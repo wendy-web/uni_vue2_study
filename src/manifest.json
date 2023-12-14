@@ -58,7 +58,9 @@
 		"setting": {
 			"urlCheck": false
 		},
-		"usingComponents": true
+		"usingComponents": true,
+		// 配置半屏小程序需要添加的
+		"embeddedAppIdList": ["wx6deb62d876c03d85"]
 	},
 	"mp-alipay" : {
         "usingComponents" : true
