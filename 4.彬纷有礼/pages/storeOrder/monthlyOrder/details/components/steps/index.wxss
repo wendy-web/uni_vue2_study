@@ -1,0 +1,86 @@
+/* pages/storeOrder/monthlyOrder/details/components/steps/index.wxss */
+
+.steps{
+  display: flex;
+  padding-top: 30rpx;
+  padding-bottom: 22rpx;
+  position: relative;
+  background-color: #ffffff;
+}
+.steps-item{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.steps-item .text{
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #797979;
+}
+.steps-item .desc{
+  font-size: 20rpx;
+  font-weight: 400;
+  color: #797979;
+}
+.steps-icon{
+  width: 20rpx;
+  height: 20rpx;
+  background-color: #b7b7b7;
+  border-radius: 50%;
+  margin-bottom: 20rpx;
+}
+
+.steps-progress-first{
+  width: 50%;
+  right: 0;
+  left: auto;
+}
+
+.steps-progress-last{
+  width: 50%;
+  left: 0;
+  right: auto;
+}
+
+.steps-active .text,.steps-active .desc{
+  color: #00AF29;
+}
+
+.steps-active .steps-icon{
+  background-color: #00AF29;
+}
+
+.steps-progress-box{
+  background-color: #B7B7B7;
+  position: absolute;
+  top: 40rpx;
+  left: 50%;
+  height: 2rpx;
+  transform: translate(-50%,-50%);
+  overflow: hidden;
+}
+.steps-progress{
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 2rpx;
+  background-color: #00AF29;
+  /* transform: translateX(-100%);
+  animation: stepsAnim 1.5s ease-in-out 1s 1 both; */
+}
+
+/* @keyframes stepsAnim{
+
+  0%{
+     transform: translateX(-100%);
+  }
+
+  100%{
+    transform: translateX(0);
+  }
+
+} */

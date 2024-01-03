@@ -1,0 +1,45 @@
+<!--pages/zhongduan/geren/mendian/shopPriv.wxml-->
+<!-- 红色背景 -->
+<view class="box">
+  <!-- 棕色背景 -->
+  <view class="box-bg" style="background-image:url({{boxBrownImg}});">
+    <!-- 蒙层 -->
+    <view class="box-head" style="background-image:url({{boxMaskImg}});">
+      <image class="box-avatar" mode="aspectFill" lazy-load src="{{shopInfo.signs_url || dydf}}">
+      </image>
+      <view class="oneLine">我的店铺：{{shopInfo.shop_name || ''}}</view>
+      <view class="box-id">店铺ID：{{shopInfo.id}}</view>
+    </view>
+  </view>
+  <!-- 店铺特权列表 -->
+  <view class="box-list-position" style="top:165px;background-image:url({{boxBgImg}});">
+    <!-- <image class="box-line" mode="aspectFit" src="{{boxLineImg}}"></image> -->
+    <!-- <view class="box-lines" style="background-image:url({{boxLineImg}});"></view> -->
+    <view class="box-list">
+      <view class="box-star-row">
+        <image class="box-star" lazy-load mode="aspectFit" src="{{boxStarLeftImg}}"></image>
+        <view class="box-star-title">店铺特权</view>
+        <image class="box-star" mode="aspectFit" src="{{boxStarRightImg}}"></image>
+      </view>
+      <view class="box-list-item">
+        <view class="list-item ">
+          <image class="box-list-item-icon" lazy-load mode="aspectFit" src="{{!shopInfo.alias_id ?icon_paper_code_grey:paperCodeIcon}}"></image>
+          <view>纸质码</view>
+        </view>
+        <view class="list-item ">
+          <image class="box-list-item-icon" lazy-load mode="aspectFit" src="{{!saleman ? icon_saleman_grey:salemanIcon}}"></image>
+          <view>业务员</view>
+        </view>
+        <view class="list-item">
+          <image class="box-list-item-icon" lazy-load mode="aspectFit" src="{{icon_box_grey}}"></image>
+          <view>箱内码特权</view>
+        </view>
+        <view class="list-item">
+          <image class="box-list-item-icon" lazy-load mode="aspectFit" src=" {{shopInfo.bottom_num == -1 ? icon_vip_grey :vipIcon}}"></image>
+          <view>VIP店铺</view>
+        </view>
+
+      </view>
+    </view>
+  </view>
+</view>

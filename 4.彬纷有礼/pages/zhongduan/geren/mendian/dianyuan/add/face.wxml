@@ -1,0 +1,34 @@
+<block wx:if="{{pageReady}}">
+	<mp-navigation-bar loading="{{loading}}" show="{{show}}" animated="{{animated}}" color="{{color}}" background="{{background}}" title="面对面添加" back="{{true}}"></mp-navigation-bar>
+	<!-- <view class="flex-container"> -->
+
+		<view class="cttx">
+			<view class="conta">
+				<view class="card">
+					<view class="title">面对面扫码邀请</view>
+					<view class="locate">
+						<view class="pic">
+							<image mode="widthFix" src="{{locimg}}"></image>
+						</view>
+						<!-- <view class="loc">{{location}}</view> -->
+						<view class="loc">{{shopInfo.shop_name}}</view>
+					</view>
+					<view class="qrcode">
+						<!-- <canvas className="canvas" canvas-id="canvas" style="background:#fff;width: 200px;height: 200px;"></canvas> -->
+						<image src="{{qrcode}}" style="background:#fff;width: 200px;height: 200px;"></image>
+					</view>
+					<view class="red">邀请店员扫码领积分掌柜得现金红包</view>
+					<!-- <view class="time">活动截止日期：2021年3月31日</view> -->
+					<button bindtap="share" open-type="share" class="redbtn">转发给微信好友</button>
+				</view>
+			</view>
+			<view class="backgr">
+				<image mode="widthFix" src="{{bgimg}}"></image>
+			</view>
+		</view>
+		<view class="adContainer-bottom">
+			<ad wx:if="{{blockAd}}" unit-id="adunit-742de9b16dcecdd0"></ad>
+		</view>
+	<!-- </view> -->
+
+</block>

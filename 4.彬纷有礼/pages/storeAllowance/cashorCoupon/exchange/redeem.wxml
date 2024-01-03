@@ -1,0 +1,64 @@
+<!--pages/storeAllowance/cashorCoupon/exchange/redeem.wxml-->
+<image class="bg-page-exc" src="{{cashcoupon_file_url}}/bg_page_exc.png" />
+<view class="box">
+  <view class="content">
+    <view class="title">
+      <text>可用兑换券额度(个)</text>
+      <text space="nbsp" class="title-num"> {{hn2in1_info.dh_num ||0}}</text>
+    </view>
+    <view class="img-gap-box">
+      <image class="img-gap-exc" src="{{cashcoupon_file_url}}/img_gap_exc.png" />
+    </view>
+    <view class="select-tips">请选择兑换类型</view>
+    <view class="select-box">
+      <van-radio-group value="{{ radio }}" bind:change="onChange">
+        <van-radio name="32" custom-class="radio-container {{(radio==32&&radio_coupon_1>0)?'radio-active':''}} {{radio_coupon_1>0?'height312':''}}" label-class="radio-label" disabled="{{radio_coupon_1==0}}" checked-color="#00c81a" style="--radio-disabled-background-color:#dddddd;">
+          <view class="select-item ">
+            <view class="select-item-type">3个额度兑2张</view>
+            <view class="select-item-title">
+              <text>可兑换产品兑换券</text>
+              <text class="select-item-num">【{{radio_coupon_1 || 0}}】</text>
+              <text>张</text>
+            </view>
+            <view class="select-item-tips" wx:if="{{radio_coupon_1>0}}">兑换后，剩余额度{{radio_remain_1||0}}个</view>
+          </view>
+        </van-radio>
+        <van-radio name="54" custom-class="radio-container {{(radio==54&&radio_coupon_2>0)?'radio-active':''}} {{radio_coupon_2>0?'height312':''}}" label-class="radio-label" disabled="{{radio_coupon_2==0}}"  checked-color="#00c81a" style="--radio-disabled-background-color:#dddddd;">
+          <view class="select-item ">
+            <view class="select-item-type">5个额度兑4张</view>
+            <view class="select-item-title">
+              <text>可兑换产品兑换券</text>
+              <text class="select-item-num">【{{radio_coupon_2 || 0}}】</text>
+              <text>张</text>
+            </view>
+            <view class="select-item-tips" wx:if="{{radio_coupon_2>0}}">兑换后，剩余额度{{radio_remain_2||0}}个</view>
+          </view>
+        </van-radio>
+      </van-radio-group>
+    </view>
+  </view>
+  <!-- <view class="btn-confirm" bindtap="confirm">确认兑换</view> -->
+  <van-button custom-class="btn-confirm {{radio==0 ?'btn-disabled':''}}" bind:click="confirm" block round disabled="{{radio==0}}">确认兑换</van-button>
+  
+</view>
+
+
+<van-popup show="{{excSuccessShow}}" bind:close="onClose" data-popname="excSuccessShow" custom-style="background-color: transparent;" close-on-click-overlay="{{true}}">
+  <image class="pop-icon-success" src="{{cashcoupon_file_url}}/pop_icon_success.png" mode="aspectFit" />
+  <view class="pop-box">
+    <image class="pop-bg-green" src="{{cashcoupon_file_url}}/pop_bg_green.png" />
+    <view class="pop-content">
+      <view class="exc-title">兑换成功</view>
+      <view class="exc-title">
+        <text>产品兑换券</text>
+        <text class="exc-num">【{{excSuccessNum}}】</text>
+        <text>张</text>
+      </view>
+    </view>
+    <view class="operate-box">
+      <view class="exc-tips">*1张产品兑换券可兑换1罐红牛原味型功能饮料250ml</view>
+      <view bindtap="openPage" data-url="pages/phaseIII/voucher/index" data-condition="{{userdata.condition}}" data-popname="excSuccessShow" class="operate-btn">{{userdata.condition == 2 ?'我知道了':'查看详情'}}</view>
+    </view>
+  </view>
+
+</van-popup>

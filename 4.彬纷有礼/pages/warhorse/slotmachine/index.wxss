@@ -1,0 +1,254 @@
+/* pages/warhorse//slotmachine/index.wxss */
+@import './utils/machine.wxss';
+@import '../style.wxss';
+
+page {
+  height: 100%;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  /* background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/machine/bg.png); */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/machine/border.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 628rpx;
+  height: 368rpx;
+  display: flex;
+  align-items: center;
+}
+
+.content-bg {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/machine/body.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 628rpx;
+  height: 368rpx;
+  margin-top: -2px;
+  z-index: 1;
+}
+
+.machine-box {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.footer {
+  width: 100%;
+  text-align: right;
+  box-sizing: border-box;
+  padding-right:56rpx;
+  margin-top: 47rpx;
+}
+
+.click_me {
+  width: 386rpx;
+  height: 123rpx;
+}
+
+.pullImg {
+  width: 55rpx;
+  height: 160rpx;
+  margin-left: 50rpx;
+}
+
+.button3D {
+  animation-name: press;
+  animation: press 0.2s infinite linear;
+  -webkit-animation: press 0.2s infinite linear;
+}
+
+.reward_bg {
+  /* background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/machine/reward_bg.png); */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.rewardPop {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5000;
+  width: 100%;
+  height: 100%;
+  /* background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/machine/reward_bg_front.png); */
+  background-repeat: no-repeat;
+  background-size: 90vw 90vh;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.rewardPop_content {
+  /* background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/machine/reward_content.png); */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 706rpx;
+  height: 840rpx;
+  position: fixed;
+  bottom: 25%;
+  /* transform: translateY(-50%); */
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 5000;
+  box-sizing: border-box;
+}
+
+.rewardPop_content .msg {
+  font-size: 51rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #e60000;
+}
+
+.rewardPop_content .msg text {
+  font-size: 80rpx;
+}
+
+.flex-column-flex_end {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+.flex-column-around {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:space-around;
+}
+.getReward{
+  margin-bottom: 200rpx;
+  margin-top: 270rpx;
+}
+.getReward .btn {
+  width: 327rpx;
+  height: 94rpx;
+}
+
+.lotteryPop {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/machine/count_bg.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 676rpx;
+  height:930rpx;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 70rpx;
+}
+
+@keyframes press {
+  0% {
+    transform: translateY(10rpx);
+  }
+
+  100% {
+    transform: translateX(10rpx);
+
+  }
+}
+
+
+/* 2022年1月17日14:33:15 战马UI更新 */
+.icon-zm-logo{
+  position: absolute;
+  left: 50rpx;
+  top: 40rpx;
+  width: 215rpx;
+  height: 123rpx;
+}
+.game-box{
+  /* background-repeat: no-repeat;
+  background-size: 100% 100%; */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.game-box .bg-zm-tiger-box-head{
+  width:613rpx;
+  height: 447rpx;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+    align-items: center;
+}
+.game-box .icon-zm-tiger-title{
+  width: 485rpx;
+  height: 160rpx;
+}
+.game-box .bg-zm-tiger-box-foot{
+  width: 685rpx;
+  height: 400rpx;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  margin-top: -20px;
+}
+.icon-zm-btn{
+  width: 240rpx;
+  height: 80rpx;
+}
+.game-box .mgl20{
+  margin-left: 20rpx;
+}
+/* @media screen and (min-width: 375px) and (min-height:724px) {
+
+ 
+
+  .footer {
+    bottom:21vh;
+  }
+} */
+
+/* @media screen and (min-width: 414px) {
+
+
+  .footer {
+    bottom: 21vh;
+
+  }
+}
+
+@media screen and (min-width: 363px) and (min-height:711px) {
+ 
+
+  .footer {
+    bottom: 25.2vh;
+
+  }
+}
+
+@media screen and (min-height:800px) {
+ 
+
+  .footer {
+    bottom: 26vh;
+
+  }
+} */
+.height500{
+  height: 500rpx;
+  padding-bottom: 100rpx;
+  box-sizing: border-box;
+}
+.lotteryPop .font100{
+  font-size: 100rpx;
+}

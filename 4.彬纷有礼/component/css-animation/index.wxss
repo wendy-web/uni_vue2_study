@@ -1,0 +1,17 @@
+.frame_wrap {
+    width: var(--width);
+    height: var(--height);
+    animation: frames calc(var(--duration) * 0.3s) steps(var(--count)) infinite;
+    background-position: 0 0;
+    background-size: calc(var(--width) * var(--count)) var(--height);
+  }
+  
+  @keyframes frames {
+    from {
+      background-position-x: 0;
+    }
+    
+    to {
+      background-position-x: calc(var(--width) *-1 *var(--count));
+    }
+  }

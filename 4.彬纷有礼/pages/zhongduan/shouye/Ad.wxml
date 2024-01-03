@@ -1,0 +1,9 @@
+<!--pages/zhongduan/shouye/detail.wxml-->
+<view class="container">
+	<!-- <image mode="aspectFit" src="{{url}}"></image> -->
+	<image mode="widthFix" lazy-load="true" bindload="imgLoaded" src="{{url}}"></image>
+	<!-- 广告位 -->
+	<!-- <view class="adContainer-bottom safeArea">
+		<ad unit-id="adunit-0fe169e63df01750"></ad>
+	</view> -->
+</view>

@@ -1,0 +1,74 @@
+<!--pages/couponActivity/gzUnbox/ranklist/index.wxml-->
+<top-navbar title="排行榜" backgroundColor="unset" iconTheme="white" bindback="onBeforeBack">
+</top-navbar>
+
+<!-- 背景图 -->
+<image class="bg_rank" src="{{file_url_gzunbox}}/bg_rank.png" />
+<view class="container safeArea" style="--content-height:{{navBarSystem.screenHeight-navBarSystem.headHeight}}px;">
+  <view class="rank-head-box">
+    <image class="rank_title" src="{{file_url_gzunbox}}/rank_title.png" mode="aspectFit" />
+    <view>*温馨提示：若开箱数相同，依据系统开箱时间先后顺序排名！</view>
+    <!-- 奖币背景 -->
+    <image class="bg_rank_grail" src="{{file_url_gzunbox}}/bg_rank_grail.png" mode="aspectFit" />
+  </view>
+  <view class="flex-row text-center space-around  fontWeight600 font28 subtitle">
+    <view class="flexNum ">
+      <text class="table-head-title">排名</text>
+    </view>
+    <view class="flexTwo">
+      <text class="table-head-title">门店名称</text>
+    </view>
+    <view class="flexOne ">
+      <text class="table-head-title">红牛开箱数</text>
+    </view>
+  </view>
+
+  <view class="listBox">
+
+    <!-- page scroll start-->
+    <scroll-view class="list-box" scroll-y scroll-top enable-flex refresher-enabled="{{true}}" lower-threshold="{{200}}" refresher-triggered="{{refreshed}}" bindrefresherrefresh="refresh" bindscrolltolower="loadMore">
+      <block wx:if="{{rankList.length>0}}" wx:for="{{rankList}}" wx:key="key">
+        <view class=" font28 bgLine {{storeInfo&&storeInfo.uid == item.uid?'myRankItem':''}}">
+
+          <view class="flex-row text-center space-around  ">
+            <view class="flex-row  mgb30 space-around  width100 ">
+              <view class="flexNum rankNum {{storeInfo&&storeInfo.uid == item.uid?'color-brown':''}}">
+                <block wx:if="{{index<3}}">
+                  <image class="rank_icon" src="{{file_url_gzunbox}}/rank_icon_{{index+1}}.png" mode="aspectFit"/>
+                </block>
+                <block wx:else>
+                  <text>{{index+1}}</text>
+                </block>
+              </view>
+              <view class="flexTwo oneLine {{storeInfo&&storeInfo.uid == item.uid?'color-brown':''}}">
+                <text>{{item.shop_name}}</text>
+              </view>
+              <view class="flexOne {{storeInfo&&storeInfo.uid == item.uid?'color-brown':''}}">
+                <text>{{item.s_num || '' }}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+      <block wx:if="{{!rankList.length}}">
+        <view class="no-data" style="min-height: {{navBarSystem.screenHeight*0.3}}px;">
+        <!-- <view class="no-data" > -->
+          暂无上榜数据
+        </view>
+      </block>
+
+      <view class="weui-loadmore" wx:if="{{loadMore}}">
+        <i class="weui-loading"></i>
+        <text class="weui-loadmore__tips">正在加载</text>
+      </view>
+      <view class="weui-loadmore weui-loadmore_line" wx:if="{{noMore&&rankList.length>0}}">
+        <text class="weui-loadmore__tips">没有更多了</text>
+      </view>
+    </scroll-view>
+    <!-- page scroll end-->
+
+  </view>
+  <!-- <view class="content">
+
+  </view> -->
+</view>

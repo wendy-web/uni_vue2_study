@@ -1,0 +1,177 @@
+<top-navbar iconTheme="{{iconTheme}}" title="{{title}}" backgroundColor="{{background}}" bindback="onBeforeBack" searchBar="" bindsearch='search'></top-navbar>
+<view class="hn-box" style="height: calc(100vh - {{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px);">
+  <!-- 红牛27周年 -->
+  <block wx:if="{{pre_act_hn<=27}}">
+    <!-- 第27图标 -->
+    <image class="icon-hn-27th" binderror="imgError" mode="aspectFit" src="{{icon_hn_27th}}"></image>
+    <!-- 27周年红牛标题 -->
+    <image class="icon-hn-title" binderror="imgError" mode="aspectFit" src="{{icon_hn_title}}"></image>
+    <!-- 活动规则 -->
+    <view class="hn-rule-box" bindtap="showRule">
+      <image class="icon-question" binderror="imgError" mode="aspectFit" src="{{icon_question}}"></image>
+      <view class="text-vertical">活动规则</view>
+    </view>
+    <!-- 开箱背景主图 -->
+    <image class="hn-banner" binderror="imgError" mode="scaleToFill" src="{{hbtype=='56'?hn_banner_type56:hn_banner}}"></image>
+    <!-- 开红包 -->
+    <view class="hn-msgbox" bindtap="{{!opened?'openHongbao':''}}" style="background-image: url({{opened?img_hn_opened:img_hn_unopened}});">
+
+      <!-- 红包已开 -->
+      <block wx:if="{{opened}}">
+
+        <view class="hn-msg-box">
+          <!-- 获奖信息 -->
+          <view class="hn-msg-item">
+            <!-- 开红包成功successful:1成功 -->
+            <block wx:if="{{successful==1}}">
+              <view class="title">{{hbdatas.msg}}</view>
+              <!-- <view class="title" style="{{userdata.condition == 2?'font-size:30rpx;':''}}">{{hbdatas.msg}}</view> -->
+              <view class="money">￥<text class="cash">{{hbdatas.data.money}}</text>
+              </view>
+            </block>
+            <!-- 开红包失败successful:2失败 -->
+            <block wx:if="{{successful==2}}">
+              <view class="title">{{hbdatas.msg}}</view>
+            </block>
+          </view>
+          <!-- 操作按钮：有无任务情况 -->
+          <view class="hn-btn-box">
+            <!-- 如果有翻倍任务 -->
+            <block wx:if="{{hasTask==1 &&successful==1}}">
+              <!-- 放弃翻倍 -->
+              <image bindtap="goYuer" binderror="imgError" data-go="1" class="icon-hn-btn" src="{{icon_btn_giveup}}" mode="aspectFit"></image>
+              <!-- 继续开箱扫码 -->
+              <block wx:if="{{image_load_failed}}">
+                <image bindtap="watchAd" binderror="imgError" data-go="2" class="icon-hn-btn btn-watchAd" src="{{icon_btn_video}}" mode="aspectFit"></image>
+              </block>
+              <block wx:else>
+                <image bindtap="watchAd" class="gif-btn-watchvideo" src="{{gif_btn_watchvideo}}" mode="aspectFit"></image>
+
+              </block>
+            </block>
+            <!-- 没有翻倍任务 -->
+            <block wx:if="{{hasTask==0&&successful==1}}">
+              <!-- 查看余额 -->
+              <image bindtap="goYuer" binderror="imgError" data-go="1" class="icon-hn-btn" src="{{userdata.condition==2?icon_btn_help:icon_hn_btn_yuer}}" mode="aspectFit"></image>
+              <!-- 继续开箱扫码：2023年5月19日 显示领取福利按钮，要在关闭福利弹窗以后再显示 继续开箱扫码按钮 -->
+              <image wx:if="{{xd_benefit_closed}}" bindtap="goScan" binderror="imgError" class="icon-hn-btn" src="{{icon_hn_btn_scan}}" mode="aspectFit"></image>
+              <image wx:else bindtap="openBenefitPop" binderror="imgError" class="icon-hn-btn" src="{{btn_get_benefit}}" mode="aspectFit"></image>
+            </block>
+          </view>
+
+        </view>
+
+      </block>
+      <block wx:else>
+        <!-- 红包未开 -->
+        <image class="img-hn-unopened" binderror="imgError" mode="aspectFill" src="{{img_hn_unopened}}"></image>
+      </block>
+    </view>
+  </block>
+  <!-- 红牛28周年 -->
+  <block wx:if="{{pre_act_hn ==28}}">
+    <view class="box-hn-28y">
+      <!-- 顶部28图标 -->
+      <image class="icon-hn-28y" mode="aspectFit" src="{{icon_hn_28y}}"></image>
+      <!-- 28banner -->
+      <image class="img-hn-banner-28y" src="{{img_hn_banner_28y}}"></image>
+      <!-- 底部坐台 -->
+      <image class="img-hn-bg-28y" src="{{img_hn_bg_28y}}"></image>
+      <!-- 右侧活动规则 -->
+      <view class="hn-rule-box-28y" bindtap="showRule">
+        <image class="icon-question" mode="aspectFit" src="{{icon_query}}"></image>
+        <view class="text-vertical">活动规则</view>
+      </view>
+    </view>
+    <!-- 红包已开 -->
+    <block wx:if="{{opened}}">
+      <view class="hn-msg-box-28y " style="background-image: url({{hn_28y_msgbox}});">
+
+        <view class="hn-msg-28y">
+          <!-- 获奖信息 -->
+          <view class="hn-msg-item-28y">
+            <!-- 开红包成功successful:1成功 -->
+            <block wx:if="{{successful==1}}">
+              <view class="title">{{hbdatas.msg}}</view>
+              <view class="money">￥<text class="cash">{{hbdatas.data.money}}</text>
+              </view>
+            </block>
+            <!-- 开红包失败successful:2失败 -->
+            <block wx:if="{{successful==2}}">
+              <view class="title">{{hbdatas.msg}}</view>
+            </block>
+          </view>
+          <!-- 操作按钮：有无任务情况 -->
+          <view class="hn-btn-box">
+            <!-- 如果有翻倍任务 -->
+            <block wx:if="{{hasTask==1 &&successful==1}}">
+              <!-- 放弃翻倍 -->
+              <image bindtap="goYuer" binderror="imgError" data-go="1" class="icon-hn-btn" src="{{icon_btn_giveup}}" mode="aspectFit"></image>
+              <!-- 继续开箱扫码 -->
+              <block wx:if="{{image_load_failed}}">
+                <image bindtap="watchAd" binderror="imgError" data-go="2" class="icon-hn-btn btn-watchAd" src="{{icon_btn_video}}" mode="aspectFit"></image>
+              </block>
+              <block wx:else>
+                <image bindtap="watchAd" class="gif-btn-watchvideo" src="{{gif_btn_watchvideo}}" mode="aspectFit"></image>
+
+              </block>
+            </block>
+            <!-- 没有翻倍任务 -->
+            <block wx:if="{{hasTask==0&&successful==1}}">
+              <!-- 查看余额 -->
+              <image bindtap="goYuer" binderror="imgError" data-go="1" class="icon-hn-btn" src="{{userdata.condition==2?icon_btn_help:icon_hn_btn_yuer}}" mode="aspectFit"></image>
+              <!-- 继续开箱扫码：2023年5月19日 显示领取福利按钮，要在关闭福利弹窗以后再显示 继续开箱扫码按钮 -->
+              <image wx:if="{{xd_benefit_closed}}" bindtap="goScan" binderror="imgError" class="icon-hn-btn" src="{{icon_hn_btn_scan}}" mode="aspectFit"></image>
+              <image wx:if="{{config&&!xd_benefit_closed}}" bindtap="openBenefitPop" binderror="imgError" class="icon-hn-btn" src="{{btn_get_benefit}}" mode="aspectFit"></image>
+            </block>
+          </view>
+
+        </view>
+        <!-- 天天图标 -->
+        <image class="icon-tt-seal" src="{{icon_tt_seal}}" mode="aspectFit" />
+        <!-- 底部水印 -->
+        <image class="icon-hn-28y-clear" src="{{icon_hn_28y_clear}}" mode="aspectFit" />
+      </view>
+    </block>
+    <block wx:else>
+      <!-- 红包未开 -->
+      <image bindtap="openHongbao" class=" img-hn-28y-seal" binderror="imgError" src="{{img_hn_28y_seal}}"></image>
+    </block>
+
+
+  </block>
+  <!-- 底部彩带 -->
+  <image class="img-hn-foot" mode="scaleToFill" src="{{img_hn_foot}}"></image>
+
+</view>
+
+<!-- 视频广告弹窗 -->
+<view wx:hidden="{{!videoPop}}">
+  <videoAd videoPop="{{videoPop}}" videoUrls="{{videoUrl}}" capsule="{{capsule}}" bind:myevent="playGame"></videoAd>
+</view>
+<!-- 跳转余额二次确认弹窗 -->
+<view class="fadeIn" wx:if="{{reconfirmPop}}">
+  <view class="weui-mask"></view>
+  <view class="weui-dialog reconfirmPop" style="background-image: url({{pre_act_hn==28?img_hn_alert_reconfirm_28y:img_hn_alert_reconfirm}});">
+    <view class="weui-dialog__bd">
+      <!-- 红包翻倍图片 -->
+    </view>
+    <view class="btn-group">
+      <a class="btn-giveup" data-go="2" bindtap="goYuer">放弃翻倍</a>
+      <block wx:if="{{image_load_failed}}">
+        <image bindtap="watchAd" binderror="imgError" data-go="2" class="icon-hn-btn btn-watchAd" src="{{icon_btn_video}}" mode="aspectFit"></image>
+      </block>
+      <block wx:else>
+        <image bindtap="watchAd" class="gif-btn-watchvideo" src="{{gif_btn_watchvideo}}" mode="aspectFit"></image>
+      </block>
+    </view>
+
+
+
+  </view>
+</view>
+<!-- 领取福利弹窗 -->
+<!-- <xdBenefitPop id="xdBenefit"></xdBenefitPop> -->
+
+<!-- </block> -->
+<xdBenefit wx:if="{{config}}" id="xdBenefit" show="{{xd_benefit_pop}}" bind:close="closeBenefitPop" config="{{config}}"></xdBenefit>

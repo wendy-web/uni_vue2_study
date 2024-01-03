@@ -1,0 +1,21 @@
+<!--components/movemenu/movemenu.wxml-->
+<movable-area class='menuarea'>
+  <movable-view class='menu_box' direction="all" x="{{width}}" y="{{screenHeight?screenHeight*0.6:height*0.6}}" out-of-bounds="{{false}}">
+    <view hidden='{{showmenus}}' class=''>
+      <block wx:for='{{menulist}}' wx:key='menulist'>
+        <view class='menu_main' catchtap='itemclick' data-item='{{item}}'>
+          <image class='menu_img' src='{{item.url}}' />
+          <text class='menu_title' hidden='{{mainmodel.title.length > 0 ? flase:true}}'>{{item.title}}</text>
+        </view>
+      </block>
+    </view>
+    <view class='menu_main'>
+      <!-- 2023年8月3日 深圳兑奖活动浮窗 -->
+      <view class="display-hn-buoy" catchtap='tapBuoy'>
+        <image class="img" src="{{img_sz_buoy}}" mode="aspectFit" lazy-load></image>
+      </view>
+    </view>
+  </movable-view>
+</movable-area>
+<storeRankPop id="storeRankPopBouy" ></storeRankPop>
+

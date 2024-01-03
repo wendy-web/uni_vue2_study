@@ -1,0 +1,53 @@
+<!--component/actCouponPop/gzExcProgress/index.wxml-->
+<view class="progress-box">
+  <!-- 背景 -->
+  <image class="bg_progress" src="{{file_url_gzexc}}/bg_progress.png" mode="aspectFit" />
+  <!-- 活动进度 -->
+  <image class="icon_act_progress" src="{{file_url_gzexc}}/icon_act_progress.png" mode="aspectFit" />
+  <!-- 当前兑奖信息 -->
+  <view class="exc-info-box">
+    <view class="exc-info-item">
+      <text>当前兑奖(罐):</text>
+      <text class="exc-s-num {{!actInfo.act_state.act_ing ?'exc-rev-num-grey':''}}">{{actInfo.s_num || 0}}</text>
+    </view>
+    <view class="exc-info-item-gap"></view>
+    <view class="exc-info-item">
+      <text>奖励累计(张):</text>
+      <text class="exc-rev-num {{!actInfo.act_state.act_ing ?'exc-rev-num-grey':''}}">{{actInfo.rev_num || 0}}</text>
+    </view>
+  </view>
+  <!-- 还需再兑x罐 奖励calc[1] -->
+  <view class="tooltip-box {{!actInfo.act_state.act_ing ?'tooltip-box-grey':''}}">
+    <view class="tooltip-item">
+      <text>再兑换</text>
+      <text class="still-need-exc {{!actInfo.act_state.act_ing ?'exc-rev-num-grey':''}}">{{actInfo.still_need_exc || 0}}</text>
+      <text>罐，奖励</text>
+      <text class="clac-num {{!actInfo.act_state.act_ing ?'exc-rev-num-grey':''}}">{{actInfo.calc[1] || 2}}</text>
+      <text>张</text>
+    </view>
+  </view>
+  <!-- 进度 -->
+  <view class="exc-progress-box">
+    <view class="exc-progress-item" wx:for="{{actInfo.calc[0]}}" wx:key="key">
+      <image class="icon_can_zm" src="./image/{{actInfo.remainder>index?'icon_can_zm':'icon_can_zm_grey'}}.png" mode="aspectFit" />
+      <view class="progress-bar-grey {{actInfo.remainder>index?'progress-bar':''}} {{index== (actInfo.calc[0]-1) ? 'progress-bar-invisibled' :''}}"></view>
+    </view>
+  </view>
+  <!-- 操作按钮：默认区分兑奖，和查看详情 -->
+  <view class="operate-box">
+    <block wx:if="{{btnType == 1}}">
+      <!-- 判断活动是否进行中 -->
+      <block wx:if="{{actInfo.act_state.act_ing}}">
+        <image bind:tap="openPage" data-url="pages/zhongduan/geren/mendian/qrcode" class="pop_btn_exc" src="{{file_url_gzexc}}/pop_btn_exc.png" mode="aspectFit"/>
+      </block>
+      <block wx:else>
+        <!-- 预热和结束状态：判断是否中奖 -->
+        <image wx:if="{{actInfo.is_win}}" bind:tap="openPage" data-opentype="2" data-url="pages/phaseIII/voucher/index" data-params='?activeTab=2' class="pop_btn_exc" src="{{file_url_gzexc}}/btn_to_use.png" mode="aspectFit"/>
+        <image wx:else  class="pop_btn_exc" src="{{file_url_gzexc}}/btn_exc_grey.png" mode="aspectFit"/>
+        
+      </block>
+    </block>
+    <image wx:if="{{btnType == 2}}" bind:tap="openPage" data-url="pages/couponActivity/gzExc/index/index" class="pop_btn_exc" src="{{file_url_gzexc}}/pop_btn_view_detail.png" mode="aspectFit"/>
+  </view>
+
+</view>

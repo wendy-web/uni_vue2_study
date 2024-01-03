@@ -1,0 +1,7 @@
+<!--component/storeRankPop/popBackground/index.wxml-->
+<view class="box">
+  <image class="icon-close" mode="aspectFit" bindtap="closePop" src="{{closeImg}}"></image>
+  <view class="box-item {{boxItemClass}}" style="background-image:url({{bgImg}});">
+      <slot></slot>
+  </view>
+</view>

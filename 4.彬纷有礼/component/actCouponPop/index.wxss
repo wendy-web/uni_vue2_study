@@ -1,0 +1,567 @@
+.act-coupon-box {
+  box-sizing: border-box;
+}
+
+.no-trans-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40rpx;
+}
+
+.no-trans-title {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #000018;
+}
+
+.no-trans-tips {
+  display: flex;
+  align-items: center;
+  font-size: 44rpx;
+  color: #f5222d;
+  margin-top: 34rpx;
+}
+
+.icon-no-trans {
+  width: 68rpx;
+  height: 68rpx;
+  margin-right: 12rpx;
+}
+
+.box-flex-center {
+  flex: 1;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.act-end-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #000018;
+}
+
+.title-tips {
+  font-size: 28rpx;
+  font-weight: 400;
+  text-align: center;
+  color: #4E4D52;
+  margin-top: 20rpx;
+}
+
+.operate-box {
+  flex-shrink: 0;
+  height: 120rpx;
+}
+
+.operate-box-apply {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  flex-shrink: 0;
+  height: 100rpx;
+  align-items: flex-start;
+}
+
+.btn-operate {
+  box-sizing: border-box;
+  width: 318rpx;
+  height: 80rpx;
+  background: linear-gradient(85deg, #fd6813 4%, #fd2e0e 95%);
+  border: 4rpx solid #ffffff;
+  border-radius: 44rpx;
+  box-shadow: 0rpx 6rpx 12rpx 0rpx #ffb291;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #fff6f2;
+  text-shadow: 0rpx 2rpx 4rpx 0rpx #920012;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-operate-mini {
+  box-sizing: border-box;
+  width: 220rpx;
+  height: 80rpx;
+  background: linear-gradient(85deg, #fd6813 4%, #fd2e0e 95%);
+  border: 4rpx solid #ffffff;
+  border-radius: 44rpx;
+  box-shadow: 0rpx 6rpx 12rpx 0rpx #ffb291;
+
+
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #fff6f2;
+  text-shadow: 0rpx 2rpx 4rpx 0rpx #920012;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-operate-no {
+  width: 220rpx;
+  height: 80rpx;
+  background: linear-gradient(85deg, #ff9e67 4%, #fdb50e 95%);
+  border: 4rpx solid #ffffff;
+  border-radius: 44rpx;
+  box-shadow: 0rpx 6rpx 12rpx 0rpx #ffb291;
+  box-sizing: border-box;
+
+  font-size: 36rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-row-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-check-mark {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.prize-container {
+  flex: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 30rpx;
+  padding-bottom: 24rpx;
+}
+
+.prize-box {
+  display: flex;
+  align-items: baseline;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #E3001B;
+  box-sizing: border-box;
+  margin-left: 8rpx;
+}
+
+.prize-num {
+  font-size: 56rpx;
+}
+
+.total-unbox {
+  font-size: 28rpx;
+  font-weight: 400;
+  color: #000018;
+}
+
+.unbox-num {
+  color: #E3001B;
+}
+
+.use-tips {
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #4e4d52;
+}
+
+.pb-88 {
+  padding-bottom: 88rpx;
+}
+
+/* 核对店铺信息 */
+.shopinfo-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 0rpx 10rpx 0 40rpx;
+  font-size: 36rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #000018;
+
+}
+
+
+.shopinfo-content .shopinfo-name {
+  flex-shrink: 0;
+}
+
+.shopinfo-content .shopinfo-item-flex {
+  margin-top: 10rpx;
+  display: flex;
+  align-items: flex-start;
+}
+
+.shopinfo-content .shopinfo-item {
+  margin-top: 10rpx;
+}
+
+.shopinfo-content .shop-name {
+  display: inline-block;
+  max-width: 280rpx;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.shopinfo-content .shopinfo-tips {
+  text-align: left;
+  color: #000018;
+  letter-spacing: 1.06rpx;
+  margin-top: 44rpx;
+  margin-bottom: 40rpx;
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #77767d;
+  line-height: 30rpx;
+}
+
+.mbt20 {
+  margin: 20rpx 0rpx;
+}
+
+.btn-operate-know {
+  width: 318rpx;
+  height: 80rpx;
+  background: linear-gradient(85deg, #fd6813 4%, #fd2e0e 95%);
+  border: 4rpx solid #ffffff;
+  border-radius: 44rpx;
+  box-shadow: 0rpx 6rpx 12rpx 0rpx #ffb291;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title-apply-success {
+  width: 340rpx;
+  height: 208rpx;
+}
+
+.apply-count-down {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #ffd500;
+  letter-spacing: 3.97rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 2023年8月24日 广州开箱活动 */
+.pop-btn-yes {
+  width: 208rpx;
+  height: 80rpx;
+}
+
+.img-apply-success {
+  width: 312rpx;
+  height: 180rpx;
+}
+
+.pop-btn-iknow {
+  width: 270rpx;
+  height: 80rpx;
+}
+
+.pop-btn-view-detail {
+  width: 270rpx;
+  height: 80rpx;
+}
+
+.gz-daily-pop-title {
+  font-size: 36rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #000018;
+  margin-bottom: 10rpx;
+}
+
+.gz-daily-pop-total {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #000018;
+  display: flex;
+  align-items: baseline;
+}
+
+.gz-daily-pop-num {
+  font-size: 36rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #ff5e00;
+}
+
+.gz-daily-pop-unit {
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #000018;
+}
+
+.count-down-tips {
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #888888;
+  margin-top: 20rpx;
+}
+
+.pop-btn-use {
+  width: 288rpx;
+  height: 80rpx;
+}
+
+.pop-win-title {
+  display: flex;
+  align-items: center;
+  font-size: 36rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #e3001b;
+}
+
+.pop-icon-tick {
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 10rpx;
+}
+
+.pop-win-title .win-coupon-num {
+  font-size: 56rpx;
+}
+
+.mt20 {
+  margin-top: 20rpx;
+}
+
+.mt70 {
+  margin-top: 70rpx;
+}
+
+.gzexc-daily-box {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 724rpx;
+  height: 760rpx;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.gzexc-daily-box .bg-pop-daily {
+  width: 724rpx;
+  height: 693rpx;
+  position: absolute;
+  top: 54rpx;
+  left: 0;
+  z-index: -1;
+}
+
+.gzexc-daily-box .pop-daily-zm-can {
+  width: 222rpx;
+  height: 248rpx;
+  position: absolute;
+  right: 0;
+  top: 0rpx;
+  z-index: 2;
+}
+
+.gzexc-win-box {
+  width: 648rpx;
+  height: 815rpx;
+  padding: 120rpx 20rpx 20rpx 20rpx;
+  margin: 0 40rpx;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+}
+
+.pop_win_tap {
+  width: 512rpx;
+  height: 124rpx;
+  position: relative;
+  left: -60rpx;
+  bottom: -30rpx;
+}
+
+.pop_win_zm_can {
+  width: 222rpx;
+  height: 249rpx;
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  top: 80rpx;
+}
+
+.pop_win_coin {
+  width: 702rpx;
+  height: 160rpx;
+  position: absolute;
+  top: 400rpx;
+  z-index: 10;
+  /* background-color: tan; */
+}
+
+.pop_bg_win {
+  width: 648rpx;
+  height: 815rpx;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+}
+
+.gzexc-win-inner {
+  width: 606rpx;
+  height: 666rpx;
+  border-radius: 46rpx;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  padding: 30rpx;
+}
+
+.gzexc-win-title {
+  font-size: 52rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #000000;
+}
+
+.gzexc-win-subtitle {
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Light;
+  font-weight: 300;
+  text-align: left;
+  color: #8f8f8f;
+}
+
+.gzexc-win-item {
+  width: 534rpx;
+  min-height: 198rpx;
+  background: linear-gradient(163deg, #fffcf1 5%, #ffe7d4 89%);
+  border-radius: 32rpx;
+  margin-top: 24rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gzexc-win-item-num {
+  font-size: 80rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #ff0045;
+  letter-spacing: 4rpx;
+  line-height: 100rpx;
+}
+
+.gzexc-win-item-title {
+  font-size: 44rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #934a12;
+  letter-spacing: 2.16rpx;
+}
+
+.gzexc-win-item-s {
+  font-size: 32rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  margin-top: 16rpx;
+}
+
+.gzexc-win-item-snum {
+  font-size: 34rpx;
+  font-family: Microsoft YaHei, Microsoft YaHei-Regular;
+  font-weight: bold;
+  color: #00a17c;
+}
+
+.gzexc-win-item-tips {
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #8f8f8f;
+}
+
+.btn_view_detail {
+  width: 374rpx;
+  height: 120rpx;
+  display: block;
+  margin: 0 auto;
+}
+
+.gzexc-fail-box {
+  box-sizing: border-box;
+  width: 658rpx;
+  height: 558rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  padding: 24rpx;
+}
+
+.pop_bg_gz_exc {
+  width: 658rpx;
+  height: 558rpx;
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+}
+
+.imsorry {
+  width: 264rpx;
+  height: 80rpx;
+}
+
+.gzexc-fail-title {
+  font-size: 52rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #000000;
+  margin-top: 36rpx;
+  margin-bottom: 40rpx;
+}
+
+.gzexc-fail-end {
+  font-size: 40rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #764f30;
+}

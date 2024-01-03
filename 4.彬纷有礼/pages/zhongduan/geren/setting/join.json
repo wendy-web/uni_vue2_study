@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "forbiddenTransShop":"../../../../component/forbiddenTransShop/index"
+  },
+  "navigationBarTitleText": "转入他人门店"
+}

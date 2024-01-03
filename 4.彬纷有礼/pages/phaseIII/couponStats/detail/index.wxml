@@ -1,0 +1,54 @@
+<!--pages/phaseIII/couponStats/detail/index.wxml-->
+<view class="box">
+  <view class="inner-box">
+    <scroller wx:if="{{!isEmpty}}" background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" type="default" bind:refresh="refreshList" bind:loadmore="loadmore" class="scroller-box"  bind:contentHeight="contentHeight">
+      <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+      <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+      <!-- 中间列表内容区域，可使用长列表分页组件、列表项组件或自定义 -->
+      <item wx:for="{{couponList}}" wx:key="id" class="list-box">
+        <!-- <item wx:for="{{10}}" wx:key="id" class="list-box"> -->
+        <!-- 卡券item:注意区分不同类型的UI图，left 和right  -->
+        <view class="list-item">
+          <view class="list-item-left">
+
+            <view class="list-title">{{ item.title}}</view>
+            <view class="list-subtitle" wx:if="{{item.rev_time || item.create_time}}">
+              <text>领券时间：</text>
+              <text>{{item.rev_time || item.create_time}}</text>
+            </view>
+
+            <view class="list-subtitle" wx:if="{{item.exp_time}}">
+              <text>有效期至：{{item.exp_time}}</text>
+            </view>
+            <view class="list-subtitle">
+              <text>{{item.sku_info.sku_name || item.couponTitle}}</text>
+            </view>
+
+
+          </view>
+          <view class="list-item-right">
+            <!-- type:1折扣券 2活动券 -->
+            <image class="icon_dis_coupon" wx:if="{{opentype==1}}" src="{{file_url_9m}}/icon_discount.png" mode="aspectFit" />
+            <view class="act-title" wx:if="{{opentype==2}}">【活动奖励券】</view>
+            <view class="discount-count">
+              <text class="discount-num">{{item.rev_num}}</text>
+              <text>张</text>
+            </view>
+          </view>
+        </view>
+      </item>
+      <!-- 加载更多区域，可使用加载更多组件或自定义 -->
+      <loadmore slot="loadmore" status="{{loadMoreSetting.status}}" loading="{{loadMoreSetting.loading}}" noMore="{{loadMoreSetting.noMore}}" more="{{loadMoreSetting.more}}" />
+      <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+      <view class="empty-box" wx:if="{{couponList.length == 0}}">
+        <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+      </view>
+    </scroller>
+    <scroller wx:else background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" bind:refresh="refreshList" class="scroller-box"  bind:contentHeight="contentHeight">
+      <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+      <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+      <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+      <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+    </scroller>
+  </view>
+</view>

@@ -1,0 +1,407 @@
+<view class="head-box" style="background-image:url({{billIcon}});">
+  <!-- 月账单、年账单切换 -->
+  <view class="head-box-bill-name">
+    <view bindtap="changeBillTab" data-index="0" class="head-box-bill-item">
+      <view class="{{activeTab == 0 ? 'brand-tab-title' :''}}">月账单</view>
+      <view class="{{activeTab == 0 ? 'tab-lined' :'tab-line'}}"></view>
+    </view>
+    <view bindtap="changeBillTab" data-index="1" class="head-box-bill-item ">
+      <view class="{{activeTab == 1 ? 'brand-tab-title' :''}}">年账单</view>
+      <view class="{{activeTab == 1 ? 'tab-lined' :'tab-line'}}"></view>
+    </view>
+  </view>
+  <!-- 年月选择、收益、提现切换 -->
+  <view class="head-box-picker">
+    <!-- 年月选择器 -->
+    <picker wx:if="{{activeTab == 0}}" mode="date" value="{{currentDate}}" start="{{startDate}}" fields="month"
+      end="{{endDate}}" bindchange="bindDateChange">
+      <view class="picker-box">
+        <view class="picker-date">
+          {{pickerDate}}
+        </view>
+        <view class="navigator-arrow-down"></view>
+      </view>
+    </picker>
+    <!-- 年选择器 -->
+    <picker wx:if="{{activeTab == 1}}" mode="date" value="{{pickerYear}}" start="{{startDate}}" fields="year"
+      end="{{lastYear}}" bindchange="bindYearChange">
+      <view class="picker-box">
+        <view class="picker-date">
+          {{pickerYear}}年
+        </view>
+        <view class="navigator-arrow-down"></view>
+      </view>
+    </picker>
+    <view bindtap="changePickerTab" data-index="0" class="picker-tab-item {{activePickerTab == 0 ?'item-default' :''}}">
+      收益</view>
+    <view bindtap="changePickerTab" data-index="1" class="picker-tab-item {{activePickerTab == 1 ?'item-default' :''}}">
+      提现</view>
+  </view>
+  <!-- 全部、战马、红牛 -->
+  <view class="head-box-brand" wx:if="{{activePickerTab == 0}}">
+    <view bindtap="changeBrandTab" data-index="0" class="head-box-brand-item">
+      <view class="{{activeBrandTab == 0 ? 'brand-tab-title' :''}}">全部</view>
+
+      <view class="{{activeBrandTab == 0 ? 'brand-tab-lined' :'brand-tab-line'}}"></view>
+    </view>
+    <view bindtap="changeBrandTab" data-index="1" class="head-box-brand-item ">
+      <view class="{{activeBrandTab == 1 ? 'brand-tab-title' :''}}">红牛</view>
+
+      <view class="{{activeBrandTab == 1 ? 'brand-tab-lined' :'brand-tab-line'}} redbull-tab-line "></view>
+    </view>
+    <view bindtap="changeBrandTab" data-index="2" class="head-box-brand-item ">
+      <view class="{{activeBrandTab == 2 ? 'brand-tab-title' :''}}">战马</view>
+      <view class="{{activeBrandTab == 2 ? 'brand-tab-lined' :'brand-tab-line'}}"></view>
+    </view>
+  </view>
+  <!-- 收益累计 -->
+  <view class="head-box-reward">
+    <block wx:if="{{activePickerTab == 0}}">
+      <view>收益累计</view>
+      <!-- 全部收益累计 -->
+      <block wx:if="{{activeBrandTab == 0}}">
+        <view class="reward-num-box">￥<text class="reward-num">{{allReward.total_num}}</text> </view>
+      </block>
+      <!-- 红牛 收益累计 -->
+      <block wx:if="{{activeBrandTab == 1}}">
+        <view class="reward-num-box">￥<text class="reward-num">{{hnReward.total_num}}</text> </view>
+      </block>
+      <!-- 战马 收益累计 -->
+      <block wx:if="{{activeBrandTab == 2}}">
+        <view class="reward-num-box">￥<text class="reward-num">{{zmReward.sum_num}}</text> </view>
+      </block>
+    </block>
+    <block wx:if="{{activePickerTab == 1}}">
+      <view class="withdrawal-count">提现累计</view>
+      <view class="withdrawal-num-box">
+        <view>
+          ￥<text class="reward-num">{{withdrawal}}</text>
+        </view>
+        <view bindtap="withdrawalDetail" data-type="3" class="withdrawal-detail">
+          <text>提现明细></text>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+<!-- 收益构成 -->
+<view class="reward">
+  <view class="reward-box">
+    <block wx:if="{{activePickerTab == 0}}">
+      <view class="reward-tab">
+        <view class="reward-title">收益构成</view>
+        <!-- 全部 -->
+        <block wx:if="{{activeBrandTab == 0}}">
+          <view class="reward-detail">
+            <view class="reward-detail-title">红牛收益</view>
+            <view class="reward-detail-item"> <progress percent="{{(allReward.hn/allReward.total)*100}}"
+                border-radius="10" active-mode="forwards" activeColor="#ee6666" duration="12" stroke-width="7" /></view>
+            <view bindtap="withdrawalDetail" data-type="1">￥<text>{{allReward.hn_num}}</text><text>></text></view>
+          </view>
+          <view class="reward-detail">
+            <view class="reward-detail-title">战马收益</view>
+            <view class="reward-detail-item"> <progress percent="{{(allReward.zm/allReward.total)*100}}"
+                border-radius="10" active-mode="forwards" activeColor="#5470c6" duration="12" stroke-width="7" /></view>
+            <view bindtap="withdrawalDetail" data-type="2">￥<text>{{allReward.zm_num}}</text><text>></text></view>
+          </view>
+        </block>
+        <!-- 红牛  -->
+        <block wx:if="{{activeBrandTab == 1}}">
+          <view class="reward-detail">
+            <view class="reward-detail-title-hn">箱内码红包收益</view>
+            <view class="reward-detail-item"> <progress percent="{{(hnReward.box/hnReward.total)*100}}"
+                border-radius="10" active-mode="forwards" activeColor="#ee6666" duration="12" stroke-width="7" /></view>
+            <view bindtap="withdrawalDetail" data-type="4">￥<text>{{ hnReward.box_num}}</text><text>></text></view>
+          </view>
+          <view class="reward-detail">
+            <view class="reward-detail-title-hn">1元兑换收益</view>
+            <view class="reward-detail-item"> <progress percent="{{(hnReward.yy/hnReward.total)*100}}"
+                border-radius="10" active-mode="forwards" activeColor="#FAC858" duration="12" stroke-width="7" /></view>
+            <view bindtap="withdrawalDetail" data-type="5">￥<text>{{ hnReward.yy_num}}</text><text>></text></view>
+          </view>
+          <view class="reward-detail">
+            <view class="reward-detail-title-hn">0.5元兑换奖励</view>
+            <view class="reward-detail-item"> <progress percent="{{(hnReward.hx/hnReward.total)*100}}"
+                border-radius="10" active-mode="forwards" activeColor="#91CC75" duration="12" stroke-width="7" /></view>
+            <view bindtap="withdrawalDetail" data-type="6">￥<text>{{hnReward.hx_num}}</text><text>></text></view>
+          </view>
+        </block>
+        <!-- 战马 -->
+        <block wx:if="{{activeBrandTab == 2}}">
+          <view class="reward-detail">
+            <view class="reward-detail-title-hn">箱内码红包收益</view>
+            <view class="reward-detail-item"> <progress percent="{{(zmReward.sum/zmReward.sum)*100}}" border-radius="10"
+                active-mode="forwards" activeColor="#5470c6" duration="12" stroke-width="7" /></view>
+            <view bindtap="withdrawalDetail" data-type="2">￥<text>{{zmReward.sum_num}}</text><text>></text></view>
+          </view>
+        </block>
+
+      </view>
+
+    </block>
+
+    <block wx:if="{{activePickerTab == 0}}">
+      <view class="reward-title">收益对比</view>
+    </block>
+    <block wx:if="{{activePickerTab == 1}}">
+      <view class="reward-title">提现对比</view>
+    </block>
+  </view>
+
+</view>
+<!-- 收益对比 -->
+<view class="reward-charts">
+
+  <!-- 柱状图：横向滚动列表 scroll-view  -->
+  <!-- <scroll-view class="reward-charts-box" scroll-x="{{true}}" scroll-into-view="itemid-{{itemid}}" id="scroll-view" scroll-left="{{scrollLeft}}" -->
+  <scroll-view class="reward-charts-box safeArea" scroll-y="{{true}}" scroll-into-view="itemid-{{itemid}}" id="scroll-view"
+    scroll-left="{{scrollLeft}}" bindscrolltolower="scrollToUpper" scroll-with-animation>
+    <block wx:if="{{activePickerTab == 1}}">
+      <!-- 提现 -->
+      <block wx:for="{{txScrollList}}" wx:key="key">
+        <block wx:if="{{activeTab == 0}}">
+          <!-- 月账单 显示全部-->
+          <view class="scroll-item" bindtap="changeDate" id="itemid-{{item.year}}{{item.month}}"
+            data-year="{{item.year}}" data-month="{{item.month}}">
+            <view class="items">
+              <view class="scroll-item-flex">
+                <view class="scroll-item-total">￥{{item.sum_num}}</view>
+                <view class="scroll-item-bar-box">
+                  <view class="tx-bar" style="width:{{item.height*2}}rpx;display: {{item.height>0?'block':'none'}};"></view>
+                </view>
+              </view>
+              <view
+                class="scroll-item-X {{(item.month == 1 && item.year!= 2020) ?'border-left':''}} {{item.month == 12 ?'border-right':''}}">
+                <view class="scroll-item-month"><text class="scroll-item-date-color">{{item.month}}</text>月</view>
+                <block wx:if="{{ item.month == 1}}">
+                <!-- <block wx:if="{{item.month == 12 || item.month == 1}}"> -->
+                  <view class="scroll-item-year"><text class="scroll-item-date-color">{{item.year}}</text>年</view>
+                </block>
+                <block wx:else>
+                  <!-- <view class="scroll-item-year"></view> -->
+                </block>
+              </view>
+            </view>
+          </view>
+        </block>
+        <block wx:else>
+          <!-- 年账单只显示上一年数据 -->
+          <block wx:if="{{item.year<=lastYear}}">
+            <view class="scroll-item" bindtap="changeDate" id="itemid-{{item.year}}{{item.month}}"
+              data-year="{{item.year}}" data-month="{{item.month}}">
+              <view class="items">
+                <view class="scroll-item-flex">
+                  <view class="scroll-item-total">￥{{item.sum_num}}</view>
+                  <view class="scroll-item-bar-box">
+                    <view class="tx-bar" style="width:{{item.height*2}}rpx;display: {{item.height>0?'block':'none'}};"></view>
+                  </view>
+                </view>
+                <view class="scroll-item-X {{(item.month == 1) ?'border-left':''}} {{item.month == 12 ?'border-right':''}}">
+                  <view class="scroll-item-month"><text class="scroll-item-date-color">{{item.month}}</text>月</view>
+                  <block wx:if="{{ item.month == 1}}">
+                  <!-- <block wx:if="{{item.month == 12 || item.month == 1}}"> -->
+                    <view class="scroll-item-year"><text class="scroll-item-date-color">{{item.year}}</text>年</view>
+                  </block>
+                  <block wx:else>
+                    <!-- <view class="scroll-item-year"></view> -->
+                  </block>
+                </view>
+              </view>
+            </view>
+          </block>
+        </block>
+
+      </block>
+
+    </block>
+    <block wx:else>
+
+      <!-- 全部 -->
+      <block wx:if="{{activeBrandTab == 0 }}">
+        <block wx:for="{{allScrollList}}" wx:key="key">
+          <block wx:if="{{activeTab == 0}}">
+            <!-- 月账单全部显示 -->
+            <view class="scroll-item" bindtap="changeDate" id="itemid-{{index}}" data-index="{{index}}"
+              data-year="{{item.year}}" data-month="{{item.month}}">
+              <view class="items">
+                <view class="scroll-item-flex">
+                  <view class="scroll-item-total">￥{{item.total_num}}</view>
+                  <view class="scroll-item-bar-box">
+                    <view class="hn-bar" style="width:{{item.hnheight*2}}rpx;display: {{item.hnheight>0?'block':'none'}};"></view>
+                    <view class="zm-bar" style="width:{{item.zmheight*2}}rpx;display: {{item.zmheight>0?'block':'none'}};"></view>
+                  </view>
+                </view>
+                <view
+                  class="scroll-item-X {{(item.month == 1 && item.year!= 2020) ?'border-left':''}} {{item.month == 12 ?'border-right':''}}">
+                  <view class="scroll-item-month"><text class="scroll-item-date-color">{{item.month}}</text>月</view>
+                  <block wx:if="{{item.month == 1}}">
+                  <!-- <block wx:if="{{item.month == 12 || item.month == 1}}"> -->
+                    <view class="scroll-item-year"><text class="scroll-item-date-color">{{item.year}}</text>年</view>
+                  </block>
+                  <block wx:else>
+                    <!-- <view class="scroll-item-year"></view> -->
+                  </block>
+                </view>
+              </view>
+            </view>
+          </block>
+          <block wx:else>
+            <!-- 年账单只显示到上一年 -->
+            <block wx:if="{{item.year == pickerYear}}">
+              <view class="scroll-item" bindtap="changeDate" id="itemid-{{index}}" data-index="{{index}}"
+                data-year="{{item.year}}" data-month="{{item.month}}">
+                <view class="items">
+                  <view class="scroll-item-flex">
+                    <view class="scroll-item-total">￥{{item.total_num}}</view>
+                    <view class="scroll-item-bar-box">
+                      <view class="hn-bar" style="width:{{item.hnheight*2}}rpx;display: {{item.hnheight>0?'block':'none'}};"></view>
+                      <view class="zm-bar" style="width:{{item.zmheight*2}}rpx;display: {{item.zmheight>0?'block':'none'}};"></view>
+                    </view>
+                  </view>
+                  <view
+                    class="scroll-item-X {{(item.month == 1) ?'border-left':''}} {{item.month == 12 ?'border-right':''}}">
+                    <view class="scroll-item-month"><text class="scroll-item-date-color">{{item.month}}</text>月</view>
+                    <block wx:if="{{ item.month == 1}}">
+                    <!-- <block wx:if="{{item.month == 12 || item.month == 1}}"> -->
+                      <view class="scroll-item-year"><text class="scroll-item-date-color">{{item.year}}</text>年</view>
+                    </block>
+                    <block wx:else>
+                      <!-- <view class="scroll-item-year"></view> -->
+                    </block>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </block>
+
+
+        </block>
+      </block>
+      <!-- 红牛 -->
+      <block wx:if="{{activeBrandTab == 1}}">
+        <block wx:for="{{hnScrollList}}" wx:key="key">
+          <block wx:if="{{activeTab == 0}}">
+            <!-- 月账单全部显示 -->
+            <view class="scroll-item" bindtap="changeDate" id="itemid-{{index}}" data-index="{{index}}"
+              data-year="{{item.year}}" data-month="{{item.month}}">
+              <view class="items">
+                <view class="scroll-item-flex">
+                  <view class="scroll-item-total">￥{{item.total_num}}</view>
+                  <view class="scroll-item-bar-box">
+                    <view class="box-bar" style="width:{{item.boxheight*2}}rpx;display: {{item.boxheight>0?'block':'none'}};"></view>
+                    <view class="yy-bar" style="width:{{item.yyheight*2}}rpx;display: {{item.yyheight>0?'block':'none'}};"></view>
+                    <view class="hx-bar" style="width:{{item.hxheight*2}}rpx;display: {{item.hxheight>0?'block':'none'}};"></view>
+                  </view>
+                </view>
+                <view
+                  class="scroll-item-X {{(item.month == 1 && item.year!= 2020) ?'border-left':''}} {{item.month == 12 ?'border-right':''}}">
+                  <view class="scroll-item-month"><text class="scroll-item-date-color">{{item.month}}</text>月</view>
+                  <block wx:if="{{ item.month == 1}}">
+                  <!-- <block wx:if="{{item.month == 12 || item.month == 1}}"> -->
+                    <view class="scroll-item-year"><text class="scroll-item-date-color">{{item.year}}</text>年</view>
+                  </block>
+                  <block wx:else>
+                    <!-- <view class="scroll-item-year"></view> -->
+                  </block>
+                </view>
+              </view>
+            </view>
+          </block>
+          <block wx:else>
+            <!-- 年账单只显示到上一年 -->
+            <block wx:if="{{item.year == pickerYear}}">
+              <view class="scroll-item" bindtap="changeDate" id="itemid-{{index}}" data-index="{{index}}"
+                data-year="{{item.year}}" data-month="{{item.month}}">
+                <view class="items">
+                  <view class="scroll-item-flex">
+                    <view class="scroll-item-total">￥{{item.total_num}}</view>
+                    <view class="scroll-item-bar-box">
+                      <view class="box-bar" style="width:{{item.boxheight*2}}rpx;display: {{item.boxheight>0?'block':'none'}};"></view>
+                      <view class="yy-bar" style="width:{{item.yyheight*2}}rpx;display: {{item.yyheight>0?'block':'none'}};"></view>
+                      <view class="hx-bar" style="width:{{item.hxheight*2}}rpx;display: {{item.hxheight>0?'block':'none'}};"></view>
+                    </view>
+                  </view>
+                  <view
+                    class="scroll-item-X {{(item.month == 1 ) ?'border-left':''}} {{item.month == 12 ?'border-right':''}}">
+                    <view class="scroll-item-month"><text class="scroll-item-date-color">{{item.month}}</text>月</view>
+                    <block wx:if="{{ item.month == 1}}">
+                    <!-- <block wx:if="{{item.month == 12 || item.month == 1}}"> -->
+                      <view class="scroll-item-year"><text class="scroll-item-date-color">{{item.year}}</text>年</view>
+                    </block>
+                    <block wx:else>
+                      <!-- <view class="scroll-item-year"></view> -->
+                    </block>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </block>
+
+
+        </block>
+
+      </block>
+      <!-- 战马 -->
+      <block wx:if="{{activeBrandTab == 2}}">
+        <block wx:for="{{zmScrollList}}" wx:key="key">
+          <!-- 月账单全部显示 -->
+          <block wx:if="{{activeTab == 0}}">
+            <view class="scroll-item" bindtap="changeDate" id="itemid-{{index}}" data-index="{{index}}"
+              data-year="{{item.year}}" data-month="{{item.month}}">
+              <view class="items">
+                <view class="scroll-item-flex">
+                  <view class="scroll-item-total">￥{{item.sum_num}}</view>
+                  <view class="scroll-item-bar-box">
+                    <view class="zm-bar" style="width:{{item.height*2}}rpx;display: {{item.height>0?'block':'none'}};"></view>
+                  </view>
+                </view>
+                <view
+                  class="scroll-item-X {{(item.month == 1 && item.year!= 2020) ?'border-left':''}} {{item.month == 12 ?'border-right':''}}">
+                  <view class="scroll-item-month"><text class="scroll-item-date-color">{{item.month}}</text>月</view>
+                  <block wx:if="{{item.month == 1}}">
+                  <!-- <block wx:if="{{item.month == 12 || item.month == 1}}"> -->
+                    <view class="scroll-item-year"><text class="scroll-item-date-color">{{item.year}}</text>年</view>
+                  </block>
+                  <block wx:else>
+                    <!-- <view class="scroll-item-year"></view> -->
+                  </block>
+                </view>
+              </view>
+            </view>
+          </block>
+          <!-- 年账单只显示到上一年 -->
+
+          <block wx:else>
+            <block wx:if="{{item.year == pickerYear}}">
+              <view class="scroll-item" bindtap="changeDate" id="itemid-{{index}}" data-index="{{index}}"
+                data-year="{{item.year}}" data-month="{{item.month}}">
+                <view class="items">
+                  <view class="scroll-item-flex">
+                    <view class="scroll-item-total">￥{{item.sum_num}}</view>
+                    <view class="scroll-item-bar-box">
+                      <view class="zm-bar" style="width:{{item.height*2}}rpx;display: {{item.height>0?'block':'none'}};"></view>
+                    </view>
+                  </view>
+                  <view
+                    class="scroll-item-X {{(item.month == 1 ) ?'border-left':''}} {{item.month == 12 ?'border-right':''}}">
+                    <view class="scroll-item-month"><text class="scroll-item-date-color">{{item.month}}</text>月</view>
+                    <block wx:if="{{ item.month == 1}}">
+                    <!-- <block wx:if="{{item.month == 12 || item.month == 1}}"> -->
+                      <view class="scroll-item-year"><text class="scroll-item-date-color">{{item.year}}</text>年</view>
+                    </block>
+                    <block wx:else>
+                      <!-- <view class="scroll-item-year"></view> -->
+                    </block>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </block>
+
+        </block>
+      </block>
+
+    </block>
+
+  </scroll-view>
+</view>

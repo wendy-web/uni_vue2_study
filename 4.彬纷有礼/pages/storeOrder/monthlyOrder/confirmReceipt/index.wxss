@@ -1,0 +1,170 @@
+/* pages/storeOrder/confirmReceipt/index.wxss */
+page{
+  background-color: #F7F7F7;
+}
+.confirm-receipt{
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+.order-info{
+  padding: 30rpx 40rpx;
+  background-color: #ffffff;
+  margin-bottom: 20rpx;
+}
+
+.order-no{
+  font-size: 24rpx;
+  font-weight: 400;
+  text-align: left;
+  color: #797979;
+  margin-bottom: 10rpx;
+}
+
+.order-total{
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #000018;
+}
+
+.ot-label{
+  color: #797979;
+}
+
+.ot-box-num{
+  color: #E3001B;
+}
+
+.shop-list-item{
+  padding: 0 30rpx 50rpx 250rpx;
+  position: relative;
+  height: 200rpx;
+  box-sizing: border-box;
+  margin-top: 20rpx;
+}
+
+.gli-icon{
+  width: 200rpx;
+  height: 200rpx;
+  position: absolute;
+  left: 30rpx;
+  top: 0;
+  filter: brightness(0.9);
+  border-radius: 5px;
+}
+
+.gli-name{
+  font-size: 28rpx;
+  color: #000;
+}
+.gli-attr{
+  font-size: 24rpx;
+  color: #a3a2a8;
+}
+
+.gli-num{
+  font-size: 24rpx;
+  color: #000018;
+}
+
+.sli-label{
+  color: #797979;
+}
+
+.shop-list{
+  flex: 1;
+  padding: 40rpx;
+  background-color: #fff;
+  margin-bottom: 20rpx;
+  overflow: auto;
+}
+
+.drop-down{
+  text-align: center;
+  font-size: 28rpx;
+  font-weight: 400;
+  text-align: center;
+  color: #000018;
+  padding-top: 40rpx;
+}
+
+.price-info{
+  padding: 40rpx;
+  background-color: #ffffff;
+  box-shadow: 0 -2px 12px #ebedf0;
+}
+
+.goods-price-total,.goods-price-yh{
+  font-size: 28rpx;
+  font-weight: 400;
+  color: #000018;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+  margin-top: 10rpx;
+}
+
+.goods-price-xjj{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+}
+
+.gpi-right-label{
+  font-size: 28rpx;
+  font-weight: 400;
+  color: #000018;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.gpi-right-value{
+  text-align: right;
+  min-width: 140rpx;
+}
+
+.discount,.cash-coupon{
+  font-size: 28rpx;
+  font-weight: 400;
+  color: #fd2b1e;
+}
+.coupons-icon{
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 5rpx;
+}
+
+.goods-price-yf{
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #000000;
+  text-align: right;
+}
+
+.shop-list-box{
+  position: relative;
+}
+
+.price-red{
+  color: #E3001B;
+}
+
+.tools{
+  margin-top: 50rpx;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+}
+.tools-btn-item{
+  flex: 1;
+}
+.tools-btn-item+.tools-btn-item{
+  margin-left: 40rpx;
+}

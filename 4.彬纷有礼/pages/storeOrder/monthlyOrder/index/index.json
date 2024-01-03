@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "月结订单",
+  "navigationBarBackgroundColor": "#E10404",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "item-list": "./components/itemList/itemList",
+    "refuse-order":"../common/refuseOrder/index",
+    "cancel-order":"../common/cancelOrder/index",
+    "confirm-order":"../common/confirmOrder/index"
+  },
+  "disableScroll": true
+}

@@ -1,0 +1,413 @@
+page {
+  background-color: #cf2928;
+}
+
+
+.navbar-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/* 重写UI样式 */
+.container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.navbar-box {
+  height: 84px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+}
+
+.bg-halo {
+  width: 750rpx;
+  height: 800rpx;
+  z-index: 0;
+}
+
+.rank-box {
+  position: absolute;
+  bottom: 0;
+  left: 20rpx;
+  right: 20rpx;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+
+.stage-head-box {
+  position: relative;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.bg-stage-head {
+  width: 100%;
+  height: 126rpx;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+}
+.stage-body-box{
+  position: relative;
+  padding-bottom: 26rpx;
+}
+.bg-stage-body {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0rpx;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0;
+  z-index: -1;
+}
+
+/* 前三名 start */
+.top-three-box {
+  box-sizing: border-box;
+  font-size: 24rpx;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.prizeL {
+  width: 182rpx;
+  height: 264rpx;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.prizeM {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 196rpx;
+  height: 264rpx;
+  box-sizing: border-box;
+
+}
+
+.prizeR {
+  width: 162rpx;
+  height: 264rpx;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.prize-info-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150rpx;
+  z-index: 2;
+}
+
+.img-prize-2t {
+  width: 182rpx;
+  height: 106rpx;
+  flex-shrink: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.img-prize-2b {
+  width: 182rpx;
+  height: 108rpx;
+  flex-shrink: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.prize-info-2t {
+  position: relative;
+  width: 182rpx;
+  height: 106rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.prize-info-2b {
+  position: relative;
+  width: 182rpx;
+  height: 108rpx;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.max-title-2 {
+  width: 170rpx;
+  z-index: 2;
+}
+
+
+.img-prize-1t {
+  width: 196rpx;
+  height: 150rpx;
+  flex-shrink: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.img-prize-1b {
+  width: 196rpx;
+  height: 116rpx;
+  flex-shrink: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.prize-info-1t {
+  position: relative;
+  width: 196rpx;
+  height: 150rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.prize-info-1b {
+  position: relative;
+  width: 196rpx;
+  height: 116rpx;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.max-title-1 {
+  width: 180rpx;
+  z-index: 2;
+}
+
+.img-prize-3t {
+  width: 162rpx;
+  height: 90rpx;
+  flex-shrink: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.img-prize-3b {
+  width: 162rpx;
+  height: 110rpx;
+  flex-shrink: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.prize-info-3t {
+  position: relative;
+  width: 162rpx;
+  height: 90rpx;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-bottom: -10rpx;
+}
+
+.prize-info-3b {
+  position: relative;
+  width: 162rpx;
+  height: 110rpx;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.max-title-3 {
+  width: 160rpx;
+  z-index: 2;
+}
+
+/* 前三名 end */
+
+.rank-tips {
+  font-size: 20rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #ffffff;
+  line-height: 32rpx;
+  position: relative;
+  z-index: 10;
+}
+
+/* table 列表 */
+.table-box {
+  display: flex;
+  flex-direction: column;
+  background: #fae3c6;
+  border-radius: 44rpx;
+  box-shadow: 0rpx 6rpx 12rpx 0rpx rgba(0, 0, 0, 0.33);
+  box-sizing: border-box;
+  margin: 0 15rpx;
+  overflow: hidden;
+}
+
+.table-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 26rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Heavy;
+  font-weight: 800;
+  color: #961b05;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 30rpx 0;
+}
+
+.table-title-rank {
+  min-width: 120rpx;
+  flex-shrink: 0;
+}
+
+.table-title-shop {
+  max-width: 280rpx;
+  flex-shrink: 0;
+}
+
+.table-title-unbox {
+  min-width: 200rpx;
+  flex-shrink: 0;
+}
+
+.list-box {
+  height: var(--max-height);
+}
+
+.list-item-box {
+  font-size: 26rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #c16b48;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATcAAAABCAYAAAC7duk2AAAAMUlEQVQ4T2PcMbXsHwMDIyMDEcAju5ModUQYxTBqL+5QGg1nYlIQdjWj6Wo0XcFCAAAn4irFFughhQAAAABJRU5ErkJggg==");
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size:90%;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+  box-sizing: border-box;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  min-height: 80rpx;
+}
+
+.list-item-center {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  min-height: 80rpx;
+  justify-content: center;
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #c16b48;
+}
+.divider-box{
+  box-sizing: border-box;
+  padding: 0 100rpx;
+}
+.loading-box{
+  text-align: center;
+}
+.rank-num {
+  font-size: 26rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Heavy;
+  font-weight: 800;
+  color: #db6b3e;
+}
+
+.color-white {
+  color: #ffffff;
+}
+
+.color-brown {
+  color: #DB6B3E;
+}
+
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #bb5c38;
+}
+
+.myrank-item {
+  background-color: #d53b37;
+  border-radius: 10rpx;
+  color: #ffffff;
+  box-shadow: 5rpx 5rpx 16rpx 0px rgba(0, 0, 0, 0.33);
+}
+
+.myrank-row {
+  background: #FAC5B4;
+  border-radius: 0 0 35rpx 35rpx;
+  height: 100rpx;
+  padding: 0 18rpx 0 10rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #BB5C38;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-shrink: 0;
+  text-align: center;
+  z-index: 2;
+}
+.myrank-num {
+  text-align: center;
+  font-size: 36rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Heavy;
+  font-weight: 800;
+  color:#CB3A00;
+}

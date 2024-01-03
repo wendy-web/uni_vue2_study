@@ -1,0 +1,157 @@
+<block wx:if="{{pageReady}}">
+	<view>
+		<block>
+			<block wx:if="{{current === 1}}">
+				<view class="containe">
+					<view class="hbbox">
+						<view class="body"></view>
+					</view>
+					<view class="rulebt" bindtap="showRule">
+						<image class="bt" src="{{ruleimg}}"></image>
+					</view>
+					<!-- 红包提现蒙版 -->
+					<block wx:if="{{guideMask}}">
+						<view class="actbox actboxZ11">
+							<view class="center">
+								<image class="back" src="{{kaiimg}}"></image>
+							</view>
+						</view>
+						<view class="yun"></view>
+						<view class="actbox actboxZ11" id="guideMask">
+							<view class="center2">
+								<view class="title">恭喜您获得</view>
+								<view class="money">￥<text class="cash">{{hbdata}}</text>
+								</view>
+								<view class="bt goyuerBtn  goYuer" bindtap="goYuer">{{yuerText}}>></view>
+							</view>
+						</view>
+					</block>
+					<block wx:else>
+						<view class="actbox ">
+							<view class="center">
+								<image class="back" src="{{kaiimg}}"></image>
+							</view>
+						</view>
+						<view class="yun"></view>
+						<view class="actbox ">
+							<view class="center2">
+								<view class="title">恭喜您获得</view>
+								<view class="money">￥<text class="cash">{{hbdata}}</text>
+								</view>
+								<view class="bt goyuerBtn  goYuer" bindtap="goYuer">{{yuerText}}>></view>
+							</view>
+						</view>
+					</block>
+
+				</view>
+			</block>
+
+		</block>
+		<block>
+			<block wx:if="{{current === 0}}">
+				<view class="containe">
+					<view class="hbbox">
+						<view class="body"></view>
+					</view>
+					<view class="rulebt" bindtap="showRule">
+						<image class="bt" src="{{ruleimg}}"></image>
+					</view>
+					<view class="actbox">
+						<view class="center">
+							<image class="back" src="{{guanimg}}" data-name="guanimg" binderror="imgError"></image>
+						</view>
+					</view>
+					<view class="openbt" bindtap="openHongbao">
+						<image class="{{animate ? 'animate' : ''}}" src="{{openimg}}" data-name="openimg" binderror="imgError"></image>
+					</view>
+					<view class="yun"></view>
+				</view>
+			</block>
+
+		</block>
+		<block>
+			<block wx:if="{{current == '-1'}}">
+				<view class="containe">
+					<view class="hbbox">
+						<view class="body"></view>
+					</view>
+					<view class="rulebt" bindtap="showRule">
+						<image class="bt" src="{{ruleimg}}"></image>
+					</view>
+					<view class="actbox">
+						<view class="center">
+							<image class="back" src="{{kaiimg}}"></image>
+						</view>
+					</view>
+					<view class="yun"></view>
+					<view class="actbox">
+						<view class="center2">
+							<view class="err"> <text class="title">{{hbdata}}</text>
+							</view>
+							<!-- <view class="tip"> <text>{{hbdata.data}}</text></view> -->
+						</view>
+					</view>
+				</view>
+			</block>
+
+		</block>
+
+	</view>
+	<!-- 活动规则弹窗 -->
+	<view class="fadeIn" wx:if="{{rule}}">
+		<view class="weui-mask"></view>
+		<view class="weui-dialog">
+			<view class="weui-dialog__hd"><strong class="weui-dialog__title title">活动说明</strong></view>
+			<view class="weui-dialog__bd">
+				<scroll-view scroll-y="true" class="h50vh">
+					<view id="demo1" class="scroll-view-item demo-text-1">
+						<text>{{shuoming}}</text>
+						<text>2元或3元</text>
+						<text>{{shuoming2}}</text>
+						<text>2元红包或3元</text>
+						<text>{{shuoming3}}</text>
+					</view>
+					<view id="demo2" class="scroll-view-item demo-text-2">
+						<view class="text-left">
+							<text class="head">\n注意事项</text>
+							<text>
+							{{zhuyi}}
+							</text>
+						</view>
+					</view>
+					<view id="demo3" class="scroll-view-item demo-text-3">
+						<view class="text-left">
+							<text class="head">\n兑奖说明</text>
+							<text>
+							{{duijiang}}
+							</text>
+						</view>
+					</view>
+				</scroll-view>
+			</view>
+
+			<view class="weui-flex pdb35">
+				<view class="weui-flex__item ">
+					<a bindtap="iknow" class="weui-btn weui-btn_mini iknow">我知道了</a>
+				</view>
+			</view>
+		</view>
+	</view>
+	<!-- 自定义蒙层 -->
+	<!-- <view class="bgMask" wx:if="{{guideMask}}"></view> -->
+	<view class="fadeIn guideMask" wx:if="{{guideMask}}">
+		<view class="weui-mask">
+			<!-- <image mode="aspectFill" style="width:{{sysWidth}}px;height:{{sysHeight}}px;"  src="../../../../assets/emoji/guide1_2.png"></image> -->
+			<image mode="aspectFill" style="width:{{sysWidth}}px;height:100%;" src="../../../../assets/emoji/guide1_2.png"></image>
+		</view>
+		<view class="weui-dialog guide1" bindtap="goYuer">
+			<!-- <view class="weui-dialog__hd"><strong class="weui-dialog__title title">活动说明</strong></view> -->
+			<view class="weui-dialog__bd">
+
+			</view>
+
+
+		</view>
+	</view>
+
+</block>

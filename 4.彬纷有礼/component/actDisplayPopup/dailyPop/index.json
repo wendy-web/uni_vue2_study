@@ -1,0 +1,11 @@
+{
+  "component": true,
+  "usingComponents": {
+    "van-popup":"@vant/weapp/popup/index",
+    "van-count-down": "@vant/weapp/count-down/index",
+    "van-button": "@vant/weapp/button/index",
+    "box-progress":"../../box-progress/box-progress",
+    "step-bar":"../../step-bar/step-bar"
+
+  }
+}

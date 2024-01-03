@@ -1,0 +1,299 @@
+<!-- 店铺排行榜 -->
+<top-navbar title=" " backgroundColor="" iconTheme="{{iconTheme}}" bindback="back"></top-navbar>
+<view class="box safeArea">
+  <view class="head">
+    <!-- 兑奖冲榜赢奖励标题+丝带 -->
+    <view class="img-raffle-title-box">
+      <image class="img-raffle-title" src="{{file_cos_url}}/img_raffle_title.png" mode="aspectFit" />
+      <image class="img-top-silk" src="{{file_cos_url}}/img_top_silk.png" mode="aspectFit" />
+    </view>
+    <!-- 抽奖规则 -->
+    <view class="raffle-tips-box">
+      <image class="bg-raffle-tips" src="{{file_cos_url}}/bg_raffle_tips.png" />
+      <view class="raffle-tips">
+        <view>凡兑奖人数达到<text class="color-yellow font28">{{actInfo.calc.ticket_num || 20}}人以上</text>的终端门店均可报名参与抽奖</view>
+        <view><text class="color-yellow font30">奖品价值为2499元荣耀90手机一台(共6台)</text></view>
+      </view>
+    </view>
+    <!-- 28周年图标 -->
+    <!-- <image class="img-hn-28th" style="top:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight-10:'60'}}rpx;" src="{{img_hn_28th}}" mode="aspectFit" /> -->
+    <!-- 奖品如图 -->
+    <!-- <view class="color-white rebBull_badge">
+      <text>（奖品如图）</text>
+    </view> -->
+    <!-- 标题+罐装 -->
+    <image class="img-hn-zm-can" src="{{file_cos_url}}/img_hn_zm_can.png" mode="aspectFit" />
+
+    <!-- 活动规则、奖励记录 -->
+    <view class="rule-tips">
+      <view class="tips-bg" bindtap="openRankRule" data-url="pages/storeRank/actRule/index"><text>活动说明</text></view>
+      <view class="tips-bg" bindtap="jumpTo" data-url="pages/storeRank/rewardRecord/index"><text>奖励记录</text></view>
+      <!-- 已中奖用户填写 -->
+      <!-- <view class="edit-personal-info" bindtap="jumpTo" data-url="pages/storeRank/prizeTicket/index/index" data-opentype="edit">填写个人信息</view> -->
+      <view wx:if="{{actInfo.raffle_win}}" class="edit-personal-info" bindtap="jumpTo" data-url="pages/storeRank/prizeTicket/index/index" data-opentype="edit">{{actInfo.win&&actInfo.win.region?'查看个人信息':'填写个人信息'}}</view>
+    </view>
+    <!-- <view class="tips-bg" wx:if="{{act_issues&&act_issues>1}}" bindtap="jumpTo" data-url="/pages/storeRank/historyRank/index"><text>往期榜单</text></view> -->
+    <!-- 店铺码操作-->
+    <view class="operate-box">
+      <!-- 柜台 -->
+      <image class="bg-shop-bar" src="{{file_cos_url}}/bg_shop_bar.png" mode="aspectFit" />
+      <!-- 丝带 -->
+      <image class="img-bottom-silk" src="{{file_cos_url}}/img_bottom_silk.png" mode="aspectFit" />
+      <!-- 抽奖报名截止时间:活动进行中、未报名、兑奖人数>=20 -->
+      <view class="raffle-apply-tips" wx:if="{{actInfo.act_state.act_ing&&actInfo.kpi_num>=actInfo.calc.ticket_num&&!actInfo.win}}">
+        <view>报名截止时间</view>
+        <view>{{actInfo.e_time || '2023-08-31 23:59:59'}}</view>
+      </view>
+      <!-- 活动结束 -->
+      <block wx:if="{{actInfo.act_state.act_end}}">
+        <block wx:if="{{actInfo.is_win}}">
+          <!-- 去使用：不是店员并且 已获得奖券 -->
+          <view class="operate-btn-box" wx:if="{{userInfo.condition != 2}}" bindtap="openPageParam" data-url="pages/phaseIII/voucher/index" data-params='?activeTab=2'>
+            <image class="bg-btn" src="{{file_cos_url}}/bg_btn_yellow.png"></image>
+            <text class="color-brown">去使用券</text>
+          </view>
+        </block>
+        <!-- 未中奖：店铺码  bindtap="goScan" -->
+        <block wx:else>
+          <view class="operate-btn-box" bindtap="goScan">
+            <image class="bg-btn" src="{{file_cos_url}}/bg_btn_yellow.png"></image>
+            <text class="color-brown">门店店铺码</text>
+          </view>
+        </block>
+      </block>
+      <!-- 活动进行中 -->
+      <block wx:if="{{actInfo.act_state.act_ing}}">
+        <!-- 立即报名：活动进行中、未报名、兑奖人数>=20 -->
+        <view class="operate-btn-box" wx:if="{{actInfo.raffle_apply}}" bindtap="jumpTo" data-url="pages/storeRank/raffle/apply/index">
+          <image class="bg-btn" src="{{file_cos_url}}/bg_btn_green.png"></image>
+          <text>立即报名</text>
+        </view>
+        <view class="operate-btn-box" wx:else bindtap="jumpTo" data-url="pages/zhongduan/geren/mendian/qrcode">
+          <image class="bg-btn" src="{{file_cos_url}}/bg_btn_yellow.png"></image>
+          <text class="color-brown">门店店铺码</text>
+        </view>
+
+      </block>
+    </view>
+    <!-- 活动倒计时 -->
+    <view class="count-down-box">
+      <view>{{actInfo.act_state.countdown_title || '活动进行中'}}</view>
+      <view class="count-down-item" wx:if="{{actInfo.act_state.count_down_timestamp>0}}">
+        <text>{{actInfo.act_state.status_title}}：</text>
+        <van-count-down time="{{ actInfo.act_state.count_down_timestamp }}" bind:finish="rankTimerFinished" format="{{actInfo.act_state.count_down_format}}" style="--count-down-text-color:#ffffff;--count-down-font-size:42rpx;font-weight: 800;margin-right:10rpx"></van-count-down>
+        <text wx:if="{{actInfo.act_state.count_down_format == 'DD'}}">天</text>
+      </view>
+    </view>
+  </view>
+  <!-- 排行榜、活动奖励 -->
+  <view class="content">
+    <view class="tab-box">
+      <view data-index="0" bindtap="changeTab" class="tab-item tab-item-rank {{activeTab == '0' ? 'activeTab' : 'tabRankLeft'}}">排行榜</view>
+      <view data-index="0" bindtap="changeTab" class="triangleA {{activeTab == '0' ? 'triangleActiveA' : ''}}"></view>
+      <view data-index="1" bindtap="changeTab" class="triangleB {{activeTab == '1' ? 'triangleActiveB' : ''}}"></view>
+      <view data-index="1" bindtap="changeTab" class="tab-item tab-item-prize {{activeTab == '1' ? 'activeTab' : 'tabRankLeft'}}">活动奖励</view>
+    </view>
+
+    <!-- <view class="container" style="min-height: {{rankList.length<10?950:1150}}rpx;"> -->
+    <view class="container">
+
+      <!-- 排行榜信息 -->
+      <view class="rank-box" wx:if="{{activeTab == 0}}">
+        <!-- 当前店铺活动信息 -->
+        <view class="rank-info" wx:if="{{actInfo}}">
+          <image class="shop-avatar" src="{{storeInfo.signs_url || img_dydf}}" mode="aspectFill" />
+          <view class="rank-right" style="padding-right:{{!actInfo.win?'40rpx':''}};">
+
+            <!-- 上榜信息：未上榜（我的兑奖罐数）、排名 -->
+            <view class="rank-item" bindtap="showMsg" data-msg="兑奖人数 ≥ {{actInfo.calc.ticket_num || 20}}人即可参与排名；">
+              <view class="rank-num-box">
+                <!-- kpi_num 兑奖人数>= ticket_num 上榜才显示排名 -->
+                <block wx:if="{{actInfo.kpi_num >= actInfo.calc.ticket_num && actInfo.rank}}">
+                  <text>第</text>
+                  <text class="rank-num">{{actInfo.rank || 0}}</text>
+                  <text>名</text>
+                </block>
+                <block wx:else>
+                  <text>未上榜</text>
+                </block>
+              </view>
+              <view class="rank-tips">
+                <text>我的排名</text>
+                <van-icon name="warning-o" />
+              </view>
+            </view>
+            <view class="rank-item" bindtap="showMsg" data-msg="按兑奖人ID去重；">
+              <view class="rank-num">
+                {{actInfo.kpi_num || 0}}
+              </view>
+              <view class="rank-tips">
+                <text>我的兑奖人数</text>
+                <van-icon name="warning-o" />
+              </view>
+            </view>
+            <!-- 兑奖号码 -->
+            <view class="rank-item" wx:if="{{actInfo.win}}" bindtap="openRaffleResult" data-url="pages/storeRank/raffle/list/index">
+              <view class="lucky-num ">
+                {{actInfo.win.lucky_number}}
+                <text class="greater-than">></text>
+              </view>
+              <view class="rank-tips">
+                <text>我的幸运号码</text>
+              </view>
+              <!-- 中奖未中奖标识: 活动结束以后显示 -->
+              <view wx:if="{{actInfo.act_state.act_end&&actInfo.calc.lottery_number.length>0}}" class="raffle-result-box">
+                <image class="bg-raffle-win" src="{{file_cos_url}}/bg_raffle_{{actInfo.raffle_win?'win':'unwin'}}.png" mode="" />
+                <text>{{actInfo.raffle_win?'已中奖':'未中奖'}}</text>
+              </view>
+            </view>
+          </view>
+
+        </view>
+        <!-- 店员助力按钮 -->
+        <!-- <view class="zhuli-box" wx:if="{{userInfo.condition == 2}}">
+          <image class="btn-zhuli" bindtap="goScan" src="{{btn_zhuli}}" mode="aspectFit" />
+        </view> -->
+        <!-- 刷新、查看全部 -->
+        <view class="rank-list-head">
+          <view class="list-head-item" bindtap="refreshRankList">
+            <image class="icon-refresh" src="{{file_cos_url}}/icon_refresh.png" mode="aspectFit" />
+            <text>排名刷新</text>
+          </view>
+          <view class="list-head-item">
+            <text>排行榜更新时间为实时更新</text>
+          </view>
+          <!-- <view class="list-head-item btn-see-all" bindtap="jumpTo" data-url="pages/storeRank/rankList/index">
+            <image class="icon-eye" src="{{file_cos_url}}/icon_eye.png" mode="aspectFit" />
+            <text>查看全部</text>
+          </view> -->
+        </view>
+        <!-- 排名、门店名称、兑奖人数 -->
+        <view class="list-title-box">
+          <!-- <image class="bg-head-bar" src="{{bg_head_bar}}" /> -->
+
+          <view class="list-item-rank flex-center-start">
+            <!-- <image class="img-text-rank" src="{{text_rank}}" mode="aspectFit" /> -->
+            <text class="table-head-title">排名</text>
+          </view>
+          <view class="list-item-shop flex-center-start">
+            <!-- <image class="img-text-shop-name" src="{{text_shop_name}}" mode="aspectFit" /> -->
+            <text class="table-head-title">门店名称</text>
+          </view>
+          <view class="list-item-exc flex-center-end">
+            <!-- <image class="img-text-exc-num " src="{{text_exc_num}}" mode="aspectFit" /> -->
+            <text class="table-head-title">兑奖人数</text>
+          </view>
+        </view>
+        <!-- 排行榜 -->
+        <view class="rank-list-box">
+          <!-- 排行榜 图标 -->
+          <!-- <image class="img-rank-tag" src="{{img_rank_tag}}" mode="aspectFit" /> -->
+
+
+          <!-- 列表 -->
+          <block wx:for="{{rankList}}" wx:key="index">
+            <view class="list-item">
+              <view class="item-top">
+                <view class="list-item-rank flex-center-start">
+                  <image wx:if="{{index+1<4}}" class="img-crown" src="{{file_cos_url}}/crown_{{index+1}}.png" mode="aspectFit" />
+                  <text wx:else>{{index+1}}</text>
+                </view>
+                <view class="list-item-name oneLine {{item.class_name}}">
+                  {{item.shop_name}}
+                </view>
+                <view class="list-item-exc flex-column-end">
+                  <view class="{{item.class_name}}">
+                    {{item.kpi_num}}
+                  </view>
+                </view>
+              </view>
+              <view class="item-date">
+                {{item.end_time}}
+              </view>
+            </view>
+          </block>
+          <!-- 100名以后的 -->
+          <block wx:for="{{myRankList}}" wx:if="{{myRankList.length}}" wx:key="key">
+            <view wx:if="{{rankList.length >99  && index == 0 && item.rank>105  }}" class="nomore-data">···</view>
+            <view class="list-item">
+              <view class="item-top">
+                <view class="list-item-rank flex-center-start">
+                  <text>{{item.rank}}</text>
+                </view>
+                <view class="list-item-name oneLine {{item.class_name}}">
+                  {{item.shop_name}}
+                </view>
+                <view class="list-item-exc flex-column-end">
+                  <view class="{{item.class_name}}">
+                    {{item.kpi_num}}
+                  </view>
+                </view>
+              </view>
+              <view class="item-date">
+                {{item.end_time}}
+              </view>
+            </view>
+            <view wx:if="{{index+1 == myRankList.length  }}" class="nomore-data">···</view>
+          </block>
+          <view wx:if="{{!rankList.length}}" class="no-data">
+            暂无排行榜数据
+          </view>
+          <view wx:if="{{noMore && rankList.length}}" class="nomore-data">~暂无更多记录~</view>
+        </view>
+      </view>
+      <!-- 活动奖励列表 -->
+      <view class="prize-box-bg">
+
+        <view class="prize-box" wx:if="{{activeTab == 1}}">
+          <!-- <view class="prize-head">兑奖人数需≥{{actInfo.calc.ticket_num || 20}}人</view> -->
+          <view class="prize-item" wx:for="{{prizeConfig}}" wx:key="index">
+            <!-- 左上角：排名区间 -->
+            <view class="rank-range">
+              <text>排名：</text>
+              <text class="font16">第</text>
+              <text class="font30">{{item.rank[0]}}</text>
+              <!-- <text class="font16">名</text> -->
+              <text>~</text>
+              <!-- <text class="font16">第</text> -->
+              <text class="font30">{{item.rank[1]}}</text>
+              <text class="font16">名</text>
+              <!-- <block wx:if="{{(index+1) == prizeConfig.length}}">
+                <text class="font16">(兑奖人数需≥20人)</text>
+              </block> -->
+            </view>
+            <!-- 右上角：提示语 -->
+            <!-- <view class="prize-tips">兑奖人数需≥{{actInfo.calc.ticket_num || 20}}人</view> -->
+            <view class="prize-title">
+              <image class="img-hn-can" src="{{file_cos_url}}/img_hn_can.png" mode="aspectFit" />
+              <text>红牛活动券</text>
+              <text class="prize-num">{{item.numArr[0]}}</text>
+              <text>{{item.unit}}</text>
+              <text>+</text>
+              <image class="img-zm-can" src="{{file_cos_url}}/img_zm_can.png" mode="aspectFit" />
+              <text>战马活动券</text>
+              <text class="prize-num">{{item.numArr[1]}}</text>
+              <text>{{item.unit}}</text>
+
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+  <!-- 背景蒙层 -->
+  <!-- <image class="img-content-mask" src="{{img_content_mask}}" mode="aspectFit" /> -->
+
+</view>
+<!-- 排名规则、兑奖人数说明 -->
+<view class="fadeIn" wx:if="{{showMsgPop}}">
+  <view class="weui-mask" bindtap="closeMsgPop"></view>
+  <view class="weui-dialog diyContainer">
+    <view class="showMsgPop text-left"><text>{{msg}}</text></view>
+    <view class="deleteIconBox">
+      <image class="deleteIcon" mode="aspectFit" src="../../../assets/tabs/delete.png" bindtap="closeMsgPop"></image>
+    </view>
+  </view>
+</view>
+<!-- 店铺排行榜弹窗 -->
+<storeRankPop id="storeRank" bind:refresh="initData"></storeRankPop>

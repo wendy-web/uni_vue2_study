@@ -1,0 +1,184 @@
+<view wx:if="pageReady">
+	<!-- 新版UI -->
+	<view class="hb-head" wx:if="{{RECORD_TYPE != 3}}" style="background-image:url({{dyhbBg}});">
+		<!-- 红牛战马单个显示 -->
+		<block wx:if="{{RECORD_TYPE===1||RECORD_TYPE===2}}">
+			<view class="hb-head-title">
+				<block wx:if="{{RECORD_TYPE===1}}">
+					<image class="hb-head-hnIcon" src="{{hnIcon}}" mode="aspectFit"></image>
+					<view>红牛</view>
+				</block>
+				<block wx:if="{{RECORD_TYPE===2}}">
+					<image class="hb-head-hnIcon" src="{{zmIcon}}" mode="aspectFit"></image>
+					<view>战马</view>
+				</block>
+			</view>
+			<view class="hb-head-money">￥<text class="hb-head-num">{{redpacketcount.hn||redpacketcount.zm}}</text></view>
+			<view class="hb-head-count">
+				<view>红包累计总收入（元）</view>
+				<image bindtap="showTips" class="hb-head-warnIcon" src="{{warnIcon}}" mode="aspectFit"></image>
+			</view>
+		</block>
+		<!-- 全部显示 -->
+		<block wx:if="{{RECORD_TYPE===0}}">
+			<view class="hb-head-money">￥<text class="hb-head-num">{{redpacketcount.all}}</text></view>
+			<view class="hb-head-count">
+				<view>红包累计总收入（元）</view>
+				<image bindtap="showTips" class="hb-head-warnIcon" src="{{warnIcon}}" mode="aspectFit"></image>
+			</view>
+			<view class="hb-head-footer">
+				<view class="hb-head-footer-item">
+					<view class="hb-head-footer-money">￥{{redpacketcount.hn}}</view>
+					<view>红牛</view>
+				</view>
+				<view class="hb-head-footer-item">
+					<view class="hb-head-footer-money">￥{{redpacketcount.zm}}</view>
+					<view>战马</view>
+				</view>
+			</view>
+		</block>
+	</view>
+	<!-- 红包记录 -->
+	<view class="hongbao-record">
+	
+		<!-- 红包分类查询  -->
+		<view class="red-type-query" wx:if="{{RECORD_TYPE === 0}}">
+			<view bindtap="changeType" data-type="1"
+				class="red-type-query-hn {{query_type ==1 ? 'red-type-query-active':''}}">
+				<!-- <view bindtap="changeType" class="red-type-query-hn {{query_type===false?'red-type-query-active':''}}"> -->
+				<!-- red_hn_icon.png -->
+				<image class="red-type-query-icon" src="{{hnIcon}}" mode="aspectFit"></image>
+				<view class="red-type-title">红牛</view>
+				<view class="{{query_type==1?'red-type-line-hns':'red-type-line-hn'}}"></view>
+
+			</view>
+			<view bindtap="changeType" data-type="2" class="red-type-query-zm {{query_type ==2 ?'red-type-query-active':''}}">
+				<!-- <view bindtap="changeType" class="red-type-query-zm {{query_type===true?'red-type-query-active':''}}"> -->
+				<!-- red_zm_icon.png -->
+				<image class="red-type-query-icon" src="{{zmIcon}}" mode="aspectFit"></image>
+				<view class="red-type-title">战马</view>
+				<view class="{{query_type==2?'red-type-line-zms':'red-type-line-zm'}}"></view>
+
+
+			</view>
+		</view>
+		<!-- 余额记录筛选 -->
+		<view class="balance-record-query {{RECORD_TYPE === 0?'top-374':'top-288'}}" wx:if="{{RECORD_TYPE !== 3}}">
+			<!-- 日期筛选 -->
+			<view class="date-select" bindtap="selectDate">
+				<image class="date-icon" src="{{dateIcon}}" mode="aspectFit"></image>
+				{{selectData.last}}~{{selectData.now}}
+			</view>
+			<!-- 店员 类型 -->
+			<view class="right-tools">
+				<!-- 店员 -->
+				<!-- <view class="right-tools-clerk" wx:if="{{boss}}" bindtap="clerkTypeSelect">
+					<text class="text iconfont iconrenqun"></text>
+					店员
+				</view> -->
+				<!-- 余额类型 -->
+				<view class="right-tools-type" bindtap="balanceTypeSelect">
+					<text class="text iconfont iconcengdie"></text>
+					类型
+				</view>
+			</view>
+		</view>
+		<!-- 数据列表 -->
+		<scroll-view scroll-y="true" class="list-box {{RECORD_TYPE === 0?'top-480':'top-405'}}"
+			bindscrolltolower="scrolltolower">
+			<view class="list-data-item" wx:for="{{listData}}" wx:key="key">
+				<!-- header -->
+				<view class="list-item-header">
+					<view class="list-item-header-left">
+						{{item.title}}
+					</view>
+					<view class="list-item-header-right" data-index="{{index}}" bindtap="tastOpen">
+						<text class="lihr-text">+{{item.change}}</text>
+						<text class="text iconfont iconarrow {{item.isOpen?'iconarrow-active':''}}" wx:if="{{item.isIcon}}"></text>
+					</view>
+				</view>
+				<!-- task 任务 -->
+				<view class="task-list" wx:if="{{item.isOpen}}">
+					<view class="task-item" wx:for="{{item.task}}" wx:key="key">
+						<block wx:if="{{index>0}}">
+							{{item.user_msg[0]}}<text class="task-item-money">{{item.user_msg[1]}}</text>
+						</block>
+					</view>
+				</view>
+				<!-- 扫码人 -->
+				<view class="code-sweeper">{{item.subtitle}}</view>
+				<!-- 日期 -->
+				<view class="list-item-date">{{item.create_time}}</view>
+			</view>
+			<view class="is-data-bottom" wx:if="{{ !_IS_DATA_BOTTOM && listData.length>3 && RECORD_TYPE!=3}}">
+				<view>
+					———————— 没有更多记录了~ ————————
+				</view>
+			</view>
+			<view class="is-data-bottom" wx:if="{{_IS_DATA_BOTTOM && RECORD_TYPE!=3}}">
+				<block wx:if="{{listData.length == 0}}">
+					<image mode="aspectFit" src="{{img_nopoint}}"></image>
+				</block>
+				<view>
+					———————— 没有更多记录了~ ————————
+				</view>
+			</view>
+		</scroll-view>
+		<!-- 空布局情况 -->
+		<view class="empty-view" wx:if="{{RECORD_TYPE === 3}}">
+			<image mode="aspectFit" src="{{img_nopoint}}"></image>
+			<view>
+				暂无数据T_T~
+			</view>
+		</view>
+		<!-- 弹窗 --- 日历弹窗 -->
+		<view class="fadeIn" wx:if="{{dateDialog}}">
+			<view class="weui-mask" bindtap="closeDateDialog"></view>
+			<view class="weui-dialog">
+				<calendar bind:onRangePick="onRangePick" mode="range"></calendar>
+				<view class="weui-dialog__ft">
+					<a class="weui-dialog__btn weui-dialog__btn_default" bindtap="closeDateDialog">取消</a>
+					<a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="chooseDate">确定</a>
+				</view>
+			</view>
+		</view>
+		<!-- 筛选下拉展示 -->
+		<mp-halfScreenDialog show="{{halfScreenDialog}}" maskClosable="{{true}}">
+			<view slot="title">
+				<text>{{halfScreenDialogTitle}}</text>
+			</view>
+			<view slot="desc">
+				<view class='half-screen-list'>
+					<view class="half-screen-item" wx:for="{{halfScreenList}}" wx:key="key" data-result="{{item}}"
+						bindtap="halfScreencTab">
+						<block wx:if="{{item.loaded}}">
+							<image mode="aspectFit" class="half-screen-item-img animation-fade" lazy-load="{{true}}"
+								src="{{item.img}}"></image>
+						</block>
+						<block wx:else>
+							<image mode="aspectFit" class="half-screen-item-img" lazy-load="{{true}}" src="{{dydf}}">
+							</image>
+						</block>
+						<view>{{item.name}}</view>
+					</view>
+				</view>
+			</view>
+		</mp-halfScreenDialog>
+
+	</view>
+</view>
+<!-- 红牛25周年弹窗 -->
+<AdPopups show="{{adShow}}" popImg="{{popImg}}" openType="switch" pagePath="/pages/tabBar/shouye/index"></AdPopups>
+<!-- 收入说明弹窗 -->
+<view class="fadeIn" wx:if="{{tipsPop}}">
+  <view class="weui-mask" bindtap="close"></view>
+
+  <view class="weui-dialog tipsPop">
+    <view class="tipsPop-title">收入说明</view>
+    <view class="tipsPop-box">此金额仅为【掌柜】身份时的收益</view>
+    <view>
+      <a class="tipsPop-btn" bindtap="close">我知道了</a>
+    </view>
+
+  </view>
+</view>

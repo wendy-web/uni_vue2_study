@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "order-popup": "../../component/order_popup/index",
+    "steps":"../../monthlyOrder/details/components/steps"
+  },
+  "navigationBarTitleText":"订单详情"
+}

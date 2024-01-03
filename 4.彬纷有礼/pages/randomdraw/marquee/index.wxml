@@ -1,0 +1,84 @@
+<!--pages/randomdraw/marquee/index.wxml-->
+<import src="utils/marquee.wxml" />
+<top-navbar title="{{title}}" bindback="onBeforeBack" searchBar="" bindsearch='search'></top-navbar>
+<view class="container" style="background-image: url({{pre_act_hn==28?img_hn_marquee_bg_28y:img_hn_marquee_bg}});--navBarHeight:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px">
+  <view class="head">
+    <image mode="aspectFit" class="zghnImg" src="{{pre_act_hn==28?img_hn_title_28y:img_hn_title_27th}}"></image>
+  </view>
+  <view class="content">
+    <template is="marquee" data="{{...marquee}}"></template>
+    <view class="playGame">
+      <a class="weui-dialog__btn  begin" bindtap="startPlay">开始</a>
+    </view>
+  </view>
+</view>
+<!-- 视频广告弹窗 -->
+<videoAd videoPop="{{videoPop}}" videoUrls="{{videoUrl}}" capsule="capsule" bind:myevent="playGame"></videoAd>
+<!-- 跳转余额二次确认弹窗 -->
+<view class="fadeIn" wx:if="{{reconfirmPop}}">
+  <view class="weui-mask"></view>
+  <view class="weui-dialog reconfirmPop" style="background-image: url({{pre_act_hn==28?img_hn_alert_reconfirm_28y:img_hn_alert_reconfirm}});">
+    <view class="weui-dialog__hd"></view>
+
+    <!-- <view class="weui-flex">
+      <view class="weui-flex__item text-center flex-align-center">
+        <view>
+          <a class="weui-dialog__btn  greyBtns goYuer" data-go="2" bindtap="goYuer">放弃翻倍</a>
+        </view>
+      </view>
+      <view class="weui-flex__item text-center">
+        <view class="scaleBtnBox">
+          <view class="scaleBtn pdl50 click_double" data-pop="1" bindtap="watchAd">
+            <css-animation class="animation-qi" width="250" height="150" count="35" duration="7" url="{{btnurl}}">
+            </css-animation>
+          </view>
+        </view>
+
+      </view>
+    </view> -->
+
+    <view class="btn-group">
+      <a class="btn-giveup" data-go="2" bindtap="goYuer">放弃翻倍</a>
+      <block wx:if="{{image_load_failed}}">
+        <image bindtap="watchAd" binderror="imgError" data-pop="1" class="icon-hn-btn btn-watchAd" src="{{icon_btn_video}}" mode="aspectFit"></image>
+      </block>
+      <block wx:else>
+        <image bindtap="watchAd" data-pop="1" class="gif-btn-watchvideo" src="{{gif_btn_watchvideo}}" mode="aspectFit"></image>
+      </block>
+    </view>
+  </view>
+</view>
+<!-- 累计获奖弹窗 -->
+<view class="fadeIn " wx:if="{{rewardPop}}">
+  <view class="weui-mask" data-id="1"></view>
+  <view class="scaleBox rewardPop">
+    <view class="rewardPop_content   flex-align-center ">
+      <view class="msg">恭喜您累计获得</view>
+      <view class="money">￥<text class="fontSize60">{{totalMoney}}</text></view>
+      <view class="rewardHistory">
+        <text>{{rewardHistory}}</text>
+      </view>
+      <view class="flex-align-around  weui-flex mgt30">
+        <view class="weui-flex__item goyuerBtn flex-align-center">
+          <a class="weui-dialog__btn  rebBtn goYuer" data-go="1" bindtap="goYuer">{{!task2? yuerText :'放弃翻倍'}}</a>
+        </view>
+        <view class="weui-flex__item text-left  mgl70" wx:if="{{task2}}">
+          <view class="scaleBtnBox">
+            <view class="scaleBtn  click_double" data-pop="2" bindtap="watchAd">
+              <css-animation class="animation-qi" width="250" height="150" count="35" duration="7" url="{{btnurl}}">
+              </css-animation>
+            </view>
+            <view class="scaleBtn-backup" bindtap="watchAd">看视频红包翻倍</view>
+
+          </view>
+        </view>
+        <view wx:if="{{!task2}}" class="pdlr20"></view>
+        <block wx:if="{{!task2}}">
+          <a class="weui-dialog__btn goldBtn ">
+            <navigator url="/pages/zongduan/saoma/index?hide=1" open-type="reLaunch" hover-class="other-navigator-hover  goScan"> 继续开箱扫码</navigator>
+          </a>
+        </block>
+      </view>
+    </view>
+  </view>
+</view>

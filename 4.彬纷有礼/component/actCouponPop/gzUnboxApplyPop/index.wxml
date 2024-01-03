@@ -1,0 +1,31 @@
+<!--component/animationOpenBox/index.wxml-->
+<view wx:if="{{show}}">
+  <view class="weui-mask" bindtap="closePop"></view>
+  <view class="weui-dialog pop-box" bindtap="closePop">
+    <view class="animation-box">
+      <!-- 开箱冲榜标题 -->
+      <image class="img-0" src="{{file_url_applypop}}/act_subtitle.png" mode="aspectFit" lazy-load></image>
+      <!-- 副标题 -->
+      <image class="img-2" src="{{file_url_applypop}}/act_title.png" mode="aspectFit" lazy-load></image>
+      <view class="box-item">
+        <!-- 圆环背景 -->
+        <image class="img-8 img-8-1" src="{{file_url_applypop}}/bg_halo.png" lazy-load></image>
+        <image class="img-8 img-8-2" src="{{file_url_applypop}}/bg_halo.png" lazy-load></image>
+        <!-- 圆环光晕 -->
+        <!-- <image class="img-9" src="{{img_9}}" mode="aspectFit" lazy-load></image> -->
+        <!-- 圆环 -->
+        <image class="img-7" src="{{file_url_applypop}}/img_silk.png" mode="aspectFit" lazy-load></image>
+        <!-- 红牛开箱 -->
+        <image class="img-5" src="{{file_url_applypop}}/img_unbox.png" mode="aspectFit" lazy-load></image>
+        <!-- 立即开箱扫码 -->
+        <image bindtap="tapUnboxAct"  class="img-3" src="{{file_url_applypop}}/btn_check.png" mode="aspectFit" lazy-load></image>
+        <!-- 内花絮 -->
+        <!-- <image class="img-6" src="{{img_6}}" mode="aspectFit" lazy-load></image> -->
+
+      </view>
+      <!-- 外花絮  -->
+      <!-- <image class="img-4" src="{{img_4}}" mode="aspectFit" lazy-load></image> -->
+    </view>
+    <slot></slot>
+  </view>
+</view>

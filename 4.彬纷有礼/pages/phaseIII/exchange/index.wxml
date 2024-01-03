@@ -1,0 +1,116 @@
+<!--pages/phaseIII//exchange/index.wxml-->
+<view class="apply-box">
+	<!-- 收件信息 -->
+	<view class="apply-address">
+		<image class="address-icon" mode="aspectFit" src="{{file_phase_static}}/mark.png"></image>
+		<view class="address-center">
+			<view class="contact">
+				<text>{{userInfo.nick_name}}</text>
+				<text class="call">{{userInfo.phoneStr}}</text>
+			</view>
+			<view class="address">
+				<text>{{shopInfo.address}}</text>
+			</view>
+		</view>
+		<view class="address-right" bindtap="changeAddress" wx:if="{{userInfo.condition == 1}}">
+			<image class="edit-icon" mode="aspectFit" src="{{file_phase_static}}/edit.png"></image>
+			<view>修改地址</view>
+		</view>
+	</view>
+	<!-- 换购券 -->
+	<view class="apply-coupon">
+		<!-- 可用换购券 -->
+		<view class="apply-head">
+			<image class="quan-icon" mode="aspectFit" src="{{file_phase_static}}/quan.png"></image>
+			<view>可用{{couponTitle}}累计（张）：<text class="num">{{all}}</text></view>
+		</view>
+		<!-- 选择换购券 -->
+		<view class="apply-body">
+			<view class="redbull-box">
+      <block wx:if="{{exc_type==2 || prizeratetype==105}}">
+        <image class="redbull-icon" mode="aspectFit" src="{{icon_jar_warhorse}}"></image>
+      </block>
+      <block wx:else>
+          <image class="redbull-icon" mode="aspectFit" wx:if="{{prizeratetype==112}}" src="{{hn_blue_can}}"></image>
+          <image class="redbull-icon" mode="aspectFit" wx:else src="{{file_phase_static}}/redbull.png"></image>
+          <!-- 战马不需要显示奖品如图 -->
+          <text wx:if="{{prizeratetype!=105}}">奖品如图</text>
+      </block>
+			</view>
+			<view class="apply-msg">
+        <block wx:if="{{exc_type==2 || prizeratetype==105}}">
+				  <view>{{zmTitle}}</view>
+        </block>
+				<view wx:else>
+            {{prizeratetype==112?hnTitleBlue:hnTitle}}
+        </view>
+				<view class="apply-num">
+					<view>换购数量</view>
+					<view class="apply-choose" wx:if="{{!forbidChange}}">
+						<view class="apply-min" bindtap="{{!forbidChange?'subtract':'forbidChange'}}">
+							<image class="minus-icon" mode="aspectFit" src="{{file_phase_static}}/minus.png"></image>
+						</view>
+						<view class="apply-count"><input class="apply-input" type="number" bindinput="inputChange"
+								bindfocus="bindFocus" placeholder="{{placeholder}}" value="{{inputValue}}" disabled="{{forbidChange}}"
+								placeholder-class="apply-input-placeholder" />
+						</view>
+						<view class="apply-max" bindtap="{{!forbidChange?'add':'forbidChange'}}">
+							<image class="minus-icon" mode="aspectFit" src="{{file_phase_static}}/plus.png"></image>
+						</view>
+					</view>
+					<view wx:else>: <text class="apply-num-red" > {{all}}</text></view>
+				</view>
+			</view>
+		</view>
+		<!-- 订单备注 -->
+		<view class="order-note">订单备注</view>
+		<view class="order-note-box">
+			<textarea class="order-text" disable-default-padding="{{true}}" cursor-spacing="100" bindinput="remindChange"
+				maxlength="{{maxLength||50}}" value="{{remindValue}}" placeholder="请输入备注信息"
+				placeholder-class="order-text-placeholder"></textarea>
+		</view>
+
+	</view>
+</view>
+<view class="footer">
+	<view class="footer-text oneLine">合计（张）：<text class="num">{{inputValue}}</text></view>
+	<view class="footer-btn" bindtap="exchange">确定</view>
+</view>
+
+
+<view class="container" style="display:none">
+	<view class="content">
+		<image mode="aspectFit" class="oneEnjoy" src="{{oneenjoy_img}}"></image>
+		<view class="mgt330">
+			<view class="font40">换购数量</view>
+			<view class="text-grey font14 mgt10">请输入您要换购的数量</view>
+			<view class="input-box">
+				<view class="weui-cell">
+					<view class="weui-cell__bd">
+						<input class="weui-input font27 text-red " type="number" bindinput="inputChange" bindfocus="bindFocus"
+							placeholder="{{placeholder}}" value="{{inputValue||''}}" placeholder-class="weui-input__placeholder" />
+					</view>
+					<view class="weui-cell__ft " bindtap="all">
+						<a class="all font14">全部</a>
+					</view>
+				</view>
+			</view>
+			<view class="text-left">
+				<a class="all font14">备注</a>
+				<text class="text-grey font14">（<text class="yellow">{{currentLength||0}}</text>/{{maxLength||50}}）字</text>
+			</view>
+			<view class="input-box" style="margin-top:0px;">
+				<view class="weui-cell " style="min-height:40px;padding: 3px 0px 3px 8px;">
+					<view class="weui-cell__bd ">
+						<textarea class="weui-input text-grey text-left textHeight" disable-default-padding="{{true}}"
+							cursor-spacing="100" bindinput="remindChange" maxlength="{{maxLength||50}}" value="{{remindValue}}"
+							placeholder="请输入备注信息" placeholder-class="weui-input__placeholder"></textarea>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view>
+			<a class="phase_btn" bindtap="exchange">确定</a>
+		</view>
+	</view>
+</view>

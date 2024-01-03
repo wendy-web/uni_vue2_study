@@ -1,0 +1,266 @@
+
+
+	/* 隐藏滚动条 */
+	::-webkit-scrollbar {
+		display: none;
+		width: 0;
+		height: 0;
+		color: transparent;
+	}
+	
+	.xh-dialog {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 9999;
+	 }
+	
+	/*弹窗相关*/
+	.xh-dialog-black{
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		top: 0;
+		background-color: $uni-bg-color-mask;
+	}
+	
+	.dialog-bg{
+		width: 100%;
+		height: 614rpx;
+	}
+	
+	.dialog-bg-header-25,.dialog-bg-header-26{
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+	.dialog-bg-header-26{
+		width: 534rpx;
+		height: 268rpx;
+		top: 26rpx;
+	}
+	.dialog-bg-header-25{
+		width: 516rpx;
+		height: 266rpx;
+		top: 44rpx;
+	}
+	
+	.xh-dialog-body{
+		position: fixed;
+		top: 50%;
+		left: 44rpx;
+		right: 58rpx;
+		z-index: 1;
+		height: 724rpx;
+	}
+	
+	.xh-dialog-close{
+		width: RPX(40);
+		height: RPX(40);
+		position: fixed;
+		bottom: 25%;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 2;
+	}
+	
+	.xh-dialog-btn{
+		position: absolute;
+		top: 600rpx;
+		left: 50%;
+		width: 623rpx;
+		margin-left: -311.5rpx;
+		padding-top: 20rpx;
+		display: flex;
+		justify-content: space-around;
+		margin-top: 15rpx;
+	}
+	.xdb-item{
+		width: 294rpx;
+		height: 90rpx;
+		text-align: center;
+		box-sizing: border-box;
+		font-size: 36rpx;
+		font-weight: bold;
+		position: relative;
+		
+		& button:after{ border: none; }
+		& button{
+			background-color: transparent;
+			padding: 0;
+			line-height: 80rpx;
+		}
+		.xdb-item-bg{
+			width: 294rpx;
+			height: 90rpx;
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: -1;
+		}
+		.xdb-item-text{
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%,-50%);
+			margin-top: -5rpx;
+		}
+	}
+	
+	@keyframes fadeInOpacity {
+		0% {
+			-webkit-transform:  translateY(2000px);
+			transform:  translateY(2000px);
+		}
+	
+		to {
+			-webkit-transform: translateX(-50%) translateY(0);
+			transform: translateX(-50%) translateY(0);
+		}
+	}
+	
+	.fadeInOpacity {
+		-webkit-animation-name: fadeInOpacity;
+		animation-name: fadeInOpacity;
+		-webkit-animation-duration: 1s;
+		-webkit-animation-fill-mode: both;
+		animation-duration: 1s;
+		animation-fill-mode: both;
+	}
+	
+	@keyframes fadeInDownBig {
+		0% {
+			-webkit-transform:  translateY(-2000px);
+			opacity: 0;
+			transform:  translateY(-2000px);
+		}
+	
+		to {
+			-webkit-transform: translateY(-60%);
+			opacity: 1;
+			transform: translateY(-60%);
+		}
+	}
+	
+	.fadeInDownBig {
+		-webkit-animation-name: fadeInDownBig;
+		animation-name: fadeInDownBig;
+		-webkit-animation-duration: 1s;
+		-webkit-animation-fill-mode: both;
+		animation-duration: 1s;
+		animation-fill-mode: both;
+	}
+	/*自定义弹窗*/
+	.xhDialog{
+		-webkit-animation-name: xhDialog;
+		animation-name: xhDialog;
+		-webkit-animation-duration: 0.5s;
+		-webkit-animation-fill-mode: both;
+		animation-duration: 0.5s;
+		animation-fill-mode: both;
+	}
+	
+	@-webkit-keyframes xhDialog {
+		0% {
+			-webkit-transform:  translateY(-2000px);
+			opacity: 0;
+			transform:  translateY(-2000px);
+		}
+	
+		to {
+			-webkit-transform: translateY(-60%);
+			opacity: 1;
+			transform: translateY(-60%);
+		}
+	}
+	
+	
+	// 自定义tabbar的底部留白
+	.nav_cont {
+	    padding-bottom: 110rpx;
+	    padding-bottom: calc(110rpx + constant(safe-area-inset-bottom));
+	    /* 兼容 IOS<11.2 */
+	    padding-bottom: calc(110rpx + env(safe-area-inset-bottom));
+	    /* 兼容 IOS>11.2 */
+	}
+	
+	.ios-safe::after {
+		content: '';
+		display: block;
+		padding-bottom: 30rpx;
+		height: constant(safe-area-inset-bottom);
+		height: env(safe-area-inset-bottom);
+		box-sizing: border-box;
+	}
+	
+	
+	
+	@-webkit-keyframes heartBeat {
+		0% {
+			-webkit-transform: scale(1);
+			transform: scale(1)
+		}
+	
+		14% {
+			-webkit-transform: scale(1.3);
+			transform: scale(1.3)
+		}
+	
+		28% {
+			-webkit-transform: scale(1);
+			transform: scale(1)
+		}
+	
+		42% {
+			-webkit-transform: scale(1.3);
+			transform: scale(1.3)
+		}
+	
+		70% {
+			-webkit-transform: scale(1);
+			transform: scale(1)
+		}
+	}
+	
+	@keyframes heartBeat {
+		0% {
+			-webkit-transform: scale(1);
+			transform: scale(1)
+		}
+	
+		14% {
+			-webkit-transform: scale(1.3);
+			transform: scale(1.3)
+		}
+	
+		28% {
+			-webkit-transform: scale(1);
+			transform: scale(1)
+		}
+	
+		42% {
+			-webkit-transform: scale(1.3);
+			transform: scale(1.3)
+		}
+	
+		70% {
+			-webkit-transform: scale(1);
+			transform: scale(1)
+		}
+	}
+	
+	.heartBeat {
+		-webkit-animation-duration: 1.3s;
+		-webkit-animation-name: heartBeat;
+		-webkit-animation-timing-function: ease-in-out;
+		animation-duration: 1.3s;
+		animation-name: heartBeat;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: infinite;
+	}
+	
+	
+	

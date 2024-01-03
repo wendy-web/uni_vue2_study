@@ -1,0 +1,733 @@
+<view class="tabbar-container safeArea">
+  <view class="tabbar-container-content">
+    <!-- 身份不同页面展示不同：0:普通 1：掌柜 2：店员 -->
+    <!-- 已登录 -->
+    <block wx:if="{{isLoggedIn}}">
+      <view class="newUI">
+        <view class="headBG" style="padding-top:{{navbarHeight}}px;">
+          <view class="user-box">
+            <view class="avatar-box">
+              <view class="avatar-item" data-url="/pages/zhongduan/geren/setting/myinfo" bindtap="navigateToPage">
+                <!-- 头像 -->
+                <image class="user-logo" mode="aspectFill" src="{{userInfo.avatar_url}}"></image>
+                <!-- 身份 -->
+                <view class="user-identity {{userInfo.condition == 0 ? 'bottom0' :''}}">
+                  <text>{{userRoleMap[userInfo.condition]['name']}}</text>
+                </view>
+                <!-- 会员图标 -->
+                <image class="shop-vip" wx:if="{{userInfo.condition != 0 }}" mode="aspectFit" src="../../../assets/images/crowns.png"></image>
+              </view>
+              <!-- 现金券状态:cash_status:0未参与，1审核中，2已参与 -->
+              <view class="cash-status" wx:if="{{shopInfo.cash_status>0}}">
+                <view wx:if="{{shopInfo.cash_status==1}}" class="cash-status-1">现金券审核中</view>
+                <view wx:if="{{shopInfo.cash_status==2}}" class="cash-status-2">现金券</view>
+              </view>
+            </view>
+            <!-- 用户信息、扫一扫 -->
+            <view class="user-info">
+              <!-- 左：用户资料，右：扫一扫 -->
+              <view class="user-info-top">
+                <!-- 姓名 -->
+                <view class="uit-left">
+                  <view class="uit-nick-name ">
+                    <text class="oneLine uit-name-width">{{userInfo.nick_name}}</text>
+                    <text class="uit-edit" data-url="/pages/zhongduan/geren/setting/myinfo" bindtap="navigateToPage">编辑个人资料</text>
+                  </view>
+                  <view class="uit-shopname oneLine" wx:if="{{shop_name}}">
+                    我的店铺：
+                    <text>{{shop_name}}</text>
+                  </view>
+                  <view class="uit-shopname {{userInfo.condition == 0 ?'mgt20':''}}">
+                    专属ID：
+                    <text>{{userInfo.id || ''}}</text>
+                  </view>
+                </view>
+                <view class="flex-center">
+                  <!-- 扫一扫 -->
+                  <view class="uit-right" data-url="/pages/zongduan/saoma/index" bindtap="navigateToPage">
+                    <image mode="aspectFit" class="scan" src="../../../assets/images/scan.png"></image>
+                    <text>扫一扫</text>
+                  </view>
+                </view>
+
+              </view>
+              <!-- 店铺信息完善度 -->
+              <view class="uit-progress">
+                <!-- 具体进度条样式 -->
+                <view class="uit-progress-box">
+                  <progress color="#fba80e" percent="{{progress||60}}" stroke-width="4" border-radius="5" />
+                </view>
+                <!-- 进度值 -->
+                <view class="uit-progress-num">店铺信息完善度{{progress||60}}%</view>
+              </view>
+            </view>
+
+          </view>
+
+          <!-- 系统公告 -->
+          <view class="noticeBar" wx:if="{{expiringSoon}}">
+            <image mode="aspectFit" src="../../../assets/images/notice.png" class="noticeIcon"></image>
+            <view>
+              <text class="red">27周年“1元乐享”换购券2023年6月15日截止返货核销,请及时核销</text>
+              <!-- <text class="blue">兑奖券可继续给消费者兑奖至</text> -->
+              <!-- <text class="red bold">2021年5月31日</text> -->
+            </view>
+          </view>
+        </view>
+
+        <block wx:if="{{userInfo.condition == 2}}">
+          <!-- 店员:助力、红包、积分 -->
+          <view class="help-box">
+            <view class="help-item" data-url="/pages/zhongduan/geren/zhuli/index" bindtap="navigateToPage">
+              <image mode="aspectFit" src="../../../assets/images/help-left.png" class="help-icon"></image>
+              <view class="help-name">我的助力</view>
+            </view>
+            <view class="help-item" data-url="/pages/zhongduan/geren/hongbao/index" bindtap="navigateToPage">
+              <image mode="aspectFit" src="../../../assets/images/help-middle.png" class="help-icon"></image>
+              <view class="help-name">红包记录</view>
+            </view>
+            <view wx:if="{{excCount&&(excCount.zm_exc_num+excCount.hn_exc_num)>0}}" class="help-item" data-url="/pages/warhorse/exchange/list" bindtap="navigateToPage">
+              <image mode="aspectFit" src="../../../assets/images/icon_exc_reward_dy.png" class="help-icon"></image>
+              <view class="help-name">换购奖励</view>
+            </view>
+
+            <view wx:if="{{shopInfo.cash_status==2}}" class="help-item" data-url="/pages/storeAllowance/clerkHelp/index" bindtap="navigateToPage">
+              <image mode="aspectFit" src="../../../assets/images/icon_cash_help.png" class="help-icon"></image>
+              <view class="help-name">助力现金券</view>
+            </view>
+            <view class="help-item" data-url="/pages/zhongduan/geren/storesRecord/index" bindtap="navigateToPage">
+              <image mode="aspectFit" src="../../../assets/images/icon_exc_record.png" class="help-icon"></image>
+              <view class="help-name">换购记录</view>
+            </view>
+            <!-- 2023年8月10日 新增 -->
+            <view wx:if="{{hn2in1_info}}" class="help-item" data-url="/pages/storeAllowance/cashorCoupon/exchange/index" bindtap="navigateToPage">
+              <image mode="aspectFit" src="../../../assets/images/icon_exc_record.png" class="help-icon"></image>
+              <view class="help-name">箱内码兑换券额度</view>
+            </view>
+
+          </view>
+
+        </block>
+        <block wx:else>
+          <!-- 掌柜、普通用户 我的资产 -->
+          <view class="assets-container">
+            <view class="assets-bg {{store_allowance_show?'pdb44':''}}">
+              <view class="assets-box">
+                <view class="my-assets">
+                  <view>我的资产</view>
+                </view>
+                <view class="assets-info">
+                  <view class="assets-item">
+                    <view class="assets-block" data-url="/pages/zhongduan/geren/yuer/index" bindtap="navigateToPage">
+                      <view class="assets-icon">
+                        <image class="shouyi" mode="aspectFit" src="../../../assets/images/shouyi.png"></image>
+                      </view>
+                      <view class="assets-line"></view>
+                      <view class="assets-right">
+                        <view class="assets-money">
+                          ￥<text class="font36 fontBold">{{userShopInfo.c_balance || '0.00'}}</text>
+                          <text class="assets-tips" wx:if="{{userInfo.condition != 2 &&userInfo.c_balance>0&& userInfo.c_balance> localBalance}}">新增</text>
+                        </view>
+                        <view>收益累计（元）</view>
+                      </view>
+                    </view>
+                    <!-- <view class="assets-block" data-url="/pages/phaseIII/voucher/voucher" bindtap="navigateToPage"> -->
+                    <view class="assets-block" data-url="/pages/phaseIII/voucher/index" bindtap="navigateToPage">
+                      <view>
+                        <image class="voucher" mode="aspectFit" src="../../../assets/images/voucher.png"></image>
+                      </view>
+                      <view class="assets-line"></view>
+                      <view class="assets-right">
+                        <view class="assets-voucher">
+                          <text class="font40">{{cardInfo.all_unused || 0}}</text>
+                          <!-- 新增gif -->
+                          <block wx:if="{{expiringSoon}}">
+                            <image class="icon-expiring-soon animate__animated animate__tada animate__infinite" mode="aspectFit" src="{{icon_expiring_soon}}"></image>
+                          </block>
+                          <block wx:else>
+                            <image wx:if="{{(cardInfo.all_unused) >0}}" class="ani-icon-use animate__animated animate__tada animate__infinite" mode="aspectFit" src="{{ani_icon_use}}"></image>
+                          </block>
+                          <!-- <image wx:if="{{cardInfo.unused >0}}"
+                        class="ani-icon-use animate__animated animate__tada animate__infinite" mode="aspectFit"
+                        src="{{ani_icon_use}}"></image> -->
+                        </view>
+                        <view>可用卡券（张）</view>
+                      </view>
+
+                    </view>
+                    <view class="assets-block" data-url="/pages/phaseIII/write-off/reward" bindtap="navigateToPage">
+                      <view>
+                        <image class="shouyi" mode="aspectFit" src="../../../assets/images/hongbao.png"></image>
+                      </view>
+                      <view class="assets-line"></view>
+                      <view class="assets-right">
+                        <view class="assets-voucher">
+                          <text class="font40">{{cardInfo.unopen || 0}}</text>
+                          <text class="assets-tips" wx:if="{{cardInfo.unopen>0}}">可领取</text>
+                        </view>
+                        <view>换购红包（个）</view>
+                      </view>
+                    </view>
+                    <view wx:if="{{excCount&&(excCount.zm_exc_num+excCount.hn_exc_num)>0}}" class="assets-block" bindtap="navigateToPage" data-url="/pages/warhorse/exchange/list">
+                      <view>
+                        <image class="voucher" mode="aspectFit" src="{{icon_hgjl}}"></image>
+                      </view>
+                      <view class="assets-line"></view>
+                      <view class="assets-right">
+                        <view class="assets-voucher">
+                          <text class="font40">{{excCount.total_available}}</text>
+                        </view>
+                        <view>换购奖励（罐）</view>
+                      </view>
+                    </view>
+                    <!-- 箱内码兑换券额度 -->
+                    <view wx:if="{{hn2in1_info}}" class="assets-block" data-url="/pages/storeAllowance/cashorCoupon/exchange/index" bindtap="navigateToPage">
+                      <view>
+                        <image class="shouyi" mode="aspectFit" src="../../../assets/images/icon_exc.png"></image>
+                      </view>
+                      <view class="assets-line"></view>
+                      <view class="assets-right">
+                        <view class="assets-voucher">
+                          <text class="font40">{{hn2in1_info.dh_num || 0}}</text>
+                          <!-- <text class="assets-tips" wx:if="{{cardInfo.unopen>0}}">可领取</text> -->
+                        </view>
+                        <view>箱内码兑换券额度(个)</view>
+                      </view>
+                    </view>
+                    <!-- 新版卡券列表 -->
+                    <!-- <view class="assets-block" data-url="/pages/phaseIII/voucher/index" bindtap="navigateToPage">
+                      <view>
+                        <image class="voucher" mode="aspectFit" src="../../../assets/images/voucher.png"></image>
+                      </view>
+                      <view class="assets-line"></view>
+                      <view class="assets-right">
+                        <view class="assets-voucher">
+                          <text class="font40">{{cardInfo.all_unused || 0}}</text>
+                          <block wx:if="{{expiringSoon}}">
+                            <image class="icon-expiring-soon animate__animated animate__tada animate__infinite" mode="aspectFit" src="{{icon_expiring_soon}}"></image>
+                          </block>
+                          <block wx:else>
+                            <image wx:if="{{(cardInfo.all_unused) >0}}" class="ani-icon-use animate__animated animate__tada animate__infinite" mode="aspectFit" src="{{ani_icon_use}}"></image>
+                          </block>
+                        </view>
+                        <view>卡券改版</view>
+                      </view>
+
+                    </view> -->
+
+                  </view>
+
+                </view>
+              </view>
+            </view>
+          </view>
+
+        </block>
+        <!-- 店长现金券入口 -->
+        <block wx:if="{{userInfo.condition != 2  && store_allowance_show}}">
+          <view class="store-allowance" data-url="/pages/storeAllowance/list/index" bindtap="navigateToPage">
+            <view>
+              <view>可用现金券（元）</view>
+              <view class="cash-scan-num-box" wx:if="{{CanScanNum}}">
+                <text>可扫箱数(箱)</text><text class="cash-scan-num">{{CanScanNum}}</text>
+              </view>
+            </view>
+            <view class="store-allowance-count" style="background-image: url({{bg_cash_balance}});">
+              <text>￥</text>
+              <text class="store-allowance-num">{{store_allowance_balance}}</text>
+              <text class="iconfont iconarrow"></text>
+            </view>
+          </view>
+        </block>
+        <!-- 我的订单 -->
+        <view class="menu-box menu-box-shadow {{userInfo.condition==2?'':'mgt40'}}">
+          <view class="menu-title">{{userInfo.condition==2 ? '我的任务' : '我的订单'}}</view>
+          <view class="menu-list">
+            <view class="menu-list-item" bindtap="jumpToOrder" data-index="1">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/order1.png"></image>
+                <text class="menu-tips" wx:if="{{ylcountTab.status_1>0}}">{{ylcountTab.status_1}}</text>
+              </view>
+              <view class="menu-text">待受理</view>
+            </view>
+            <view class="menu-list-item" bindtap="jumpToOrder" data-index="2">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/order2.png"></image>
+                <text class="menu-tips" wx:if="{{ylcountTab.status_2>0}}">{{ylcountTab.status_2}}</text>
+              </view>
+              <view class="menu-text">待配送</view>
+            </view>
+
+            <view class="menu-list-item" bindtap="jumpToOrder" data-index="3">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/order3.png"></image>
+                <text class="menu-tips" wx:if="{{ylcountTab.status_3>0}}">{{ylcountTab.status_3}}</text>
+
+              </view>
+              <view class="menu-text">待收货</view>
+            </view>
+            <view class="menu-list-item" bindtap="jumpToOrder" data-index="0">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/order4.png"></image>
+                <!-- <text class="menu-tips">新增</text> -->
+              </view>
+              <view class="menu-text">全部</view>
+            </view>
+          </view>
+          <!-- swiper 订单信息 -->
+          <!-- <view class="order-swiper-box">
+        <swiper class="swiper-container" autoplay interval="{{swiperOption.interval}}" duration="{{swiperOption.duration}}" circular="{{true}}" vertical>
+          <swiper-item class="swiper-item" wx:for="{{10}}" wx:key="key">
+            <view class="order-swiper-item">
+              <view class="item-left">
+                <image class="icon-order-goods" mode="aspectFit" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAkFBMVEXy8vJjYmaGhYjNzc6qqqzt7e3j4+PR0dKKiYzp6emtra+bm512dXlram7v7++npqiSkpR6eXxycXXX19jAwMKysbOhoKONjI9+fYFpaGxubXBnZmrDwsSYmJrm5ufg4ODd3N28u725ubvLy8zHx8i+vr+3t7iqqavFxMaWlZiEg4bZ2dnU1NW1tbaPjpFwb3Nz4Z2FAAABtUlEQVRIx+2V2ZaCMAxACVAHkLIIsoMCAuL6/383ZZGyKDCPc4590YbcbM1JmP90UKDtAOTypKwEfrbY3cYcl2v+0zKW9TeSDEKGmouYXMDZb+b0xZgFWRqoHIodCCb6AKSlj7c/7wJ138qP6ow1ZAogF4ehIQf0+Zg3ex2EY0+A7dtyZQzB6d00EuwCoJw1UPuCk+aTYGc8WJ5fjq1G+QUuifgpDzYWR/pGWzVfS5VJtdq3UowelQHs1DqsNHRpk9A3aV8Bgu6DLEV3h/hGVQdkwqtJDoUMdoBenZNHqt4hwDUZuo3BjaSDzrIyQaPqzoWuZ12rP9BD2p4XQG9a7JrzfHx89al9rhOcIp1CgHq507aYIDRjEoZUW1WkNtQlhCSbe2H1W3oJ8TePUE+VJAVa7WWEeRA34YP5C8KzDMPyX+SLvEWwuQ7JMJ189jrE1nq9LinLiMLDld4CTIbSPEKGEj73BWI1lDL0CUExC859MkpvFsbb2wCh888bLc3hPIko0i2WAM1snoKMZbK7LZvUxyIb4lEP5IWTav5OAPJSJthPP+SYNUdM1FO9dFSyPL5nfH4BitcdibD8RMUAAAAASUVORK5CYII="></image>
+                <view>
+                  <view>待收货</view>
+                  <view wx:if="{{index>2}}" class="item-tips">红牛*5箱、战马*2箱</view>
+                  <view wx:else class="item-tips">
+                    <text>剩余</text>
+                    <van-count-down time="1800000" bind:finish="actTimerFinished" format="HH时mm分ss秒" style="--count-down-text-color:#FF0000;margin:0 10rpx;"></van-count-down>
+                    <text>自动取消订单</text>
+                  </view>
+                </view>
+
+              </view>
+              <view>
+                <view bindtap="goOrderDetail" class="item-operate-btn">去支付</view>
+              </view>
+            </view>
+          </swiper-item>
+        </swiper>
+      </view> -->
+        </view>
+        <!-- 我的活动 -->
+        <!-- <view class="menu-box menu-box-shadow" bindtap="goStoreDisplay" wx:if="{{userInfo.condition>0}}">
+      <view class="menu-title">我的活动</view>
+      <view class="my-act-list">
+        <view class="my-act-item">
+          <view class="my-act-progress">{{disPurTotal.purWait}}</view>
+          <view>待完成(箱)</view>
+        </view>
+        <view class="my-act-item">
+          <view class="my-act-goal">{{disPurTotal.purNeed}}</view>
+          <view>需进货(箱)</view>
+        </view>
+        <view class="split-line"></view>
+        <view class="my-act-item">
+          <view class="my-act-progress">{{disPurTotal.disWait}}</view>
+          <view>待完成(次)</view>
+        </view>
+        <view class="my-act-item">
+          <view class="my-act-goal">{{disPurTotal.disNeed}}</view>
+          <view>需陈列(次)</view>
+        </view>
+      </view>
+    </view> -->
+        <!-- 我的服务 -->
+        <view class="menu-box">
+          <view class="menu-title">我的服务</view>
+          <view class="menu-list">
+            <view class="menu-list-item" data-url="/pages/zhongduan/geren/guanyu/faq" bindtap="navigateToPage">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/contact.png"></image>
+              </view>
+              <view class="menu-text">客服中心</view>
+            </view>
+
+            <view class="menu-list-item" data-url="/pages/zhongduan/geren/banben/index" bindtap="navigateToPage">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/aboutus.png"></image>
+              </view>
+              <view class="menu-text">关于我们</view>
+            </view>
+            <view class="menu-list-item" bindtap="getxdyhUser">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/credit.png"></image>
+              </view>
+              <view class="menu-text">我的积分</view>
+            </view>
+            <view class="menu-list-item" data-url="/pages/phaseIII/distributor/saleman" bindtap="navigateToPage">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/salesman.png"></image>
+              </view>
+              <view class="menu-text">业务员</view>
+            </view>
+            <view class="menu-list-item" data-url="/pages/zhongduan/yingdao/index" bindtap="navigateToPage">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/course.png"></image>
+              </view>
+              <view class="menu-text">操作说明</view>
+            </view>
+          </view>
+        </view>
+        <block wx:if="{{userInfo.condition!=2}}">
+          <!-- 掌柜：我的店铺 -->
+          <view class="menu-box menu-box-shadow">
+            <view class="menu-title">我的店铺</view>
+            <view class="menu-list">
+              <view class="menu-list-item" data-url="{{userInfo.condition == 3?'/pages/tabBar/dianyuan/add':'/pages/zhongduan/geren/mendian/renzhen/index?hide=1'}}" bindtap="navigateToPage">
+                <view class="menu-logo">
+                  <image class="menu-icon" mode="aspectFit" src="../../../assets/images/shopIcon.png"></image>
+                </view>
+                <view class="menu-text">店铺信息</view>
+              </view>
+              <view class="menu-list-item" data-url="/pages/tabBar/dianyuan/add" bindtap="navigateToPage" wx:if="{{userInfo.condition == 1}}">
+                <view class="menu-logo">
+                  <image class="menu-icon" mode="aspectFit" src="../../../assets/images/crewsIcon.png"></image>
+                </view>
+                <view class="menu-text">人员管理</view>
+              </view>
+              <view class="menu-list-item" data-url="/pages/zhongduan/geren/mendian/shopPrivilege" bindtap="navigateToPage">
+                <view class="menu-logo">
+                  <image class="menu-icon" mode="aspectFit" src="../../../assets/images/privilege.png"></image>
+                </view>
+                <view class="menu-text">店铺特权</view>
+              </view>
+              <view class="menu-list-item" data-url="/pages/zhongduan/geren/annualBill/index?activeTab=1" bindtap="navigateToPage">
+                <view class="menu-logo">
+                  <image class="menu-icon" mode="aspectFit" src="../../../assets/images/bill.png"></image>
+                  <image class="icon-hot-fire animate__animated animate__infinite animate__zoomIn" mode="aspectFit" src="{{icon_hot_fire}}"></image>
+                </view>
+                <view class="menu-text">店铺账单</view>
+              </view>
+              <!-- <view class="menu-list-item" bindtap="goStoreDisplayTabs" wx:if="{{userInfo.condition>0}}">
+            <view class="xh-menu-logo">
+              <image class="menu-icon" mode="aspectFit" src="../../../assets/images/privilege.png"></image>
+              <view class="menu-new-icon">NEW</view>
+            </view>
+            <view class="menu-text">促销活动</view>
+          </view> -->
+
+            </view>
+          </view>
+        </block>
+        <block wx:else>
+
+          <!-- 店员：我的店铺 -->
+          <view class="menu-box menu-box-shadow">
+            <view class="menu-title">我的店铺</view>
+            <view class="menu-list">
+              <view class="menu-list-item" data-url="/pages/tabBar/dianyuan/add" bindtap="navigateToPage">
+                <view class="menu-logo">
+                  <image class="menu-icon" mode="aspectFit" src="../../../assets/images/shopIcon.png"></image>
+                </view>
+                <view class="menu-text">店铺信息</view>
+              </view>
+              <view class="menu-list-item" data-url="/pages/zhongduan/geren/mendian/shopPrivilege" bindtap="navigateToPage">
+                <view class="menu-logo">
+                  <image class="menu-icon" mode="aspectFit" src="../../../assets/images/privilege.png"></image>
+                </view>
+                <view class="menu-text">店铺特权</view>
+              </view>
+              <!-- <view class="menu-list-item" bindtap="goStoreDisplayTabs" data-type="tabs">
+            <view class="xh-menu-logo">
+              <image class="menu-icon" mode="aspectFit" src="../../../assets/images/privilege.png"></image>
+              <view class="menu-new-icon">NEW</view>
+            </view>
+            <view class="menu-text">促销活动</view>
+          </view> -->
+              <view class="menu-list-item"></view>
+              <view class="menu-list-item"></view>
+            </view>
+          </view>
+        </block>
+        <!-- 2023年5月22日 official-account ：需要判断显示隐藏 -->
+        <view class="official-account-box" wx:if="{{showOfficalAccount}}">
+          <official-account class="official-account" bindload="officialLoad" binderror="officialError"></official-account>
+        </view>
+        <!-- fixed 布局 站位 -->
+        <!-- <view class="official-account-occupy" wx:if="{{showOfficalAccount}}"></view> -->
+      </view>
+    </block>
+    <!-- 未登录 -->
+    <block wx:else>
+      <view class="newUI" bind:tap="goToLogIn">
+        <view class="headBG" style="padding-top:{{navbarHeight}}px;">
+          <view class="user-box not-loggedin-user-box">
+            <view class="avatar-box not-loggedin-avatar-box">
+              <view class="avatar-item" data-url="/pages/zhongduan/geren/setting/myinfo">
+                <!-- 头像 -->
+                <image class="user-logo-default" mode="aspectFill" src="{{avatar_grey}}"></image>
+              </view>
+              <view class="cash-status" wx:if="{{shopInfo.cash_status>0}}">
+                <view wx:if="{{shopInfo.cash_status==1}}" class="cash-status-1">现金券审核中</view>
+                <view wx:if="{{shopInfo.cash_status==2}}" class="cash-status-2">现金券</view>
+              </view>
+            </view>
+            <!-- 用户信息、扫一扫 -->
+            <view class="user-info">
+              <view class="user-info-top">
+                <!-- 姓名 -->
+                <view class="uit-left">
+                  <view class="uit-nick-name ">
+                    <text class="not-loggedin-title">Hello!</text>
+                  </view>
+
+                  <view class="not-loggedin-subtitle">
+                    <text>登录享受更多精彩服务</text>
+                  </view>
+                </view>
+                <view class="flex-center">
+                  <!-- 注册登录 -->
+                  <view class="uit-right">
+                    <view class="btn-login">注册/登录</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 掌柜、普通用户 我的资产 -->
+        <view class="assets-container">
+          <view class="assets-bg pdb44">
+            <view class="assets-box">
+              <view class="my-assets">
+                <view>我的资产</view>
+              </view>
+              <view class="assets-info">
+                <view class="assets-item">
+                  <view class="assets-block" data-url="/pages/zhongduan/geren/yuer/index">
+                    <view class="assets-icon">
+                      <image class="shouyi" mode="aspectFit" src="../../../assets/images/shouyi.png"></image>
+                    </view>
+                    <view class="assets-line"></view>
+                    <view class="assets-right">
+                      <view class="assets-money not-loggedin-assets-money">
+                        <text class="not-loggedin-rmb">￥</text>
+                        <text class="not-loggedin-star">*</text>
+                      </view>
+                      <view>收益累计（元）</view>
+                    </view>
+                  </view>
+                  <view class="assets-block" data-url="/pages/phaseIII/voucher/index">
+                    <view>
+                      <image class="voucher" mode="aspectFit" src="../../../assets/images/voucher.png"></image>
+                    </view>
+                    <view class="assets-line"></view>
+                    <view class="assets-right">
+                      <view class="assets-voucher">
+                        <text class="font40">*</text>
+                      </view>
+                      <view>可用卡券（张）</view>
+                    </view>
+
+                  </view>
+                  <view class="assets-block" data-url="/pages/phaseIII/write-off/reward">
+                    <view>
+                      <image class="shouyi" mode="aspectFit" src="../../../assets/images/hongbao.png"></image>
+                    </view>
+                    <view class="assets-line"></view>
+                    <view class="assets-right">
+                      <view class="assets-voucher">
+                        <text class="font40">*</text>
+                      </view>
+                      <view>换购红包（个）</view>
+                    </view>
+                  </view>
+                  <view class="assets-block" data-url="/pages/warhorse/exchange/list">
+                    <view>
+                      <image class="voucher" mode="aspectFit" src="{{icon_hgjl}}"></image>
+                    </view>
+                    <view class="assets-line"></view>
+                    <view class="assets-right">
+                      <view class="assets-voucher">
+                        <text class="font40">*</text>
+                      </view>
+                      <view>换购奖励（罐）</view>
+                    </view>
+                  </view>
+
+                </view>
+
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 店长现金券入口 -->
+        <view class="store-allowance">
+          <view>
+            <view>可用现金券（元）</view>
+            <view class="cash-scan-num-box">
+              <text>可扫箱数(箱)</text><text class="cash-scan-num">*</text>
+            </view>
+          </view>
+          <view class="store-allowance-count" style="background-image: url({{bg_cash_balance}});">
+            <text>￥</text>
+            <text class="store-allowance-num">*</text>
+            <text class="iconfont iconarrow"></text>
+          </view>
+        </view>
+        <!-- 我的订单 -->
+        <view class="menu-box menu-box-shadow {{userInfo.condition==2?'':'mgt40'}}">
+          <view class="menu-title">我的订单</view>
+          <view class="menu-list">
+            <view class="menu-list-item" data-index="1">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/order1.png"></image>
+              </view>
+              <view class="menu-text">待受理</view>
+            </view>
+            <view class="menu-list-item" data-index="2">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/order2.png"></image>
+              </view>
+              <view class="menu-text">待配送</view>
+            </view>
+
+            <view class="menu-list-item" data-index="3">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/order3.png"></image>
+              </view>
+              <view class="menu-text">待收货</view>
+            </view>
+            <view class="menu-list-item" data-index="0">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/order4.png"></image>
+              </view>
+              <view class="menu-text">全部</view>
+            </view>
+          </view>
+
+        </view>
+
+        <!-- 我的服务 -->
+        <view class="menu-box">
+          <view class="menu-title">我的服务</view>
+          <view class="menu-list">
+            <view class="menu-list-item" data-url="/pages/zhongduan/geren/guanyu/faq">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/contact.png"></image>
+              </view>
+              <view class="menu-text">客服中心</view>
+            </view>
+
+            <view class="menu-list-item" data-url="/pages/zhongduan/geren/banben/index">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/aboutus.png"></image>
+              </view>
+              <view class="menu-text">关于我们</view>
+            </view>
+            <view class="menu-list-item" bindtap="getxdyhUser">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/credit.png"></image>
+              </view>
+              <view class="menu-text">我的积分</view>
+            </view>
+            <view class="menu-list-item" data-url="/pages/phaseIII/distributor/saleman">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/salesman.png"></image>
+              </view>
+              <view class="menu-text">业务员</view>
+            </view>
+            <view class="menu-list-item" data-url="/pages/zhongduan/yingdao/index">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/course.png"></image>
+              </view>
+              <view class="menu-text">操作说明</view>
+            </view>
+          </view>
+        </view>
+        <!-- 我的店铺 -->
+        <view class="menu-box menu-box-shadow">
+          <view class="menu-title">我的店铺</view>
+          <view class="menu-list">
+            <view class="menu-list-item">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/shopIcon.png"></image>
+              </view>
+              <view class="menu-text">店铺信息</view>
+            </view>
+            <view class="menu-list-item" data-url="/pages/zhongduan/geren/mendian/shopPrivilege">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/privilege.png"></image>
+              </view>
+              <view class="menu-text">店铺特权</view>
+            </view>
+            <view class="menu-list-item" data-url="/pages/zhongduan/geren/annualBill/index?activeTab=1">
+              <view class="menu-logo">
+                <image class="menu-icon" mode="aspectFit" src="../../../assets/images/bill.png"></image>
+              </view>
+              <view class="menu-text">店铺账单</view>
+            </view>
+
+          </view>
+        </view>
+
+        <!-- 2023年5月22日 official-account ：需要判断显示隐藏 -->
+        <view class="official-account-box" wx:if="{{showOfficalAccount}}">
+          <official-account class="official-account" bindload="officialLoad" binderror="officialError"></official-account>
+        </view>
+      </view>
+    </block>
+  </view>
+  <!-- 自定义tabbar -->
+  <!-- <view class="tabbar-container-foot safeArea">
+    <tabbar active="4"></tabbar>
+  </view> -->
+</view>
+
+
+<!-- 待核销弹窗 -->
+<view class="fadeIn" wx:if="{{dhxPop}}">
+  <view class="weui-mask" bindtap="closePop"></view>
+  <view class="weui-dialog dhxpop">
+    <view class="mg-pop ">
+      <view>
+        <view class="pop_title">
+          <image lazy-load="{{true}}" mode="aspectFit" class="dhxImg" src="{{dhxbg}}"></image>
+        </view>
+        <view class="pop_content">
+          <view class="dhxMsg">您有新的收货核销订单！</view>
+        </view>
+        <view class="flex-center">
+          <a bindtap="goHx" class="dhxbtn flex-center">点击立即前往</a>
+        </view>
+      </view>
+    </view>
+
+  </view>
+</view>
+
+
+
+<!-- 开箱活动券浮标:和店铺排行榜同时存在时需要调整位置 -->
+<!-- <block wx:if="{{actInfo&&!actInfo.next_cl.act_state.act_end}}">
+  <actCouponWidget actInfo="{{actInfo}}" displayInfo="{{displayInfo}}" screenHeight="{{screenHeight*0.8}}">
+  </actCouponWidget>
+</block> -->
+
+<!-- 年度账单弹窗 -->
+<view class="fadeIn" wx:if="{{billPop2021&&userInfo.condition!=2}}">
+  <view class="weui-mask" bindtap="closePop"></view>
+  <view class="weui-dialog pop-container billPop-box">
+    <image class="img-billPop" lazy-load="{{true}}" mode="aspectFit" bindtap="openBill" src="{{img_billPop}}"></image>
+    <!-- <image class="img-btn-bill" lazy-load="{{true}}" mode="aspectFit" bindtap="openBill" src="{{icon_btn_bill}}"></image> -->
+    <image class="billPop-icon-close" lazy-load="{{true}}" mode="aspectFit" bindtap="closePop" src="{{icon_close}}"></image>
+
+  </view>
+</view>
+
+<!-- 促销活动相关 -->
+<!-- <sign-notice id="signNotice" bindreleaseQueueTaskBack="releaseQueueTaskBack" />
+<activity-execution id="activityExecution" bindreleaseQueueTaskBack="releaseQueueTaskBack" />
+<award-grant id="awardGrant" bindreleaseQueueTaskBack="releaseQueueTaskBack" />
+<display-review id="displayReview" bindreleaseQueueTaskBack="releaseQueueTaskBack" /> -->
+<!-- 促销活动相关 -->
+<!-- 订单相关 -->
+<order-task id="orderTask" bindreleaseQueueTaskBack="releaseQueueTaskBack" />
+<!-- 订单相关 -->
+
+
+<!-- 2023年7月24日  深圳8月开箱活动 -->
+<!-- <actCouponWidget screenHeight="{{screenHeight*0.8}}" wx:if="{{actInfoSZ}}"></actCouponWidget>
+<block wx:if="{{actInfoRaffle}}">
+  <movemenu screenHeight="{{screenHeight*0.7}}"></movemenu>
+</block> -->
+<!-- 广州开箱活动浮标 buoy -->
+<!-- <gzUnboxBouy wx:if="{{actInfoGZ}}" screenHeight="{{screenHeight}}"></gzUnboxBouy> -->
+<!-- <actCouponPop id="actCouponPop" wx:if="{{actInfoGZ}}"></actCouponPop> -->
+<!-- 广州兑奖活动浮标 buoy -->
+<!-- <gzExcBuoy wx:if="{{actInfoGzExc}}" screenHeight="{{screenHeight*1.2}}"></gzExcBuoy> -->
+<!-- 2023年10月 东莞战马兑奖活动浮标 -->
+<activityWidget wx:if="{{actInfoDgzmExc}}" screenHeight="{{screenHeight*1.05}}"></activityWidget>

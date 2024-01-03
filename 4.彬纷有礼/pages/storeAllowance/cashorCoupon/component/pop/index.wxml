@@ -1,0 +1,75 @@
+<!--pages/storeAllowance/cashorCoupon/component/pop/index.wxml-->
+<!-- 领取现金红包弹窗 -->
+<van-popup show="{{cashPopShow}}" bind:close="onClose" data-popname="cashPopShow" custom-style="background-color: transparent;" close-on-click-overlay="{{false}}">
+  <view class="cash-box">
+    <!-- 红包背景 -->
+    <image class="pop-bg-cash" src="{{cashcoupon_file_url}}/pop_bg_cash.png" mode="aspectFit" />
+    <view class="cash-info">
+      <view class="type-title">现金红包</view>
+      <view class="cash-info-title">
+        <text>恭喜您成功领取</text>
+        <image class="icon-success" src="{{cashcoupon_file_url}}/icon_success.png" mode="aspectFit" />
+      </view>
+      <view class="cash-info-num-box">
+        <image class="icon-rmb" src="{{cashcoupon_file_url}}/icon_rmb.png" mode="aspectFit" />
+
+        <text class="num">{{data?data.num:''}}</text>
+      </view>
+    </view>
+  </view>
+  <!-- 操作按钮 -->
+  <view class="operate-box">
+    <image class="btn-check" wx:if="{{userdata&&userdata.condition != 2}}" bindtap="openPage" data-url="/pages/zhongduan/geren/yuer/index" data-popname="cashPopShow" src="{{cashcoupon_file_url}}/pop_btn_check.png" mode="aspectFit" />
+    <image class="btn-check" wx:if="{{userdata&&userdata.condition == 2}}" bindtap="openPage" data-url="/pages/zhongduan/geren/zhuli/index?hn2in1_tab=2" data-popname="cashPopShow" src="{{cashcoupon_file_url}}/pop_btn_check.png" mode="aspectFit" />
+    <image class="btn-scan" bindtap="goScan" data-popname="cashPopShow" src="{{cashcoupon_file_url}}/pop_btn_scan.png" mode="aspectFit" />
+  </view>
+</van-popup>
+<!-- 领取产品券 -->
+<van-popup show="{{couponPopShow}}" bind:close="onClose" data-popname="couponPopShow" custom-style="background-color: transparent;" close-on-click-overlay="{{false}}">
+  <view class="coupon-box">
+    <!-- 橙色背景 -->
+    <image class="bg-coupon-orange" src="{{cashcoupon_file_url}}/bg_coupon_orange.png" />
+    <!-- 黄色背景 -->
+    <image class="bg-coupon-yellow" src="{{cashcoupon_file_url}}/bg_coupon_yellow.png" />
+    <view class="coupon-inner-box">
+      <view class="type-title">产品兑换券</view>
+
+      <view class="cash-info-title">
+        <text>恭喜您成功领取</text>
+        <image class="icon-success" src="{{cashcoupon_file_url}}/icon_success.png" mode="aspectFit" />
+      </view>
+      <view class="coupon-num-box">
+        <text>额度</text>
+        <text class="coupon-item-num">{{data?data.num:''}}</text>
+        <text>个</text>
+      </view>
+      <view class="gap-box">
+        <image class="bg-coupon-gap" src="{{cashcoupon_file_url}}/bg_coupon_gap.png" mode="aspectFit" />
+        <!-- <image class="icon-line" src="{{cashcoupon_file_url}}/icon_line.png" mode="aspectFit" /> -->
+
+      </view>
+      <view class="coupon-item">
+        <view class="coupon-item-tips">
+          <text>每满</text>
+          <text class="coupon-item-tips-num">3个</text>
+          <text>额度可兑换</text>
+          <text class="coupon-item-tips-num">2张</text>
+        </view>
+        <view class="coupon-item-tips">
+          <text>每满</text>
+          <text class="coupon-item-tips-num">5个</text>
+          <text>额度可兑换</text>
+          <text class="coupon-item-tips-num">4张</text>
+        </view>
+        <view class="coupon-exc-tips">*1张【产品兑换券】可兑换</view>
+        <view class="coupon-exc-tips">1罐原味型红牛维生素功能饮料250ml</view>
+      </view>
+    </view>
+  </view>
+  <!-- 操作按钮 -->
+  <view class="operate-box">
+    <image class="btn-check"  bindtap="openPage" data-url="/pages/storeAllowance/cashorCoupon/exchange/index" data-popname="cashPopShow" src="{{cashcoupon_file_url}}/pop_btn_check.png" mode="aspectFit" />
+    <image class="btn-scan" bindtap="goScan" data-popname="cashPopShow" src="{{cashcoupon_file_url}}/pop_btn_scan.png" mode="aspectFit" />
+  </view>
+
+</van-popup>

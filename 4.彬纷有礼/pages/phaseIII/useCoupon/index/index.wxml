@@ -1,0 +1,85 @@
+<!--pages/phaseIII/useCoupon/index/index.wxml-->
+<view class="box">
+  <!-- 截止日期 -->
+  <view class="deadline-box" wx:if="{{initDate}}">
+    <view>
+      <text>(截止：{{initDate}})</text>
+    </view>
+    <view bind:tap="initData" class="refresh-box">
+      <image class="icon_refresh_thin" src="{{file_url_9m}}/icon_refresh_thin.png" mode="aspectFit" />
+      <text>刷新</text>
+    </view>
+  </view>
+  <!-- 列表 -->
+  <view class="list-box">
+    <scroller wx:if="{{!isEmpty}}" background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" bind:loadmore="loadmore" bind:refresh="initData">
+      <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+      <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+
+      <!-- 中间列表内容区域，可使用长列表分页组件、列表项组件或自定义 -->
+      <!-- <item wx:for="{{10}}" wx:key="key" class="list-box"> -->
+      <item wx:for="{{couponList}}" wx:key="id" class="list-box">
+        <!-- 卡券item:注意区分不同类型的UI图，left 和right  -->
+        <view class="list-item">
+          <view class="list-info">
+            <!-- <image class="icon_coupon_hn" wx:if="{{item.group == '红牛'}}" src="{{file_url_9m}}/icon_coupon_hn.png" mode="aspectFit" />
+            <image class="icon_coupon_hn" wx:if="{{item.group == '战马'}}" src="{{file_url_9m}}/icon_coupon_zm.png" mode="aspectFit" /> -->
+            <image class="icon_coupon_hn" src="{{item.icon}}" mode="aspectFit" />
+            <view class="usable-box">
+              <view class="usable-title">
+                <text>可用卡券</text>
+                <text class="unable-unit">（张）</text>
+                <text class="unable-num">{{item.unused}}</text>
+              </view>
+              <view class="sku-info" wx:for="{{item.sku_list}}" wx:key="key" wx:for-item="sku">
+                <text>{{sku.sku_short}}：</text>
+                <text class="sku-unused">{{sku.unused}}</text>
+              </view>
+            </view>
+          </view>
+          <!-- 近X天内 到期 为了测试方便暂时未隐藏，实际需求三个字段都为0 不显示 -->
+          <view class="expire-box" wx:if="{{item.day_total>0}}">
+            <!-- <view class="expire-box" > -->
+            <view class="expire-item">
+              <view>
+                <text class="expire-day day-7">7天</text>
+                <text>内到期</text>
+              </view>
+              <view class="expire-num">{{item.day_7}}</view>
+            </view>
+            <view class="expire-item">
+              <view>
+                <text class="expire-day day-15">15天</text>
+                <text>内到期</text>
+              </view>
+              <view class="expire-num">{{item.day_15}}</view>
+            </view>
+
+            <view class="expire-item">
+              <view>
+                <text class="expire-day day-30">30天</text>
+                <text>内到期</text>
+              </view>
+              <view class="expire-num">{{item.day_30}}</view>
+            </view>
+
+          </view>
+          <!-- 操作按钮 -->
+          <view class="operate-box">
+            <view class="btn-apply" wx:if="{{item.unused>0}}" bind:tap="openPageParam" data-url="pages/phaseIII/useCoupon/confirm/index" data-params="{{item}}">一键申请返货</view>
+          </view>
+        </view>
+      </item>
+
+      <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+      <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+
+    </scroller>
+    <scroller wx:else background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" bind:refresh="initData">
+      <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+      <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+      <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+      <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+    </scroller>
+  </view>
+</view>

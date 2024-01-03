@@ -1,0 +1,106 @@
+/* pages/storeDisplay/component/disQualifiedState/index.wxss */
+.dis-qualified-state-box{
+  width: 600rpx;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.dqs-photo-box{
+  font-size: 0;
+  position: relative;
+}
+
+.dis-qualified-position{
+  position: absolute;
+  left: 52rpx;
+  bottom: 30rpx;
+  right: 50rpx;
+}
+
+.dqs-photo-time{
+  background-color: #ffffff;
+  padding: 10rpx;
+  border-radius: 5px;
+  padding-left: 98rpx;
+  line-height: 1;
+  text-align: center;
+  width: 80rpx;
+}
+
+.dqs-pt-label{
+  position: absolute;
+  left: 10rpx;
+  top: 10rpx;
+  width: 80rpx;
+  height: 48rpx;
+  background-color: #ffcb00;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 48rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #000018;
+}
+
+.dqs-pt-hour{
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #000018;
+}
+.dqs-pt-day{
+  font-size: 16rpx;
+  font-weight: 400;
+  color: #a3a2a8;
+  margin-top: 5rpx;
+}
+
+.dqs-address{
+  font-size: 26rpx;
+  font-weight: 400;
+  color: #ffffff;
+  padding-left: 10rpx;
+  border-left:8rpx solid #FFCB00;
+  margin-top: 20rpx;
+}
+.dqs-unqualified{
+  padding-left: 108rpx;
+  padding-top: 40rpx;
+  height: 284rpx;
+  position: relative;
+}
+.dqs-unqualified-title{
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #000018;
+}
+.dqs-unqualified-tips{
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #000018;
+}
+
+.dqs-unqualified-icon{
+  position: absolute;
+  top: 39rpx;
+  left: 40rpx;
+}
+
+.dqs-qualified{
+  height: 160rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #000018;
+}
+.dqs-qualified-text{
+  margin-left: 20.5rpx;
+}
+
+.close{
+  width: 56rpx;
+  height: 56rpx;
+  display: block;
+  margin: 60rpx auto 0;
+}

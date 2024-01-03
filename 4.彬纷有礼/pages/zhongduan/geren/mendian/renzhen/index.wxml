@@ -1,0 +1,302 @@
+<top-navbar title="{{title}}" backgroundColor="#ffffff" iconTheme="black" bindback="onBeforeBack" searchBar="" bindsearch='search'></top-navbar>
+<view class="page">
+  <view class="bgGrey10"></view>
+  <form bindsubmit="formSubmit" bindreset="formReset">
+    <view class="weui-form">
+      <view class="weui-form__control-area">
+        <view class="weui-cells__group weui-cells__group_form">
+          <view class="weui-cells weui-cells_form">
+
+            <view class="weui-cell weui-cell_active borderTop">
+              <view class="weui-cell__bd">
+                <label class="weui-label font32">
+                  <text class="iconfont iconhouse imgIcon"></text>
+                  <text class="tips">*</text>门店名称
+                </label>
+              </view>
+              <view class="weui-cell__bd">
+                <input class="weui-input grey" data-name="shop_name" bindinput="inputChange" name="shop_name" value="{{shopInfo.shop_name}}" placeholder="请输入店铺名称" placeholder-class="weui-input__placeholder" />
+              </view>
+            </view>
+
+            <view class="weui-cell weui-cell_active">
+              <view class="weui-cell__hd">
+                <label class="weui-label font32">
+                  <text class="iconfont iconren imgIcon font-weight700"></text>
+                  <text class="tips">*</text>联系人姓名
+                </label>
+              </view>
+              <view class="weui-cell__bd">
+                <input class="weui-input grey" data-name="contact" bindinput="inputChange" name="contact" value="{{shopInfo.contact}}" placeholder="请输入联系人" placeholder-class="weui-input__placeholder" />
+              </view>
+            </view>
+
+            <view class="weui-cell weui-cell_active ">
+              <view class="weui-cell__hd">
+                <label class="weui-label font32">
+                  <text class="iconfont iconflod imgIcon font-weight700"></text>
+                  <text class="tips">*</text>门店地址
+                </label>
+              </view>
+
+              <view class="weui-cell__bd" bindtap="onChooseLocation">
+                <view class="text-right">
+                  <block wx:if="{{shopInfo.area}}">
+                    <text class="grey">{{shopInfo.area}}</text>
+                  </block>
+                  <block wx:else>
+                    <text class="weui-input__placeholder">请选择地区</text>
+                  </block>
+                  <image class="locs" mode="aspectFit" src="{{locimg}}"></image>
+                </view>
+
+                <!-- <input class="weui-input grey" style="display:none;" placeholder="请输入详细门店地址"
+										value="{{shopInfo.address}}" name="address" placeholder-class="weui-input__placeholder" /> -->
+                <input class="weui-input grey" style="display:none;" placeholder="请输入详细门店地址" value="{{shopInfo.address_detail}}" name="address" placeholder-class="weui-input__placeholder" />
+              </view>
+
+
+            </view>
+            <view class="weui-cell weui-cell_active ">
+              <view class="weui-cell__hd">
+                <label class="weui-label font32">
+                  <text class="iconfont iconaddress imgIcon font-weight700"></text>
+                  <text class="tips">*</text>详细地址
+                </label>
+              </view>
+              <view class="weui-cell__bd">
+                <input class="weui-input grey" data-name="address" bindinput="bindTextAreaInput" name="address" value="{{shopInfo.address}}" placeholder="请输入门店详细地址" placeholder-class="weui-input__placeholder" />
+                <!-- <input class="weui-input grey" data-name="address_detail" bindinput="bindTextAreaInput"
+										name="address_detail" value="{{shopInfo.address}}" placeholder="请输入门店详细地址"
+										placeholder-class="weui-input__placeholder" /> -->
+              </view>
+            </view>
+            <block wx:if="{{boss.mobile||userInfo.mobile}}">
+              <view class="weui-cell weui-cell_active " bindtap="changePhone">
+                <view class="weui-cell__hd">
+                  <label class="weui-label font32">
+                    <text class="iconfont iconphone imgIcon font-weight700"></text>
+                    绑定手机号
+                  </label>
+                </view>
+                <view class="weui-cell__bd">
+                  <view class="text-right flex-end">
+                      <text class="grey" style="padding:0px 20rpx;">{{boss.phoneStr||userInfo.phoneStr}}</text>
+                      <a class="weui-btn_cell  greenBtn" >更换</a>
+                  </view>
+                </view>
+              </view>
+            </block>
+            <!-- 无手机号，快捷绑定手机号 -->
+            <block wx:else>
+              <button class="btn-getphone" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
+                <view class="weui-cell weui-cell_active btn-getphone-item">
+                  <view class="weui-cell__hd">
+                    <label class="weui-label font32">
+                      <text class="iconfont iconphone imgIcon font-weight700"></text>
+                      绑定手机号
+                    </label>
+                  </view>
+                  <view class="weui-cell__bd">
+                    <view class="text-right flex-end">
+                        <text class="grey" style="padding:0px 20rpx;" class="weui-input__placeholder">无手机号</text>
+                    </view>
+
+                  </view>
+                </view>
+              </button>
+            </block>
+
+            <view class="weui-cell weui-cell_active">
+              <view class="weui-cell__hd">
+                <label class="weui-label font32">
+                  <text class="iconfont iconphoto imgIcon"></text>
+                  <text class="tips">*</text>门店招牌
+                </label>
+              </view>
+              <view class="weui-cell__bd" style="text-align:right" bindtap="chooseImg">
+                <block wx:if="{{signs_url}}">
+                  <image mode="aspectFit" class="rzIcon" src="{{signs_url}}"></image>
+                </block>
+                <block wx:else>
+                  <text class="grey">请上传门店招牌照片</text>
+                  <text class="iconfont iconcamera rzIcon"></text>
+                </block>
+              </view>
+            </view>
+            <view class="tips" style="padding-left:24rpx;">
+              <text style="font-size:20rpx;">为了保障您的权益，"*"为必填项。</text>
+            </view>
+          </view>
+
+          <view class="weui-form__opr-area mt40">
+            <block wx:if="{{userInfo.mobile}}">
+              <button class="weui-btn {{btnDisable ? 'btnDisable' : 'redbtn'}} " disabled="{{btnDisable}}" form-type="submit">
+                <block wx:if="{{shopInfo.status ==1}}">重新提交</block>
+                <block wx:else>提交资料</block>
+              </button>
+            </block>
+            <block wx:else>
+              <button wx:if="{{supportGetPhoneCode}}" class="weui-btn {{btnDisable ? 'btnDisable' : 'redbtn'}} " disabled="{{btnDisable}}" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">提交资料</button>
+              <button wx:else class="weui-btn {{btnDisable ? 'btnDisable' : 'redbtn'}} " disabled="{{btnDisable}}" form-type="submit">提交资料</button>
+            </block>
+          </view>
+
+        </view>
+
+
+      </view>
+
+
+    </view>
+
+  </form>
+  <view class="bgGrey10"></view>
+  <!-- 人员列表 -->
+  <!-- 人满红色，不满黑色 -->
+  <block wx:if="{{boss}}">
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cells__title teams">人员列表（<text class="{{member.length==3?'tips':''}}">{{member.length||0}}</text>）</view>
+      <view class="weui-cell weui-cell_access">
+        <view class="weui-cell__hd flex-center">
+          <image class="avatar" src="{{boss['avatar_url']}}" mode="aspectFit"></image>
+          <text class="ident  identity">掌柜</text>
+        </view>
+        <view class="weui-cell__bd text-break">
+          <view class="weui-grid__label text-left nickname">
+            {{boss['shop_note']?boss['shop_note']:boss['nick_name']}}
+          </view>
+        </view>
+      </view>
+
+      <block wx:for="{{crew}}" wx:for-item="item" wx:key="keys">
+        <view class="weui-cell weui-cell_access">
+          <view class="weui-cell__hd flex-center">
+            <image wx:if="{{item.loaded}}" class="avatar" src="{{item['avatar_url']}}" mode="aspectFit"></image>
+            <text class="ident  dianyuanIcon" wx:if="{{item.condition==2}}">店员</text>
+            <text class="ident  dianyuanIcon" wx:if="{{item.condition==3}}">副掌柜</text>
+          </view>
+          <view class="weui-cell__bd ">
+
+            <view class="weui-grid__label text-left  row-reverse" bindtap="openChangeName" data-uid="{{item['uid']}}">
+              <view class="nickname weui-grid__label">
+                {{item['shop_note']?item['shop_note']:item['nick_name']}}
+              </view>
+              <text class="iconfont iconpencil "></text>
+            </view>
+          </view>
+          <navigator url="/pages/zhongduan/geren/hongbao/index?uid={{item['uid']}}" hover-class="weui-cell_active">
+            <view class="weui-cell__bd weui-cell__ft weui-cell__ft_in-access" style="width:200rpx;height:100rpx;">
+            </view>
+          </navigator>
+        </view>
+      </block>
+
+
+
+    </view>
+  </block>
+  <!-- 创建成功弹窗 -->
+  <view class="fadeIn" wx:if="{{createPop}}">
+    <view class="weui-mask" data-param="1" bindtap="closePop"></view>
+    <view class="weui-dialog flex-around shopQr_head" style="background-image:url({{shopQR_head}});">
+      <view class="weui-dialog__hd pd0 pdt0 pdb0 height43"></view>
+      <view class="weui-dialog__bd" style="color:#1D2087;"><strong class="weui-dialog__title"><text>恭喜您成为第<text style="color:red">{{rank}}</text>名店铺会员</text></strong></view>
+      <view class=" text-center font28" style="color:#1D2087;font-weight:bold;">店铺码入口：彬纷有礼小程序 > 店铺码</view>
+      <view class="weui-dialog__bd"><strong class="weui-dialog__title" style="color:#ca1318;font-size:27rpx"><text>恭喜您获得<text class="redd">{{credits}}</text>个专属积分</text></strong>
+      </view>
+      <view class="weui-flex" bindtap="addCrew">
+
+        <view class="weui-flex__item">
+          <a class="weui-btn add-crew"> </a>
+        </view>
+
+      </view>
+      <view class="weui-flex pdtb20">
+        <view class="weui-flex__item close-Pop" data-param="1" bindtap="closePop"></view>
+      </view>
+
+    </view>
+    <image class="close-Pop" data-param="1" bindtap="closePop" src="{{iconClose}}" mode="aspectFit"></image>
+  </view>
+  <!-- 编辑店铺弹窗 -->
+  <view class="fadeIn" wx:if="{{changePop}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog flex-around" style="height:50%;">
+      <view class="weui-dialog__hd pd0 ">
+        <image class="redbullBG" mode="aspectFit" src="{{bgimg}}"></image>
+      </view>
+      <view class="weui-dialog__bd"><strong class="weui-dialog__title" style="color:black"><text>修改店铺资料成功</text></strong></view>
+      <!-- <view class="weui-dialog__bd"><strong class="weui-dialog__title" style="color:black"><text>{{changeMsg}}</text></strong></view> -->
+      <view class="weui-flex">
+
+        <view class="weui-flex__item">
+          <a bindtap="addCrew" class="weui-btn weui-btn_mini redbtn redbtnWith" style="font-size:28rpx;">去添加店员</a>
+        </view>
+
+      </view>
+      <view class="weui-flex pdtb20">
+        <view class="weui-flex__item">
+          <text class="grey" data-param="2" bindtap="closePop">不了</text>
+
+        </view>
+      </view>
+
+    </view>
+  </view>
+  <!-- 修改店员昵称 -->
+  <view class="fadeIn" wx:if="{{changeNamePop}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog">
+      <view class="weui-dialog__hd"><strong class="weui-dialog__title">修改备注</strong></view>
+      <view class="weui-dialog__bd">
+        <view class="inputBox">
+          <input placeholder="请输入备注" type="text" class="nicknameInput" bindinput="bindInput" value=""></input>
+        </view>
+      </view>
+      <view class="weui-dialog__ft">
+        <a class="weui-dialog__btn weui-dialog__btn_default" data-param="3" bindtap="closePop">取消</a>
+        <a class="weui-dialog__btn weui-dialog__btn_primary" data-uid="{{uid}}" bindtap="changeName">确定</a>
+      </view>
+    </view>
+  </view>
+  <!-- 修改店员昵称 Pop end -->
+</view>
+
+
+
+<!-- 修改店铺资料激励弹窗 -->
+<view class="fadeIn" wx:if="{{xgPop}}">
+  <view class="weui-mask"></view>
+  <!-- <view class="weui-dialog" style="max-height:55%;height:100%">
+		<view class="mglr40 popBG"></view> -->
+  <view class="weui-dialog h-pop">
+    <view class="mg-pop">
+      <image mode="aspectFit" bindload="imgLoaded" src="{{xgPopUrl}}"></image>
+    </view>
+    <view class="flex-end" style="justify-content:center;">
+      <image mode="acspectFit" class="cpPopbtn mgr20" src="{{xgPopBtl}}" bindtap="close"></image>
+      <image mode="acspectFit" class="cpPopbtn mgl20" bindload="imgLoaded" bindtap="wtachAd" src="{{xgPopBtr}}"></image>
+    </view>
+  </view>
+</view>
+<!-- 悬浮导航 -->
+<!-- <movemenu bindmenuItemClick="menuItemClick" pageUrl="{{pageUrl}}"></movemenu> -->
+<!-- 店铺码弹窗 -->
+<view class="fadeIn" wx:if="{{shopQrPop&&notToday&&phaseIIIShow}}" style="display:none">
+  <view class="weui-mask" data-param="4" bindtap="closePop"></view>
+  <view class="weui-dialog pop-container" wx:if="{{shopQR_pop}}">
+    <view class="icon-close">
+      <image mode="aspectFit" data-param="4" bindtap="closePop" src="{{deleteUrl}}"></image>
+    </view>
+    <block wx:if="{{shopQR_pop}}">
+      <image class="WarHorse" mode="aspectFit" bindload="imgLoaded" src="{{shopQR_pop}}" bindtap="openShopQR"></image>
+    </block>
+  </view>
+</view>
+<!-- 禁止转让店铺：多个活动判断 -->
+<forbiddenTransShop id="forbiddenTransShop"></forbiddenTransShop>
+<!-- 用户隐私保护 -->
+<privacyPop></privacyPop>
+<!-- 绑定手机号弹窗 -->
+<bindPhonePop id="bindPhonePop" bind:bindPhoneSuccess="bindPhoneSuccess"></bindPhonePop>

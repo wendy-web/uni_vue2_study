@@ -1,0 +1,14 @@
+	<view class="favored-movie">
+		<view class="content" style="background-image:url({{merchants}})">
+			<view class="inner">
+				<!-- <image bindtap="watchVideo" src="{{headImg}}" mode="scaleToFill"></image>
+				<image bindtap="watchPoster" src="{{bodyImg}}" mode="scaleToFill"></image> -->
+				<view bindtap="watchVideo" class="box"></view>
+				<view bindtap="watchPoster" class="box"></view>
+			</view>
+			<view bindtap="watchPoster" class="inner-bottom"></view>
+		</view>
+		<view class="contents" bindtap="watchPosters" style="background-image:url({{customer}})">
+			<!-- <image wx:if="{{footImg}}"  src="{{footImg}}" mode="widthFix"></image> -->
+		</view>
+	</view>

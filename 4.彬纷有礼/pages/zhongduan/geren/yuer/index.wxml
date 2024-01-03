@@ -1,0 +1,172 @@
+<view class="page-box safeArea">
+  <!-- 自定义导航 -->
+  <top-navbar title="{{title}}" bgImg="{{tabbar_bg}}" iconTheme="white" bindback="onBeforeBack"></top-navbar>
+  <!-- 可用余额 -->
+  <view class="income-head" style="background-image:url({{rewardBodyImg}});">
+    <view class="income-refresh-box">
+      <view bindtap="resetRefresh">
+        <image class="income-refresh" mode="aspectFit" src="../../static/refresh-icon.png"></image>
+        <text>刷新</text>
+      </view>
+    </view>
+    <view class="income-title">可用余额</view>
+    <view class="income-money">
+      <view>￥<text class="money">{{userShopInfo.balance}}</text></view>
+      <!-- 普通用户、店长身份可提现 -->
+      <view wx:if="{{userInfo&&(userInfo.condition == 1 || userInfo.condition == 0)}}" bindtap="withdraw" class="income-withdrawal" style="background-image:url({{txbtnImg}});">提现</view>
+    </view>
+    <view class="income-count" style="background-image:url({{countbgImg}});">
+      <view class="count-item">
+        <view class="count-num"><text>￥{{userShopInfo.c_balance}}</text></view>
+        <view>收益累计</view>
+      </view>
+      <view class="count-item">
+        <view class="count-num"><text>￥{{userShopInfo.c_withdraw}}</text></view>
+        <view class="count-tx">提现累计</view>
+      </view>
+      <view class="count-item">
+        <view class="count-num"><text>{{userShopInfo.c_num}}</text></view>
+        <view>提现次数</view>
+      </view>
+    </view>
+    <view class="yuer-detail">
+      <view>余额明细</view>
+      <view bindtap="checkMore" class="check-more">
+        <text>查看更多</text>
+        <image class="arrow" mode="aspectFit" src="../../static/arrow-right-icon.png"></image>
+      </view>
+    </view>
+  </view>
+  <view class="list-box">
+    <!-- 余额明细 begin -->
+    <view class="balanceInfo collapse">
+
+      <scroller id="scroller" wx:if="{{!isEmpty}}" background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" bind:loadmore="loadmore" bind:refresh="resetRefresh" class="scroller-box">
+        <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+        <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+
+        <!-- 中间列表内容区域，可使用长列表分页组件、列表项组件或自定义 -->
+        <item wx:for="{{balanceInfo}}" wx:key="key" wx:for-item="item" wx:for-index="idx">
+          <view class="kind-list__item">
+            <view id="{{item.create_time}}" class="kind-list__item-hd {{oldopen==item.create_time ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle" data-idx="{{idx}}">
+              <!-- 主体部分 -->
+              <view class="weui-cells weui-cells_after-title">
+                <view class="weui-cell">
+                  <view class="weui-cell__bd">
+                    <view class="flex-row-between">
+                      <view class="title">{{item.title}}</view>
+                    </view>
+
+                    <!-- 折叠部分 -->
+                    <view wx:if="{{item.task&& oldopen==item.create_time}}" class="kind-list__item-bd {{oldopen==item.create_time ? 'kind-list__item-bd_show' : ''}}">
+                      <view class="weui-cells {{oldopen==item.create_time ? 'weui-cells_show' : ''}} tasklist">
+                        <block wx:for="{{item.task}}" wx:key="keys" wx:for-item="task">
+
+                          <block wx:if="{{task.task_id==1}}">
+                            <view>
+                              <text class="subtitle">{{task.user_msg[0]}}</text>
+                              <text class="red font28rpx">{{task.user_msg[1]}}</text>
+                            </view>
+                          </block>
+                          <block wx:if="{{task.task_id==2}}">
+                            <view>
+                              <text class="subtitle">{{task.user_msg[0]}}</text>
+                              <text class="red font28rpx">{{task.user_msg[1]}}</text>
+                            </view>
+                          </block>
+                          <block wx:if="{{task.task_id==3}}">
+                            <view>
+                              <text class="subtitle">{{task.user_msg[0]}}</text>
+                              <text class="subtitle font28rpx">{{task.user_msg[1]}}</text>
+                            </view>
+                          </block>
+                        </block>
+                      </view>
+                    </view>
+                    <!-- 折叠end -->
+                    <!-- status = 1金额退回 -->
+                    <block wx:if="{{item.status==1}}">
+                      <view class="subtitle green">{{item.subtitle}}</view>
+                    </block>
+                    <!-- status=0 提现记录 再判断 w_status=1 绿色，w_status=0 红色 ，红色时候判断err_code_des，有值才弹 -->
+                    <block wx:elif="{{item.status==0}}">
+                      <!-- 判断w_status -->
+                      <block wx:if="{{item.w_status==1}}">
+                        <view class="subtitle green">{{item.subtitle}}</view>
+                      </block>
+                      <block wx:else>
+                        <block wx:if="{{item.err_code_des}}">
+                          <view class="subtitle red" bindtap="checkFailMsg" data-err_code_des="{{item.err_code_des}}">
+                            {{item.subtitle}}
+                            <i class="weui-icon-warn weui-icon_msg"></i>
+                          </view>
+                        </block>
+                        <block wx:else>
+                          <view class="subtitle red">{{item.subtitle}}</view>
+                        </block>
+                      </block>
+                    </block>
+                    <block wx:else>
+                      <view class="subtitle">{{item.subtitle}}</view>
+                    </block>
+                    <view class="flex-row-between">
+                      <view class="create_time">{{item.create_time}}</view>
+                    </view>
+                  </view>
+                  <!-- 不存在任务红包  居中显示 -->
+                  <view wx:if="{{!item.task}}" class="{{item.change>0?'green':'red'}}">
+                    <block wx:if="{{item.change>0}}">
+                      +{{item.change}}
+                    </block>
+                    <block wx:else>
+                      {{item.change}}
+                    </block>
+                  </view>
+                </view>
+              </view>
+              <view wx:if="{{item.task}}" class="{{item.change>0?'green':'red'}} flex-align-center">
+                <block wx:if="{{item.change>0}}">
+                  <view>+{{item.change}}</view>
+                </block>
+                <block wx:else>
+                  <view>{{item.change}}</view>
+                </block>
+                <text class="iconfont {{ oldopen==item.create_time ? 'icondownarrow' : 'iconarrow'}} "></text>
+              </view>
+
+            </view>
+          </view>
+        </item>
+
+        <!-- 加载更多区域，可使用加载更多组件或自定义 -->
+        <loadmore slot="loadmore" status="{{loadMoreSetting.status}}" loading="{{loadMoreSetting.loading}}" noMore="{{loadMoreSetting.noMore}}" more="{{loadMoreSetting.more}}" />
+
+        <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+        <view class="empty-box" wx:if="{{couponList.length == 0}}">
+          <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+        </view>
+      </scroller>
+      <scroller wx:else background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" bind:refresh="resetRefresh" class="scroller-box">
+        <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+        <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+        <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+        <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+      </scroller>
+    </view>
+    <!-- 余额明细 end -->
+  </view>
+
+
+  <!-- 助力/余额banner  Ad -->
+  <view class="adContainer-bottom">
+    <ad wx:if="{{blockAd}}" unit-id="adunit-56cb2b4392aaf9b4"></ad>
+  </view>
+</view>
+
+
+
+
+<!-- 红牛25周年弹窗 -->
+<!-- <AdPopups show="{{adShow&&blockAd}}" popImg="{{popImg}}" openType="switch" pagePath="/pages/tabBar/shouye/index"></AdPopups> -->
+<!-- 绑定手机号弹窗 -->
+<bindPhonePop id="bindPhonePop" bind:bindPhoneSuccess="bindPhoneSuccess"></bindPhonePop>

@@ -1,0 +1,51 @@
+<!--component/storeExchangePop/background/index.wxml-->
+<view class="box {{ openType == 6 ?'box-bottom':''}}">
+  <!-- openType:1每日进度，2中奖弹窗，3店铺转让 -->
+  <image wx:if="{{openType == 3}}" class="img-shop-head" src="{{file_url_gzunbox}}/img_shop_head.png" mode="aspectFit" />
+  <block wx:if="{{openType&&openType<3}}">
+    <image wx:if="{{openType == 2}}" class="icon-ticker-tape" src="{{icon_ticker_tape}}" mode="aspectFit" />
+    <view class="title-box">
+      <image class="title-bg" src="{{bg_record_title}}" />
+      <view wx:if="{{openType == 1}}">每日开箱进度</view>
+      <view wx:if="{{openType == 2}}" class="title-win">恭喜您</view>
+    </view>
+  </block>
+  <!-- 4核对店铺信息 -->
+  <block wx:if="{{openType == 4}}">
+    <view class="title-box">
+      <image class="title-bg" src="{{bg_record_title}}" />
+      <view>核对店铺信息</view>
+    </view>
+  </block>
+  <!-- 5报名成功弹窗 -->
+  <block wx:if="{{ openType == 5 }}">
+    <image class="icon-ticker-tape" src="{{icon_ticker_tape}}" mode="aspectFit" style="z-index: 0;" />
+  </block>
+  <!-- 中奖  openType == 6 -->
+  <block wx:if="{{ openType == 6 }}">
+    <view class="winer-box">
+      <image class="pop_star_left" src="{{file_url_gzunbox}}/pop_star_left.png" mode="aspectFit" style="z-index: 0;" />
+      <image class="pop_title_win" src="{{file_url_gzunbox}}/pop_title_win.png" mode="aspectFit" style="z-index: 0;" />
+      <image class="pop_star_left" src="{{file_url_gzunbox}}/pop_star_right.png" mode="aspectFit" style="z-index: 0;" />
+      <!-- 背景 -->
+      <image class="bg_halo_half" src="{{file_url_gzunbox}}/bg_halo_half.png" style="z-index: 0;" />
+    </view>
+  </block>
+
+  <block wx:if="{{openType == 3}}">
+    <view class="box-item-inner-box">
+      <view class="box-item-inner">
+        <slot></slot>
+      </view>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="box-item-outer" style="background-image:url({{file_url_gzunbox}}/pop_bg_outer.png);">
+      <view class="box-item {{boxItemClass}}">
+        <image class="pop-bg-inner" src="{{file_url_gzunbox}}/pop_bg_inner.png" />
+        <slot></slot>
+      </view>
+    </view>
+  </block>
+  <image class="icon-close " mode="aspectFit" bindtap="closePop" src="{{closeImg}}"></image>
+</view>

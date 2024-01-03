@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "mp-halfScreenDialog":"../components/half-screen-dialog/half-screen-dialog",
+    "selectCrew":"../../../component/selectCrew/index"
+  },
+  "navigationBarTitleText": "已核销清单",
+  "enablePullDownRefresh":true
+}

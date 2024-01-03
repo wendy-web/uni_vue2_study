@@ -1,0 +1,25 @@
+<!--pages/storeDisplay/component/promotion/alreadyEnded/index.wxml-->
+<view class="promotion-item" bindtap="lookInfo">
+  <view class="promotion-item-title">
+    {{config.title||''}}
+  </view>
+  <view class="promotion-item-date">
+    {{config.dateText}}
+  </view>
+  <block wx:if="{{config.huiRangText===null}}">
+    <view class="purchase" wx:if="{{config.purNum !== null}}">
+      进货待完成(箱)<text class="num">{{config.purNum}}</text>
+    </view>
+    <view class="display" wx:if="{{config.disNum !== null}}">
+    陈列待完成(次)<text class="num">{{config.disNum}}</text>
+    </view>
+</block>
+<view class="obtained-hrj" wx:else>{{config.huiRangText}}</view>
+  <!-- logo -->
+  <image class="promotion-item-logo"  src="{{config.image}}" mode="aspectFill"></image>
+  <!-- 查看详情 -->
+  <view class="look-info" wx:if="{{!config.labelData.isNoLookInfo}}">查看详情<van-icon name="arrow" size="30rpx"/></view>
+  <!-- 标签 -->
+  <view wx:if="{{config.labelData !== null}}" class="promotion-item-label {{config.labelData.class}}">{{config.labelData.text}}</view>  
+</view>
+

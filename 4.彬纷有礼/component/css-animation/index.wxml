@@ -1,0 +1,1 @@
+<view class="frame_wrap" style="background-image: url({{url}});--width:{{width}}px;--height:{{height}}px;--count:{{count}};--duration:{{duration}};"></view>

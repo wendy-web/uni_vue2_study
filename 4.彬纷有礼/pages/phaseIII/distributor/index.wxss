@@ -1,0 +1,428 @@
+/* pages/phaseIII//distributor/index.wxss */
+@import '../common.wxss';
+
+page {
+  background: #ffffff;
+}
+
+/* 搜索框样式 */
+.search-box {
+  margin: 30rpx 28rpx 0 28rpx;
+  background-color: #f6f6f6;
+  border-radius: 30rpx;
+  height: 60rpx;
+  position: relative;
+}
+
+.search-box .input {
+  color: #333;
+  font-size: 24rpx;
+  text-align: center;
+  height: 100%;
+}
+
+.search-box .input-placeholder {
+  color: #999999;
+  font-size: 24rpx;
+}
+
+.search-box .search-icon {
+  width: 36rpx;
+  height: 36rpx;
+  position: absolute;
+  right: 36rpx;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 10;
+}
+
+/* 红牛业务员列表 */
+.redbull-saleman {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 40rpx 36rpx 0rpx 36rpx;
+  padding-bottom: 22rpx;
+  border-bottom: 4rpx dotted #DFDFDF;
+
+}
+
+.saleman-info {
+  height: 78rpx;
+}
+
+.title {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #333;
+}
+
+.contact {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  /* color: #333; */
+  display: flex;
+  align-items: center;
+  height: 40rpx;
+  color:#1592E6;
+
+}
+
+.contact .phone {
+  margin-left: 20rpx;
+}
+
+.contact .call-icon {
+  width: 26rpx;
+  height: 26rpx;
+  margin-left: 10rpx;
+}
+
+.saleman-box {
+  margin: 56rpx 36rpx 0 36rpx;
+  border-bottom: 4rpx dotted #DFDFDF;
+}
+
+.saleman-box .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.saleman-box .content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.saleman-box .content .address {
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #676767;
+  margin-top: 6rpx;
+  flex: 1;
+}
+.saleman-box .address .text-black{
+  color:#333;
+}
+.distance{
+  font-weight: bold;
+  font-size: 28rpx;
+}
+.apply-btn {
+  width: 158rpx;
+  height: 48rpx;
+  line-height: 48rpx;
+  background-color: #e10404;
+  border-radius: 50rpx;
+  color: #fff;
+  font-size: 24rpx;
+  text-align: center;
+}
+.apply-btn-zm{
+  background: #f18f13;
+}
+/*  业务员列表 */
+.list{
+  margin-bottom: 20rpx;
+}
+.item .btn {
+  background: #E02020;
+  display: inline-block;
+  line-height: 50rpx;
+  width: 170rpx;
+  height: 50rpx;
+  text-align: center;
+  border-radius: 10rpx;
+  color: #ffffff;
+  font-size: 26rpx;
+}
+
+
+
+.text-blue {
+  color: #0091FF;
+  font-size: 26rpx;
+}
+
+/* 经销商列表 */
+.list .item {
+  padding-bottom: 0px;
+  height: auto;
+}
+
+.list .item .applyFor {
+  height: auto;
+}
+
+
+/* 修改radio默认样式 */
+.radio .wx-radio-input {
+  width: 16rpx;
+  height: 16rpx;
+}
+
+/* 选中后的 背景样式 （红色背景 无边框 可根据UI需求自己修改） */
+.radio .wx-radio-input.wx-radio-input-checked {
+  /* width: 20rpx; */
+  /* 选中后对勾大小，不要超过背景的尺寸 */
+  /* height: 20rpx; */
+  /* 选中后对勾大小，不要超过背景的尺寸 */
+  border: none;
+  background-color: red;
+}
+
+/* 选中后的 对勾样式 （白色对勾 可根据UI需求自己修改） */
+.radio .wx-radio-input.wx-radio-input-checked::before {
+  border-radius: 50%;
+  /* 圆角 */
+  /* width: 20rpx; */
+  /* 选中后对勾大小，不要超过背景的尺寸 */
+  /* height: 20rpx; */
+  /* 选中后对勾大小，不要超过背景的尺寸 */
+  /* line-height: 20rpx; */
+  text-align: center;
+  font-size: 10rpx;
+  color: red;
+  /* 对勾大小 30rpx */
+  /* transform: translate(-50%, -50%) scale(1);
+  -webkit-transform: translate(-50%, -50%) scale(1); */
+}
+
+.radio {
+  display: block;
+  padding-bottom:10rpx;
+  font-size: 20rpx;
+}
+
+.mp-cell {
+  padding: 10rpx 0rpx !important;
+}
+
+.pop_title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20rpx;
+}
+
+.successImg {
+  width: 142rpx !important;
+  height: 142rpx;
+}
+
+.mp-dialog .weui-dialog {
+  /* top: 35%; */
+  border: 7rpx solid #e02020;
+  border-radius: 50rpx;
+}
+
+.mp-dialog .weui-dialog__ft {
+  justify-content: center;
+}
+
+.cancel {
+  display: inline-block !important;
+  border-radius: 50rpx;
+  width: 200rpx !important;
+  height: 76rpx;
+  line-height: 76rpx;
+  margin-right: 20rpx;
+  background: linear-gradient(180deg, #dcdcdc, #898989);
+  color: #ffffff !important;
+  font-weight: normal !important;
+  -webkit-box-flex: unset !important;
+  -webkit-flex: unset !important;
+  flex: unset !important;
+
+}
+
+.confirm {
+  display: inline-block !important;
+  border-radius: 50rpx;
+  width: 200rpx;
+  height: 76rpx;
+  line-height: 76rpx;
+  margin-left: 20rpx;
+  background: linear-gradient(180deg, #ff0000, #ac0000);
+  color: #ffffff !important;
+  font-weight: normal !important;
+  font-weight: normal !important;
+  -webkit-box-flex: unset !important;
+  -webkit-flex: unset !important;
+  flex: unset !important;
+}
+
+.mgt26 {
+  margin-top: 26rpx;
+}
+
+.phoneImg {
+  position: fixed;
+  top: 54px;
+  z-index: 5001;
+  left: 10%;
+}
+
+.phoneImg image {
+  width: 132px;
+  height: 136px;
+}
+
+.phase_pop {
+  height: 235px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 50%;
+}
+
+.callImg {
+  width: 45rpx;
+  height: 45rpx;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mgt20 {
+  margin-top: 20rpx;
+}
+
+.phase_btn {
+  width: 264rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+  display: inline-block;
+  border-radius: 50rpx;
+  color: #ffffff;
+  text-align: center;
+  /* background: linear-gradient(180deg, #FF0000, #A90000); */
+  background-color: #e10404;
+  font-size: 32rpx;
+}
+/* 兑换申请成功弹窗 css */
+.pop_flex{
+  width: 100%;
+  height:unset;
+}
+.order-info-box{
+  box-sizing: border-box;
+  padding: 0rpx 50rpx;
+  text-align: left;
+  font-size: 24rpx;
+  color: #333;
+}
+.order-info-box .colours-bar{
+  width: 100%;
+  height: 10rpx;
+  margin-top: 20rpx;
+  margin-bottom: 10rpx;
+}
+.order-info-box .num{
+  color: #0AA55D;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+.btn-box{
+  margin-top: 35px;
+}
+/* 2023年1月10日 新增战马换购券 */
+.bgImg{
+  width: 65px!important;
+  height: 65px!important;
+  right: 190rpx!important;
+  top: unset!important;
+  left: unset!important;
+  bottom: 0!important;
+}
+.exc-check-pop{
+  width: 630rpx;
+  height: 766rpx;
+  border-radius: 20rpx;
+  box-sizing: border-box;
+  background-color: #fff;
+  padding: 94rpx 50rpx 65rpx 50rpx;
+}
+.exc-check-pop-hn{
+  height: 410rpx;
+}
+.exc-check-pop-title{
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #000000;
+  text-align: center;
+}
+.exc-check-pop-tips{
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #000000;
+  margin-top: 30rpx;
+  text-align: center;
+
+}
+.img-zm-exc-cans{
+  width: 298rpx;
+  height: 352rpx;
+  margin:15rpx auto 0 auto;
+  display: block;
+}
+.exc-check-btn-box{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 45rpx;
+}
+.exc-check-btn-cancel{
+  width: 220rpx;
+  height: 68rpx;
+  box-sizing: border-box;
+  line-height: 68rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #4a4a4a;
+  background-color: #ffffff;
+  border-radius: 50rpx;
+  border: 1rpx solid #4a4a4a;
+}
+.exc-check-btn-confirm{
+  width: 220rpx;
+  height: 68rpx;
+  line-height: 68rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #ffffff;
+  background-color: #e10404;
+  border-radius: 50rpx;
+  box-sizing: border-box;
+
+}
+.vant-pop{
+  background-color: unset!important;
+}
+.phone-call-box{
+  background-color: #ffffff;
+  border: 7rpx solid #e02020;
+  border-radius: 50rpx;
+  height: 235px;
+  width: 346px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.icon-phone-call{
+  width: 132px;
+  height: 136px;
+  display: inline-block;
+}

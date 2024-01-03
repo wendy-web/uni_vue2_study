@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+   "excItemHn":"./component/excItemHn/index",
+   "excItemZm":"./component/excItemZm/index",
+   "discountItem":"./component/discountItem/index",
+   "actItem":"./component/actItem/index",
+   "filterPop":"./component/filterPop/index"
+  },
+  "disableScroll": true,
+  "navigationBarTitleText": "可用卡券"
+}

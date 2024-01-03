@@ -1,0 +1,158 @@
+<!--pages/storeOrder/monthlyOrder/details/index.wxml-->
+<view class="order-details">
+   
+   <!-- 订单状态 -->
+   <view class="order-status">
+      <image class="order-status-icon" src="{{orderStatus.statusIcon}}"></image>
+      <text  class="order-status-text" style="color:{{orderStatus.textColor}}">{{orderStatus.statusText}}</text>
+   </view>
+   <!-- 进度 -->
+   <steps timeline="{{timeline}}"/>
+   <!-- 配送员信息 -->
+   <view class="delivery-info" wx:if="{{deliveryInfo}}">
+      <view class="delivery-info-item">
+        <text class="dii-label">配送员：</text>
+        <text class="dii-value">{{deliveryInfo.name}}</text>
+      </view>
+      <view class="delivery-info-item">
+        <text class="dii-label">联系电话：</text>
+        <text class="dii-value">{{deliveryInfo.mobile}}</text>
+      </view>
+   </view>
+   <!-- 下单信息 -->
+   <view class="place-order-info">
+     <!-- 配送信息 -->
+     <view class="order-delivery-info">
+        <view class="odi-order">
+          <image class="odi-icon" src="../../static/icon_salesman.png"></image>
+          <text class="odi-label">代下单</text>
+          <text class="odi-name">{{config.y_name}}</text>
+        </view>
+        <view class="odi-delivery">
+          <image class="odi-icon" src="../../static/icon_delivery.png"></image>
+          <text class="odi-label">配送</text>
+          <text class="odi-name">{{config.b_sname}}</text>
+        </view>
+     </view>
+     <!-- 多商品信息 -->
+     <view class="shop-info" wx:if="{{config.goodSize>1}}" bindtap="goGoodsList">
+         <view class="gpi-left-goods">
+            <image class="gpi-lg-icon" wx:for="{{config.goods}}" wx:key="key" src="{{item.icon}}" mode="aspectFill"></image>
+            <view class="gpi-lg-more" wx:if="{{config.goodSize > 2}}">...</view>
+          </view>
+          <view class="goods-total">
+            <view>共{{config.sku_num}}个商品</view>
+            <view>需求{{config.buy_num}}箱</view>
+            <view class="gpi-left-fav" wx:if="{{config.hr}}">
+              进货已满{{config.hr.need_num}}箱赠送{{config.hr.awarded_num}}罐
+            </view>
+            <!-- arrow -->
+            <van-icon class="goods-total-arrow" name="arrow" />
+          </view>
+     </view>
+     <!-- 单商品 -->
+     <view class="shop-one-info" wx:else>
+      <image class="soi-icon"  src="{{config.goods.icon}}" ></image>
+      <view class="soi-name">{{config.goods.title}}</view>
+      <view class="soi-attr">款式：{{config.goods.attr}}</view>
+      <view class="soi-price">价格：￥{{config.goods.buy_price}}/箱</view>
+      <view class="soi-num">需求数量：{{config.goods.buy_num}}箱</view>
+      <view class="gpi-left-fav position" wx:if="{{config.hr}}">
+              进货已满{{config.hr.need_num}}箱赠送{{config.hr.awarded_num}}罐
+      </view>
+     </view>
+     <!-- 商品总价 -->
+     <view class="goods-price-total">
+        <view>商品总价：</view>
+        <view>￥{{config.total_amount}}</view>
+     </view>
+     <!-- 商品优惠 -->
+     <view class="goods-price-yh">
+        <view>优惠：</view>
+        <view>-￥{{config.yh_amount}}</view>
+     </view>
+     <!-- 现金劵  -->
+     <view class="goods-price-xjj"  wx:if="{{config.d_amount}}">
+            <view class="gpi-right-label">
+             <image class="coupons-icon" src="../../static/coupons.png" mode="aspectFill"></image>
+             <text>现金劵：</text>
+            </view>
+            <view class="gpi-right-value cash-coupon">-￥{{config.d_amount}}</view>
+     </view>
+     <!-- 应付 -->
+     <view class="goods-price-yf">
+     <block  wx:if="{{orderStatus.statusText == '已完成'}}">
+        <text>实付款:</text>
+        <text class="price-red">￥{{config.payInfo.sf_amount}}</text>
+     </block>
+     <block wx:else>
+        <text>应付款:</text>
+        <text class="price-red">￥{{config.c_amount}}</text>
+     </block>
+     </view>
+   </view>
+   <!-- 订单类型 -->
+   <view class="order-type-info">
+      <view class="oti-item">
+        <view class="oti-label">订单类型：</view>
+        <view class="oti-value">月结</view>
+      </view>
+      <view class="oti-item" bindtap="cilpboard">
+        <view class="oti-label">订货单号：</view>
+        <view class="oti-value">{{config.out_trade_no}}</view>
+        <image class="oti-copy-icon" src="../../static/icon_copy.png"></image>
+      </view>
+      <view class="oti-item">
+        <view class="oti-label">代下单时间：</view>
+        <view class="oti-value">{{config.create_time}}</view>
+      </view>
+      <!-- 支付信息 -->
+      <block wx:if="{{orderStatus.statusText == '已完成'}}">
+        <view class="oti-item split-line">
+          <view class="oti-label">支付方式：</view>
+          <view class="oti-value">{{config.payInfo.type}}</view>
+        </view>
+        <view class="oti-item address">
+          <view class="oti-label">支付时间：</view>
+          <view class="oti-value">{{config.payInfo.create_time}}</view>
+        </view>
+    </block>
+      <!-- 分割綫 -->
+      <view class="oti-item split-line">
+        <view class="oti-label">期望送达时间：</view>
+        <view class="oti-value">{{config.dy_time}}</view>
+      </view>
+      <view class="oti-item address">
+        <view class="oti-label">送货地址：</view>
+        <view class="oti-value">{{config.sh_address}}</view>
+      </view>
+      <view class="oti-item remarks">
+        <view class="oti-label">备注：</view>
+        <view class="oti-value">{{config.note}}</view>
+      </view>
+      <!-- 分割綫 -->
+      <view class="oti-item split-line justify">
+        <view class="oti-label">促销活动名称：</view>
+        <view class="oti-value">{{config.pro_title}}</view>
+      </view>
+      <!-- 分割綫 -->
+      <view class="oti-item split-line justify" bindtap="operaRecord">
+        <view class="oti-label">操作记录：</view>
+        <view class="oti-value">{{config.actTemp}}<van-icon name="arrow" /></view>
+      </view>
+   </view>
+  <!-- 操作按钮 -->
+  <view class="tools" wx:if="{{toolsBtns.length>0}}">
+    <view class="tools-btn-item" wx:for="{{toolsBtns}}" wx:key="key">
+       <van-button wx:if="{{item.isPlain}}" block  plain  round  data-tool-type="{{item.key}}" bindtap="toolsHandle">{{item.name}}</van-button>
+       <van-button wx:else  type="danger" block  round data-tool-type="{{item.key}}" bindtap="toolsHandle">{{item.name}}</van-button>
+    </view>
+  </view>
+</view>
+
+<!-- 拒绝订单 -->
+<refuse-order id="refuseOrder" bindrefresh="refresh"/>
+<!-- 取消订单 --> 
+<cancel-order id="cancelOrder" bindrefresh="refresh"/>
+<!-- 确认订单 -->
+<confirm-order id="confirmOrder" bindrefresh="refresh"/>

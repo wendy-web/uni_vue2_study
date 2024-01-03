@@ -1,0 +1,78 @@
+<!--pages/zhongduan/geren/guanyu/faq.wxml-->
+<view class="page">
+	<view class="container">
+
+		<view class="flex-box">
+			<view class="flex_item">
+				<text class="guess">猜你想问</text>
+			</view>
+			<view class="flex_item">
+				<view class="text-right change" bindtap="getFaq">
+					<text class="iconfont iconshuaxin"> </text>
+					<text>换一组</text>
+				</view>
+
+			</view>
+		</view>
+		<!-- toggle begin -->
+		<view class="page__bd page__bd_spacing">
+			<view class="kind-list">
+				<block wx:for="{{list}}" wx:key="title">
+					<view class="kind-list__item">
+						<view id="{{item.title}}"
+							class="weui-flex kind-list__item-hd {{item.open ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle">
+							<view class="weui-flex__item font30">{{item.title}}</view>
+							<view class="weui-cell__ft weui-cell__ft_in-access">
+
+								<text class="iconfont {{ item.open ? 'icondownarrow' : 'iconarrow'}} "></text>
+							</view>
+						</view>
+						<view class="kind-list__item-bd {{item.open ? 'kind-list__item-bd_show' : ''}}">
+
+							<view class="weui-cells {{item.open ? 'weui-cells_show' : ''}}">
+
+								<view class="weui-cell__bd pdb30 red_ans font27">
+									<text>{{item.answer}}</text>
+								</view>
+							</view>
+						</view>
+					</view>
+				</block>
+			</view>
+		</view>
+		<!-- toggle end -->
+	</view>
+
+
+
+	<!-- 在线客服 -->
+	<!-- <view class="fix-box">
+		<view bindtap="contact">
+			<button hover-class="none" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="bindgetuserinfo">
+				<image mode="aspectFit" class="img" src="{{online}}"></image>
+			</button>
+		</view>
+		<view class="mt33" bindtap="call">
+			<image mode="aspectFit" class="img" src="{{hotline}}"></image>
+		</view>
+	</view> -->
+</view>
+<!-- 悬浮导航 -->
+<!-- <movemenu bindmenuItemClick="menuItemClick" pageUrl="{{pageUrl}}"></movemenu> -->
+<!-- store Qrcode -->
+<!-- <qrcodeWidget></qrcodeWidget> -->
+<movable-area>
+	<movable-view direction="all" inertia class="movable-view" x="20" y="{{screenHeight*0.68}}">
+		<!-- 在线客服 -->
+		<view bindtap="contact">
+			<button hover-class="none" 	hover-stop-propagation="{{true}}" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="bindgetuserinfo">
+				<image mode="aspectFit" class="img" src="{{online}}"></image>
+			</button>
+		</view>
+	</movable-view>
+	<movable-view direction="all" inertia class="movable-view" x="20" y="{{screenHeight*0.82}}">
+		<view bindtap="call">
+			<image mode="aspectFit" class="img" src="{{hotline}}"></image>
+		</view>
+	</movable-view>
+</movable-area>

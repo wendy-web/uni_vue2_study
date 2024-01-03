@@ -1,0 +1,32 @@
+<!--component/bindPhonePop/index.wxml-->
+<van-popup show="{{bindPhonePopShow}}" bind:close="onClose" round position="bottom" data-popname="bindPhonePopShow" closeable>
+  <view class="bindphone-box">
+    <view class="title">请先绑定手机号</view>
+    <view class="getphone-box">
+      <view class="send-sms-box" wx:if="{{!supportGetPhoneCode}}">
+        <van-field value="{{ mobile }}" type="number" clearable label="" placeholder="请输入手机号" error-message="" bindinput="inputMobile" />
+        <van-field value="{{ smsCode }}" center label="" bindinput="inputVcode" placeholder="请输入短信验证码" use-button-slot>
+          <van-button wx:if="{{sendMsgTimes < 2 }}" disabled="{{resend}}" slot="button" size="small" type="primary" bindtap="getVcode" round color="linear-gradient(180deg,#e71919 26%, #a31015 100%)">
+            {{resend?'重新发送'+ countdown + 's':'获取验证码'}}
+          </van-button>
+          <van-button wx:else slot="button" size="small" type="primary" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" round color="linear-gradient(180deg,#e71919 26%, #a31015 100%)">
+            获取验证码
+          </van-button>
+        </van-field>
+      </view>
+      <block wx:if="{{supportGetPhoneCode}}">
+        <button class="at-button" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
+          微信授权绑定手机号
+        </button>
+      </block>
+      <block wx:else>
+        <button class="at-button" bindtap="bindPhoneSMS">
+          绑定手机号
+        </button>
+      </block>
+    </view>
+
+  </view>
+</van-popup>
+<!-- 隐私授权弹窗 -->
+<privacyPop></privacyPop>

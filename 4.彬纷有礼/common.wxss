@@ -1,0 +1,121 @@
+.phase_btn {
+  display: inline-block;
+  border-radius: 50rpx;
+  width: 362rpx;
+  height: 76rpx;
+  line-height: 76rpx;
+  background: linear-gradient(180deg, #FF0000, #A90000);
+  color: #ffffff;
+}
+
+.phase_pop {
+  height: 341px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  top: 300px;
+}
+
+.pop_flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height:227px;
+}
+
+.pop_title {
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #3D3D3D;
+}
+
+.pop_content {
+  font-size: 33rpx;
+  font-weight: 500;
+  color: #3D3D3D;
+}
+
+.pop_msg {
+  font-size: 62rpx;
+  color: #e02020;
+  font-weight: 600;
+}
+
+.oneEnjoy {
+  position: fixed;
+  top: 0px;
+  z-index: 5001;
+  left: 0;
+  right:0;
+  margin: auto;
+}
+/* 一元乐享红牛 */
+.phase_pop_redbull{
+  height: 400px;
+  /* background: #E02020; */
+  background: #ab0d0e;
+  padding-bottom: 30px;
+  top: 305px;
+}
+.oneEnjoy_redbull{
+  top: 45px;
+}
+.pop_box{
+  background: #ffffff;
+  margin:unset;
+  width: 80%;
+  border-radius: 36rpx;
+  height: 220px;
+}
+/* 三期  我的 */
+.coupons_img{
+  width:68rpx ;
+  height:68rpx ;
+}
+.exchange_img{
+  width:67rpx;
+  height: 67rpx;
+}
+.mgl20{
+  margin-left: 20rpx;
+}
+.mgr20{
+  margin-right: 20rpx;
+}
+.text-normal{
+  font-weight: normal;
+}
+.confirm {
+  display: inline-block !important;
+  border-radius: 50rpx;
+  width: 200rpx !important;
+  height: 76rpx;
+  line-height: 76rpx;
+  margin-right: 20rpx;
+  background: linear-gradient(180deg, #dcdcdc, #898989);
+  color: #ffffff !important;
+  font-weight: normal !important;
+  -webkit-box-flex: unset !important;
+  -webkit-flex: unset !important;
+  flex: unset !important;
+
+}
+
+.cancel {
+  display: inline-block !important;
+  border-radius: 50rpx;
+  width: 200rpx;
+  height: 76rpx;
+  line-height: 76rpx;
+  margin-left: 20rpx;
+  background: linear-gradient(180deg, #ff0000, #ac0000);
+  color: #ffffff !important;
+  font-weight: normal !important;
+  font-weight: normal !important;
+  -webkit-box-flex: unset !important;
+  -webkit-flex: unset !important;
+  flex: unset !important;
+}
+button:after{
+  border: none;
+}

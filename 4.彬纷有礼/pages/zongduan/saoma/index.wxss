@@ -1,0 +1,364 @@
+@import '../../../common.wxss';
+
+.containe {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 100vw;
+  height: 80vh;
+  padding-top: 160rpx;
+}
+
+.containe-img {
+  height: 457rpx;
+}
+
+.containe-btn {
+  width: 240rpx;
+  height: 72rpx;
+  color: #fff;
+  background-color: #e13030;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+}
+
+/* paga{
+  min-height: 100%;
+} */
+.flex-container {
+  display: felx;
+  min-height: 100%;
+}
+
+.back {
+  margin-top: -100rpx;
+}
+
+.back image {
+  width: 750rpx;
+  height: auto;
+}
+
+.at-button {
+  margin-top: -200rpx;
+  font-size: 32rpx;
+  border-radius: 25px;
+  padding: 7rpx 90rpx;
+  background: -webkit-linear-gradient(120deg, #a10f16 0%, #e71a19 100%);
+  background: -o-linear-gradient(120deg, #a10f16 0%, #e71a19 100%);
+  background: linear-gradient(-30deg, #a10f16 0%, #e71a19 100%);
+  color: white !important;
+}
+
+/* 广告位 */
+.adContainer-bottom {
+  width: 100%;
+  align-self: flex-end;
+  position: absolute;
+  bottom: calc(8px + env(safe-area-inset-bottom));
+}
+
+.pop_content {
+  font-weight: bold;
+}
+
+.pop_msg {
+  font-weight: bold;
+}
+
+.chokeDown {
+  background: linear-gradient(180deg, #f8f8f8, #efefef);
+  width: 120px;
+  height: 45px;
+  line-height: 45px;
+  border-radius: 50rpx;
+  color: #C9C9C9;
+}
+
+.scaleBtn {
+  transform: scale(0.5);
+  transform-origin: left top;
+}
+
+
+.scaleBox {
+  width: 120px;
+  height: 60px;
+  overflow: hidden;
+}
+
+
+.shopInfoPop_item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 330px;
+  font-size: 34rpx;
+  color: #333;
+}
+
+.shopInfoPop_content {
+  width: 87%;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.shopInfo_btn {
+  width: 256rpx;
+  height: 74rpx;
+}
+
+.shop_signs {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+}
+
+.paper_code_pop {
+  font-size: 30rpx;
+}
+
+.paper_code_pop_content {
+  text-align: center;
+  font-size: 30rpx;
+  padding: 20rpx 30rpx;
+  color: #999;
+}
+
+.colorGrey {
+  color: #999;
+}
+
+.bindedShopInfoBox {
+  color: #333;
+  height: 230px;
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+  justify-content: space-around;
+}
+
+.pdl24 {
+  padding-left: 24rpx;
+}
+
+.fontBold {
+  font-weight: bolder;
+}
+
+/* 2021年3月16日 修改核销弹窗UI */
+.hxPop {
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
+  width: 92vw;
+}
+
+.trickIcon {
+  width: 99rpx;
+  height: 99rpx;
+}
+
+.color333 {
+  color: #333333;
+
+}
+
+.h4 {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.hxPop .redBG {
+  background-color: #c50000;
+  padding: 15px 15px;
+  box-sizing: border-box;
+}
+
+.hxPop .hxMsgBox {
+  font-size: 28rpx;
+  width: 100%;
+  padding: 10px 20px 0 20px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  margin: 0;
+  border-radius: 20rpx 20rpx 0 0;
+}
+
+.hxPop .title {
+  font-size: 30rpx;
+  font-family: PingFang SC Heavy, PingFang SC Heavy-Heavy;
+  text-align: left;
+  font-weight: 600;
+}
+
+.hxPop .text-green {
+  color: #33A954;
+}
+
+.hxPop .money {
+  font-size: 28rpx;
+  font-family: PingFang SC Heavy, PingFang SC Heavy-Heavy;
+  text-align: right;
+  font-weight: 600;
+}
+
+.hxPop .tips {
+  font-size: 24rpx;
+  font-family: PingFang SC Heavy, PingFang SC Heavy-Heavy;
+  text-align: left;
+  font-weight: 600;
+}
+
+.hxPop .flex-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hxPop .mgb34 {
+  margin-bottom: 24rpx;
+}
+.hxPop .mgb34:last-child {
+  margin-bottom: 0rpx;
+}
+.hxPop .mgb29 {
+  margin-bottom: 29rpx;
+}
+
+.hxPop .mgb17 {
+  margin-bottom: 17rpx;
+}
+
+.hxPop .mgt96 {
+  margin-top: 96rpx;
+}
+
+.hxPop .explain {
+  font-size: 20rpx;
+  font-family: PingFang SC Medium, PingFang SC Medium-Medium;
+  font-weight: 500;
+  text-align: left;
+  color: #494949;
+  padding-left: 70rpx;
+}
+
+.hxPop .detail {
+  opacity: 1;
+  font-size: 18rpx;
+  font-family: PingFang SC Heavy, PingFang SC Heavy-Heavy;
+  text-align: right;
+  color: #555555;
+}
+
+.hxPop .btn {
+  display: block;
+  width: 250rpx;
+  height: 69rpx;
+  line-height: 69rpx;
+  background: linear-gradient(0deg, #b90000 0%, #fc0000 100%);
+  border-radius: 33px;
+  color: #ffffff;
+}
+
+.hxPop .failIcon {
+  width: 174rpx;
+  height: 156rpx;
+}
+
+.hxPop .failBox {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px 0px;
+}
+
+.hxPop .color-red {
+  color: #B90000;
+}
+
+.weui-tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0
+}
+.hx-warn-tips{
+  font-size: 24rpx;
+  font-family: PingFang SC Heavy, PingFang SC Heavy-Heavy;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 29rpx;
+  color: #33A954;
+}
+/* 2023年9月12日 优化扫码核销弹窗UI */
+.redBG{
+  display: flex;
+  flex-direction: column;
+}
+.gap-dash-box{
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 50rpx;
+}
+.gap-dash-box::before {
+  content: '';
+  width: 28rpx;
+  height: 30rpx;
+  background-color: #c50000;
+  /* border-right: 1rpx solid #ffffff; */
+  border-left: unset;
+  border-radius: 36rpx;
+  position: absolute;
+  left: -10rpx;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.gap-dash-box::after {
+  content: '';
+  width: 28rpx;
+  height: 30rpx;
+  background-color: #c50000;
+  /* border-left: 1rpx solid #ffffff; */
+  border-radius: 36rpx;
+  position: absolute;
+  right: -10rpx;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+.dash-line-box{
+  flex: 1;
+  height: 2rpx;
+  border-top: 2rpx dashed #d44040;
+}
+.receipt-time-box{
+  flex: 1;
+  width: 100%;
+  display: flex;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  padding: 0rpx 30rpx 20rpx 30rpx;
+  border-radius:0 0 20rpx 20rpx;
+
+}
+.bg-white-box{
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius:25rpx;
+}

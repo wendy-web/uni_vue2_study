@@ -1,0 +1,10 @@
+{
+  "usingComponents": {},
+  "navigationStyle": "custom",
+  "enablePullDownRefresh":true,
+  "backgroundColor":"#e62318",
+  "backgroundColorTop":"#e62318",
+  "backgroundColorBottom":"#ffffff",
+  "onReachBottomDistance":0,
+  "navigationBarTitleText":"收益"
+}

@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "css-animation":"../../../component/css-animation/index"
+  },
+  "navigationBarTitleText":"扫码领红包"
+}

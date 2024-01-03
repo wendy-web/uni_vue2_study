@@ -1,0 +1,61 @@
+/* component/actCouponPop/gzExcBuoy/index.wxss */
+/* component/actCouponPop/gzUnboxBuoy/index.wxss */
+
+.menuarea {
+  pointer-events: none;
+  position: fixed;
+  left: 0rpx;
+  right: 0rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+}
+
+.menu_box {
+  pointer-events: auto;
+  /* position: fixed;
+  bottom: 150rpx;
+  right: 70rpx;
+  text-align: center;
+  width: 140rpx;
+  height: 170rpx; */
+  /* width: 250rpx;
+  height: 196rpx; */
+  width: 164rpx;
+  height: 132rpx;
+}
+
+.menu_main {
+  height: auto;
+  width: auto;
+  box-sizing: border-box;
+}
+
+.menu_img {
+  margin-top: 10rpx;
+  width: 100%;
+  height: 100%;
+}
+
+.menu_title {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 30rpx;
+}
+.display-hn-buoy{
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+.display-hn-buoy .img{
+  /* width: 206rpx;
+  height: 164rpx; */
+  width: 164rpx;
+  height: 132rpx;
+  position: relative;
+  right: -6px;
+}

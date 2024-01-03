@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "mp-cell":"../components/cell/cell",
+    "mp-dialog":"../components/dialog/dialog",
+    "selectCrew":"../../../component/selectCrew/index"
+
+  },
+  "navigationBarTitleText": "换购红包",
+  "navigationBarBackgroundColor":"#e10404",
+  "navigationBarTextStyle":"white",
+  "enablePullDownRefresh":true
+}

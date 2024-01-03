@@ -1,0 +1,497 @@
+/* pages/storeRank/index.wxss */
+page {
+  height: 100%;
+  overflow: auto;
+  position: relative;
+}
+/*箭头部分*/
+.align-center {
+  position: fixed;
+  left: 20rpx;
+  top: 0;
+  display: flex;
+  align-items: center;
+  z-index: 25;
+}
+
+.navigator {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.nav-bar__button {
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  font-size: 12px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 1em 2em;
+}
+
+.nav-bar__btn_goback {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='24' viewBox='0 0 12 24'%3E  %3Cpath fill-opacity='.9' fill-rule='evenodd' d='M10 19.438L8.955 20.5l-7.666-7.79a1.02 1.02 0 0 1 0-1.42L8.955 3.5 10 4.563 2.682 12 10 19.438z'/%3E%3C/svg%3E");
+}
+
+.nav-bar__btn_goback .white {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='24' viewBox='0 0 12 24'%3E  %3Cpath fill-opacity='.9' fill-rule='evenodd' d='M10 19.438L8.955 20.5l-7.666-7.79a1.02 1.02 0 0 1 0-1.42L8.955 3.5 10 4.563 2.682 12 10 19.438z' fill='%23ffffff'/%3E%3C/svg%3E");
+}
+
+.container {
+  /* background-color: #c12621; */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.container .head {
+  /* height: 877rpx; */
+  height: 1008rpx;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* background-size: 100% 100%; */
+  background-size: contain;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.rebBull_badge {
+  writing-mode: vertical-lr;
+  transform: rotate(10deg);
+  position: absolute;
+  right: 258rpx;
+  bottom: 262rpx;
+  text-align: center;
+  display: inline-block;
+  width: 40rpx;
+  font-size: 20rpx;
+}
+
+.color-white {
+  color: #ffffff;
+}
+
+.font26 {
+  font-size: 26rpx;
+}
+
+.font36 {
+  font-size: 36rpx;
+}
+
+.font23 {
+  font-size: 23rpx;
+}
+
+.font20 {
+  font-size: 20rpx;
+}
+
+.font17 {
+  font-size: 17rpx;
+}
+
+.fontNormal {
+  font-weight: normal;
+}
+
+.weight500 {
+  font-weight: 500;
+}
+
+.bgmask {
+  background: rgba(0, 0, 0, .2);
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.pure_top {
+  width: 100%;
+  height: 20px;
+  position: relative;
+  /* z-index: -1; */
+  overflow: hidden;
+  margin-top: -80rpx;
+}
+
+.pure_top::after {
+  content: '';
+  width: 140%;
+  height: 120px;
+  position: absolute;
+  left: -20%;
+  top: 0;
+  /* z-index: -1; */
+  border-radius: 50% 50% 0 0;
+  background: #c12621;
+
+}
+
+.bgColor {
+  background: #c12621;
+}
+
+.mgt30 {
+  margin-top: 30rpx;
+}
+
+.mgt25px {
+  margin-top: 25px;
+}
+
+.mgt50 {
+  margin-top: 50rpx;
+}
+
+.relative {
+  position: relative;
+}
+
+.tag {
+  height: 94rpx;
+  width: 400rpx;
+  position: absolute;
+  top: -22px;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* background-size: 100% 100%; */
+  background-size: contain;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding-bottom: 14rpx;
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #730400;
+  text-align: center;
+}
+
+.iKnowBtn {
+  width: 289rpx;
+  height: 83rpx;
+}
+
+.tag-Img {
+  width: 68rpx;
+  height: 68rpx;
+}
+
+.tag-ImgM {
+  width: 90rpx;
+  height: 68rpx;
+}
+
+.pdlr20 {
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+}
+
+.width100 {
+  width: 100%;
+}
+
+.hdshuoming text {
+  line-height: 45rpx;
+}
+
+
+.pdt30 {
+  padding-top: 30rpx;
+
+}
+
+.pdtb30 {
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
+}
+
+.fontBold {
+  font-weight: 600;
+}
+
+.color-orange {
+  color: #fdd622;
+}
+
+.flexOne {
+  flex: 1;
+}
+
+.flex_5 {
+  flex: 0.3;
+}
+
+.color-brown {
+  color: #FFF3C1;
+}
+
+.checkShopBtn {
+  width: 184rpx;
+  height: 83rpx;
+}
+
+.shopInfoBox {
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+  text-align: left;
+}
+
+.bottom100rpx {
+  position: absolute;
+  bottom: 100rpx;
+  width: 100%;
+  left: 0;
+  right: 0;
+}
+
+.bottomBtn {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100rpx;
+}
+
+.color4361 {
+  color: #4361b8;
+}
+
+.colorE {
+  color: #002aff;
+}
+
+
+.bottomContent {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 100px;
+}
+
+
+.text-left {
+  text-align: left;
+}
+
+/* 2023年5月28日 */
+.img-hn-28th {
+  width: 262rpx;
+  height: 88rpx;
+  position: absolute;
+}
+
+.img-title-can {
+  width: 501rpx;
+  height: 560rpx;
+  position: absolute;
+  bottom: 170rpx;
+  left: -30rpx;
+  right: 0;
+  margin: 0 auto;
+}
+
+.act-time-box {
+  text-align: center;
+  box-sizing: border-box;
+  /* height: 130rpx; */
+  /* background: rgba(255, 230, 107, 0.72); */
+  background: #c12621;
+  font-family: Source Han Sans CN Regular, Source Han Sans CN Regular-Regular;
+  font-weight: 400;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  font-size: 28rpx;
+  color: #fefce3;
+}
+
+.act-time-box .title {
+  font-size: 32rpx;
+  color: #ffffff;
+  font-weight: 400;
+  /* color: #c12621; */
+
+}
+
+.act-rule-box {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+  background-color: #c12621;
+  padding-bottom: 50rpx;
+  z-index: 10;
+  position: relative;
+}
+
+.act-rule-box .act-rule-item {
+  box-sizing: border-box;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  color: #ffffff;
+  position: relative;
+  margin-top: 88rpx;
+
+  background: rgba(0, 0, 0, .2);
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.act-rule-box .act-rule-item:first-child {
+  margin-top: 40rpx;
+}
+
+.act-rule-box .act-rule-item:nth-child(5) {
+  padding-bottom: 40rpx;
+}
+
+.rule-item {
+  box-sizing: border-box;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  margin-top: 30rpx;
+}
+
+.rule-item .rule-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  line-height: 45rpx;
+}
+
+.rule-content .fontBold {
+  flex-shrink: 0;
+}
+
+.prize-title {
+  font-size: 20rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #ffffff;
+  line-height: 61rpx;
+  margin-top: 30rpx;
+}
+
+.prize-item {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30rpx;
+  height: 50rpx;
+  position: relative;
+}
+
+.prize-item::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 30rpx;
+  right: 30rpx;
+  height: 1rpx;
+  border-bottom: 1rpx solid #b64d49;
+}
+
+.prize-item:first-child:after {
+  border: unset;
+}
+
+.prize-item:last-child:after {
+  border: unset;
+}
+
+.prize-item .prize-rank {
+  min-width: 80rpx;
+  text-align: left;
+}
+
+.prize-item .prize-name {
+  min-width: 100rpx;
+  text-align: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.prize-img-list {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.prize-img-list .img-hn-box {
+  width: 42rpx;
+  height: 29rpx;
+}
+
+.prize-img-list .img-hn-can {
+  width: 24rpx;
+  height: 28rpx;
+}
+
+/* 蒙层 */
+.head .img-head-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 618rpx;
+}
+
+.act-rule-box .img-content-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.act-rule-box .back-top {
+  min-height: 100rpx;
+  line-height: 100rpx;
+  color: #ffffff;
+  font-size: 24rpx;
+  text-align: center;
+  z-index: 20;
+}
+
+.count-down-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 2023年5月27日 报名 */
+.sign-up-box {
+  z-index: 2;
+}
+
+.sign-up-box .btn-signup {
+  width: 278rpx;
+  height: 96rpx;
+}
+.btn-check-detail {
+  width: 354rpx;
+  height: 102rpx;
+  background: rgba(0, 0, 0, 0.00);
+}

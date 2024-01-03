@@ -1,0 +1,55 @@
+<!--pages/storeDisplay/component/disQualifiedState/index.wxml-->
+<view class="dis-qualified-state">
+		<van-popup show="{{show}}"   bind:close="onClose" custom-style="background-color: transparent;"   z-index="{{10000}}">
+			  <view class="dis-qualified-state-box">
+          <view class="dqs-photo-box">
+            <van-image  width="600rpx" height="600rpx" src="{{config.img_url}}" fit="cover" radius="10px 10px 0 0"  use-loading-slot>
+                          <van-loading slot="loading" type="spinner" size="20" vertical />
+            </van-image>
+            <view class="dis-qualified-position">
+              <!-- 拍照时间 -->
+              <view class="dqs-photo-time">
+                <view class="dqs-pt-label">
+                  拍照
+                </view>
+                <view class="dqs-pt-hour">{{config.hour}}</view>
+                <view class="dqs-pt-day">{{config.day}}</view>
+              </view>
+              <!-- 地址 -->
+              <view class="dqs-address">
+                 {{config.address}}
+              </view>
+          </view>
+          </view>
+          <!-- 不合格 -->
+          <view wx:if="{{config.status == 0}}" class="dqs-unqualified">
+            <!-- icon -->
+            <van-icon class="dqs-unqualified-icon" name="warning" size="48rpx" color="#E3001B"/>
+              <view class="dqs-unqualified-title">
+                冰柜识别不合格的可能原因：
+              </view>
+              <view class="dqs-unqualified-tips">
+                1. 商品数量不够
+              </view>
+              <view class="dqs-unqualified-tips">
+                2. 未连续摆放
+              </view>
+              <view class="dqs-unqualified-tips">
+                3. 混有其他品牌商品
+              </view>
+              <view class="dqs-unqualified-tips">
+                4. 未摆放在首要位置
+              </view>
+              <view class="dqs-unqualified-tips">
+                5. 价签缺失或不合要求
+              </view>
+          </view>
+          <!-- 合格 -->
+          <view wx:else class="dqs-qualified">
+            <van-icon name="checked" size="48rpx" color="#02AF2A"/>
+            <text class="dqs-qualified-text">识别成功</text>
+          </view>
+         </view>
+         <image class="close" src="/pages/storeDisplay/static/close.png" mode="aspectFill" bindtap="onClose"></image>
+		</van-popup>
+	</view>

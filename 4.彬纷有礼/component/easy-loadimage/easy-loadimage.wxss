@@ -1,0 +1,58 @@
+/* component/easy-loadimage.wxss */
+
+.easy-loadimage {
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+/* 渐变过渡效果处理 */
+.origin-img {
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  will-change: transform;
+}
+.show-transition {
+  transition: opacity 1.2s;
+  opacity: 1;
+ 
+}
+.no-transition {
+  opacity: 1;
+}
+/* 加载失败、加载中的占位图样式 */
+.loadfail-img {
+  min-height: 200rpx;
+  height: 100%;
+  width: 100%;
+  /* background: url('./images/loadfail.png') no-repeat center; */
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAZlBMVEX19vfo6Ojr7OxISEifn5/t7u7v7/CoqKjr6+tycnLy8/Sys7N2d3dZWVnx8fLGx8ja29y9vb1XV1fg4OCDhITj5OXQ0NGVlZWKiopoaGjGxsacnJ2QkJGhoqJ+fn69vr+1travr7D0m99wAAAEVklEQVR42u2aiZbaIBRAIcgSIGRx1xnb/v9P9oELpioGUNtzyj0tc2aCcH28B3EyqFAoFAqFQqFQ+NcwjFbx3I4j73ekzITnpzgBgW4J9JaB+XESMnKgx/NXr5pf4BD04frjFEz8Qj7KA4YToAnj0BdmIE0JpHiWAqKayp35JXsAFc/SsAoWSj5STBSQ6E3IaQIVehtF4GMCkgpbS0b+HQHpt3T6NwTY+Oz7gED4RJMfFqC3R89HBSS+QXxUoMK3sA8KyMDh91aB8IkuPycg7gqYzwngf1OA/UdLID6WhFE31v/TPnB3IzCvFTCxIaCvPQsqbOKyQKQcx+HxWThCN/OnCIRHN2EDMYr/SwWkT6sQ7KwgDHqtwGhrCWGY5arXammbbqKAVmgMb/w+N3MstOULOfZ/9G+bm7E1t8336jCfJECOtF7AX+d2fkVU27ar02W1PX7t+H57T4Bzvl1w3upvvK7ncRFoyRUDXN31DsJ3rQVGJw7dwn/O6ZVA4y50I4F5PUtdglN5rWsHqWttsReh90rTy9tWxMFRAxc6K0Ap1Rwa/j2fd08iUBMPvRLwW9z8FIH+R9u6HuDbNe0l7oaZHbz0ywtoMqIOC8zOVdCOBfCZfjhGAIBpESUnVHP5WNafBHwE+IICvJ4DOEZAjeUHO7obhfTQ1O0p6Npni11iNbBrgSXnDaQAVwrePF/hlAgM+F4Ehh/XAg2CKSkGoDsbCWw1B1Q74BVZReZAw6H5dgLDzAnU0EAEbOcejoWvUxX0TsANMoMuWl0EwG3ZauS+2WxwXAScAJt5gVEEekzPEXBNo9wohzUM9MsL6Ebbf3s0zIYudisGAYmvBXabYxVAs9lhzJbbVumvPVrsjwJI4IGDADcXgVULXey+dSAch5NwXncQWLRsKOr0WQCPBPjMQja2hYmw5vbNL1TTOgHgB4G3ueX4qgqsAFe0hnHWh5DAGlZvsziOtFVHAREWwMxFf6HRWUBvMCTbDg+nnVCRLSzBnqt9DUPUs4DADl6Gf5IlWoBE31C3n3pm7izyAgAGaUIUWurlWaAnHfzoAMJcniIAGaUR1XqpyJqogABf2xxolqi359yiG99lDk5gzOj2wJ+NYnw75ATUggqo0DouCVnaI5MK3xnr5BUlYPAkHt+5VHkCMvF39hJ7gywBgacgZOgjIs0QqBIeGt2+jiYLUDwJ9uzjGUsUYInzs9suSQImKgHDhWMSBOS0BKyC83uDeIGs+W+RsQJVfAGG42bcqJMFWGIBikDfmAiYxKe2NBit6QIyff6QwWQBKVI3oDDVVIEqYwMIG0wUSCtAOeVFzwSmI+Ln94QF8k7gfIG8EzhfILMA8wXyCjBfIPcOIF8g4wTMF8jfAPIFUgoQAx8UyNsA8gVMkvXrBNh7/vzOV1N8AaZAw48a8k/gyHX0VDkFmL8CwNtO4HAheaRIKsD8BPCwavoJnAIzqFAoFAqFQqFQ+Mf4DZLAPxvn0r0+AAAAAElFTkSuQmCC");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.loading-gif{
+  height: 100rpx;
+  width: 100rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+.avatar{
+  height: 186rpx;
+  width: 330rpx;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transform: translate3d(0, 0, 0);
+  font-size: 0;
+  border-radius: 5px;
+  margin-right: 20rpx;
+}

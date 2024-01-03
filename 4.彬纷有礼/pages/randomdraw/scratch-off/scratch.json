@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "css-animation":"../../../component/css-animation/index"
+  },
+  "disableScroll":true,
+  "navigationBarTitleText":"箱内码活动"
+}

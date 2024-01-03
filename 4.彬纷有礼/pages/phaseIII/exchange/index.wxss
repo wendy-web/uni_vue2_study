@@ -1,0 +1,479 @@
+/* pages/phaseIII//exchange/index.wxss */
+@import '../common.wxss';
+
+page {
+  background: #ebebeb;
+  /* background: #ae0001; */
+}
+
+.apply-box {
+  padding: 22rpx 16rpx 0 16rpx;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.apply-box .apply-address {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  height: 170rpx;
+  padding: 24rpx 28rpx 22rpx 46rpx;
+  box-sizing: border-box;
+  border-radius: 10rpx;
+}
+
+.apply-box .apply-address .address-icon {
+  width: 40rpx;
+  height: 50rpx;
+}
+
+.address-center {
+  flex: 1;
+  margin-left: 26rpx;
+}
+
+.address-center .contact {
+  font-size: 32rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #333;
+}
+
+.address-center .contact .call {
+  margin-left: 20rpx;
+  font-weight: normal;
+  font-size: 28rpx;
+}
+
+.address-center .address {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Medium;
+  font-weight: 500;
+  color: #383838;
+}
+
+.apply-address .address-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-left: 2rpx dashed #999999;
+  padding-left: 28rpx;
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #333;
+  height: 120rpx;
+}
+
+.apply-address .address-right .edit-icon {
+  width: 38rpx;
+  height: 38rpx;
+  margin-bottom: 10rpx;
+}
+
+.apply-box .apply-coupon {
+  
+  background-color: #fff;
+  /* height: 882rpx; */
+  height: calc(100vh - 220rpx);
+  margin-top: 18rpx;
+  padding: 24rpx 46rpx 22rpx 46rpx;
+  box-sizing: border-box;
+  border-radius: 10rpx;
+}
+
+.apply-coupon .apply-head {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.apply-coupon .apply-head .quan-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 38rpx;
+}
+
+.apply-coupon .apply-head .num {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.apply-coupon .apply-body {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.apply-body .redbull-box {
+  width: 122rpx;
+  height: 140rpx;
+  margin-top: 32rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 14rpx;
+  background-color: #ececec;
+}
+
+.apply-body .redbull-box .redbull-icon {
+  width: 70rpx;
+  height: 104rpx;
+}
+
+.apply-body .apply-msg {
+  margin-left: 52rpx;
+  color: #333;
+  font-size: 24rpx;
+  margin-top: 32rpx;
+}
+
+.apply-body .apply-msg .apply-num {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 30rpx;
+
+}
+
+.apply-body .apply-msg .apply-num .apply-choose {
+  display: flex;
+  justify-content: center;
+  margin-left: 50rpx;
+
+}
+
+.apply-body .apply-choose .apply-min {
+  border: 2rpx solid #999;
+  border-radius: 10rpx 0 0 10rpx;
+  display: inline-block;
+  width: 70rpx;
+  height: 60rpx;
+  color: #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.apply-min .minus-icon {
+  width: 20rpx;
+  height: 20rpx;
+}
+
+.apply-body .apply-choose .apply-count {
+  width: 126rpx;
+  height: 60rpx;
+  border-top: 2rpx solid #999;
+  border-bottom: 2rpx solid #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.apply-count .apply-input{
+  height: 100%;
+  text-align: center;
+}
+.apply-count .apply-input-placeholder{
+  text-align: center;
+
+}
+
+.apply-body .apply-choose .apply-max {
+  border: 2rpx solid #999;
+  border-radius: 0 10rpx 10rpx 0;
+  display: inline-block;
+  width: 70rpx;
+  height: 60rpx;
+  color: #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.apply-max .minus-icon {
+  width: 20rpx;
+  height: 20rpx;
+}
+
+.order-note {
+  font-size: 24rpx;
+  color: #333;
+  margin-top: 54rpx;
+}
+.order-note-box{
+  height: 238rpx;
+  margin-top: 14rpx;
+  background-color: #f5f5f5;
+}
+.order-note-box .order-text{
+  padding: 10rpx 15rpx;
+  font-size: 24rpx;
+}
+
+.order-note-box  .order-text-placeholder{
+  font-size: 24rpx;
+  padding: 10rpx 15rpx;
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 108rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 62rpx;
+  padding-right: 48rpx;
+  background-color: #ffffff;
+}
+
+.footer .footer-text {
+  font-size: 28rpx;
+  font-weight: 700;
+  flex: 1;
+  font-family: PingFang SC, PingFang SC-Bold;
+  text-align: left;
+  color: #333;
+}
+
+.footer .footer-text .num {
+  font-size: 36rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+}
+
+.footer .footer-btn {
+  width: 154rpx;
+  height: 62rpx;
+  opacity: 1;
+  background: linear-gradient(148deg, #e10404 13%, #eb0000 77%);
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  color: #ffffff;
+  text-align: center;
+  line-height: 62rpx;
+}
+
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 100rpx 50rpx 50rpx 50rpx;
+}
+
+.head .redBull_bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 584rpx;
+}
+
+.head .oneEnjoy {
+  position: fixed;
+  top: 0;
+  left: 15px;
+  right: 15px;
+  margin: auto;
+  height: 454rpx;
+  z-index: 1;
+}
+
+.head .redBull {
+  width: 43px;
+  height: 68px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 484rpx;
+}
+
+.content {
+  /* position: fixed;
+  top: 457rpx;
+  right: 0;
+  left: 0;
+  margin: auto; */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  /* width: 676rpx;
+  height: 606rpx; */
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  border-radius: 27px;
+  box-shadow: 0px 4px 18px 0px rgba(0, 0, 0, 0.25);
+  align-items: center;
+}
+
+.content .oneEnjoy {
+  top: 24rpx;
+  height: 365rpx;
+
+}
+
+.text-grey {
+  color: #787878;
+}
+
+.text-red {
+  color: #E02020;
+}
+
+.font18 {
+  font-size: 18px;
+}
+
+.font14 {
+  font-size: 14px;
+}
+
+.font27 {
+  font-size: 27px;
+}
+
+.font40 {
+  font-size: 62rpx;
+}
+
+.fontNormal {
+  font-weight: normal;
+}
+
+.input-box {
+  /* background: #d7d7d7; */
+  background-color: #f3f3f3;
+  /* width: 551rpx; */
+  width: 470rpx;
+  margin-top: 40rpx;
+}
+
+.input-box .weui-cell {
+  /* padding: 10px 16px; */
+  padding: 3px 0px 3px 16px;
+}
+
+.input-box .weui-cell__ft {
+  width: 20%;
+  height: 74rpx;
+  line-height: 74rpx;
+  text-align: center;
+  border-left: 1px solid #f3f3f3;
+  /* border-left: 1px solid #bcbcbc; */
+  color: #171717;
+}
+
+.weui-input__placeholder {
+  font-size: 14px;
+}
+
+.mp-dialog .loc image {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.mp-dialog .weui-dialog__ft {
+
+  justify-content: center;
+}
+
+.mgt30 {
+  margin-top: 30rpx;
+}
+
+.mgt10 {
+  margin-top: 10px;
+}
+
+.mp-dialog .weui-dialog__bd {
+  padding-top: unset;
+}
+
+.confirm {
+  display: inline-block !important;
+  border-radius: 50rpx;
+  width: 200rpx !important;
+  height: 76rpx;
+  line-height: 76rpx;
+  margin-right: 20rpx;
+  background: linear-gradient(180deg, #dcdcdc, #898989);
+  color: #ffffff !important;
+  font-weight: normal !important;
+  -webkit-box-flex: unset !important;
+  -webkit-flex: unset !important;
+  flex: unset !important;
+
+}
+
+.cancel {
+  display: inline-block !important;
+  border-radius: 50rpx;
+  width: 200rpx;
+  height: 76rpx;
+  line-height: 76rpx;
+  margin-left: 20rpx;
+  background: linear-gradient(180deg, #ff0000, #ac0000);
+  color: #ffffff !important;
+  font-weight: normal !important;
+  font-weight: normal !important;
+  -webkit-box-flex: unset !important;
+  -webkit-flex: unset !important;
+  flex: unset !important;
+}
+
+.mp-dialog .weui-dialog {
+  top: unset;
+  /* padding-top: 100rpx; */
+  /* display: flex;
+  flex-direction: column;
+  justify-content: flex-end; */
+  height: 720rpx;
+  /* background: url("https://file.y1b.cn/public/img/phaseIII/oneenjoy08181.png") no-repeat;
+  background-size: contain; */
+  background-color: #ffffff;
+  border-radius: 25px;
+  overflow: unset;
+}
+
+.mgt330 {
+  margin-top: 218rpx;
+}
+
+.successImg {
+  position: fixed;
+  top: -253rpx;
+  z-index: 5001;
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+}
+
+.textHeight {
+  background-color: #f3f3f3;
+  height: 90px;
+}
+
+.yellow {
+  color: #fcd132;
+}
+.apply-num-red{
+  color: #e10404;
+  font-weight: 700;
+  font-size: 36rpx;
+}

@@ -1,0 +1,28 @@
+<!--pages/zhongduan/geren/setting/modifyInfo.wxml-->
+<view class="{{open_type==2?'container':'container-dark'}}">
+
+  <view class="{{open_type==2?'emo-box':'emo-box-dark'}}" style="height: {{navBarSystem?navBarSystem.navBarHeight:'32'}}px;">
+
+  </view>
+  <form bindsubmit="saveName">
+    <van-nav-bar title="{{title}}" left-text="{{left_text}}" left-arrow bind:click-left="onClickLeft" custom-class="{{open_type==2?'emo-bar':'emo-bar-dark'}}" custom-style="--nav-bar-icon-color:{{open_type==1?'#ffffff':'#3d3d3d'}};">
+
+      <!-- <view wx:if="{{open_type==2}}" class="{{new_name&&new_name!=nick_name?'btn-confirm':'btn-default'}} " bindtap="saveName" slot="right">完成</view> -->
+      <button wx:if="{{open_type==2}}" class="{{inputChanged?'btn-confirm':'btn-default'}} " form-type="submit" slot="right">完成</button>
+      <view wx:if="{{open_type==1}}" slot="right">
+        <button wx:if="{{supportAvatarInput}}" class="btn-change" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">修改</button>
+        <button wx:else class="opacity-button" class="btn-change" catchtap="shot">修改</button>
+      </view>
+    </van-nav-bar>
+    <!-- <van-search wx:if="{{open_type==2}}" maxlength="15" left-icon='' bind:change="searchChange" value="{{ nick_name }}" background="#ffffff" placeholder="" /> -->
+    <input wx:if="{{open_type==2}}" type="nickname" name="nickname" placeholder="" placeholder-class=" input-name-placeholder" class="input-nick-name" bindinput="searchChange"  maxlength="15" bindnicknamereview="nicknamereview"  value="{{nick_name}}" />
+
+    <view class="img-avatar-box" wx:if="{{open_type==1}}">
+
+      <image class="img-avatar" src="{{avatar_url}}" mode="aspectFit" />
+    </view>
+  </form>
+
+</view>
+<!-- 2023年8月30日 用户隐私保护授权弹窗 -->
+<privacyPop></privacyPop>

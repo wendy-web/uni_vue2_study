@@ -1,0 +1,14 @@
+<!--pages/storeDisplay/index/index.wxml-->
+<view class="index">
+  <van-tabs active="{{ active }}" bind:change="tabChange">
+    <van-tab  wx:for="{{tabs}}" wx:key="key" title="{{item.name}}" name="{{item.id}}"></van-tab>
+   </van-tabs>
+   <!-- swiper -->
+   <swiper class="page-list" current="{{active}}" bind:change="swiperChange">
+			<swiper-item wx:for="{{tabs}}" wx:key="key">
+          <item-list class="item-list" tab="{{item.id}}" bindsign="sign" bindrefresh="refresh"/>
+      </swiper-item>
+  </swiper>
+</view>
+<!-- 签约确认 -->
+<sign-confirm id="signConfirm" bindrefresh="refresh"/>

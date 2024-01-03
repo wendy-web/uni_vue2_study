@@ -1,0 +1,135 @@
+<!--pages/shopDisplay/displayRecord.wxml-->
+<view class="box">
+  <!-- 顶部背景 -->
+  <view class="head-bg"></view>
+  <!-- 标题 -->
+  <view class="title-box">
+    <view class="title-item">
+      <image class="icon-freezer" mode="aspectFit" src="{{icon_freezer}}"></image>
+      <view class="title">中国红牛冰柜陈列</view>
+    </view>
+
+  </view>
+  <!-- 规则说明 -->
+  <view class="rule-box">
+    <view class="rule-item">
+      <view class="rule-title">拍照要求</view>
+      <view class="rule-desc"><text class="color-red">50天</text>内需合格拍照<text class="color-red">{{displayInfo.kpi_num||4}}次</text>，每<text class="color-red">7天</text>合格<text class="color-red">1次</text>即可</view>
+    </view>
+    <view class="rule-item mgt20">
+      <view class="rule-title">陈列要求</view>
+      <view class="rule-desc">冰柜陈列<text class="color-red">≥6个面</text></view>
+    </view>
+    <view class="rule-item mgt20">
+      <view class="rule-title">陈列商品</view>
+      <image class="icon-redbull" src="{{icon_redbull}}" mode="aspectFit"></image>
+    </view>
+  </view>
+</view>
+
+<!-- 已完成的陈列拍照 -->
+<view class="display-list-box" wx:if="{{actInfo}}">
+  <view class="complete-box">
+    <!-- <image class="icon-hook-max" src="{{icon_hook_max}}" mode="aspectFit"></image> -->
+    <view>已完成</view>
+    <view class="times">{{actInfo.s_num||0}}</view>
+    <view>次合格拍照</view>
+  </view>
+  <!-- 历史记录 -->
+  <view class="step-box vertical">
+
+    <block wx:for="{{list}}" wx:key="key" wx:for-item="item" wx:for-index="idx">
+      <!-- 111 {{idx}} -->
+      <view data-step="{{item[item.length-1].status}}" class="{{'status_'+item[item.length-1].status}}">
+
+
+        <!-- 折叠s -->
+        <view class="kind-list__item">
+          <!-- 取消折叠状态 -->
+          <!-- <view id="{{idx}}" class="kind-list__item-hd {{oldopen==idx ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle" data-idx="{{idx}}"> -->
+          <view id="{{idx}}" class="kind-list__item-hd kind-list__item-hd_show" data-idx="{{idx}}">
+            <!-- 主体部分 -->
+            <view class="step-item">
+              <view>
+                <view>
+                  <text class="display-date">{{idx}}</text>
+                  <text wx:if="{{item[item.length-1].status==1}}" class="display-hook">合格</text>
+                  <text wx:else class="display-fork">不合格</text>
+                </view>
+                <view class="user-info-box">
+                  <image class="user-avatar" src="{{item[item.length-1].avatar_url}}" mode="aspectFit"></image>
+                  <!-- 文案显示要根据是否拍摄 、合格不合格来展示 -->
+                  <block wx:if="{{item[item.length-1].uid==userInfo.id&&userInfo.condition==1}}">
+                    <text>{{item[item.length-1].nick_name}}店长最后上传</text>
+                  </block>
+                  <block wx:else>
+                    <text>{{item[item.length-1].nick_name}}最后上传</text>
+                  </block>
+                </view>
+              </view>
+              <!-- 取消箭头 -->
+              <!-- <text class="iconfont {{ oldopen==idx ? 'icondownarrow' : 'iconarrow'}}"></text> -->
+
+
+            </view>
+            <!-- 折叠部分 -->
+            <!-- 取消折叠 -->
+            <!-- <view wx:if="{{oldopen==idx}}" class="kind-list__item-bd {{oldopen==idx ? 'kind-list__item-bd_show' : ''}}"> -->
+            <view  class="kind-list__item-bd kind-list__item-bd_show">
+              <view class="weui-cells weui-cells_show tasklist">
+              <!-- <view class="weui-cells {{oldopen==idx ? 'weui-cells_show' : ''}} tasklist"> -->
+
+                <!-- 图片展示 -->
+                <view class="img-box">
+                  <view class="result-box" wx:for="{{item}}" wx:key="keys" wx:for-item="itm">
+                    <image class="item-img" catchtap="previewImg" data-path="{{itm.pic_url}}" mode="scaleToFill" src="{{itm.pic_url}}"></image>
+                    <view class="{{itm.status==1?'itm-hook':'itm-fork'}} item-status ">{{itm.status==1?'合格':"不合格"}}</view>
+                  </view>
+
+                </view>
+
+              </view>
+            </view>
+            <!-- 折叠end -->
+
+          </view>
+        </view>
+        <!-- 折叠end -->
+
+
+      </view>
+    </block>
+
+
+    <block wx:if="{{list}}">
+      <view wx:for='{{lists}}' wx:key="key" data-step="{{item.status}}" class="{{'status_'+item.status}}">
+        <view class="step-item" bindtap="previewImg" data-path="{{item.pic_url}}">
+          <view>
+            <view>
+              <text class="display-date">{{item.create_time}}</text>
+              <!-- <text class="date-today">今天</text> -->
+              <text wx:if="{{item.status==1}}" class="display-hook">合格</text>
+              <text wx:else class="display-fork">不合格</text>
+            </view>
+            <view class="user-info-box">
+              <image class="user-avatar" src="{{item.avatar_url}}" mode="aspectFit"></image>
+              <!-- 文案显示要根据是否拍摄 、合格不合格来展示 -->
+              <text>{{item.nick_name}} 最后上传</text>
+            </view>
+          </view>
+          <text class="iconfont iconarrow"></text>
+
+        </view>
+      </view>
+
+    </block>
+    <!-- <block wx:else>
+    </block> -->
+
+
+  </view>
+  <!-- 没有更多记录 -->
+  <block wx:if="{{nomore}}">
+    <view class="nomore">~暂无更多记录~</view>
+  </block>
+</view>

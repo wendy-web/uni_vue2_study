@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "van-radio": "@vant/weapp/radio/index",
+    "van-radio-group": "@vant/weapp/radio-group/index",
+    "successPop":"./component/pop/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "扫码领奖励"
+
+}

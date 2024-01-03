@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "van-steps": "@vant/weapp/steps/index",
+    "van-button": "@vant/weapp/button/index",
+    "fh-popup": "../../component/fh_popup/index",
+    "privacyPop":"../../../../component/privacyPop/index",
+    "batchHxPop":"../../component/batchHxPop/index"
+    
+  },
+  "navigationBarTitleText": "订单详情"
+}

@@ -1,0 +1,49 @@
+/* component/xdBenefitPop/index.wxss */
+/* 2023年5月19日 跳转小店有惠弹窗 */
+.benefit-box{
+  box-sizing: border-box;
+  position: relative;
+}
+.pop-bg-reward{
+  width: 702rpx;
+  height: 622rpx;
+}
+.benefit-pop {
+  width: 582rpx;
+  height: 408rpx;
+  background: #ffffff;
+  border-radius: 4rpx;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50rpx 20rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  text-align: center;
+  color: #333333;
+}
+
+.benefit-pop .benefit-btn {
+  width: 280rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  margin-top: 108rpx;
+  background: #f04037;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #ffffff;
+}
+.benefit-close-box{
+  margin-top: 40rpx;
+  text-align: center;
+}
+.benefit-close-box .benefit-icon-close{
+  width: 56rpx;
+  height: 56rpx;
+}

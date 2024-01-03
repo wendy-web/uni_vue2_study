@@ -1,0 +1,35 @@
+<!--component/privacyPop/index.wxml-->
+<view class="privacy" wx:if="{{showPrivacy}}">
+  <view class="content">
+    <!-- 隐私保护图标 -->
+    <image class="icon_privacy_shield" src="{{icon_privacy_shield}}" mode="aspectFit" />
+    <view class="title">用户隐私保护提示</view>
+    <view class="des">
+      感谢您使用本小程序，请您在使用前阅读完整版<text class="link" bind:tap="openPrivacyContract">{{privacyContractName}}</text>了解详细信息。
+    </view>
+    <view class="des">
+      当您点击同意开始使用我们的产品和服务，即表示您已理解并同意该条款内容，我们将保护您的个人信息安全，并为您提供完整的服务。
+    </view>
+    <view class="btns">
+      <button class="item reject" bind:tap="handleDisagree">不同意</button>
+      <button id="agree-btn" class="item agree" open-type="agreePrivacyAuthorization" bindagreeprivacyauthorization="handleAgree">同意</button>
+    </view>
+  </view>
+</view>
+<view class="home-privacy-box" wx:if="{{firstShowPrivacy}}">
+  <view class="content content-page-home">
+    <!-- 隐私保护图标 -->
+    <!-- <image class="icon_privacy_shield" src="{{icon_privacy_shield}}" mode="aspectFit" /> -->
+    <view class="title">用户隐私保护提示</view>
+    <view class="des">
+      感谢您使用本小程序，请您在使用前阅读完整版<text class="link" bind:tap="openPrivacyContract">{{privacyContractName}}</text>了解详细信息。
+    </view>
+    <view class="des">
+      <text>您同意隐私政策仅代表您已了解应用提供的功能，以及功能运行所需的必要个人信息，并不代表您已同意我们可以收集非必要个人信息，非必要个人信息会根据您使用过程中的授权情况单独征求您的同意。相应设备权限并不会默认开启，当涉及重要或敏感的设备权限时，我们会在您使用到相应业务功能时，另行弹窗再次征得您的同意后开启；权限开启后，您还可以随时通过设备设置关闭权限；你不同意开启权限，将不会影响其他非相关业务功能的正常使用。针对个人敏感信息，我们会单独征得您的同意后进行处理。</text>
+    </view>
+    <view class="btns btn-page-home">
+      <button class="item reject" bind:tap="handleDisagree">不同意</button>
+      <button id="agree-btn" class="item agree" open-type="agreePrivacyAuthorization" bindagreeprivacyauthorization="handleAgree">同意</button>
+    </view>
+  </view>
+</view>

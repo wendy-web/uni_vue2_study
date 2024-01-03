@@ -1,0 +1,1180 @@
+/* pages/phaseIII/voucher/voucher.wxss */
+/* 使用记录 */
+.coupon-used-history-box {
+  text-align: right;
+}
+
+.coupon-used-history {
+  width: 126rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  font-size: 22rpx;
+  color: #ffffff;
+  text-align: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  display: inline-block;
+}
+
+.headFixed {
+  background-color: #ffffff;
+  position: sticky;
+  top: 0rpx;
+  z-index: 10;
+}
+
+.exc-tab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10rpx;
+}
+
+.exc-tab-item {
+  flex: 1;
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #4a4a4a;
+  line-height: 44rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.exc-tab-active {
+  color: #E10404;
+}
+
+.exc-bottom-line {
+  width: 60rpx;
+  height: 2rpx;
+  border-bottom: 4rpx solid #ffffff;
+}
+
+.exc-bottom-line-active {
+  border-bottom: 4rpx solid #e10404;
+}
+
+.exc-tips-box {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  color: #5a3000;
+  height: 31px;
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  padding-left: 39rpx;
+  padding-right: 39rpx;
+  font-size: 18rpx;
+  color: #777777;
+  margin-top: 15rpx;
+}
+
+.exc-rule-box {
+  display: flex;
+  align-items: center;
+}
+
+.text-rule {
+  line-height: 34rpx;
+  margin-left: 8rpx;
+}
+
+.icon-warn-grey {
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.icon-arrow-right {
+  width: 20rpx;
+  height: 20rpx;
+}
+
+.filter-box {
+  display: flex;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  padding-right: 20rpx;
+  margin-bottom: 10rpx;
+}
+
+.filter-date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+  color: #4a4a4a;
+}
+
+.icon-date {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.count-module {
+  background-color: #f5f5f5;
+  box-sizing: border-box;
+
+}
+
+.count-box {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 0px 36rpx 14rpx 36rpx;
+}
+
+.count-available {
+  font-size: 28rpx;
+  color: #383838;
+  display: flex;
+  align-items: center;
+}
+
+.count-available-name {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: rgba(0, 0, 24, 0.90);
+}
+
+.count-available-num {
+  font-size: 56rpx;
+  font-weight: 700;
+  color: rgba(0, 0, 24, 0.90);
+  margin-left: 10rpx;
+}
+
+.count-detail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #777777;
+  box-sizing: border-box;
+}
+
+.count-detail-hn {
+  text-align: left;
+}
+
+.count-detail-hn>view {
+  flex: 1;
+}
+
+.text-exc {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #000000;
+}
+
+.text-exc-award {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #ff711f;
+}
+
+.icon-arrow-r-orange {
+  width: 22rpx;
+  height: 22rpx;
+}
+
+.text-detail {
+  color: #ec7204;
+}
+
+.text-green {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #03c48a;
+}
+
+.exc-count-pop {
+  box-sizing: border-box;
+  padding: 10rpx 30rpx 30rpx 30rpx;
+}
+
+.exc-count-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 106rpx;
+  text-align: center;
+}
+
+.exc-count-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 106rpx;
+  text-align: center;
+}
+
+.exc-unit {
+  font-size: 20rpx;
+  font-weight: 400;
+  color: #777777;
+  min-width: 140rpx;
+  text-align: left;
+}
+
+.exc-unused {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #09b351;
+  flex: 1;
+  flex-shrink: 0;
+}
+
+.exc-count-content .exc-unused {
+  font-size: 32rpx;
+}
+
+.exc-used {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #656565;
+  flex: 1;
+}
+
+.exc-count-content .exc-used {
+  font-size: 32rpx;
+}
+
+.exc-expired {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #FF711F;
+  flex: 1;
+}
+
+.exc-count-content .exc-expired {
+  font-size: 32rpx;
+}
+
+.exc-total {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #000000;
+  flex: 1;
+}
+
+.exc-count-content .exc-total {
+  font-size: 32rpx;
+}
+
+.exc-count-content .exc-unit {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #2e2e2e;
+}
+
+.exc-count-border-bottom {
+  border-bottom: 1rpx dashed #dbdada;
+}
+
+.exc-zm-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.exc-zm-left {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  box-sizing: border-box;
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 180rpx;
+  flex: 1;
+  padding: 30rpx 34rpx 30rpx 50rpx;
+}
+
+/* .exc-zm-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+} */
+.exc-zm-tips {
+  opacity: 0.95;
+  font-size: 20rpx;
+  color: #666666;
+  margin-left: 15rpx;
+}
+
+.exc-zm-right {
+  position: relative;
+  box-sizing: border-box;
+  align-self: stretch;
+  width: 182rpx;
+}
+
+.exc-zm-right .icon-zm-exc {
+  /* width: 182rpx;
+  height: 180rpx; */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.exc-zm-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #000000;
+}
+
+.name-max-width {
+  max-width: 100rpx;
+}
+
+.exc-zm-unit {
+  font-size: 26rpx;
+  color: #000000;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.exc-zm-unit-num {
+  font-size: 64rpx;
+  font-weight: 700;
+  color: #000000;
+  line-height: 70rpx;
+}
+
+/* 2023年1月9日 UI改版 end */
+
+.content-bg {
+  background: #f5f5f5;
+}
+
+.content {
+  overflow-y: scroll;
+  z-index: 0;
+  min-height: 460rpx;
+  box-sizing: border-box;
+  padding: 26rpx 0rpx 80px 0rpx;
+  border-radius: 40rpx 40rpx 0px 0px;
+  background-color: #ffffff;
+}
+
+
+
+.mp-dialog {
+  min-height: 60%;
+}
+
+.mp-dialog .weui-dialog {
+  top: 20%;
+  max-height: 70%;
+  min-height: 60%;
+}
+
+.mp-dialog .weui-dialog .weui-dialog__bd {
+  padding: unset;
+  margin: unset;
+}
+
+.checkShopInfo .loc {
+  margin-bottom: 20rpx;
+}
+
+.checkShopInfo .loc .loc_icon {
+  width: 160rpx;
+  height: 174rpx;
+}
+
+.checkShopInfo .weui-dialog {
+  top: 30%;
+  max-height: 50%;
+  min-height: 50%;
+}
+
+.checkShopInfo .btn-list {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 49rpx;
+  z-index: 1;
+}
+
+.checkShopInfo .btn-item {
+  width: 240rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  color: #fff;
+  border-radius: 50rpx;
+  font-weight: normal;
+}
+
+.checkShopInfo .btn-left {
+  background: linear-gradient(#d6d6d6, #878787);
+}
+
+.checkShopInfo .btn-right {
+  background: linear-gradient(#fc0000, #ab0000);
+}
+
+.tabs {
+  color: #333333;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  height: 50px;
+  background-color: #ffffff;
+  margin-top: 10rpx;
+}
+
+.tabs .tab {
+  height: 80rpx;
+  min-width: 200rpx;
+  position: relative;
+}
+
+.tab-item {
+  font-weight: bold;
+  position: relative;
+}
+
+.tab-item-num {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: #fe324b;
+  border-radius: 16rpx;
+  box-sizing: border-box;
+  font-size: 20rpx;
+  color: #ffffff;
+  width: 48rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  text-align: center;
+}
+
+.exc-tab-item-title {
+  position: relative;
+}
+
+.exc-tab-item-num {
+  position: absolute;
+  top: -20rpx;
+  right: -41rpx;
+  background: #fe324b;
+  border-radius: 16rpx;
+  box-sizing: border-box;
+  font-size: 20rpx;
+  color: #ffffff;
+  width: 48rpx;
+  height: 30rpx;
+  line-height: 30rpx;
+  text-align: center;
+
+}
+
+.active {
+  color: #e01b14;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.unactive {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bottom_line {
+  display: inline-block;
+  width: 41px;
+  height: 1px;
+  opacity: 1;
+  border-bottom: 10rpx solid #e3001b;
+  border-radius: 50rpx;
+}
+
+.unbottom_line {
+  display: inline-block;
+  width: 41rpx;
+  height: 1px;
+  opacity: 1;
+  border-bottom: 10rpx solid #ffffff;
+}
+
+.item {
+  background-repeat: no-repeat;
+  /* background-position: center; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 19rpx;
+
+}
+
+.item .title {
+  font-size: 28rpx;
+  font-weight: 700;
+  text-align: left;
+  color: #333333;
+}
+
+.item .name {
+  font-size: 20rpx;
+  font-weight: 400;
+  text-align: left;
+  color: #333333;
+}
+
+.item .explain {
+  font-size: 24rpx;
+  font-weight: 500;
+  text-align: left;
+  color: #999999;
+  padding-left: 14rpx;
+}
+
+.list .item {
+  height: 208rpx;
+  background-size: cover;
+}
+
+.list .item .item_left {
+  height: 208rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 10rpx;
+  padding-bottom: 27rpx;
+  box-sizing: border-box;
+}
+
+.orderNumber {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #008b0a;
+  padding-left: 14rpx;
+}
+
+
+
+.noData {
+  font-size: 20rpx;
+  font-weight: 400;
+  color: #707070;
+}
+
+.stampBox {
+  width: 210rpx;
+  height: 208rpx;
+  position: relative;
+  /* width: 207rpx;
+  height: 185rpx; */
+}
+
+.stamp_25 {
+  width: 115rpx;
+  height: 77rpx;
+  padding-bottom: 20rpx;
+}
+
+.font60 {
+  font-size: 60rpx;
+}
+
+.font36 {
+  font-size: 36rpx;
+}
+
+.font28 {
+  font-size: 28rpx;
+}
+
+.font20 {
+  font-size: 20rpx;
+}
+
+.fontW700 {
+  font-weight: 700;
+}
+
+.fontBold {
+  font-weight: bold;
+}
+
+.fontNormal {
+  font-weight: normal;
+}
+
+/* 活动规则 */
+.activityBox {
+  position: absolute;
+  right: 0;
+  top: 120rpx;
+  width: 150rpx;
+  height: 46rpx;
+  background-color: #ffcc01;
+  opacity: 1;
+  font-size: 24rpx;
+  font-weight: 400;
+  text-align: left;
+  color: #e5281d;
+  display: flex;
+  align-items: center;
+  padding-left: 18rpx;
+  border-radius: 30rpx 0 0 30rpx;
+}
+
+.activityBox .activityBox-icon {
+  width: 26rpx;
+  height: 26rpx;
+  margin-right: 8rpx;
+}
+
+.mgtb20 {
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.font48 {
+  font-size: 48rpx;
+}
+
+.mgt20 {
+  margin-top: 20rpx;
+}
+
+.mgt10 {
+  margin-top: 10rpx;
+}
+
+/* 惠让券列表 */
+.hrList .hrlist-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 170rpx;
+  margin-bottom: 40rpx;
+}
+
+.hrlist-box .hrlist-left {
+  flex: 0.7;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfYAAACqBAMAAACt/nC3AAAAHlBMVEUAAAD/NGX/F1D/FU//GFD/////GVH/4ej/gqH/t8m1kLKbAAAABXRSTlMA+3UrvQKWD/QAAAFLSURBVHja7dQ9agJhFEbhFz9XYEJslUiwHHcQG8HS4mJcQEydQnADgpbuWGdcxjnPDg73J09tsTni5GV9OxXNrktvfimew3eeRtMimgxj5y1873+WNObYa//+mTHx2of4a1aFlWVhZVtY+S0s25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ8pfYWVbWFkWVlaFlfGlmM4fadBnd5h0yfxURPcuyWhaQPu39L6IF/8zS6+tb7y133UZtMXmiJPkAVZpca4aOAaVAAAAAElFTkSuQmCC");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding-left: 20rpx;
+}
+
+.hrlist-left .hrlist-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  text-align: left;
+  color: #000018;
+}
+
+.hrlist-left .hrlist-tips {
+  font-size: 24rpx;
+  color: #000018;
+  margin: 6rpx 0;
+}
+
+.hrlist-tips .title-redbull {
+  font-size: 22rpx;
+  color: #666666;
+}
+
+.hrlist-left .hrlist-time {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.hrlist-box .hrlist-right {
+  flex: 0.3;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANAAAACqBAMAAAAuM9zgAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAwUExURUdwTP8ZUP////8bUv8YUP8gVv8ZUf8XUP////8ZUf+/zv9qj//c5f+qvv89bP+QqyeJMj0AAAAIdFJOUwCZyOory3tdYbD+AwAAAQpJREFUeNrt3LEJwmAQhuEDgxnBFRwgCloJgrWFXSCNC2SMI0jqWNplArVwAMFKLG1dIZJSk4ADCHeIvP8CDwjfm8oTEZlsTd9oIN0LCjV9m/u4g/q1Gr/LqoXmZ2tIb7O3E07NHc0ikUVS2kNaicQejuapDD0czZZOkD68oIMX9PSCdkDfQwUQkDvEYIFoHRCtAwJiR0C0DgiIHQHROiAgBgtE64BoHRAQrQOidUBA7AiI1gEBsSMgWgcExGCBaB0QrQMCYkdAtA4IiB0B0TogoJ+Drl7Q/t/+wJ4tJTl5QHkqwbp2gKrmhEbs8MtFzWmLXmkOtactJDxaO5eoOwti/En6nB/xOajyAvQzlsbS3Wc4AAAAAElFTkSuQmCC");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 100%;
+  font-size: 20rpx;
+  color: #e3001b;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hrlist-right .icon-hr {
+  width: 155rpx;
+  height: 49rpx;
+}
+
+.hrlist-right .hr-num {
+  font-size: 50rpx;
+  font-weight: bold;
+}
+
+/* 活动券列表 */
+.actList {
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+.actList .actlist-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 200rpx;
+  margin-bottom: 30rpx;
+  box-sizing: border-box;
+}
+
+.actlist-box .actlist-left {
+  flex: 0.7;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfYAAACqBAMAAACt/nC3AAAAHlBMVEUAAAD/NGX/F1D/FU//GFD/////GVH/4ej/gqH/t8m1kLKbAAAABXRSTlMA+3UrvQKWD/QAAAFLSURBVHja7dQ9agJhFEbhFz9XYEJslUiwHHcQG8HS4mJcQEydQnADgpbuWGdcxjnPDg73J09tsTni5GV9OxXNrktvfimew3eeRtMimgxj5y1873+WNObYa//+mTHx2of4a1aFlWVhZVtY+S0s25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ8pfYWVbWFkWVlaFlfGlmM4fadBnd5h0yfxURPcuyWhaQPu39L6IF/8zS6+tb7y133UZtMXmiJPkAVZpca4aOAaVAAAAAElFTkSuQmCC");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding-left: 20rpx;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+}
+
+.actlist-left .actlist-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  color: #000018;
+}
+
+.actlist-left .actlist-tips {
+  font-size: 12px;
+  color: #666666;
+  margin: 1px 0;
+}
+
+.actlist-box .actlist-right {
+  flex: 0.3;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANAAAACqBAMAAAAuM9zgAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAwUExURUdwTP8ZUP////8bUv8YUP8gVv8ZUf8XUP////8ZUf+/zv9qj//c5f+qvv89bP+QqyeJMj0AAAAIdFJOUwCZyOory3tdYbD+AwAAAQpJREFUeNrt3LEJwmAQhuEDgxnBFRwgCloJgrWFXSCNC2SMI0jqWNplArVwAMFKLG1dIZJSk4ADCHeIvP8CDwjfm8oTEZlsTd9oIN0LCjV9m/u4g/q1Gr/LqoXmZ2tIb7O3E07NHc0ikUVS2kNaicQejuapDD0czZZOkD68oIMX9PSCdkDfQwUQkDvEYIFoHRCtAwJiR0C0DgiIHQHROiAgBgtE64BoHRAQrQOidUBA7AiI1gEBsSMgWgcExGCBaB0QrQMCYkdAtA4IiB0B0TogoJ+Drl7Q/t/+wJ4tJTl5QHkqwbp2gKrmhEbs8MtFzWmLXmkOtactJDxaO5eoOwti/En6nB/xOajyAvQzlsbS3Wc4AAAAAElFTkSuQmCC");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  font-size: 20rpx;
+  color: #e3001b;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+}
+
+.actlist-right .act-title {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.actlist-right .act-num {
+  font-size: 50rpx;
+  font-weight: bold;
+}
+
+/* 操作按钮 */
+.buyo-btn {
+  position: fixed;
+  bottom: 40rpx;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 670rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: #e3001b;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  color: #ffffff;
+  text-align: center;
+  z-index: 100;
+}
+
+/* 兑换券过期时间 */
+.exp-time {
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #e10404;
+}
+
+.weui-mask {
+  z-index: 9999;
+}
+
+.voucherExpPop {
+  z-index: 10000;
+  left: 20px;
+  right: 20px;
+  width: unset;
+  background-color: unset;
+  align-items: center;
+  top: 51%;
+  padding-bottom: 2px;
+  box-sizing: border-box;
+}
+
+.expPop-box {
+  /* height: 930rpx; */
+  background-color: #fff;
+  border-radius: 40px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
+.voucherExpPop .expPop-content {
+  border: 2rpx solid #facdad;
+  border-radius: 40px;
+  height: 100%;
+  padding: 25px 17px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  background-color: #fff9e5;
+}
+
+.color-orange {
+  color: #ff2e00;
+}
+
+.expPop-content .expPop-title {
+  font-size: 56rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #000000;
+  text-align: center;
+}
+
+.subtitle {
+  font-size: 38rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #ff2e00;
+  text-align: center;
+}
+
+.expPop-voucher {
+  margin-top: 30rpx;
+  background: #fee2e2;
+  border-radius: 16rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12rpx 6rpx;
+  width: 100%;
+}
+
+.expPop-voucher .icon-voucher {
+  height: 140rpx;
+  width: 100%;
+}
+
+.expPop-detail {
+  font-size: 30rpx;
+  font-weight: 500;
+  margin-top: 30rpx;
+  width: 100%;
+  /* max-width: 300px; */
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkcAAABNAQMAAACWiVL7AAAABlBMVEUAAAD/LgAQ+IQOAAAAAnRSTlMAXvpAscsAAAAkSURBVFjD7cIxDQAACAMwHODfDcI4MMG1tGkBAAAAAJBle34eauQsBTUcJbcAAAAASUVORK5CYII=");
+  background-repeat: repeat-y;
+  background-size: 100% 60rpx;
+  color: #000000;
+  text-align: justify;
+  line-height: 60rpx;
+  box-sizing: border-box;
+  padding: 0 5px;
+}
+
+.expPop-detail view {
+  color: #000000;
+  text-align: justify;
+  line-height: 30px;
+  height: 30px;
+  width: 100%;
+  /* opacity: 0.37; */
+  /* border-bottom: 1px dashed #ffaf92; */
+}
+
+.expPop-btn {
+  margin-top: 60rpx;
+  width: 322rpx;
+  height: 112rpx;
+}
+
+.expPop-slogan {
+  position: absolute;
+  bottom: 5px;
+  right: 2px;
+  width: 166rpx;
+  height: 110rpx;
+  /* opacity: 0.24; */
+  z-index: 10000;
+}
+
+@media screen and (max-width: 320px) {
+  .expPop-detail {
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 30rpx;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 452px) {
+  .expPop-detail {
+    max-width: 500px;
+  }
+}
+
+.icon-close {
+  z-index: 10000;
+  height: 74rpx;
+  width: 74rpx;
+  margin-top: 20px;
+}
+
+/* 2021年10月28日 活动券列表改为复选框 */
+.check-box {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.check-box .weui-icon-checked {
+  width: 16px;
+  height: 16px;
+}
+
+/* 27周年1元乐享 */
+.stamp_27 {
+  width: 140rpx;
+  height: 87rpx;
+}
+
+.flex-box {
+  display: flex;
+}
+
+.nick-name-width {
+  max-width: 150rpx;
+  display: inline-block;
+}
+
+/* 东莞陈列活动新增活动券类型：105战马 */
+.bg-stamp {
+  position: absolute;
+  width: 180rpx;
+  height: 180rpx;
+  z-index: 0;
+}
+
+/* 战马图标 新 */
+.icon-new {
+  position: absolute;
+  top: -20rpx;
+  right: -25rpx;
+  width: 80rpx;
+  height: 39rpx;
+}
+
+.heartbeat {
+  animation: heartbeat 1s ease-in-out infinite both;
+}
+
+/* ----------------------------------------------
+ * Generated by Animista on 2022-5-27 18:51:33
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+/**
+ * ----------------------------------------
+ * animation heartbeat
+ * ----------------------------------------
+ */
+
+@keyframes heartbeat {
+  from {
+    transform: scale(1);
+    transform-origin: center center;
+    animation-timing-function: ease-out;
+  }
+
+  10% {
+    transform: scale(1);
+    animation-timing-function: ease-out;
+  }
+
+  20% {
+    transform: scale(1.4);
+    animation-timing-function: ease-out;
+  }
+
+  40% {
+    transform: scale(1);
+    animation-timing-function: ease-out;
+  }
+
+  60% {
+    transform: scale(1.4);
+    animation-timing-function: ease-out;
+  }
+
+  100% {
+    transform: scale(1);
+    animation-timing-function: ease-out;
+  }
+}
+
+/* 2023年2月6日 红牛28周年 */
+.stamp_28 {
+  position: absolute;
+  bottom: 0rpx;
+  width: 210rpx;
+  height: 208rpx;
+}
+
+.list .item-bg-left {
+  background-size: 540rpx 210rpx;
+  background-position: left;
+}
+
+.act-info {
+  z-index: 2;
+  text-align: center;
+}
+
+/* 2023年7月7日 卡券累计+筛选时分秒 */
+.count-available-box {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.count-available-box .count-total {
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #777777;
+}
+
+.count-available-box .count-total-num {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #777777;
+}
+
+/* 2023年8月14日 产品兑换券统计 */
+.flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.box-coupon-item {
+  position: relative;
+  z-index: 1;
+  height: 208rpx;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  box-sizing: border-box;
+}
+
+.box-coupon-item .bg-box-coupon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.box-coupon-item .box-coupon-inner {
+  position: relative;
+  margin: 16rpx 20rpx 0rpx 40rpx;
+  box-sizing: border-box;
+  display: flex;
+  height: 160rpx;
+  /* background-color: teal; */
+}
+
+.box-coupon-item .box-coupon-bar {
+  width: 33rpx;
+  height: 166rpx;
+}
+
+.box-coupon-item-left {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #000000;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 470rpx;
+}
+
+.box-coupon-item-left .explain {
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Medium;
+  font-weight: 500;
+  text-align: left;
+  color: #999999;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.box-coupon-item-right{
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.box-coupon-item-right .box-coupon-stamp{
+  width: 165rpx;
+  height: 127rpx;
+}
+
+.bg-type9-stamp {
+  position: absolute;
+  bottom: 0rpx;
+  top: 0rpx;
+  margin: auto;
+  width: 218rpx;
+  height: 214rpx;
+}
+.actlist-item-box{
+  display: flex;
+  align-items: center;
+  width: 100%;
+}

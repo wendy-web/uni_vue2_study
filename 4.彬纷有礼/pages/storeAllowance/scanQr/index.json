@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+  },
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "扫码领现金券",
+  "onReachBottomDistance": 100
+}

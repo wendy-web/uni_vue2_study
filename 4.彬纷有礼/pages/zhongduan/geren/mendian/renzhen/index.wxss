@@ -1,0 +1,476 @@
+.page {
+  background-color: #F6F6F6;
+}
+
+.imgIcon {
+  width: 40rpx;
+  height: 40rpx;
+  top: 4rpx;
+  position: relative;
+  padding-right: 10rpx;
+
+}
+
+.bdIcon {
+  width: 130rpx;
+  height: 50rpx;
+}
+
+.bgGrey10 {
+  background: #F6F6F6;
+  height: 10px;
+  width: 100%;
+
+}
+
+.rzIcon {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.storeLogo {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.weui-form {
+  padding: 0px;
+}
+
+.weui-form .weui-cell {
+  min-height: 90rpx;
+}
+
+.weui-cells__group_form .weui-label {
+  max-width: none;
+  margin-right: 8px;
+  width: 220rpx;
+}
+
+.weui-input {
+  text-align: right;
+  font-size: 28rpx;
+}
+
+.weui-form__control-area {
+  margin: 0px;
+}
+
+.pdlr32 {
+  padding-left: 64rpx;
+  padding-right: 64rpx;
+}
+
+.mt200 {
+  margin-top: 200rpx;
+}
+
+/* .borderTop:before {
+  border-top: none;
+}
+
+.weui-cells__group_form .weui-cell::before,
+.weui-cells__group_form .weui-cells::before {
+  left: none !important;
+  right: none !important;
+
+} */
+
+.weui-cells::before {
+  border-top: none;
+
+}
+
+/* .weui-dialog__hd {
+  padding: 0px;
+} */
+.pd0 {
+  padding: 40rpx 0px;
+}
+
+
+.weui-dialog__bd {
+  margin-bottom: 18rpx;
+}
+
+.redbullBG {
+  height: 280rpx;
+  padding-bottom: 20rpx;
+}
+
+.redbtn {
+  border-radius: 25px;
+  background-color: #c21316;
+  color: white;
+  font-size: 32rpx;
+  padding: 5rpx 70rpx;
+
+}
+
+.btnDisable {
+  border-radius: 25px;
+  background-color: #e6e6e6 !important;
+  font-size: 32rpx;
+  width: 600rpx;
+  padding: 5rpx 70rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+  border: 1px solid #e6e6e6;
+  color: #C9C9C9;
+}
+
+.btnDisable:after {
+  border: unset;
+}
+
+.redbtnWith {
+  width: 300rpx;
+  height: 70rpx;
+}
+
+.pdtb20 {
+  padding-bottom: 20rpx;
+  padding-top: 20rpx;
+}
+
+.grey {
+  font-size: 27rpx;
+  color: grey;
+}
+
+.locs {
+  width: 23rpx;
+  height: 32rpx;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.tips {
+  color: #E02020;
+}
+
+.weui-cells__group_form .weui-cell {
+  padding: 15rpx 20rpx;
+}
+
+.weui-cells_form {
+  font-size: 24rpx;
+}
+
+.weui-cells_form .weui-label {
+  color: #333;
+}
+
+.font-weight700 {
+  font-weight: 700;
+}
+
+.mt40 {
+  margin-top: 40rpx;
+}
+
+/* .weui-cell::before {
+  border-top: 0px;
+} */
+
+.weui-cells::after {
+  border-bottom: 0px;
+}
+
+.greenBtn {
+  width: 110rpx;
+  min-height: 20px;
+  height: 45rpx;
+  font-size: 20rpx;
+  line-height: 45rpx;
+  background: rgba(109, 212, 0, 1);
+  border-radius: 20rpx;
+}
+
+.weui-btn_cell {
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 0px 16rpx;
+}
+
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: unset;
+}
+
+.weui-form__opr-area:last-child {
+  margin-bottom: 45rpx;
+
+}
+
+.teams {
+  color: #333;
+  font-weight: 700;
+  font-size: 34rpx;
+
+}
+
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50rpx;
+}
+
+.ident {
+  width: 120rpx;
+  height: 40rpx;
+}
+
+.nickname {
+  font-size: 40rpx;
+  font-weight: 400;
+  color: #333;
+  line-height: 56rpx;
+  max-width: 320rpx;
+  -webkit-line-clamp: 1;
+
+}
+
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mt-15 {
+  margin-top: -15rpx;
+}
+
+.weui-cell {
+  padding: 20rpx 32rpx;
+}
+
+.nicknameInput {
+  width: 327rpx;
+  height: 52rpx;
+  /* border: 1px solid #676767; */
+  border-bottom: 1px solid #EBEBEB;
+  margin-bottom: 20rpx;
+}
+
+.inputBox {
+  display: flex;
+  justify-content: center;
+}
+
+.identity {
+  width: 120rpx;
+  height: 40rpx;
+  background: linear-gradient(14deg, #feb444 0%, #f48700 100%);
+  border-radius: 26rpx;
+  color: white;
+  margin-top: -20rpx;
+  font-size: 24rpx;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dianyuanIcon {
+  width: 120rpx;
+  height: 40rpx;
+  background: linear-gradient(180deg, rgba(254, 201, 22, 1) 0%, rgba(248, 139, 10, 1) 100%);
+  border-radius: 26rpx;
+  color: white;
+  margin-top: -20rpx;
+  font-size: 24rpx;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.font32 {
+  font-size: 30rpx;
+}
+
+.font28 {
+  font-size: 28rpx;
+}
+
+.weui-cells__group_form .weui-cell::before,
+.weui-cells__group_form .weui-cells::before {
+  right: 26rpx;
+
+}
+
+.row-reverse {
+  display: flex;
+  /* flex-direction: row-reverse; */
+
+}
+
+.weui-cell_access .weui-cell__ft {
+  padding-right: unset;
+}
+
+.h-pop {
+  height: 747rpx;
+  padding-bottom: unset;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.ad-custom-position {
+  bottom: 180rpx;
+}
+
+.mg-pop {
+  /* margin: 60rpx 0px; */
+  margin: unset;
+}
+
+.flex-around {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+}
+
+.weui-cell__bd {
+  min-height: 20px;
+}
+
+.textareaHeight {
+  height: 40px !important;
+  line-height: 40px !important;
+
+}
+
+.display-flex {
+  display: flex;
+  align-items: center;
+}
+
+/* iphone 11 width414 */
+/* 
+@media screen and (min-width: 414px) {
+  .page{
+    padding-top:50px;
+  }
+} */
+
+.pdt0 {
+  padding-top: 0px;
+}
+
+.pdb0 {
+  padding-bottom: 0px;
+
+}
+
+.height43 {
+  height: 40%;
+}
+
+/* activity pop */
+.WarHorse {
+  width: 600rpx;
+  height: 800rpx;
+}
+
+.pop-container {
+  background-color: unset;
+  width: 600rpx;
+  padding-top: 44rpx;
+  margin: 0 auto;
+}
+
+.icon-close {
+  display: inline-block;
+  position: absolute;
+  right: 0rpx;
+  top: 5rpx;
+
+}
+
+.icon-close text {
+  font-size: 60rpx;
+  /* background-color: #f3f3f3; */
+  border-radius: 50%;
+  padding: 0rpx;
+
+}
+
+.icon-close image {
+  width: 77rpx;
+  height: 77rpx;
+
+}
+
+/* 2021年6月25日11:23:13 */
+.shopQr_head {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  background-color: unset;
+  height: 425px;
+}
+.add-crew{
+  height: 100rpx;
+  width: 400rpx;
+  /* background-color: rebeccapurple; */
+  position: absolute;
+  bottom:25px;
+  left: 0;
+  right: 0;
+  z-index: 20;
+}
+.close-Pop{
+  width:25px ;
+  height:224rpx ;
+  position: fixed;
+  top: 50%;
+  height: 455px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 1001;
+}
+.btn-getphone{
+  width: 100%;
+  border: unset;
+  padding: unset;
+  background-color:transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+.btn-getphone::after{
+  border: unset;
+}
+.btn-getphone::before {
+  content: " ";
+  position: absolute;
+  left: 32px;
+  top: 0;
+  right: 26rpx;
+  height: 1px;
+  border-top: 1px solid var(--weui-FG-3);
+  color: var(--weui-FG-3);
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
+  z-index: 2;
+}
+.btn-getphone-item{
+  flex: 1;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 27rpx;
+  color: grey;
+}

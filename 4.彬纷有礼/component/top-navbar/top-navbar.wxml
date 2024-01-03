@@ -1,0 +1,42 @@
+<!--component/top-navbar/top-navbar.wxml-->
+<view class="navBar-wapper" style="background: {{backgroundColor}};height: {{statusBarHeight+ navBarHeight}}px;--height:44px;--navBarHeight:{{statusBarHeight+ navBarHeight}}px;">
+  <view class="nav-bar__placeholder" style="padding-top: {{statusBarHeight+ navBarHeight}}px;visibility: hidden;">
+  </view>
+  <view class="navBar-container" style="--bgcolor:{{backgroundColor}}">
+    <!-- 状态栏 -->
+    <view class="navBar-head " style="--headheight:{{statusBarHeight}}px"></view>
+    <!-- 自定义背景图 -->
+    <image wx:if="{{bgImg}}" src="{{bgImg}}" mode="contain" class="bgImg"></image>
+    <!-- 导航栏 -->
+    <view class="navBar-body" style="--bodyheight:{{navBarHeight}}px;" style="{{textLeft?'justify-content: flex-start;':''}}">
+      <!-- 左边返回 | 主页 -->
+      <block wx:if="{{textLeft}}">
+        <view class="left-icon" style="height:{{navBarHeight}}px;width:{{capsulePosition.width}}rpx;">
+          <view bindtap="back" class="navigator nav-bar__button nav-bar__btn_goback {{iconTheme}}" wx:if="{{!isShowHome}}"></view>
+          <navigator hover-class="none" class="nav-bar__button nav-bar__btn_gohome {{iconTheme}}" open-type="switchTab" url="/pages/tabBar/shouye/index" wx:else />
+        </view>
+      </block>
+      <block wx:else>
+        <view class="left-icon" style="height:{{navBarHeight}}px;width:{{capsulePosition.width}}px;">
+          <view bindtap="back" class="navigator nav-bar__button nav-bar__btn_goback {{iconTheme}}" wx:if="{{!isShowHome}}"></view>
+          <navigator hover-class="none" class="nav-bar__button nav-bar__btn_gohome {{iconTheme}}" open-type="switchTab" url="/pages/tabBar/shouye/index" wx:else />
+        </view>
+      </block>
+      <!-- 中间标题 -->
+      <view class="navBarTitle {{textCenter ? 'textCenter' : ''}}" style="width:{{contentWidth}}px">
+        <block wx:if="{{title}}">
+          <text class="{{iconTheme=='white'?'color-white':'color-black'}}">{{title}}</text>
+        </block>
+        <view class='nav-bar-search' style="height:{{capsulePosition.height}}px;" wx:elif="{{searchBar}}" bindtap="search">
+          <view class='nav-bar-search__icon' />
+          <view class='nav-bar-search__input'>{{searchText}}</view>
+        </view>
+        <view wx:else style="width:{{contentWidth}}px">
+          <slot name="content"></slot>
+        </view>
+      </view>
+      <!-- 胶囊占位 -->
+      <view class="capsuleWidth" style="width:{{menuWidth}}px;height:{{navBarHeight}}px;"></view>
+    </view>
+  </view>
+</view>

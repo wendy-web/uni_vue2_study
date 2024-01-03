@@ -1,0 +1,110 @@
+<!--pages/zhongduan/geren/bangding/mobile.wxml-->
+<view class="page">
+	<!--step = 1 更换手机号 -->
+	<block wx:if="{{step==1}}">
+
+		<view class="weui-flex">
+			<view class="weui-flex__item text-center mt30">
+				<view>
+					<image mode="aspectFit" class="avatar" src="{{icon_changePhone}}"></image>
+				</view>
+				<view class="mt30 color333">您当前的手机号{{userdata.phoneStr}}</view>
+				<view class="font24 mt30">更换手机号后，个人其它信息不变</view>
+				<view class="mt30">
+					<button class="weui-btn redbtn" bindtap="stepTwo">更换手机号</button>
+				</view>
+			</view>
+		</view>
+	</block>
+	<!-- step = 2 发送验证码 -->
+	<block wx:elif="{{step==2}}">
+		<view class="weui-form__control-area">
+			<view class="weui-cells__group weui-cells__group_form">
+				<view class="weui-cells weui-cells_form">
+					<view class="weui-cell weui-cell_active">
+						<view class="weui-cell__hd"><label class="iconfont iconphone"></label></view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" type="number" maxlength="11" bindinput="onInput"
+								placeholder-class="weui-input__placeholder" placeholder="请输入新手机号" value="{{newPhone}}" />
+
+						</view>
+						<view class="weui-cell__ft">
+							<view wx:if="{{showClearBtn}}" class="weui-btn_reset weui-btn_icon weui-btn_input-clear"
+								bindtap="onClear">
+								<i class="weui-icon-clear"></i>
+							</view>
+						</view>
+					</view>
+					<view class="weui-cell weui-cell_active weui-cell_vcode afterline ">
+						<view class="weui-cell__hd"><label class="iconfont iconmessage"></label></view>
+						<view class="weui-cell__bd">
+							<input class="weui-input" type="number" value="{{code}}" placeholder="输入验证码" placeholder-class="weui-input__placeholder"
+								bindinput="inputVcode" />
+						</view>
+						<view class="weui-cell__ft">
+							<!-- <a class="weui-btn weui-btn_default weui-vcode-btn" bindtap="getVcode">获取验证码</a> -->
+							<block wx:if="{{sendMsgTimes<2}}">
+								<block wx:if="{{!resend}}">
+									<a class="weui-btn weui-btn_default weui-vcode-btn vcode-btn" bindtap="getVcode">获取验证码</a>
+								</block>
+								<block wx:else>
+									<a class="weui-btn weui-btn_default weui-vcode-btn  grey-btn">重新发送({{countdown}}s)</a>
+								</block>
+							</block>
+							<block wx:else>
+								<button class="getPhoneNumber-btn" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">获取验证码</button>
+							</block>
+
+						</view>
+					</view>
+					<view class="text-center mt30">
+						<button class="weui-btn redbtn" bindtap="changeMobile">确认更换</button>
+					</view>
+				</view>
+			</view>
+		</view>
+	</block>
+	<!-- step = 3 修改成功 -->
+	<block wx:else>
+		<view class="weui-flex">
+			<view class="weui-flex__item text-center mt30">
+				<view>
+					<image mode="aspectFit" class="avatar" src="{{icon_changePhone}}"></image>
+				</view>
+				<view class="mt30 color333">更换手机号成功</view>
+				<view wx:if="{{phone}}" class="mt30 color333">当前绑定手机号：{{phone}}</view>
+
+
+
+			</view>
+		</view>
+	</block>
+</view>
+<!-- 更换电话弹窗 -->
+<view class="fadeIn" wx:if="{{cpPop}}">
+	<view class="weui-mask"></view>
+	<!-- <view class="weui-dialog" style="max-height:55%;height:100%">
+		<view class="mglr40 popBG"></view> -->
+	<view class="weui-dialog">
+		<view class="mg-pop">
+			<image mode="aspectFit" bindload="imgLoaded" src="{{cpPopUrl}}"></image>
+		</view>
+		<view class="flex-end">
+			<image mode="acspectFit" class="cpPopbtn mgr20" src="{{cpPopBtl}}" bindtap="close"></image>
+			<image mode="acspectFit" class="cpPopbtn mgl20" bindload="imgLoaded" bindtap="wtachAd" src="{{cpPopBtr}}"></image>
+		</view>
+	</view>
+</view>
+<!-- 已报名兑奖排行榜不可转店 -->
+<activityPop show="{{storeRankingPop}}" bgImg="{{storeRankingImg}}">
+	<view class="colorFFF3C1 activityContainer">
+		<view class="fontBold font40 letter-space colorFFF3C1"><text>您已报名参加</text></view>
+		<view class="fontBold font40 letter-space colorFFF3C1"><text>“二十八星宿封神榜”活动</text></view>
+		<view class="fontBold font40 letter-space colorFFF3C1"><text>暂不更改手机号</text></view>
+		<view class="iKnowBox" bindtap="close">
+			<image class="iKnow" mode="aspectFit" src="{{iKnowImg}}"></image>
+		</view>
+	</view>
+</activityPop>
+<!-- 2023年8月30日 用户隐私保护授权弹窗 -->
+<privacyPop></privacyPop>

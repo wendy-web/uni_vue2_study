@@ -1,0 +1,117 @@
+<import src="utils/scratch.wxml" />
+<view class="hn-scratch">
+	<!-- 顶部header -->
+	<view class="top-header">
+		<!-- 红牛25周年 -->
+		<image class="top-header-title-01" src="{{COS_URL+'/public/img/to2/ggl/title2.png'}}" />
+		<!-- 红牛25周年 -->
+		<image class="top-header-title-02" src="{{COS_URL+'/public/img/to2/ggl/title1.png'}}" />
+		<!-- 金幣輝煌 -->
+		<image class="top-header-title-logo" src="{{COS_URL+'/public/img/to2/ggl/rain.png'}}" mode="widthFix" />
+	</view>
+	<!-- 底部大背景 -->
+	<image class="bottom-bg" src="{{COS_URL+'/public/img/to2/ggl/bg1.png'}}" />
+	<!-- 刮刮樂相關 -->
+	<view class="xh-scratch-box" >
+		<!-- 底部背景 -->
+		<image class="xh-scratch-box-bg" src="{{COS_URL+'/public/img/to2/ggl/gglBG0927.png'}}" />
+		<!-- 刮奖背景 -->
+		<image class="xh-scratch-body" src="{{COS_URL+'/public/img/to2/gglbody.png'}}" />
+		<image class="xh-scratch-copy" wx:if="{{!isInit}}" src="{{COS_URL+'/public/img/to2/ggl/mask.jpg'}}" />
+		<!-- 中奖内容 -->
+		<view class="xh-scratch-content" wx:if="{{isInit}}">
+			{{task.title}} <text class="money">{{task.messge}}</text>
+		</view>
+		<!-- scrath 刮刮乐组件-->
+		<template wx:if="{{!isModelShow&&!isModelShow2}}" is="scratch" data="{{scratch, isScroll}}"></template>
+	</view>
+	<!-- 刮完后弹窗  -->
+	<view class="scratch-model" style="display:{{isModelShow?'block':'none'}}" >
+		<view class="scratch-model-body xhOldDialog">
+			<image class="scratch-model-bg" src="{{COS_URL+'/public/img/to2/ggl/gglPopBG0927.png'}}" />
+			<image class="scratch-model-icon-bg" src="{{COS_URL+'/public/img/to2/gglbody.png'}}" />
+			<view class="scratch-model-icon" wx:if="{{isInit}}">
+				{{task.title}} <text class="money">{{task.messge}}</text>
+			</view>
+			<!-- 弹窗按钮 -->
+			<view class="scratch-model-tools">
+				<view class="click-to-claim" bindtap="clickCaim">
+					点击领取
+				</view>
+			</view>
+		</view>
+	</view>
+	<!-- 幕布 -->
+	<view class="scratch-model-black" style="display:{{isModelShow||isModelShow2?'block':'none'}}"></view>
+	<!-- 视频广告弹窗 -->
+	<videoAd videoPop="{{videoPop}}" videoUrls="{{videoUrl}}"  bind:myevent="playGame"></videoAd>
+	<!-- 领奖后弹窗 -->
+	<view class="prize-after-model" style="display:{{isModelShow2?'block':'none'}}" >
+		<view class="prize-after-model-body xhOldDialog">
+			<image class="prize-after-model-bg" src="{{COS_URL+'/public/img/to2/ggl/gglPopBG0928.png'}}" mode="widthFix"/>
+			<view class="prize-after-model-info text-center"> 
+				<view class="msg">恭喜您累计获得</view>
+				<view class="msg">￥<text class="fontSize60">{{totalMoney}}</text></view>
+				<view class="rewardHistory">
+					<text>{{rewardHistory}}</text>
+				</view>
+			</view>
+			<!-- 弹窗按钮 -->
+			<view class="prize-after-model-tools">
+				<view class="mgr10">
+					<a class="weui-dialog__btn  rebBtn goYuer" data-go="1" bindtap="goYuer">{{task2?'放弃翻倍':'点击查看余额'}}</a>
+				</view>
+				<view wx:if="{{task2}}"  class="ml-20" bindtap="moreTask">
+					<css-animation class="animation-qi" width="130" height="75" count="35" duration="7" url="{{COS_URL+'/public/img/phaseIII/css_sprites091003.png'}}"></css-animation>
+				</view>
+				<view wx:else class="mgl10">
+					<a class="weui-dialog__btn goldBtn">
+						<navigator url="/pages/zongduan/saoma/index" open-type="redirect" hover-class="other-navigator-hover  goScan">继续开箱扫码</navigator>
+					</a>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+
+<!-- 跳转余额二次确认弹窗 -->
+<view class="fadeIn" wx:if="{{reconfirmPop}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog reconfirmPop">
+		<view class="weui-dialog__hd"><strong class="weui-dialog__title brown-text">红包<text class="slant">还</text>未翻倍,确定要离开吗？</strong></view>
+		<view class="weui-dialog__bd">
+			<!-- 红包翻倍图片 -->
+			<view class="flex-box">
+				<view>
+					<image mode="aspectFit" src="{{hongbao}}"></image>
+				</view>
+				<view class="flex-cloumn">
+					<view class="brown-text">翻倍</view>
+					<image mode="aspectFit" style="height:38rpx;" src="{{arrow}}"></image>
+				</view>
+				<view>
+					<image mode="aspectFit" src="{{hongbao}}"></image>
+				</view>
+				<view>
+					<image mode="aspectFit" src="{{hongbao}}"></image>
+				</view>
+			</view>
+		</view>
+		<view class="weui-flex">
+			<view class="weui-flex__item text-center flex-align-center">
+				<view>
+					<a class="weui-dialog__btn  greyBtns goYuer" data-go="2" bindtap="goYuer">放弃翻倍</a>
+				</view>
+			</view>
+			<view class="weui-flex__item text-center">
+				<view class="scaleBox">
+					<view class="scaleBtn pdl50 click_double" data-pop="1" bindtap="moreTask">
+						<css-animation class="animation-qi" width="250" height="150" count="35" duration="7" url="{{btnurl}}"></css-animation>
+					</view>
+				</view>
+
+			</view>
+		</view>
+	</view>
+</view>

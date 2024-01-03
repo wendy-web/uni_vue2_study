@@ -1,0 +1,568 @@
+/* pages/warhorse//index/index.wxss */
+@import '../style.wxss';
+
+.container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/zm_bg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.title {
+  position: fixed;
+  left: 36rpx;
+  width: 527rpx;
+  height: 270rpx;
+  z-index: 2;
+  /* bottom: 859rpx; */
+  top: 159rpx;
+}
+
+.warhorseImg {
+  width: 500rpx;
+  height: 675rpx;
+  position: fixed;
+  right: 2rpx;
+  /* bottom: 511rpx; */
+  top: 30rpx;
+  transform: rotate(-12deg);
+}
+
+.ribbonImg {
+  width: 281rpx;
+  height: 297rpx;
+  position: fixed;
+  bottom: 372rpx;
+  left: 100rpx;
+}
+
+.zmhbImg {
+  width: 236rpx;
+  height: 242rpx;
+  position: fixed;
+  /* bottom: 613rpx; */
+  top: 413rpx;
+  left: 100rpx;
+}
+
+.activity {
+  text-align: right;
+  /* position: relative; */
+  position: fixed;
+  right: 0px;
+  top: 120rpx;
+  z-index: 2;
+}
+
+.activity image {
+  height: 50rpx;
+  width: 155rpx;
+  z-index: 999;
+}
+
+.hongbao {
+  height: 700rpx;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 0px 100rpx;
+}
+
+.hongbao .opened2 {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/openImg2.png);
+  background-size: 100% 77%;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: -100rpx;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  height: 580rpx;
+  width: 550rpx;
+}
+
+.hongbao .opened1 {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/openImg1.png);
+  background-size: 100% 92%;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: 0rpx;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  height: 486rpx;
+  width: 550rpx;
+}
+
+.hongbao .open {
+  width: 100%;
+  border-radius: 50rpx;
+}
+
+.footer {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/zmhbfooter.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 246rpx;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+[class*="animation-"] {
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+.animation-fade {
+  animation-name: fade;
+  animation-duration: 0.8s;
+  animation-timing-function: linear;
+}
+
+.animation-reverse {
+  animation-direction: reverse;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.rule-bg {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/ruleBG.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: scroll;
+  border-bottom: 15px solid #770aa1;
+  background-color: unset;
+}
+
+.rule-bg .weui-dialog__hd {
+  height: 100%;
+  overflow: hidden;
+}
+
+.rule-bg scroll-view {
+  height: 900rpx;
+}
+
+.rule-bg scroll-view::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+  display: none;
+}
+
+.rule-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1c002e;
+}
+
+.text-purple {
+  color: #1c002e;
+  font-weight: normal;
+}
+
+.mgt100 {
+  margin-top: 50rpx;
+}
+
+.ruleY {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/ruleY.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: block;
+  width: 184rpx;
+  height: 75rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #1c002e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.scroll-view-item {
+  font-size: 28rpx;
+}
+
+.flex-align-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-align-around {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.flex-column-center {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-column-end {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.iknow {
+  width: 256rpx;
+  height: 68rpx;
+  color: #ffffff;
+  background: linear-gradient(180deg, #e020fd 0%, #65028d 100%);
+  border-radius: 20px;
+  box-shadow: 0px 0px 27px 0px #e1bcf5.00000a inset;
+}
+
+.color-brown {
+  color: #8b6504;
+  font-size: 36rpx;
+}
+
+.color-red {
+  color: #d80e1d;
+  font-weight: 700;
+}
+
+.font70 {
+  font-size: 70rpx;
+}
+
+.height347 {
+  height: 347rpx;
+}
+
+.height370 {
+  height: 420rpx;
+}
+
+.goYuer {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/btnBG.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 289rpx;
+  height: 73rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  color: #fefb7b;
+  z-index: 5;
+}
+
+.zIndex99 {
+  z-index: 99;
+}
+
+.zIndex100 {
+  z-index: 100;
+}
+
+.mgt27 {
+  margin-top: 27rpx;
+}
+
+.greyBG {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/greyBG.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 221rpx;
+  height: 81rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #404040;
+}
+
+.yellowBG {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/yellowBG.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 263rpx;
+  height: 82rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #fb091b;
+}
+
+.watchAdBG {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/btnBG.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 263rpx;
+  height: 82rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #ffec4e;
+}
+
+.width100 {
+  width: 100%;
+}
+
+.reconfirmPop {
+  height: 680rpx;
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/remindBG.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: 50rpx;
+}
+
+.reconfirmPop .remindIcon {
+  width: 536rpx;
+  height: 227rpx;
+}
+
+.scaleBtn {
+  transform: scale(0.5);
+  transform-origin: left top;
+  z-index: 1;
+}
+
+.scaleBox {
+  width: 130px;
+  height: 75px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+.scaleBtn-backup {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 20rpx;
+  margin: auto 0;
+  width: 100px;
+  height: 30px;
+  display: flex;
+  font-size: 22rpx;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+  border-color: #ff0500;
+  text-align: center;
+  color: white;
+  border-radius: 50rpx;
+  background: linear-gradient(0deg, #e60000, #e40001);
+  -webkit-box-shadow: 0 8rpx 0 0 rgba(14, 13, 13, 0.562);
+  box-shadow: 0 6rpx 0 0 rgba(14, 13, 13, 0.562);
+}
+.watchAdBtn {
+  border-color: #ff0500;
+  text-align: center;
+  z-index: 1000;
+  color: white;
+  border-radius: 50rpx;
+  width: 221rpx;
+  height: 81rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  background: linear-gradient(0deg, #e60000, #e40001);
+  -webkit-box-shadow: 0 8rpx 0 0 rgba(14, 13, 13, 0.562);
+  box-shadow: 0 6rpx 0 0 rgba(14, 13, 13, 0.562);
+}
+/* @media screen and (min-height:700px) {
+  .hongbao {
+    bottom: 22px;
+  }
+
+  .hongbao .open {
+    height: 500rpx;
+  }
+
+  .ribbonImg {
+    bottom: 500rpx;
+  }
+} */
+/* 2022年type=6战马箱内码活动类型 */
+.zm-box .zm-logo-box {
+  position: absolute;
+  left: 35rpx;
+  top: 7px;
+}
+.zm-logo-box .icon-zm-logo {
+  /* width: 215rpx;
+  height: 123rpx; */
+  width: 150rpx;
+  height: 86rpx;
+}
+.zm-box .rule-box {
+  position: absolute;
+  right: 0;
+  top: 20px;
+}
+.rule-box .icon-zm-rule {
+  width: 54rpx;
+  height: 230rpx;
+}
+.zm-box .icon-zm-activity {
+  width: 100%;
+  height: 722rpx;
+  /* height: 765rpx; */
+  margin-top: 7px;
+}
+.zm-box .redpacket-box {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.zm-box .redpacket-box .icon-redpacket {
+  width: 700rpx;
+  height: 597rpx;
+}
+.zm-box .redpacket-box .icon-redpacket-opened {
+  width: 700rpx;
+  height: 552rpx;
+}
+
+.zm-box .bottom-box {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  /* justify-content: flex-end; */
+  align-items: flex-end;
+  z-index: 0;
+}
+.bottom-box .icon-zm-bottom {
+  width: 100%;
+  height: 162rpx;
+}
+.zm-box .result-box{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: absolute;
+  bottom: 0;
+  width: 635rpx;
+  height: 470rpx;
+}
+.result-box .result-msg{
+  color: #fe8f2c;
+  font-weight: bold;
+  font-size: 45rpx;
+  box-sizing: border-box;
+  padding-top: 10px;
+}
+.result-box .result-msg,.result-money{
+  text-align: center;
+}
+.result-box .pdl15{
+  padding-left: 15rpx;
+}
+.result-box .pdr15{
+  padding-right: 15rpx;
+}
+.result-box .result-money{
+  height: 194rpx;
+}
+.result-box {
+  z-index: 99;
+}
+.result-box .icon-zm-btn{
+  width: 260rpx;
+  height: 90rpx;
+}
+
+/* 2022年12月27日14:12:36  新增2023年战马活动类型8 */
+.img-zm-main-box{
+  text-align: center;
+  box-sizing: border-box;
+}
+.img-zm-main{
+  height: 598rpx;
+  margin-top: 45rpx;
+}
+
+@media screen and (min-height: 700px) {
+  .warhorseImg {
+    width: 553rpx;
+    height: 860rpx;
+    position: fixed;
+    right: 0rpx;
+    top: 39rpx;
+    transform: rotate(-14deg);
+  }
+
+  .hongbao {
+    bottom: 22px;
+  }
+
+  .hongbao .open {
+    height: 527rpx;
+  }
+  .hongbao .opened1 {
+    height: 557rpx;
+  }
+  .hongbao .opened2 {
+    height: 653rpx;
+  }
+  .ribbonImg {
+    bottom: 521rpx;
+    left: 20rpx;
+  }
+  .zm-box .icon-zm-activity {
+    width: 100%;
+    height: 826rpx;
+    /* margin-top: 20px; */
+    margin-top: 34px;
+  }
+  .zm-logo-box{
+    top: 25px;
+  }
+  .zm-box .redpacket-box .icon-redpacket {
+    width: 700rpx;
+    height: 597rpx;
+  }
+  .zm-box .redpacket-box .icon-redpacket-opened {
+    width: 700rpx;
+    height: 552rpx;
+  }
+  .zm-box .result-box{
+    width: 700rpx;
+    height: 555rpx;
+  }
+  .result-box .result-money{
+    height: 238rpx;
+  }
+  .result-box .result-msg {
+    padding-top:27px;
+  }
+  .img-zm-main{
+    margin-top: 120rpx;
+    margin-right: 30rpx;
+    height: 760rpx;
+  }
+}

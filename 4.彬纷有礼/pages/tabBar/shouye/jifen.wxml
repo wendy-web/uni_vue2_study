@@ -1,0 +1,16 @@
+<!-- <block wx:if="{{taroCompReady}}">
+    <web-view src="{{storeurl}}"></web-view>
+</block> -->
+<view class="box">
+    <!-- <image class="nodata" mode="aspectFit" src="{{img_nopoint}}"></image> -->
+    <image class="bg-credit" mode="widthFix" src="{{bg_credit}}"></image>
+    <image bindtap="openXdyh" class="btn-credit-exc" mode="aspectFit" src="{{btn_credit_exc}}"/>
+    <block wx:if="{{isLoggedIn}}">
+      <view class="usable-credit" wx:if="{{userInfo}}">
+        可用积分：{{userInfo.credits || '*'}}
+      </view>
+    </block>
+    <block wx:else>
+      <view class="usable-credit" >可用积分：*</view>
+    </block>
+</view>

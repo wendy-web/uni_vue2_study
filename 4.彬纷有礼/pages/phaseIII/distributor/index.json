@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "van-popup": "@vant/weapp/popup/index"
+  },
+  "navigationBarBackgroundColor":"#e10404",
+  "navigationBarTextStyle":"white",
+  "navigationBarTitleText":"确认订单",
+  "enablePullDownRefresh":true,
+  "navigationStyle": "custom"
+
+}

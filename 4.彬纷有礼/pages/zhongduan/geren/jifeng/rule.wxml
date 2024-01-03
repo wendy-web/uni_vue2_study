@@ -1,0 +1,2 @@
+<!--pages/zhongduan/geren/jifeng/rule.wxml-->
+<web-view src="{{link}}"></web-view>

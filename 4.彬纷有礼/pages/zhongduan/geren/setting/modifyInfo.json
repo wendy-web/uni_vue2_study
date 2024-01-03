@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "van-nav-bar": "@vant/weapp/nav-bar/index",
+    "van-search": "@vant/weapp/search/index",
+    "privacyPop":"../../../../component/privacyPop/index"
+  },
+  "navigationBarTitleText": "设置",
+  "navigationStyle": "custom"
+}

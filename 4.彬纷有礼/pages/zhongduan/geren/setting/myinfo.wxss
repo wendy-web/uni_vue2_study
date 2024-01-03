@@ -1,0 +1,150 @@
+/* pages/zhongduan/geren/setting/myinfo.wxss */
+.container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+.operate-box {
+  box-sizing: border-box;
+}
+
+.weui-cell__bd {
+  font-size: 32rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333;
+  line-height: 34rpx;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+}
+
+.weui-cells::before {
+  border-top: 0px;
+}
+
+.container .weui-cells {
+  margin-top: 0px;
+}
+
+.black {
+  color: #333;
+}
+
+.weui-cell_access .weui-cell__ft::after {
+  color: #000000;
+}
+
+.afterline::after {
+  content: "c菜鸡互啄";
+  border-bottom: 1px solid red;
+}
+
+.afterline:after {
+  border-bottom: 1px solid red;
+}
+
+.font24 {
+  font-size: 28rpx;
+}
+
+.login-out-box {
+  flex-shrink: 0;
+  width: 670rpx;
+  height: 96rpx;
+  background: #e3001b;
+  border-radius: 48rpx;
+  margin: 0 auto;
+  box-sizing: border-box;
+  font-size: 32rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoutpop-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  padding-top: 50rpx;
+  padding-bottom: 40rpx;
+}
+
+.logoutpop-box .title {
+  font-size: 44rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #000018;
+  letter-spacing: 0.53rpx;
+  padding: 0 20rpx 20rpx 40rpx;
+  border-bottom: 1rpx solid #a3a2a8;
+
+}
+
+.logoutpop-box .btn-confirm {
+  box-sizing: border-box;
+  width: 420rpx;
+  height: 80rpx;
+  background: #e3001b;
+  border-radius: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #ffffff;
+  margin-top: 60rpx;
+}
+
+.logoutpop-box .btn-cancel {
+  width: 420rpx;
+  height: 80rpx;
+  border: 1rpx solid #636266;
+  border-radius: 41rpx;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #4e4d52;
+  margin-top: 30rpx;
+}
+.btn-getphone{
+  width: 100%;
+  border: unset;
+  padding: unset;
+  background-color:transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.btn-getphone::after{
+  border: unset;
+}
+.btn-getphone-item{
+  flex: 1;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 32rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #333;
+  line-height: 34rpx;
+}

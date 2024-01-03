@@ -1,0 +1,71 @@
+<view class="monthly-item tobe-accepted">
+   <!--  顶部信息  -->
+   <view class="ta-top-info border-bottom"  bindtap="lookInfo">
+      <view class="ta-ti-time">{{config.create_time}}发起</view>
+      <view class="ta-ti-label" style="color:{{config.orderStatus.textColor}}">{{config.orderStatus.statusText}}</view>
+   </view>
+   <!-- 下单配送信息 -->
+   <view class="order-delivery-info border-bottom"  bindtap="lookInfo">
+      <view class="odi-order">
+        <image class="odi-icon" src="../../../../static/icon_salesman.png"></image>
+        <text class="odi-label">代下单</text>
+        <text class="odi-name">{{config.y_name}}</text>
+      </view>
+      <view class="odi-delivery">
+        <image class="odi-icon" src="../../../../static/icon_delivery.png"></image>
+        <text class="odi-label">配送</text>
+        <text class="odi-name">{{config.b_sname}}</text>
+      </view>
+   </view>
+   <!-- 商品与支付信息 -->
+   <view class="goods-pay-info border-bottom"  bindtap="lookInfo">
+       <!-- 左边 -->
+       <view class="gpi-left">
+          <view class="gpi-left-goods">
+            <image wx:for="{{config.sku_img}}" wx:key="key" class="gpi-lg-icon" src="{{item}}" mode="aspectFill"></image>
+            <view class="gpi-lg-more" wx:if="{{config.goodSize > 2}}">...</view>
+          </view>
+          <view class="gpi-left-goods-total">
+            {{config.sku_num}}个商品，共{{config.buy_num}}箱
+          </view>
+          <view class="gpi-left-fav" wx:if="{{config.hr}}">
+            进货已满{{config.hr.need_num}}箱赠送{{config.hr.awarded_num}}罐
+          </view>
+       </view>
+       <!-- 右边 -->
+       <view class="gpi-right">
+          <view class="gpi-item">
+            <view class="gpi-right-label">商品总价:</view>
+            <view class="gpi-right-value total-price">￥{{config.total_amount}}</view>
+          </view>
+          <view class="gpi-item">
+            <view class="gpi-right-label">优惠:</view>
+            <view class="gpi-right-value discount">-￥{{config.yh_amount}}</view>
+          </view>
+          <view class="gpi-item" wx:if="{{config.d_amount}}">
+            <view class="gpi-right-label">
+             <image class="coupons-icon" src="../../../../static/coupons.png" mode="aspectFill"></image>
+             <text>现金劵:</text>
+            </view>
+            <view class="gpi-right-value cash-coupon">-￥{{config.d_amount}}</view>
+          </view>
+          <view class="gpi-item">
+          <block  wx:if="{{config.orderStatus.statusText == '已完成'}}">
+            <view class="gpi-right-label account-payable">实付款:</view>
+            <view class="gpi-right-value account-payable">￥{{config.sf_amount}}</view>
+          </block>
+          <block wx:else>
+            <view class="gpi-right-label account-payable">应付款:</view>
+            <view class="gpi-right-value account-payable">￥{{config.c_amount}}</view>
+          </block>
+          </view>
+       </view>
+   </view>
+   <!-- 按钮操作 -->
+   <view class="tobe-accepted-tools" wx:if="{{config.toolsBtns&&config.toolsBtns.length>0}}">
+    <block wx:for="{{config.toolsBtns}}" wx:key="key">
+       <van-button wx:if="{{item.isPlain}}" custom-class="tools-btn-plain" plain  round size="small" data-tool-type="{{item.key}}" bindtap="toolsHandle">{{item.name}}</van-button>
+       <van-button wx:else custom-class="tools-btn" type="danger" round size="small" data-tool-type="{{item.key}}" bindtap="toolsHandle">{{item.name}}</van-button>
+    </block>
+   </view>
+</view>

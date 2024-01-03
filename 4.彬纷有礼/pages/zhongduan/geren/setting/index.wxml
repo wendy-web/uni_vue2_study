@@ -1,0 +1,35 @@
+<view class="page-box">
+  <!-- <view class="bgGrey"></view> -->
+  <image class="avatar" mode="aspectFill" src="https://file.y1b.cn/public/yl_login.png"></image>
+
+  <button class="btn-login" bindtap="loggedIn">立即登录</button>
+  <!-- 隐私协议模块 -->
+  <view class="privacy-box">
+    <van-checkbox value="{{ yinsiChecked }}" shape="square" icon-size="28rpx" checked-color="#e3001b" bind:change="onChange" custom-class="checkbox-diy">
+      <view>
+        <text>我已阅读、理解并接受以下规定</text>
+      </view>
+      <view data-id="1" catch:tap="checkDeal">
+        <text class="color-blue">《个人信息保护政策》</text>
+      </view>
+      <view data-id="2" catch:tap="checkDeal">
+        <text class="color-blue">《平台服务协议》</text>
+      </view>
+    </van-checkbox>
+
+  </view>
+</view>
+<!-- 同意授权弹窗 -->
+
+<van-popup show="{{privacyConfirmShow}}" bind:close="onCloseDialog" round>
+  <view class="privacy-confirm-box">
+    <text>请阅读</text>
+    <text class="color-blue" data-id="1" catch:tap="checkDeal">《个人信息保护政策》</text>
+    <text class="color-blue" data-id="2" catch:tap="checkDeal">《平台服务协议》</text>
+    <text>的全部条款，接受后可开始使用我们的服务</text>
+  </view>
+  <view class="btn-group">
+    <view class="btn-cancel" bind:tap="onCloseDialog">不同意</view>
+    <view class="btn-confirm" bind:tap="confirmPrivacy">同意</view>
+  </view>
+</van-popup>

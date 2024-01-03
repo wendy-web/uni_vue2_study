@@ -1,0 +1,81 @@
+<!--pages/zongduan/geren/notice/index.wxml-->
+<!-- 兑货申请通知 -->
+<view class="page" wx:if="{{pageReady}}">
+	<block wx:if="{{msgList.length==0}}">
+		<view class="page__hd text-center">
+			<view class="page__desc pdt200">您暂时还没有系统通知</view>
+		</view>
+	</block>
+	<block wx:else>
+		<view class="page__bd page__bd_spacing pdb34">
+			<view class="weui-panel weui-panel_access">
+				<view class="weui-panel__bd" wx:for="{{msgList}}" wx:key="key" wx:for-index="idx">
+					<!-- type:0 默认通知  type:1 订单通知 -->
+					<block wx:if="{{item.type==1}}">
+						<view class="weui-media-box weui-media-box_text" >
+							<h4 class="weui-media-box__title">{{item.tip}}</h4>
+							<!-- <h4 class="weui-media-box__title">商品已核销兑换成功(用户核销与申请数量一致)</h4> -->
+							<view class="weui-media-box__desc">{{item.create_time}}</view>
+							<view class="line"></view>
+							<view class="weui-media-box__desc">
+								<view class="notice">
+									<block wx:for="{{item.content}}" wx:for-item="content" wx:key="index">
+										<block>
+											<view>
+												<block wx:if="{{item.status ==0 && index=='状态'}}">
+													<text class="text-yellow">{{index}}：</text>
+													<text class="text-yellow">{{content}}</text>
+												</block>
+												<block wx:elif="{{item.status ==1 && index=='状态'}}">
+													<text class="text-yellow">{{index}}：</text>
+													<text class="text-yellow">{{content}}</text>
+												</block>
+												<block wx:elif="{{item.status ==2 && index=='状态'}}">
+													<text class="text-green">{{index}}：</text>
+													<text class="text-green">{{content}}</text>
+												</block>
+												<block wx:elif="{{item.status ==3 && index=='状态'}}">
+													<text class="text-red">{{index}}：</text>
+													<text class="text-red">{{content}}</text>
+												</block>
+												<block wx:else>
+													<text>{{index}}：</text>
+													<text>{{content}}</text>
+												</block>
+
+											</view>
+										</block>
+									</block>
+
+								</view>
+							</view>
+						</view>
+					</block>
+					<block wx:else>
+
+						<view class="weui-media-box weui-media-box_text">
+							<h4 class="weui-media-box__title">{{item.tip}}</h4>
+							<view class="weui-media-box__desc">{{item.create_time}}</view>
+							<view class="line"></view>
+							<view class="weui-media-box__desc">
+								<!-- <text class="notice">{{item.content}}</text> -->
+								<text >{{item.content}}</text>
+							</view>
+						</view>
+					</block>
+				</view>
+				<!-- 加载更多 -->
+				<view class="weui-loadmore" wx:if="{{loading}}">
+					<i class="weui-loading"></i>
+					<text class="weui-loadmore__tips text-grey" >正在加载</text>
+				</view>
+				<block wx:if="{{noMore}}">
+					<view class="weui-loadmore weui-loadmore_line">
+						<text class="weui-loadmore__tips {{next?'':''}}">没有更多数据了~</text>
+					</view>
+				</block>
+			</view>
+		</view>
+	</block>
+
+</view>

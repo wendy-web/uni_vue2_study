@@ -1,0 +1,245 @@
+.page {
+  padding-top: 100rpx;
+}
+
+.weui-flex {
+  padding: 0rpx 30rpx;
+}
+
+.font32 {
+  font-size: 32rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  line-height: 44rpx;
+}
+
+.avatar {
+  height: 100rpx;
+  width: 100rpx;
+  border-radius: 50%;
+}
+
+.name {
+  font-size: 40rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  line-height: 56rpx;
+  margin-left: 15rpx;
+  display: block;
+  width: 230rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+}
+
+.icon-box-img {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.tixianBtn::after {
+  border: 0px;
+}
+
+.tixianBtn {
+  background-color: white;
+  min-height: 20px;
+}
+
+h4 {
+  font-size: 40rpx;
+  font-family: PingFangSC-Semibold, PingFang SC;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 1);
+  line-height: 28px;
+}
+
+.weui-label {
+  color: #000000;
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.weui-vcode-btn {
+  font-size: 28rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  line-height: 20px;
+  min-height: 20px;
+  height: auto;
+  margin-left: unset;
+}
+
+.weui-cell {
+  padding: 0px;
+}
+
+.mgt100 {
+  margin-top: 100rpx;
+}
+
+.mgt30 {
+  margin-top: 30rpx;
+}
+
+.mgt20 {
+  margin-top: 20rpx;
+}
+
+.lineBox {
+  width: 1rpx;
+  height: 46rpx;
+  border-left: 1rpx solid #979797;
+
+}
+
+.width40 {
+  width: 40rpx;
+}
+
+.weui-btn_input-clear {
+  margin-right: 30rpx;
+  line-height: 112rpx;
+}
+
+.redText {
+  font-size: 20rpx;
+  font-weight: 400;
+  color: #E02020;
+}
+
+.tips {
+  font-size: 20rpx;
+}
+
+.cash {
+  font-size: 80rpx;
+  font-weight: 600;
+  color: rgba(224, 32, 32, 1);
+  line-height: 112rpx;
+}
+
+.text-indent {
+  display: block;
+  text-align: left;
+  text-indent: 25rpx;
+}
+
+.redStar {
+  color: #DF1819;
+}
+
+.weui-agree__checkbox-check[aria-checked=true]+.weui-agree__checkbox,
+.weui-agree__checkbox:checked {
+  color: #DF1819;
+}
+
+.weui-agree__text {
+  font-size: 28rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+  line-height: 40rpx;
+}
+
+.redbtn {
+  width: 420rpx;
+  height: 100rpx;
+  background: linear-gradient(180deg, rgba(231, 25, 25, 1) 0%, rgba(163, 16, 21, 1) 100%);
+  border-radius: 25px;
+}
+
+.weui-dialog__bd>text {
+  display: block;
+  text-align: left;
+}
+
+checkbox-group {
+  width: 100%;
+}
+
+.sad {
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.weui-icon_msg {
+  position: relative;
+  top: 100rpx;
+  left: -40px;
+}
+
+.successBox {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+.shoptip {
+  width: 226px;
+  height: 14px;
+  font-size: 10px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(224, 32, 32, 1);
+  line-height: 14px
+}
+
+.completeImg {
+  width: 200rpx;
+  height: 200rpx;
+}
+/* 提现引导 */
+.guideMask .weui-mask{
+  background:unset ;
+}
+
+.guideMask .guide3{
+  /* width: 175rpx; */
+  height:115rpx;
+  top: 59%;
+
+
+  opacity: 0.79;
+  border-radius: 16rpx;
+  background-color: transparent;
+  /* border: 2px solid rgba(255, 255, 255, 1); */
+ 
+}
+/* 2021年6月25日14:53:00 */
+.shopPop-msg{
+  color: #1D2087;
+  font-size: 15px;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 0 10px;
+}
+.shopPop-tips{
+  color: #FF0000;
+  font-size: 20rpx;
+  margin-bottom: 20rpx;
+
+}
+.bottomContent{
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 100px;
+}

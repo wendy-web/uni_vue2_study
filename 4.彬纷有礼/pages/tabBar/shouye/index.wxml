@@ -1,0 +1,353 @@
+<view class="tabbar-container">
+  <view class="tabbar-container-content">
+    <scroll-view scroll-x class="bg-white nav  ">
+      <view class="flex text-center">
+        <view class="cu-item flex-sub {{index==TabCur?'bottomLine cur':''}}" wx:for="{{titles}}" wx:key="key" bindtap="tabSelect" data-id="{{index}}">
+          <view class="{{index==TabCur?'tabSelect':''}}">
+            {{item}}
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <!-- <swiper class="swiper" style="height:100vh" current="{{TabCur}}" bindchange="onChange"> -->
+    <swiper style="height:100%" current="{{TabCur}}" bindchange="onChange">
+      <!-- 品牌 -->
+      <swiper-item>
+        <scroll-view refresher-enabled="{{true}}" refresher-triggered="{{triggered}}" bindrefresherrefresh="onRefresh" scroll-y="{{true}}" enable-flex="{{true}}" style="overflow-anchor:auto;height: 100%;">
+          <block wx:for="{{list1}}" wx:key="key">
+            <view class="content-item ">
+              <view class="weui-flex" style="height:100%" data-link="{{item.link}}" data-title="{{item.title}}" bindtap="jumpToDetail">
+                <view class="weui-flex__item flex-center">
+                  <view class="flex-center">
+                    <!-- <image wx:if="{{item.loaded}}" class="brand_pic animation-fade" lazy-load="{{true}}" mode="aspectFill"
+										src="{{item.img}}"></image> -->
+                    <easy-loadimage index="{{index}}" imageSrc="{{item.img}}" mode="scaleToFill" imageClass="brand_pic">
+                    </easy-loadimage>
+
+                  </view>
+                </view>
+                <view class="weui-flex__item brandBox">
+                  <view class="brand_title">{{item.title}}</view>
+                  <view class="brand_desc">{{item.digest}}</view>
+                </view>
+              </view>
+
+            </view>
+          </block>
+        </scroll-view>
+
+      </swiper-item>
+      <!-- 热门活动 -->
+      <swiper-item>
+        <scroll-view refresher-enabled="{{true}}" refresher-triggered="{{triggered}}" bindrefresherrefresh="onRefresh" scroll-y="{{true}}" enable-flex="{{true}}" style="box-sizing: border-box;height: 100%;">
+          <!-- 10月 东莞战马兑奖活动 actInfoDgzmExc -->
+          <block wx:if="{{actInfoDgzmExc}}">
+            <view class="content-item ">
+              <view class="weui-flex" style="height:100%" bindtap="tapDgzmExcAct" data-taped="{{true}}">
+                <view class="weui-flex__item flex-center">
+                  <view class="flex-center">
+                    <easy-loadimage index="1" imageSrc="{{actInfoDgzmExc.sub_cover}}" mode="scaleToFill" imageClass="brand_pic">
+                    </easy-loadimage>
+                  </view>
+                </view>
+                <view class="weui-flex__item brandBox">
+                  <view class="brand_title">{{actInfoDgzmExc.title}}</view>
+                  <!-- <view class="brand_title">{{actInfoDgzmExc.sub_t1}}</view> -->
+                  <view class="sub_title">{{actInfoDgzmExc.sub_t1}}</view>
+                  <view class="flex-row">
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                  </view>
+                  <!-- 开始/结束倒计时，活动已结束 -->
+                  <view class="act-count-down-box">
+                    <block wx:if="{{actInfoDgzmExc.act_state.act_end}}">
+                      <text>活动已结束</text>
+                    </block>
+                    <block wx:else>
+                      <block wx:if="{{actInfoDgzmExc.act_state.act_yure}}">
+                        <text>距离活动开始:</text>
+                      </block>
+                      <block wx:else>
+                        <text>距离活动结束:</text>
+                      </block>
+                      <van-count-down time="{{ actInfoDgzmExc.act_state.count_down_timestamp }}" data-actname="actInfoDgzmExc" bind:finish="rankTimerFinished" format="DD天HH时mm分ss秒" style="--count-down-text-color:#FF0000;"></van-count-down>
+                    </block>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+          <!-- 9月 广州兑奖活动 -->
+          <block wx:if="{{actInfoGzExc}}">
+            <view class="content-item ">
+              <view class="weui-flex" style="height:100%" bindtap="tapActInfoGzExc" data-taped="{{true}}">
+                <view class="weui-flex__item flex-center">
+                  <view class="flex-center">
+                    <easy-loadimage index="1" imageSrc="{{actInfoGzExc.sub_cover}}" mode="scaleToFill" imageClass="brand_pic">
+                    </easy-loadimage>
+                  </view>
+                </view>
+                <view class="weui-flex__item brandBox">
+                  <view class="brand_title">{{actInfoGzExc.title}}</view>
+                  <!-- <view class="brand_title">{{actInfoGZ.sub_t1}}</view> -->
+                  <view class="sub_title">{{actInfoGzExc.sub_t1}}</view>
+                  <view class="flex-row">
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                  </view>
+                  <!-- 开始/结束倒计时，活动已结束 -->
+                  <view class="act-count-down-box">
+                    <block wx:if="{{actInfoGzExc.act_state.act_end}}">
+                      <text>活动已结束</text>
+                    </block>
+                    <block wx:else>
+                      <block wx:if="{{actInfoGzExc.act_state.act_yure}}">
+                        <text>距离活动开始:</text>
+                      </block>
+                      <block wx:else>
+                        <text>距离活动结束:</text>
+                      </block>
+                      <van-count-down time="{{ actInfoGzExc.act_state.count_down_timestamp }}" data-actname="actInfoGzExc" bind:finish="rankTimerFinished" format="DD天HH时mm分ss秒" style="--count-down-text-color:#FF0000;"></van-count-down>
+                    </block>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+          <!-- 9月 广州开箱活动 -->
+          <block wx:if="{{actInfoGZ}}">
+            <view class="content-item ">
+              <view class="weui-flex" style="height:100%" bindtap="tapActInfoGZ" data-taped="{{true}}">
+                <view class="weui-flex__item flex-center">
+                  <view class="flex-center">
+                    <easy-loadimage index="1" imageSrc="{{actInfoGZ.sub_cover}}" mode="scaleToFill" imageClass="brand_pic">
+                    </easy-loadimage>
+                  </view>
+                </view>
+                <view class="weui-flex__item brandBox">
+                  <view class="brand_title">{{actInfoGZ.title}}</view>
+                  <!-- <view class="brand_title">{{actInfoGZ.sub_t1}}</view> -->
+                  <!-- <view class="sub_title">{{actInfoRaffle.sub_t1}}</view> -->
+                  <view class="flex-row">
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                  </view>
+                  <!-- 开始/结束倒计时，活动已结束 -->
+                  <view class="act-count-down-box">
+                    <block wx:if="{{actInfoGZ.act_state.act_end}}">
+                      <text>活动已结束</text>
+                    </block>
+                    <block wx:else>
+                      <block wx:if="{{actInfoGZ.act_state.act_yure}}">
+                        <text>距离活动开始:</text>
+                      </block>
+                      <block wx:else>
+                        <text>距离活动结束:</text>
+                      </block>
+                      <van-count-down time="{{ actInfoGZ.act_state.count_down_timestamp }}" data-actname="actInfoGZ" bind:finish="rankTimerFinished" format="DD天HH时mm分ss秒" style="--count-down-text-color:#FF0000;"></van-count-down>
+                    </block>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+          <!-- 8月深圳兑奖活动 issue:14 -->
+          <block wx:if="{{actInfoRaffle}}">
+            <view class="content-item ">
+              <view class="weui-flex" style="height:100%" bindtap="tapActInfoRaffle" data-taped="{{true}}">
+                <view class="weui-flex__item flex-center">
+                  <view class="flex-center">
+                    <easy-loadimage index="1" imageSrc="{{actInfoRaffle.sub_cover}}" mode="scaleToFill" imageClass="brand_pic">
+                    </easy-loadimage>
+                  </view>
+                </view>
+                <view class="weui-flex__item brandBox">
+                  <view class="brand_title">{{actInfoRaffle.title}}</view>
+                  <view class="brand_title">{{actInfoRaffle.sub_t1}}</view>
+                  <!-- <view class="sub_title">{{actInfoRaffle.sub_t1}}</view> -->
+                  <view class="flex-row">
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                  </view>
+                  <!-- 开始/结束倒计时，活动已结束 -->
+                  <view class="act-count-down-box">
+                    <block wx:if="{{actInfoRaffle.act_state.act_end}}">
+                      <text>活动已结束</text>
+                    </block>
+                    <block wx:else>
+                      <block wx:if="{{actInfoRaffle.act_state.act_yure}}">
+                        <text>距离活动开始:</text>
+                      </block>
+                      <block wx:else>
+                        <text>距离活动结束:</text>
+                      </block>
+                      <van-count-down time="{{ actInfoRaffle.act_state.count_down_timestamp }}" data-actname="actInfoRaffle" bind:finish="rankTimerFinished" format="DD天HH时mm分ss秒" style="--count-down-text-color:#FF0000;"></van-count-down>
+                    </block>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+          <!-- 8月深圳开箱活动 -->
+          <block wx:if="{{actInfoSZ}}">
+            <view class="content-item ">
+              <view class="weui-flex" style="height:100%" bindtap="tapUnboxAct" data-taped="{{true}}">
+                <view class="weui-flex__item flex-center">
+                  <view class="flex-center">
+                    <easy-loadimage index="1" imageSrc="{{actInfoSZ.sub_cover}}" mode="scaleToFill" imageClass="brand_pic">
+                    </easy-loadimage>
+                  </view>
+                </view>
+                <view class="weui-flex__item brandBox">
+                  <view class="brand_title">{{actInfoSZ.title}}</view>
+                  <!-- <view class="sub_title">{{actInfoSZ.sub_t1}}</view> -->
+                  <view class="flex-row">
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                  </view>
+                  <!-- 开始/结束倒计时，活动已结束 -->
+                  <view class="act-count-down-box">
+                    <block wx:if="{{actInfoSZ.act_state.act_end}}">
+                      <text>活动已结束</text>
+                    </block>
+                    <block wx:else>
+                      <block wx:if="{{actInfoSZ.act_state.act_yure}}">
+                        <text>距离活动开始:</text>
+                      </block>
+                      <block wx:else>
+                        <text>距离活动结束:</text>
+                      </block>
+                      <van-count-down time="{{ actInfoSZ.act_state.count_down_timestamp }}" data-actname="actInfoSZ" bind:finish="rankTimerFinished" format="DD天HH时mm分ss秒" style="--count-down-text-color:#FF0000;"></van-count-down>
+                    </block>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+          <!-- 东莞战马兑奖活动 -->
+          <block wx:if="{{actInfoDG}}">
+            <view class="content-item ">
+              <view class="weui-flex" style="height:100%" bindtap="tapRankAct" data-taped="{{true}}">
+                <view class="weui-flex__item flex-center">
+                  <view class="flex-center">
+                    <easy-loadimage index="1" imageSrc="{{actInfoDG.sub_cover}}" mode="scaleToFill" imageClass="brand_pic">
+                    </easy-loadimage>
+                  </view>
+                </view>
+                <view class="weui-flex__item brandBox">
+                  <view class="brand_title">{{actInfoDG.title}}</view>
+                  <view class="sub_title">{{actInfoDG.sub_t1}}</view>
+                  <view class="flex-row">
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                    <image mode="aspectFit" class="fireIcon" src="{{fireIcon}}"></image>
+                  </view>
+                  <!-- 开始/结束倒计时，活动已结束 -->
+                  <view class="act-count-down-box">
+                    <block wx:if="{{actInfoDG.act_state.act_end}}">
+                      <text>活动已结束</text>
+                    </block>
+                    <block wx:else>
+                      <block wx:if="{{actInfoDG.act_state.act_yure}}">
+                        <text>距离活动开始:</text>
+                      </block>
+                      <block wx:else>
+                        <text>距离活动结束:</text>
+                      </block>
+                      <van-count-down time="{{ actInfoDG.act_state.count_down_timestamp }}" data-actname="actInfoDG" bind:finish="rankTimerFinished" format="DD天HH时mm分ss秒" style="--count-down-text-color:#FF0000;"></van-count-down>
+                    </block>
+
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+
+          <block wx:for="{{list2}}" wx:key="key" wx:for-index="idx">
+            <view class="content-item" wx:if="{{item.hide!=1}}">
+
+              <view class="weui-flex" style="height:100%" data-link="{{item.link}}" data-title="{{item.title}}" bindtap="jumpToDetail">
+                <view class="weui-flex__item flex-center">
+                  <view class="flex-center">
+                    <easy-loadimage index="{{idx}}" imageSrc="{{item.img}}" mode="scaleToFill" imageClass="brand_pic">
+                    </easy-loadimage>
+
+                  </view>
+                </view>
+                <view class="weui-flex__item brandBox">
+                  <view class="brand_title">
+                    {{item.title}}
+                    <!-- 2023年8月23日 新增new标识 第一条 -->
+                    <view wx:if="{{idx==0&&list2.length>3}}" class="mark-new">new</view>
+                  </view>
+                  <view class="sub_title">{{item.sub_title}}</view>
+                  <view class="brand_desc">{{item.digest}}</view>
+                </view>
+              </view>
+
+            </view>
+            <block wx:if="{{idx == (list2.length-1)}}">
+              <view class="activityBannerAd-placehold">
+              </view>
+            </block>
+          </block>
+
+        </scroll-view>
+      </swiper-item>
+    </swiper>
+    <!-- 广告 -->
+    <ad wx:if="{{TabCur==1 && blockAd}}" class="activityBannerAd" unit-id="adunit-9001823347dc8764"></ad>
+    <ad-custom wx:if="{{TabCur==1 && blockAd}}" class="activityBannerAd" unit-id="adunit-67467ebb0054ab9a"></ad-custom>
+
+  </view>
+  <!-- 自定义导航栏 -->
+  <!-- <view class="tabbar-container-foot safeArea">
+    <tabbar active="0"></tabbar>
+  </view> -->
+</view>
+
+<!-- 2023年10月17日 首次进入小程序隐私弹窗：永久保留 -->
+<privacyPop id="privacyPop"></privacyPop>
+
+<!-- 福利弹窗组件 -->
+<welfare bind:myevent="listenWelfareLoad" show="{{welfareShow&&sdkVersion_ok}}" welfareShow="{{welfareAdShow}}"></welfare>
+<!-- 福利弹窗浮标 -->
+<welfareWidget wx:if="{{welfareLoaded&&sdkVersion_ok}}" bind:myevent="triggerWelfare" screenHeight="{{screenHeight*0.8}}"></welfareWidget>
+<!-- <welfareWidget wx:if="{{welfareLoaded&&sdkVersion_ok}}" bind:myevent="triggerWelfare"></welfareWidget> -->
+
+
+<storeExchangePop id="storeExchangePop" wx:if="{{actInfoDG}}" actInfo="{{actInfoDG}}"></storeExchangePop>
+<!-- 2023年7月24日  深圳8月开箱活动 -->
+<!-- <actCouponWidget screenHeight="{{screenHeight*0.6}}" wx:if="{{actInfoSZ}}"></actCouponWidget> -->
+<!-- 9月广州开箱活动 -->
+<actCouponPop id="actCouponPop" wx:if="{{actInfoSZ ||actInfoGZ}}"></actCouponPop>
+<!-- 2023年8月3日 深圳兑奖活动（抽奖） -->
+<block wx:if="{{actInfoRaffle}}">
+  <storeRankPop id="storeRankPopHome"></storeRankPop>
+  <!-- <movemenu screenHeight="{{screenHeight*0.82}}"></movemenu> -->
+</block>
+<!-- 广州开箱活动浮标 buoy -->
+<gzUnboxBouy wx:if="{{actInfoGZ}}" screenHeight="{{screenHeight*1.2}}"></gzUnboxBouy>
+<!-- 广州战马兑奖浮标 -->
+<gzExcBuoy wx:if="{{actInfoGzExc}}"></gzExcBuoy>
+<!-- 10月东莞战马兑奖活动弹窗 -->
+<dgzmExcPop id="dgzmExcPop" wx:if="{{actInfoDgzmExc}}" actInfo="{{actInfoDgzmExc}}"></dgzmExcPop>
+<!-- 2023年10月 东莞战马兑奖活动浮标 -->
+<activityWidget wx:if="{{actInfoDgzmExc}}"></activityWidget>

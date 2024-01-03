@@ -1,0 +1,101 @@
+<top-navbar class="navbar-box" title="排行榜" backgroundColor="unset" iconTheme="white" bindback="onBeforeBack"></top-navbar>
+<view class="container">
+  <!-- 背景图 -->
+  <image class="bg-halo" src="{{img_cos_url}}/rankbg.png" mode="aspectFit" />
+  <!-- 排行榜、背景、列表 -->
+  <view class="rank-box">
+    <view class="stage-head-box">
+      <image class="bg-stage-head" src="{{img_cos_url}}/stage_head.png" />
+      <!-- 前三名 -->
+      <view class="top-three-box">
+        <view class="prizeL">
+          <view class="prize-info-2t">
+            <image class="img-prize-2t" src="{{img_cos_url}}/img_prize_2t.png" mode="aspectFit" />
+            <view class="max-title-2 oneLine">{{rankList[1]['shop_name']}}</view>
+          </view>
+          <view class="prize-info-2b">
+            <image class="img-prize-2b" src="{{img_cos_url}}/img_prize_2b.png" mode="aspectFit" />
+            <view wx:if="{{rankList[1]['s_num']}}" class="prize-info-flex ">{{rankList[1]['s_num']}}<text class="font20">箱</text></view>
+          </view>
+        </view>
+        <view class="prizeM">
+          <view class="prize-info-1t">
+            <image class="img-prize-1t" src="{{img_cos_url}}/img_prize_1t.png" mode="aspectFit" />
+            <view class="max-title-1 oneLine">{{rankList[0]['shop_name']}}</view>
+          </view>
+          <view class="prize-info-1b">
+            <image class="img-prize-1b" src="{{img_cos_url}}/img_prize_1b.png" mode="aspectFit" />
+            <view wx:if="{{rankList[0]['s_num']}}" class="prize-info-flex">{{rankList[0]['s_num']}}<text class="font20">箱</text></view>
+          </view>
+        </view>
+        <view class="prizeR">
+
+          <view class="prize-info-3t">
+            <image class="img-prize-3t" src="{{img_cos_url}}/img_prize_3t.png" mode="aspectFit" />
+            <view class="max-title-3 oneLine">{{rankList[2]['shop_name']}}</view>
+          </view>
+          <view class="prize-info-3b">
+            <image class="img-prize-3b" src="{{img_cos_url}}/img_prize_3b.png" mode="aspectFit" />
+            <view wx:if="{{rankList[2]['s_num']}}" class="prize-info-flex">{{rankList[2]['s_num']}}<text class="font20">箱</text></view>
+          </view>
+        </view>
+      </view>
+      <!-- 排行榜提示 -->
+      <view class="rank-tips">
+        <text>*温馨提示：若开箱数相同，依据系统开箱时间先后顺序排名！</text>
+      </view>
+    </view>
+    <!-- 列表 -->
+    <view class="stage-body-box">
+      <!-- 背景图 -->
+      <image class="bg-stage-body" src="{{img_cos_url}}/stage_body.png" />
+      <view class="table-box">
+        <!-- 标题 -->
+        <view class="table-head">
+          <view class="table-title-rank">排名</view>
+          <view class="table-title-shop">门店名称</view>
+          <view class="table-title-unbox">红牛开箱数</view>
+        </view>
+        <!-- 列表内容 scroll-view 一定要给一个初始化的高度，否则会出现不能下拉刷新的问题-->
+        <scroll-view class="list-box" style="--max-height: {{screenHeight?(screenHeight*0.5)+'px':'52vh'}};" scroll-y scroll-top enable-flex refresher-enabled="{{true}}" lower-threshold="{{200}}" refresher-triggered="{{refreshed}}" bindrefresherrefresh="refresh" bindscrolltolower="loadMore">
+          <block wx:if="{{rankList.length>0}}" wx:for="{{rankList}}" wx:key="key">
+            <view class=" list-item-box {{storeInfo&&storeInfo.uid == item.uid?'myrank-item':''}}">
+              <view class="list-item">
+                <view class="table-title-rank rank-num {{storeInfo&&storeInfo.uid == item.uid?'color-white':''}}">{{index+1}}</view>
+                <view class="table-title-shop oneLine {{storeInfo&&storeInfo.uid == item.uid?'color-white':'color-brown'}}">{{item.shop_name}}</view>
+                <view class="table-title-unbox {{storeInfo&&storeInfo.uid == item.uid?'color-white':'color-brown'}}">{{item.s_num}}</view>
+              </view>
+            </view>
+          </block>
+          <block wx:if="{{!rankList.length}}">
+            <view class="no-data" style="min-height: {{navBarSystem.screenHeight*0.5}}px;">
+              暂无上榜数据
+            </view>
+          </block>
+          <block wx:for="{{myRankList}}" wx:if="{{myRankList.length}}" wx:key="key">
+            <view wx:if="{{rankList.length >99  && index == 0 && item.rank>105  }}" class="list-item ">···</view>
+            <view class=" list-item-box {{storeInfo&&storeInfo.uid == item.uid?'myrank-item':''}}">
+              <view class="list-item  ">
+                <view class="table-title-rank rank-num {{storeInfo&&storeInfo.uid == item.uid?'color-white':''}}">{{item.rank}}</view>
+                <view class="table-title-shop oneLine {{storeInfo&&storeInfo.uid == item.uid?'color-white':'color-brown'}}">{{item.shop_name}}</view>
+                <view class="table-title-unbox {{storeInfo&&storeInfo.uid == item.uid?'color-white':'color-brown'}}">{{item.s_num}}</view>
+              </view>
+            </view>
+            <view wx:if="{{index+1 == myRankList.length  }}" class="list-item-center">...</view>
+          </block>
+          <view class="loading-box" wx:if="{{loadMore}}">
+            <van-loading type="spinner" size="26rpx">加载中...</van-loading>
+          </view>
+          <view wx:if="{{noMore&&rankList.length>0}}" class="divider-box">
+            <van-divider customStyle="color: #9b9b9b; border-color:#e1ccb2; font-size: 24rpx;" contentPosition="center">没有更多了</van-divider>
+          </view>
+        </scroll-view>
+        <view class="myrank-row ">
+          <view class="table-title-rank myrank-num ">{{myRankInfo&&myRankInfo.rank != 0?myRankInfo.rank:'未上榜'}}</view>
+          <view class="table-title-shop oneLine">{{storeInfo.shop_name}}</view>
+          <view class="table-title-unbox">{{myRankInfo.s_num}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

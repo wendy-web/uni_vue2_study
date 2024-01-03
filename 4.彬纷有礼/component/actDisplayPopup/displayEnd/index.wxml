@@ -1,0 +1,46 @@
+<!--component/actDisplayPopup/displayEnd/index.wxml-->
+<view class="container">
+  <van-popup show="{{ show }}" bind:close="onClose" custom-style="background-color: transparent;" z-index="{{10000}}">
+    <!-- 每日进度弹窗内容:开箱进行中&&陈列已解锁，显示2个，否则只显示1个，进行中的开箱，或者陈列 -->
+    <view class="display-pop-box">
+      <!-- 陈列活动中奖弹窗 -->
+      <view class="display-win-box" wx:if="{{displayWin}}">
+        <image class="icon-apply-success" src="{{img_title_winner}}" mode="aspectFit"></image>
+        <view class="pop-content">
+          <view class="act-display-apply-box">
+            <view class="act-prize-box" style="background-image: url({{img_bg_pop_apply}});">
+              <view class="act-prize-title">活动券</view>
+              <view class="act-prize-text"><text class="num24">24</text>张</view>
+              <view class="act-prize-text">凭活动券兑换{{coupon_name}}</view>
+            </view>
+            <view class="act-prize-tips mgt20">活动券将发放到{{userdata.condition!=2?'您':'店长'}} “彬纷有礼-可用卡券”</view>
+            <view class="act-prize-tips">请注意查收</view>
+            <block wx:if="{{userdata.condition!=2}}">
+              <navigator url="/pages/phaseIII/voucher/index?activeTab=2" hover-class="none">
+                <view bindtap="onClose" class="act-display-apply-btn" style="background-image: url({{img_bg_apply_btn}});">查看详情</view>
+              </navigator>
+            </block>
+            <block wx:else>
+              <view bindtap="onClose" class="act-display-apply-btn" style="background-image: url({{img_bg_apply_btn}});">请通知店长查收</view>
+            </block>
+          </view>
+        </view>
+      </view>
+      <!-- 陈列活动未中奖 -->
+      <view class="display-fail-box" wx:if="{{displayFail}}">
+        <view class="pop-content">
+          <view class="act-display-daily-box">
+            <image class="icon-smile" src="{{icon_sad}}" mode="aspectFit"></image>
+            <view class="act-display-end-title">很遗憾</view>
+            <view class="act-display-end-title">您本次未获得活动奖励</view>
+            <view class="act-display-end-subtitle mgt50">活动已结束</view>
+            <!-- 查看详情  -->
+            <view bindtap="toDisplayHome" data-issues="{{displayInfo.issues}}" class="act-display-apply-btn mgt50" style="background-image: url({{img_bg_apply_btn}});">查看详情</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 关闭按钮 -->
+    <image class="icon-close" bindtap="onClose" mode="aspectFit" src="../static/close.png"></image>
+  </van-popup>
+</view>

@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "bindPhonePop":"../../../../component/bindPhonePop/index",
+    "privacyPop":"../../../../component/privacyPop/index"
+  },"navigationBarTitleText": "我的信息"
+}

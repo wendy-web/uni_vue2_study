@@ -1,0 +1,110 @@
+/* pages/storeOrder/index/index.wxss */
+page {
+  background-color: #ffffff;
+}
+.page-box{
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+
+}
+/* pages/storeDisplay/index/index.wxss */
+.page-list {
+  flex: 1;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+.index .van-info {
+  position: absolute !important;
+  display: inline-flex !important;
+}
+
+.filter-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14rpx 34rpx;
+  background-color: #f7f7f7;
+  font-size: 24rpx;
+}
+
+.filter-box .filter-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter-item .icon-filter {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.filter-box .monthly-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid #e10404;
+  border-radius: 23rpx;
+  color: #e10404;
+  width: 160rpx;
+  height: 45rpx;
+  box-sizing: border-box;
+  padding: 0 10rpx;
+}
+
+.monthly-item .icon-monthly-order {
+  width: 25rpx;
+  height: 28rpx;
+}
+
+/* 2023年9月21日 tab选项卡重构 start */
+.tab-box {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #000000;
+  height: 90rpx;  
+  padding: 0 30rpx;
+}
+
+.tab-box .tab-item {
+  position: relative;
+  border-bottom: 6rpx solid #ffffff;
+}
+
+.tab-box .tab-active {
+  border-bottom: 6rpx solid #e10404;
+}
+
+.tab-box .tab-info {
+  font-size: 20rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #e10404;
+  box-sizing: border-box;
+  border-radius: 10rpx 10rpx 10rpx 0rpx;
+  height: 30rpx;
+  min-width: 40rpx;
+  padding: 0 4rpx;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: -22px;
+  top: -4px;
+}
+
+/* 2023年9月21日 tab选项卡重构 end */

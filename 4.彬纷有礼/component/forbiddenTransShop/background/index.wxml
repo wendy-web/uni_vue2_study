@@ -1,0 +1,14 @@
+<!--component/storeExchangePop/background/index.wxml-->
+<view class="box">
+  <image class="img-shop-head" src="{{img_shop_head}}" mode="aspectFit"/>
+  <view wx:if="{{bgImg}}" class="box-item {{boxItemClass}}" style="background-image:url({{bgImg}});">
+    <slot></slot>
+  </view>
+  <!-- 广州开箱活动无背景图片 -->
+  <view wx:else class="box-outer">
+    <view class="box-inner">
+      <slot></slot>
+    </view>
+  </view>
+  <image class="icon-close" mode="aspectFit" bindtap="closePop" src="{{closeImg}}"></image>
+</view>

@@ -1,0 +1,104 @@
+<!--pages/storeDisplay/displayShopComple/index.wxml-->
+<view class="display-shop-comple">
+  <!-- head -->
+  <view class="dsc-head">
+     <view class="dsc-dis-info">
+       <image class="ice-box" src="../static/iceBox.png" mode="aspectFill"></image>
+       <view class="dis-name">{{basicInfo.dis_name}}</view>
+     </view>
+     <view wx:if="{{pageStatus!=3}}" class="look-record" bindtap="goPhotoRecord">
+       记录<van-icon name="arrow" />
+     </view>
+  </view>
+  <!-- content -->
+  <scroll-view class="dsc-content" scroll-y="{{true}}">
+       <!-- 基本信息 -->
+       <view class="basic-info">
+          <!-- 拍照要求 -->
+          <view class="photo-require">
+             <view class="photo-require-title">拍照要求</view>
+             <view class="photo-require-details">
+               <text class="prd-stress">{{basicInfo.date_num}}天</text>
+               <text>内需合格拍照</text>
+               <text class="prd-stress">{{basicInfo.need_num}}次</text>
+               <text>，每</text>
+               <text class="prd-stress">{{basicInfo.periodic_date}}天</text>
+               <text>合格</text>
+               <text class="prd-stress">{{basicInfo.periodic_times}}次</text>
+               <text>即可</text>
+             </view>
+          </view>
+          <!--陈列要求  -->
+          <view class="dis-require">
+             <view class="photo-require-title">陈列要求</view>
+             <view class="photo-require-details">
+              {{basicInfo.label}}
+             </view>
+          </view>
+          <!-- 陈列商品 -->
+          <view class="dis-shop" bindtap="showDisGoods">
+             <view class="photo-require-title">陈列商品</view>
+              <scroll-view class="dis-goods" scroll-x="{{true}}">
+                <block wx:for="{{basicInfo.goods_list}}" wx:key="key">
+                    <van-image class="goods-icon" width="92rpx" height="92rpx" src="{{item.icon}}" fit="cover" radius="6px"  use-loading-slot>
+                     <van-loading slot="loading" type="spinner" size="20" vertical />
+                    </van-image>
+                </block>
+              </scroll-view>
+          </view>
+       </view>
+       <!-- 陈列拍照相关 -->
+       <view class="dis-photograph">
+            <!-- 店铺信息 -->
+            <view class="dis-shop-info">
+              <van-image  bindtap="showImages" data-picture="{{shopInfo.picture}}" class="shop-icon" width="108rpx" height="72rpx" src="{{shopInfo.picture}}" fit="cover" radius="6px"  use-loading-slot>
+                     <van-loading slot="loading" type="spinner" size="20" vertical />
+              </van-image>
+              <view class="shop-name">{{shopInfo.shopName}}</view>
+              <view class="shop-address">{{shopInfo.address}}</view>
+            </view>
+            <!-- 日期 -->
+            <view class="day-info">
+              <text class="day-num">{{date}}</text>
+              <text class="day-text" wx:if="{{isToday}}">今天</text>
+            </view>
+            <!-- 拍照面与记录 -->
+            <view class="photograph-item" wx:for="{{tag_list}}" wx:key="key">
+               <view class="standard-name">{{item.tag}}</view>
+               <view class="photograph-item-box">
+                 <!-- 正面照 -->
+                <van-image  bindtap="showImages" data-picture="{{item.url}}" class="standard-icon" width="94rpx" height="162rpx" src="{{item.url}}" fit="cover"  use-loading-slot bin>
+                     <van-loading slot="loading" type="spinner" size="20" vertical />
+                </van-image>
+                <!-- 拍摄的照片与结果 -->
+                <view class="photo-shot-item" wx:for="{{item.img_list}}" wx:for-item="photo" wx:key="key" bindtap="showDisQualifiedState" data-tag-id="{{item.id}}" data-index="{{index}}">
+                    <van-image class="photograph-item-icon" width="88rpx" height="88rpx" src="{{photo.img_url}}" fit="cover" radius="6px"  use-loading-slot>
+                        <van-loading slot="loading" type="spinner" size="20" vertical />
+                    </van-image>
+                    <view class="photo-shot-status">
+                        <text class="qualified" wx:if="{{photo.status == 1}}">合格</text>
+                        <text class="unqualified" wx:else>不合格</text>
+                    </view>
+                  </view>
+                  <!-- 点击拍摄 -->
+                  <block wx:if="{{disStatus==-1&&pageStatus==1&&item.img_list.length<5}}">
+                     <van-loading class="shot" size="24px" wx:if="{{shotLoading}}"></van-loading>
+                     <image  wx:elif="{{!shotLoading&&isToday}}" class="shot" src="../static/camera.png" mode="aspectFill" bindtap="shot" data-tag-id="{{item.id}}"></image>
+                  </block>
+               </view>
+            </view>
+            <!-- 复核按钮显示            ,
+            is_apply -->
+            <view class="apply-review" wx:if="{{isApplyReview}}">
+                <van-button wx:if="{{apply_status == 0}}"  loading="{{applyLoading}}"  block round type="info" color="#E3001B" bind:click="applyReview">申请复核</van-button>
+                <van-button wx:else  block round type="info" color="#CCCCCC" >已申请复核，请耐心等待结果</van-button>
+            </view>
+            <!-- 打标签 合格状态 0=不合格  1=复核不合格  2=合格 3=复核合格-->
+              <image wx:if="{{disStatus!=-1}}" class="dis-shot-status-icon" src="/pages/storeDisplay/static/shot_status{{disStatus}}.png" mode="aspectFill"></image>
+       </view>
+  </scroll-view>
+</view>
+<!-- 展示陈列商品 -->
+<show-dis-goods id="showDisGoods"/>
+<!-- 陈列拍照合格状态 -->
+<dis-qualified-state id="disQualifiedState"/>

@@ -1,0 +1,14 @@
+<!--pages/storeOrder/goodsList/index.wxml-->
+<view class="goods-list">
+  <!-- 数量统计 -->
+  <view class="goods-total">
+    商品数量：{{shopList.length}}个
+  </view>
+  <view class="goods-list-item" wx:for="{{shopList}}" wx:key="key">
+    <image class="gli-icon"  src="{{item.icon}}" ></image>
+      <view class="gli-name">{{item.title}}</view>
+      <view class="gli-attr">款式：{{item.attr}}</view>
+      <view class="gli-num">需求数量：{{item.buy_num}}箱</view>
+      <view class="gli-num">交货数量：{{item.buy_num}}箱</view>
+  </view>
+</view>

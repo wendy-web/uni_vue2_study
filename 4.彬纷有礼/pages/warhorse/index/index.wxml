@@ -1,0 +1,137 @@
+<!--pages/warhorse//index/index.wxml-->
+<view class="container" style="background-image: url({{img_bg_zm}});">
+
+	<!-- 战马2022年箱内码活动类型 -->
+	<block>
+		<view class="zm-box">
+			<!-- 战马logo -->
+			<view class="zm-logo-box">
+				<image class="icon-zm-logo" src="{{icon_zm_logo}}" mode="aspectFit"></image>
+			</view>
+			<!-- 活动规则 -->
+			<view class="rule-box">
+				<image bindtap="showRule" class="icon-zm-rule" src="{{icon_zm_rule}}" mode="aspectFit"></image>
+			</view>
+			<!-- 战马活动图:区分2023年类型8的，和之前旧的 -->
+      <block wx:if="{{pre_act_zm}}">
+			  <image class="icon-zm-activity"  src="{{icon_zm_activity}}" mode="aspectFit"></image>
+      </block>
+      <block wx:else>
+        <view class="img-zm-main-box">
+          <image class="img-zm-main"  src="{{img_zm_main}}" mode="aspectFit"></image>
+        </view>
+        
+      </block>
+
+			<!-- 开红包 -->
+			<view class="redpacket-box">
+				<image wx:if="{{!opened}}" bindtap="open" class="icon-redpacket" src="{{icon_redpacket}}"></image>
+				<!-- 下一行测试完需要改回opened -->
+				<image wx:if="{{opened}}" class="icon-redpacket-opened" src="{{icon_redpacket_opened}}" mode="scaleToFill"></image>
+				<!-- 开红包结果 -->
+				<view class="result-box" wx:if="{{opened}}">
+					<!-- 无翻倍任务的情况: 查看余额，继续开箱扫码-->
+					<view wx:if="{{opened && !hasTask}}" class="result-hasTask">
+						<!-- <view  class="result-hasTask"> -->
+						<view class="result-msg">{{hbData.msg}}</view>
+						<view wx:if="{{hbData.data.money}}" class="result-money color-red">￥<text class="font70">{{hbData.data.money}}</text></view>
+						<!-- <view  class="result-money color-red">￥<text class="font70">{{hbData.data.money}}</text></view> -->
+						<view wx:if="{{hbData.data.money}}" class="result-btn">
+							<!-- <view  class="result-btn"> -->
+							<!-- 查看余额 -->
+							<image bindtap="goYuer" class="icon-zm-btn pdr15" src="{{icon_zm_btn_yuer}}" mode="aspectFit"></image>
+							<!-- 继续开箱扫码 -->
+							<image bindtap="goScan" class="icon-zm-btn pdl15" src="{{icon_zm_btn_scan}}" mode="aspectFit"></image>
+						</view>
+					</view>
+					<!-- 有翻倍任务的情况：放弃翻倍，看视频翻倍 -->
+					<view wx:if="{{opened && hasTask}}" class="result-noTask">
+						<view class="result-msg">{{hbData.msg}}</view>
+						<view wx:if="{{hbData.data.money}}" class="result-money color-red">￥<text class="font70">{{hbData.data.money}}</text></view>
+						<view wx:if="{{hbData.data.money}}" class="result-btn">
+							<!-- 放弃翻倍 -->
+							<image bindtap="goYuer" data-go="1" class="icon-zm-btn pdr15" src="{{icon_zm_btn_giveup}}" mode="aspectFit"></image>
+							<!-- 继续开箱扫码 -->
+							<image bindtap="watchAd" data-go="2" class="icon-zm-btn pdl15" src="{{icon_zm_btn_video}}" mode="aspectFit"></image>
+						</view>
+					</view>
+				</view>
+			</view>
+			<!-- 底部图标 -->
+			<view class="bottom-box">
+				<image bindtap="triggerOpen" mode="aspectFit" class="icon-zm-bottom" src="{{icon_zm_bottom}}"></image>
+			</view>
+		</view>
+
+	</block>
+
+
+</view>
+
+
+<!-- 活动规则弹窗 -->
+<view class="fadeIn" wx:if="{{rule}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog rule-bg">
+		<!-- 活动规则 -->
+		<view class="weui-dialog__hd ">
+			<view class="rule-title">
+				<text>活动规则</text>
+			</view>
+			<scroll-view scroll-y="{{true}}" show-scrollbar="{{false}}" class="text-purple mgt100 text-left">
+				<view id="demo1" class="scroll-view-item">
+					<text>{{zmshuoming}}</text>
+				</view>
+				<view id="demo2" class="scroll-view-item ">
+					<view class="text-left">
+						<view class="ruleY"><span>活动说明</span></view>
+						<text>
+							{{zmshuoming2}}
+						</text>
+					</view>
+				</view>
+				<view id="demo3" class="scroll-view-item ">
+					<view class="text-left">
+						<view class="ruleY"><span>注意事项</span></view>
+						<text>
+							{{zmzhuyi}}
+						</text>
+					</view>
+				</view>
+				<view class="flex-align-center">
+					<view class="iknow flex-align-center" bindtap="iknow">知道了</view>
+				</view>
+			</scroll-view>
+		</view>
+
+	</view>
+</view>
+<!-- 视频广告弹窗 -->
+<view style="padding-top:128rpx" wx:hidden="{{!videoPop}}">
+	<videoAd videoPop="{{videoPop}}" videoUrls="{{videoUrl}}" Ad="{{false}}" capsule="{{capsule}}" bind:myevent="playGame"></videoAd>
+</view>
+<!-- 跳转余额二次确认弹窗 -->
+<view class="fadeIn" wx:if="{{reconfirmPop}}">
+	<view class="weui-mask" bindtap="closePop"></view>
+	<view class="weui-dialog reconfirmPop" style="background-image: url({{pop_zm_bg}});">
+		<view class="weui-dialog__hd"></view>
+		<view class="weui-dialog__bd">
+			<!-- 红包翻倍图片 -->
+			<!-- <view>
+				<image mode="aspectFit" class="remindIcon" src="{{remindIcon}}"></image>
+			</view> -->
+		</view>
+
+		<view class="flex-align-around width100">
+			<!-- <view class="goyuerBtn flex-align-center greyBG" data-go="2" bindtap="goYuer">放弃翻倍</view>
+			<view class="watchAdBG flex-align-center" bindtap="watchAd">看视频红包翻倍</view> -->
+			<view class="goyuerBtn flex-align-center " data-go="2" bindtap="goYuer">
+				<image class="icon-zm-btn" mode="aspectFit" src="{{icon_zm_btn_giveup}}"></image>
+			</view>
+			<view class=" flex-align-center" bindtap="watchAd">
+				<image class="icon-zm-btn" mode="aspectFit" src="{{icon_zm_btn_video}}"></image>
+			</view>
+		</view>
+
+	</view>
+</view>

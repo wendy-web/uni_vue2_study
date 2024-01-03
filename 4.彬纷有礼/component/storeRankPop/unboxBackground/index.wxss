@@ -1,0 +1,40 @@
+/* component/storeRankPop/unboxBackground/index.wxss */
+.box {
+  box-sizing: border-box;
+  border-radius: 20rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-end;
+  position: relative;
+}
+.close-box{
+  box-sizing: border-box;
+  width: 100%;
+  height: 74rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 1;
+}
+.close-box .icon-close {
+  width: 69rpx;
+  height: 69rpx;
+}
+
+.box .box-item {
+  box-sizing: border-box;
+  width: 520rpx;
+  height: 650rpx;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  padding: 30rpx;
+  position: relative;
+  overflow: hidden;
+}
+
+.box .box-item-nowin {
+  width: 520rpx;
+  height: 520rpx;
+}

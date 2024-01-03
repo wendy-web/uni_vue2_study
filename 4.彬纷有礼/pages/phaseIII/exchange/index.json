@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "mp-dialog":"../components/dialog/dialog"
+  },
+  "navigationBarBackgroundColor":"#e10404",
+  "navigationBarTextStyle":"white",
+  "navigationBarTitleText": "确认订单"
+}

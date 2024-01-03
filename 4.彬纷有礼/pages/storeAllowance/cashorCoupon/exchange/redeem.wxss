@@ -1,0 +1,301 @@
+/* pages/storeAllowance/cashorCoupon/exchange/redeem.wxss */
+page {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(182deg, #ffd28a 1%, #ec4c3a 51%);
+  box-sizing: border-box;
+  padding: 40rpx 20rpx 20rpx;
+  position: relative;
+  z-index: 1;
+}
+.bg-page-exc{
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.box {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 80rpx;
+  background-color: #ffffff;
+  border-radius: 46rpx;
+}
+
+.content {
+  box-sizing: border-box;
+  padding-top: 40rpx;
+}
+
+.content .title {
+  font-size: 30rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Medium;
+  font-weight: 500;
+  text-align: left;
+  color: #000018;
+  display: flex;
+  align-items: center;
+  padding-left: 40rpx;
+
+}
+
+.content .title-num {
+  font-size: 54rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #000000;
+}
+.img-gap-box{
+  height: 43rpx;
+  width: 100%;
+  position: relative;
+}
+.img-gap-box .img-gap-exc{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.content .select-tips {
+  font-size: 32rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #706a61;
+  padding-left: 40rpx;
+
+}
+
+/* radio 选项 start*/
+.select-box {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 46rpx;
+}
+
+.select-box .select-item {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.radio-container {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  text-align: right;
+  position: relative;
+  min-height: 256rpx;
+  background: #fcfcfc;
+  border: 2rpx solid #e4e4e4;
+  border-radius: 24rpx;
+  padding: 66rpx 20rpx 66rpx 0rpx;
+  margin: 0 20rpx 40rpx 20rpx;
+}
+.height312{
+  height: 312rpx;
+}
+
+.radio-label {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  right: 20rpx;
+  top: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  padding-right: 60rpx;
+}
+
+.radio-icon {
+  box-sizing: border-box;
+  border: 3rpx solid #ff3813;
+  border-radius: 50%;
+}
+
+.radio-normal {
+  box-sizing: border-box;
+  width: 40rpx;
+  height: 40rpx;
+  background: #ffffff;
+  border: 3rpx solid #d1d1d1;
+  border-radius: 50%;
+
+}
+
+.select-box .radio-active {
+  box-sizing: border-box;
+  height: 312rpx;
+  background: #fff2e8;
+  border: 2rpx solid #ffac98;
+  border-radius: 24rpx;
+}
+
+/* .radio-active::after {
+  content: '';
+  width: 24rpx;
+  height: 24rpx;
+  background: #ff3813;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+} */
+.select-item .select-item-type {
+  font-size: 36rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #706a61;
+}
+
+.select-item .select-item-title {
+  font-size: 44rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #000018;
+  margin-top: 40rpx;
+}
+
+.select-item .select-item-num {
+  font-size: 44rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: bold;
+  text-align: left;
+  color: #FF3813;
+}
+
+.select-item .select-item-tips {
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #8b8b8b;
+  margin-top: 32rpx;
+}
+
+
+/* radio 选项 end*/
+
+
+.box .btn-confirm {
+  width: 638rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: #e3001b;
+  border-radius: 48rpx;
+
+  font-size: 36rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #ffffff;
+  margin: 0 auto;
+}
+
+/* 兑换成功弹窗 */
+.pop-box {
+  width: 600rpx;
+  min-height: 586rpx;
+  background: #ffffff;
+  border-radius: 30rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 120rpx;
+  padding-bottom: 60rpx;
+  position: relative;
+  z-index: -1;
+}
+.pop-box .pop-bg-green{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.pop-icon-success {
+  width: 198rpx;
+  height: 204rpx;
+  margin: auto auto -136rpx auto;
+  display: block;
+  z-index: 3;
+}
+
+.pop-box .pop-content {
+  margin-top: 44rpx;
+}
+
+.pop-box .exc-title {
+  font-size: 44rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #000018;
+}
+
+.pop-box .exc-num {
+  font-size: 44rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: bold;
+  color: #FF3813;
+}
+
+.operate-box {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.operate-box .exc-tips {
+  font-size: 20rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #727272;
+}
+
+.operate-box .operate-btn {
+  width: 300rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: #e3001b;
+  border-radius: 40rpx;
+  font-size: 32rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #ffffff;
+  margin-top: 18rpx;
+}
+.btn-disabled{
+  background-color: #bdbdbd!important;
+  opacity:1!important;
+}

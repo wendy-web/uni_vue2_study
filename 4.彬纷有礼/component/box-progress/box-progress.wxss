@@ -1,0 +1,256 @@
+/* pages/couponActivity/component/box-progress.wxss */
+.box {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 98%;
+}
+
+.box .num {
+  font-size: 37rpx;
+  font-weight: bold;
+  color: #e21e00;
+}
+
+.box .title {
+  font-size: 20rpx;
+  font-weight: 400;
+  color: #5f5857;
+}
+
+.box .title2 {
+  color: #fff;
+  font-size: 24rpx;
+}
+
+.box .num-box {
+  text-align: center;
+  flex: 0.2;
+  min-height: 86rpx;
+}
+
+.box .progress-box {
+  position: relative;
+  flex: 0.8;
+  display: flex;
+  align-items: center;
+  height: 160rpx;
+  padding-right: 35rpx;
+}
+
+.progress-box .progress-item {
+  width: 100%;
+  height: 30rpx;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+.progress-box-section {
+  position: relative;
+  flex: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 160rpx;
+  padding-left: 35rpx;
+  margin-right: 35rpx;
+}
+
+.progress-box-section .progress-item-section {
+  width: 100%;
+  height: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 0;
+}
+
+.progress-border {
+  border-radius: 20rpx 0 20rpx 20rpx;
+  padding: 2rpx 40rpx 2rpx 4rpx;
+  box-sizing: border-box;
+  border: 1rpx solid #ef8130;
+}
+
+.progress-border-section {
+  border-radius: 20rpx;
+  padding: 2rpx 40rpx 2rpx 4rpx;
+  box-sizing: border-box;
+  border: 1rpx solid #ef8130;
+  margin-right: 4px;
+}
+
+.progress-box .progress-border2 {
+  background: #c2815b;
+  border: 4rpx solid #f1c0a9;
+  padding: 1rpx 60rpx 1rpx 1rpx;
+}
+
+.progress {
+  height: 14rpx;
+  background: #FCBA7A;
+  border-radius: 7rpx;
+  margin: 0 auto;
+}
+
+.progress-border .progress2 {
+  background: #c2815b;
+  height: 16rpx;
+}
+
+.progress .progress-inner {
+  height: 14rpx;
+  width: var(--width);
+  border-radius: 7rpx;
+  background: linear-gradient(0deg, #fd6913 0%, #fd2d0e 100%);
+  border-radius: 7px;
+}
+
+.progress .progress-inner2 {
+  height: 16rpx;
+
+  background: linear-gradient(270deg, #250dfc, #fc108e);
+  box-shadow: none;
+}
+
+.box .min-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 130rpx;
+  width: 130rpx;
+  position: absolute;
+  left: var(--percent);
+}
+
+.box .min-box-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 130rpx;
+  z-index: 1;
+  /* position: absolute;
+  left: var(--percent); */
+}
+
+.box .min-num {
+  font-size: 26rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  color: #fe521d;
+}
+
+.box .max-num {
+  font-size: 34rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  color: #FE521D;
+}
+
+.box .icon-box {
+  width: 74rpx;
+  height: 49rpx;
+}
+
+.box .max-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 140rpx;
+  width: 130rpx;
+  position: absolute;
+  right: 0;
+}
+
+.box .max-box2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 160rpx;
+  width: 130rpx;
+  position: absolute;
+  right: 0;
+}
+
+.mgt10 {
+  margin-top: 10rpx;
+}
+
+.act_updatePop_title {
+  font-size: 24rpx;
+  text-align: center;
+  color: #1A1817;
+}
+
+.act_updatePop_num {
+  font-size: 30rpx;
+  color: #e21e00;
+  font-weight: bold;
+  margin: 0 8rpx;
+}
+.act_updatePop_num_section{
+  /* font-size: 37rpx; */
+  font-size: 60rpx;
+  color: #e21e00;
+  font-weight: bold;
+  margin: 0 8rpx;
+}
+
+.item-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40rpx;
+  /* margin-bottom: 20rpx; */
+  font-size: 20rpx;
+}
+
+.mgt20 {
+  margin-top: 20rpx;
+}
+
+.act-tips {
+  font-size: 20rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #f5a262;
+  position: absolute;
+  bottom: 34rpx;
+  left: 0px;
+  right: 96rpx;
+  margin: 0 auto;
+}
+
+.unlock_display_title {
+  font-size: 28rpx;
+  text-align: center;
+  color: #7916c6;
+  font-weight: bold;
+  min-height: 40rpx;
+}
+.font34{
+  font-size: 34rpx;
+}
+
+.font50{
+  font-size: 50rpx;
+}
+.color-blue{
+  color: #101BFF;
+}
+.font60{
+  font-size: 60rpx;
+}

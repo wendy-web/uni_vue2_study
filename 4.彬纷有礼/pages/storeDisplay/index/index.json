@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "促销活动",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "item-list":"./common/itemList/itemList",
+    "sign-confirm":"./common/signConfirm"
+  },
+  "disableScroll": true
+}

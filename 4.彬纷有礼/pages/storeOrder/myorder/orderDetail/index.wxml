@@ -1,0 +1,251 @@
+<!--pages/storeOrder/orderDetail/index.wxml-->
+<!-- 商城订单 -->
+<view class="store-box">
+  <!-- 订单状态 -->
+  <view class="order-item">
+    <view class="order-status-box {{status_name=='已完成'?'color-green':''}} {{status_name=='已取消'?'color-grey':''}}">
+      <image class="icon-status" mode="aspectFit" src="{{status_icon_path}}"></image>
+      <text>{{status_name}}</text>
+
+    </view>
+    <!-- 提示语 -->
+    <view class="order-status-tips" wx:if="{{status_name=='待付款'}}">收货后，金额才转至配送商账户</view>
+    <!-- 订单进度：已取消status:0,2 的不显示 -->
+    <view class="steps-box" wx:if="{{orderInfo.order.status !=0 || orderInfo.order.status != 2}}">
+      <steps timeline="{{orderInfo.timeline}}"></steps>
+      <!-- <block wx:for="{{orderInfo.timeline}}" wx:key="key">
+        <view class="steps-item {{item.date?'steps-item-active':''}}">
+          <view class="icon-dot {{item.date?'icon-dot-active':''}}"></view>
+          <view>{{item.name}}</view>
+          <view class="steps-item-date">{{item.date}}</view>
+        </view>
+      </block> -->
+    </view>
+  </view>
+  <!-- 配送员信息 -->
+  <view class="order-item " wx:if="{{deliveryInfo}}">
+  <!-- <view class="order-item" wx:if="{{orderInfo.order.status>2&&orderInfo.order.status<5}}"> -->
+    <view class="order-info-item mgt20">
+      <view>配送员：</view>
+      <view class="order-info-value">{{deliveryInfo['name']}}</view>
+    </view>
+    <view class="order-info-item">
+      <view>联系电话：</view>
+      <view class="order-info-value">{{deliveryInfo['mobile']}}</view>
+    </view>
+
+  </view>
+  <!-- 下单配送信息 -->
+  <view class="order-item unset-border-bottom">
+    <view class="order-info-box">
+      <image class="order-icon" src="{{icon_salesman}}" mode="aspectFit" lazy-load></image>
+      <text class="order-color-grey mglr10">代下单</text>
+      <text>{{orderInfo.order.y_name}}</text>
+    </view>
+    <view class="order-info-box">
+      <image class="order-icon" src="{{icon_delivery}}" mode="aspectFit" lazy-load></image>
+      <text class="order-color-grey mglr10">配送</text>
+      <text>{{orderInfo.order.b_sname||''}}</text>
+    </view>
+  </view>
+  <!-- 商品sku信息 -->
+  <view class="order-item">
+    <view class="sku-box">
+      <!-- 多个sku -->
+      <block wx:if="{{orderInfo.sku.length>1}}">
+
+        <block wx:for="{{orderInfo.sku}}" wx:key="key">
+          <view class="sku-item" wx:if="{{index < 2}}">
+            <image class="icon-sku" mode="aspectFit" src="{{item.icon}}"></image>
+          </view>
+
+        </block>
+        <view class="sku-item-placeholder {{orderInfo.sku.length>2?'':'min-width-100'}}">{{orderInfo.sku.length>2?'...':' '}}</view>
+        <view class="sku-item" bindtap="openGoodList" data-sku="{{orderInfo.sku}}">
+          <view>
+            <view>共{{orderInfo.order.sku_num}}个商品</view>
+            <view>需求{{orderInfo.order.buy_num}}箱</view>
+            <view class="hr-info-box" wx:if="{{orderInfo.hr}}">进货已满{{orderInfo.hr.need_num}}箱赠送{{orderInfo.hr.awarded_num}}罐</view>
+          </view>
+          <van-icon custom-class="icon-arrow" size="30rpx" name="arrow" />
+        </view>
+      </block>
+      <!-- 只有1个sku -->
+      <block wx:else>
+        <!-- sku info -->
+        <block wx:for="{{orderInfo.sku}}" wx:key="key">
+          <view class="sku-info-box">
+            <image class="sku-info-img" mode="aspectFit" src="{{item.icon}}"></image>
+            <view>
+              <view class="sku-info-title">{{item.title}}</view>
+              <view>款式：{{item['attr_str'][0][1]}} {{item['attr_str'][1][1]}} {{item['attr_str'][2][1]}}</view>
+              <view>价格：￥{{item.buy_price}}/箱</view>
+              <view>需求数量：{{item.buy_num}}箱</view>
+              <view class="hr-info-box" wx:if="{{orderInfo.hr}}">进货已满{{orderInfo.hr.need_num}}箱赠送{{orderInfo.hr.awarded_num}}罐</view>
+            </view>
+          </view>
+        </block>
+      </block>
+    </view>
+    <view class="goods-info">
+      <view>商品总价：</view>
+      <view>￥{{orderInfo.order.total_amount}}</view>
+    </view>
+    <view class="goods-info" wx:if="{{orderInfo.order.discount_amount}}">
+      <view>优惠：</view>
+      <view>-￥{{orderInfo.order.discount_amount}}</view>
+    </view>
+    <view class="goods-info" wx:if="{{orderInfo.order.d_amount}}">
+      <view>
+        <text class="icon-ticket">券</text>
+        <text>现金券：</text>
+      </view>
+      <view>-￥{{orderInfo.order.d_amount}}</view>
+    </view>
+    <!-- 实付款 -->
+    <view class="pay-info">
+      <view class="name">
+        <block wx:if="{{orderInfo.order.isPaid}}">
+          <text>实付款：</text>
+        </block>
+        <block wx:else>
+          <text>应付款：</text>
+        </block>
+      </view>
+      <view>￥{{orderInfo.order.isPaid?orderInfo.order.p_amount:orderInfo.order.c_amount}}</view>
+    </view>
+  </view>
+  <!-- 订单信息 -->
+  <view class="order-item">
+    <view class="order-info-item mgt20" wx:if="{{orderInfo.order.orderType != '先付后货'}}">
+      <view>订单类型：</view>
+      <view class="order-info-value">{{orderInfo.order.orderType}}</view>
+    </view>
+    <view class="order-info-item">
+      <view>订货单号：</view>
+      <view class="order-info-value">{{orderInfo.order.out_trade_no}}</view>
+      <image bindtap="copyText" data-text="{{orderInfo.order.out_trade_no}}" class="icon-copy" mode="aspectFit" src="{{icon_copy}}"></image>
+    </view>
+    <view class="order-info-item border-bottom-dashed">
+      <view>代下单时间：</view>
+      <view class="order-info-value">{{orderInfo.order.create_time}}</view>
+    </view>
+
+    <view class="order-info-item mgt20" wx:if="{{orderInfo.order.payType}}">
+      <view>支付方式：</view>
+      <view class="order-info-value">{{orderInfo.order.payType}}</view>
+    </view>
+    <view class="order-info-item border-bottom-dashed" wx:if="{{orderInfo.order.payTime}}">
+      <view>支付时间：</view>
+      <view class="order-info-value">{{orderInfo.order.payTime}}</view>
+    </view>
+
+    <view class="order-info-item mgt20">
+      <view>期望到达时间：</view>
+      <view class="order-info-value">{{orderInfo.order.dy_time}}</view>
+    </view>
+    <view class="order-info-item ">
+      <view class="order-info-subtitle">送货地址：</view>
+      <view class="order-info-note">{{orderInfo.order.address}}</view>
+    </view>
+    <view class="order-info-item border-bottom-dashed">
+      <view class="order-info-subtitle">备注：</view>
+      <view class="order-info-note">{{orderInfo.order.note||''}}</view>
+    </view>
+    <!-- 促销活动 -->
+    <view class="order-info-item mgt20 border-bottom-dashed order-info-item-space-between" wx:if="{{orderInfo.order.pro_title}}">
+      <view>促销活动名称：</view>
+      <view class="order-info-value">{{orderInfo.order.pro_title}}</view>
+    </view>
+    <!-- 操作记录 -->
+    <view class="order-info-item mgt20 order-info-item-space-between" bindtap="checkActRecord" wx:if="{{orderInfo.order.actRecord}}">
+      <view>操作记录：</view>
+      <view class="order-info-value">{{orderInfo.order.actRecord}}
+        <van-icon name="arrow" />
+      </view>
+    </view>
+  </view>
+  <!-- 操作按钮订单状态未完成status:4已完成，5已取消 -->
+  <view class="operate-box {{(orderInfo.order.pay_type == 1&&orderInfo.order.status == 3&&orderInfo.order.rev_status != 2)?'btn-display-none':''}}" wx:if="{{orderInfo.order.status<4 }}">
+    <!-- 区分先付后货-->
+    <block wx:if="{{orderInfo.order.pay_type == 0}}">
+      <!-- 待接单 -->
+      <block wx:if="{{orderInfo.order.status == 1}}">
+        <!-- 已支付：店员只有催接单 -->
+        <block wx:if="{{orderInfo.order.isPaid}}">
+          <!-- type:1 已支付未确认 -->
+          <block wx:if="{{orderInfo.order.type == 1 &&condition != 2 }}">
+            <van-button bind:click="storeOrderdxdConfirm" data-item="{{orderInfo.order}}" custom-class="btn-operate-block" round type="default">确认订单</van-button>
+          </block>
+          <!-- type:2 已支付确认 -->
+          <block wx:if="{{orderInfo.order.type == 2}}">
+            <block wx:if="{{condition != 2}}">
+              <van-button bind:click="storeOrderRefuse" data-item="{{orderInfo.order}}" custom-class="btn-cancel" round type="default">取消订单</van-button>
+              <van-button bind:click="storeOrderPress" data-item="{{orderInfo.order}}" data-type="1" custom-class="btn-cancel" round loading="{{loading}}" type="default">催接单</van-button>
+            </block>
+            <block wx:else>
+              <van-button bind:click="storeOrderPress" data-item="{{orderInfo.order}}" data-type="1" custom-class="btn-cancel-block" round loading="{{loading}}" type="default">催接单</van-button>
+            </block>
+
+          </block>
+        </block>
+        <!-- 未支付：店长显示拒绝、去支付操作 -->
+        <block wx:else>
+          <block wx:if="{{condition != 2}}">
+            <van-button bind:click="storeOrderRefuse" data-item="{{orderInfo.order}}" custom-class="btn-cancel" round type="default">拒绝</van-button>
+            <van-button bind:click="storePay" data-item="{{orderInfo.order}}" custom-class="btn-operate" round type="default">去支付</van-button>
+
+          </block>
+        </block>
+      </block>
+      <!-- 待配送 -->
+      <block wx:if="{{orderInfo.order.status == 2}}">
+        <van-button bind:click="storeOrderPress" data-item="{{orderInfo.order}}" data-type="2" custom-class="btn-cancel-block" round type="default">催送货</van-button>
+      </block>
+      <!-- 待收货 -->
+      <block wx:if="{{orderInfo.order.status == 3}}">
+        <van-button wx:if="{{orderInfo.order.rev_status == 2}}" bind:click="storeOrderConfirmReceipt" custom-class="btn-operate-block" block round type="default">确认收货</van-button>
+      </block>
+    </block>
+    <!-- 货到付款-->
+    <block wx:if="{{orderInfo.order.pay_type == 1}}">
+      <!-- 待确认 -->
+      <block wx:if="{{orderInfo.order.status == 1}}">
+        <block wx:if="{{orderInfo.order.type == 1 && condition != 2}}">
+          <van-button bind:click="storeOrderRefuse" data-item="{{orderInfo.order}}" custom-class="btn-cancel" round type="default">拒绝</van-button>
+          <van-button bind:click="storeOrderConfirm" data-item="{{orderInfo.order}}" custom-class="btn-operate " round type="default">确认订单</van-button>
+        </block>
+        <block wx:if="{{orderInfo.order.type == 2}}">
+          <block wx:if="{{condition != 2}}">
+            <van-button bind:click="storeOrderRefuse" data-item="{{orderInfo.order}}" custom-class="btn-cancel" round type="default">取消订单</van-button>
+            <van-button bind:click="storeOrderPress" data-item="{{orderInfo.order}}" data-type="1" custom-class="btn-cancel " round type="default">催接单</van-button>
+          </block>
+          <block wx:else>
+            <van-button bind:click="storeOrderPress" data-item="{{orderInfo.order}}" data-type="1" custom-class="btn-cancel-block" block round type="default">催接单</van-button>
+          </block>
+        </block>
+      </block>
+      <!-- 待配送 -->
+      <block wx:if="{{orderInfo.order.status == 2}}">
+        <van-button bind:click="storeOrderPress" data-item="{{orderInfo.order}}" data-type="2" custom-class="btn-cancel-block" block round type="default">催送货</van-button>
+      </block>
+      <!-- 待核销 -->
+      <block wx:if="{{orderInfo.order.status == 3}}">
+        <block wx:if="{{orderInfo.order.rev_status == 2}}">
+          <block wx:if="{{condition !=2}}">
+            <van-button bind:click="storeOrderConfirmReceipt" data-item="{{orderInfo.order}}" custom-class="btn-operate-block" block round type="default">确认收货</van-button>
+          </block>
+          <block wx:else>
+            <van-button bind:click="storeOrderConfirmReceipt" data-item="{{orderInfo.order}}" custom-class="btn-operate-block" block round type="default">{{orderInfo.order.isPaid?'确认收货':'通知店长'}}</van-button>
+          </block>
+        </block>
+      </block>
+    </block>
+
+  </view>
+</view>
+
+
+
+<!-- 订单弹窗 -->
+<order-popup id="orderPopup" bind:myevent="getDetail"></order-popup>

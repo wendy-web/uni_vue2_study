@@ -1,0 +1,137 @@
+.backgr {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    width: 100vw;
+    background-color: darkred;
+}
+
+.backgr image {
+    width: 100vw;
+    min-height: 100vh;
+    max-height: 120vh;
+}
+
+
+.conta {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 100vw;
+}
+
+.conta .card {
+    background: white;
+    margin-top: 15vh;
+    padding: 30rpx 0;
+    width: 690rpx;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border-radius: 20rpx;
+}
+
+.conta .card .title {
+    font-weight: bold;
+    font-size: 32rpx;
+    margin-bottom: 20rpx;
+}
+
+.conta .card .red {
+    color: red;
+    font-size: 24rpx;
+    font-weight: bold;
+    margin: 20rpx 0 10rpx 0;
+}
+
+.conta .card .time {
+    color: gray;
+    font-size: 24rpx;
+    margin-bottom: 20rpx;
+}
+
+.conta .card .locate {
+    margin-bottom: 20rpx;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 22rpx;
+    font-weight: bold;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: gray;
+}
+
+.conta .card .locate .loc {
+    max-width: 400rpx;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.conta .card .locate .pic {
+    margin-right: 10rpx;
+    width: 18rpx;
+    height: 26rpx;
+}
+
+.conta .card .locate .pic image {
+    width: 18rpx;
+    max-height: 26rpx;
+}
+
+
+.redbtn {
+    width: 600rpx;
+    border-radius: 50rpx;
+    color: white;
+    background: linear-gradient(0deg, #a10f16 0, #e71a19 100%);
+    font-size: 36rpx;
+    height: 96rpx;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-bottom: 10%;
+}
+
+.adContainer-bottom {
+    display: flex;
+    bottom: 0px;
+    width: 100%;
+    margin-top:16%;
+    /* align-self: flex-end; */
+}
+
+page {
+    min-height: 100%;
+}
+
+/* .flex-container {
+    display: flex;
+    min-height: 100%;
+ 
+}
+
+.cttx{
+    height: 1050rpx;
+
+} */

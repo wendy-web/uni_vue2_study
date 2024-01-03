@@ -1,0 +1,16 @@
+<!--components/movemenu/movemenu.wxml-->
+<movable-area class='menuarea'>
+	<movable-view class='menu_box' direction="all" x="{{width}}" y="{{screenHeight?screenHeight*0.7:height*0.7}}" out-of-bounds="{{false}}">
+		<view catchtap='showclick' class='menu_main' data-trigger="{{trigger}}">
+			<image class='menu_img' mode="aspectFit" src='{{mainmodel.url?mainmodel.url:url}}' />
+			<block wx:if="{{noticeUnread>99}}">
+				<text class='menu_title yellow'>99+</text>
+			</block>
+			<block wx:else>
+				<text class='menu_title yellow' wx:if="{{noticeUnread>0}}">{{noticeUnread}}</text>
+			</block>
+			<text class='menu_title' hidden='{{mainmodel.title.length > 0 ? flase:true}}'>{{mainmodel.title}}</text>
+		</view>
+	</movable-view>
+</movable-area>
+

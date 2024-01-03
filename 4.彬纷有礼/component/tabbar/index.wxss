@@ -1,0 +1,5 @@
+/* component/tabbar/index.wxss */
+.tabbar-box{
+  padding-top: 10rpx;
+  height: 100rpx;
+}

@@ -1,0 +1,53 @@
+<!--pages/storeRank/prizeTicket/index/index.wxml-->
+<view class="prize-ticket-box">
+<!-- 奖品图片 -->
+<view class="banner-box">
+  <!-- <view class="banner-item">
+    <view class="banner-tips">奖品如图，以实物为准</view>
+  </view> -->
+  <image class="banner-honor" src="{{banner_honor}}" mode="aspectFit"/>
+</view>
+  <!-- 奖品信息 -->
+  <view class="prize-info">
+    <text>奖品为2499元荣耀90手机一台</text>
+    <!-- 待领取:有领取图片以后隐藏 -->
+    <view class="unclaimed-box  {{actInfo.win.status>=2?'received':''}}">{{actInfo.win.status>=2?'已领取':'待领取'}}</view>
+  </view>
+  <!-- 说明 -->
+  <view class="explain">
+    <text>请正确输入中奖者</text>
+    <text class="text-red">姓名、身份证号、手机号码、联系地址</text>
+    <text>用于</text>
+    <text class="text-red">红牛公司工作人员与获奖者联系、</text>
+    <text>确认奖品领取信息及作为</text>
+    <text class="text-red">奖品领取核对凭证。一经确认不得修改。</text>
+    <text>请您保持电话畅通，在您确认中奖信息后，红牛公司将在10个工作日内安排当地分公司给您兑奖，奖品签收需提交本人身份证资料供红牛公司备案。</text>
+
+  </view>
+  <view class="form-box">
+    <van-cell-group border="{{false}}">
+      <van-field value="{{ prizeInfo.name }}" bind:change="onChange" data-field="name" custom-class="form-item" type="textarea" placeholder="请输入真实姓名" autosize placeholder-style="color:#4E4E4E;font-size:28rpx;" readonly="{{editDisabled}}" />
+      <van-field value="{{ prizeInfo.id_card }}" bind:change="onChange" data-field="id_card" custom-class="form-item" type="textarea" placeholder="请输入身份证号码" custom-class="form-item" autosize placeholder-style="color:#4E4E4E;font-size:28rpx;" readonly="{{editDisabled}}" />
+      <view class="id-card-tips">*用以核对中奖者身份及为中奖者代缴个人所得税</view>
+      <van-field value="{{ prizeInfo.phone }}"  custom-class="form-item" type="textarea" placeholder="请输入联系人手机号码" custom-class="form-item" autosize placeholder-style="color:#4E4E4E;font-size:28rpx;" readonly disabled />
+      <van-field value="{{ prizeInfo.region }}" bind:change="onChange" data-field="region" custom-class="form-item" type="textarea" placeholder="城市/区域" custom-class="form-item" autosize placeholder-style="color:#4E4E4E;font-size:28rpx;" readonly="{{editDisabled}}" />
+      <van-field value="{{ prizeInfo.detailed }}" bind:change="onChange" data-field="detailed" custom-class="form-item" type="textarea" placeholder="请输入详细地址" custom-class="form-item" autosize placeholder-style="color:#4E4E4E;font-size:28rpx;" readonly="{{editDisabled}}" />
+      <view class="prize-info-tips">
+        *当前页面为验证兑奖联系人信息的凭证，若您在本期开奖结果公布前未提交资料，视为自愿放弃兑奖机会。
+      </view>
+    </van-cell-group>
+    <!-- 领取信息 -->
+    <view class="received-box" wx:if="{{prizeInfo.voucher.length>0}}">
+      <view class="received-title">领取凭证</view>
+      <view class="img-list">
+        <view wx:for="{{prizeInfo.voucher}}" wx:key="index" class="img-item">
+          <image class="img-item" src="{{item}}" bindtap="previewImg" data-url="{{item}}" mode="aspectFill"/>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="submit-box safeArea" wx:if="{{!editDisabled}}">
+    <van-button block round type="danger" bind:click="onSubmit" disabled="{{submitDisabled}}">提交</van-button>
+  </view>
+</view>
+<popModule id="pop" bind:refresh="submit"></popModule>

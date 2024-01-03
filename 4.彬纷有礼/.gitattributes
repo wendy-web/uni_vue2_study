@@ -1,0 +1,4 @@
+utils/socket.js merge=ours
+utils/http.js merge=ours
+project.config.json merge=ours
+project.private.config.json merge=ours

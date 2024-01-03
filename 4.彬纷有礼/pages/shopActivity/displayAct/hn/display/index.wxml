@@ -1,0 +1,147 @@
+<!--pages/shopActivity/displayAct/hn/display/index.wxml-->
+
+<view class="box">
+  <!-- 顶部背景 -->
+  <view class="head-bg"></view>
+  <!-- 标题 -->
+  <view class="title-box">
+    <view class="title-item">
+      <image class="icon-freezer" mode="aspectFit" src="{{icon_freezer}}"></image>
+      <view class="title">中国红牛冰柜陈列</view>
+    </view>
+    <!-- 拍照记录 -->
+    <view class="record-box" bindtap="openHistory">
+      <text>拍照记录</text>
+      <image class="icon-arrow" src="{{icon_arrow_red}}" mode="aspectFit"></image>
+    </view>
+  </view>
+  <!-- 规则说明 -->
+  <view class="rule-box">
+    <view class="rule-item">
+      <view class="rule-title">拍照要求</view>
+      <!-- <view class="rule-desc"><text class="color-red">50天</text>内需合格拍照<text class="color-red">{{displayInfo.kpi_num||4}}次</text>，每<text class="color-red">7天</text>合格<text class="color-red">1次</text>即可</view> -->
+      <view class="rule-desc">活动期间合格拍照<text class="color-red">{{displayInfo.kpi_num||4}}次</text>，每<text class="color-red">7天</text>合格<text class="color-red">1次</text>即可</view>
+    </view>
+    <view class="rule-item mgt20">
+      <view class="rule-title">陈列要求</view>
+      <view class="rule-desc">冰柜陈列<text class="color-red">≥6个面</text></view>
+    </view>
+    <view class="rule-item mgt20">
+      <view class="rule-title">陈列商品</view>
+      <image class="icon-redbull" src="{{icon_redbull}}" mode="aspectFit"></image>
+    </view>
+  </view>
+  <view class="container">
+    <!-- 店铺信息 点击跳转至 修改店铺信息-->
+    <view class="shop-box">
+      <image class="shop-sign" src="{{displayInfo.signs_url}}" mode="aspectFill"></image>
+      <view class="shop-info">
+        <block wx:if="{{userInfo.condition == 1}}">
+          <view class="shop-name" bindtap="editShopInfo">
+            <text>{{displayInfo.shop_name}}</text>
+            <text class="iconfont iconarrow"></text>
+          </view>
+        </block>
+        <block wx:else>
+          <view class="shop-name">
+            <text>{{displayInfo.shop_name}}</text>
+          </view>
+        </block>
+        <view class="shop-address">{{displayInfo.address}}</view>
+      </view>
+    </view>
+    <!-- 陈列信息 -->
+    <view class="display-box">
+      <view class="display-date">{{date_today}} <text class="display-tips">(每天可最多拍照{{displayInfo.calc.photo_num||5}}次)</text></view>
+      <view class="display-rule">陈列示意图</view>
+      <view class="display-item {{uploadList.length>0?'flex-start':''}}">
+        <!-- 默认显示示例图，如果有上传图片，可预览 -->
+        <image class="icon-example" bindtap="previewImg" data-path="{{icon_example}}" mode="aspectFit" src="{{icon_example}}"></image>
+        <!-- 图片展示 -->
+        <view class="img-box">
+
+
+          <block wx:if="{{uploadList}}">
+            <view class="result-box" wx:for="{{uploadList}}" wx:key="keys" wx:for-item="itm">
+              <image class="item-img" catchtap="previewImg" data-path="{{itm.pic_url}}" mode="scaleToFill" src="{{itm.pic_url}}"></image>
+              <view class="{{itm.status==1?'itm-hook':'itm-fork'}} item-status ">{{itm.status==1?'合格':"不合格"}}</view>
+            </view>
+          </block>
+          <!-- 每日最多可拍照次数判断 -->
+          <!-- <block wx:if="{{uploadList}}">
+            <block wx:if="{{caniDisplay&&uploadList.length<displayInfo.calc.photo_num}}">
+              <view class="camera-box">
+                <image bindtap="takePhoto" class="icon-camera" mode="aspectFit" src="{{icon_camera}}"></image>
+                <view class="camera-tips">点击拍照</view>
+              </view>
+            </block>
+          </block> -->
+          <!-- page:0 可拍照，s_num<kpi_num -->
+          <block wx:if="{{displayInfo.page ==0 && displayInfo.s_num < displayInfo.kpi_num}}">
+            <view class="camera-box">
+              <image bindtap="takePhoto" class="icon-camera" mode="aspectFit" src="{{icon_camera}}"></image>
+              <view class="camera-tips">点击拍照</view>
+            </view>
+          </block>
+         
+        </view>
+      </view>
+      <block wx:if="{{displayInfo.s_num < displayInfo.kpi_num}}">
+        <view class="display-item">
+          <block wx:if="{{displayInfo.page==2}}">
+            <view class="display-success-box">
+              <image class="icon-success" src="{{icon_success}}" mode="aspectFit"></image>
+              <view class="display-status-tips">
+                <view>您已完成{{displayInfo.s_num}}次合格拍照，</view>
+                <view wx:if="{{next_display_date}}">请<text class="next-date">{{next_display_date}}</text>再进行拍照上传！</view>
+              </view>
+            </view>
+          </block>
+          <block wx:if="{{displayInfo.page==1}}">
+            <view class="display-warn-box">
+              <image class="icon-warn" src="{{icon_warn}}" mode="aspectFit"></image>
+              <view class="display-warn-tips">
+                <view>您今天的拍照次数已用完，</view>
+                <view>请<text class="tomorrow">明天</text>再进行拍照上传！</view>
+              </view>
+            </view>
+          </block>
+
+
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
+<!-- 陈列成功弹窗 -->
+<block wx:if="{{displayInfo&&displayInfo.s_num>3}}">
+
+  <view class="fadeIn" wx:if="{{pop_act_won}}">
+    <view class="weui-mask" bindtap="closePop"></view>
+    <view class=" pop-applyed scale-in-center">
+      <image class="icon-apply-success" src="{{img_title_winner}}" mode="aspectFit"></image>
+      <view class="pop-content">
+        <view class="act-display-apply-box">
+          <view class="act-prize-box" style="background-image: url({{img_bg_pop_apply}});">
+            <view class="act-prize-title">活动券</view>
+            <view class="act-prize-text"><text class="num24">24</text>张</view>
+            <view class="act-prize-text">凭活动券兑换红牛</view>
+          </view>
+
+          <view class="act-prize-tips mgt20">活动券将发放到{{userInfo.condition != 2 ?'您':'店长'}} “彬纷有礼-可用卡券”</view>
+          <view class="act-prize-tips">请注意查收</view>
+          <block wx:if="{{userInfo.condition !=2}}">
+            <navigator url="/pages/phaseIII/voucher/index?activeTab=2" hover-class="none">
+              <view bindtap="closePop" class="act-display-apply-btn" style="background-image: url({{img_bg_apply_btn}});">查看详情</view>
+            </navigator>
+          </block>
+          <block wx:else>
+            <view bindtap="closePop" class="act-display-apply-btn" style="background-image: url({{img_bg_apply_btn}});">请通知店长查收</view>
+          </block>
+        </view>
+      </view>
+      <image class="icon-closed " mode="aspectFit" bindtap="closePop" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEUAAABFCAMAAAArU9sbAAAARVBMVEX///8AAAD///////////////////////////////////////////////////////////////////////////////////+Y34OdAAAAF3RSTlMaAP71MWneX3Ime8k71eW77q2giJVMD8ZYXSIAAAMGSURBVFjDnNPRkqMgFIThnj6AIKio6Ps/6g5OdjcJyGj+i1QuyFddaPB11u6CTtMwishopkUHt5+ePVNC8qPwORl9CncUaP/4oRl8bjAPctDuooLFHMRst6Acck6Fzc4HNC7ugrLrmM9OGmXdNJKMFr8pm89GH1Av9NkZuqayr0Ka1eE8txpSVpwrzpOSAtqpJKRXZ0owpNH4PZ0PhrqyRXJSuJKayNjVlE0oC662CGUrlRDJhOutZAzvijOUhDutwtG9KrsnF9xrIT1elJWccLeJXJ+VTWgU7qYMpfuvYKBo3E8LDf4plkz4pESufxVEmoBPUobRPZTlW8Rn9eT8o8BwdPgsl397KB1pi6kdanWquGDSHornGMp/W48yS6/KmxmyEiovXEeKrT1YFhtnMnwridTlrQlpy/FSLuzI5Qu7p1THv7+I3QGXCYcdbuSMGiNk/8b2qDQzKgShRS2d17ws0SfnZPv5qNY/rbHM36sdM9LxnBtrWneSUyMXTDQKaKxpLwHcwAkDBwe01jSXAM7TINIDaK2ZG0tyEyOkqUAzZ9FUBGwryEtmtBX+acValiQEYaCGQASNA6j7/5+6C6MHZ3moTA4eLMvqCqTT3TUsBKFkBUulL8PFvihgXUQyxN7I8hkd96U0S6ZyX8bOwzwVkYQqoUEFfp+j2lSb8hzFRwXJgYayM53lF/nBLyaQaHrpW8xxnUxyncxwXeRdqjJdfJfl3a/tgJ4T+2hMnojJ76NetuxGOnajnkG17Gn8ombotQ2z9KSQQehDS5mnWmoBWJp1HZ10XU+PNKZmENSsdx3AelLN3QPtvQJwd/YBOINYbvsATHmS5d7xiO2/PyJxx5Wsf19Tq1dzAIIafSMxwLzlPCxGD4s1IMEuM+b9dBf9tCn6acMQGlj09gEszAPmcAQTDIpqOUNnbPjOUaofLvzDmu5C5qHd/M485IR6zzw0TvTOPKzTF/MXPfCev/D4CjWy2vOXAW9lQZ7tRxZk2eezoFz94Db4l7IChFWjNxvmc6lfZ6QgAX80xusAAAAASUVORK5CYII="></image>
+
+    </view>
+  </view>
+</block>

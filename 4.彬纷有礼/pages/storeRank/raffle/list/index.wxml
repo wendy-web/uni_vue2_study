@@ -1,0 +1,48 @@
+<!--pages/storeRank/raffle/list/index.wxml-->
+<top-navbar title="门店幸运号码" backgroundColor="" iconTheme="white" bindback="back"></top-navbar>
+<!-- 背景图 -->
+<image class="bg-luckynum-list" src="{{file_cos_url}}/bg_luckynum_list.png" />
+<!-- 彩票开奖才显示记录 -->
+<view class="box" style="--navBarHeight:{{navbarHeight || 70 }}px;">
+  <view class="raffle-box">
+  <block wx:if="{{raffle_code_arr.length}}">
+    <view class="my-raffle-code-box">
+      <view class="left-bar"></view>
+      <view>我的幸运号码</view>
+      <view class="right-bar"></view>
+    </view>
+    <view class="my-raffle-code" wx:if="{{raffle_code_arr.length}}">
+      <view wx:for="{{raffle_code_arr}}" wx:key="index" class="my-raffle-code-item">{{item}}</view>
+    </view>
+    <view class="my-raffle-tips">获取时间 {{actInfo.win.create_time || ''}}</view>
+  </block>
+    <view class="flex-item list-head">
+      <view class="item-index">序号</view>
+      <view class="item-shop">门店名称</view>
+      <view class="item-num">幸运号码</view>
+      <view class="head-time">获取时间</view>
+    </view>
+    <!-- 列表 -->
+    <view class="pull-refresh-box">
+      <pull-refresh-view autoLoad="{{autoLoad}}" class="list-container" bindloadData="loadData" emptyImg="" lowerThreshold="{{100}}" enhanced="{{true}}"  enablePassive="{{true}}">
+        <view class="raffle-list-box" wx:if="{{list.length}}">
+
+          <block wx:for="{{list}}" wx:key="index">
+            <view class="flex-item {{item.sid == actInfo.shop_id ?'my-lucky-item':''}}">
+              <view class="item-index">{{index+1}}</view>
+              <view class="item-shop oneLine">{{item.shop_name}}</view>
+              <view class="item-num">
+                <view>{{item.lucky_number}}</view>
+              </view>
+              <view class="item-time">{{item.create_time}}</view>
+            </view>
+          </block>
+        </view>
+        <view wx:else class="no-data">
+          <text>~暂无记录~</text>
+        </view>
+
+      </pull-refresh-view>
+    </view>
+  </view>
+</view>

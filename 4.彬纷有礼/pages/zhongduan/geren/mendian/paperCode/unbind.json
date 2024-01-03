@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "mp-dialogModal": "../../../../../component/dialogModal/index"
+  },
+  "navigationBarTitleText": "解绑纸质码"
+}

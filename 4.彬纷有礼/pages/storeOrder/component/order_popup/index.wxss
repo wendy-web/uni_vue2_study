@@ -1,0 +1,44 @@
+/* pages/storeOrder/component/order_popup/index.wxss */
+.store-order-popup-box {
+  width: 580rpx;
+  height: 400rpx;
+  border-radius: 20rpx;
+  background-color: #ffffff;
+  text-align: center;
+  padding: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.store-order-popup-box .title {
+  font-size: 36rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #000018;
+}
+.store-order-popup-box .operate-box{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.btn-cancel{
+  height: 100rpx;
+  color: #636266;
+}
+.diy-btn-default{
+  height: 80rpx;
+  min-width: 240rpx;
+  font-size: 32rpx!important;
+  color: #636266!important;
+  border: 1px solid #636266!important;
+}
+.diy-btn-operate{
+  height: 80rpx;
+  min-width: 240rpx;
+  font-size: 32rpx!important;
+  background-color: #e3001b!important;
+  border: 1px solid #e3001b!important;
+  color: #ffffff!important;
+}

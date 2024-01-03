@@ -1,0 +1,84 @@
+/* pages/storeDisplay/component/promotion/alreadyEnded/index.wxss */
+.promotion-item{
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 12px 0px rgba(203,204,214,0.16); 
+  margin-bottom: 20rpx;
+  padding: 40rpx 0 40rpx 30rpx; 
+  height: 180rpx;
+  position: relative;
+}
+.promotion-item-title{
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #000018;
+}
+.promotion-item-date{
+  font-size: 28rpx;
+  font-weight: 400;
+  color: #a3a2a8;
+}
+.promotion-item .purchase{
+  margin-top: 18rpx;
+}
+.promotion-item .purchase,.promotion-item .display{
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #3f3f3f;
+}
+.promotion-item .num{
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #E3001B;
+  font-weight: bold;
+  margin: 0 18rpx;
+}
+.promotion-item .look-info{
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #a3a2a8;
+  position: absolute;
+  right: 25rpx;
+  bottom:16rpx;
+  padding: 10rpx;
+  display: flex;
+  align-items: center;
+}
+
+.obtained-hrj{
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #f55b21;
+  margin-top: 64rpx;
+}
+
+.promotion-item-logo{
+  width: 208rpx;
+  height: 208rpx;
+  position: absolute;
+  top: 3rpx;
+  right: 6rpx;
+}
+
+.promotion-item .promotion-item-label{
+  width: 100rpx;
+  height: 40rpx;
+  background-color: #A3A2A8;
+  border-radius: 10px 0px 10px 0px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 24rpx;
+  font-weight: 400;
+  text-align: center;
+  color: #ffffff;
+  line-height: 40rpx;
+}
+
+.promotion-item .promotion-item-label.red{
+  background-color: #e3001b;
+}
+
+.promotion-item .promotion-item-label.gray{
+  background-color: #A3A2A8;
+}

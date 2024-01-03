@@ -1,0 +1,61 @@
+<view class="order-task">
+  <van-popup show="{{show}}" bind:close="onClose" custom-style="background-color: transparent;" z-index="{{10000}}">
+    <!-- 铃铛icon -->
+    <image class="icon-bell" src="{{icon_bell}}" mode="aspectFit"></image>
+    <view class="order-task-box" style="background-image: url({{bg_order_task_pop}});">
+      <view class="order-task-title" wx:if="{{config.type == 3}}">
+        订单已取消
+      </view>
+      <view class="order-task-tips01" wx:if="{{config.type == 3}}">
+        {{config.tip}}
+      </view>
+      <view class="order-task-tips02" wx:else>
+        <block wx:for="{{config.tip}}" wx:key="key">
+          <view class="{{index==0?'order-task-head':'order-task-content'}}">
+          {{item}}
+          </view>
+        </block>
+        <block wx:if="{{config.popup&&config.popup.length}}">
+          <view class="order-task-content">
+            <block wx:for="{{config.popup}}" wx:key="key">
+              <block wx:for="{{item}}" wx:key="key" wx:for-item="itm" wx:for-index="idx">
+                  <block wx:if="{{index==0}}">
+                    <text wx:if="{{idx==0}}">{{itm}}*</text>
+                    <text class="color-red" wx:if="{{idx==1}}">{{itm}}箱</text>
+                  </block>
+                  <block wx:else>
+                    <text wx:if="{{idx==0}}">,  {{itm}}*</text>
+                    <text class="color-red" wx:if="{{idx==1}}">{{itm}}箱</text>
+                  </block>
+              </block>
+            </block>
+          </view>
+        </block>
+      </view>
+      <!-- 按钮 -->
+      <view class="tools" wx:if="{{config.type == 3}}">
+        <view class="tools-btn info" bindtap="onClose">取消</view>
+        <view class="tools-btn sign" bindtap="goCheck">去查看</view>
+      </view>
+      <view class="tools-02" wx:else>
+        <view class="tools-btn sign" bindtap="goNow">
+          立即查看
+        </view>
+      </view>
+    </view>
+    <!-- 关闭 按钮-->
+    <view class="order-task-close">
+      <van-icon name="close" size="30px" color="#ffffff" bindtap="onClose" />
+    </view>
+  </van-popup>
+  <van-popup show="{{publicShow}}" bind:close="onClose" custom-style="background-color: transparent;" z-index="{{10000}}">
+    <view class="public-pop-box">
+        <view class="public-title">{{config.title}}</view>
+        <view class="public-content">
+          <text>{{config.content}}</text>
+        </view>
+        <view class="{{config.jump != 0?'btn-check':'btn-closed'}}" data-jump="{{config.jump}}" bindtap="openPage">{{config.jump != 0?'去查看':'关闭'}}</view>
+    </view>
+   
+  </van-popup>
+</view>

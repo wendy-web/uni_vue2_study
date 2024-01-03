@@ -1,0 +1,101 @@
+.box {
+  box-sizing: border-box;
+  border-radius: 20rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+}
+
+.icon-close {
+  width: 64rpx;
+  height: 64rpx;
+  flex-shrink: 1;
+  margin-top: 60rpx;
+}
+
+.box .box-item {
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  min-width: 690rpx;
+  min-height: 500rpx;
+  border-radius: 26rpx;
+  padding: 88rpx 28rpx 28rpx 28rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff0e0;
+}
+
+.icon-ticker-tape {
+  width: 664rpx;
+  height: 314rpx;
+  margin-bottom: -68rpx;
+  z-index: 2
+}
+
+.title-box {
+  position: relative;
+  width: 454rpx;
+  height: 102rpx;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #fefbf2;
+  margin-bottom: -66rpx;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title-win {
+  font-size: 48rpx;
+}
+
+.title-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.img-shop-head {
+  width: 750rpx;
+  height: 240rpx;
+  margin-bottom: -100rpx;
+  z-index: 2;
+}
+
+.box-outer {
+  width: 664rpx;
+  min-height: 470rpx;
+  background: #ff6157;
+  border-radius: 50rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box-outer .box-inner {
+  width: 600rpx;
+  min-height: 414rpx;
+  background: #fff0e0;
+  border-radius: 50rpx;
+
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  padding: 68rpx 28rpx 28rpx 28rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -1,0 +1,16 @@
+<!--pages/zhongduan/geren/mendian/paperCode/unbind.wxml-->
+<view class="container">
+  <view class="text-center h1">您当前已绑定纸质版店铺码</view>
+  <view class="text-center h4" wx:if="{{alias_id}}">*纸质码ID:{{alias_id}}</view>
+  <view class="text-center h4">解绑后，绑定的纸质码将失效</view>
+  <view class="text-center h4">但不影响原有彬纷有礼小程序中店铺码的使用</view>
+  <view class="text-center mgt100">
+    <a class="weui-btn  bg_grey " bindtap="confirm">解绑纸质码</a>
+  </view>
+</view>
+<!-- 纸质码相关弹窗 -->
+<mp-dialogModal   title="确定解绑该纸质版店铺码？"
+	isShow="{{paper_code_pop}}" content="纸质版店铺码解绑后将作废，不可使用" 
+ cancelText="否" confirmText="是"
+	bind:confirm="checkPaperCodeStatus" bind:cancel="checkPaperCodeStatus"  >
+</mp-dialogModal>

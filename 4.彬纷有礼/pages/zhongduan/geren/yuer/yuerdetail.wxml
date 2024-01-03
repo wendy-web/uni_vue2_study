@@ -1,0 +1,231 @@
+<!--pages/zhongduan/geren/yuer/yuerdetail.wxml-->
+<!-- 类型选择 -->
+<view class="type-box">
+  <view class="flex-row" bindtap="openTypePop" wx:if="{{typeTitle}}">
+    <view class="oneLine">{{typeTitle}}</view>
+    <image class="type-icon" mode="aspectFit" src="{{typeIcon}}"></image>
+  </view>
+</view>
+<block wx:if="{{list.length>0}}">
+  <view class="list">
+    <block wx:for="{{list}}" wx:key="key" wx:for-item="item" wx:for-index="index">
+
+      <block wx:for="{{item}}" wx:key="key" wx:for-item="info" wx:for-index="idx">
+        <block wx:if="{{idx=='month'}}">
+          <view class="header" id="header" data-selectdata="">
+            <picker mode="date" value="{{info.time}}" start="{{startDate}}" fields="month" end="{{endDate}}" bindchange="bindDateChange">
+              <view class="header-picker-box">
+                <view class="header-date">
+                  {{info.date}}
+                </view>
+                <view class="navigator-arrow-down"></view>
+              </view>
+            </picker>
+            <view class="subtitle">
+              <!-- 根据不同类型显示文案 -->
+              <block wx:if="{{txType&&txType>0}}">
+                <block wx:if="{{txType == 3}}">
+                  <view class="subtitle-item">次数累计（笔）：{{info.count.total}}</view>
+                  <view class="subtitle-item">提现累计（元）：￥{{info.count.pay_fee}}</view>
+                </block>
+                <block wx:else>
+                  <view class="subtitle-item">提现累计：￥{{info.count.pay_fee}}</view>
+                  <view class="subtitle-item">收益累计：￥{{info.count.receive_fee}}</view>
+                </block>
+              </block>
+              <block wx:else>
+                <view class="subtitle-item">提现累计：￥{{info.count.pay_fee}}</view>
+                <view class="subtitle-item">收益累计：￥{{info.count.receive_fee}}</view>
+                <view bindtap="goToBill" data-date="{{info.time}}">统计></view>
+              </block>
+            </view>
+          </view>
+        </block>
+        <block wx:else>
+          <block wx:for="{{info}}" wx:for-item="detail" wx:key="detail_Key" wx:for-index="detail_Index">
+            <!-- 余额明细 begin -->
+            <view class="collapse {{(detail_Index ==info.length-1)?'unset-border-bottom':''}}">
+              <view class="kind-list__item">
+                <view id="{{detail.create_time}}" class="kind-list__item-hd {{oldopen==detail.create_time ? 'kind-list__item-hd_show' : ''}}" bindtap="kindToggle" data-idx="{{detail_Index}}">
+                  <!-- 主体部分 -->
+                  <view class="weui-cells weui-cells_after-title">
+                    <view class="weui-cell">
+                      <view class="weui-cell__bd">
+                        <view class="flex-row-between">
+                          <view class="title">{{detail.title}}</view>
+                          <!-- <view wx:if="{{!item.task}}" class="{{item.change>0?'green':'red'}}">
+														<block wx:if="{{item.change>0}}">
+															+{{item.change}}
+														</block>
+														<block wx:else>
+															{{item.change}}
+														</block>
+													</view> -->
+                        </view>
+
+                        <!-- 折叠部分 -->
+                        <view wx:if="{{detail.task&& oldopen==detail.create_time}}" class="kind-list__item-bd {{oldopen==item.create_time ? 'kind-list__item-bd_show' : ''}}">
+                          <view class="weui-cells {{oldopen==item.create_time ? 'weui-cells_show' : ''}} tasklist">
+                            <block wx:for="{{detail.task}}" wx:key="task_keys" wx:for-item="task">
+                              <block wx:if="{{task.task_id==1}}">
+                                <view>
+                                  <text class="subtitle">{{task.user_msg[0]}}</text>
+                                  <text class="red font28rpx">{{task.user_msg[1]}}</text>
+                                </view>
+                              </block>
+                              <block wx:if="{{task.task_id==2}}">
+                                <view>
+                                  <text class="subtitle">{{task.user_msg[0]}}</text>
+                                  <text class="red font28rpx">{{task.user_msg[1]}}</text>
+                                </view>
+                              </block>
+                              <block wx:if="{{task.task_id==3}}">
+                                <view>
+                                  <text class="subtitle">{{task.user_msg[0]}}</text>
+                                  <text class="subtitle font28rpx">{{task.user_msg[1]}}</text>
+                                </view>
+                              </block>
+                            </block>
+                          </view>
+                        </view>
+                        <!-- 折叠end -->
+                        <!-- status = 1金额退回 -->
+                        <block wx:if="{{detail.status==1}}">
+                          <view class="subtitle green">{{detail.subtitle}}</view>
+                        </block>
+                        <!-- status=0 提现记录 再判断 w_status=1 绿色，w_status=0 红色 ，红色时候判断err_code_des，有值才弹 -->
+                        <block wx:elif="{{detail.status==0}}">
+                          <!-- 判断w_status -->
+                          <block wx:if="{{detail.w_status==1}}">
+                            <view class="subtitle green">{{detail.subtitle}}</view>
+                          </block>
+                          <block wx:else>
+                            <block wx:if="{{detail.err_code_des}}">
+                              <view class="subtitle red" bindtap="checkFailMsg" data-err_code_des="{{detail.err_code_des}}">
+                                {{detail.subtitle}}
+                                <i class="weui-icon-warn weui-icon_msg"></i>
+                              </view>
+                            </block>
+                            <block wx:else>
+                              <view class="subtitle red">{{detail.subtitle}}</view>
+                            </block>
+                          </block>
+                        </block>
+                        <block wx:else>
+                          <view class="subtitle">{{detail.subtitle}}</view>
+                        </block>
+                        <view class="flex-row-between">
+                          <view class="create_time">{{detail.create_time}}</view>
+                          <!-- <view class="subtitle" wx:if="{{!item.task}}">余额：{{item.after}}</view> -->
+                        </view>
+                      </view>
+                      <!-- 不存在任务红包  居中显示 -->
+                      <view wx:if="{{!detail.task}}" class="{{detail.change>0?'green':'red'}}">
+                        <block wx:if="{{detail.change>0}}">
+                          +{{detail.change}}
+                        </block>
+                        <block wx:else>
+                          {{detail.change}}
+                        </block>
+                      </view>
+                    </view>
+                  </view>
+                  <view wx:if="{{detail.task}}" class="{{detail.change>0?'green':'red'}} flex-align-center">
+                    <block wx:if="{{detail.change>0}}">
+                      <view>+{{detail.change}}</view>
+                    </block>
+                    <block wx:else>
+                      <view>{{detail.change}}</view>
+                    </block>
+                    <text class="iconfont {{ oldopen==detail.create_time ? 'icondownarrow' : 'iconarrow'}} "></text>
+                  </view>
+
+                </view>
+              </view>
+
+
+            </view>
+          </block>
+        </block>
+      </block>
+
+
+
+
+    </block>
+    <view wx:if="{{list.length>0&&noMore}}" class="noMore">
+      <view>~没有更多记录了~</view>
+    </view>
+  </view>
+</block>
+<block wx:else>
+
+  <picker mode="date" value="{{defaultDate}}" start="{{startDate}}" fields="month" end="{{endDate}}" bindchange="bindDateChange">
+    <view class="nodata-picker-box">
+      <view class="header-date">
+        {{defaultYearMonth}}
+      </view>
+      <view class="navigator-arrow-down"></view>
+    </view>
+  </picker>
+
+  <view class="noData">
+    <image class="noData-icon" mode="aspectFit" src="{{noDataImg}}"></image>
+    <view>~没有更多数据了~</view>
+  </view>
+</block>
+<!-- 类型选择 -->
+<view wx:if="{{typePop}}" class="fadeIn">
+  <view class="weui-mask" bindtap="close"></view>
+  <view class="weui-actionsheet weui-actionsheet_toggle typePop">
+    <view class="weui-actionsheet__title">
+      <view class="weui-actionsheet__title-text ">选择交易类型</view>
+    </view>
+    <view class="weui-actionsheet__menu">
+      <view class="typePop-box">
+        <view bindtap="chooseType" data-title="全部类型" data-val="0" class="typePop-box-item {{activeType=='0'?'activeType':''}}">全部类型</view>
+        <view bindtap="chooseType" data-title="箱内码红包（红牛）" data-val="1" class="typePop-box-item font24 {{activeType=='1'?'activeType':''}}">
+          <view>箱内码红包</view>
+          <view>(红牛)</view>
+        </view>
+        <view bindtap="chooseType" data-title="箱内码红包（战马）" data-val="2" class="typePop-box-item font24 {{activeType=='2'?'activeType':''}}">
+          <view>箱内码红包</view>
+          <view>(战马)</view>
+        </view>
+        <view bindtap="chooseType" data-title="红牛换购" data-val="3" class="typePop-box-item {{activeType=='3'?'activeType':''}}">红牛换购</view>
+        <view bindtap="chooseType" data-title="战马换购" data-val="7" class="typePop-box-item {{activeType=='7'?'activeType':''}}">战马换购</view>
+        <view bindtap="chooseType" data-title="换购红包" data-val="4" class="typePop-box-item {{activeType=='4'?'activeType':''}}">换购红包</view>
+        <view bindtap="chooseType" data-title="余额提现" data-val="5" class="typePop-box-item {{activeType=='5'?'activeType':''}}">余额提现</view>
+        <view bindtap="chooseType" data-title="其它" data-val="6" class="typePop-box-item {{activeType=='6'?'activeType':''}}">其它</view>
+        <!-- 店员列表 -->
+        <!-- <block wx:for="{{crew}}" wx:key="key">
+          <view bindtap="chooseCrew" data-title="店员:{{item.nick_name}}" data-val="{{item.uid}}" class="typePop-box-item oneLine {{activeType== ('uid_'+item.uid)?'activeType':''}}">
+            <view class="oneLine crew-item">{{item.nick_name}}</view>
+          </view>
+        </block> -->
+        <view class="typePop-box-item typePop-box-item-placeholder "></view>
+        <view class="typePop-box-item typePop-box-item-placeholder "></view>
+      </view>
+      <view class="scan-member" wx:if="{{can_filter_crew}}">扫码人员</view>
+      <view class="typePop-box"  wx:if="{{can_filter_crew}}">
+        <!-- <view bindtap="chooseCrew" data-title="扫码人员:全部" data-val="all" class="typePop-box-item {{activeType=='uid_all'?'activeType':''}}">全部</view>
+        <view bindtap="chooseCrew" data-title="扫码人员:自己" data-val="mine" class="typePop-box-item {{activeType=='uid_mine'?'activeType':''}}">自己</view> -->
+        <view bindtap="chooseCrew" data-title="扫码人员:全部" data-val="all" class="typePop-box-item {{activeCrew=='uid_all'?'activeType':''}}">全部</view>
+        <view bindtap="chooseCrew" data-title="扫码人员:自己" data-val="mine" class="typePop-box-item {{activeCrew=='uid_mine'?'activeType':''}}">自己</view>
+
+        <!-- 店员列表 -->
+        <block wx:for="{{crew}}" wx:key="key">
+          <view bindtap="chooseCrew" data-title="扫码店员:{{item.nick_name}}" data-val="{{item.uid}}" class="typePop-box-item oneLine {{activeCrew== ('uid_'+item.uid)?'activeType':''}}">
+          <!-- <view bindtap="chooseCrew" data-title="扫码店员:{{item.nick_name}}" data-val="{{item.uid}}" class="typePop-box-item oneLine {{activeType== ('uid_'+item.uid)?'activeType':''}}"> -->
+            <view class="oneLine crew-item">{{item.nick_name}}</view>
+          </view>
+        </block>
+        <view class="typePop-box-item typePop-box-item-placeholder "></view>
+        <view class="typePop-box-item typePop-box-item-placeholder "></view>
+      </view>
+    </view>
+    <view class="weui-actionsheet__action">
+      <view class="weui-actionsheet__cell" bindtap="close">取消</view>
+    </view>
+  </view>
+</view>

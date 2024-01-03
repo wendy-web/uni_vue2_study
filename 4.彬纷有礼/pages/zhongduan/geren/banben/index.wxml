@@ -1,0 +1,66 @@
+<block wx:if="{{pageReady}}">
+	<!-- <view class="container "> -->
+	<view class="container {{yinsiPop ? 'preventTouchMove':''}}">
+		<view class="content">
+			<view class="logo">
+				<image mode="aspectFit" src="{{logoimg}}"></image>
+			</view>
+			<view class="weui-cells weui-cells_after-title">
+				<view url="" class="weui-cell " data-id="1" bindtap="check">
+					<view class="weui-cell__bd">版本更新</view>
+					<view class="weui-cell__ft weui-cell__ft_in-access"><text class="iconfont iconarrow"></text></view>
+				</view>
+        <!-- 2023年10月19日 添加小红点标识符 -->
+				<view class="weui-cell privacy-box" data-id="2" bindtap="check">
+          <view class="icon-dot" wx:if="{{!isReadPrivacy}}"></view>
+					<view class="weui-cell__bd">个人信息保护政策</view>
+					<view class="weui-cell__ft weui-cell__ft_in-access"><text class="iconfont iconarrow"></text></view>
+				</view>
+				<view url="" class="weui-cell " data-id="4" bindtap="check">
+					<view class="weui-cell__bd">平台服务协议</view>
+					<view class="weui-cell__ft weui-cell__ft_in-access"><text class="iconfont iconarrow"></text></view>
+				</view>
+				<view url="" class="weui-cell " data-id="3" bindtap="check">
+					<view class="weui-cell__bd">开发者</view>
+					<view class="weui-cell__ft weui-cell__ft_in-access"><text class="iconfont iconarrow"></text></view>
+				</view>
+			</view>
+		</view>
+		<!-- 广告位 -->
+		<view class="adContainer-bottom safeArea">
+			<ad wx:if="{{blockAd}}" unit-id="adunit-0fe169e63df01750"></ad>
+		</view>
+	</view>
+</block>
+<!-- 隐私协议 -->
+<view class="fadeIn" wx:if="{{yinsiPop}}">
+	<view class="weui-mask" bindtap="close"></view>
+	<view class="weui-dialog" style="max-height:60%;">
+		<view class="weui-dialog__hd">
+			<text class="title">隐私协议</text>
+		</view>
+		<view class="weui-dialog__bd text-left" style="color:black;font-size:32rpx;">
+			<rich-text nodes="{{nodes}}"></rich-text>
+			<!-- <text>{{yinsi}}</text> -->
+		</view>
+
+	</view>
+</view>
+<view class="fadeIn" hidden="{{openTest==false}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog">
+		<view class="weui-dialog__hd"><strong class="weui-dialog__title">弹窗标题</strong></view>
+		<view class="weui-dialog__bd" style="padding:unset;">
+			<view class="lottie-text" bindtap="pause">点我暂停</view>
+			<canvas id="c1" type="2d" style="display: inline-block; width: 300px; height: 300px;"></canvas>
+		</view>
+		<view class="weui-dialog__ft">
+			<a class="weui-dialog__btn weui-dialog__btn_default" bindtap="play">播放</a>
+			<a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="closePop">关闭</a>
+		</view>
+	</view>
+</view>
+<!-- 悬浮导航 -->
+<!-- <movemenu bindmenuItemClick="menuItemClick" pageUrl="{{pageUrl}}"></movemenu> -->
+<!-- store Qrcode -->
+<!-- <qrcodeWidget></qrcodeWidget> -->

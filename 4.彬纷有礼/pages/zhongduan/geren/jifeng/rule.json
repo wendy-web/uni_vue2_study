@@ -1,0 +1,7 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "积分规则",
+  "enablePullDownRefresh":true,
+  "navigationBarBackgroundColor":"#e73636",
+  "navigationBarTextStyle":"white"
+}

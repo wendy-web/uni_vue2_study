@@ -1,0 +1,10 @@
+<pull-refresh-view  
+  class="list-container"
+  bindloadData="loadData"
+  pullText="下拉可以刷新"
+  loadmoreText="加载中..."
+  autoLoad="{{false}}">
+	<block wx:for="{{feedList}}" wx:for-item="list" wx:for-index="page" wx:key="key">
+    <item wx:for="{{list}}" wx:key="key" config="{{item}}" bindsign="sign"/>
+	</block>
+</pull-refresh-view>

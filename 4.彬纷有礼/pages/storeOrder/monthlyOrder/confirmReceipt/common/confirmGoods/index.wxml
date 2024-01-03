@@ -1,0 +1,14 @@
+<view class="confirm-order">
+		<van-popup show="{{show}}"   bind:close="onClose" custom-style="background-color: transparent;"   z-index="{{10000}}">
+			  <view class="confirm-order-box">
+            <view class="rob-tips">确认收货?</view>
+            <view class="rob-tools">
+              <van-button custom-class="rob-tools-btn" plain  round size="small" bindtap="onClose" >取消</van-button>
+              <van-button  custom-class="rob-tools-btn"  loading="{{loading}}" type="danger" round size="small" bindtap="confirm" >
+                  确认
+              </van-button>
+            </view>    
+         </view>
+         <image class="close" src="/pages/storeOrder/static/close.png" mode="aspectFill" bindtap="onClose"></image>
+		</van-popup>
+	</view>

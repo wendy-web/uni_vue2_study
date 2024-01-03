@@ -1,0 +1,33 @@
+/* component/storeRankPop/popBackground/index.wxss */
+.box{
+    box-sizing: border-box;
+    border-radius: 20rpx;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-end;
+    position: relative;
+}
+.icon-close {
+  width: 48rpx;
+  height: 48rpx;
+  flex-shrink: 1;
+}
+.box .box-item{
+  box-sizing: border-box;
+  /* width: 520rpx;
+  height: 650rpx; */
+  width: 608rpx;
+  height: 778rpx;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  padding: 30rpx 20rpx;
+  margin-top: 32rpx;
+  position: relative;
+  overflow: hidden;
+}
+.box .box-item-nowin{
+  width: 520rpx;
+  height: 520rpx;
+}

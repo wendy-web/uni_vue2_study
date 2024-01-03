@@ -1,0 +1,182 @@
+.at-button {
+    margin: 0;
+    font-size: 36rpx;
+    font-weight: 500;
+    border-radius:50rpx;
+    /* background: -webkit-gradient(linear, left bottom, left top, from(#a10f16), to(#e71a19));
+    background: -webkit-linear-gradient(bottom, #a10f16 0%, #e71a19 100%);
+    background: -o-linear-gradient(bottom, #a10f16 0%, #e71a19 100%);
+    background: linear-gradient(0deg, #a10f16 0%, #e71a19 100%); */
+    color: white;
+    width: 630rpx;
+    line-height: 96rpx;
+    height: 96rpx;
+    background: linear-gradient(180deg,#e71919 26%, #a31015 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rongqi {
+    margin: 0 59rpx 0 59rpx;
+    text-align: center;
+}
+
+.rongqi .logo {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 632rpx;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin: 100rpx 0 50rpx 0;
+}
+
+.rongqi .logo image {
+    width: 316rpx;
+    height: 240rpx;
+}
+
+
+.rongqi .head {
+    font-size: 36rpx;
+    font-weight: bold;
+    margin-bottom: 10rpx;
+    color: #E62318;
+}
+
+.rongqi .jiesao {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-size: 28rpx;
+    font-weight: 500;
+    color: #666666;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    margin-bottom: 73rpx;
+}
+
+.rongqi .kefu {
+    width: 100%;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    border-bottom: #ECECEC;
+    margin: 40rpx 0 40rpx 0;
+}
+
+.weui-dialog__hd {
+    padding: 30rpx 20rpx;
+}
+
+.cancle {
+    border-radius: 50rpx;
+    width: 630rpx;
+    margin-bottom: 40rpx;
+    color: grey !important;
+    border-color: grey !important;
+}
+
+.redbtn {
+    width: 525rpx;
+}
+
+.font26 {
+    font-size: 26rpx;
+}
+
+.red {
+    color: #E3001B;
+}
+
+.height20 {
+    height: 20px;
+    display: inline-block;
+}
+
+.checkbox {
+    margin-top: 0px;
+    /* width: 25px; */
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 24rpx;
+}
+
+.checkbox label {
+    padding: 0px;
+}
+
+.checked {
+    background-color: #E02020;
+}
+
+.weui-cells:before {
+    border-top: unset;
+}
+
+.weui-cells:after {
+    border-bottom: unset;
+}
+
+.flexBox {
+    display: flex;
+}
+
+.weui-check__label:active {
+    background-color: unset;
+}
+.warn{
+    width: 13px;
+    height: 13px;
+}
+.pdl7{
+    padding-left: 7px;
+}
+.font13{
+    font-size:13px;
+}
+.color-grey{
+    color: #99abb4;
+}
+.color-blue{
+    color: #5ea8f2;
+}
+.fixed-bottom{
+    position: fixed;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    margin:auto;
+}
+.underLine{
+    text-decoration:underline;
+}
+.weui-icon-checked{
+  width: 20px;
+  height: 20px;
+}
+.weui-cells_checkbox .weui-cell__hd{
+  padding-right: 5px;
+}
+/* 更新一键登录页面 */
+.icon-camer{
+  width: 56rpx;
+  height: 44rpx;
+  margin-right: 10rpx;
+}
