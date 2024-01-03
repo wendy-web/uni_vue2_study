@@ -1,0 +1,230 @@
+<template>
+<view class="cont-tabs" id="contBox">
+	<view class="remind_box fl_center">
+		<image class="remind_icon" :src="takeImgUrl + '/kfc_remind.png'" mode="aspectFill"></image>
+		自助点餐，不支持外卖
+	</view>
+	<scroll-view
+		v-if="tabs.length"
+		:id="viewId"
+		:scroll-top="scrollTop"
+		scroll-y
+		scroll-with-animation
+		:scroll-animation-duration="300"
+		style="height: 100%"
+		:enhanced="true"
+		@scroll="scrollHandle"
+		:scroll-into-view="scrollTopId"
+	>
+		<view class="tabs-item" :style="{ '--padding': isShowComBuy ? '106rpx' : '0rpx' }">
+			<!-- tab -->
+			<view class="tab-item"
+				v-for="(tab, i) in tabs"
+				:key="i"
+				:id="'tabItemId'+i"
+			>
+				<view class="cont_title">{{ tab.name }}</view>
+				<view class="cont_list">
+					<listItem
+						:list="tab.products"
+						:tabIndex="i"
+						@selCom="selComHandle"
+						@selAddCom="selAddComHandle"
+						@selSubCom="selSubComHandle"
+					>
+					</listItem>
+				</view>
+			</view>
+			<view class="add_label">
+				本产品为第三方代点餐服务,即第三方人员代下单服务与肯德基官方无关!
+			</view>
+		</view>
+	</scroll-view>
+</view>
+</template>
+
+<script>
+import listItem from './listItem.vue';
+import { getImgUrl } from '@/utils/auth.js';
+export default {
+	props: {
+		tabs: {
+			type: Array,
+			default () {
+				return []
+			}
+		},
+		value: { // 当前显示的下标 (使用v-model语法糖: 1.props需为value; 2.需回调input事件)
+			type: [String, Number],
+			default: 0
+		},
+		// 是否展示底部的购物组件 - 为底下留白
+		isShowComBuy: {
+			type: Boolean,
+			default: false
+		}
+	},
+	components: {
+		listItem
+	},
+	computed: {
+		scrollTopId() {
+			return `tabItemId${this.value}`
+		}
+	},
+	data() {
+		return {
+			viewId: 'id_' + Math.random().toString(36).substr(2, 16),
+			scrollTop: 0,
+			topValue: 0,
+			isScroll: true,
+			scrollTopHeight: 0,
+			itemHeight: uni.upx2px(184 + 109), // 单个商品类目与标题头的高度
+			opacityIndex: -1,
+            takeImgUrl: getImgUrl() + 'static/subPackages/userModule/takeawayMenu',
+		}
+	},
+	watch: {
+		tabs() {
+			this.$nextTick(()=>{
+				setTimeout(() => {
+					this.itemDomFun();
+				}, 1000);
+			});
+			if(this.isFirst) {
+				this.isFirst = false;
+			}
+		},
+		value(newValue, oldValue) {
+			this.isScroll = false;
+			setTimeout(() => {
+				this.isScroll = true;
+			}, 3000);
+		}
+	},
+	created() {
+	},
+	methods: {
+		scrollHandle(event){
+			const { scrollTop } = event.detail;
+			this.scrollTopHeight = scrollTop;
+			if(!this.isScroll) return;
+			let currentIndex = this.tabs.findIndex(event => scrollTop < event._top);
+			let opacityIndex = this.tabs.findIndex(event => scrollTop <= event._top && (scrollTop > (event._top - this.itemHeight)));
+			this.opacityIndex = opacityIndex;
+			this.$emit('scroll', currentIndex);
+		},
+		selComHandle(item, tabIndex, index) {
+			this.$emit('selCom', item, tabIndex, index);
+		},
+		selAddComHandle(item, tabIndex, index) {
+			this.$emit('selAddCom', item, tabIndex, index);
+		},
+		selSubComHandle(item, tabIndex, index) {
+			this.$emit('selSubCom', item, tabIndex, index);
+		},
+		itemDomFun(){
+			this.initWarpRect('contBox').then(res =>  this.topValue = res.top );
+			this.tabs.forEach((res, index) => {
+				const tabItemId = `tabItemId${index}`;
+				this.initWarpRect(tabItemId).then(result => {
+					res.top = result.top + this.scrollTopHeight;
+					res.height = result.height;
+					// console.log('result :>> ', result);
+					if(index == 0) {
+						// 底部边距的
+						res._top = result.height + uni.upx2px(48);
+					} else {
+						res._top = result.height + uni.upx2px(48) + this.tabs[index-1]._top;
+					}
+				});
+			});
+		},
+		initWarpRect(id) {
+			return new Promise(resolve => {
+				setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
+					let query = uni.createSelectorQuery();
+					// #ifndef MP-ALIPAY
+					query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
+					// #endif
+					query.select('#' + (id || this.viewId)).boundingClientRect(data => {
+						resolve(data)
+					}).exec();
+				}, 20)
+			})
+		}
+	}
+}
+</script>
+
+<style lang="scss">
+@import '@/static/css/mixin.scss';
+.cont-tabs {
+	position: relative;
+	font-size: 30rpx;
+	font-weight: 500;
+	box-sizing: border-box;
+	color: #333;
+	height: 100%;
+	overflow: hidden;
+	padding-top: 84rpx;
+	.tabs-item {
+		position: relative;
+		z-index: 0;
+		white-space: nowrap;
+		box-sizing: border-box;
+		// 102是底部的add_label的文本留白
+		padding-bottom: calc(var(--padding) + constant(safe-area-inset-bottom));
+		/* 兼容 IOS<11.2 */
+		padding-bottom: calc(var(--padding) + env(safe-area-inset-bottom));
+		/* 兼容 IOS>11.2 */
+	}
+}
+.remind_box{
+	width: 100%;
+	height: 60rpx;
+	font-size: 26rpx;
+	line-height: 60rpx;
+	box-sizing: border-box;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(228,0,48,0.04);
+	border: 1rpx solid rgba(228,0,48,0.60);
+	border-radius: 24rpx;
+	color: $kfcColor;
+	.remind_icon{
+		width: 28rpx;
+		height: 22rpx;
+		margin-right: 12rpx;
+	}
+}
+.tab-item {
+	position: relative;
+	box-sizing: border-box;
+	width: 570rpx;
+	font-size: 30rpx;
+	font-weight: 600;
+	color: #333333;
+	box-sizing: border-box;
+	margin-bottom: 48rpx;
+	.cont_title {
+		font-size: 26rpx;
+		color: #999999;
+		line-height: 36rpx;
+	}
+	.cont_list{
+		overflow: hidden;
+	}
+}
+.add_label {
+    font-size: 24rpx;
+    text-align: center;
+    color: #aaaaaa;
+    line-height: 34rpx;
+    padding: 0 34rpx;
+	width: 562rpx;
+	white-space: normal;
+	box-sizing: border-box;
+  }
+</style>

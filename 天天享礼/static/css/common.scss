@@ -1,0 +1,224 @@
+// 自定义tabbar的底部留白
+.nav_cont {
+    padding-bottom: 110rpx;
+    padding-bottom: calc(110rpx + constant(safe-area-inset-bottom));
+    /* 兼容 IOS<11.2 */
+    padding-bottom: calc(110rpx + env(safe-area-inset-bottom));
+    /* 兼容 IOS>11.2 */
+}
+
+// 列表加载手动添加的空引用
+.empty_box {
+    padding: 50rpx 50rpx 0;
+    font-size: 24rpx;
+    color: gray;
+    .empty_box_img {
+        width: 280rpx;
+        height: 280rpx;
+        margin-bottom: 20rpx;
+    }
+}
+
+// 猜你喜欢的样式
+.you_like-title {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32rpx;
+    font-weight: 500;
+    color: #ef2b20;
+    line-height: 44rpx;
+    margin: 72rpx auto 10rpx;
+    .left-icon {
+        width: 28rpx;
+        height: 30rpx;
+        opacity: 0.8;
+        position: relative;
+        align-self: flex-end;
+        margin-right: 7rpx;
+    }
+    .right-icon {
+        width: 28rpx;
+        height: 28rpx;
+        position: relative;
+        align-self: flex-start;
+        margin-top: -14rpx;
+    }
+}
+
+.bg_img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.po_center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.txt_ov_ell1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.txt_ov_ell2 {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.box_fl {
+    display: flex;
+    align-items: center;
+}
+
+.box_fl_end {
+    display: flex;
+    align-items: flex-end;
+}
+
+.fl_bet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.fl_bet-al_end {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.fl_ard {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.fl {
+    display: flex;
+}
+
+.fl1 {
+    flex: 1;
+}
+
+.fl_center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fl_end {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.fl_start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.fl_al_end {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.fl_al_start {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.fl_al_start1 {
+    display: flex;
+    align-items: flex-start;
+}
+
+.fl_col_sp_bt {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.fl_col_sp_ar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.fl_col_sp_st {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.fl_col_sp_en {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.fl_col_cen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.widHei {
+    width: 100%;
+    height: 100%;
+}
+
+.line_dashed {
+    position: relative;
+    border-bottom: 1rpx dashed #e1e1e1;
+    height: 2rpx;
+    &::before {
+        content: '\3000';
+        width: 30rpx;
+        height: 30rpx;
+        background: #F5F5F5;
+        position: absolute;
+        bottom: -15rpx;
+        left: -39rpx;
+        border-radius: 50%;
+    }
+    &::after {
+        content: '\3000';
+        width: 30rpx;
+        height: 30rpx;
+        background: #F5F5F5;
+        position: absolute;
+        bottom: -15rpx;
+        right: -39rpx;
+        border-radius: 50%;
+    }
+}
+
+.price_line {
+    font-size: 26rpx;
+    text-decoration: line-through;
+    color: #a1a1b1;
+    margin-top: 4rpx;
+}
+
+.txf84842 {
+    color: #f84842;
+}
