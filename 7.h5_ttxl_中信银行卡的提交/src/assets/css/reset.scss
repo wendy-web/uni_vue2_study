@@ -1,0 +1,259 @@
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+hr,
+button,
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    margin: 0;
+    padding: 0
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+audio,
+canvas,
+video {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+
+fieldset,
+img {
+    border: 0
+}
+
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var {
+    font-style: normal;
+    font-weight: normal
+}
+
+ol,
+ul {
+    list-style: none
+}
+
+caption,
+th {
+    text-align: left
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: 100%;
+    font-weight: normal
+}
+
+q:before,
+q:after {
+    content: ''
+}
+
+abbr,
+acronym {
+    border: 0;
+    font-variant: normal
+}
+
+sup {
+    vertical-align: text-top
+}
+
+sub {
+    vertical-align: text-bottom
+}
+
+input,
+textarea,
+select {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit
+}
+
+input,
+textarea,
+select {
+    *font-size: 100%
+}
+
+html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
+    line-height: 1;
+    color: #333333;
+}
+
+html,
+body {
+    width: 100vw;
+    background-color: #FBEBDB;
+}
+
+body {
+    -webkit-touch-callout: none;
+    /*系统默认菜单被禁用*/
+    -webkit-user-select: none;
+    /*webkit浏览器*/
+    -khtml-user-select: none;
+    /*早起浏览器*/
+    -moz-user-select: none;
+    /*火狐浏览器*/
+    -ms-user-select: none;
+    /*IE浏览器*/
+    user-select: none;
+    /*用户是否能够选中文本*/
+    /*padding-top: constant(safe-area-inset-top);*/
+    /*padding-top: env(safe-area-inset-top);*/
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+    /*padding-left: constant(safe-area-inset-left);*/
+    /*padding-left: env(safe-area-inset-left);*/
+    /*padding-right: constant(safe-area-inset-right);*/
+    /*padding-right: env(safe-area-inset-right);*/
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+input,
+select,
+div,
+a,
+ul,
+li {
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    border-radius: 0;
+    border: 0;
+    background: transparent;
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #fefbf8 inset;
+    // 自动填充 class 类名；
+    // -webkit-box-shadow：使用盒子阴影遮挡input背景色；
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-text-size-adjust: 100%;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+button {
+    cursor: pointer;
+    outline: 0;
+    border: 0;
+    background: transparent;
+    -webkit-tap-highlight-color: transparent;
+}
+
+i {
+    font-style: normal;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+:not(.ct__tv) div::-webkit-scrollbar {
+    display: none;
+}
+
+:-webkit-input-placeholder {
+    /* Chrome、Safari等Webkit内核浏览器 */
+    color: #CCCCCC;
+}
+
+::-moz-placeholder {
+    /* Firefox浏览器 */
+    color: #CCCCCC;
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: #CCCCCC;
+}
+
+::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: #CCCCCC;
+}
+
+::placeholder {
+    /* 最新标准语法 */
+    color: #CCCCCC;
+}
