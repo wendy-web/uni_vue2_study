@@ -1,0 +1,742 @@
+<template>
+<view @touchmove.stop>
+<van-popup
+    :show="isShow"
+    @close="popupClose"
+    position="bottom"
+    custom-style="overflow: inherit; background: transparent; max-height:85vh;"
+    round
+    safe-area-inset-bottom
+    duration="5"
+    :transition-appear="true"
+    :lock-scroll="false"
+    @touchmove.native.stop.prevent
+>
+<!-- @touchmove.native.stop.prevent -->
+<!-- :catchtouchmove="true" -->
+<view class="detail_box ani_bottom_active">
+    <image class="close_icon" :src="imgUrl +'static/images/close_back.png'" mode="aspectFill" @click="popupClose"></image>
+    <scroll-view
+        :scroll-y="true"
+        class="detail_cont"
+        @scrolltolower="scrollToLowerHandle"
+        @scroll="scrollHandle"
+        :lower-threshold="100"
+    >
+        <view class="rec_detail-box" v-if="!isOver">
+            <view class="rec_detail fl_bet">
+                <view class="rec_detail-left">{{ couponPrice }}</view>
+                <view class="rec_detail-right">
+                    <view>优惠券<text style="font-size: 26rpx;font-weight: 400;">(全场通用)</text></view>
+                    <view class="cd_txt" v-if="isShowRemainTime">
+                        <van-count-down
+                            @finish="countFinished"
+                            :time="remainTime"
+                            millisecond
+                            use-slot
+                            format="mm:ss"
+                            @change="onChangeHandle"
+                            style="--count-down-text-color:#fff;--count-down-font-size:26rpx;"
+                            class="cd_time-con"
+                            :auto-start="false"
+                        >
+                            还剩
+                            <text class="item">{{ timeData.hours }}</text>:
+                            <text class="item">{{ timeData.minutes }}</text>:
+                            <text class="item">{{ timeData.seconds }}</text>.
+                            <text class="item">{{ timeData.milliseconds }}</text>
+                            结束
+                        </van-count-down>
+                    </view>
+                </view>
+            </view>
+            <!-- 悬浮的倒计时 -->
+            <view class="timer_fixed fl_ard" v-if="isShowRemainTime">
+                <view class="timer_fixed-left">{{ couponPrice }}</view>
+                <view class="timer_fixed-right">
+                    <van-count-down
+                        @finish="countFinished"
+                        :time="remainTime"
+                        millisecond
+                        use-slot
+                        format="mm:ss"
+                        @change="onChangeHandle"
+                        style="--count-down-text-color:#F84842;--count-down-font-size:22rpx;"
+                        class="cd_time-con"
+                        :auto-start="false"
+                    >
+                        <text class="item_num">{{ timeData.hours }}</text>:
+                        <text class="item_num">{{ timeData.minutes }}</text>:
+                        <text class="item_num">{{ timeData.seconds }}</text>.
+                        <text class="item">{{ timeData.milliseconds }}</text>
+                    </van-count-down>
+                    <view>后结束</view>
+                </view>
+            </view>
+            <view class="dia_cont">
+                <view class="good-list" v-if="goods.length">
+                    <view :class="['good-list-item', (item.is_expand == 1) ? 'active' : '']"
+                        v-for="(item, index) in goods" :key="index"
+                        @click="itemHandle(item, index)"
+                    >
+                        <view class="good-img">
+                            <van-image height="354rpx" width="354rpx" radius="8px 8px 0 0" :src="item.image" use-loading-slot>
+                                <van-loading slot="loading" type="spinner" size="20" vertical />
+                            </van-image>
+                        </view>
+                        <view class="good_name_box txt_ov_ell2">{{item.title}}</view>
+                        <!-- <view class="list_price box_fl">
+                            <view>
+                                抵用后 ￥
+                                <text style="font-size: 32rpx;">{{ item.lowestCouponPrice }}</text>
+                            </view>
+                            <view class="price_line">¥{{ item.face_value + item.lowestCouponPrice }}</view>
+                        </view> -->
+                        <view class="price_btn">
+                            {{ !item.is_expand ? `免费膨胀至${item.face_value}元` : `领${item.face_value}元券` }}
+                        </view>
+                    </view>
+                </view>
+                <view class="empty_box fl_col_sp_st" v-else-if="!isLoading">
+                    <view class="empty_timer">暂无相关商品</view>
+                    <view class="empty_btn" @click="goProductListHandle">去领券中心逛逛</view>
+                </view>
+                <view class="loading_box">
+                    <van-loading size="14px" color="gray" v-if="isLoading">加载中...</van-loading>
+                    <view class="noMore_txt" v-else-if="!isScroll"> - 我也是有底线的 - </view>
+                </view>
+            </view>
+        </view>
+        <view class="empty_box fl_col_sp_st" v-else>
+            <image class="empty_lab-img" src="https://file.y1b.cn/store/1-0/23912/64ffbafe6816d.png" mode="aspectFill"></image>
+            <view class="empty_timer">{{ showOverTime }}前有效</view>
+            <view class="empty_btn" @click="goProductListHandle">去领券中心逛逛</view>
+        </view>
+    </scroll-view>
+</view>
+</van-popup>
+<expandDia
+    :isShow="isShowExpand"
+    :couponPrice="couponPrice"
+    :expandFaceValue="expandFaceValue"
+    @close="isShowExpand = false"
+    @expand="expandHandle"
+    @goToUse="goToUseHandle"
+></expandDia>
+</view>
+</template>
+<script>
+import { getImgUrl } from '@/utils/auth.js';
+import { mapGetters, mapMutations } from "vuex";
+import { parseTime } from '@/utils/index.js';
+import expandDia from "./expandDia.vue";
+import {
+    goodsRecommended,
+    material,
+	jingfen,
+	goodsQuery,
+	bysubunionid,
+} from '@/api/modules/jsShop.js';
+let interstitialAd = null;
+export default {
+    components:{
+        expandDia
+    },
+    computed: {
+        ...mapGetters(["gift", "userInfo", "diaList"]),
+    },
+    watch: {
+        diaList(newValue, oldValue) {
+            if(newValue.length && (newValue[0] == 'recommend')) {
+                this.isShow = true;
+            }
+        },
+        isShow(newValue, oldValue) {
+            if(newValue) return setTimeout(() => this.startTime(), 100);
+            setTimeout(() => this.resetTime(), 100);
+        }
+    },
+    data() {
+        return {
+            imgUrl: getImgUrl(),
+            isShow: false,
+            isOver: false,
+            couponPrice: 30,
+            expandFaceValue: 31,
+            remainTime: 0,
+            timeData: null,
+            jdDate: null,
+            pageNum: 1, // 页面num
+            groupId_index: 0,
+            goods: [],
+            isScroll: true,
+            isLoading: false,
+            isShowRemainTime: true,
+            showOverTime: '',
+            isShowExpand: false,
+            expandIndex: 0,
+            isCodeErrorShow: false, // 扫码异常展示推券的事件区分
+            isClickList: false, // 未点击过商品列表
+        }
+    },
+    mounted() {
+        interstitialAd = wx.createInterstitialAd({
+            adUnitId: 'adunit-ea094960cd12b9c4'
+        })
+        interstitialAd.onLoad(() => interstitialAd.initFinish = true);
+        interstitialAd.onError((err) => {
+            console.log('插屏广告加载失败', err);
+        })
+        interstitialAd.onClose(() => {})
+    },
+    methods: {
+        ...mapMutations({
+            setDiaList: "user/setDiaList",
+            delCurrentDiaList: "user/delCurrentDiaList",
+        }),
+        itemHandle(item, index) {
+            this.isClickList = true;
+            // is_expand 0:开始膨胀；1：已膨胀； 2：无需要膨胀
+            const { face_value, is_expand } = item;
+            this.expandIndex = index;
+            if(!is_expand) {
+                this.expandFaceValue = face_value;
+                this.isShowExpand = true;
+                return;
+            }
+            this.openEmbeddedRequest(item);
+        },
+        // 已膨胀事件
+        expandHandle() {
+            this.goods[this.expandIndex].is_expand = 1;
+        },
+        goToUseHandle() {
+            this.isShowExpand = false;
+            const item = this.goods[this.expandIndex];
+            this.openEmbeddedRequest(item);
+        },
+        async openEmbeddedRequest(item){
+            const { skuId, positionId } = item;
+            const params = { skuId, positionId };
+            if(!this.isShowRemainTime) params.is_popover = 1;
+            const skuRes = await bysubunionid(params);
+            if (skuRes.code == 0) return this.$toast(skuRes.msg);
+            const {
+                type_id,
+                jdShareLink
+            } = skuRes.data;
+            this.$openEmbeddedMiniProgram({
+                appId: type_id,
+                path: jdShareLink
+            });
+        },
+        popupClose() {
+            this.isShow = false;
+            this.delCurrentDiaList();
+            this.$emit('close');
+            // 扫码异常关闭弹窗时 - 展示插屏广告
+            if(this.isCodeErrorShow) {
+                this.$wxReportEvent("closetq");
+                if (!this.isClickList && interstitialAd && interstitialAd.initFinish) {
+                    setTimeout(() => interstitialAd.show(), 100);
+                }
+            }
+        },
+        popupShow() {
+            if(this.diaList.length) {
+                this.setDiaList('recommend');
+                return;
+            }
+            this.isShow = true;
+        },
+        onChangeHandle(event) {
+            // return;
+            let {
+                hours,
+                minutes,
+                seconds,
+                milliseconds,
+                days
+            } = event.detail;
+            hours = hours < 10 ? '0' + hours : hours
+            minutes = minutes < 10 ? '0' + minutes : minutes
+            seconds = seconds < 10 ? '0' + seconds : seconds
+            milliseconds = Math.floor(milliseconds / 100);
+            this.timeData = {
+                hours,
+                minutes,
+                seconds,
+                milliseconds,
+                days
+            }
+        },
+        //倒计时结束
+        countFinished(e) {
+            this.isOver = true;
+        },
+        resetTime() {
+            // 时间重置
+            const countDown = this.selectComponent('.cd_time-con');
+            countDown && countDown.reset();
+        },
+        startTime() {
+            const countDown = this.selectComponent('.cd_time-con');
+            countDown && countDown.start();
+        },
+        async initShow(jdDate = null){
+            this.isClickList = false;
+            if(jdDate) {
+                this.jdDate = jdDate;
+                this.isShowRemainTime = false;
+            } else {
+                this.isShowRemainTime = true;
+                const res = await goodsRecommended();
+                if(res.code != 1) return;
+                const {
+                    over,
+                    end_time,
+                    group
+                } = res.data;
+                const cur_date = new Date().getTime();
+                const over_time = new Date(end_time?.replace(new RegExp(/-/gm), '/')).getTime(); // 开始时间戳
+                this.isOver = Boolean(over);
+                this.showOverTime = parseTime(over_time, "{y}年{m}月{d}日 {h}:{i}");
+                this.remainTime = over_time - cur_date;
+                this.jdDate = group;
+            }
+            this.goods = [];
+            this.pageNum = 1;
+            this.isCodeErrorShow = false;
+            const { coupon } = this.jdDate;
+            this.couponPrice = coupon && coupon[0];
+            this.popupShow();
+            this.requestRem();
+        },
+        goProductListHandle() {
+            this.popupClose();
+            this.$go(`/pages/userModule/productList/index`);
+        },
+        scrollToLowerHandle(event) {
+            // console.log('event', event.target);
+            if(!this.isScroll || this.goods.length < 5) return;
+            this.requestRem();
+        },
+        scrollHandle(event) {
+            // console.log('event-scrollHandle:', event)
+        },
+        // 弹窗进入 初始化
+        initGtData(data) {
+            this.isClickList = false;
+            this.pageNum = 1;
+            this.goods = [];
+            this.isCodeErrorShow = false;
+            if(!data) return;
+            const {
+                group_id,
+                group_cid,
+                group_cid2,
+                group_cid3,
+                eliteId,
+                groupId,
+                group_type,
+                coupon,
+                end_time,
+                over,
+                interval_time,
+                isCodeErrorShow
+            } = data;
+            this.isCodeErrorShow = isCodeErrorShow;
+            if(end_time || interval_time) {
+                const cur_date = new Date().getTime();
+                let over_time = new Date(end_time?.replace(new RegExp(/-/gm), '/')).getTime(); // 结束时间戳
+                if(interval_time) {
+                    over_time = cur_date + (interval_time*60*60*1000);
+                }
+                this.remainTime = over_time - cur_date;
+                this.showOverTime = parseTime(over_time, "{y}年{m}月{d}日 {h}:{i}");
+                this.isShowRemainTime = true;
+            } else {
+                this.isShowRemainTime = false
+            }
+            if(over) this.popupClose(); // 倒计时结束
+            this.couponPrice = coupon && coupon[0]
+            this.jdDate = {
+                id: group_id,
+                cid: group_cid,
+                cid2: group_cid2,
+                cid3: group_cid3,
+                eliteId,
+                groupId,
+                type: group_type
+            };
+            this.popupShow();
+            this.requestRem();
+        },
+        async requestRem() {
+            if(this.isLoading) return;
+            this.isLoading = true;
+            const {
+                id,
+                cid,
+                cid2,
+                cid3,
+                eliteId,
+                groupId,
+                type
+            } = this.jdDate;
+            let params = {
+                id,
+                page: this.pageNum,
+                size: 10,
+            }
+            let queryApi = goodsQuery;
+            // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
+            switch(type) {
+                case 1:
+                    queryApi = material;
+                    params.eliteId = eliteId;
+                    params.groupId = groupId;
+                    params.size = 10;
+                    break;
+                case 2:
+                    queryApi = jingfen;
+                    params.eliteId = eliteId;
+                    params.groupId = groupId;
+                    params.size = 20;
+                    break;
+                case 3:
+                    queryApi = goodsQuery;
+                    params.cid1 = cid;
+                    params.cid2 = cid2;
+                    params.cid3 = cid3;
+                    break;
+                case 4:
+                    queryApi = jingfen;
+                    const groupId_index = this.groupId_index;
+                    params.eliteId = eliteId;
+                    params.groupId = groupId[groupId_index];
+                    params.size = 20;
+                    break;
+            };
+            queryApi(params).then(res=>{
+                const {
+                    list,
+                    total_count
+                } = res.data;
+                this.isLoading = false;
+                this.isScroll = Number(total_count);
+                // if(this.pageNum == 1) this.goods = [];
+                this.pageNum += 1;
+                this.goods = this.goods.concat(list); // 追加新数据
+                if(!this.isScroll && type != 4) return;
+                let isNextPage = Boolean(total_count) && (this.pageNum * params.size) <= total_count;
+                if(!isNextPage && type == 4 && this.groupId_index < (groupId.length - 1)) {
+                    this.groupId_index += 1;
+                    this.pageNum = 1;
+                    this.requestRem();
+                    return;
+                }
+                if(list.length <= 4  && this.pageNum == 1) return this.requestRem();
+                if(isNextPage && (list.length < 5)) {
+                    this.requestRem();
+                    return;
+                }
+            }).catch(()=>{
+                //联网失败, 结束加载
+            }).finally(res => {
+                this.isLoading = false;
+            })
+        },
+    }
+}
+</script>
+<style lang="scss">
+.detail_box {
+    position: relative;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    // padding-bottom: constant(safe-area-inset-bottom);
+    // padding-bottom: env(safe-area-inset-bottom);
+    // padding-bottom: calc(var(--padding) + constant(safe-area-inset-bottom));
+    // /* 兼容 IOS<11.2 */
+    // padding-bottom: calc(var(--padding) + env(safe-area-inset-bottom));
+    box-sizing: border-box;
+    .close_icon {
+        width: 52rpx;
+        height: 52rpx;
+        flex: 0 0 52rpx;
+        padding: 16rpx;
+        margin: 0 24rpx 0rpx auto;
+        display: block;
+    }
+}
+
+.dia_cont{
+    position: relative;
+}
+.detail_cont{
+    background: #fffae9;
+    border-radius: 48rpx 48rpx 0rpx 0rpx;
+    position: relative;
+    flex: 1;
+    overflow: scroll;
+    box-sizing: border-box;
+}
+.rec_detail-box{
+    &::before {
+        content: '\3000';
+        background: url("https://file.y1b.cn/store/1-0/23911/64fedbad5cdcb.png") 0 0 / 100% 100%;
+        width: 286rpx;
+        height: 82rpx;
+        display: block;
+        // padding-top: 26rpx;
+        margin: 26rpx auto 0;
+    }
+}
+.rec_detail{
+    position: relative;
+    z-index: 0;
+    margin: 63rpx auto 50rpx;
+    color: #fff;
+    &::before {
+        content: '\3000';
+        background: url("https://file.y1b.cn/store/1-0/23911/64fedc16f0549.png") 0 0 / cover;
+        width: 100%;
+        min-height: 324rpx;
+        position: absolute;
+        top: -90rpx;
+        left: 0;
+        z-index: -1;
+    }
+    .rec_detail-left{
+        width: 30%;
+        text-align: center;
+        font-size: 68rpx;
+        font-weight: 600;
+        line-height: 96rpx;
+        &::after {
+            content: '元';
+            font-size: 28rpx;
+        }
+    }
+    .rec_detail-right{
+        width: 60%;
+        font-size: 32rpx;
+        font-weight: 600;
+        line-height: 44rpx;
+    }
+}
+.cd_txt{
+    font-weight: 600;
+    font-size: 36rpx;
+    color: #fff;
+    .item{
+      width: 40rpx;
+      height: 40rpx;
+      background: rgba($color: #fff, $alpha: .6);
+      border-radius: 4rpx;
+      text-align: center;
+      line-height: 40rpx;
+      margin: 0 8rpx;
+      display: inline-block;
+    }
+    .item_lab{
+      margin-left: 16rpx;
+    }
+}
+.good-list {
+    position: relative;
+    overflow: hidden;
+    padding: 14rpx;
+    .good-list-item {
+        width: 354rpx;
+        background-color: #ffffff;
+        border-radius: 8px;
+        margin-bottom: 16rpx;
+        overflow: hidden;
+        position: relative;
+        z-index: 0;
+        &.active::before {
+            content: '\3000';
+            background: url("https://file.y1b.cn/store/1-0/231212/6577bdf34de59.png") 0 0 / cover;
+            width: 174rpx;
+            height: 202rpx;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            z-index: -1;
+        }
+    }
+
+    .good-list-item:nth-child(odd) {
+        float: left;
+    }
+
+    .good-list-item:nth-child(even) {
+        float: right;
+    }
+
+    .good-img {
+        width: 352rpx;
+        height: 352rpx;
+        font-size: 0;
+        position: relative;
+        .img_rem-box {
+            height: 56rpx;
+            width: 100%;
+            position: absolute;
+            z-index: 0;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            .img_rem-right{
+                width: 266rpx;
+                height: 56rpx;
+                position: relative;
+                z-index: 0;
+                text-align: center;
+                font-size: 28rpx;
+                font-weight: 600;
+                color: #ffffff;
+                line-height: 56rpx;
+            }
+        }
+    }
+    .good_name_box {
+        margin: 20rpx 16rpx 0;
+        font-size: 28rpx;
+        color: #333333;
+    }
+    .list_price{
+        font-size: 24rpx;
+        font-weight: 600;
+        color: #e7331b;
+        line-height: 34rpx;
+        padding: 0 16rpx;
+        margin-top: 18rpx;
+        .price_line{
+            font-size: 24rpx;
+            font-weight: 400;
+            color: #aaa;
+            margin-left: 16rpx;
+            text-decoration: line-through;
+        }
+    }
+    .price_btn{
+        width: 322rpx;
+        height: 60rpx;
+        line-height: 60rpx;
+        margin: 16rpx auto 30rpx;
+        color: #fff;
+        text-align: center;
+        font-size: 26rpx;
+        position: relative;
+        z-index: 0;
+        &::before {
+            content: '\3000';
+            background: url("https://file.y1b.cn/store/1-0/231211/65766961d7083.png") 0 0 / 100% 100%;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+        }
+    }
+}
+
+.empty_box{
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 178rpx;
+    &::before {
+        content: '\3000';
+        background: url("https://file.y1b.cn/public/img/ttxl/static/images/img_no_data.png") 0 0 / 100%;
+        display: block;
+        width: 358rpx;
+        height: 330rpx;
+    }
+    .empty_img{
+        width: 358rpx;
+        height: 330rpx;
+    }
+    .empty_lab-img{
+        width: 434rpx;
+        height: 40rpx;
+        margin-top: 29rpx;
+    }
+    .empty_timer{
+        font-size: 26rpx;
+        text-align: center;
+        color: #c1c1c1;
+        margin-top: 16rpx;
+    }
+    .empty_btn{
+        padding: 0 33rpx;
+        height: 72rpx;
+        line-height: 72rpx;
+        border: 2rpx solid #f84842;
+        border-radius: 46rpx;
+        font-size: 26rpx;
+        font-weight: 600;
+        color: #f84842;
+        margin-top: 64rpx;
+    }
+}
+.loading_box{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+    .noMore_txt {
+        font-size: 28rpx;
+        padding: 30rpx 0;
+        color: gray;
+        text-align: center;
+
+    }
+}
+.timer_fixed{
+    position: fixed;
+    bottom: 146rpx;
+    left: 32rpx;
+    padding: 4rpx 0;
+    z-index: 1;
+    &::before {
+        content: '\3000';
+        background: url("https://file.y1b.cn/store/1-0/23913/650152f7cac02.png") 0 0 / 100% 100%;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+    .timer_fixed-left{
+        font-size: 36rpx;
+        font-weight: 600;
+        color: #fff;
+        margin-right: 24rpx;
+        min-width: 88rpx;
+        text-align: center;
+        &::before {
+            content: '￥';
+            font-size: 24rpx;
+        }
+    }
+    .timer_fixed-right{
+        font-size: 22rpx;
+        color: #666666;
+        min-width: 112rpx;
+        padding-right: 12rpx;
+    }
+}
+
+
+</style>

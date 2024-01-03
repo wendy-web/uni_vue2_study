@@ -1,0 +1,136 @@
+<template>
+<view class="about-us">
+	<view class="about_cont">
+		<view class="about-us-header">
+			<image class="about-us-icon" :src="imgUrl+'static/images/logo.jpg'" mode="widthFix"></image>
+			<view class="about_title">天天享礼{{version}}</view>
+			<view class="about_txt">生活省钱小帮手</view>
+		</view>
+		<!-- <van-cell title="版本号"  :value="version" is-link @click="versionHandle" /> -->
+		<van-cell title="服务协议" @click="agreementLook('/agreement/service-agreement.html')" is-link />
+		<van-cell title="隐私协议" @click="agreementLook('/agreement/privacy-agreement.html')" is-link />
+		<van-cell title="服务热线" @click="hotLine" :value="phoneNumber" is-link />
+		<!-- <van-cell title="开发者" @click="developer" is-link /> -->
+		<van-cell title="服务时间" value="工作日 8:30 - 17:30" value-class="right_txt"/>
+	</view>
+	<view class="cont_remind">
+		<view class="company_name">亿兴云科技（广东）有限公司</view>
+		<view class="company_pho">服务热线 {{ phoneNumber }}</view>
+	</view>
+</view>
+</template>
+
+<script>
+	import {getBaseUrl, getVersion} from '@/utils/auth.js';
+	import {getImgUrl} from '@/utils/auth.js';
+	export default {
+		onLoad() {
+			let version = wx.getAccountInfoSync().miniProgram.version;
+			this.version = version ? `v${version}` : getVersion();
+		},
+		data(){
+		   return {
+			imgUrl: getImgUrl(),
+			version: '',
+			phoneNumber: '400-870-7076'
+		   }
+		},
+		methods: {
+			versionHandle() {
+				uni.showToast({
+					title: '已经是最新版本啦~',
+					icon: 'none',
+					duration: 2000
+				});
+			},
+			agreementLook(link) {
+				link = getBaseUrl() + link;
+				uni.navigateTo({
+					url: `/pages/webview/webview?link=${encodeURIComponent(link)}`
+				});
+			},
+			developer() {
+				uni.showToast({
+					title: 'TXC BIG DATA-DEPTH RESEARCH',
+					icon: 'none',
+					duration: 2000
+				});
+			},
+			hotLine() {
+				wx.makePhoneCall({
+					phoneNumber: this.phoneNumber
+				});
+			}
+		}
+	};
+</script>
+
+<style lang="scss">
+page{
+	background-color: #f7f7f7;
+}
+.about-us {
+	position: fixed;
+	top: 0;
+	bottom:0;
+	left: 0;
+	width: 100%;
+	border-radius: 12px 12px 0px 0px;
+	overflow: hidden;
+	.about_cont {
+		background: #fff;
+	}
+	.about-us-header {
+		padding: 70rpx 0 72rpx;
+		position: relative;
+	}
+	.about_title {
+		font-size: 30rpx;
+		text-align: center;
+		color: #666666;
+		line-height: 42rpx;
+		margin: 32rpx auto 16rpx;
+	}
+	.about_txt {
+		font-size: 24rpx;
+		text-align: center;
+		color: #aaaaaa;
+		line-height: 34rpx;
+	}
+	.about-us-icon {
+		width: 136rpx;
+		height: 136rpx;
+		background: #d8d8d8;
+		border-radius: 36rpx;
+		display: block;
+		margin: 0 auto;
+	}
+}
+.right_txt {
+	color: #AAAAAA!important;;
+}
+.cont_remind {
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	bottom: 32rpx;
+	left: 0;
+	padding-bottom: constant(safe-area-inset-bottom);
+    /* 兼容 IOS<11.2 */
+    padding-bottom:  env(safe-area-inset-bottom);
+    /* 兼容 IOS>11.2 */
+	.company_name {
+		font-size: 26rpx;
+		font-weight: 600;
+		color: #8c8c8c;
+		line-height: 36rpx;
+	}
+	.company_pho {
+		font-size: 24rpx;
+		font-weight: 400;
+		color: #aaaaaa;
+		line-height: 34rpx;
+		margin-top: 12rpx;
+	}
+}
+</style>
