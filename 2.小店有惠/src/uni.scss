@@ -1,0 +1,293 @@
+$uni-color-primary: #007aff;
+$uni-color-success: #4cd964;
+$uni-color-warning: #f0ad4e;
+$uni-color-error: #dd524d;
+
+/* 文字基本颜色 */
+
+$uni-text-color: #333; // 基本色
+$uni-text-color-inverse: #fff; // 反色
+$uni-text-color-grey: #999; // 辅助灰色，如加载更多的提示信息
+$uni-text-color-placeholder: #808080;
+$uni-text-color-disable: #c0c0c0;
+
+/* 背景颜色 */
+
+$uni-bg-color: #fff;
+$uni-bg-color-grey: #f8f8f8;
+$uni-bg-color-hover: #f1f1f1; // 点击状态颜色
+$uni-bg-color-mask: rgba(0, 0, 0, 0.4); // 遮罩颜色
+
+/* 边框颜色 */
+
+$uni-border-color: #c8c7cc;
+
+/* 尺寸变量 */
+
+
+/* 文字尺寸 */
+
+$uni-font-size-sm: 12px;
+$uni-font-size-base: 14px;
+$uni-font-size-lg: 16;
+
+/* 图片尺寸 */
+
+$uni-img-size-sm: 20px;
+$uni-img-size-base: 26px;
+$uni-img-size-lg: 40px;
+
+/* Border Radius */
+
+$uni-border-radius-sm: 2px;
+$uni-border-radius-base: 3px;
+$uni-border-radius-lg: 6px;
+$uni-border-radius-circle: 50%;
+
+/* 水平间距 */
+
+$uni-spacing-row-sm: 5px;
+$uni-spacing-row-base: 10px;
+$uni-spacing-row-lg: 15px;
+
+/* 垂直间距 */
+
+$uni-spacing-col-sm: 4px;
+$uni-spacing-col-base: 8px;
+$uni-spacing-col-lg: 12px;
+
+/* 透明度 */
+
+$uni-opacity-disabled: 0.3; // 组件禁用态的透明度
+
+/* 文章场景相关 */
+
+$uni-color-title: #2c405a; // 文章标题颜色
+$uni-font-size-title: 20px;
+$uni-color-subtitle: #555; // 二级标题颜色
+$uni-font-size-subtitle: 18px;
+$uni-color-paragraph: #3f536e; // 文章段落颜色
+$uni-font-size-paragraph: 15px;
+
+/*多行缩略*/
+
+@mixin line-clamp($line: 2) {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: normal !important;
+    -webkit-line-clamp: $line;
+    -webkit-box-orient: vertical;
+}
+
+.uni-scroll-view ::-webkit-scrollbar {
+    /* 隐藏滚动条，但依旧具备可以滚动的功能 */
+    display: none;
+    width: 0;
+    height: 0;
+    color: transparent;
+    background: transparent;
+}
+
+ ::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    color: transparent;
+    background: transparent;
+}
+
+.bg_img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.po_center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.txt_ov_ell1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.txt_ov_ell2 {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.box_fl {
+    display: flex;
+    align-items: center;
+}
+
+.box_fl_end {
+    display: flex;
+    align-items: flex-end;
+}
+
+.fl_bet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.fl_ard {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.fl {
+    display: flex;
+}
+
+.fl1 {
+    flex: 1;
+}
+
+.fl_center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fl_end {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.fl_start {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.fl_al_end {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.fl_al_start {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.fl_col_sp_bt {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.fl_col_sp_ar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.fl_col_sp_en {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.fl_col_cen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.widHei {
+    width: 100%;
+    height: 100%;
+}
+
+// 列表加载手动添加的空引用
+.empty_box {
+    padding: 50rpx 50rpx 0;
+    font-size: 24rpx;
+    color: gray;
+    .empty_box_img {
+        width: 280rpx;
+        height: 280rpx;
+        margin-bottom: 20rpx;
+    }
+}
+
+// 猜你喜欢的样式
+.you_like-title {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32rpx;
+    font-weight: 500;
+    color: #ef2b20;
+    line-height: 44rpx;
+    margin: 72rpx auto 10rpx;
+    .left-icon {
+        width: 28rpx;
+        height: 30rpx;
+        opacity: 0.8;
+        position: relative;
+        align-self: flex-end;
+        margin-right: 7rpx;
+    }
+    .right-icon {
+        width: 28rpx;
+        height: 28rpx;
+        position: relative;
+        align-self: flex-start;
+        margin-top: -14rpx;
+    }
+}
+
+@keyframes heartBeat {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+    14% {
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1)
+    }
+    28% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+    42% {
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1)
+    }
+    70% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+}
+
+.heartBeat {
+    -webkit-animation-duration: 1.3s;
+    -webkit-animation-name: heartBeat;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-duration: 1.3s;
+    animation-name: heartBeat;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}

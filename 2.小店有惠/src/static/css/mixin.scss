@@ -1,0 +1,85 @@
+$subject-color: #47d998;
+$linear-subject-color: linear-gradient(90deg, $subject-color 0%, #01d5d8 100%);
+$linear-white-color: linear-gradient(to right, #fff 0%, #fff 100%);
+$linear-fail-color: linear-gradient(90deg, #ff7039 0%, #ff395e 100%);
+$linear-text-color: linear-gradient(90deg, #3dd8a1 0%, #02d5d7 100%);
+$orange-text-color: #fb8c3c;
+$green-text-color: #2caf7d;
+$subtext-color: #888;
+$disabled-color: #9E9E9E;
+$highlight-color: #F90;
+$rgba-background-black:rgba(0, 0, 0, 0.7);
+$dialog-background-color: #fff;
+$kdp-color: #414141;
+
+// 新设计方案
+$sub-color: #07C16C;
+$fail-color: #FF3B30;
+$linear-tt-bg: linear-gradient(45deg, #29C37F, #2AC480, #07C16C);
+// 字体
+$tt_color: #fff;
+$cont_color: #353535;
+$ext_color: #989898;
+$link_color: #63A1FF;
+$ext_size: .22rem; // 
+$cont_size: .28rem;
+$btn_size: .32rem;
+$res_size: .32rem; // 验证结果
+$ans_size: .24rem;
+// tv 模式的字体
+$tvTt_size: 24px;
+$tvCont_size: 18px; // 正文字体
+$smallCont_size: 14px; // 帮助正文的小字体
+$resultTt_size: 32px; // 成功的文本标题
+$resultCont_size: 28px; // 成功的文本显示
+
+// 精灵图的定位
+@mixin icon-posit($x, $y, $img:url(../assets/img/cert_sprites.png), $unit:rem, $scale: 1) {
+    background: $img no-repeat 0 0;
+    @if $unit == rem {
+        background-size: 11.76rem*$scale 8.43rem*$scale;
+    } @else {
+        background-size: 1176px*$scale 843px*$scale;
+    }
+	background-position: $x*$scale $y*$scale;
+}
+
+/* 文本超出隐藏 */
+@mixin text-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+@mixin position($position, $top: auto, $left:auto, $right:auto, $bottom:auto) {
+    position: $position;
+    top: $top;
+    left: $left;
+    right: $right;
+    bottom: $bottom;
+    @if $position == 'fixed' {
+	    z-index: 9;
+    }
+    @if $top == 50% {
+        transform: translateY(-50%);
+	    -webkit-transform: translateY(-50%);
+    }
+    @if $left == 50% {
+        transform: translateX(-50%);
+	    -webkit-transform: translateX(-50%);
+    }
+}
+@mixin display-flex($direction:row, $align: normal, $justify:normal) {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+	flex-direction: $direction;
+	align-items: $align;
+	justify-content: $justify;
+}
+/* 渐变主题色的文本 */
+@mixin linear-text {
+    background: $linear-text-color;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
