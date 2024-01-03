@@ -1,0 +1,19 @@
+<!--pages/storeDisplay/index/index.wxml-->
+<view class="index">
+  <van-tabs active="{{ active }}" bind:change="tabChange">
+    <van-tab  wx:for="{{tabs}}" wx:key="key"  info="{{item.count}}" title="{{item.name}}" name="{{item.id}}"></van-tab>
+   </van-tabs>
+   <!-- swiper -->
+   <swiper class="page-list" current="{{active}}" bind:change="swiperChange">
+			<swiper-item wx:for="{{tabs}}" wx:key="key">
+          <item-list class="item-list" tab="{{item.id}}" bindsign="sign" bindtoolsTrigger="toolsTrigger" bindrefresh="refresh" bindgetTopCount="getTopCount"/>
+      </swiper-item>
+  </swiper>
+</view>
+
+<!-- 拒绝订单 -->
+<refuse-order id="refuseOrder" bindrefresh="refresh"/>
+<!-- 取消订单 --> 
+<cancel-order id="cancelOrder" bindrefresh="refresh"/>
+<!-- 确认订单 -->
+<confirm-order id="confirmOrder" bindrefresh="refresh"/>

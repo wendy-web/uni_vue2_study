@@ -1,0 +1,84 @@
+<!--pages/storeOrder/component/order_popup/index.wxml-->
+<view class="store-order-popup">
+  <!-- 拒绝收货弹窗：我再想想，拒绝收货 -->
+  <van-popup show="{{ rejectReceiptShow }}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="rejectReceiptShow">
+    <view class="store-order-popup-box">
+      <view class="title">拒绝收货后，订单将退回给配送员</view>
+      <view class="operate-box">
+        <van-button type="default" bind:click="onClose"  custom-class="diy-btn-default"   data-popname="rejectReceiptShow"  block round >我再想想</van-button>
+        <van-button type="info" bind:click="rejectReceipt" data-item="{{orderInfo}}" loading="{{loading}}"  custom-class="diy-btn-operate" block round >拒绝收货</van-button>
+      </view>
+    </view>
+
+  </van-popup>
+
+  <!-- 确认收货弹窗：取消，确定 -->
+  <van-popup show="{{ confirmReceiptShow }}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="confirmReceiptShow" >
+    <view class="store-order-popup-box">
+      <view class="title">确定收货？</view>
+      <view class="operate-box">
+        <van-button type="default" bind:click="onClose"  custom-class="diy-btn-default"  data-popname="confirmReceiptShow"  block round >取消</van-button>
+        <van-button type="info" bind:click="confirmReceipt" loading="{{loading}}" custom-class="diy-btn-operate"  block round >确定</van-button>
+      </view>
+    </view>
+
+  </van-popup>
+  <!-- 接受订单弹窗：再想想，确认 -->
+  <van-popup show="{{ acceptOrdersShow }}" custom-style="background-color: transparent;" bind:close="onClose"  data-popname="acceptOrdersShow">
+    <view class="store-order-popup-box">
+      <view class="title">确认接受该订单？</view>
+      <view class="operate-box">
+        <van-button type="default" bind:click="onClose"  custom-class="diy-btn-default"  data-popname="acceptOrdersShow"  block round >再想想</van-button>
+        <van-button type="info" bind:click="acceptOrders" loading="{{loading}}" loading-text="加载中..." data-item="{{orderInfo}}" custom-class="diy-btn-operate"  block round >确认</van-button>
+      </view>
+    </view>
+
+  </van-popup>
+
+
+  <!-- 拒绝订单弹窗：拒绝，再想想Reject order -->
+  <van-popup show="{{ rejectOrdersShow }}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="rejectOrdersShow">
+    <view class="store-order-popup-box">
+      <view class="title">是否拒绝该订单？</view>
+      <view class="operate-box">
+        <van-button type="default" bind:click="rejectOrders"  data-item="{{orderInfo}}" loading="{{loading}}" loading-text="加载中..."   custom-class="diy-btn-default"   block round >拒绝</van-button>
+        <van-button type="default" bind:click="onClose" data-popname="rejectOrdersShow"  custom-class="diy-btn-default"  block round >再想想</van-button>
+      </view>
+    </view>
+
+  </van-popup>
+  <!-- 取消订单弹窗：我再想想，确定取消 -->
+  <van-popup show="{{ cancelOrdersShow }}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="cancelOrdersShow">
+    <view class="store-order-popup-box">
+      <view class="title">确认接受该订单？</view>
+      <view class="operate-box">
+        <van-button type="default" bind:click="onClose"  custom-class="diy-btn-default"  data-popname="cancelOrdersShow"  block round >我再想想</van-button>
+        <van-button type="info" bind:click="cancelOrders" custom-class="diy-btn-operate"  block round >确定取消</van-button>
+      </view>
+    </view>
+
+  </van-popup>
+
+  <!-- 店长已支付弹窗：取消，查看订单 -->
+  <van-popup show="{{ paidOrdersShow }}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="paidOrdersShow" >
+    <view class="store-order-popup-box">
+      <view class="title">有一笔订单，店长已完成支付</view>
+      <view class="operate-box">
+        <van-button type="default" bind:click="onClose"  custom-class="diy-btn-default"  data-popname="paidOrdersShow"  block round >取消</van-button>
+        <van-button type="info" bind:click="checkOrders" custom-class="diy-btn-operate"  block round >查看订单</van-button>
+      </view>
+    </view>
+
+  </van-popup>
+  <!-- 代下单确认操作 -->
+  <van-popup show="{{ dxdConfirmShow }}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="dxdConfirmShow">
+    <view class="store-order-popup-box">
+      <view class="title">是否接受该订单</view>
+      <view class="operate-box">
+        <van-button type="default" bind:click="onClose"  custom-class="diy-btn-default"  data-popname="dxdConfirmShow"  block round >再想想</van-button>
+        <van-button type="info" bind:click="dxdConfirm" data-item="{{orderInfo}}" loading="{{loading}}" loading-text="加载中..."  custom-class="diy-btn-operate"  block round >确认</van-button>
+      </view>
+    </view>
+  </van-popup>
+
+</view>

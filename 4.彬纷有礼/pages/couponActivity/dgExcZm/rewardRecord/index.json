@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "easy-loadimage": "../../../../component/easy-loadimage/easy-loadimage"
+  },
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#e7420d",
+  "navigationStyle": "custom"
+}

@@ -1,0 +1,33 @@
+<!--pages/tabBar/component/noticeItem/sys.wxml-->
+<view class="box">
+  <view class="order-box" id="innerbox" >
+    <scroller wx:if="{{!isEmpty}}" class="scroller-box" innerBoxHeight="{{innerBoxHeight}}" enhanced="{{false}}" type="default" style="height:{{innerBoxHeight}}px;" background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" bind:loadmore="loadmore" bind:refresh="refresh">
+      <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+      <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+      <item wx:for="{{noticeList}}" wx:key="key">
+        <view class="list-item">
+          <view class="list-title">{{item.tip}}</view>
+          <view class="list-date">{{item.create_time}}</view>
+          <view class="list-date">
+            {{item.content}}
+          </view>
+        </view>
+      </item>
+
+
+      <!-- 加载更多区域，可使用加载更多组件或自定义 -->
+      <loadmore slot="loadmore" status="{{loadMoreSetting.status}}" loading="{{loadMoreSetting.loading}}" noMore="{{loadMoreSetting.noMore}}" more="{{loadMoreSetting.more}}" />
+      <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+      <view class="empty-box" wx:if="{{noticeList.length == 0}}">
+        <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+      </view>
+    </scroller>
+    <scroller wx:else enhanced="{{false}}" type="default" background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" bind:refresh="refresh" innerBoxHeight="{{innerBoxHeight}}" style="height:{{innerBoxHeight}}px;">
+      <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+      <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+      <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+      <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+    </scroller>
+  </view>
+
+</view>

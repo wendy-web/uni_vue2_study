@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "订货单",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle":"black",
+  "usingComponents": {
+    "steps":"./components/steps",
+    "refuse-order":"../common/refuseOrder/index",
+    "cancel-order":"../common/cancelOrder/index",
+    "confirm-order":"../common/confirmOrder/index"
+  }
+}

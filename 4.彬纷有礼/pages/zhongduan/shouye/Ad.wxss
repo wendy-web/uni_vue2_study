@@ -1,0 +1,16 @@
+/* pages/zhongduan/shouye/detail.wxss */
+page{
+  height: 100%;
+}
+.container{
+  height: 100%;
+  text-align: center;
+}
+.container image {
+  width: 100%;
+  max-width: 100%;
+  display: inline-block;
+  position: relative;
+  z-index: 0;
+
+}

@@ -1,0 +1,175 @@
+<!--pages/phaseIII//distributor/index.wxml-->
+
+<top-navbar title="{{navbar_title}}" backgroundColor="{{exc_type==1?'#e10404':'#F18A07'}}" bgImg="{{exc_type==1?icon_hn_nav_bar:icon_zm_nav_bar}}" iconTheme="white" bindback="onBeforeBack"></top-navbar>
+<!-- 搜索框 -->
+<view class="search-box">
+  <input class="input" placeholder-class="input-placeholder" bindblur="searchMsg" type="text" placeholder="电话/姓名/公司名称搜索" />
+  <image class="search-icon" bindtap="searchMsg" mode="aspectFit" src="{{file_phase_static}}/search-icon.png"></image>
+</view>
+
+<!-- distributor list-->
+<view class="list safeArea">
+  <!-- <radio-group class="radio-group" bindchange="radioChange"> -->
+  <radio-group class="radio-group">
+    <view class="item" wx:for="{{list}}" wx:key="keys" wx:for-index="index" wx:for-item="item">
+      <!-- 红牛业务员 condition=0 -->
+      <block wx:if="{{item.condition==0}}">
+        <!-- 红牛业务员不显示地址和距离 -->
+        <view class="redbull-saleman">
+          <view class="saleman-info">
+            <view class="title">红牛业务员</view>
+            <view class="contact ">
+              <text>{{item.name}}</text>
+              <text bindtap="mkPhoneCall" data-phonestar="{{item.phoneStar}}" data-phone="{{item.mobile}}" class="phone">{{item.phoneStar}}</text>
+              <image bindtap="mkPhoneCall" data-phonestar="{{item.phoneStar}}" data-phone="{{item.mobile}}" class="call-icon" mode="aspectFit" src="{{file_phase_static}}/call-icon.png"></image>
+            </view>
+          </view>
+          <view bindtap="apply" data-id="{{item.condition}}" data-index="{{index}}" class="apply-btn {{exc_type==2?'apply-btn-zm':''}}">申请返货</view>
+        </view>
+      </block>
+      <block wx:elif="{{item.condition==4}}">
+        <!-- 其他配送商 -->
+        <view class="saleman-box">
+          <view class="head">
+            <view>
+              <view class="title" wx:if="{{item.name}}">{{item.name}}</view>
+              <view class="contact ">
+                <text>{{item.contact}}</text>
+                <text bindtap="mkPhoneCall" data-phonestar="{{item.phoneStar}}" data-phone="{{item.mobile}}" class="phone">{{item.phoneStar}}</text>
+                <image bindtap="mkPhoneCall" data-phonestar="{{item.phoneStar}}" data-phone="{{item.mobile}}" class="call-icon" mode="aspectFit" src="{{file_phase_static}}/call-icon.png"></image>
+
+              </view>
+            </view>
+            <view class="distance">{{item.dist}}km</view>
+          </view>
+          <view class="content">
+            <view class="address">
+              <view>
+                <text>地址：</text>
+                <text>{{item.address}}</text>
+              </view>
+              <view class="text-black" data-id="{{item.uid}}" bindtap="setDefault" data-index="{{index}}">
+                <radio class="radio" value="{{item.uid}}" checked="{{item.checked}}">
+                  <text>默认</text>
+                </radio>
+              </view>
+            </view>
+            <view bindtap="apply" data-id="{{item.condition}}" data-index="{{index}}" class="apply-btn {{exc_type==2?'apply-btn-zm':''}}">申请返货</view>
+          </view>
+        </view>
+      </block>
+      <block wx:else>
+        <!-- 其他配送商 -->
+        <view class="saleman-box">
+          <view class="head">
+            <view>
+              <view class="title" wx:if="{{item.name}}">{{item.name}}</view>
+              <view class="contact">
+                <text>{{item.contact}}</text>
+                <text bindtap="mkPhoneCall" data-phonestar="{{item.phoneStar}}" data-phone="{{item.mobile}}" class="phone">{{item.phoneStar}}</text>
+                <image bindtap="mkPhoneCall" data-phonestar="{{item.phoneStar}}" data-phone="{{item.mobile}}" class="call-icon" mode="aspectFit" src="{{file_phase_static}}/call-icon.png"></image>
+
+              </view>
+            </view>
+            <view class="distance">{{item.dist}}km</view>
+          </view>
+          <view class="content">
+            <view class="address">
+              <view>
+                <text>地址：</text>
+                <text>{{item.address}}</text>
+              </view>
+              <view class="text-black" data-id="{{item.uid}}" bindtap="setDefault" data-index="{{index}}">
+                <radio class="radio" value="{{item.uid}}" checked="{{item.checked}}">
+                  <text>默认</text>
+                </radio>
+              </view>
+            </view>
+            <view bindtap="apply" data-id="{{item.condition}}" data-index="{{index}}" class="apply-btn {{exc_type==2?'apply-btn-zm':''}}">申请返货</view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </radio-group>
+  <view class="noMore" wx:if="{{noMore}}">
+    <view class="text-center">~~没有更多数据了~~</view>
+  </view>
+</view>
+
+
+
+
+<!-- 申请成功弹窗 -->
+<view class="fadeIn" wx:if="{{applyPop}}">
+  <view class="weui-mask"></view>
+  <view class="weui-dialog phase_pop" style="height:800rpx;">
+    <view class="mg-pop pop_flex">
+      <view class="pop_title">
+        <image mode="aspectFit" class="successImg" src="{{successImg}}"></image>
+        <view class="mgt20">换购申请已提交</view>
+      </view>
+      <view class="pop_content">
+        <view>将尽快为您配送请留意系统通知</view>
+      </view>
+      <view class="order-info-box">
+        <image class="colours-bar" mode="aspectFit" src="{{file_phase_static}}/colour-bar.png"></image>
+        <view>订单编号：<text>{{check_no}}</text></view>
+        <view>申请数量：<text class="num">{{num}}</text>罐</view>
+        <view>收货地址：{{address}}</view>
+      </view>
+      <view>
+      </view>
+      <view style="margin-top:70rpx;">
+        <a bindtap="close" class="phase_btn">确定</a>
+      </view>
+    </view>
+
+  </view>
+</view>
+<!-- 电话确认弹窗 -->
+
+<!-- <view class="fadeIn mp-dialog" wx:if="{{phoneCallPop}}">
+  <view class="weui-mask"></view>
+  <view class="phoneImg">
+    <image mode="aspectFit" src="{{file_phase_static}}/phonecall.png"></image>
+  </view>
+  <view class="weui-dialog phase_pop">
+    <view class="mg-pop pop_flex">
+      <view>
+        <view class="font50 ">拨打电话</view>
+        <view class="font36 text-normal mgt26">您确定拨打电话：<text>{{phoneStar}}</text>？</view>
+      </view>
+      <view class="btn-box">
+        <a class="cancel" bindtap="tapButton" data-index='0'>取消</a>
+        <a class="confirm" bindtap="tapButton" data-index='1'>确定</a>
+      </view>
+    </view>
+
+  </view>
+</view> -->
+
+
+<van-popup show="{{ phoneCallPop }}" bind:close="onClose" round custom-class="vant-pop">
+    <image class="icon-phone-call" mode="aspectFit" src="{{file_phase_static}}/phonecall.png"></image>
+  <view class="phone-call-box">
+    <view class="font50 ">拨打电话</view>
+    <view class="font36 text-normal mgt26">您确定拨打电话：<text>{{phoneStar}}</text>？</view>
+    <view class="btn-box">
+      <a class="cancel" bindtap="tapButton" data-index='0'>取消</a>
+      <a class="confirm" bindtap="tapButton" data-index='1'>确定</a>
+    </view>
+
+  </view>
+</van-popup>
+<!-- 兑换确认弹窗 -->
+<van-popup show="{{ excCheckPop }}" bind:close="onClose" round>
+  <view class="exc-check-pop {{exc_type == 1?'exc-check-pop-hn':''}}">
+    <view class="exc-check-pop-title">温馨提示</view>
+    <view class="exc-check-pop-tips">点击确定，发起换购申请</view>
+    <image wx:if="{{exc_type == 2}}" class="img-zm-exc-cans" src="{{img_zm_exc_cans}}" mode="aspectFit" />
+    <view class="exc-check-btn-box">
+      <view class="exc-check-btn-cancel" bindtap="onClose">取消</view>
+      <view class="exc-check-btn-confirm" bindtap="confirmToExc">确定</view>
+    </view>
+  </view>
+</van-popup>

@@ -1,0 +1,282 @@
+{
+    "insetLoader": {
+        "config": {
+            "confirm": "<pointUpgradeDia ref='pointUpgradeDia' @close='closeHandle'/>",
+            "privacy": "<privacy ref='privacy'></privacy>"
+        },
+        "label": [
+            "confirm",
+            "privacy"
+        ],
+        "rootEle": "view"
+    },
+    "pages": [{
+            "path": "pages/home/index",
+            "style": {
+                "navigationBarTitleText": "首页",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/card/index",
+            "style": {
+                "navigationBarTitleText": "省钱中心",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/mine/index",
+            "style": {
+                "navigationBarTitleText": "我的",
+                "navigationStyle": "custom"
+            }
+        },
+        {
+            "path": "pages/payStatus/index",
+            "style": {
+                "navigationBarTitleText": "",
+                "navigationBarBackgroundColor": "#f7f7f7",
+                "backgroundColor": "#f7f7f7",
+                "disableScroll": true
+            }
+        },
+        {
+            "path": "pages/webview/index",
+            "style": {
+                "navigationBarTitleText": ""
+            }
+        },
+        {
+            "path": "pages/login/index",
+            "style": {
+                "navigationBarTitleText": "登录",
+                "navigationBarBackgroundColor": "#FFFFFF",
+                "navigationBarTextStyle": "black",
+                "navigationStyle": "custom"
+            }
+        }
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "uni-app",
+        "navigationBarBackgroundColor": "#F8F8F8",
+        "backgroundColor": "#F8F8F8",
+        "usingComponents": {
+            "van-tab": "/wxcomponents/vant_update/tab/index",
+            "van-tabs": "/wxcomponents/vant_update/tabs/index",
+            "van-icon": "/wxcomponents/vant_update/icon/index",
+            "van-image": "/wxcomponents/vant_update/image/index",
+            "van-field": "/wxcomponents/vant_update/field/index",
+            "van-count-down": "/wxcomponents/vant_update/count-down/index",
+            "van-button": "/wxcomponents/vant_update/button/index",
+            "van-popup": "/wxcomponents/vant_update/popup/index",
+            "van-picker": "/wxcomponents/vant_update/picker/index",
+            "van-cell": "/wxcomponents/vant_update/cell/index",
+            "van-datetime-picker": "/wxcomponents/vant_update/datetime-picker/index",
+            "van-swipe-cell": "/wxcomponents/vant_update/swipe-cell/index",
+            "van-checkbox": "/wxcomponents/vant_update/checkbox/index",
+            "van-checkbox-group": "/wxcomponents/vant_update/checkbox-group/index",
+            "van-loading": "/wxcomponents/vant_update/loading/index",
+            "painter": "/wxcomponents/Kujiale-Mobile-painter/painter"
+        }
+    },
+    "tabBar": {
+        "custom": true,
+        "color": "#999999",
+        "selectedColor": "#EF2B20",
+        "backgroundColor": "#F8F8F8",
+        "list": [{
+                "pagePath": "pages/home/index",
+                "text": "积分商城",
+                "iconPath": "/static/images/navbar/icon_home.png",
+                "selectedIconPath": "/static/images/navbar/icon_home_active.png"
+            },
+            {
+                "pagePath": "pages/card/index",
+                "text": "赚钱中心",
+                "iconPath": "/static/images/navbar/icon_card.png",
+                "selectedIconPath": "/static/images/navbar/icon_card_active.png"
+            },
+            {
+                "pagePath": "pages/mine/index",
+                "text": "我的",
+                "iconPath": "/static/images/navbar/icon_mine.png",
+                "selectedIconPath": "/static/images/navbar/icon_mine_active.png"
+            }
+        ]
+    },
+    "subPackages": [{
+            "root": "pages/mineModule/",
+            "name": "mineModule",
+            "pages": [{
+                    "path": "personalInfo/index",
+                    "style": {
+                        "navigationBarTitleText": "个人信息",
+                        "navigationBarBackgroundColor": "#ffffff"
+                    }
+                },
+                {
+                    "path": "personalInfo/modifyName/index",
+                    "style": {
+                        "navigationBarTitleText": "修改昵称",
+                        "navigationBarBackgroundColor": "#ffffff"
+                    }
+                },
+                {
+                    "path": "order/index",
+                    "style": {
+                        "navigationBarTitleText": "积分订单",
+                        "navigationBarTextStyle": "black",
+                        "navigationBarBackgroundColor": "#ffffff",
+                        "backgroundColor": "#F5F6FA"
+                    }
+                },
+                {
+                    "path": "orderDetail/index",
+                    "style": {
+                        "navigationBarTitleText": "",
+                        "navigationBarTextStyle": "black",
+                        "navigationBarBackgroundColor": "#FFFFFF"
+                    }
+                },
+                {
+                    "path": "myCollect/index",
+                    "style": {
+                        "navigationBarTitleText": "我的收藏",
+                        "navigationBarTextStyle": "black",
+                        "navigationBarBackgroundColor": "#ffffff"
+                    }
+                },
+                {
+                    "path": "service/service",
+                    "style": {
+                        "navigationBarTitleText": "客服中心",
+                        "navigationBarTextStyle": "black",
+                        "navigationBarBackgroundColor": "#f7f7f7"
+                    }
+                },
+                {
+                    "path": "aboutUs/index",
+                    "style": {
+                        "navigationBarTitleText": "关于我们",
+                        "navigationBarTextStyle": "black",
+                        "navigationBarBackgroundColor": "#f7f7f7"
+                    }
+                },
+                {
+                    "path": "myCredit/index",
+                    "style": {
+                        "navigationBarTitleText": "我的积分",
+                        "navigationBarTextStyle": "black",
+                        "navigationBarBackgroundColor": "#f4f5f9",
+                        "navigationStyle": "custom"
+                    }
+                },
+                {
+                    "path": "creditRecord/index",
+                    "style": {
+                        "navigationBarTitleText": "积分账单",
+                        "navigationBarTextStyle": "black",
+                        "navigationBarBackgroundColor": "#f4f5f9"
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/homeModule/",
+            "name": "homeModule",
+            "pages": [{
+                    "path": "productDetails/index",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "商品详情"
+                    }
+                },
+                {
+                    "path": "productList/index",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "京东商品"
+                    }
+                },
+                {
+                    "path": "productList/search",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "搜索"
+                    }
+                },
+                {
+                    "path": "feedDetailsList/index",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "京东商品列表"
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/cardModule/",
+            "name": "cardModule",
+            "pages": [
+                {
+                    "path": "invite/index",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "邀请",
+                        "backgroundColor": "#FFE7D1"
+                    }
+                },{
+                    "path": "invite/inviteList",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "邀请记录",
+                        "backgroundColor": "#FFE7D1"
+                    }
+                },
+                {
+                    "path": "cardEarnings/index",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "省钱卡收益"
+                    }
+                },
+                {
+                    "path": "withdrawal/index",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "提现"
+                    }
+                },
+                {
+                    "path": "withdrawal/history",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "提现记录"
+                    }
+                },
+                {
+                    "path": "withdrawal/detail",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "提现详情"
+                    }
+                }
+            ]
+        }
+    ],
+    "preloadRule": {
+        "pages/mine/index": {
+            "network": "all",
+            "packages": [
+                "mineModule"
+            ]
+        },
+        "pages/home/index": {
+            "network": "all",
+            "packages": [
+                "homeModule"
+            ]
+        }
+    }
+}

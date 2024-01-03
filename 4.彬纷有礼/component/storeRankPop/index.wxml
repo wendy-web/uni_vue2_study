@@ -1,0 +1,483 @@
+<!--component/storeRankPop/index.wxml-->
+<view class="store-rank-box">
+  <!-- 兑奖冲榜活动相关弹窗 -->
+  <!-- 首页报名弹窗 unboxSignUpShow -->
+  <van-popup show="{{unboxSignUpShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="unboxSignUpShow">
+    <view class="sign-up-box">
+      <image class="img-pop-apply" src="{{img_pop_apply}}" mode="aspectFit" bindtap="goPage" data-url="pages/storeRank/index/index" />
+      <view class="bg-close-area" bindtap="onClose" data-popname="unboxSignUpShow"> 关闭区域</view>
+    </view>
+  </van-popup>
+  <!-- 报名确认弹窗 -->
+  <van-popup show="{{unboxApplyCheckShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="unboxApplyCheckShow">
+    <background bind:close="onClose" data-popname="unboxApplyCheckShow">
+      <view class="store-rank-item">
+        <view class="content-apply-check">
+          <view>报名成功后，活动期间</view>
+          <view>不可转让店铺或转入他人门店！</view>
+          <view>是否确认报名?</view>
+        </view>
+        <view class="btn-group">
+          <image bindtap="showCheckShopInfoPop" data-popname="unboxApplyCheckShow" class="btn-check-shopinfo" src="{{btn_yes}}" mode="aspectFit" />
+          <image bindtap="onClose" data-popname="unboxApplyCheckShow" class="btn-check-shopinfo" src="{{btn_no}}" mode="aspectFit" />
+        </view>
+      </view>
+    </background>
+  </van-popup>
+  <!-- 报名成功弹窗 -->
+  <van-popup show="{{unboxApplySuccessShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="unboxApplySuccessShow">
+    <background bind:close="onClose" data-popname="unboxApplySuccessShow" bgImg="{{pop_bg_apply_success}}">
+      <view class="store-rank-item">
+        <view class="content-signup-success">
+          <image class="title-apply-success" src="{{title_apply_success}}" mode="aspectFit" />
+
+        </view>
+        <!-- 开启消息通知 -->
+        <image class="btn-know" src="{{btn_know}}" mode="aspectFit" bindtap="onClose" data-popname="unboxApplySuccessShow" />
+      </view>
+    </background>
+  </van-popup>
+  <!-- 已报名弹窗 -->
+  <van-popup show="{{unboxAppliedShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="unboxAppliedShow">
+    <background bind:close="onClose" data-popname="unboxAppliedShow">
+      <view class="store-rank-item">
+        <view class="text-applied">您的店铺已报名</view>
+        <image class="btn-check-detail" src="{{btnCheckDetail}}" bindtap="goPage" data-url="pages/storeRank/rank/index" mode="aspectFit" />
+      </view>
+    </background>
+  </van-popup>
+
+
+  <!-- 活动每日进度 -->
+  <van-popup show="{{actDailyProgressShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="actDailyProgressShow" catchtouchmove="{{false}}">
+    <background bind:close="onClose" data-popname="actDailyProgressShow">
+      <view class="store-rank-item">
+        <image class="unbox-icon-star" src="{{unbox_icon_star}}" mode="aspectFit" />
+        <view class="content">
+          <view class="title">【{{rankInfo&&(rankInfo.title +' '+ rankInfo.sub_t1) || '开箱冲榜 赢奖励'}}】战况</view>
+          <!-- 罐数小于10，未上榜，大于10 才有排名， -->
+          <view>
+            <!-- <text>累计红牛开箱数{{rankInfo.card_count>=rankInfo.kpi_1 ?'人数：':'罐数：'}}</text> -->
+            <text>累计红牛开箱数：</text>
+            <text>{{rankInfo.s_num}}箱</text>
+          </view>
+          <view>
+            <text>当前排名：</text>
+            <!-- <text class="num">{{rankInfo.card_count>=rankInfo.kpi_1 ?'第'+rankInfo.rank+'名':'未上榜'}}</text> -->
+            <text>{{rankInfo.rank>rankInfo.kpi_1 ?'第'+rankInfo.rank+'名':'未上榜'}}</text>
+          </view>
+          <view class="count-down-tips">距离活动结束还剩：</view>
+          <view wx:if="{{rankInfo.act_state.count_down_timestamp}}">
+            <van-count-down time="{{rankInfo.act_state.count_down_timestamp}}" data-actname="rankInfo" bind:finish="rankTimerFinished" format="DD天HH时mm分ss秒" style="--count-down-text-color:#FEF1C9;"></van-count-down>
+          </view>
+
+        </view>
+        <image class="btn-check-detail mb-50" src="{{btnCheckDetail}}" mode="aspectFit" bindtap="goPage" data-url="pages/storeRank/rank/index" />
+      </view>
+    </background>
+  </van-popup>
+
+  <!-- 活动中奖 -->
+  <van-popup show="{{actIsWinShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="actIsWinShow">
+    <background bind:close="onClose" data-popname="actIsWinShow">
+      <view class="store-rank-item-win">
+        <view class="content-win">
+          <view class="win-title">恭喜您中奖了！</view>
+          <!-- <view class="win-subtitle">【{{rankInfo.title || '开箱冲榜赢奖励'}}】战况</view> -->
+          <view class="win-tips">
+            <text>累计兑奖人数：</text>
+            <text class="num">{{rankInfo.uid_num}}人</text>
+          </view>
+          <view>
+            <text>排名：</text>
+            <text class="num">第{{rankInfo.rank}}名</text>
+          </view>
+          <view class="win-subtitle">活动已结束</view>
+        </view>
+        <image class="btn-check-detail" src="{{btn_get_award}}" mode="aspectFit" bindtap="goPage" data-url="pages/storeRank/rank/index" />
+      </view>
+    </background>
+  </van-popup>
+
+  <!-- 活动未中奖 -->
+  <van-popup show="{{actNoWinShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="actNoWinShow">
+    <!-- <background bind:close="onClose" data-popname="actNoWinShow" bgImg="{{bg_act_rank_nowin}}" boxItemClass="box-item-nowin"> -->
+    <background bind:close="onClose" data-popname="actNoWinShow" bgImg="{{bg_act_rank_nowin}}">
+      <view class="store-rank-item">
+        <view class="content">
+          <image class="icon-star" src="{{icon_star}}" mode="aspectFit" />
+          <view class="title-nowin">很遗憾您未中奖!</view>
+          <image class="btn-check-detail btn-no-win" src="{{btnCheckDetail}}" mode="aspectFit" bindtap="goPage" data-url="pages/storeRank/rank/index" />
+
+        </view>
+      </view>
+    </background>
+  </van-popup>
+
+  <!-- 活动期间不可转让店铺 -->
+  <van-popup show="{{notTransferShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="notTransferShow">
+    <background bind:close="onClose" data-popname="notTransferShow">
+      <view class="store-rank-item">
+        <view class="content-forbid">
+          <!-- <view class="title-forbid">您已参加</view> -->
+          <view>您已报名参加</view>
+          <view>“{{(rankInfo.title +' '+ rankInfo.sub_t1 )|| '开箱冲榜赢奖励'}}”活动</view>
+          <view>
+            <!-- <view class="forbid-transfer"> -->
+            <!-- <image class="icon-forbid" src="{{icon_forbid}}" mode="aspectFit" /> -->
+            <text>{{ noTransferTips }}</text>
+          </view>
+        </view>
+        <!-- <image class="btn-check-detail" src="{{btnIknow}}" mode="aspectFit" bindtap="onClose" data-popname="notTransferShow" /> -->
+      </view>
+    </background>
+  </van-popup>
+
+  <!-- 活动已结束:中奖、未中奖 -->
+  <van-popup show="{{actEndShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="actEndShow">
+    <background bind:close="onClose" data-popname="actEndShow">
+      <!-- 活动结束：未报名，未中奖，中奖 -->
+      <view class="store-rank-item unbox-end">
+        <image class="icon-star-badge" src="{{icon_star_badge}}" mode="aspectFit" />
+        <block wx:if="{{rankInfo.status == '未报名'}}">
+          <view>
+            <view class="title-end mt-60">活动已结束</view>
+            <view class="content-end">
+              <text>下期活动敬请期待......</text>
+            </view>
+          </view>
+        </block>
+        <block wx:if="{{rankInfo.status == '未中奖'}}">
+          <view class="title-end mt-138">很遗憾您未中奖</view>
+          <image class="btn-check-detail mt-156" src="{{btnCheckDetail}}" bindtap="goPage" data-url="pages/storeRank/rank/index" mode="aspectFit" />
+
+        </block>
+        <block wx:if="{{rankInfo.status == '已中奖' || rankInfo.status == '已领取'}}">
+          <view class="title-award">恭喜您中奖啦！</view>
+          <view class="mt-20">
+            <text>累计红牛开箱数：</text>
+            <text>{{rankInfo.s_num}}箱</text>
+          </view>
+          <view class="mt-20">
+            <text>排名：</text>
+            <!-- 区分特等奖和其它 -->
+            <block wx:if="{{rankInfo.rank == 1}}">
+              <text>第一名</text>
+            </block>
+            <block wx:else>
+              <text>{{'第'+rankInfo.rank+'名'}}</text>
+            </block>
+          </view>
+          <view class="title-end mt-50">活动已结束</view>
+
+          <image class="btn-check-award mt-40" src="{{btn_check_award}}" bindtap="goPage" data-url="pages/phaseIII/voucher/index?activeTab=2" mode="aspectFit" />
+
+        </block>
+      </view>
+    </background>
+  </van-popup>
+
+  <!-- 核对店铺信息 -->
+  <van-popup show="{{checkShopInfoShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="checkShopInfoShow">
+    <background bind:close="onClose" data-popname="checkShopInfoShow">
+      <view class="store-rank-item">
+
+        <view class="shopinfo-content">
+          <view class="shopinfo-title">核对店铺信息</view>
+          <view class="shopinfo-item-flex">
+            <text class="shopinfo-name ">门店名称：</text>
+            <text class="shop-name oneLine">{{shopInfo.shop_name}}</text>
+          </view>
+          <view class="shopinfo-item">
+            <text class="shopinfo-name">联系方式：</text>
+            <text>{{shopPhoneNum}}</text>
+          </view>
+          <view class="shopinfo-item">
+            <text class="shopinfo-name">门店地址：</text>
+            <text>{{shopInfo.address}}</text>
+          </view>
+          <view class="shopinfo-tips">*请仔细核对店铺地址并确认所属地为广东省，若因地址信息有误而导致奖励不能正常发放的，由您自行承担。</view>
+        </view>
+        <view class="btn-group">
+          <!-- 最新一期活动：报名 -->
+          <image bindtap="unboxSignUp" class="btn-check-shopinfo" src="{{btn_confirm}}" mode="aspectFit" />
+          <!-- 上一期活动直接领奖 -->
+          <!-- <image bindtap="getReward" class="btn-check-shopinfo" src="{{btn_confirm}}" mode="aspectFit" /> -->
+          <image bindtap="changeShopInfo" class="btn-check-shopinfo" src="{{btn_change}}" mode="aspectFit" />
+        </view>
+
+      </view>
+    </background>
+  </van-popup>
+
+  <!-- 领奖成功 -->
+  <van-popup show="{{getAwardSuccessShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="getAwardSuccessShow">
+    <background bind:close="onClose" data-popname="getAwardSuccessShow" bgImg="{{bg_get_award_success}}">
+      <view class="store-rank-item" bindtap="goPage" data-url="pages/storeRank/rewardRecord/index">
+        <view>
+          <view class="prize-title">
+            <!-- <text class="prize-num">{{prizeInfo.prize_msg || ''}}</text> -->
+            <text class="prize-num">{{prizeInfo.arr[0] || ''}}</text>
+            <text>{{prizeInfo.arr[1] || ''}}</text>
+          </view>
+          <view class="prize-tips">
+            <view>请您耐心等待，</view>
+            <view>业务员将根据您的店铺信息，</view>
+            <view>在15个工作日内将货品送达您的手中，</view>
+            <view>如有疑问，</view>
+            <view>请拨打400-870-7076</view>
+          </view>
+        </view>
+      </view>
+
+    </background>
+  </van-popup>
+  <!-- 2023年8月1日 抽奖相关弹窗 start -->
+  <!-- 获得报名资格 -->
+  <van-popup show="{{raffleApplyShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="raffleApplyShow">
+    <szExc-background bind:close="onClose" data-popname="raffleApplyShow" openType="1">
+      <view class="raffle-apply-box" >
+        <view class="raffle-get-qualify">报名参与抽奖的资格</view>
+        <view>
+          <text>兑奖人数已达到</text>
+          <text class="exc-num">{{actInfo.kpi_num}}</text>
+          <text>人</text>
+        </view>
+        <view class="raffle-tips mt-20"><text class="line-height-70">点击报名即有机会赢得手机哦</text></view>
+        <van-button custom-class="raffle-button mt-10" bindtap="goPage" data-url="pages/storeRank/raffle/apply/index">立即报名</van-button>
+      </view>
+
+    </szExc-background>
+  </van-popup>
+  <!-- 抽奖报名成功  -->
+  <van-popup show="{{raffleApplySuccessShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="raffleApplySuccessShow">
+    <szExc-background bind:close="onClose" data-popname="raffleApplySuccessShow" openType="2">
+      <view class="raffle-apply-box" >
+        <view class="raffle-get-qualify">恭喜您获得幸运号码</view>
+        <view class="my-raffle-code">
+          <view wx:for="{{actInfo.raffleInfo.numArr}}" wx:key="index" class="my-raffle-code-item">{{item}}</view>
+        </view>
+        <view class="raffle-tips mt-20 ">
+          <view>请于{{actInfo.e_time_date ||'2023-08-31'}}在平台关注开奖结果，</view>
+          <view>有机会赢得千元手机，千万别错过哦</view>
+        </view>
+        <!-- <van-button custom-class="raffle-button mt-10" bindtap="openWithActInfo" data-url="pages/storeRank/rank/index">我知道了</van-button> -->
+        <van-button custom-class="raffle-button mt-10" bindtap="openPageRedirect" data-url="/pages/storeRank/rank/index">我知道了</van-button>
+
+      </view>
+
+    </szExc-background>
+  </van-popup>
+  <!-- 每日进度弹窗 -->
+  <van-popup show="{{szExcDailyShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="szExcDailyShow">
+    <!-- 兑奖人数>=20 且 未报名 -->
+    <view class="raffle-daily-box" >
+      <block wx:if="{{actInfo.raffle_apply}}">
+        <view class="title-box">
+          <image class="title-bg" src="{{bg_record_title}}" />
+          <view>恭喜您获得</view>
+        </view>
+        <view class="raffle-daily-item" style="background-image:url({{bgImg}});">
+          <view class="raffle-apply-box">
+            <view class="raffle-get-qualify">报名参与抽奖的资格</view>
+            <view>
+              <text>兑奖人数已达到</text>
+              <text class="exc-num">{{actInfo.kpi_num}}</text>
+              <text>人</text>
+            </view>
+            <view class="raffle-tips mt-20"><text class="line-height-70">点击报名即有机会赢得手机哦</text></view>
+            <van-button custom-class="raffle-button mt-10" bindtap="goPage" data-url="pages/storeRank/raffle/apply/index">立即报名</van-button>
+          </view>
+        </view>
+        <!-- 连接bar -->
+        <view class="pop-bar-box">
+          <image class="img-pop-bar" src="{{img_pop_bar}}" mode="aspectFit" />
+          <image class="img-pop-bar" src="{{img_pop_bar}}" mode="aspectFit" />
+        </view>
+      </block>
+      <!-- 每日兑奖进度:注意没有抽奖报名时候的高度显示 -->
+      <view class="daily-item" style="background-image:url({{actInfo.raffle_apply?bg_pop_mini:bgImg}});min-height: {{actInfo.raffle_apply?'440':'470'}}rpx;">
+      <!-- <view class="daily-item" style="background-image:url({{bg_pop_mini}});min-height: {{actInfo.apply?'572':'354'}}rpx;"> -->
+        <!-- 标题 -->
+        <view class="daily-item-title">
+          <view class="left-bar"></view>
+          <view>每日兑奖进度</view>
+          <view class="right-bar"></view>
+        </view>
+        <!-- 兑奖人数 排名信息 -->
+        <view class="daily-item-info mt-20">
+          <text>累计兑奖人数：</text>
+          <text class="daily-item-num">{{actInfo.kpi_num}}</text>
+          <text class="daily-item-unit">人</text>
+        </view>
+        <view class="daily-item-info" wx:if="{{actInfo.rank&&actInfo.rank>0}}">
+          <text>当前排名：</text>
+          <text class="daily-item-unit">第</text>
+          <text class="daily-item-num">{{actInfo.rank}}</text>
+          <text class="daily-item-unit">名</text>
+        </view>
+        <!-- 活动倒计时 -->
+        <view class="daily-item-tips">
+          <view>{{actInfo.act_state.status_title}}</view>
+          <block wx:if="{{actInfo.act_state.count_down_timestamp}}">
+            ：<van-count-down time="{{actInfo.act_state.count_down_timestamp}}" data-actname="actInfo" bind:finish="rankTimerFinished" format="DD天HH时mm分ss秒" style="--count-down-text-color:#808080;--count-down-font-size: 20rpx;"></van-count-down>
+          </block>
+        </view>
+        <!-- 查看详情 -->
+        <van-button custom-class="raffle-button mt-10" bindtap="goPage" data-url="pages/storeRank/rank/index">查看详情</van-button>
+
+      </view>
+      <image class="icon-close" mode="aspectFit" bindtap="onClose" data-popname="szExcDailyShow" src="{{closeImg}}"></image>
+    </view>
+  </van-popup>
+  <!-- 活动结束未中奖 -->
+  <van-popup show="{{raffleNoWinShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="raffleNoWinShow">
+    <szExc-background bind:close="onClose" data-popname="raffleNoWinShow">
+      <!-- 兑奖等于0直接不显示查看详情按钮 -->
+      <view class="raffle-apply-box">
+        <block wx:if="{{actInfo.kpi_num<=0}}">
+          <view class="raffle-get-qualify mt-50">活动已结束</view>
+          <view class="raffle-tips mt-20 ">下期活动敬请期待......</view>
+        </block>
+        <block wx:else>
+          <view class="raffle-get-qualify">很遗憾</view>
+          <view class="raffle-get-qualify">您未获得奖励</view>
+          <view class="raffle-tips mt-20 ">
+            活动已结束
+          </view>
+          <van-button custom-class="raffle-button mt-40" bindtap="goPage" data-url="pages/storeRank/rank/index" data-popname="raffleNoWinShow">查看详情</van-button>
+        </block>
+      </view>
+
+    </szExc-background>
+  </van-popup>
+  <!-- 不可转让店铺 -->
+  <van-popup show="{{raffleNotTransferShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="raffleNotTransferShow">
+    <szExc-background bind:close="onClose" data-popname="raffleNotTransferShow" openType="3">
+      <view class="no-trans-box">
+        <view class="no-trans-title">您已参加</view>
+        <view class="no-trans-title">“{{(actInfo.title )|| '兑奖冲榜'}}”活动</view>
+        <view class="no-trans-tips">
+          <image class="icon-no-trans" src="{{icon_no_trans}}" mode="aspectFit" />
+          {{noTransferTips}}
+        </view>
+      </view>
+    </szExc-background>
+  </van-popup>
+  <!-- 活动结束中奖 -->
+  <van-popup show="{{raffleWinShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="raffleWinShow">
+    <view class="raffle-daily-box">
+      <view class="title-box" wx:if="{{actInfo.is_win || actInfo.raffle_win}}">
+        <image class="title-bg" src="{{bg_record_title}}" />
+        <view>恭喜您获得</view>
+      </view>
+      <block wx:if="{{actInfo.raffle_win}}">
+        <view class="raffle-daily-item raffle-win-item" style="background-image:url({{bgImg}});">
+          <view class="raffle-apply-box" >
+            <view class="raffle-win-info">2499元荣耀90手机一台</view>
+            <view class="raffle-result">
+              <text>您的幸运号码</text>
+              <text class="lucky-num">{{actInfo.win.lucky_number}}</text>
+            </view>
+            <view class="raffle-result">
+              <text>本期开奖号码</text>
+              <text >{{actInfo.calc.lottery_number_str}}</text>
+            </view>
+            <view class="raffle-win-tips"><text>由于核奖需要，请您填写本人真实信息,方便我们核实您的身份并发放奖励(奖励以实物为准)</text></view>
+            <van-button custom-class="raffle-button-edit mt-10" bindtap="goPage" data-opentype="edit" data-url="pages/storeRank/prizeTicket/index/index">{{actInfo.win&&actInfo.win.region?'查看个人信息':'前往填写个人信息'}}</van-button>
+          </view>
+        </view>
+        <!-- 连接bar -->
+        <view class="pop-bar-box" wx:if="{{actInfo.is_win && actInfo.raffle_win}}">
+          <image class="img-pop-bar" src="{{img_pop_bar}}" mode="aspectFit" />
+          <image class="img-pop-bar" src="{{img_pop_bar}}" mode="aspectFit" />
+        </view>
+      </block>
+      <!-- 每日兑奖进度:注意没有抽奖报名时候的高度显示还有背景替换 -->
+      <view wx:if="{{actInfo.is_win}}" class="daily-item {{actInfo.raffle_win?'sz-raffle-win-item':'sz-exc-win-item'}}" style="background-image:url({{actInfo.raffle_win?bg_pop_mini:bgImg}});">
+        <!-- 获得的奖券 -->
+        <view class="sz-exc-win-info  mt-20">
+          <text>红牛活动券</text>
+          <text class="coupon-num">{{actInfo.rev_msg[0] || ''}}张</text>
+          <text>+战马活动券</text>
+          <text class="coupon-num">{{actInfo.rev_msg[1] || ''}}张</text>
+        </view>
+        <!-- 兑奖人数 排名信息 -->
+        <view class="daily-item-info mt-20">
+          <text>累计兑奖人数：</text>
+          <text class="daily-item-num">{{actInfo.kpi_num}}</text>
+          <text class="daily-item-unit">人</text>
+        </view>
+        <!-- 查看详情 -->
+        <van-button custom-class="raffle-button mt-40" bindtap="goPage" data-url="pages/storeRank/rank/index">查看详情</van-button>
+        
+      </view>
+      <image class="icon-close" mode="aspectFit" bindtap="onClose" data-popname="raffleWinShow" src="{{closeImg}}"></image>
+    </view>
+  </van-popup>
+  <!-- 2023年8月1日 抽奖相关弹窗 end -->
+
+
+
+  <!-- 开箱核对店铺信息 -->
+  <!-- <van-popup show="{{unboxcheckShopInfoShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="unboxcheckShopInfoShow">
+    <unbox-background bind:close="onClose" data-popname="unboxcheckShopInfoShow" bgImg="{{bg_check_shopinfo}}">
+      <view class="store-rank-item">
+
+        <view class="shopinfo-content">
+          <view class="shopinfo-title">核对店铺信息</view>
+          <view class="shopinfo-item-flex">
+            <text class="shopinfo-name ">门店名称：</text>
+            <text class="shop-name oneLine">{{shopInfo.shop_name}}</text>
+          </view>
+          <view class="shopinfo-item">
+            <text class="shopinfo-name">联系方式：</text>
+            <text>{{shopPhoneNum}}</text>
+          </view>
+          <view class="shopinfo-item">
+            <text class="shopinfo-name">门店地址：</text>
+            <text>{{shopInfo.address}}</text>
+          </view>
+          <view class="shopinfo-tips">*温馨提示：因中奖后需将奖品配送至您的店铺，请确认店铺所属地为湛江市或江门市</view>
+          <view class="btn-group">
+            <image bindtap="unboxSignUp" class="btn-check-shopinfo" src="{{btn_confirm}}" mode="aspectFit" />
+            <image bindtap="changeShopInfo" class="btn-check-shopinfo" src="{{btn_change}}" mode="aspectFit" />
+          </view>
+        </view>
+
+      </view>
+    </unbox-background>
+  </van-popup> -->
+  <!-- 报名成功弹窗：注意区分三种不同活动规则、奖励区间 -->
+  <!-- <van-popup show="{{unboxApplySuccessShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="unboxApplySuccessShow">
+    <unbox-background bind:close="onClose" data-popname="unboxApplySuccessShow" bgImg="{{bg_act_rank_update}}">
+      <view class="store-rank-item">
+        <image class="btn-check-detail" src="{{btnIknow}}" mode="aspectFit" bindtap="onClose" data-popname="unboxApplySuccessShow" />
+      </view>
+    </unbox-background>
+  </van-popup> -->
+  <!-- 开箱冲榜活动每日进度弹窗 -->
+  <!-- <van-popup show="{{unboxDailyProgressShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="unboxDailyProgressShow">
+    <unbox-background bind:close="onClose" data-popname="unboxDailyProgressShow" bgImg="{{bg_act_rank_update}}">
+      <view class="store-rank-item">
+        <image class="btn-check-detail" src="{{btnIknow}}" mode="aspectFit" bindtap="onClose" data-popname="unboxDailyProgressShow" />
+      </view>
+    </unbox-background>
+  </van-popup> -->
+  <!-- 开箱活动期间不可转让店铺 -->
+  <!-- <van-popup show="{{unboxNotTransferShow}}" custom-style="background-color: transparent;" bind:close="onClose" data-popname="unboxNotTransferShow">
+    <unbox-background bind:close="onClose" data-popname="unboxNotTransferShow">
+      <view class="store-rank-item">
+        <view class="content-forbid">
+          <view class="title-forbid">您已参加</view>
+          <view>“{{rankInfo.title || '28周年开箱冲榜赢奖励'}}”活动</view>
+          <view class="forbid-transfer">
+            <image class="icon-forbid" src="{{icon_forbid}}" mode="aspectFit" />
+            <text>{{ noTransferTips }}</text>
+          </view>
+        </view>
+        <image class="btn-check-detail" src="{{btnIknow}}" mode="aspectFit" bindtap="onClose" data-popname="unboxNotTransferShow" />
+      </view>
+    </unbox-background>
+  </van-popup> -->
+</view>

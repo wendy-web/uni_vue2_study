@@ -1,0 +1,63 @@
+<!--component/videoAd.wxml-->
+<!-- 视频弹窗 -->
+<view class="fadeIn" wx:if="{{videoPop?true:false}}">
+	<view class="weui-mask"></view>
+	<view class="weui-half-screen-dialog ">
+		<cover-view class="weui-half-screen-dialog__hd {{capsule}}">
+			<!-- 顶部胶囊按钮 -->
+			<cover-view class="flex-between {{capsule?'pdlr40':''}}">
+				<!-- 倒计时 -->
+				<cover-view class="flex-align">
+					<cover-view>广告</cover-view>
+				</cover-view>
+				<!-- 关闭/静音 -->
+				<cover-view class="flex-align">
+					<cover-view class="colorfff" bindtap="muted">
+						{{muted?'声音':'静音'}}
+					</cover-view>
+					<cover-view class="line colorfff"></cover-view>
+					<block wx:if="{{countdown>0}}">
+						<!-- <view class="line"></view> -->
+						<cover-view>您可以在{{countdown}}秒后关闭视频</cover-view>
+					</block>
+					<block wx:else>
+						<cover-view class="colorfff closeVideo" bindtap="closeVideoPop">关闭</cover-view>
+					</block>
+				</cover-view>
+			</cover-view>
+		</cover-view>
+		<view class="weui-half-screen-dialog__bd" style="height:100%;">
+			<!-- 可放自定义内容 -->
+			<block wx:if="{{Ad}}">
+				<video src="{{videoUrls?videoUrls:videoUrl}}" bindadplay="onAdplay" bindadload="onAdload"
+					bindadclose="onAdclose" bindaderror="onAdError" unit-id="adunit-76825144de9a409d" id="myVideo"
+					class="videoCss" controls="{{false}}" object-fit="contain" autoplay="{{true}}" bindended="videoEnd"
+					bindtimeupdate="timeupdate" enable-progress-gesture="{{false}}" muted="{{muted}}" bindplay="playVideo"
+					binderror="playError" bindpause="pasueVideo" bindwaiting="waitingVideo"
+					bindloadedmetadata="bindloadedmetadata" bindseekcomplete="bindseekcomplete"></video>
+			</block>
+			<block wx:else>
+				<video src="{{videoUrls?videoUrls:videoUrl}}" bindadplay="onAdplay" bindadload="onAdload"
+					bindadclose="onAdclose" bindaderror="onAdError" id="myVideo" class="videoCss" controls="{{false}}"
+					object-fit="contain" autoplay="{{true}}" bindended="videoEnd" bindtimeupdate="timeupdate"
+					enable-progress-gesture="{{false}}" muted="{{muted}}" bindplay="playVideo" binderror="playError"
+					bindpause="pasueVideo" bindwaiting="waitingVideo" bindloadedmetadata="bindloadedmetadata"
+					bindseekcomplete="bindseekcomplete"></video>
+			</block>
+
+			<!-- <video src="{{videoUrls?videoUrls:videoUrl}}" unit-id="adunit-76825144de9a409d" id="myVideo" class="videoCss" controls="{{false}}" object-fit="contain" autoplay="{{true}}" bindended="videoEnd" bindtimeupdate="timeupdate" enable-progress-gesture="{{false}}" muted="{{muted}}" bindplay="playVideo" binderror="playError" bindpause="pasueVideo"></video> -->
+		</view>
+	</view>
+</view>
+
+<!-- 关闭视频二次弹窗 videoRem -->
+<view class="fadeIn" wx:if="{{videoRem}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog">
+		<view class="weui-dialog__bd">观看完整视频可以获取小程序奖励</view>
+		<view class="weui-dialog__ft">
+			<a class="weui-dialog__btn weui-dialog__btn_default" bindtap="closeVideoPops">关闭广告</a>
+			<a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="videoPlay">继续观看</a>
+		</view>
+	</view>
+</view>

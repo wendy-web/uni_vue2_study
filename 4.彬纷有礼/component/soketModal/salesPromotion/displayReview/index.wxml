@@ -1,0 +1,24 @@
+<!--pages/tabBar/geren/salesPromotion/displayReview/index.wxml-->
+<view class="display-review">
+		<van-popup show="{{show}}"   bind:close="onClose" custom-style="background-color: transparent;"   z-index="{{10000}}">
+			  <view class="display-review-box">
+            <view class="display-review-title">
+               {{config.title}}
+            </view>
+            <view class="display-review-tips">
+              {{config.content}}
+            </view>
+            <!-- 按钮 -->
+            <view class="tools">
+              <view class="tools-btn info" bindtap="onClose">取消</view> 
+              <view class="tools-btn sign" bindtap="goDisplayShopComple">
+                 去查看
+              </view>
+            </view>
+         </view>
+         <view class="display-review-close">
+              <!-- 关闭 按钮-->
+              <van-icon  name="close"  size="30px" color="#ffffff" bindtap="onClose"/>
+         </view>
+		</van-popup>
+	</view>

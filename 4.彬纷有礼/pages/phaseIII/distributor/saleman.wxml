@@ -1,0 +1,35 @@
+<!--pages/phaseIII/distributor/saleman.wxml-->
+<block wx:if="{{info}}">
+  <view class="card" style="background-image:url({{salemanBgImg}});">
+    <view class="card-title">红牛</view>
+    <view class="card-info">
+      <view class="card-info-left">
+        <view class="nick-name">{{info.name}}</view>
+        <view class="name">红牛业务员</view>
+        <!-- <view class="nick-name">{{info.nickname}}</view> -->
+        <!-- <view class="name">{{info.name}}</view> -->
+        <view>{{info.address}}</view>
+      </view>
+      <image class="avatar" mode="aspectFit" src="{{info.picture}}"></image>
+    </view>
+    <view>关联时间：{{info.bind_time}}</view>
+    <view class="card-contact">
+      <image class="call-icon" mode="aspectFit" src="{{salemanCallImg}}"></image>
+      <view>{{info.phoneStr}}</view>
+    </view>
+  </view>
+  <view class="card-btn-box">
+    <view bindtap="contact" class="card-btn" style="background-image:url({{salemanBtnImg}});">
+      <text class="btn-title">联系业务员</text>
+    </view>
+  </view>
+</block>
+<block wx:else>
+  <view class="noData" >
+    <image class="salemanNodata" mode="aspectFit" src="{{salemanNodataImg}}"></image>
+    <view class="noData-text">
+      <text>~暂无关联业务员~</text>
+    </view>
+    <view bindtap="serviceContact" class="contact">*如需要关联业务员，请联系<text class="service">客服</text></view>
+  </view>
+</block>

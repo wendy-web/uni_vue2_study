@@ -1,0 +1,13 @@
+{
+  "usingComponents": {
+    "easy-loadimage": "../../../../component/easy-loadimage/easy-loadimage",
+    "van-count-down": "@vant/weapp/count-down/index",
+    "actCouponPop":"../../../../component/actCouponPop/index",
+    "gzExcProgress":"../../../../component/actCouponPop/gzExcProgress/index"
+  },
+  "navigationBarTitleText": "",
+  "navigationStyle":"custom",
+  "backgroundColorTop":"#ff2826",
+  "backgroundColorBottom":"#ffeedc",
+  "navigationBarBackgroundColor": "#ff2826"
+}

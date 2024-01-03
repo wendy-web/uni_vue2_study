@@ -1,0 +1,205 @@
+/* component/actCouponPop/gzExcProgress/index.wxss */
+.progress-box {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 724rpx;
+  height: 566rpx;
+  padding: 28rpx 28rpx 48rpx 28rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.progress-box .bg_progress {
+  width: 724rpx;
+  height: 566rpx;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+}
+
+.progress-box .icon_act_progress {
+  width: 246rpx;
+  height: 66rpx;
+  position: absolute;
+  top: 24rpx;
+  left: 28rpx;
+}
+
+.exc-info-box {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-self: stretch;
+  /* background-color: tan;  */
+  /* padding: 0 20rpx; */
+}
+
+.exc-info-box .exc-info-item {
+  position: relative;
+  font-size: 32rpx;
+  font-family: Microsoft YaHei, Microsoft YaHei-Regular;
+  font-weight: 400;
+  color: #764f30;
+  letter-spacing: 1.6rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.exc-s-num {
+  font-size: 52rpx;
+  font-family: Microsoft YaHei, Microsoft YaHei-Regular;
+  font-weight: 700;
+  text-align: center;
+  color: #00a17c;
+}
+
+.exc-rev-num {
+  font-size: 52rpx;
+  font-family: Microsoft YaHei, Microsoft YaHei-Regular;
+  font-weight: 700;
+  text-align: center;
+  color: #ff0045;
+}
+
+.exc-info-box .exc-info-item-gap {
+  width: 2rpx;
+  height: 30rpx;
+  background-color: #d0d0d0;
+  margin: 0 20rpx;
+}
+
+.tooltip-box {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  /* padding-right: 20rpx; */
+  padding-right: 10px;
+  margin-top: 10rpx;
+  box-sizing: border-box;
+}
+
+.tooltip-box .tooltip-item {
+  font-size: 26rpx;
+  font-family: Microsoft YaHei, Microsoft YaHei-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #000000;
+  width: 280rpx;
+  height: 80rpx;
+  background: #ffefe9;
+  border: 2rpx solid #ff4600;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.tooltip-item:before,
+.tooltip-item:after {
+  content: "";
+  display: block;
+  border-width: 15rpx;
+  position: absolute;
+  bottom: -30rpx;
+  right: 68rpx;
+  border-style: solid dashed dashed solid;
+  border-color: #ff4600 transparent transparent transparent;
+  font-size: 0;
+  line-height: 0;
+}
+
+
+.tooltip-item:after {
+  bottom: -28rpx;
+  border-color: #ffefe9 transparent transparent transparent;
+}
+
+.still-need-exc {
+  font-size: 36rpx;
+  font-family: Microsoft YaHei, Microsoft YaHei-Regular;
+  font-weight: 700;
+  text-align: center;
+  color: #00a17c;
+  letter-spacing: 1.3rpx;
+}
+
+.clac-num {
+  font-size: 36rpx;
+  font-family: Microsoft YaHei, Microsoft YaHei-Regular;
+  font-weight: 700;
+  text-align: center;
+  color: #ff0045;
+  letter-spacing: 1.3rpx;
+}
+
+.exc-progress-box {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 20rpx;
+  width: 100%;
+  padding-right: 0px;
+}
+
+.exc-progress-box .exc-progress-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.icon_can_zm {
+  width: 32rpx;
+  height: 86rpx;
+}
+
+.progress-bar-grey {
+  min-width: 92rpx;
+  height: 12rpx;
+  background-color: #d3d3d3;
+}
+
+.progress-bar {
+
+  background: #00a17c;
+}
+
+.progress-bar-invisibled {
+  background: transparent;
+}
+
+.operate-box {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30rpx;
+  min-height: 110rpx;
+}
+
+.operate-box .pop_btn_exc {
+  width: 378rpx;
+  height: 110rpx;
+}
+
+.tooltip-box-grey {
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  color: #474747;
+}
+
+.exc-rev-num-grey {
+  color: #393939;
+}

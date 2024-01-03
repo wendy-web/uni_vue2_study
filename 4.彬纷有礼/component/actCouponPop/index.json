@@ -1,0 +1,13 @@
+{
+  "component": true,
+  "usingComponents": {
+    "background": "./background/index",
+    "process": "./process/index",
+    "animationOpenBox": "../animationOpenBox/index",
+    "van-count-down": "@vant/weapp/count-down/index",
+    "gzUnboxBackground": "./gzUboxBackground/index",
+    "gzExcBackground": "./gzExcBackground/index",
+    "gzExcProcess": "./gzExcProgress/index",
+    "gzUnboxApplyPop":"./gzUnboxApplyPop/index"
+  }
+}

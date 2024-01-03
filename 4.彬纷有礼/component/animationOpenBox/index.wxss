@@ -1,0 +1,333 @@
+/* component/animationOpenBox/index.wxss */
+page {
+  --animate-duration: 1s;
+  --animate-delay: 1s;
+  --animate-repeat: 1;
+}
+
+.weui-mask,
+.weui-mask_transparent {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  /* background: rgba(0, 0, 0, 0.6); */
+  background: rgba(0, 0, 0, 0.7);
+}
+.weui-dialog {
+  position: fixed;
+  z-index: 5000;
+  top: 50%;
+  left: 16px;
+  right: 16px;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  background-color: #fff;
+  text-align: center;
+  border-radius: 12px;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  max-height: 90%;
+}
+.pop-box {
+  background-color: unset;
+  color: #fff;
+  max-height: 100%;
+  left: 0px;
+  right: 0px;
+}
+.animation-box {
+  position: relative;
+  width: 100%;
+  /* height: 100vh; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* 开箱扫码赢红牛 */
+.img-0 {
+  width: 700rpx;
+  height: 110rpx;
+  animation-name: img-0;
+  animation-delay: 0.5s;
+  animation-direction: normal;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  margin-bottom: 70rpx;
+}
+/* 开箱即可得红牛 */
+.img-2 {
+  width: 100%;
+  height: 140rpx;
+  position: relative;
+  top: -50rpx;
+  z-index: 5;
+
+  animation-name: img-2;
+  animation-delay: 0.5s;
+  animation-direction: alternate;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+}
+.box-item {
+  position: relative;
+  margin-top: -50rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+/* 圆环背景 */
+.img-8 {
+  width: 1000rpx;
+  height: 1000rpx;
+  position: absolute;
+  top: 0px;
+  left: 0;
+  right: 0;
+  margin: -150rpx -150rpx;
+  z-index: -1;
+  opacity: 1;
+}
+.img-8-1 {
+  animation-name: img-8-1;
+  animation-delay: 0.5s;
+  animation-duration: 1.2s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  opacity: 0;
+  animation-fill-mode: none;
+}
+.img-8-2 {
+  opacity: 0;
+  animation-name: img-8-2;
+  animation-delay: 0.7s;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+}
+/* 圆环光晕 */
+.img-9 {
+  position: absolute;
+  left: 16rpx;
+  right: 0;
+  top: -98rpx;
+  margin: auto;
+  width: 715rpx;
+  height: 715rpx;
+  z-index: -1;
+  animation-name: img-9;
+  animation-delay: 0.5s;
+  animation-duration: 0.7s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-direction: alternate;
+}
+/* 圆环 */
+.img-7 {
+  /* position: absolute;
+  left: 0;
+  right: 0;
+  top: 240rpx;
+  bottom: 0; */
+  margin: auto;
+  width: 750rpx;
+  height: 636rpx;
+  z-index: 3;
+}
+/* 红牛开箱 */
+.img-5 {
+  position: absolute;
+  width: 672rpx;
+  height: 716rpx;
+  bottom: 192rpx;
+  z-index: 4;
+  opacity: 0;
+  animation-name: img-5;
+  animation-delay: 0.5s;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+/* 立即开箱扫码 */
+.img-3 {
+  width: 380rpx;
+  height: 134rpx;
+  z-index: 99;
+  position: absolute;
+  bottom: 50rpx;
+  animation-name: img-3;
+  animation-delay: 0.5s;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  animation-duration: 0.8s;
+}
+/* 外花絮 */
+.img-4 {
+  position: absolute;
+  /* left: 0; */
+  /* right: 0; */
+  top: 70rpx;
+  width: 790rpx;
+  height: 575rpx;
+  z-index: 3;
+  opacity: 0;
+
+  animation-name: img-5;
+  animation-delay: 0.5s;
+  animation-duration: 0.7s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+/* 内花絮 */
+.img-6 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 36rpx;
+  width: 600rpx;
+  height: 330rpx;
+  z-index: 3;
+  opacity: 0;
+
+  animation-name: img-5;
+  animation-delay: 0.5s;
+  animation-duration: 0.7s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+/* 光晕背景 */
+@keyframes img-8-1 {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes img-8-2 {
+  0% {
+    opacity: 1;
+    transform: rotateZ(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateZ(180deg);
+  }
+}
+/* 立即开箱扫码 */
+@keyframes img-3 {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+/* 花絮同时放大显示 */
+/* @keyframes titbits{
+  fr
+} */
+/* 红牛箱子 */
+@keyframes img-5 {
+  from {
+    opacity: 1;
+    transform: scale(0) translateY(200rpx);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0px);
+  }
+}
+/* 光晕 */
+@keyframes img-9 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* 标题上下摇晃 */
+@keyframes img-0 {
+  10% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+/* 标题左右摇晃 */
+@keyframes img-2 {
+  from {
+    transform: rotate(-3deg);
+  }
+  to {
+    transform: rotate(3deg);
+  }
+}
+
+.animate__animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-duration: var(--animate-duration);
+  animation-duration: var(--animate-duration);
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+.animate__tada {
+  -webkit-animation-name: tada;
+  animation-name: tada;
+}
+@keyframes tada {
+  0% {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+  }
+
+  10%,
+  20% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9) rotate(-3deg);
+    transform: scale3d(0.9, 0.9, 0.9) rotate(-3deg);
+  }
+
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate(3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate(3deg);
+  }
+
+  40%,
+  60%,
+  80% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate(-3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate(-3deg);
+  }
+
+  to {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+  }
+}

@@ -1,0 +1,171 @@
+.monthly-item{
+  margin-top: 30rpx;
+}
+.tobe-accepted{
+  background-color: #fff;
+  padding: 30rpx 0;
+}
+
+.ta-top-info{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30rpx 22rpx;
+  position: relative;
+}
+
+
+.ta-ti-time{
+  font-size: 24rpx;
+  color: #a3a2a8;
+}
+
+.ta-ti-label{
+  font-size: 24rpx;
+  color: #e3001b;
+}
+
+.order-delivery-info{
+  padding: 20rpx 30rpx;
+  position: relative;
+}
+
+
+.order-delivery-info::before{
+  content: '';
+  position: absolute;
+  left: 50rpx;
+  top: 40rpx;
+  height: 62rpx;
+  border-left: 1px dashed  #A3A2A8;
+  transform: translateX(-50%);
+}
+
+.odi-order,.odi-delivery{
+  display: flex;
+  align-items: center;
+}
+.odi-order{
+  margin-bottom: 22rpx;
+}
+
+.odi-icon{
+  width: 40rpx;
+  height: 40rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.odi-label{
+  font-size: 24rpx;
+  color: #a3a2a8;
+  margin: 0 10rpx;
+}
+.odi-name{
+  font-size: 24rpx;
+  color: #000018;
+}
+
+.goods-pay-info{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx 30rpx 10rpx 30rpx;
+  position: relative;
+}
+.gpi-left-goods{
+  font-size: 0;
+  display: flex;
+  align-items: center;
+}
+.gpi-lg-icon{
+  width: 120rpx;
+  height: 120rpx;
+  filter: brightness(0.9);
+  border-radius: 5px;
+}
+.gpi-lg-icon+.gpi-lg-icon{
+  margin-left: 10rpx;
+}
+
+.gpi-lg-more{
+  color:  #a3a2a8;
+  font-size: 40rpx;
+  letter-spacing: 6rpx;
+  margin-left: 10rpx;
+}
+
+.gpi-left-goods-total{
+  font-size: 24rpx;
+  color: #a3a2a8;
+}
+
+.gpi-left-fav{
+  font-size: 24rpx;
+  color: #ff8800;
+}
+
+.gpi-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gpi-right-label{
+  font-size: 24rpx;
+  color: #a3a2a8;
+  min-width: 120rpx;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.gpi-right-value{
+  text-align: right;
+  min-width: 140rpx;
+}
+.total-price{
+  font-size: 22rpx;
+  font-weight: 400;
+  color: #000018;
+}
+.discount,.cash-coupon{
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #fd2b1e;
+}
+.coupons-icon{
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 5rpx;
+}
+.gpi-right-label.account-payable{
+  font-size: 28rpx;
+  color: #000000;
+}
+.gpi-right-value.account-payable{
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #000018;
+}
+
+.border-bottom::after{
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2rpx;
+  background-color: #F7F7F7;
+}
+
+.tobe-accepted-tools{
+  padding-top: 40rpx;
+  text-align: right;
+}
+.tools-btn,.tools-btn-plain{
+  margin-right: 20rpx;
+  min-width: 180rpx;
+}
+.tools-btn-plain{
+  border-color: #000;
+}

@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "van-count-down": "@vant/weapp/count-down/index",
+    "activityWidget":"../../../component/activityWidget/movemenu",
+    "storeRankPop":"../../../component/storeRankPop/index",
+    "gzUnboxBouy":"../../../component/actCouponPop/gzUnboxBuoy/index",
+    "gzExcBuoy":"../../../component/actCouponPop/gzExcBuoy/index"
+
+  },
+  "navigationBarTitleText": "我的",
+  "navigationStyle": "custom"
+}

@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "van-divider": "@vant/weapp/divider/index",
+    "van-loading": "@vant/weapp/loading/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "排行榜",
+  "enablePullDownRefresh":false,
+  "backgroundColorBottom":"#cf2928"
+}

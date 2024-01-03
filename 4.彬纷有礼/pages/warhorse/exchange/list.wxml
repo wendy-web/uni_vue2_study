@@ -1,0 +1,171 @@
+<!--pages/warhorse/exchange/list.wxml-->
+<view class="stores-record">
+  <!-- tab:红牛、战马 -->
+  <view class="exc-tab">
+    <view bindtap="excTabChange" data-index="1" class="exc-tab-item {{excType==1?'exc-tab-active':''}}">
+      <view>
+        <text>中国红牛</text>
+        <text wx:if="{{excCount.hn_available>0}}">{{excCount.hn_available}}</text>
+      </view>
+      <view class="exc-bottom-line {{excType==1?'exc-bottom-line-active':''}}"></view>
+    </view>
+    <view bindtap="excTabChange" data-index="2" class="exc-tab-item {{excType==2?'exc-tab-active':''}}">
+      <view>
+        <text>战马</text>
+        <text class="exc-tab-count-num" wx:if="{{excCount.zm_available>0}}">{{excCount.zm_available}}</text>
+      </view>
+      <view class="exc-bottom-line {{excType==2?'exc-bottom-line-active':''}}"></view>
+    </view>
+  </view>
+  <!-- banner -->
+  <view class="head-box">
+    <view class="banner-box">
+      <!-- 红牛背景 -->
+      <block wx:if="{{excType==1}}">
+        <image class="img-banner-bg-hn0" src="{{img_banner_bg_hn}}" mode="aspectFit" />
+        <image class="img-banner-bg-hn1" src="{{img_banner_bg_hn1}}" mode="aspectFit" />
+        <image class="img-banner-bg-hn2" src="{{img_banner_bg_hn2}}" mode="aspectFit" />
+      </block>
+      <!-- 战马背景 -->
+      <block wx:if="{{excType==2}}">
+        <image class="img-banner-bg" src="{{img_banner_bg}}" mode="aspectFit" />
+        <image class="img-banner" src="{{img_banner}}" mode="aspectFit" />
+      </block>
+      <!-- 内容部分 -->
+      <view class=" {{excType==1?'banner-content-hn':'banner-content'}}" wx:if="{{excCount}}">
+        <view class="head-item">
+          <view class="use-item">
+            <view class="use-item-title">可用{{excMap[excType]['name']}}换购奖励(罐)</view>
+            <view class="use-item-num">{{excCount.available}}</view>
+            <view class="use-item-tips">*满足1罐，即可兑换1张{{excMap[excType]['coupon']}}</view>
+            <view class="mgt10" bindtap="jumpToMyCoupon" wx:if="{{userdata.condition != 2}}">
+              <text>可到【我的-可用卡券】</text>
+              <text class="use-item-tips">去查看</text>
+              <van-icon color="#ff711f" name="arrow" />
+            </view>
+
+          </view>
+          <view class="btn-box">
+            <view class="btn-exchange" bindtap="goToExc">{{userdata.condition == 2?'帮掌柜兑换':'去兑换'}}</view>
+          </view>
+        </view>
+        <view class="count-box">
+          <view class="count-item">
+            <text>奖励累计(罐):</text>
+            <text class="count-item-num">{{excCount.total_earned}}</text>
+          </view>
+          <view class="count-item">
+            <text>奖励次数(次):</text>
+            <text class="count-item-num">{{excCount.awards_times}}</text>
+          </view>
+          <view class="count-item">
+            <text>换购累计(罐):</text>
+            <text class="count-item-num">{{excCount.total_exc}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 筛选 -->
+  <view class="stores-record-query">
+    <view class="exc-title">兑换明细(罐)</view>
+    <view class="filter-box">
+
+      <!-- 日期筛选 -->
+      <view wx:if="{{!hideCalendar}}" class="date-select" bindtap="selectDate">
+        <image class="date-icon" src="{{dateIcon}}" mode="aspectFit"></image>
+        <block wx:if="{{selectData.last}}">
+          {{selectData.last}}~{{selectData.now}}
+        </block>
+        <block wx:else>
+          <text>时间筛选</text>
+          <van-icon color="#333333" name="arrow" />
+        </block>
+      </view>
+      <!-- 类型筛选 -->
+      <view class="drop-box {{excPop?'excPop':''}}">
+        <view class="drop-title" bindtap="openExcType">
+          <text>{{excTitle}}</text>
+          <image class="icon-delta-down" src="{{excPop?icon_delta_up:icon_delta_down}}" mode="aspectFit" />
+        </view>
+        <view class="drop-content {{excPop?'drop-content-show':''}}">
+          <block wx:for="{{excOptions}}" wx:key="key">
+            <view bindtap="selectExcType" class="drop-item" data-item="{{item}}">{{item.name}}</view>
+          </block>
+        </view>
+      </view>
+    </view>
+
+
+  </view>
+
+  <!-- 数据列表 -->
+  <scroll-view scroll-y="{{true}}" class="list-box" bindscrolltolower="scrolltolower" refresher-enabled="{{true}}" refresher-triggered="{{refreshed}}" bindrefresherrefresh="pullRefresh">
+    <!-- 列表item -->
+    <view class="list-item" wx:for="{{listData}}" wx:key="key">
+      <!-- 标题 -->
+      <view class="list-item-title">{{item.title}}</view>
+      <view class="center-info">
+        <!-- 左边信息 -->
+        <view class="list-item-left">
+          <!-- 用户 -->
+          <view class="play-user ellipsis">
+            <block wx:if="{{item.source==1}}">
+              {{item.exc_name1}}：{{item.ext_record}}(CID:{{item.ext_id}})
+            </block>
+            <block wx:if="{{item.source==2}}">
+              {{item.exc_name1}}：{{item.ext_record}}(UID:{{item.ext_id}})
+            </block>
+          </view>
+          <!-- 兑换时间 -->
+          <view class="play-user">
+            {{item.exc_name2}}：<text>{{item.create_time}}</text>
+          </view>
+        </view>
+        <!-- 右边信息 -->
+        <view class="list-item-right text-right">
+          <view class="play-money">
+            <!-- <block wx:if="{{item.type==1}}">
+              <text class="lihr-text {{item.change<0?'color-red':''}}">{{item.change>0?'+':''}}{{item.change}}</text>
+            </block> -->
+            <!-- <block wx:if="{{item.type==2}}"> -->
+            <view wx:if="{{item.change>0}}">
+              <view class="lihr-text">+{{item.change}}</view>
+              <view>(0.15罐*{{item.exc_num}})</view>
+            </view>
+            <view wx:else>
+              <text class="lihr-text color-red">{{item.change}}</text>
+            </view>
+            <!-- </block> -->
+          </view>
+
+        </view>
+      </view>
+    </view>
+    <!-- 到底了 -->
+    <view class="is-data-bottom" wx:if="{{_IS_DATA_BOTTOM && listData.length>0}}">
+      <view>
+        <!-- ———————— 没有更多记录了~ ———————— -->
+        没有更多记录了~
+      </view>
+    </view>
+    <!-- 无数据情况 -->
+    <view class="empty-view" wx:if="{{listData.length == 0}}">
+      <image class="hbNoDataImg" mode="aspectFit" src="{{hbNodataIcon}}"></image>
+      <view>
+        ~~暂无记录~~
+      </view>
+    </view>
+  </scroll-view>
+  <!-- 弹窗 --- 日历弹窗 -->
+  <view class="fadeIn" wx:if="{{dateDialog}}">
+    <view class="weui-mask" bindtap="closeDateDialog"></view>
+    <view class="weui-dialog">
+      <calendar bind:onRangePick="onRangePick" mode="range"></calendar>
+      <view class="weui-dialog__ft">
+        <a class="weui-dialog__btn weui-dialog__btn_default" bindtap="closeDateDialog">取消</a>
+        <a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="chooseDate">确定</a>
+      </view>
+    </view>
+  </view>
+</view>

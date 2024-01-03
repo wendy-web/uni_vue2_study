@@ -1,0 +1,86 @@
+.page-box {
+  box-sizing: border-box;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.avatar {
+  width: 220rpx;
+  height: 220rpx;
+  border-radius: 50%;
+  margin-bottom: 138rpx;
+}
+
+.privacy-box {
+  box-sizing: border-box;
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #000018;
+  padding: 0 60rpx;
+  margin-top: 80rpx;
+ 
+}
+.checkbox-diy{
+  display: flex!important;
+  align-items: baseline!important;
+}
+.color-blue {
+  color: #006FFF;
+}
+
+
+.btn-login {
+  width: 670rpx;
+  height: 96rpx;
+  background: #e3001b;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #ffffff;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 58rpx;
+}
+.privacy-confirm-box{
+  box-sizing: border-box;
+  padding:40rpx 40rpx;
+  width: 90vw;
+}
+.btn-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: 40rpx;
+}
+.btn-confirm{
+  box-sizing: border-box;
+  border-radius: 50rpx;
+  width: 280rpx;
+  height: 90rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e3001b;
+  color: #ffffff;
+}
+.btn-cancel{
+  box-sizing: border-box;
+  border-radius: 50rpx;
+  width: 280rpx;
+  height: 90rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx solid #e4e4e4;
+
+}

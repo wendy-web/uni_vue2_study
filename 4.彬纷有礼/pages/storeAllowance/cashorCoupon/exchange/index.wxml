@@ -1,0 +1,169 @@
+<!--pages/warhorse/exchange/list.wxml-->
+<view class="stores-record">
+  <!-- banner -->
+  <view class="head-box">
+    <!-- 背景 -->
+    <image class="bg-exc" src="{{cashcoupon_file_url}}/bg_exc.png" mode="aspectFit" />
+    <!-- 28周年背景 -->
+    <image class="bg-stamp-28th" src="{{cashcoupon_file_url}}/bg_stamp_28th.png" mode="aspectFit" />
+
+    <!-- 内容部分 -->
+    <view class="banner-content-hn" wx:if="{{excCount}}">
+      <view class="head-item">
+        <view class="use-item">
+          <view class="use-item-title">可用兑换券额度<text class="use-item-title-unit">(个)</text></view>
+          <view class="use-item-num">{{excCount.dh_num ||0}}</view>
+          <view class="use-item-total">累计领取兑换券额度<text class="use-item-total-unit">(个)</text><text class="use-item-total-num">{{excCount.dh_num+excCount.use_dh_num}}</text></view>
+        </view>
+        <view class="btn-box" bindtap="goToExc">
+          <view class="btn-exchange">{{userdata.condition != 2?'去兑换':'帮掌柜兑换'}}</view>
+        </view>
+      </view>
+      <view class="used-box">
+        <view class="used-title">已用兑换券额度 <text class="used-title-unit">(个)</text> <text space="nbsp" class="used-num"> {{excCount.use_dh_num ||0}}</text></view>
+        <view class="used-exc-box">
+          <view class="used-exc-item">
+            <view class="used-exc-title">【3个额度兑2张】</view>
+            <view class="pdl10">已用额度<text class="used-exc-unit">(个)</text> <text class="used-exc-num">{{excCount.use_dh_num_32}}</text></view>
+            <view class="pdl10">已兑换产品券<text class="used-exc-unit">(张)</text> <text class="used-exc-coupon">{{excCount.exc_num_32}}</text></view>
+          </view>
+          <view class="used-exc-item">
+            <view class="used-exc-title">【5个额度兑4张】</view>
+            <view class="pdl10">已用额度<text class="used-exc-unit">(个)</text> <text class="used-exc-num">{{excCount.use_dh_num_54}}</text></view>
+            <view class="pdl10">已兑换产品券<text class="used-exc-unit">(张)</text> <text class="used-exc-coupon">{{excCount.exc_num_54}}</text></view>
+          </view>
+        </view>
+        <view class="use-item-tips">*1张产品兑换券可兑换1罐红牛原味型功能饮料250ml</view>
+      </view>
+    </view>
+  </view>
+  <!-- 筛选 -->
+  <view class="stores-record-query">
+    <view class="exc-title">扫码/兑换明细</view>
+    <view class="filter-box">
+
+      <!-- 日期筛选 -->
+      <view wx:if="{{!hideCalendar}}" class="date-select" bindtap="selectDate">
+        <image class="date-icon" src="{{dateIcon}}" mode="aspectFit"></image>
+        <block wx:if="{{selectData.last}}">
+          {{selectData.last}}~{{selectData.now}}
+        </block>
+        <block wx:else>
+          <text>时间筛选</text>
+          <van-icon color="#333333" name="arrow" />
+        </block>
+      </view>
+      <!-- 类型筛选 -->
+      <view class="drop-box {{excPop?'excPop':''}}">
+        <view class="drop-title" bindtap="openExcType">
+          <text>{{typeTitle == '全部类型'?excTitle:typeTitle}}</text>
+          <image class="icon-delta-down" src="{{excPop?icon_delta_up:icon_delta_down}}" mode="aspectFit" />
+        </view>
+      </view>
+    </view>
+
+
+  </view>
+
+  <!-- 数据列表 -->
+  <scroll-view scroll-y="{{true}}" class="list-box" bindscrolltolower="scrolltolower" refresher-enabled="{{true}}" refresher-triggered="{{refreshed}}" bindrefresherrefresh="pullRefresh">
+    <!-- 列表item -->
+    <view class="list-item" wx:for="{{listData}}" wx:key="key">
+      <!-- 标题 -->
+      <view class="list-item-title">{{item.title}}</view>
+      <view class="center-info">
+        <!-- 左边信息 -->
+        <view class="list-item-left">
+          <!-- 用户 -->
+          <view class="play-user user-flex">
+            <!-- <block wx:if="{{item.source==1}}"> -->
+            <text class="ellipsis">{{item.exc_name1}}：{{item.act_name}}</text>
+            <!-- </block> -->
+            <!-- <block wx:if="{{item.source==2}}">
+              {{item.exc_name1}}：{{item.act_name}}
+            </block> -->
+            ({{item.source==1?'UID:'+item.ext_id:'CID:'+item.act_uid}})
+          </view>
+          <!-- 兑换时间 -->
+          <view class="play-user">
+            <!-- {{item.exc_name2}}：<text>{{item.create_time}}</text> -->
+            <text>{{item.create_time}}</text>
+          </view>
+        </view>
+        <!-- 右边信息 -->
+        <view class="list-item-right text-right">
+          <view class="play-money">
+            <view wx:if="{{item.source==1}}">
+              <view class="lihr-text">+{{item.change}}</view>
+            </view>
+            <view wx:else>
+              <text class="lihr-text color-red">-{{item.change}}</text>
+            </view>
+          </view>
+
+        </view>
+      </view>
+    </view>
+    <!-- 到底了 -->
+    <view class="is-data-bottom" wx:if="{{_IS_DATA_BOTTOM && listData.length>0}}">
+      <view>
+        <!-- ———————— 没有更多记录了~ ———————— -->
+        没有更多记录了~
+      </view>
+    </view>
+  </scroll-view>
+  <!-- 无数据情况 -->
+  <view class="empty-view" wx:if="{{listData.length == 0}}">
+    <image class="hbNoDataImg" mode="aspectFit" src="{{hbNodataIcon}}"></image>
+    <view>
+      ~~暂无记录~~
+    </view>
+  </view>
+  <!-- 弹窗 --- 日历弹窗 -->
+  <view class="fadeIn" wx:if="{{dateDialog}}">
+    <view class="weui-mask" bindtap="closeDateDialog"></view>
+    <view class="weui-dialog">
+      <calendar bind:onRangePick="onRangePick" mode="range"></calendar>
+      <view class="weui-dialog__ft">
+        <a class="weui-dialog__btn weui-dialog__btn_default" bindtap="closeDateDialog">取消</a>
+        <a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="chooseDate">确定</a>
+      </view>
+    </view>
+  </view>
+
+
+</view>
+<!-- 类型选择 -->
+
+
+<van-popup show="{{ excPop }}" position="bottom" custom-style="background-color:#f5f5f5;" round bind:close="onClose">
+  <view class="typePop-title">选择类型</view>
+  <view class="typePop-box">
+    <view bindtap="chooseType" data-title="全部类型" data-val="0" class="typePop-box-item {{activeType=='0'?'activeType':''}}">全部类型</view>
+    <view bindtap="chooseType" data-title="箱内码额度（红牛）" data-val="1" class="typePop-box-item {{activeType=='1'?'activeType':''}}">
+      <view><text space="nbsp">箱内码额度\n（红牛）</text></view>
+    </view>
+    <view bindtap="chooseType" data-title="兑换产品券（红牛）" data-val="2" class="typePop-box-item {{activeType=='2'?'activeType':''}}">
+      <view><text>兑换产品券\n（红牛）</text></view>
+    </view>
+    <view class="typePop-box-item typePop-box-item-placeholder "></view>
+    <view class="typePop-box-item typePop-box-item-placeholder "></view>
+  </view>
+  <view class="typePop-title" wx:if="{{can_filter_crew}}">选择人员</view>
+  <view class="typePop-box" wx:if="{{can_filter_crew}}">
+    <view bindtap="chooseCrew" data-title="扫码人员:全部" data-val="all" class="typePop-box-item {{activeCrew=='uid_all'?'activeType':''}}">全部</view>
+    <view bindtap="chooseCrew" data-title="扫码人员:自己" data-val="{{userdata.id}}" class="typePop-box-item {{activeCrew== ('uid_'+userdata.id)?'activeType':''}}">自己</view>
+    <!-- 店员列表 -->
+    <block wx:for="{{crew}}" wx:key="key">
+      <view wx:if="{{item.uid != userdata.id}}" bindtap="chooseCrew" data-title="扫码店员:{{item.nick_name}}" data-val="{{item.uid}}" class="typePop-box-item oneLine {{activeCrew== ('uid_'+item.uid)?'activeType':''}}">
+        <view class="oneLine crew-item">{{item.nick_name}}</view>
+      </view>
+    </block>
+    <view class="typePop-box-item typePop-box-item-placeholder "></view>
+    <view class="typePop-box-item typePop-box-item-placeholder "></view>
+  </view>
+  <view class="cancel-box" bindtap="onClose">取消</view>
+</van-popup>
+
+<!-- 选择日期区间 -->
+<!-- <van-calendar show="{{ dateDialog }}" type="range" bind:close="closeDateDialog" bind:confirm="onConfirm" /> -->

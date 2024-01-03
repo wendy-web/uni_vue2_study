@@ -1,0 +1,484 @@
+/* new UI 3.0 2020-09-11 */
+page {
+  color: #333333;
+  --white: #ffffff;
+  --darkGray: #666666;
+  --gray: #aaaaaa;
+  --orange: #f37b1d;
+  background-color: #eaeaea;
+  /* filter: grayscale(100%) */
+}
+
+.content-item {
+  background: #ffffff;
+  margin: 25rpx 20rpx;
+  padding: 20rpx 20rpx;
+  height: 200 rpx;
+  border-radius: 15rpx;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  -webkit-transition: -webkit-box-shadow 0.3s;
+  transition: -webkit-box-shadow 0.3s;
+  transition: box-shadow 0.3s;
+  transition: box-shadow 0.3s, -webkit-box-shadow 0.3s;
+  position: relative;
+}
+
+/* hide scrol-view   scroll bar*/
+scroll-view ::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+  display: none;
+}
+
+/* brand_activity */
+.brandBox {
+  padding-left: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.brand_pic {
+  width: 330rpx;
+  height: 186rpx;
+  border-radius: 5px;
+}
+
+.brand_title {
+  height: auto;
+  font-size: 30rpx;
+  text-align: left;
+  color: #272727;
+  letter-spacing: 1rpx;
+  /* overflow: hidden; */
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-weight: 600;
+  display: flex;
+  align-items: flex-start;
+}
+
+.sub_title {
+  font-size: 24rpx;
+  color: #b3b3b3;
+}
+
+.brand_desc {
+  height: auto;
+  font-size: 24rpx;
+  text-align: left;
+  color: #6e6e6e;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  font-weight: 600;
+}
+
+.brand_desc_2line {
+  height: auto;
+  font-size: 24rpx;
+  text-align: left;
+  color: #939393;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* 首页tab 样式 */
+.bg-white {
+  background-color: var(--white);
+  color: var(--darkGray);
+}
+
+.nav {
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+.nav .cu-item {
+  height: 42px;
+  display: inline-block;
+  line-height: 90rpx;
+  margin: 0 50rpx;
+  padding: 0 20rpx;
+  color: #979797;
+  font-size: 30rpx;
+  font-weight: bolder;
+}
+
+.nav .cu-item.cur {
+  border-bottom: 3px solid;
+}
+
+.flex {
+  display: flex;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.flex-sub {
+  flex: 1;
+}
+
+.bottomLine {
+  border-bottom-color: #e02020 !important;
+}
+
+.tabSelect {
+  color: #000000;
+}
+
+.swiper {
+  height: calc(100vh - 45px);
+}
+
+.weui-cell {
+  padding: unset !important;
+}
+
+.touch {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 热门活动:店铺排行榜item */
+.fireIcon {
+  width: 22rpx;
+  height: 28rpx;
+  margin-right: 10rpx;
+}
+
+.activity_countDown {
+  color: #ff0000;
+  font-size: 10px;
+}
+
+.mgt30 {
+  margin-top: 30rpx;
+}
+
+.mgt20 {
+  margin-top: 20rpx;
+}
+
+.mgt50 {
+  margin-top: 50rpx;
+}
+
+
+
+@media screen and (min-width: 768px) {
+  .nav .cu-item {
+    height: 10vh;
+  }
+}
+
+.activityBannerAd {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+}
+
+.activityBannerAd-placehold {
+  width: 100%;
+  height: 27vh;
+}
+
+
+
+.unbox-animate-timer {
+  font-size: 24rpx;
+  text-align: center;
+  color: #ffd500;
+  letter-spacing: 1.98px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 2022年4月25日 东莞陈列 */
+.act-display-apply-box {
+  /* background-color: #eaf1fb; */
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20rpx;
+}
+
+.act-display-apply-title {
+  font-size: 19px;
+  font-weight: 500;
+  color: #3f150e;
+}
+
+.act-display-zm {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fe3c13;
+}
+
+.act-display-target {
+  font-size: 22px;
+  color: #fe3c13;
+}
+
+.pop-display-apply {
+  height: 900rpx;
+}
+
+/* 每日报名弹窗 */
+.act-prize-box {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  margin-top: 10px;
+  /* width: 454rpx;
+  height: 331rpx; */
+  width: 227px;
+  height: 165px;
+  position: relative;
+  text-align: center;
+}
+
+.act-prize-box .act-prize-title {
+  font-size: 22px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.act-prize-box .act-prize-text {
+  font-size: 20px;
+  font-weight: 500;
+  color: #fe3c13;
+}
+
+.act-prize-box .num24 {
+  font-weight: 700;
+  font-size: 50px;
+}
+
+.act-prize-tips {
+  font-size: 14px;
+  font-weight: 500;
+  color: #3f150e;
+}
+
+.act-display-apply-btn {
+  width: 259px;
+  /* height: 119rpx;
+  line-height: 105rpx; */
+  height: 65px;
+  line-height: 59px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  font-size: 18px;
+  font-weight: 500;
+  color: #ffe400;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* 陈列报名弹窗UI */
+.pop-applyed {
+  position: fixed;
+  width: 100vw;
+  height: 1024rpx;
+  top: 24%;
+  left: 50%;
+  margin-top: -200rpx;
+  margin-left: -50vw;
+  z-index: 2000;
+  padding: 0 40px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.icon-closed {
+  width: 39px;
+  height: 39px;
+  margin-top: 12px;
+}
+
+.pop-applyed .icon-apply-success {
+  height: 149px;
+}
+
+.pop-applyed .pop-content {
+  background: linear-gradient(0deg, #fff7e2 0%, #ffffff 100%);
+  /* height: 715rpx; */
+  height: 404px;
+  border-radius: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+
+.pop-content .btn-disabled {
+  width: 452rpx;
+  height: 81rpx;
+  line-height: 75rpx;
+  background: #b9a492;
+  border-radius: 52rpx;
+  font-size: 38rpx;
+  font-weight: 500;
+  color: #ffffff;
+  text-align: center;
+}
+
+/* 陈列每日进度弹窗 */
+.pop-act-daily {
+  top: 34%;
+}
+
+.pop-applyed .act-display-daily-box {
+  background: linear-gradient(0deg, #fff7e2 0%, #ffffff 100%);
+  height: 715rpx;
+  border-radius: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.act-display-countdown {
+  margin-top: 10rpx;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  color: #3f150e;
+}
+
+.act-display-countdown .day {
+  color: #ff3f3b;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* 陈列活动结束弹窗 */
+.act-display-end-title {
+  font-size: 48rpx;
+  font-weight: 500;
+  text-align: center;
+  color: #fe3c13;
+}
+
+.act-display-end-subtitle {
+  font-size: 40rpx;
+  font-weight: 500;
+  text-align: center;
+  color: #3f150e;
+}
+
+.icon-smile {
+  width: 200rpx;
+  height: 200rpx;
+}
+
+
+.scale-in-center {
+  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@-webkit-keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in-center {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* 2022年8月8日 深圳开箱陈列活动 */
+.act-count-down-box {
+  display: flex;
+  align-items: center;
+  color: #ff0000;
+  font-size: 9px;
+}
+
+.act-count-down-box .van-count-down {
+  font-size: 10px !important;
+}
+
+/* 陈列未解锁 */
+.act-count-down-box .act-count-down-grey {
+  color: #909090;
+}
+
+.act-display-unlock {
+  color: #242424;
+  font-size: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.act-display-unlock .icon-lock {
+  width: 26rpx;
+  height: 34rpx;
+  margin-right: 10rpx;
+}
+
+/* 2023年8月23日 增加new 标识 */
+.mark-new {
+  /* position: absolute;
+  top: 0;
+  right: 0; */
+  width: 80rpx;
+  height: 34rpx;
+  line-height: 34rpx;
+  background: #e10404;
+  border-radius: 18rpx 18rpx 18rpx 0rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #ffffff;
+  margin-top: -10rpx;
+}

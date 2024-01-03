@@ -1,0 +1,147 @@
+/* pages/storeRank//historyRank.wxss */
+page{
+  background-color: #d12423;
+  padding-bottom: env(safe-area-inset-bottom);
+
+}
+/*箭头部分*/
+.align-center {
+  position: fixed;
+  left: 20rpx;
+  top: 0;
+  display: flex;
+  align-items: center;
+}
+
+.navigator {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.nav-bar__button {
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  font-size: 12px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 1em 2em;
+}
+
+.nav-bar__btn_goback {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='24' viewBox='0 0 12 24'%3E  %3Cpath fill-opacity='.9' fill-rule='evenodd' d='M10 19.438L8.955 20.5l-7.666-7.79a1.02 1.02 0 0 1 0-1.42L8.955 3.5 10 4.563 2.682 12 10 19.438z'/%3E%3C/svg%3E");
+}
+
+.nav-bar__btn_goback.white {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='24' viewBox='0 0 12 24'%3E  %3Cpath fill-opacity='.9' fill-rule='evenodd' d='M10 19.438L8.955 20.5l-7.666-7.79a1.02 1.02 0 0 1 0-1.42L8.955 3.5 10 4.563 2.682 12 10 19.438z' fill='%23ffffff'/%3E%3C/svg%3E");
+}
+
+.container {
+  background-color: #d02423;
+  box-sizing: border-box;
+  padding-bottom: 20rpx;
+  height: 100vh;
+  width: 100%;
+  overflow: auto;
+}
+
+.historyHead {
+  width: 100%;
+  height: 140rpx;
+}
+.historyItem{
+  /* max-height: 700rpx; */
+  box-sizing: border-box;
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+  overflow:auto;
+}
+.itemBottomLine{
+  border-bottom: 1px solid #CF2928;
+}
+.historyListImg {
+  height: 100rpx;
+}
+
+.content {
+  margin:0 30rpx 20rpx 30rpx;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  background-color: #fff2e5;
+  border-radius: 0 0 10rpx 10rpx;
+  box-sizing:border-box;
+}
+
+.content .head {
+  font-weight: 600;
+  font-size: 30rpx;
+}
+
+.leftWidth {
+  width: 12vw;
+}
+
+.vwOne {
+  width: 12vw;
+}
+
+.vwThree {
+  width: 26vw;
+}
+
+.vwTwo {
+  width: 50vw;
+}
+
+.verticalText {
+  width: 40rpx;
+  line-height: 40rpx;
+}
+
+.list {
+  width: 77vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.mgb30 {
+  margin-bottom: 30rpx;
+}
+
+.mgt20 {
+  margin-top: 20rpx;
+}
+
+.weui-loadmore__tips {
+  background-color: #fff2e5 !important;
+}
+.tag{
+  /* position: fixed;
+  top: var(--tabBarHeight);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  background-color: #d12423; */
+  position: sticky;
+  top: var(--tabBarHeight);
+  background-color: #d12423; 
+  z-index: 5;
+}
+.tag .head{
+  margin: 0 30rpx;
+  background-color: #fff2e5;
+}
+.prizeTag {
+  width: 37rpx;
+  height: 41rpx;
+}
+
+.vertical-lr {
+  writing-mode: vertical-lr;
+}
+.myRankItem{
+  background-color: #d53b37;
+ 
+  border-radius: 10rpx;
+  color: #ffffff;
+}

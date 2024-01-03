@@ -1,0 +1,283 @@
+{
+
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/tabBar/home/index",
+			"style": {
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/tabBar/personal/index",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"onReachBottomDistance": 250
+			}
+		},
+		// {
+		// 	"path": "pages/tabBar/happyCows/happyCows",
+		// 	"style": {
+		// 		"navigationBarTitleText": "牛牛乐园"
+		// 	}
+		// },
+		{
+			"path": "pages/tabBar/ttxl/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/tabBar/service/service",
+			"style": {
+				"navigationBarTitleText": "客服中心",
+				"navigationBarBackgroundColor": "#FFFFFF"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "授权",
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "pages/webview/webview"
+		}, {
+			"path": "pages/noLocation/noLocation",
+			"style": {
+				"navigationBarTitleText": "定位异常",
+				"enablePullDownRefresh": false
+			}
+		}, {
+			"path": "pages/loginInner/loginInner",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"enablePullDownRefresh": false
+			}
+
+		}
+	],
+	"requiredPrivateInfos": [
+		"getLocation"
+	],
+	"subPackages": [{
+		"root": "pages/personal/",
+		"name": "personal",
+		"pages": [{
+				"path": "myCardBag/index",
+				"style": {
+					"navigationBarTextStyle": "white",
+					"navigationStyle": "custom"
+				}
+			},
+			{
+				"path": "storesCode/index",
+				"style": {
+					"navigationBarTitleText": "扫换购商户的店铺码"
+				}
+			},
+			{
+				"path": "tankBottomCode/tankBottomCode",
+				"style": {
+					"navigationBarTitleText": "扫红牛罐底二维码"
+				}
+			},
+			{
+				"path": "exchangeCode/index",
+				"style": {
+					"navigationStyle": "custom"
+				}
+			},
+			// {
+			// 	"path": "sweepRingCode/sweepRingCode",
+			// 	"style": {
+			// 		"navigationBarTitleText": "扫拉环二维码"
+			// 	}
+			// },
+			// {
+			// 	"path": "xhVideo/index",
+			// 	"style": {
+			// 		"navigationBarTitleText": "换购视频教学"
+			// 	}
+			// },
+			// {
+			// 	"path": "favoredMovie/index",
+			// 	"style": {
+			// 		"navigationBarTitleText": "换购流程"
+			// 	}
+			// },
+			{
+				"path": "aboutUs/index",
+				"style": {
+					"navigationBarTitleText": "关于我们"
+				}
+			},
+			{
+				"path": "shop/index",
+				"style": {
+					"navigationStyle": "custom",
+					"navigationBarTextStyle": "white",
+					"navigationBarTitleText": "附近换购商铺",
+					"disableScroll": true
+				}
+			}, {
+				"path": "scanRecord/scanRecord",
+				"style": {
+					"navigationBarTitleText": "扫码记录"
+				}
+
+			}, {
+				"path": "myPoints/index",
+				"style": {
+					"navigationBarTitleText": "我的积分"
+				}
+
+			}, {
+				"path": "scanResult/index",
+				"style": {
+					"navigationBarTitleText": "扫码结果",
+					"onReachBottomDistance": 250,
+					"navigationBarBackgroundColor": "#F5F6FA",
+					"navigationStyle": "custom"
+				}
+
+			}, {
+				"path": "welfare/index",
+				"style": {
+					"navigationBarTitleText": "其它福利"
+				}
+
+			}, {
+				"path": "userTutorial/index",
+				"style": {
+					"navigationStyle": "custom"
+				}
+			},
+			{
+				"path": "userInfo/index",
+				"style": {
+					"navigationBarTitleText": "我的信息",
+					"navigationBarBackgroundColor": "#ffffff"
+				}
+
+			},
+			{
+				"path": "editUser/index",
+				"style": {
+					"navigationBarTitleText": "修改",
+					"navigationBarBackgroundColor": "#ffffff"
+				}
+
+			}
+		]
+	}, {
+		"root": "pages/zm/",
+		"name": "zm",
+		"pages": [{
+			"path": "storesCode/index",
+			"style": {
+				"navigationBarTitleText": "扫换购商户的店铺码"
+			}
+		}, {
+			"path": "exchangeCode/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}]
+	}, {
+		"root": "pages/scan/",
+		"name": "scan",
+		"pages": [{
+				"path": "sweepRingCode/sweepRingCode",
+				"style": {
+					"navigationBarTitleText": "扫拉环二维码"
+				}
+			},
+			{
+				"path": "grandPrize/index",
+				"style": {
+					"navigationBarTitleText": "特等奖"
+				}
+
+			},
+			{
+				"path": "scanErr/index",
+				"style": {
+					"navigationBarTitleText": "扫拉环二维码"
+				}
+			}
+		]
+	}],
+	"preloadRule": {
+		"pages/tabBar/personal/index": {
+			"network": "all",
+			"packages": ["personal", "scan", "zm"]
+		}
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#F0F0F0"
+	},
+	"tabBar": {
+		"custom": true,
+		"selectedColor": "#DD524D",
+		"borderStyle": "white",
+		"list": [{
+				"pagePath": "pages/tabBar/home/index",
+				// "iconPath": "static/tabsImg/personal.png",
+				// "selectedIconPath": "static/tabsImg/personal_select.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/tabBar/ttxl/index",
+				// "iconPath": "static/tabsImg/ttxl_icon.png",
+				// "selectedIconPath": "static/tabsImg/ttxl_icon_select.png",
+				"text": "积分商城"
+			},
+			{
+				"pagePath": "pages/tabBar/personal/index",
+				// "iconPath": "static/tabsImg/home-icon.png",
+				// "selectedIconPath": "static/tabsImg/home-select-icon.png",
+				"text": "个人中心"
+			},
+			/* 			{
+							"pagePath": "pages/tabBar/happyCows/happyCows",
+							"iconPath": "static/tabsImg/niuniu.png",
+							"selectedIconPath": "static/tabsImg/niuniu_select.png",
+							"text": "牛牛乐园"
+						}, */
+			{
+				"pagePath": "pages/tabBar/service/service",
+				// "iconPath": "static/tabsImg/customer.png",
+				// "selectedIconPath": "static/tabsImg/customer_select.png",
+				"text": "客服中心"
+			}
+		]
+	},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 0, //当前激活的模式(list 的索引项)
+		"list": []
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "彬纷享礼",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"usingComponents": {
+			"van-popup": "/wxcomponents/vant/popup/index",
+			"van-calendar": "/wxcomponents/vant/calendar/index",
+			"van-button": "/wxcomponents/vant/button/index",
+			"van-rate": "/wxcomponents/vant/rate/index",
+			"van-cell": "/wxcomponents/vant/cell/index",
+			"van-cell-group": "/wxcomponents/vant/cell-group/index",
+			"van-field": "/wxcomponents/vant/field/index",
+			"van-image": "/wxcomponents/vant/image/index",
+			"van-row": "/wxcomponents/vant/row/index",
+			"van-col": "/wxcomponents/vant/col/index",
+			"van-dialog": "/wxcomponents/vant/dialog/index",
+			"van-icon": "/wxcomponents/vant/icon/index"
+		}
+	}
+}

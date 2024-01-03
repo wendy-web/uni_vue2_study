@@ -1,0 +1,66 @@
+<!--pages/tabBar/geren/salesPromotion/awardGrant/index.wxml-->
+<van-popup show="{{show}}"   bind:close="onClose" custom-style="background-color: transparent;"   z-index="{{10000}}">
+    <view class="award-grant-box" wx:if="{{config.awarded_num>0}}">
+          <view class="award-grant-title">
+                活动奖励发放
+          </view>
+          <view class="award-grant-start">
+               <image class="ags-icon" src="https://file.y1b.cn/public/img/bfyl/202208/sales_pro_stars.png" mode="aspectFill"></image>
+          </view>
+          <view class="award-grant-tips01">恭喜你</view>
+          <view class="award-grant-tips02">完成《{{config.title}}》促销活动</view>
+          <view class="award-grant-tips03">
+            <text wx:if="{{config.pur_id === '0'}}">共</text>
+            <text>获得</text>
+            <text class="award-grant-card-num">{{config.awarded_num}}</text>
+            <text>张惠让劵</text>
+          </view>
+          <view class="award-grant-card-box">
+            <!-- 背景 -->
+            <image class="award-grant-card-bg" src="https://file.y1b.cn/public/img/bfyl/202208/sales_pro_huirang_card.png" mode="aspectFill"></image>
+            <!-- 内容 -->
+             <view class="award-grant-card-cright">
+                 <view class="agc-cr-title">
+                  {{config.title}}
+                 </view>
+                 <view class="agc-cr-tips01">
+                  <text>1张券可兑换1罐</text>
+                  <text class="agc-cr-sku">红牛维生素功能饮料250ml</text>
+                 </view>
+                 <view class="agc-cr-time">
+                  <text>领取时间：{{config.send_time}}</text>
+                 </view>
+             </view>
+            <view class="award-grant-card-cleft">
+               <text>{{config.awarded_num}}</text>
+               <text class="agc-cl-sign">张</text>
+             </view>
+          </view>
+          <view class="award-grant-tips04">*已将惠让券发放到您的【可用奖券】中，请及时查看。</view>
+          <!-- 查看详情 -->
+          <view class="award-grant-look">
+            <view class="agl-btn" bindtap="goCoupon">立即查看</view>
+          </view>
+      </view>
+     <!-- 活动结果通知 -->
+    <view class="activity-result-notific" wx:else>
+        <!-- 标题 -->
+        <view class="arn-title">
+          活动结果通知
+        </view>
+        <view class="arn-tips01">《{{config.title}}》已结束</view>
+        <view class="arn-tips02">您在该活动中未获得奖励</view>
+        <view class="arn-tips03">下次要努力哦</view>
+        <view class="award-grant-look">
+            <view class="agl-btn" bindtap="goStoreDisplay">立即查看</view>
+          </view>
+    </view>  
+    <view class="award-grant-close">
+          <!-- 关闭 按钮-->
+          <van-icon  name="close"  size="30px" color="#ffffff" bindtap="onClose"/>
+    </view>
+
+</van-popup>
+
+
+

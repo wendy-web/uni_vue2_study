@@ -1,0 +1,79 @@
+<!--pages/couponActivity/prizeRecord.wxml-->
+<view class="align-center" style="height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;box-sizing:border-box; padding-top:{{navBarSystem?navBarSystem.statusBarHeight:'20'}}px">
+  <view bindtap="back" class=" nav-bar__button nav-bar__btn_goback white"></view>
+</view>
+
+<!-- 内容框 -->
+<view class="container" style="top:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;">
+  <!-- 标题：奖励记录 -->
+  <view class="page-title-box">
+    <image class="bg-record-title" src="{{bg_record_title}}" mode="aspectFit" />
+    <view>奖励记录</view>
+  </view>
+  <!-- 活动期数、奖励区间 、实际开箱 、奖励、状态 -->
+  <view class="row-title">
+    <view class="item flex_one">期数</view>
+    <view class="item flex_two">兑奖人数</view>
+    <!-- <view class="item flex_three">实际开箱</view> -->
+    <view class="item flex_four">奖励活动券</view>
+    <view class="item flex_five">状态</view>
+  </view>
+  <!-- 列表信息 -->
+  <view class="list-box">
+    <view wx:if="{{actInfo}}" wx:key="key" class="list-item">
+      <view class="item flex_one">{{actInfo.issue_title||1}}</view>
+      <view class="item flex_two kpi-num ">{{actInfo.kpi_num ||0}}人</view>
+
+      <!-- <view class="item flex_three">{{item.s_num?item.s_num+'箱':'0'}}</view> -->
+      <!-- 奖励需要判断中间未中奖，中奖区间 -->
+      <view class="item flex_four">
+        <block wx:if="{{actInfo.rev_msg&&actInfo.act_state.act_end}}">
+          <view>
+            <text>红牛</text>
+            <text class="color-red">{{actInfo.rev_msg[1]}}张</text>
+            <text> + </text>
+          </view>
+          <view>
+            <text>战马</text>
+            <text class="color-red">{{actInfo.rev_msg[0]}}张</text>
+          </view>
+        </block>
+        <block wx:else>——</block>
+      </view>
+      <!-- 状态需要判断 -->
+      <view class="item flex_five {{ statusClass[actInfo.status] }}">{{actInfo.status}}</view>
+    </view>
+    <view class="noMore mgt30">—— 暂无更多记录 ——</view>
+
+    <!-- <scroll-view class="scroll-view" scroll-y>
+
+      <block wx:if="{{list.length>0}}">
+        <view wx:for="{{list}}" wx:key="key" class="list-item">
+          <view class="item flex_one">{{item.issues||1}}期</view>
+          <block wx:if="{{item.calc.type==1}}">
+            <view class="item flex_two">{{item.kpi[0]||0}}~{{item.kpi[1] ||0}}箱</view>
+          </block>
+          <block wx:if="{{item.calc.type==2}}">
+            <view class="item flex_two">{{item.kpi_num<10?10:item.kpi_num}}箱 </view>
+          </block>
+          <view class="item flex_four">
+            <block wx:if="{{item.prize_num}}">活动券{{item.prize_num}}张</block>
+            <block wx:else>——</block>
+          </view>
+          <view class="item flex_five {{item.status == 4?'color-warn':''}}">{{item.status_name}}</view>
+        </view>
+        <view class="noMore mgt30">—— 暂无更多记录 ——</view>
+      </block>
+      <block wx:else>
+        <view class="noMore mgt50">—— 暂无更多记录 ——</view>
+      </block>
+
+    </scroll-view> -->
+
+  </view>
+  <!-- 底部图片 -->
+  <view class="img-record-bottom-box">
+    <image class="img-record-bottom" src="{{img_record_bottom}}" mode="aspectFit" />
+  </view>
+
+</view>

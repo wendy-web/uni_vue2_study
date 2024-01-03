@@ -1,0 +1,21 @@
+<!--pages/storeRank/component/flip-card.wxml-->
+<view class="card-box" bindtap="click">
+<block wx:if="{{index==1}}">
+<!-- 未翻牌 -->
+<easy-loadimage index="{{index}}" imageSrc="{{cardSrc}}" mode="aspectFit" imageClass="prize-one front {{isFlip?'flip-to-back':''}}"></easy-loadimage>
+  <!-- 翻牌 -->
+  <easy-loadimage index="{{index+index}}" imageSrc="{{flipSrc}}" mode="aspectFit" imageClass="prize-one back {{isFlip?'flip-to-front':''}}"></easy-loadimage>
+</block>
+<block wx:if="{{index==2 || index==3}}">
+<!-- 未翻牌 -->
+<easy-loadimage index="{{index}}" imageSrc="{{cardSrc}}" mode="aspectFit" imageClass="prize-two front {{isFlip?'flip-to-back':''}}"></easy-loadimage>
+  <!-- 翻牌 -->
+  <easy-loadimage index="{{index+index}}" imageSrc="{{flipSrc}}" mode="aspectFit" imageClass="prize-two back {{isFlip?'flip-to-front':''}}"></easy-loadimage>
+</block>
+<block wx:if="{{index>3}}">
+<!-- 未翻牌 -->
+<easy-loadimage index="{{index}}" imageSrc="{{cardSrc}}" mode="aspectFit" imageClass="prize-item front {{isFlip?'flip-to-back':''}}"></easy-loadimage>
+  <!-- 翻牌 -->
+  <easy-loadimage index="{{index+index}}" imageSrc="{{flipSrc}}" mode="aspectFit" imageClass="prize-item back {{isFlip?'flip-to-front':''}}"></easy-loadimage>
+</block>
+</view>

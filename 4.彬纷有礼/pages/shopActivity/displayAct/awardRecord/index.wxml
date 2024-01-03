@@ -1,0 +1,51 @@
+<!--pages/shopActivity/displayAct/awardRecord/index.wxml-->
+<view class="me-shop-record">
+
+  <view class="align-center" style="height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;box-sizing:border-box; padding-top:{{navBarSystem?navBarSystem.statusBarHeight:'20'}}px">
+    <view bindtap="back" class=" nav-bar__button nav-bar__btn_goback white"></view>
+  </view>
+  <view class="shop-record">
+    <!--  table-head -->
+    <view class="msr-table-head msr-table-head-{{opentype}}">
+      <view class="msr-table-head-item">陈列目标</view>
+      <view class="msr-table-head-item">已完成陈列</view>
+      <view class="msr-table-head-item">奖励</view>
+      <view class="msr-table-head-item">状态</view>
+    </view>
+    <!-- 记录列表 -->
+    <scroll-view class="shop-record-list" scroll-y>
+      <!-- table-cell -->
+      <block wx:if="{{list.length>0}}">
+        <view class="msr-table-cell msr-table-cell-{{opentype}}" wx:for="{{list}}" wx:key="key">
+          <view class="msr-table-cell-item">{{item.kpi_num}}次</view>
+          <view class="msr-table-cell-item display-num">{{item.s_num || 0}}次</view>
+          <block wx:if="{{item.rev_num}}">
+            <view class="msr-table-cell-item flex-shrink">{{item.issues == 7 ?'红牛':'战马'}}活动劵<text class="display-num">{{item.rev_num}}张</text></view>
+          </block>
+          <block wx:else>
+            <view class="msr-table-cell-item">——</view>
+          </block>
+          <view class="msr-table-cell-item">
+            <block wx:if="{{item.rev_num}}"><text class="display-state-success">已发放</text></block>
+            <block wx:else>
+              <!-- 除了已发放：活动未结束：进行中，已结束：未中奖 -->
+              <block wx:if="{{item.act_end}}"><text class="display-state-fail">未中奖</text></block>
+              <block wx:else><text class="display-state-ing">进行中</text></block>
+            </block>
+          </view>
+        </view>
+      </block>
+      <!-- 暂无更多记录 -->
+      <view class="no-more-records">—— 暂无更多记录 ——</view>
+    </scroll-view>
+    <!-- head -->
+    <image class="shop-record-head-{{opentype}}" src="{{me_shop_record_head}}"></image>
+    <!-- 背景 -->
+    <image class="shop-record-bg" src="{{me_shop_record_board}}"></image>
+  </view>
+
+  <!-- 背景 -->
+  <image class="me-shop-record-bg" src="{{me_shop_record_bg}}"></image>
+  <!-- 底部Icon -->
+  <image class="me-shop-record-icon-{{opentype}}" src="{{me_shop_record_icon}}"></image>
+</view>

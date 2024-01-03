@@ -1,0 +1,369 @@
+/* pages/randomdraw/marquee/index.wxss */
+@import './utils/marquee.wxss';
+.container{
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: fixed;
+  /* top: 64px; */
+  top:var(--navBarHeight);
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.head{
+  text-align: center;  
+  margin-top: 30rpx;
+}
+.zghnImg{
+  width: 593rpx;
+  height: 148rpx;
+}
+.content{
+  /* background: url(https://file.y1b.cn/public/img/to2/marquee/marquee_content.png) no-repeat; */
+  background-size: 100% 100%;
+  position: fixed;
+  /* top: 178rpx; */
+  top: 306rpx;
+  left: 50rpx;
+  right: 50rpx;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  /* padding-top: 100rpx; */
+}
+
+.rewardPop {
+  z-index: 8;
+  background-image: url(https://file.y1b.cn/public/img/to2/marquee/marqueePop.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: fixed;
+  left: 37rpx;
+  right: 37rpx;
+  bottom: 112rpx;
+  margin: auto;
+  top: 100rpx;
+}
+
+.rewardPop_content {
+  /* background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/goldenEgg/reward_content.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%; */
+  width: 632rpx;
+  height: 713rpx;
+  position: fixed;
+  left: 0;
+  right: 0;
+  /* bottom:280rpx; */
+  bottom:0;
+  margin: auto;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:flex-start ;
+  font-size: 51rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #CA0000;
+}
+
+.rewardPop_content .msg {
+  font-size: 51rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #CA0000;
+  margin-top: 200rpx;
+}
+
+.rewardPop_content .msg text {
+  font-size: 80rpx;
+}
+
+.flex-column-around {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+.flex-column-between {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.height52{
+  height: 52%;
+}
+.getReward{
+  position: fixed;
+  bottom: 16%;
+  z-index: 5000;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.rewardHistory{
+  margin-top: 40rpx;
+  color: #FFE777;
+}
+.getReward .btn {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/btnBG.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 327rpx;
+  height: 94rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #ffe300;
+}
+
+.totalMoney {
+  color: #CA0000;
+  font-weight: 700;
+}
+
+.lotteryPop {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/goldenEgg/count_bg.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 594rpx;
+  height:930rpx;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 70rpx;
+}
+.weui-mask{
+  z-index: 7;
+}
+
+.flex-align-around {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.flex-column-center {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rebBtn {
+  display: inline-block;
+  text-align: center;
+  z-index: 1000;
+  color: #c0bbbb;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  padding: 7px 5px;
+  width: 100px;
+  background:rgba(0,0,0,.2);
+}
+.goldBtn {
+  display: inline-block;
+  border-color: #fff000;
+  text-align: center;
+  z-index: 1000;
+  color: #e81910;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  padding: 15rpx 10rpx;
+  width: 200rpx;
+  background: linear-gradient(0deg, #fff000, #fec401);
+
+}
+.pdlr20{
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+}
+.scaleBtn {
+  transform: scale(0.5);
+  transform-origin: left top;
+  z-index: 1;
+}
+
+.width300 {
+  width: 156px;
+  height: 75px;
+  text-align: center;
+}
+
+.scaleBtnBox {
+  width: 117px;
+  height: 75px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+.scaleBtn-backup {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 20rpx;
+  margin: auto 0;
+  width: 100px;
+  height: 30px;
+  display: flex;
+  font-size: 22rpx;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+  border-color: #ff0500;
+  text-align: center;
+  color: white;
+  border-radius: 50rpx;
+  background: linear-gradient(0deg, #e60000, #e40001);
+  -webkit-box-shadow: 0 8rpx 0 0 rgba(14, 13, 13, 0.562);
+  box-shadow: 0 6rpx 0 0 rgba(14, 13, 13, 0.562);
+}
+.rewardPop  .msg {
+  font-size: 41rpx;
+  font-weight: bold;
+  text-align: center;
+  color: #fff000;
+}
+.rewardPop  .money {
+  font-size: 41rpx;
+  font-weight: bold;
+  text-align: center;
+  color: #fff000;
+}
+
+.fontSize60 {
+  font-size: 60rpx;
+}
+
+.rewardHistory {
+  font-size: 24rpx;
+  font-weight: bold;
+  color: #ffe777;
+}
+.playGame{
+  /* position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 200rpx;
+  margin: auto; */
+  text-align: center;
+  margin-top: 30rpx;
+}
+.begin{
+  display: inline-block;
+  border-color: #ff0500;
+  text-align: center;
+  z-index: 1000;
+  color: white;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  padding: 11rpx 10rpx;
+  width: 200rpx;
+  background: linear-gradient(0deg, #ff0500, #ff4801);
+  -webkit-box-shadow: 0 8rpx 0 0 rgba(14, 13, 13, 0.562);
+  box-shadow: 0 6rpx 0 0 rgba(14, 13, 13, 0.562);
+}
+.reconfirmPop {
+  height:370px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding-bottom: 10px;
+}
+
+
+.reconfirmPop .flex-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.reconfirmPop .flex-cloumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.brown-text {
+  color: #faf6aa;
+  font-size: 36rpx;
+  font-weight: 700;
+  letter-spacing: 5rpx;
+}
+.slant {
+  color: #fced0a;
+  font-size: 70rpx;
+  font-style: oblique;
+  padding: 0rpx 10rpx;
+}
+.scaleBox {
+  animation-name: scale;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+.mgt30{
+  margin-top: 30rpx;
+}
+/* 2022年1月22日 27周年UI改版 */
+.reconfirmPop .btn-group{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 25rpx;
+}
+.btn-group .btn-giveup{
+  display: inline-block;
+  text-align: center;
+  z-index: 1000;
+  color: white;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  box-sizing: border-box;
+  width: 250rpx;
+  height: 83rpx;
+  line-height: 83rpx;
+  background: #cfb7a6;
+}
+.gif-btn-watchvideo{
+  width: 270rpx;
+  height:92rpx;
+}
+.icon-hn-btn {
+  width: 260rpx;
+  height: 90rpx;
+}
+
+@keyframes scale {
+  0% {
+    transform: scale(0.4);
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@media only screen and (min-height:740px) {
+  .content{
+    align-items:center;
+    height: 80vh;
+  }
+  .rewardPop{
+    background-size: 100% 80%;
+    background-position: center;
+    top: 64px;
+  }
+  .rewardPop_content{
+    bottom: 100rpx;
+  }
+
+}

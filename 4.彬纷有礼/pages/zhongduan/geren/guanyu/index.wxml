@@ -1,0 +1,57 @@
+<mp-dialogModal title="温馨提示" isShow="{{dialogShow}}" content="{{isOnline}}" confirmType="contact" confirmText="前往留言"
+    bindbuttontap="tapDialogButton" buttons="{{buttons}}">
+</mp-dialogModal>
+
+<view class="rongqi">
+    <view class="head">
+        <image lazy-load="{{true}}" src="{{kefu}}"></image><text class="title">水果技术客服</text><text
+            class="desc">(点击你喜欢的水果，一对一解答)</text>
+    </view>
+    <view class="listct">
+        <view class="item" wx:for="{{list}}" wx:for-item="item" wx:for-index="index" wx:key="key">
+            <block wx:if="{{isOnline}}">
+                <button bindtap="onlineService" hover-class="none">
+                    <easy-loadimage index="{{index}}" imageSrc="{{item.src}}" mode="aspectFit" iamgeClass="">
+                    </easy-loadimage>
+                </button>
+            </block>
+            <block wx:else>
+                <button open-type="contact" hover-class="none"
+                    session-from="nickName={{userInfo.nick_name+'(BID'+UID+')'}}|avatarUrl={{userInfo.avatar_url}}|gender={{originalUserInfo.gender}}|country={{originalUserInfo.country}}|province={{originalUserInfo.province}}|city={{originalUserInfo.city}}">
+                    <easy-loadimage index="{{index}}" imageSrc="{{item.src}}" mode="aspectFit" iamgeClass="">
+                    </easy-loadimage>
+                </button>
+
+            </block>
+            <view class="sub">{{item.tt}}</view>
+        </view>
+    </view>
+    <!-- <view class="lxbt">
+            <button bindtap="anonymousFunc0">
+                <image src="{{lianxiimg}}"></image>
+            </button>
+        </view> -->
+    <view class="weui-flex safeArea">
+        <view class="weui-flex__item">
+            <view class="time text-right">
+                <text decode="{{true}}" space="{{true}}">服务时间：周一至周五&nbsp;8:30-17:30\n</text>
+                <text decode="{{true}}" space="{{true}}">周六至周日&nbsp;10:00-19:00 \n</text>
+                <text decode="{{true}}" space="{{true}}">(法定节假日除外)</text>
+            </view>
+        </view>
+    </view>
+
+</view>
+<!-- 自定义联系客服弹窗 -->
+<view class="fadeIn mp-dialog" wx:if="{{customerService}}">
+    <view class="weui-mask" bindtap="closeContactPop"></view>
+    <view class="weui-dialog pop-container">
+        <view class="text-align title">温馨提示</view>
+        <view class="content">{{isOnline}}</view>
+        <view class="quickBtn">
+            <button hover-class="none" class="cancel-btn" bindtap="closeContactPop">取消</button>
+            <button hover-class="none" class="confirm-btn" open-type="contact" bindtap="closeContactPop"
+                session-from="nickName={{userInfo.nick_name+'(BID'+UID+')'}}|avatarUrl={{userInfo.avatar_url}}|gender={{originalUserInfo.gender}}|country={{originalUserInfo.country}}|province={{originalUserInfo.province}}|city={{originalUserInfo.city}}">前往留言</button>
+        </view>
+    </view>
+</view>

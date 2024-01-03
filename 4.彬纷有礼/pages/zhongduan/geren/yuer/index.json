@@ -1,0 +1,17 @@
+{
+  "usingComponents": {
+    "selectCrew":"../../../../component/selectCrew/index",
+    "scroller": "coolui-scroller/scroller/index",
+    "item": "coolui-scroller/item/index",
+    "refresh": "coolui-scroller/refresh/index",
+    "loadmore": "coolui-scroller/loadmore/index",
+    "empty": "coolui-scroller/empty/index",
+    "bindPhonePop":"../../../../component/bindPhonePop/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "收益累计",
+  "enablePullDownRefresh":false,
+  "onReachBottomDistance": 100,
+  "disableScroll": true
+
+}

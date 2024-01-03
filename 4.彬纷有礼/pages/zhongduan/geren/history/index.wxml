@@ -1,0 +1,79 @@
+<!--pages/zhongduan/geren/notice/index.wxml-->
+
+<view class="page" wx:if="{{pageReady}}">
+	<block wx:if="{{msgList.length==0}}">
+		<view class="page__hd text-center">
+			<view class="page__desc pdt200">您暂时还没有历史记录</view>
+		</view>
+	</block>
+	<block wx:else>
+		<view class="page">
+			<!-- 红包列表页面 -->
+			<view wx:for="{{msgList}}" wx:key="*this" wx:for-item="item" wx:for-index="idx" class="balanceInfo">
+				<view class="weui-cells weui-cells_after-title">
+					<view class="weui-cell">
+						<view class="weui-cell__bd">
+							<view class="title">{{item.logs}} </view>
+							<!-- status = 1金额退回 -->
+							<block wx:if="{{item.status==1}}">
+								<view class="subtitle green">{{item.subtitle}}</view>
+							</block>
+							<!-- status=0 提现记录 再判断 w_status=1 绿色，w_status=0 红色 ，红色时候判断err_code_des，有值才弹 -->
+							<!-- <block wx:elif="{{item.status==0}}"> -->
+							<block wx:elif="{{item.status==0}}">
+
+								<block wx:if="{{item.w_status==1}}">
+									<view class="subtitle green">{{item.subtitle}}</view>
+								</block>
+								<block wx:else>
+									<block wx:if="{{item.err_code_des}}">
+										<view class="subtitle red" bindtap="checkFailMsg" data-err_code_des="{{item.err_code_des}}">
+											{{item.subtitle}}
+											<i class="weui-icon-warn weui-icon_msg"></i>
+										</view>
+									</block>
+									<block wx:else>
+										<view class="subtitle red">{{item.subtitle}}</view>
+									</block>
+								</block>
+							</block>
+							<block wx:else>
+								<view class="subtitle">{{item.subtitle}}</view>
+							</block>
+							<view class="create_time">{{item.create_time}}</view>
+						</view>
+						<view class="weui-cell__ft">
+							<view class="{{item.fee>0?'red':'green'}}">
+								<block wx:if="{{item.fee>0}}">
+									+{{item.fee}}
+								</block>
+								<block wx:else>
+									{{item.fee}}
+								</block>
+							</view>
+
+							<view class="subtitle" wx:if="{{type!=1}}">余额：{{item.balance}} </view>
+
+						</view>
+					</view>
+				</view>
+			</view>
+
+			<!-- 加载更多 -->
+			<view class="weui-loadmore" wx:if="{{loading}}">
+				<i class="weui-loading"></i>
+				<text class="weui-loadmore__tips text-grey">正在加载</text>
+			</view>
+
+			<block wx:if="{{noMore}}">
+				<view class="weui-loadmore weui-loadmore_line">
+					<text class="weui-loadmore__tips">没有更多数据了~</text>
+				</view>
+			</block>
+
+
+
+		</view>
+	</block>
+
+</view>

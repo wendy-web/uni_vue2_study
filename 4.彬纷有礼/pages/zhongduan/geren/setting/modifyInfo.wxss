@@ -1,0 +1,121 @@
+/* pages/zhongduan/geren/setting/modifyInfo.wxss */
+
+page{
+  /* --nav-bar-icon-color: #3d3d3d; */
+  background-color: #ededed;
+}
+.emo-box{
+  width: 100%;
+  background-color: #ededed;
+}
+.emo-box-dark{
+  background-color: #000000;
+}
+.emo-bar{
+  background-color: #ededed!important;
+  color: black;
+}
+.emo-bar-dark{
+  background-color: #000000!important;
+  color: #ffffff;
+}
+.btn-default{
+  width: 104rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  background: #f3f3f3;
+  color: #B4B4B4;
+  /* border-radius: 10px; */
+  text-align: center;
+  font-size: 32rpx;
+  padding: 0 20rpx;
+}
+.btn-confirm{
+  height: 60rpx;
+  line-height: 60rpx;
+  background: #e3001b;
+  border-radius: 10rpx;
+  color: #ffffff;
+  text-align: center;
+  font-size: 32rpx;
+  padding: 0 20rpx;
+}
+
+.container .van-nav-bar__text{
+  font-size: 32rpx;
+  font-weight: 400;
+  color: #3d3d3d!important;
+}
+
+.van-search__content{
+  padding-left: 0px!important;
+  background-color: #ffffff!important;
+}
+.container{
+  height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+.container-dark{
+  height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #000000;
+  position: relative;
+}
+.van-hairline--bottom:after {
+  border-bottom-width: 0px!important;
+}
+.img-avatar-box{
+  margin-top: 100rpx;
+  text-align: center;
+}
+.img-avatar{
+  width: 100vw;
+  height: 100vw;
+}
+.container-dark .btn-change{
+  height: 60rpx;
+  line-height: 60rpx;
+  border-radius: 10rpx;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 32rpx;
+  padding: 0 20rpx;
+  background-color: #000000;
+}
+.container-dark .van-nav-bar__title{
+  color: #ffffff;
+}
+
+
+.container-dark .van-nav-bar__text{
+  font-size: 32rpx;
+  font-weight: 400;
+  color: #ffffff!important;
+}
+.input-nick-name{
+  background-color: #ffffff;
+  height: 100rpx;
+  line-height: 100rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding: 10rpx 20rpx;
+}
+.input-name-placeholder{
+  height: 100rpx;
+  line-height: 100rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding: 10rpx 20rpx;
+}
+button::after {
+  border: 0px;
+}

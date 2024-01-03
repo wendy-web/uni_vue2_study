@@ -1,0 +1,38 @@
+<!--pages/phaseIII/useCoupon/record/index.wxml-->
+<view class="page-box">
+  <view class="tab-coupon-box">
+    <view bind:tap="tabRecordChange" data-id="{{item.id}}" wx:for="{{tabRecordList}}" wx:key="id" class="tab-coupon-item ">
+      <view class="tab-coupon-title {{tabRecord == item.id ? 'tab-active':''}}">{{item.name}}</view>
+      <view class="tab-count-info" wx:if="{{item.count>0}}">{{item.count>99?'99+':item.count}}</view>
+    </view>
+  </view>
+  <block wx:if="{{tabRecord == 2}}">
+    <view class="tab-coupon-box">
+      <view bind:tap="tabExpireChange" data-id="{{item.id}}" wx:for="{{tabExpireList}}" wx:key="id" class="tab-coupon-item tab-exc-item ">
+        <view class="tab-coupon-title tab-exc-title {{tabExpire == item.id ? 'tab-active':''}}">{{item.name}}</view>
+        <view class="tab-count-info" wx:if="{{item.count>0}}">{{item.count>99?'99+':item.count}}</view>
+      </view>
+    </view>
+  </block>
+  <swiper class="swiper-box" current="{{swiperIdx}}" bind:change="swiperChange">
+    <swiper-item>
+      <hxing id="hxing" bind:showFilterPop="showFilterPop" bind:deleteTag="deleteTag" bind:initCount="initCount" bind:resetFilterPop="resetFilterPop"></hxing>
+    </swiper-item>
+    <swiper-item>
+      <hxed id="hxed" bind:showFilterPop="showFilterPop" bind:deleteTag="deleteTag" bind:initCount="initCount" bind:resetFilterPop="resetFilterPop"></hxed>
+    </swiper-item>
+
+    <swiper-item>
+      <!-- 为了初始化tab和scroll-view 的高度这里需要判断一下 后期需要加上统计字段判断 -->
+      <excItem wx:if="{{swiperIdx>1 || expire_exc}}" id="excItem" bind:showFilterPop="showFilterPop" bind:deleteTag="deleteTag" bind:initCount="initCount" bind:resetFilterPop="resetFilterPop"></excItem>
+    </swiper-item>
+    <!-- <swiper-item>
+      <discountItem wx:if="{{swiperIdx>1 }}" id="discountItem" bind:showFilterPop="showFilterPop" bind:deleteTag="deleteTag" bind:initCount="initCount" ></discountItem>
+    </swiper-item> -->
+    <swiper-item>
+      <actItem wx:if="{{swiperIdx>1 || expire_act}}" id="actItem" bind:showFilterPop="showFilterPop" bind:deleteTag="deleteTag" bind:initCount="initCount" bind:resetFilterPop="resetFilterPop"></actItem>
+    </swiper-item>
+  </swiper>
+</view>
+<!-- 条件筛选弹窗 -->
+<filterPop id="filterPop" bind:initFilterData="initFilterData" skuParams="{{skuParams}}" member="{{shopInfo.member}}"></filterPop>

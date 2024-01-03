@@ -1,0 +1,99 @@
+<!--pages/storeAllowance/scanQr/index.wxml-->
+<top-navbar iconTheme="{{iconTheme}}" title="{{title}}" backgroundColor="{{background}}" bindback="onBeforeBack" searchBar="" bindsearch='search'></top-navbar>
+<view class="hn-box" style="height: calc(100vh - {{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px);">
+  <block wx:if="{{pre_act_hn <= 27}}">
+    
+
+    <!-- 第27图标 -->
+    <image class="icon-hn-27th" binderror="imgError" mode="aspectFit" src="{{icon_hn_27th}}"></image>
+    <!-- 27周年红牛标题 -->
+    <image class="icon-hn-title" binderror="imgError" mode="aspectFit" src="{{icon_hn_title}}"></image>
+    <!-- 活动规则 -->
+    <!-- <view class="hn-rule-box" bindtap="showRule">
+      <image class="icon-question" binderror="imgError" mode="aspectFit" src="{{icon_question}}"></image>
+      <view class="text-vertical">活动规则</view>
+    </view> -->
+    <!-- 开箱背景主图 -->
+    <image class="hn-banner" binderror="imgError" mode="scaleToFill" src="{{qrtype=='56'?hn_banner_type56:hn_banner}}"></image>
+  </block>
+  <block wx:if="{{pre_act_hn == 28}}">
+    <view class="box-hn-28y">
+        <!-- 顶部28图标 -->
+        <image class="icon-hn-28y" mode="aspectFit" src="{{icon_hn_28y}}"></image>
+        <!-- 28banner -->
+        <image class="img-hn-banner-28y" src="{{img_hn_banner_28y}}"></image>
+        <!-- 底部坐台 -->
+        <image class="img-hn-bg-28y" src="{{img_hn_bg_28y}}"></image>
+       
+      </view>
+  </block>
+  <!-- 开红包 -->
+  <view class="hn-msgbox" style="background-image: url({{img_hn_opened}});">
+
+    <!-- 红包已开 -->
+    <block wx:if="{{opened}}">
+
+      <view class="hn-msg-box">
+        <!-- 获奖信息 -->
+        <view class="hn-msg-item">
+          <!-- 领取成功 -->
+          <block wx:if="{{qrResult.code==1}}">
+            <!-- 区分用户信息：店员助力 -->
+            <block wx:if="{{userdata.condition!=2}}">
+              <view class="title">恭喜您获得<text class="coupon-text">现金券</text></view>
+            </block>
+            <block wx:else>
+              <view class="title">恭喜您助力获得<text class="coupon-text">现金券</text></view>
+            </block>
+            <view class="coupon-box" style="background-image: url({{bg_cash_coupon}});">
+              <view class="head">￥<text class="coupon-money">{{qrResult.data.money}}</text></view>
+              <block wx:if="{{userdata.condition !=2}}">
+                <view class="foot-tips">请到【我的-可用现金券】查看</view>
+              </block>
+              <block wx:if="{{userdata.condition==2}}">
+                <view class="foot-tips">现金券已发放至店铺"掌柜-可用现金券"</view>
+              </block>
+             
+            </view>
+            <view class="tips">现金券仅用于彬纷有礼APP，订购商品时使用可抵扣相应货款</view>
+          </block>
+          <!-- 领取失败 -->
+          <block wx:if="{{qrResult.code==0}}">
+            <!-- 判断是否自己领取 -->
+            <view class="coupon-box-failed" style="background-image: url({{bg_cash_coupon}});">
+
+              <view>
+                <!-- <block wx:if="{{isOwner}}">
+                  <text>您已经领取过该"现金券"</text>
+                </block>
+                <block wx:else>
+                  <text>{{qrResult.msg}}</text>
+                </block> -->
+                  <text>{{qrResult.msg}}</text>
+              </view>
+            </view>
+            <block wx:if="{{qrResult.data.tips}}">
+                <view class="owner-tips">{{qrResult.data.tips}}</view>
+              </block>
+          </block>
+        </view>
+        <!-- 操作按钮 -->
+        <view class="hn-btn-box">
+          <image class="btn-check" bindtap="goScan" mode="aspectFit" src="{{img_btn_scan}}"></image>
+
+          <block wx:if="{{qrResult.data.money}}">
+            <navigator hover-class="none" url="{{userdata.condition!=2?'/pages/storeAllowance/list/index':'/pages/storeAllowance/clerkHelp/index'}}" style="height: 90rpx;">
+              <image class="btn-check" mode="aspectFit" src="{{img_btn_check}}"></image>
+            </navigator>
+          </block>
+        </view>
+
+      </view>
+
+    </block>
+
+  </view>
+  <!-- 底部彩带 -->
+  <image class="img-hn-foot" mode="scaleToFill" src="{{img_hn_foot}}"></image>
+
+</view>

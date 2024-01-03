@@ -1,0 +1,19 @@
+<!--pages/storeDisplay/component/promotion/signConfirm/index.wxml-->
+<view class="sign-confirm">
+		<van-popup show="{{show}}"   bind:close="onClose" custom-style="background-color: transparent;"   z-index="{{10000}}">
+			  <view class="sign-confirm-box">
+            <view class="sgmb-title">签约确认</view>
+            <view class="tips">是否签约《{{config.title}}》？</view>
+            <!-- 按钮 -->
+            <view class="tools">
+              <view class="tools-btn info" bindtap="lookInfo">查看详情</view> 
+              <view class="tools-btn sign" bindtap="sign">
+                <van-loading wx:if="{{loading}}"/>
+                <text wx:else>确认签约</text>
+              </view>
+            </view>
+         </view>
+         <image class="close" src="/pages/storeDisplay/static/close.png" mode="aspectFill" bindtap="onClose"></image>
+		</van-popup>
+	</view>
+

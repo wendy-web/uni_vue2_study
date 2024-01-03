@@ -1,0 +1,16 @@
+<!-- 活动弹窗 -->
+<view class="fadeIn" wx:if="{{show&&popImg[0]}}">
+	<view class="weui-mask" bindtap="closePop"></view>
+	<view class="weui-dialog pop-container" wx:if="{{popImg}}">
+		<view class="icon-close">
+			<image mode="aspectFit" class="image" bindtap="closePop" src="{{deleteUrl}}"></image>
+		</view>
+		<block wx:for="{{popImg}}" wx:key="key">
+			<block wx:if="{{item.img}}">
+				<image class="AdPopups" mode="aspectFit"  src="{{item.img}}" 
+					data-appid="{{item.appid}}" data-link="{{item.link}}"></image>
+					<view class="click_btn" bindtap="openAd" ></view>
+			</block>
+		</block>
+	</view>
+</view>

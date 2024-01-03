@@ -1,0 +1,104 @@
+/* component/actDisplayPopup/displayEnd/index.wxss */
+.container {
+  background: #ffffff;
+}
+
+.display-pop-box {
+  width: 700rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: scroll;
+  box-sizing: border-box;
+  padding-top: 30rpx;
+}
+.icon-close {
+  display: block;
+  width: 56rpx;
+  height: 56rpx;
+  margin: 20rpx auto 0;
+}
+/* 陈列中奖弹窗 */
+.display-win-box .icon-apply-success {
+  height: 230rpx;
+  width: 100%;
+}
+.pop-content {
+  background: linear-gradient(0deg, #fff7e2 0%, #ffffff 100%);
+  /* height: 404px; */
+  /* width: 100%; */
+  height: 700rpx;
+  width: 588rpx;
+  margin: 0 auto;
+  border-radius: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.act-display-apply-box {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.act-prize-box {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 227px;
+  height: 165px;
+  position: relative;
+  text-align: center;
+}
+.act-prize-box .act-prize-title {
+  font-size: 22px;
+  font-weight: 500;
+  color: #ffffff;
+}
+.act-prize-box .act-prize-text {
+  font-size: 20px;
+  font-weight: 500;
+  color: #fe3c13;
+}
+.act-prize-box .num24 {
+  font-weight: 700;
+  font-size: 50px;
+}
+.act-prize-tips {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #3F150E;
+}
+.act-display-apply-btn {
+  width: 259px;
+  height: 65px;
+  line-height: 59px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  font-size: 18px;
+  font-weight: 500;
+  color: #ffe400;
+  text-align: center;
+  margin-top: 10px;
+}
+/* 陈列活动结束弹窗 */
+.act-display-end-title {
+  font-size: 48rpx;
+  font-weight: 500;
+  text-align: center;
+  color: #fe3c13;
+}
+.act-display-end-subtitle {
+  font-size: 40rpx;
+  font-weight: 500;
+  text-align: center;
+  color: #3f150e;
+}
+.icon-smile{
+  width: 200rpx;
+  height: 200rpx;
+  margin: 0 auto;
+  display: block;
+}

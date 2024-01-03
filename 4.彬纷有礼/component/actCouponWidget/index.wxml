@@ -1,0 +1,46 @@
+<!--components/movemenu/movemenu.wxml-->
+<movable-area class='menuarea'>
+  <movable-view class='menu_box' direction="all" x="{{width}}" y="{{screenHeight?screenHeight*0.6:height*0.6}}" out-of-bounds="{{false}}">
+    <view hidden='{{showmenus}}' class=''>
+      <block wx:for='{{menulist}}' wx:key='menulist'>
+        <view class='menu_main' catchtap='itemclick' data-item='{{item}}'>
+          <image class='menu_img' src='{{item.url}}' />
+          <text class='menu_title' hidden='{{mainmodel.title.length > 0 ? flase:true}}'>{{item.title}}</text>
+        </view>
+      </block>
+    </view>
+    <view class='menu_main'>
+      <!-- 2022年8月8日 星期一 深圳开箱活动浮窗 -->
+      <!-- <view class="menu_img buoy-box" catchtap='toUnboxHome' data-issues="{{actInfo.issues}}">
+        <image class="unbox-img-0" src="{{unbox_img_0}}" mode="aspectFit" lazy-load></image>
+        <image class="buoy-img-0" src="{{unbox_img_3}}" mode="aspectFit" lazy-load></image>
+        <view class="buoy-item">
+          <image class="buoy-img-2" src="{{unbox_img_2}}" mode="aspectFit" lazy-load></image>
+          <image class="buoy-img-3" src="{{unbox_img_1}}" mode="aspectFit" lazy-load></image>
+        </view>
+      </view> -->
+      <view class="display-hn-buoy" catchtap='toUnboxHome' data-issues="4">
+        <image class="img" src="{{buoy_unbox_hn}}" mode="aspectFit" lazy-load></image>
+      </view>
+      <!-- 2022年8月8日 星期一 深圳陈列活动浮窗 -->
+      <!-- 陈列issues:5 奖励战马券 -->
+      <!-- <view class="menu_img buoy-box" wx:if="{{displayInfo.issues == 5}}" catchtap='toDisplayHome' data-issues="{{displayInfo.issues}}">
+        <image class="buoy-img-0" src="{{img_0}}" mode="aspectFit" lazy-load></image>
+        <view class="buoy-item">
+          <image class="buoy-img-2" src="{{img_2}}" mode="aspectFit" lazy-load></image>
+          <image class="buoy-img-3" src="{{img_3}}" mode="aspectFit" lazy-load></image>
+          <image class="buoy-img-4" src="{{img_4}}" mode="aspectFit" lazy-load></image>
+        </view>
+      </view> -->
+      <!-- <view class="display-hn-buoy" catchtap='toDisplayHome' data-issues="{{displayInfo.issues}}" wx:if="{{displayInfo.issues == 5}}">
+        <image class="img" src="{{buoy_display_zm}}" mode="aspectFit" lazy-load></image>
+      </view> -->
+      <!-- 陈列issues:7 奖励红牛券 -->
+      <!-- <view class="display-hn-buoy" catchtap='toDisplayHome' data-issues="{{displayInfo.issues}}" wx:if="{{displayInfo.issues == 7}}">
+        <image class="img" src="{{buoy_display_hn}}" mode="aspectFit" lazy-load></image>
+      </view> -->
+    </view>
+
+  </movable-view>
+</movable-area>
+<actCouponPop id="actCouponPop" wx:if="{{actInfoSZ}}"></actCouponPop>

@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "hxing": "../component/hxing/index",
+    "hxed": "../component/hxed/index",
+    "excItem": "../component/excItem/index",
+    "discountItem": "../component/discountItem/index",
+    "actItem": "../component/actItem/index",
+    "filterPop": "../component/filterPop/index"
+  },
+  "disableScroll": true,
+  "navigationBarTitleText": "卡券使用记录"
+}

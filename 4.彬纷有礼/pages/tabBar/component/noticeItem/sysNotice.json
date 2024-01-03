@@ -1,0 +1,10 @@
+{
+  "component": true,
+  "usingComponents": {
+    "scroller": "coolui-scroller/scroller/index",
+    "refresh": "coolui-scroller/refresh/index",
+    "item": "coolui-scroller/item/index",
+    "loadmore": "coolui-scroller/loadmore/index",
+    "empty": "coolui-scroller/empty/index"
+  }
+}

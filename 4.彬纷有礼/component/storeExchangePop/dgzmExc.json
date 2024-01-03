@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "process": "./process/index",
+    "background":"./background/index",
+    "van-count-down": "@vant/weapp/count-down/index"
+  }
+}

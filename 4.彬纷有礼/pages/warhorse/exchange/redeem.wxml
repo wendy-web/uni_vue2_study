@@ -1,0 +1,30 @@
+<!--pages/warhorse/exchange/redeem.wxml-->
+<top-navbar title="{{brand_name}}{{navbar_title}}" bgImg="{{navbar_bg}}" iconTheme="white" bindback="onBack"></top-navbar>
+<view class="exc-box" style="--top:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;">
+  <view class="exc-item">
+    <!-- 可用奖励罐数 -->
+    <view class="exc-info">
+      <image class="img-hn-cans" wx:if="{{exc_type==1}}" src="{{img_redbull}}" mode="aspectFit" />
+      <image class="img-zm-cans" wx:if="{{exc_type==2}}" src="{{img_zm_cans}}" mode="aspectFit" />
+      <view class="exc-info-total">
+        <view class="exc-available">
+          {{available}}
+        </view>
+        <view class="exc-name">可用{{brand_name}}{{navbar_title}}(罐)</view>
+      </view>
+    </view>
+    <!-- 可兑换换购券 -->
+    <view class="exc-title">可兑换{{brand_name}}换购券(张)</view>
+    <view class="exc-stepper">
+      <van-stepper value="{{exchange_num}}" plus-class="stepper-plus" minus-class="stepper-minus" input-class="stepper-input" input-width="342rpx" button-size="100rpx"  min="0" max="{{exc_max_num}}" integer bind:change="stepperChange" />
+    </view>
+    <view class="exc-remain">
+      <text>剩余换购奖励(罐)：</text>
+      <text class="exc-remain-num">{{exc_remain_num}}</text>
+    </view>
+    <view class="exc-tips">最低兑换需满足1罐</view>
+    <view class="exc-operate">
+      <van-button color="#e3001b" bind:click="exchange" custom-class="exc-btn" size="large" disabled="{{disabled}}" loading-text="加载中···" loading="{{disabled}}" round>确认兑换</van-button>
+    </view>
+  </view>
+</view>

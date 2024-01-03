@@ -1,0 +1,9 @@
+<!--component/storeRankPop/unboxBackground/index.wxml-->
+<view class="box">
+  <view class="box-item {{boxItemClass}}" style="background-image:url({{bgImg}});">
+      <slot></slot>
+  </view>
+  <view class="close-box">
+    <image class="icon-close" mode="aspectFit" bindtap="closePop" src="{{closeImg}}"></image>
+  </view>
+</view>

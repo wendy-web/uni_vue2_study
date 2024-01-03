@@ -1,0 +1,165 @@
+/* pages/phaseIII/couponStats/detail/index.wxss */
+
+.box {
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  z-index: 1;
+  background-color: #f6f6f6;
+  overflow: hidden;
+}
+.inner-box{
+  box-sizing: border-box;
+  flex: 1;
+  background-color: #ffffff;
+  margin-top: 20rpx;
+  padding-top: 30rpx;
+  border-radius: 20rpx 20rpx 0rpx 0rpx;
+}
+
+/* 列表项list-item start */
+
+.list-item {
+  min-height: 180rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  margin: 0 20rpx 30rpx 20rpx;
+}
+
+.list-item-left {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  padding: 20rpx 0rpx 20rpx 20rpx;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfYAAACqBAMAAACt/nC3AAAAHlBMVEUAAAD/NGX/F1D/FU//GFD/////GVH/4ej/gqH/t8m1kLKbAAAABXRSTlMA+3UrvQKWD/QAAAFLSURBVHja7dQ9agJhFEbhFz9XYEJslUiwHHcQG8HS4mJcQEydQnADgpbuWGdcxjnPDg73J09tsTni5GV9OxXNrktvfimew3eeRtMimgxj5y1873+WNObYa//+mTHx2of4a1aFlWVhZVtY+S0s25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ7KdyXYm25lsZ8pfYWVbWFkWVlaFlfGlmM4fadBnd5h0yfxURPcuyWhaQPu39L6IF/8zS6+tb7y133UZtMXmiJPkAVZpca4aOAaVAAAAAElFTkSuQmCC");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.list-title {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #000000;
+  line-height: 30px;
+}
+
+.list-subtitle {
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Medium;
+  font-weight: 500;
+  text-align: left;
+  color: #676767;
+  line-height: 40rpx;
+  display: flex;
+  align-items: center;
+}
+
+.nick-name-width {
+  max-width: 180rpx;
+  display: inline-block;
+}
+
+.expire-time {
+  font-size: 22rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Light;
+  font-weight: 500;
+  text-align: left;
+  color: #e10404;
+}
+
+.list-item-right {
+  position: relative;
+  z-index: 1;
+  min-width: 210rpx;
+  flex-shrink: 0;
+  align-self: stretch;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANAAAACqBAMAAAAuM9zgAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAwUExURUdwTP8ZUP////8bUv8YUP8gVv8ZUf8XUP////8ZUf+/zv9qj//c5f+qvv89bP+QqyeJMj0AAAAIdFJOUwCZyOory3tdYbD+AwAAAQpJREFUeNrt3LEJwmAQhuEDgxnBFRwgCloJgrWFXSCNC2SMI0jqWNplArVwAMFKLG1dIZJSk4ADCHeIvP8CDwjfm8oTEZlsTd9oIN0LCjV9m/u4g/q1Gr/LqoXmZ2tIb7O3E07NHc0ikUVS2kNaicQejuapDD0czZZOkD68oIMX9PSCdkDfQwUQkDvEYIFoHRCtAwJiR0C0DgiIHQHROiAgBgtE64BoHRAQrQOidUBA7AiI1gEBsSMgWgcExGCBaB0QrQMCYkdAtA4IiB0B0TogoJ+Drl7Q/t/+wJ4tJTl5QHkqwbp2gKrmhEbs8MtFzWmLXmkOtactJDxaO5eoOwti/En6nB/xOajyAvQzlsbS3Wc4AAAAAElFTkSuQmCC");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon_dis_coupon {
+  width: 154rpx;
+  height: 48rpx;
+}
+.act-title {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #e3001b;
+  line-height: 40px;
+}
+
+.discount-count {
+  font-size: 20rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #e3001b;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.discount-num {
+  font-size: 56rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #e3001b;
+  margin-right: 4rpx;
+}
+
+.empty-img {
+  width: 428rpx !important;
+  height: 428rpx !important;
+}
+
+/* 列表项list-item end */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oneLine {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.scroller-box{
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 2;
+}
+.empty-box{
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  overflow: hidden;
+  z-index: 1;
+}

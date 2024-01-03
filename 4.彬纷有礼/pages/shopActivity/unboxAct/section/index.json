@@ -1,0 +1,13 @@
+{
+  "usingComponents": {
+    "easy-loadimage": "../../../../component/easy-loadimage/easy-loadimage",
+    "box-progress":"../../../../component/box-progress/box-progress",
+    "van-count-down": "@vant/weapp/count-down/index"
+
+  },
+  "navigationBarTitleText": "",
+  "navigationStyle":"custom",
+  "backgroundColorTop":"#ff2826",
+  "backgroundColorBottom":"#ffeedc",
+  "navigationBarBackgroundColor": "#ff2826"
+}

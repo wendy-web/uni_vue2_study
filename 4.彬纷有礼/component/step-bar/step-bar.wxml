@@ -1,0 +1,42 @@
+<!--component/step-bar/step-bar.wxml-->
+<view class="box {{classDaily}}" style="background-image: url({{bg_act_progress}});">
+  <view class="head {{!showTakePhoto?'head-height80':''}}">
+    <image class="icon_progress" src="{{icon_progress}}" mode="aspectFit"></image>
+    <block wx:if="{{type==1}}">
+      <view class="head-title">活动进度</view>
+    </block>
+    <block wx:if="{{type==2}}">
+      <view class="head-title">下次可陈列拍照</view>
+    </block>
+    <block wx:if="{{type==3}}">
+      <view class="head-title" style="font-size: 30rpx;">现在可第{{actInfo.s_num+1}}次陈列拍照</view>
+    </block>
+    <image class="icon_progress" src="{{icon_progress}}" mode="aspectFit"></image>
+  </view>
+  <view class="content {{!nextDisplay?'bottom70':''}}">
+    <view class="title">
+      <text>您已完成</text>
+      <view class="times">{{actInfo.s_num||0}}</view>
+      <text>次冰箱陈列</text>
+    </view>
+    <view class="step-box-top">
+      <view wx:for='{{4}}' wx:key="key" data-step="{{item+1}}" class="{{item< actInfo.s_num?'active':''}}">
+        <!-- <view class="item">{{item+1}} 次</view> -->
+      </view>
+    </view>
+    <!-- 下次拍照时间，视情况显示：（活动结束、超过4次都隐藏）-->
+    <block wx:if="{{nextDisplay&&type!=3&&actInfo.s_num<actInfo.kpi_num&&actInfo.act_state.act_ing}}">
+      <view class="next-display-box">下次拍照时间：<text class="next-display-date">{{nextDisplay}}</text></view>
+    </block>
+    <!-- 现在可陈列拍照 -->
+    <block wx:if="{{type==3}}">
+      <view class="next-display-box"><text class="next-display-date">现在就去拍照吧</text></view>
+      <view class="btn-take-photo" bindtap="takePhoto" data-issues="{{actInfo.issues}}" wx:if="{{showTakePhoto}}">去拍照</view>
+    </block>
+    <!-- 查看详情 -->
+    <block wx:if="{{type==2 || actInfo.s_num>=actInfo.kpi_num}}">
+      <view class="btn-take-photo" bindtap="toDisplayHome" data-issues="{{actInfo.issues}}" wx:if="{{showTakePhoto}}">查看详情</view>
+      <!-- <view bindtap="toDisplayHome" data-issues="{{actInfo.issues}}" class="act-display-btn" style="background-image: url({{img_bg_apply_btn}});">查看详情</view> -->
+    </block>
+  </view>
+</view>

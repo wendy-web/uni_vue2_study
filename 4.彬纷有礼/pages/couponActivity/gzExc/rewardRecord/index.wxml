@@ -1,0 +1,59 @@
+<!--pages/couponActivity/gzExc/rewardRecord/index.wxml-->
+<view class="align-center" style="height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;box-sizing:border-box; padding-top:{{navBarSystem?navBarSystem.statusBarHeight:'20'}}px">
+  <view bindtap="back" class=" nav-bar__button nav-bar__btn_goback white"></view>
+</view>
+
+<!-- 内容框 -->
+<view class="container" style="top:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;">
+  <!-- 标题：奖励记录 -->
+  <view class="page-title-box">
+    <image class="head_reward_record" src="{{file_url_gzexc}}/head_reward_record.png" mode="aspectFit" />
+    <!-- <view>奖励记录</view> -->
+  </view>
+  <!-- 活动期数、奖励区间 、实际开箱 、奖励、状态 -->
+  <view class="row-title">
+    <view class="item flex_one">期数</view>
+    <view class="item flex_two">兑奖罐数</view>
+    <!-- <view class="item flex_three">实际开箱</view> -->
+    <view class="item flex_four">奖品</view>
+    <view class="item flex_five">状态</view>
+  </view>
+  <!-- 列表信息 -->
+  <view class="list-box">
+    <view wx:if="{{actInfo}}" wx:key="key" class="list-item">
+      <view class="item flex_one">{{actInfo.issue_title||1}}</view>
+      <view class="item flex_two  reward-text">
+        <block wx:if="{{actInfo.s_num}}">
+          <text class="kpi-num">{{actInfo.s_num || '-'}}</text>
+          <text>罐</text>
+        </block>
+        <text wx:else>——</text>
+      </view>
+
+      <!-- <view class="item flex_three">{{item.s_num?item.s_num+'箱':'0'}}</view> -->
+      <!-- 奖励需要判断中间未中奖，中奖区间 -->
+      <view class="item flex_four reward-text">
+        <block wx:if="{{actInfo.rev_time&&actInfo.act_state.act_end}}">
+          <view>
+            <text>战马活动券</text>
+            <text class="reward-num">{{actInfo.rev_num}}</text>
+            <text>张</text>
+          </view>
+
+        </block>
+        <block wx:else>——</block>
+      </view>
+      <!-- 状态需要判断 -->
+      <view class="item flex_five {{ statusClass[actInfo.status] }}">{{actInfo.status}}</view>
+    </view>
+    <view class="noMore mgt30">—— 暂无更多记录 ——</view>
+
+  </view>
+  <!-- 底部图片 -->
+  <view class="img-record-bottom-box">
+
+    <image class="bg_reward_record" src="{{file_url_gzexc}}/bg_reward_record_1.png" mode="aspectFit" />
+
+  </view>
+
+</view>

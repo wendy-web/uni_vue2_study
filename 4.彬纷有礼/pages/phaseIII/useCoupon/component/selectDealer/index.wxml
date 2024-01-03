@@ -1,0 +1,83 @@
+<!--pages/phaseIII/useCoupon/component/selectDealer/index.wxml-->
+<view class="box">
+  <van-popup show="{{selectDealerShow}}" bind:close="onClose" data-popname="selectDealerShow" position="bottom" z-index="999" custom-style="background-color: transparent;" custom-class="select-dealer-pop">
+    <view bind:tap="onClose" data-popname="selectDealerShow" class="icon_close_box">
+      <image class="icon_close" src="{{file_url_9m}}/icon_close.png" mode="aspectFit" />
+    </view>
+    <view class="dealer-box safeArea">
+      <view class="title">选择配送商</view>
+      <view class="search-box">
+        <van-search 
+        field-class="search-item" 
+        value="{{ keyword }}" 
+        shape="round" 
+        background="#f6f6f6" 
+        bind:search="searchChange" 
+        bind:change="searchChange" 
+        bind:cancel="searchCancel" 
+        bind:clear="searchChange" 
+        bind:blur="searchBlur" 
+        placeholder="电话/姓名/公司名称搜索" />
+      </view>
+      <view class="list-box">
+        <block wx:if="{{dealerList.length}}">
+          <block class="list-item" wx:for="{{dealerList}}" wx:key="key">
+            <!-- 区分红牛业务员和其它身份：红牛业务员没有默认的选项，UI布局也不太一样 -->
+            <view class="list-item-hn" wx:if="{{item.condition == 0}}">
+              <view>
+                <view class="dealer-title">红牛业务人员</view>
+                <view class="dealer-contact" bindtap="mkPhoneCall" data-phonestr="{{item.phoneStr}}" data-phone="{{item.mobile}}">
+                  <text wx:if="{{item.name ||item.contact}}" class="mr-30">{{item.name ||item.contact}}</text>
+                  <text class="dealer-mobile" space="nbsp"> {{item.phoneStr}}</text>
+                  <image class="icon_call" src="{{file_url_9m}}/icon_call.png" mode="aspectFit" />
+                </view>
+              </view>
+              <view>
+                <view class="btn-select" bind:tap="selectDealer" data-item="{{item}}">选择</view>
+              </view>
+            </view>
+            <view class="list-item" wx:else>
+              <!-- 右上角的标识：默认 -->
+              <view class="tag-default" wx:if="{{item.is_def == 1}}">默认</view>
+              <!-- 右上角的标识：上次送货 -->
+              <view class="tag-default  tag-last-send" wx:if="{{item.is_verify == 1}}">上次送货</view>
+              <view>
+                <view class="dealer-title" wx:if="{{item.name}}">{{item.name}}</view>
+                <view class="dealer-contact" bindtap="mkPhoneCall" data-phonestr="{{item.phoneStr}}" data-phone="{{item.mobile}}">
+                  <text class="mr-30" wx:if="{{item.contact}}">{{item.contact}}</text>
+                  <text class="dealer-mobile">{{item.phoneStr}}</text>
+                  <image class="icon_call" src="{{file_url_9m}}/icon_call.png" mode="aspectFit" />
+                </view>
+              </view>
+              <view class="dealer-address-box">
+                <view class="dealer-address">
+                  <text>地址：</text>
+                  <text>{{item.address || ''}}</text>
+                  <!-- <text>{{item.address || ''}}</text>
+                  <text>{{item.address || ''}}</text>
+                  <text>{{item.address || ''}}</text> -->
+                </view>
+                <view class="dealer-distance">
+                  <text>{{item.dist}}</text>
+                  <text>km</text>
+                </view>
+              </view>
+              <view class="select-box">
+                <view class="set-default" bind:tap="setDefault" data-uid="{{item.uid}}">
+                  <view class="icon-circle {{item.checked?'icon-circle-active':''}}"></view>
+                  <text>默认</text>
+                </view>
+                <view class="btn-select" bind:tap="selectDealer" data-item="{{item}}">选择</view>
+              </view>
+            </view>
+
+          </block>
+        </block>
+        <block wx:else>
+          <empty img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+        </block>
+      </view>
+    </view>
+
+  </van-popup>
+</view>

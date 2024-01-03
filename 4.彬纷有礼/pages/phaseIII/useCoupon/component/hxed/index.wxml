@@ -1,0 +1,149 @@
+<!--pages/phaseIII/useCoupon/component/hxed/index.wxml-->
+<!--pages/phaseIII/useCoupon/component/hxing/index.wxml-->
+<view class="box">
+  <view class="filter-box">
+    <view class="filter-inner">
+      <view class="keyword-box">
+        <block wx:if="{{filterArr.length}}">
+          <scroll-view class="scroll-tag" scroll-x>
+            <view class="tag-box">
+              <view wx:for="{{filterArr}}" wx:key="id" class="tag-item" data-id="{{item.id}}" bind:tap="deleteTag">
+                <text>{{item.label}}</text>
+                <view class="icon-tag">
+                  <van-icon name="clear" />
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+        </block>
+        <!-- 如果有筛选列表,显示累计字段 -->
+        <view wx:if="{{total}}" class="total-box">
+          <text>累计：</text>
+          <text class="total-num">{{total}}</text>
+        </view>
+      </view>
+      <view class="filter-item {{filterArr.length?'filter-item-active':''}}" bind:tap="showFilterPop">
+        <view class="flex-center">
+          <image class="icon_filter" src="{{file_url_9m}}/{{filterArr.length?'icon_filter_active.png':'icon_filter.png'}}" mode="aspectFit" />
+          <text>筛选</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view  class="inner-box">
+    <scroller wx:if="{{!isEmpty}}" background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" bind:loadmore="loadmore" bind:refresh="restRefresh" class="scroller-box">
+      <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+      <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+
+      <!-- 中间列表内容区域，可使用长列表分页组件、列表项组件或自定义 -->
+      <block wx:if="{{couponList.length>0}}">
+        <item wx:for="{{couponList}}" wx:key="id">
+          <!-- 卡券item:注意区分不同类型的UI图，left 和right  -->
+          <view class="list-item-box" bind:tap="foldCouponInfo" data-index="{{index}}">
+            <view class="list-item">
+              <view class="list-item-left">
+
+                <view class="list-title">{{item.sku_info.sku_name}}</view>
+                <view class="list-subtitle">
+                  <text>订单号：</text>
+                  <text>{{item.check_no}}</text>
+                </view>
+
+                <view class="list-subtitle">
+                  <text>核销时间：{{item.check_time}}</text>
+                </view>
+                <view class="list-subtitle">
+                  <text class="nick-name-width oneLine">核销人员：{{item.check_name}}</text>
+                  <text space="nbsp"> (UID:{{item.check_uid}})</text>
+                </view>
+              </view>
+              <!-- 中间间隔 上下半圆 -->
+              <view class="gap-vertical-box">
+                <view class="semi-circle-t"></view>
+                <view class="semi-circle-b"></view>
+              </view>
+              <view class="list-item-right">
+                <view class="discount-count">
+                  <text class="discount-num">{{item.count_sj || item.count_dh}}</text>
+                </view>
+                <view class="discount-count">
+                  <text>张</text>
+                </view>
+                <image class="icon_arrow_down" src="{{file_url_9m}}/{{item.is_toggle ? 'icon_arrow_up':'icon_arrow_down'}}.png" mode="aspectFit" />
+              </view>
+              <!-- 水印 -->
+              <image class="icon_stamp_hxing" src="{{file_url_9m}}/icon_stamp_hxed.png" mode="aspectFit" />
+            </view>
+            <!-- 卡券信息 -->
+            <view class="counpon-info-box {{item.is_toggle ? 'is_toggle':''}}">
+              <!-- 换购券 -->
+              <view class="sku-count-item" wx:if="{{item.sku_count._total>0}}">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">换购券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">{{item.sku_count._total}}</view>
+                </view>
+                <view class="counpon-info-item" wx:if="{{item.sku_count.exc.exc_num>0}}">
+                  <view>
+                    <text class="subtitle">换购券</text>
+                  </view>
+                  <view class="sub-count-num">{{item.sku_count.exc.exc_num}}</view>
+                </view>
+                <view class="counpon-info-item" wx:if="{{item.sku_count.exc.exc_jl>0}}">
+                  <view>
+                    <text class="subtitle">换购奖励券</text>
+                  </view>
+                  <view class="sub-count-num">{{item.sku_count.exc.exc_jl}}</view>
+                </view>
+                <view class="counpon-info-item" wx:if="{{item.sku_count.exc.exc_dhq>0}}">
+                  <view>
+                    <text class="subtitle">产品兑换券</text>
+                  </view>
+                  <view class="sub-count-num">{{item.sku_count.exc.exc_dhq}}</view>
+                </view>
+              </view>
+              <!-- 折扣券 -->
+              <view class="sku-count-item" wx:if="{{item.sku_count._dis_num>0}}">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">折扣券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">{{item.sku_count._dis_num}}</view>
+                </view>
+              </view>
+              <!-- 活动券 -->
+              <view class="sku-count-item" wx:if="{{item.sku_count._act_num > 0}}">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">活动券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">{{item.sku_count._act_num}}</view>
+                </view>
+              </view>
+              <!-- end -->
+            </view>
+          </view>
+
+        </item>
+      </block>
+
+      <!-- 加载更多区域，可使用加载更多组件或自定义 -->
+      <loadmore slot="loadmore" status="{{loadMoreSetting.status}}" loading="{{loadMoreSetting.loading}}" noMore="{{loadMoreSetting.noMore}}" more="{{loadMoreSetting.more}}" />
+
+      <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+      <view class="empty-box" wx:if="{{couponList.length == 0}}">
+        <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+      </view>
+    </scroller>
+    <scroller wx:else background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" bind:refresh="restRefresh" class="scroller-box">
+      <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+      <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+      <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+      <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+    </scroller>
+  </view>
+</view>

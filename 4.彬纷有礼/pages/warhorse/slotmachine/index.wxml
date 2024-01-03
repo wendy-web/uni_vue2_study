@@ -1,0 +1,126 @@
+<!--pages/warhorse//slotmachine/index.wxml-->
+<import src="./utils/machine.wxml" />
+<view class="container" style="background-image: url({{bg_zm_tiger}});">
+	<!-- 战马logo -->
+	<image class="icon-zm-logo" mode="aspectFit" src="{{icon_zm_logo}}"></image>
+	<!-- 游戏机背景 -->
+	<view class="game-box">
+		<view class="bg-zm-tiger-box-head" style="background-image: url({{bg_zm_tiger_box_head}});">
+			<image class="icon-zm-tiger-title" mode="aspectFit" src="{{icon_zm_tiger_title}}"></image>
+		</view>
+		<view class="content-bg">
+
+			<view class="content">
+				<view class="machine-box">
+
+					<template is="machine" data="{{...machine}}"></template>
+				</view>
+			</view>
+		</view>
+		<view class="bg-zm-tiger-box-foot" style="background-image: url({{bg_zm_tiger_box_foot}});">
+			<view class="footer" bindtap="onStart">
+				<image src="{{cjImg}}" class="click_me button3D" mode="aspectFit"></image>
+				<image src="{{pullImg}}" class="pullImg" mode="aspectFit"></image>
+			</view>
+		</view>
+	</view>
+
+</view>
+
+
+<!-- 视频广告弹窗 -->
+<view wx:hidden="{{!videoPop}}">
+	<videoAd videoPop="{{videoPop}}" Ad="{{false}}" videoUrls="{{videoUrl}}" capsule="" bind:myevent="playGame"></videoAd>
+</view>
+<!-- 跳转余额二次确认弹窗 -->
+<view class="fadeIn " wx:if="{{reconfirmPop}}">
+	<view class="weui-mask" data-id="0" bindtap="closePop"></view>
+	<view class="weui-dialog reconfirmPop {{reconfirmPop ? 'popIn' : ''}}" style="background-image: url({{pop_zm_bg}});">
+		<view class="weui-dialog__hd"></view>
+		<view class="weui-dialog__bd">
+			<!-- 红包翻倍图片 -->
+			<!-- <view>
+				<image mode="aspectFit" class="remindIcon" src="{{remindIcon}}"></image>
+			</view> -->
+		</view>
+
+		<view class="flex-align-around width100">
+			<view class="goyuerBtn flex-align-center " data-go="2" bindtap="goYuer">
+				<image  class="icon-zm-btn" mode="aspectFit" src="{{icon_zm_btn_giveup}}"></image>
+			</view>
+			<view class=" flex-align-center" bindtap="watchAd">
+				<image  class="icon-zm-btn" mode="aspectFit" src="{{icon_zm_btn_video}}"></image>
+			</view>
+		</view>
+
+	</view>
+</view>
+<!-- 获奖弹窗 -->
+<view class="fadeIn " wx:if="{{rewardPop}}">
+	<view class="weui-mask reward_bg" style="background-image: url({{bg_zm_tiger_pop}});" data-id="1"></view>
+	<view class="rewardPop_content  flex-column-flex_end" style="background-image: url({{pop_zm_tiger_bg}});">
+		<view class="msg">
+			<view class="msg-title">恭喜您获得</view>
+
+			<block wx:if="{{taskKey==1}}">
+				<view class="msg-name">红包翻<text class="msg-reward">{{rewardMsg}}</text>奖励</view>
+			</block>
+			<block wx:if="{{taskKey==2}}">
+				<view class="msg-name">{{methodName}}<text class="msg-reward">{{rewardMsg}}</text></view>
+			</block>
+		</view>
+		<view class="getReward  flex-align-center">
+			<!-- <view class="btn  flex-align-center" data-id="1" bindtap="closePop">
+				点击领取
+			</view> -->
+			<image class="btn" data-id="1" bindtap="closePop" mode="aspectFit" src="{{icon_btn_getreward}}"></image>
+		</view>
+	</view>
+	<view class=" rewardPop " style="background-image: url({{bg_zm_tiger_pop_coin}});" data-id="1" bindtap="closePop">
+	</view>
+</view>
+<!-- 累计奖励弹窗 -->
+<view class="fadeIn " wx:if="{{lotteryPop}}">
+	<view class="weui-mask " data-id="2"></view>
+	<view class="weui-dialog lotteryPop" style="background-image: url({{pop_zm_tiger_bg_earned}});">
+
+		<view class="flex-column-flex_end   height500">
+			<view class="{{gameOver ? 'getRewarded20': 'getRewarded'}} ">
+				<view class="">
+					<view class=" totalMoney letter-spacing">恭喜您累计获得</view>
+					<view class="totalMoney-item">¥<text class="font120 font-bold">{{totalMoney}}.00</text>
+					</view>
+					<view class="flex-row-center">
+						<view>
+							<text class="rewardHistory">{{rewardHistory}}</text>
+						</view>
+					</view>
+				</view>
+				<view class="mgt27 flex-align-around  weui-flex">
+					<view class="weui-flex__item goyuerBtn flex-align-center " data-go="1" bindtap="goYuer">
+						<image wx:if="{{!gameOver}}" class="icon-zm-btn" mode="aspectFit" src="{{icon_zm_btn_giveup}}"></image>
+						<image wx:else class="icon-zm-btn" mode="aspectFit" src="{{icon_zm_btn}}"></image>
+						<!-- {{!gameOver?'放弃翻倍': yuerText}} -->
+					</view>
+					<!-- <view class="weui-flex__item text-left  mgl70" wx:if="{{!gameOver}}">
+						<view class="scaleBox">
+							<view class="scaleBtn  click_double" data-pop="2" bindtap="watchAd">
+								<css-animation class="animation-qi" width="250" height="150" count="35" duration="7" url="{{btnurl}}">
+								</css-animation>
+							</view>
+							<view class="scaleBtn-backup" bindtap="watchAd">看视频红包翻倍</view>
+						</view>
+					</view> -->
+					<view wx:if="{{!gameOver}}" class="pdlr20"></view>
+					<image wx:if="{{!gameOver}}" bindtap="watchAd" class="icon-zm-btn weui-flex__item" mode="aspectFit" src="{{icon_zm_btn_video}}"></image>
+					<view wx:if="{{gameOver}}" class="pdlr20"></view>
+					<view wx:if="{{gameOver}}" class="flex-align-center" bindtap="goScan">
+						<image class="icon-zm-btn" mode="aspectFit" src="{{icon_zm_btn_scan}}"></image>
+					</view>
+				</view>
+
+			</view>
+		</view>
+	</view>
+
+</view>

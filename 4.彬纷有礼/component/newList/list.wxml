@@ -1,0 +1,33 @@
+<!--component/newList/list.wxml-->
+
+<block wx:for="{{list}}" wx:key="key">
+
+  <block wx:if="{{!item.adCustom}}">
+
+    <view class="content-item">
+      <easy-loadimage index="{{index}}" imageSrc="{{item.cover}}" mode="aspectFill" bindtap="goWebview"
+        data-title="{{item.title}}" data-link="{{item.url}}" imageClass="news_pic"></easy-loadimage>
+      <view class="newsBox " style="min-height:92px;">
+        <view bindtap="goWebview" data-title="{{item.title}}" data-link="{{item.url}}">
+          <view class="news_time">{{item.posts_time}}</view>
+          <view class="news_title"><text decode>{{item.title}}</text></view>
+          <view class="news_desc"><text class="text" decode>{{item.digest}}</text></view>
+        </view>
+        <view class="giveAlike">
+          <view class="readed">
+            <image class="image" mode="aspectFit" src="../../assets/images/readed.png"></image>
+            <text class="pdl7">{{item.pv}}</text>
+          </view>
+          <view class="liked" data-id="{{item.c_id}}" bindtap="giveAlike">
+            <image class="image {{item.animate ? 'animation-shake' : ''}} " mode="aspectFit"
+              src="{{item.is_give == '0' ? unlikeImg : likeImg}}"></image>
+            <text class="pdl7">{{item.give}}</text>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+  </block>
+  <banner-ads wx:if="{{index>1&&index%adPosition === 0}}"></banner-ads>
+</block>

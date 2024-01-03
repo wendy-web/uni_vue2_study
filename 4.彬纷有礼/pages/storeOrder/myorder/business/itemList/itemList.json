@@ -1,0 +1,10 @@
+{
+  "component": true,
+  "usingComponents": {
+    "van-icon": "@vant/weapp/icon/index",
+    "van-button": "@vant/weapp/button/index",
+    "fh-popup": "../../../component/fh_popup/index",
+    "order-popup": "../../../component/order_popup/index"
+
+  }
+}

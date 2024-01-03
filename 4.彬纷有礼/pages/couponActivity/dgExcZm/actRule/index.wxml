@@ -1,0 +1,150 @@
+<!--pages/couponActivity/dgExcZm/actRule/index.wxml-->
+<view class="page-box">
+
+  <view class="align-center" style="height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;box-sizing:border-box; padding-top:{{navBarSystem?navBarSystem.statusBarHeight:'20'}}px">
+    <view bindtap="back" class=" nav-bar__button nav-bar__btn_goback white"></view>
+  </view>
+  <!-- 活动规则 -->
+  <view class="rule-title-box" style="margin-top: {{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'60'}}px;">
+    <image class="img-rule-title" src="{{img_rule_title}}" mode="aspectFit" />
+    <image class="img-rule-can" src="{{img_rule_can}}" mode="aspectFit" />
+  </view>
+  <view class="act-rule-box">
+    <view class="act-rule-item">
+      <view class="head">活动说明</view>
+      <view class="rule-item">
+        <view class="subtitle">活动时间</view>
+        <view>
+          {{ actInfo.act_start_date || '2023年10月22日' }}-{{ actInfo.act_end_date || '2023年11月30日' }}，共{{actInfo.act_state.total_day}}天。
+        </view>
+      </view>
+      <view class="rule-item rule-item-gap">
+        <view class="subtitle">活动对象</view>
+        <view>
+          凡在”彬纷有礼“小程序内显示该活动的店铺均可参加，活动区域东莞市。
+        </view>
+      </view>
+      <view class="rule-item rule-item-gap">
+        <view class="subtitle">参与方式</view>
+        <view>
+          可进入“彬纷有礼”小程序，首页“资讯－热门活动”点击“年末大促销，战马兑奖超高奖励”，或从页面活动浮窗进入查看当前消费者兑奖进度；
+        </view>
+
+      </view>
+    </view>
+    <!-- 奖励发放说明 -->
+    <view class="act-rule-item">
+      <view class="head">奖励发放方式及使用有效期</view>
+      <view class="rule-item">
+        <view class="content">
+          <view class="content-left">
+            <view class="bg-num" style="background-image: url({{bg_num}});">1</view>
+          </view>
+          <view class="content-right">
+            <view>
+              活动结束后，系统将自动把活动奖券发放至您的彬纷有礼账户，您可到【我的-可用卡券】页面查看，
+              <text class="color-orange">1张奖券可兑换1罐红牛维生素功能饮料（250ml）或1罐战马能量型功能饮料（310ml）；</text>
+            </view>
+          </view>
+        </view>
+        <view class="content">
+          <view class="content-left">
+            <view class="bg-num" style="background-image: url({{bg_num}});">2</view>
+          </view>
+          <view class="content-right">
+            <view>
+              本次活动依据“彬纷有礼”现有活动券的核销流程，请在{{actInfo.exp_time}}前通过
+              <text class="color-orange">【彬纷有礼－可用卡券】</text>
+              向上级配送商申请核销，逾期未申请核销作废。
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+    <!-- 活动规则 -->
+    <view class="act-rule-item">
+      <view class="head">活动规则</view>
+      <view class="rule-item">
+        <!-- 1 -->
+
+        <view class="content">
+          <view class="content-left">
+            <view class="bg-num" style="background-image: url({{bg_num}});">1</view>
+          </view>
+          <view class="content-right">
+            <view>
+              活动开始后，记录店铺成功兑换2023年“码上换购，1元乐享”战马产品（战马能量型功能饮料310ml）的消费者人数，并按照兑奖人数进行奖励。活动结束后，按照最终兑奖人数的数量，获得相应等级的战马产品（战马能量型功能饮料310ml）和红牛产品（红牛维生素功能饮料250ml）奖励。
+            </view>
+          </view>
+        </view>
+        <!-- 2 -->
+
+        <view class="content">
+          <view class="content-left">
+            <view class="bg-num" style="background-image: url({{bg_num}});">2</view>
+          </view>
+          <view class="content-right">
+            <view>
+              同一消费者活动期间多次兑奖的情况视为同一位兑奖人（以兑奖时使用的“彬纷享礼”小程序用户ID作为唯一判断标准）。
+            </view>
+          </view>
+        </view>
+        <!-- 3 -->
+        <view class="content">
+          <view class="content-left">
+            <view class="bg-num" style="background-image: url({{bg_num}});">3</view>
+          </view>
+          <view class="content-right">
+            <view>
+              同一店铺（同一店铺ID）店长、店员均可参与此次兑奖活动，不同的消费者（不同的用户ID）每兑换一罐战马产品（战马能量型维生素饮料310ml），则店铺的兑奖人数增加1人。
+            </view>
+          </view>
+        </view>
+        <!-- 4 -->
+        <view class="content">
+          <view class="content-left">
+            <view class="bg-num" style="background-image: url({{bg_num}});">4</view>
+          </view>
+          <view class="content-right">
+            <view>
+              若在彬纷有礼上填写的店铺地址与实际店铺地址不在同一个城市（实际店铺地址非东莞市），此次活动兑奖人数视为无效，不予发放奖励。
+            </view>
+          </view>
+        </view>
+        <!-- 5 -->
+        <view class="content">
+          <view class="content-left">
+            <view class="bg-num" style="background-image: url({{bg_num}});">5</view>
+          </view>
+          <view class="content-right">
+            <view>
+              活动期间暂不能对店铺进行转让或加入其他店铺，带来的不便请您谅解。
+            </view>
+          </view>
+        </view>
+
+      </view>
+    </view>
+    <!-- 奖项设置 -->
+    <view class="act-rule-item" wx:if="{{prizeConfig}}">
+      <view class="head">奖项设置</view>
+      <view class="rule-item">
+        活动期间，店铺成功兑换2023年“码上换购，1元乐享”战马促销装产品（战马能量型维生素饮料310ml）的消费者人数：
+      </view>
+      <!-- 根据后台返回的配置 -->
+      <view class="prize-item " wx:for="{{prizeConfig}}" wx:key="index">
+        <view class="prize-title" wx:if="{{index+1 === prizeConfig.length}}">兑奖 {{item.min}} 人及以上</view>
+        <view class="prize-title" wx:else>兑奖 {{item.min}}~{{item.max}}人</view>
+        <view class="prize-item-coupon">
+          奖励活动券【红牛<text class="color-orange">{{item.hn_coupon}}张</text>+战马<text class="color-orange">{{item.zm_coupon}}张</text>】
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 返回顶部 -->
+  <view class="back-to-top" bindtap="scrollTop">
+    <image class="icon-arrow-up" src="{{icon_arrow_up}}" mode="aspectFit"></image>
+    <view>返回顶部</view>
+  </view>
+</view>

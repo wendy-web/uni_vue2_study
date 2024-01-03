@@ -1,0 +1,316 @@
+<!--pages/shopActivity/displayAct/hn/index/index.wxml-->
+<!--pages/shopDisplay/apply.wxml-->
+<view class="top-transparent"></view>
+<view class="align-center" style="height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;box-sizing:border-box; padding-top:{{navBarSystem?navBarSystem.statusBarHeight:'20'}}px">
+  <view bindtap="back" class=" nav-bar__button nav-bar__btn_goback white"></view>
+</view>
+
+<view class="box">
+  <!-- 小背景 -->
+  <block wx:if="{{miniPhone}}">
+    <easy-loadimage index="1" imageSrc="{{img_freezer_mini}}" imageClass="bg-freezer-mini" mode="aspectFit">
+    </easy-loadimage>
+  </block>
+  <block wx:else>
+    <easy-loadimage index="1" imageSrc="{{img_freezer}}" imageClass="bg-freezer" mode="aspectFit">
+    </easy-loadimage>
+  </block>
+  <!-- 拍照攻略+奖励记录,issues 是否解锁 -->
+  <view class="operate-box" wx:if="{{displayInfo.issues}}">
+    <image bindtap="toPlayVideo" class="icon-camera-exp" src="{{icon_camera_exp}}" mode="aspectFit"></image>
+    <block wx:if="{{displayInfo}}">
+      <view class="prize-record-box mgt40">
+        <navigator url="/pages/shopActivity/displayAct/displayRecord/index" hover-class="none">拍照记录</navigator>
+      </view>
+      <view class="prize-record-box mgt20">
+        <navigator url="/pages/shopActivity/displayAct/awardRecord/index?opentype=zm" hover-class="none">奖励记录</navigator>
+      </view>
+    </block>
+  </view>
+  <!-- 预热倒计时 -->
+  <view wx:if="{{displayInfo.act_state.act_yure}}" class="yure-box {{miniPhone?'mini-phone-tips':''}}">
+    <view class="count-down-box">
+      <text>距离活动开始还有</text>
+      <van-count-down time="{{ displayInfo.act_state.count_down_timestamp }}" bind:finish="actTimerFinished" format="{{ displayInfo.act_state.count_down_format }}" style="--count-down-text-color:#ffffff;"></van-count-down>
+    </view>
+    <!-- <block wx:if="{{act_yure_day>1}}">
+      距离活动开始还有<text class="day">{{act_yure_day}}</text>天
+    </block>
+    <block wx:else>
+      <view class="{{miniPhone?'act-yure-count-hms':''}}">距离活动开始还有<text class="day">{{act_countDown}}</text></view>
+    </block> -->
+
+  </view>
+  <!-- 报名、拍照按钮：需判断 未报名 是否逾期 -->
+  <!-- 已激活 -->
+  <view class="act-btn-box" wx:if="{{displayInfo.issues}}">
+
+    <!-- 活动进行中:未结束，也不是预热 （注意：活动未结束，只要满足4次合格即获得奖券：隐藏拍照入口）  -->
+    <block wx:if="{{displayInfo.act_state.act_ing}}">
+      <!-- 陈列拍照 -->
+      <block wx:if="{{displayInfo&&displayInfo.s_num<4 }}">
+        <!-- 点击前往拍照、请明天再来拍照哦、x月x日再来拍照哦 -->
+        <block wx:if="{{!displayInfo.act_state.act_end}}">
+          <block wx:if="{{btn_display_status == 3}}">
+            <view class="btn-goto-display btn-grey {{miniPhone?'mini-phone-btn':''}}" style="background-image: url({{bg_btn_grey}});">
+              <image class="btn-icon-camer " src="{{btn_icon_camer}}" mode="aspectFit"></image>
+              <view class="btn-goto-display-title">{{next_display_date}}再来拍照哦</view>
+            </view>
+          </block>
+          <block wx:elif="{{btn_display_status == 2}}">
+            <image class="btn-goto-display  {{miniPhone?'mini-phone-btn':''}}" src="{{img_btn_tomorrow}}" mode="aspectFit"></image>
+          </block>
+          <block wx:else>
+            <image bindtap="goScan" class="btn-goto-display  {{miniPhone?'mini-phone-btn':''}}" src="{{img_btn_display}}" mode="aspectFit"></image>
+          </block>
+        </block>
+      </block>
+
+      <!-- 活动倒计时 -->
+      <block wx:if="{{!displayInfo.act_state.act_end}}">
+        <view class="act-countdown-box {{miniPhone?'mgt40':'mgt20'}}" style="background-image: url({{bg_act_countdown}});">
+          <view class="act-countdown-title count-down-box">
+            <text>距离活动结束还剩</text>
+            <van-count-down time="{{ displayInfo.act_state.count_down_timestamp }}" bind:finish="actTimerFinished" format="{{ displayInfo.act_state.count_down_format }}" style="--count-down-text-color:#ffffff;--count-down-font-size:30rpx;"></van-count-down>
+          </view>
+          <!-- <view class="act-countdown-title {{act_remain_day>1?'':'font13px'}}">距离活动结束还剩
+            <block wx:if="{{act_remain_day>1}}">
+              <text class="act-countdown-tip">{{act_remain_day}}天</text>
+            </block>
+            <block wx:else>
+              <text class="act-countdown-tip">{{act_countDown}}</text>
+            </block>
+          </view> -->
+
+        </view>
+      </block>
+    </block>
+    <!-- s_num 满足4次完成活动 -->
+    <block wx:if="{{displayInfo&&displayInfo.s_num>3 }}">
+      <!-- 需要判断设备大小······UI不一样 -->
+      <block wx:if="{{miniPhone}}">
+        <view class="winner-box mini-winner-box">
+          <image class="img-title" mode="aspectFit" src="{{img_title}}"></image>
+          <view class="win-tips"><text class="color-blue blue-bold">24</text><text class="color-blue">张</text>战马活动券已发放到“彬纷有礼-可用卡券”中</view>
+
+        </view>
+      </block>
+      <block wx:else>
+        <view class="winner-box">
+          <!-- <view class="win-title">您已完成本次活动</view>
+            <view class="win-tips">活动券将发放到您“彬纷有礼-可用卡券”</view>
+            <view class="win-tips">请注意查收</view> -->
+          <image class="img-title" mode="aspectFit" src="{{img_title}}"></image>
+          <view class="win-tips"><text class="color-blue blue-bold">24</text><text class="color-blue">张</text>战马活动券已发放到“彬纷有礼-可用卡券”中</view>
+
+        </view>
+      </block>
+      <!-- 前往兑换 -->
+      <navigator url="/pages/phaseIII/voucher/index?activeTab=2" hover-class="none" wx:if="{{userInfo.condition !=2}}">
+        <image class="btn-goto-display  {{miniPhone?'mini-phone-btn':''}}" mode="aspectFit" src="{{img_btn_exchange}}"></image>
+      </navigator>
+      
+
+    </block>
+    <!-- 活动结束：此处只要非预热，就一直展示 活动进度 -->
+    <block wx:if="{{!displayInfo.act_state.act_yure}}">
+      <view class="act-step-box">
+        <step-bar actInfo="{{displayInfo}}" nextDisplay="{{next_display_date}}"></step-bar>
+      </view>
+    </block>
+  </view>
+  <!-- 未激活 -->
+  <block wx:if="{{!displayInfo.issues}}">
+    <view class="not-active-box">
+      <view class="not-active-content">
+        <!-- 预留2个图片 -->
+        <image class="display-icon-star" mode="aspectFit" src="{{display_icon_star}}"></image>
+        <view>{{displayInfo.unbox_end_date_md||'9月10日'}}前，在活动中有效开箱扫码20箱</view>
+        <image class="display-icon-star" mode="aspectFit" src="{{display_icon_star}}"></image>
+      </view>
+      <view>即可解锁此活动</view>
+    </view>
+  </block>
+  <!-- 活动主题 -->
+  <view class="act-rule-box">
+    <!-- 标题 -->
+    <view class="act-rule-title" style="background-image:url({{bg_title}}); ">活动主题</view>
+    <!-- 小标题 -->
+    <view class="sub-title">活动主题</view>
+    <!-- 内容 -->
+    <view class="sub-content">陈列中国红牛 奖战马一箱</view>
+
+    <!-- 活动时间 -->
+    <view class="sub-title">活动时间</view>
+    <view class="sub-content italic">{{displayInfo.act_start_date || '2022年8月15日 0时0分0秒'}} -- {{displayInfo.act_end_date || '2022年10月9日23时59分59秒'}}</view>
+
+    <!-- 报名截止时间 -->
+    <!-- <view class="sub-title">报名截止时间</view>
+    <view class="sub-content">{{displayInfo.act_overdue_date}}，逾期视为放弃。</view> -->
+    <!-- 活动对象 -->
+    <view class="sub-title">活动对象</view>
+    <view class="sub-content">本活动参与对象为在“开箱扫码赢红牛，中国红牛大回馈”活动且在9月10日前有效开箱数达到20箱的店铺即可参加本活动。</view>
+    <!-- 参与方式 -->
+    <view class="sub-title">参与方式</view>
+    <view class="sub-content">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      8月15日0点开始，已解锁该活动的店铺进入《彬纷有礼》小程序可参加陈列任务。
+    </view>
+    <view class="sub-content mgt20">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>客户按照系统提示操作，在活动期间内进行冰箱陈列并拍照上传。
+    </view>
+
+  </view>
+  <!-- 活动规则 -->
+  <view class="act-rule-box">
+    <!-- 标题 -->
+    <view class="act-rule-title" style="background-image:url({{bg_title}}); ">活动规则</view>
+    <view class="sub-title">陈列活动规则</view>
+    <view class="sub-content">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image> 1、冰箱陈列要求：中国红牛冰箱陈列一层6个横面，陈列必须饱满。
+    </view>
+    <view class="sub-content mgt20">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      <text> 2、拍照上传要求：</text>
+      <text class="italic">终端客户每7天为一个拍照周期，每次拍照且AI识别合格的7天后可再次拍照；在{{displayInfo.date_md_start || '8月15日'}}---{{displayInfo.date_md_end || '9月30日'}}期间，要完成4次拍照AI识别合格，才算活动达标。</text>
+    </view>
+
+    <!-- 奖励发放方式及说明 -->
+    <view class="sub-title">奖励发放方式及说明</view>
+    <view class="sub-content ">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      <text> 战马活动券发放：</text>
+      <text class="italic">终端客户拍照上传AI识别4次合格后，</text>
+      <text>系统自动发放战马活动券24张（即相当于战马能量型维生素饮料（310ml）一箱），到终端客户的《彬纷有礼》小程序上。</text>
+    </view>
+    <view class="sub-content mgt20">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      <text class="italic">注：若在活动期间完成AI识别合格次数低于4次，不发放战马活动券。</text>
+    </view>
+    <!-- 奖券使用方式及有效期说明 -->
+    <view class="sub-title">奖券使用方式及有效期说明</view>
+    <view class="sub-content ">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      <text> 本次活动依据“彬纷有礼”现有拉环奖券的核销流程，请在</text>
+      <text class="italic">2022-11-30 23:59:59</text>
+      <text>前用这24张券向上级批发客户兑换战马能量型维生素饮料（310ml）一箱。</text>
+    </view>
+    <view class="sub-content mgt20">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      <text>逾期未兑换则战马活动券失效，</text>
+      <text class="italic">视为自动放弃相关权益。</text>
+    </view>
+
+  </view>
+  <!-- 活动免责说明 -->
+  <view class="act-rule-box">
+    <!-- 标题 -->
+    <view class="act-rule-title" style="background-image:url({{bg_title}}); ">活动免责说明</view>
+    <view class="sub-content">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      <text>活动秉着公平、公正、公开、真实的原则，对于本次活动，我司声明以下免责条款，参加活动前请您仔细阅读以下条款，参加本次活动即表明您了解并接受以下所有条款：</text>
+    </view>
+    <view class="sub-content mgt20">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      <text> 1、免责事项 \n</text>
+      <text>（1）本活动期间发生任何不可抗力事件使本活动或本次目的不能实现，我司因此免责。不可抗力是指不能控制、不可预见或不能避免，即使预见亦无法避免的事件，该事件使任何一方根据本协议履行其全部或部分义务已不可能。包括社会异常事件、自然灾害或政府管制行为而造成的非基于我司过错的行为。 \n</text>
+      <text>（2）您自身主观过错、恶意或不按正常流程操作、填写信息不真实、不完整等类似情形致使此次活动无效、无法核验您真实信息而不能领取奖品的，我司免责。 \n</text>
+      <text>（3）若由于您的原因，导致我司遭受损失的，我司有权向您追偿。本规则所称“损失”包括但不限于因涉诉、涉仲裁而产生的诉讼费、律师费、调查取证费、行政处罚或第三人索赔等。 \n</text>
+
+    </view>
+    <view class="sub-content mgt20">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      <text>2、本活动的奖品不可退不折现。若奖品的价值需按照国家法律规定缴纳税费的，由您自行缴税。</text>
+    </view>
+    <view class="sub-content mgt20">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      <text>3、我司可以根据市场环境、参与情况随时暂停或终止活动。活动内容如果有调整或补充，请以最新公告为准。</text>
+    </view>
+    <view class="sub-content mgt20">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      <text>4、针对违规骗取奖励的行为，我司将不予发放奖励、追回相关奖励或封停账号，并追究其法律责任。</text>
+
+    </view>
+
+  </view>
+  <!-- 活动注意事项 -->
+  <view class="act-rule-box">
+    <!-- 标题 -->
+    <view class="act-rule-title" style="background-image:url({{bg_title}}); ">活动注意事项</view>
+    <view class="sub-content">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      <text class="italic">1、参与活动前，请详细阅读活动规则及相关条款，凡参与本次活动，则视为您同意此次活动规则。</text>
+    </view>
+    <view class="sub-content mgt20">
+      <image class="icon-arrow" src="{{icon_arrow_r}}" mode="aspectFit"></image>
+      <text class="italic">2、本次活动在法律允许范围内，其修改权、更新权及最终解释权均属深圳市天兴诚科技有限公司，如有任何问题，请与平台客服联系，客服热线400-870-7076。</text>
+
+    </view>
+
+
+  </view>
+
+
+
+</view>
+
+<!-- sign_up:1已报名，0未报名控制 报名按钮显示隐藏 -->
+<!-- 页面超出一屏幕：未报名，切未逾期 -->
+<!-- <image bindtap="apply" wx:if="{{fixed_show&&actInfo.sign_up==0&&!apply_overdue}}" class="btn-apply btn-fixed" src="{{img_btn_apply}}" mode="aspectFit"></image> -->
+<!-- <image bindtap="apply" wx:if="{{fixed_show&&actInfo.sign_up==0&&!apply_overdue}}" class="btn-apply btn-fixed" src="{{img_btn_apply}}" mode="aspectFit"></image> -->
+<!-- <image bindtap="apply"  class="btn-apply btn-fixed" src="{{img_btn_apply}}" mode="aspectFit"></image> -->
+<!-- 陈列拍照:已报名，陈列次数小于四次 -->
+<block wx:if="{{displayInfo&&displayInfo.s_num<4&&fixed_show&&displayInfo.issues &&displayInfo.act_state.act_ing}}">
+  <!-- <view bindtap="goScan" class="btn-goto-display {{miniPhone?'mini-phone-btn':''}} btn-fixed" style="background-image: url({{bg_btn_camer}});">
+    <image class="btn-icon-camer " src="{{btn_icon_camer}}" mode="aspectFit"></image>
+    <block wx:if="{{btn_display_status == 3}}">
+      <view class="btn-goto-display-title">{{next_display_date}}再来拍照哦</view>
+    </block>
+    <block wx:elif="{{btn_display_status == 2}}">
+      <view class="btn-goto-display-title">请明天再来拍照哦</view>
+    </block>
+    <block wx:else>
+      <view class="btn-goto-display-title">点击前往拍照</view>
+    </block>
+  </view> -->
+  <block wx:if="{{btn_display_status == 3}}">
+    <view class="btn-goto-display  {{miniPhone?'mini-phone-btn':''}} btn-fixed btn-grey" style="background-image: url({{bg_btn_grey}});">
+      <image class="btn-icon-camer " src="{{btn_icon_camer}}" mode="aspectFit"></image>
+      <view class="btn-goto-display-title">{{next_display_date}}再来拍照哦</view>
+    </view>
+  </block>
+  <block wx:elif="{{btn_display_status == 2}}">
+    <image class="btn-goto-display  {{miniPhone?'mini-phone-btn':''}} btn-fixed" src="{{img_btn_tomorrow}}" mode="aspectFit"></image>
+  </block>
+  <block wx:else>
+    <image bindtap="goScan" class="btn-goto-display  {{miniPhone?'mini-phone-btn':''}} btn-fixed" src="{{img_btn_display}}" mode="aspectFit"></image>
+  </block>
+</block>
+<!-- 回到顶部 -->
+<block wx:if="{{fixed_show}}">
+  <image class="icon-back-top" bindtap="scrollTop" src="{{icon_back_top}}" mode="aspectFit"></image>
+</block>
+<!-- 报名成功弹窗 -->
+<view class="fadeIn" wx:if="{{pop_applyed}}">
+  <view class="weui-mask" bindtap="closePop"></view>
+  <view class=" pop-applyed scale-in-center {{apply_success?'pop-applyed-top':''}}">
+    <!-- <view class="weui-dialog pop-applyed scale-in-center"> -->
+    <image class="icon-apply-success" wx:if="{{apply_success}}" src="{{act_apply_success}}" mode="aspectFit"></image>
+    <view class="pop-content">
+      <!-- <image class="img-video-poster" src="{{img_video_poster}}" mode="aspectFit"></image> -->
+      <video src="{{videoUrl}}" id="myVideo" class="img-video-poster" controls object-fit="contain" bindended="videoEnd" bindtimeupdate="timeupdate" enable-progress-gesture="{{false}}" bindplay="playVideo" binderror="playError" bindpause="pauseVideo" bindwaiting="waitingVideo" bindloadedmetadata="bindloadedmetadata" bindseekcomplete="bindseekcomplete"></video>
+
+
+      <view bindtap="playVideo" class="btn-video" style="background-image: url({{img_bg_apply_btn}});">观看拍照攻略</view>
+    </view>
+    <image class="icon-closed " mode="aspectFit" bindtap="closePop" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEUAAABFCAMAAAArU9sbAAAARVBMVEX///8AAAD///////////////////////////////////////////////////////////////////////////////////+Y34OdAAAAF3RSTlMaAP71MWneX3Ime8k71eW77q2giJVMD8ZYXSIAAAMGSURBVFjDnNPRkqMgFIThnj6AIKio6Ps/6g5OdjcJyGj+i1QuyFddaPB11u6CTtMwishopkUHt5+ePVNC8qPwORl9CncUaP/4oRl8bjAPctDuooLFHMRst6Acck6Fzc4HNC7ugrLrmM9OGmXdNJKMFr8pm89GH1Av9NkZuqayr0Ka1eE8txpSVpwrzpOSAtqpJKRXZ0owpNH4PZ0PhrqyRXJSuJKayNjVlE0oC662CGUrlRDJhOutZAzvijOUhDutwtG9KrsnF9xrIT1elJWccLeJXJ+VTWgU7qYMpfuvYKBo3E8LDf4plkz4pESufxVEmoBPUobRPZTlW8Rn9eT8o8BwdPgsl397KB1pi6kdanWquGDSHornGMp/W48yS6/KmxmyEiovXEeKrT1YFhtnMnwridTlrQlpy/FSLuzI5Qu7p1THv7+I3QGXCYcdbuSMGiNk/8b2qDQzKgShRS2d17ws0SfnZPv5qNY/rbHM36sdM9LxnBtrWneSUyMXTDQKaKxpLwHcwAkDBwe01jSXAM7TINIDaK2ZG0tyEyOkqUAzZ9FUBGwryEtmtBX+acValiQEYaCGQASNA6j7/5+6C6MHZ3moTA4eLMvqCqTT3TUsBKFkBUulL8PFvihgXUQyxN7I8hkd96U0S6ZyX8bOwzwVkYQqoUEFfp+j2lSb8hzFRwXJgYayM53lF/nBLyaQaHrpW8xxnUxyncxwXeRdqjJdfJfl3a/tgJ4T+2hMnojJ76NetuxGOnajnkG17Gn8ombotQ2z9KSQQehDS5mnWmoBWJp1HZ10XU+PNKZmENSsdx3AelLN3QPtvQJwd/YBOINYbvsATHmS5d7xiO2/PyJxx5Wsf19Tq1dzAIIafSMxwLzlPCxGD4s1IMEuM+b9dBf9tCn6acMQGlj09gEszAPmcAQTDIpqOUNnbPjOUaofLvzDmu5C5qHd/M485IR6zzw0TvTOPKzTF/MXPfCev/D4CjWy2vOXAW9lQZ7tRxZk2eezoFz94Db4l7IChFWjNxvmc6lfZ6QgAX80xusAAAAASUVORK5CYII="></image>
+
+
+  </view>
+  <!-- 关闭弹窗按钮 -->
+  <!-- <image class="icon-close scale-in-center" mode="aspectFit" bindtap="closePop" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEUAAABFCAMAAAArU9sbAAAARVBMVEX///8AAAD///////////////////////////////////////////////////////////////////////////////////+Y34OdAAAAF3RSTlMaAP71MWneX3Ime8k71eW77q2giJVMD8ZYXSIAAAMGSURBVFjDnNPRkqMgFIThnj6AIKio6Ps/6g5OdjcJyGj+i1QuyFddaPB11u6CTtMwishopkUHt5+ePVNC8qPwORl9CncUaP/4oRl8bjAPctDuooLFHMRst6Acck6Fzc4HNC7ugrLrmM9OGmXdNJKMFr8pm89GH1Av9NkZuqayr0Ka1eE8txpSVpwrzpOSAtqpJKRXZ0owpNH4PZ0PhrqyRXJSuJKayNjVlE0oC662CGUrlRDJhOutZAzvijOUhDutwtG9KrsnF9xrIT1elJWccLeJXJ+VTWgU7qYMpfuvYKBo3E8LDf4plkz4pESufxVEmoBPUobRPZTlW8Rn9eT8o8BwdPgsl397KB1pi6kdanWquGDSHornGMp/W48yS6/KmxmyEiovXEeKrT1YFhtnMnwridTlrQlpy/FSLuzI5Qu7p1THv7+I3QGXCYcdbuSMGiNk/8b2qDQzKgShRS2d17ws0SfnZPv5qNY/rbHM36sdM9LxnBtrWneSUyMXTDQKaKxpLwHcwAkDBwe01jSXAM7TINIDaK2ZG0tyEyOkqUAzZ9FUBGwryEtmtBX+acValiQEYaCGQASNA6j7/5+6C6MHZ3moTA4eLMvqCqTT3TUsBKFkBUulL8PFvihgXUQyxN7I8hkd96U0S6ZyX8bOwzwVkYQqoUEFfp+j2lSb8hzFRwXJgYayM53lF/nBLyaQaHrpW8xxnUxyncxwXeRdqjJdfJfl3a/tgJ4T+2hMnojJ76NetuxGOnajnkG17Gn8ombotQ2z9KSQQehDS5mnWmoBWJp1HZ10XU+PNKZmENSsdx3AelLN3QPtvQJwd/YBOINYbvsATHmS5d7xiO2/PyJxx5Wsf19Tq1dzAIIafSMxwLzlPCxGD4s1IMEuM+b9dBf9tCn6acMQGlj09gEszAPmcAQTDIpqOUNnbPjOUaofLvzDmu5C5qHd/M485IR6zzw0TvTOPKzTF/MXPfCev/D4CjWy2vOXAW9lQZ7tRxZk2eezoFz94Db4l7IChFWjNxvmc6lfZ6QgAX80xusAAAAASUVORK5CYII="></image> -->
+</view>
+<!-- 视频 -->
+<!-- <block wx:if="{{video_played}}">
+  <video src="{{videoUrl}}" id="myVideo" class="videoCss" controls object-fit="contain" autoplay bindended="videoEnd" bindtimeupdate="timeupdate" enable-progress-gesture="{{false}}" bindplay="playVideo" binderror="playError" bindpause="pasueVideo" bindwaiting="waitingVideo" bindloadedmetadata="bindloadedmetadata" bindseekcomplete="bindseekcomplete"></video>
+</block> -->

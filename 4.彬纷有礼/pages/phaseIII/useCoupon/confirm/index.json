@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "van-stepper": "@vant/weapp/stepper/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "selectDealer":"../component/selectDealer/index",
+    "checkOrder":"../component/checkOrder/index"
+  },
+  "navigationStyle": "custom",
+  "enablePullDownRefresh":false,
+  "navigationBarTitleText": "确认订单"
+}

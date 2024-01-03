@@ -1,0 +1,124 @@
+<!--component/storeExchangePop/index.wxml 2023年7月8月 东莞战马店铺兑奖活动弹窗：无需报名，奖励自动发放 -->
+<view class="store-exchange-box">
+  <!-- 每日兑奖进度弹窗 -->
+  <van-popup show="{{dailyProcessShow}}" bind:close="onClose" data-popname="dailyProcessShow" custom-style="background-color: transparent;">
+    <background bind:close="onClose" data-popname="dailyProcessShow">
+      <!-- 顶部标题 -->
+      <view class="head-box">
+        <image class="bg-pop-title" src="{{bg_bar_orange}}" />
+        <image class="icon-star" src="{{icon_star}}" mode="aspectFit" />
+        <view class="title">每日兑奖进度</view>
+        <image class="icon-star" src="{{icon_star}}" mode="aspectFit" />
+      </view>
+      <view class="flex-row-center">
+        <!-- 活动倒计时 -->
+        <view class="count-down-box">
+          <image class="icon-bar mr-16" src="{{icon_bar_left}}" mode="aspectFit" />
+          <view>{{actInfo.act_state.status_title}}：</view>
+          <van-count-down time="{{actInfo.act_state.count_down_timestamp}}" bind:finish="rankTimerFinished" format="{{actInfo.act_state.count_down_format}}" style="--count-down-text-color:#FC7E41;"></van-count-down>
+          <image class="icon-bar ml-16" src="{{icon_bar_right}}" mode="aspectFit" />
+        </view>
+
+      </view>
+      <!-- 进度条组件 -->
+      <process actInfo="{{actInfo}}"></process>
+
+      <!-- 操作按钮 -->
+      <!-- <view class="btn-operate" bindtap="onClose" data-popname="dailyProcessShow">知道了</view> -->
+      <!-- <view class="btn-operate" bindtap="openPage" data-url="pages/couponActivity/index/index">查看详情</view> -->
+      <image class="btn-view-detail" bindtap="openPage" data-url="pages/couponActivity/index/index" src="{{cos_file_2310}}/btn_view_detail.png" mode="aspectFit" />
+
+    </background>
+  </van-popup>
+  <!-- 奖励弹窗 -->
+  <van-popup show="{{winShow}}" bind:close="onClose" data-popname="winShow" custom-style="background-color: transparent;">
+    <!-- 活动已结束 -->
+    <view class="act-end-box">
+      <!-- 背景 -->
+      <image class="bg-bits-pop" src="{{bg_bits_pop}}" mode="aspectFit" />
+      <view class="act-end-item">活动已结束</view>
+      <view class="img-bar-box">
+        <image class="img-bar" src="{{img_bar_pop}}" mode="aspectFit" />
+        <image class="img-bar" src="{{img_bar_pop}}" mode="aspectFit" />
+      </view>
+    </view>
+    <background bind:close="onClose" data-popname="winShow" bgImg="{{cos_file_2310}}/bg_pop.png">
+      <!-- 顶部标题 -->
+      <view class="head-box head-box-win">
+        <image class="bg-pop-title" src="{{bg_bar_orange}}" />
+        <image class="icon-star" src="{{icon_star}}" mode="aspectFit" />
+        <view class="title">恭喜您获得</view>
+        <image class="icon-star" src="{{icon_star}}" mode="aspectFit" />
+      </view>
+      <!-- 获得的奖券 -->
+      <view class="flex-row-center mt-20">
+        <image class="icon-check-mark" src="{{icon_check_mark}}" mode="aspectFit" />
+        <view class="prize-box">
+          <text>活动券:</text>
+          <text class="coupon-name">红牛</text>
+          <text class="prize-num">{{actInfo.rev_msg[1]}}</text>
+          <text class="prize-unit">张+</text>
+          <text class="coupon-name">战马</text>
+          <text class="prize-num">{{actInfo.rev_msg[0]}}</text>
+          <text class="prize-unit">张</text>
+        </view>
+      </view>
+      <!-- 累计兑奖人 -->
+      <view class="total-exchange flex-row-center">
+        <text>本期活动兑奖人数累计：</text>
+        <text class="exchange-num">{{actInfo.kpi_num}}</text>
+        <text>人</text>
+      </view>
+      <!-- 使用提示 -->
+      <view class="use-tips">活动券已发放到您“彬纷有礼-可用卡券”</view>
+      <view class="use-tips mb-20">有效期至{{actInfo.exp_time_date_ymd}}</view>
+      <!-- 操作按钮 -->
+      <!-- <view class="btn-operate" bindtap="openPageParam" data-url="pages/phaseIII/voucher/index" data-params='?activeTab=2'>去使用</view> -->
+      <!-- <view class="btn-operate" bindtap="openPage" data-url="pages/couponActivity/index/index">查看详情</view> -->
+      <image class="btn-view-detail" bindtap="openPage" data-url="pages/couponActivity/index/index" src="{{cos_file_2310}}/btn_view_detail.png" mode="aspectFit" />
+    </background>
+  </van-popup>
+  <!-- 活动结束：未中奖、未达标 -->
+  <van-popup show="{{ActEndShow}}" bind:close="onClose" data-popname="ActEndShow" custom-style="background-color: transparent;">
+    <background bind:close="onClose" data-popname="ActEndShow">
+      <view class="box-flex-center">
+        <image class="img_sorry" src="{{cos_file_2310}}/img_sorry.png" mode="aspectFit" />
+        <view class="act-end-title">您未获得奖励</view>
+        <view class="title-end-tips">活动已结束</view>
+        <!-- 操作按钮 -->
+        <!-- <view class="btn-operate" bindtap="openPage" data-url="pages/couponActivity/index/index">查看详情</view> -->
+        <image class="btn-view-detail" bindtap="openPage" data-url="pages/couponActivity/index/index" src="{{cos_file_2310}}/btn_view_detail.png" mode="aspectFit" />
+
+      </view>
+
+    </background>
+  </van-popup>
+  <!-- 活动结束：0兑换 -->
+  <van-popup show="{{ActNoExcShow}}" bind:close="onClose" data-popname="ActNoExcShow" custom-style="background-color: transparent;">
+    <background bind:close="onClose" data-popname="ActNoExcShow">
+      <view class="box-flex-center">
+        <view class="act-end-title">活动已结束</view>
+        <view class="title-end-tips">下期活动敬请期待......</view>
+      </view>
+
+    </background>
+  </van-popup>
+  <!-- 活动期间：店铺不可转让 -->
+  <van-popup show="{{notTransferShow}}" bind:close="onClose" data-popname="notTransferShow" custom-style="background-color: transparent;">
+    <view class="box">
+      <image class="img-shop-head" src="{{img_shop_head}}" mode="aspectFit" />
+      <view class="box-item">
+        <view class="box-inner">
+          <view class="no-trans-title">您已参加</view>
+          <view class="no-trans-title">“{{(actInfo.title )|| '战马兑奖送奖励'}}”活动</view>
+          <view class="no-trans-tips">
+
+            <image class="icon-no-trans" src="{{icon_no_trans}}" mode="aspectFit" />
+            {{noTransferTips}}
+          </view>
+        </view>
+      </view>
+      <image class="icon-close" mode="aspectFit" bindtap="onClose" data-popname="notTransferShow" src="{{closeImg}}"></image>
+    </view>
+  </van-popup>
+</view>

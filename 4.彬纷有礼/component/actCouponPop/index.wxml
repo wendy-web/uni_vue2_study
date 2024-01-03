@@ -1,0 +1,341 @@
+<!--component/actCouponPop/index.wxml-->
+<view class="act-coupon-box">
+  <!-- 每日兑奖进度弹窗 -->
+  <van-popup show="{{dailyProcessShow}}" bind:close="onClose" data-popname="dailyProcessShow" custom-style="background-color: transparent;">
+    <background bind:close="onClose" data-popname="dailyProcessShow" openType="1">
+      <!-- 活动倒计时 -->
+      <!-- 进度条组件 -->
+      <view class="box-flex-center">
+        <process actInfo="{{actInfo}}"></process>
+      </view>
+      <!-- 操作按钮 -->
+      <view class="operate-box">
+        <view class="btn-operate" bindtap="openPage" data-url="pages/shopActivity/unboxAct/base/index">查看详情</view>
+      </view>
+    </background>
+  </van-popup>
+  <!-- 活动结束：中奖弹窗 -->
+  <van-popup show="{{winShow}}" bind:close="onClose" data-popname="winShow" custom-style="background-color: transparent;">
+    <background bind:close="onClose" data-popname="winShow" openType="2">
+      <view class="prize-container">
+        <view>
+          <!-- 获得的奖券 -->
+          <view class="flex-row-center">
+            <image class="icon-check-mark" src="{{icon_check_mark}}" mode="aspectFit" />
+            <view class="prize-box">
+              <text>获得红牛活动券：</text>
+              <text class="prize-num">{{actInfo.rev_num || 0}}</text>
+              <text>张</text>
+            </view>
+          </view>
+          <!-- 累计兑奖人 -->
+          <view class="total-unbox flex-row-center">
+            <text>本期活动开箱累计：</text>
+            <text class="unbox-num">{{actInfo.s_num || 0}}箱</text>
+          </view>
+        </view>
+        <!-- 使用提示 -->
+        <view class="use-tips">
+          <view>活动券已发放到您“彬纷有礼-可用卡券”</view>
+          <view>有效期至{{actInfo.exp_time_date_ymd}}</view>
+        </view>
+      </view>
+      <!-- 操作按钮 -->
+      <view class="operate-box">
+        <view class="btn-operate" bindtap="openPage" data-url="pages/shopActivity/unboxAct/base/index">查看详情</view>
+      </view>
+    </background>
+  </van-popup>
+  <!-- 活动结束：未中奖、未达标 -->
+  <van-popup show="{{ActEndShow}}" bind:close="onClose" data-popname="ActEndShow" custom-style="background-color: transparent;">
+    <background bind:close="onClose" data-popname="ActEndShow">
+      <view class="box-flex-center">
+
+        <view class="act-end-title">很遗憾</view>
+        <view class="act-end-title">您未获得奖励</view>
+        <view class="title-tips">活动已结束</view>
+        <!-- 操作按钮 -->
+      </view>
+      <view class="operate-box">
+        <view class="btn-operate" bindtap="openPage" data-url="pages/shopActivity/unboxAct/base/index">查看详情</view>
+      </view>
+
+    </background>
+  </van-popup>
+  <!-- 活动结束一个没开箱 -->
+  <van-popup show="{{notUnboxShow}}" bind:close="onClose" data-popname="notUnboxShow" custom-style="background-color: transparent;">
+    <background bind:close="onClose" data-popname="notUnboxShow">
+      <view class="box-flex-center pb-88">
+        <view class="act-end-title">活动已结束</view>
+        <view class="title-tips">下期活动敬请期待......</view>
+      </view>
+
+    </background>
+  </van-popup>
+  <!-- 活动期间：店铺不可转让 -->
+  <van-popup show="{{notTransferShow}}" bind:close="onClose" data-popname="notTransferShow" custom-style="background-color: transparent;">
+    <background bind:close="onClose" data-popname="notTransferShow" openType="3">
+      <view class="no-trans-box">
+        <view class="no-trans-title">您已参加</view>
+        <view class="no-trans-title">“{{(actInfo.title )|| '中国红牛促销大回馈'}}”活动</view>
+        <view class="no-trans-tips">
+          <image class="icon-no-trans" src="{{icon_no_trans}}" mode="aspectFit" />
+          {{noTransferTips}}
+        </view>
+      </view>
+    </background>
+
+  </van-popup>
+  <!-- 报名确认弹窗 -->
+  <van-popup show="{{unboxApplyCheckShow}}" bind:close="onClose" data-popname="unboxApplyCheckShow" custom-style="background-color: transparent;">
+    <background bind:close="onClose" data-popname="unboxApplyCheckShow" bgImg="{{bg_pop_empty}}">
+      <view class="box-flex-center">
+
+        <view class="act-end-title">报名成功后，活动期间</view>
+        <view class="act-end-title mbt20">不可转让店铺或转入他人门店！</view>
+        <view class="act-end-title">是否确认报名</view>
+        <!-- 操作按钮 -->
+      </view>
+      <view class="operate-box-apply">
+        <!-- <view class="btn-operate-mini" bindtap="showCheckShopInfoPop" data-popname="unboxApplyCheckShow">是</view> -->
+        <view class="btn-operate-mini" bindtap="unboxSignUp">是</view>
+        <view class="btn-operate-no" bindtap="onClose" data-popname="unboxApplyCheckShow">否</view>
+      </view>
+
+    </background>
+  </van-popup>
+  <!--  核对店铺信息弹窗 -->
+  <van-popup show="{{checkShopInfoShow}}" bind:close="onClose" data-popname="checkShopInfoShow" custom-style="background-color: transparent;">
+    <background bind:close="onClose" data-popname="checkShopInfoShow" bgImg="{{bg_pop_empty}}" openType="4">
+      <view class="shopinfo-content">
+        <view class="shopinfo-item-flex">
+          <text class="shopinfo-name ">门店名称：</text>
+          <text class="shop-name oneLine">{{shopInfo.shop_name}}</text>
+        </view>
+        <view class="shopinfo-item">
+          <text class="shopinfo-name">联系方式：</text>
+          <text>{{shopPhoneNum}}</text>
+        </view>
+        <view class="shopinfo-item">
+          <text class="shopinfo-name">门店地址：</text>
+          <text>{{shopInfo.address}}</text>
+        </view>
+        <view class="shopinfo-tips">*请仔细核对店铺地址并确认所属地为广东省，若因地址信息有误而导致奖励不能正常发放的，由您自行承担。</view>
+      </view>
+      <!-- 操作按钮 -->
+      <view class="operate-box-apply">
+        <view class="btn-operate-mini" bindtap="unboxSignUp">确认</view>
+        <view class="btn-operate-no" bindtap="changeShopInfo">更改</view>
+      </view>
+
+    </background>
+  </van-popup>
+  <!-- 报名成功弹窗 -->
+  <van-popup show="{{unboxApplySuccessShow}}" bind:close="onClose" data-popname="unboxApplySuccessShow" custom-style="background-color: transparent;">
+    <background bind:close="onClose" data-popname="unboxApplySuccessShow" openType="5">
+      <view class="box-flex-center">
+        <image class="title-apply-success" src="{{title_apply_success}}" mode="aspectFit" />
+      </view>
+      <!-- 操作按钮 -->
+      <view class="operate-box-apply">
+        <view class="btn-operate-know" bindtap="onClose" data-popname="unboxApplySuccessShow">知道了</view>
+      </view>
+
+    </background>
+  </van-popup>
+</view>
+<!-- 8月深圳开箱活动报名弹窗 -->
+<animationOpenBox id="animationOpenBox">
+  <view wx:if="{{actInfo}}" class="apply-count-down">
+    <text>{{actInfo.act_state.status_title}}：</text>
+    <van-count-down time="{{actInfo.act_state.count_down_timestamp}}" bind:finish="rankTimerFinished" format="{{actInfo.act_state.count_down_format}}" style="--count-down-text-color:#ffd500;font-weight: bold;--count-down-font-size: 32rpx;"></van-count-down>
+
+  </view>
+</animationOpenBox>
+<!-- 2023年8月22日 广州开箱活动相关：gz_unbox_pop start -->
+<!--  -->
+<gzUnboxApplyPop id="gzUnboxApplyPop">
+  <view wx:if="{{actInfo}}" class="apply-count-down">
+    <text>{{actInfo.act_state.status_title}}：</text>
+    <van-count-down time="{{actInfo.act_state.count_down_timestamp}}" bind:finish="rankTimerFinished" format="DD天HH时mm分ss秒" style="--count-down-text-color:#ffd500;font-weight: bold;--count-down-font-size: 32rpx;"></van-count-down>
+
+  </view>
+</gzUnboxApplyPop>
+
+<!-- 报名确认弹窗 -->
+<van-popup show="{{gzUnboxApplyCheckShow}}" bind:close="onClose" data-popname="gzUnboxApplyCheckShow" custom-style="background-color: transparent;">
+  <gzUnboxBackground bind:close="onClose" data-popname="gzUnboxApplyCheckShow" bgImg="" openType="3">
+    <view class="box-flex-center">
+
+      <view class="act-end-title">报名成功后，活动期间</view>
+      <view class="act-end-title mbt20">不可转让店铺或转入他人门店！</view>
+      <view class="act-end-title">是否确认报名</view>
+      <!-- 操作按钮 -->
+    </view>
+    <view class="operate-box-apply">
+      <image class="pop-btn-yes" bindtap="gzUnboxSignUp" src="{{file_url_gzunbox}}/pop_btn_yes.png" mode="aspectFit" />
+      <image class="pop-btn-yes" bindtap="onClose" data-popname="gzUnboxApplyCheckShow" src="{{file_url_gzunbox}}/pop_btn_no.png" mode="aspectFit" />
+    </view>
+
+  </gzUnboxBackground>
+</van-popup>
+<!-- 报名成功弹窗 -->
+<van-popup show="{{gzUnboxApplySuccessShow}}" bind:close="onClose" data-popname="gzUnboxApplySuccessShow" custom-style="background-color: transparent;">
+  <gzUnboxBackground bind:close="onClose" data-popname="gzUnboxApplySuccessShow" openType="5" bgImg="">
+    <view class="box-flex-center">
+      <image class="img-apply-success" src="{{file_url_gzunbox}}/img_apply_success.png" mode="aspectFit" />
+    </view>
+    <!-- 操作按钮 -->
+    <view class="operate-box-apply">
+      <!-- <view class="btn-operate-know" bindtap="onClose" data-popname="gzUnboxApplySuccessShow">知道了</view> -->
+      <image class="pop-btn-iknow" bindtap="tapIknow" data-url="pages/couponActivity/gzUnbox/index/index" data-popname="gzUnboxApplySuccessShow" src="{{file_url_gzunbox}}/pop_btn_iknow.png" mode="aspectFit" />
+
+    </view>
+  </gzUnboxBackground>
+</van-popup>
+<!-- 每日进度弹窗  -->
+<van-popup show="{{gzUnboxDailyPopShow}}" bind:close="onClose" data-popname="gzUnboxDailyPopShow" custom-style="background-color: transparent;">
+  <gzUnboxBackground bind:close="onClose" data-popname="gzUnboxDailyPopShow" bgImg="">
+    <view class="box-flex-center">
+      <view class="gz-daily-pop-title">【{{actInfo.title || '开箱冲榜赢奖励'}}】战况</view>
+      <view class="gz-daily-pop-total">
+        <text>累计红牛开箱数：</text>
+        <text class="gz-daily-pop-num" space="nbsp">{{actInfo.s_num || 0}}</text>
+        <text class="gz-daily-pop-unit">箱</text>
+      </view>
+      <view class="gz-daily-pop-total">
+        <text>当前排名：</text>
+        <text class="gz-daily-pop-unit">{{actInfo.rank || '未上榜'}}</text>
+
+      </view>
+      <block wx:if="{{actInfo.act_state.count_down_timestamp}}">
+        <view class="count-down-tips">距离活动结束还剩：</view>
+        <view>
+          <van-count-down time="{{actInfo.act_state.count_down_timestamp}}" bind:finish="rankTimerFinished" format="DD天HH时mm分ss秒" style="--count-down-text-color:#888888;--count-down-font-size:24rpx"></van-count-down>
+        </view>
+      </block>
+    </view>
+    <!-- 操作按钮 -->
+    <view class="operate-box-apply">
+      <image class="pop-btn-view-detail" bindtap="openPage" data-url="pages/couponActivity/gzUnbox/index/index" data-popname="gzUnboxDailyPopShow" src="{{file_url_gzunbox}}/pop_btn_view_detail.png" mode="aspectFit" />
+    </view>
+  </gzUnboxBackground>
+</van-popup>
+<!-- 中奖、未中奖弹窗  -->
+<van-popup show="{{gzUnboxWinPopShow}}" bind:close="onClose" data-popname="gzUnboxWinPopShow" custom-style="background-color: transparent;">
+  <gzUnboxBackground bind:close="onClose" data-popname="gzUnboxWinPopShow" bgImg="" openType="{{actInfo.is_win?6:''}}">
+    <view class="box-flex-center">
+      <!-- 已中奖 -->
+      <block wx:if="{{actInfo.is_win}}">
+        <view class="pop-win-title">
+          <image class="pop-icon-tick" src="{{file_url_gzunbox}}/pop_icon_tick.png" mode="aspectFit" />
+          <text>获得红牛活动券：</text>
+          <text class="win-coupon-num" space="nbsp">{{actInfo.rev_num || 0}} </text>
+          <text>张</text>
+        </view>
+        <view class="gz-daily-pop-total">
+          <text>本期活动开箱累计：</text>
+          <text class="unbox-num">{{actInfo.s_num ||0}}箱</text>
+        </view>
+        <view class="use-tips mt70">活动券已发放到您“彬纷有礼-可用卡券”</view>
+        <view class="use-tips">有效期至{{ actInfo.exp_time_date_ymd || '2023年10月31日'}}</view>
+        <!-- 操作按钮 -->
+        <view class="operate-box-apply mt20">
+          <!-- <image class="pop-btn-use " bindtap="goUseCoupon" data-popname="gzUnboxWinPopShow" src="{{file_url_gzunbox}}/pop_btn_view_detail.png" mode="aspectFit" /> -->
+          <image class="pop-btn-use " bindtap="openPage" data-url="pages/couponActivity/gzUnbox/index/index" data-popname="gzUnboxWinPopShow" src="{{file_url_gzunbox}}/pop_btn_view_detail.png" mode="aspectFit" />
+        </view>
+      </block>
+      <!-- 未中奖 -->
+      <block wx:else>
+        <!-- 区分有没有开箱 -->
+        <block wx:if="{{actInfo.s_num>0}}">
+          <view class="gz-daily-pop-title">很遗憾</view>
+          <view class="gz-daily-pop-title">您未获得开箱奖励</view>
+          <view class="use-tips mt20">活动已结束</view>
+          <image class="pop-btn-view-detail  mt70" bindtap="openPage" data-url="pages/couponActivity/gzUnbox/index/index" data-popname="gzUnboxDailyPopShow" src="{{file_url_gzunbox}}/pop_btn_view_detail.png" mode="aspectFit" />
+        </block>
+        <block wx:else>
+          <view class="gz-daily-pop-title">活动已结束</view>
+          <view class="use-tips mt20">下期活动敬请期待......</view>
+        </block>
+
+      </block>
+    </view>
+
+  </gzUnboxBackground>
+</van-popup>
+<!--  广州开箱活动相关 end -->
+
+
+
+
+<!-- 广州战马兑奖活动相关 start -->
+<!-- 每日兑奖进度 gzExcDailyPopShow -->
+<van-popup show="{{gzExcDailyPopShow}}" bind:close="onClose" data-popname="gzExcDailyPopShow" custom-style="background-color: transparent;">
+  <gzExcBackground bind:close="onClose" data-popname="gzExcDailyPopShow">
+    <view class="gzexc-daily-box">
+      <!-- 每日进度背景 -->
+      <image class="bg-pop-daily" src="{{file_url_gzexc}}/bg_pop_daily.png" />
+      <!-- 右上角的战马罐 -->
+      <image class="pop-daily-zm-can" src="{{file_url_gzexc}}/pop_daily_zm_can.png" />
+      <!-- 活动进度组件 -->
+      <gzExcProcess actInfo="{{actInfo}}" btnType="2"></gzExcProcess>
+    </view>
+  </gzExcBackground>
+
+</van-popup>
+<!-- 中奖判断弹窗 -->
+<van-popup show="{{gzExcWinPopShow}}" bind:close="onClose" data-popname="gzExcWinPopShow" custom-style="background-color: transparent;">
+  <gzExcBackground bind:close="onClose" data-popname="gzExcWinPopShow">
+    <!-- 中奖弹窗 -->
+    <block wx:if="{{actInfo.is_win}}">
+      <image class="pop_win_tap" src="{{file_url_gzexc}}/pop_win_tap.png" />
+      <image class="pop_win_zm_can" src="{{file_url_gzexc}}/pop_win_zm_can.png" />
+      <image class="pop_win_coin" src="{{file_url_gzexc}}/pop_win_coin.png" />
+      <view class="gzexc-win-box">
+        <image class="pop_bg_win" src="{{file_url_gzexc}}/pop_bg_win.png" />
+        <view class="gzexc-win-inner">
+          <view class="gzexc-win-title">
+            恭喜您获得
+          </view>
+          <view class="gzexc-win-subtitle">
+            1张活动券兑换1罐战马能量型维生素饮料310ml
+          </view>
+          <view class="gzexc-win-item">
+            <view class="gzexc-win-item-num">{{actInfo.rev_num}}</view>
+            <view class="gzexc-win-item-title">战马活动券(张)</view>
+          </view>
+          <view class="gzexc-win-item-s">
+            <text>本期活动兑奖罐数累计(罐)：</text>
+            <text class="gzexc-win-item-snum">{{actInfo.s_num}}</text>
+          </view>
+          <view class="gzexc-win-item-tips">活动券已发放到您“彬纷有礼——可用卡券"</view>
+          <view class="gzexc-win-item-tips">有效期至{{actInfo.exp_time || '2023年10月31日'}}</view>
+          <image class="btn_view_detail" bindtap="openPage" data-url="pages/couponActivity/gzExc/index/index" data-popname="gzExcWinPopShow" src="{{file_url_gzexc}}/btn_view_detail.png" mode="aspectFit" />
+
+        </view>
+      </view>
+    </block>
+    <!-- 未中奖判断 -->
+    <block wx:else>
+      <view class="gzexc-fail-box">
+        <image class="pop_bg_gz_exc" mode="aspectFit" src="{{file_url_gzexc}}/pop_bg_gz_exc.png"></image>
+        <block wx:if="{{actInfo.s_num}}">
+
+          <image class="imsorry" mode="aspectFit" src="{{file_url_gzexc}}/imsorry.png"></image>
+          <view class="gzexc-fail-title">您未获得奖励</view>
+          <view class="gzexc-fail-end ">活动已结束</view>
+          <image class="btn_view_detail" bindtap="openPage" data-url="pages/couponActivity/gzExc/index/index" data-popname="gzExcWinPopShow" src="{{file_url_gzexc}}/btn_view_detail.png" mode="aspectFit" />
+
+        </block>
+        <block wx:else>
+          <view class="gzexc-fail-title">活动已结束</view>
+          <view class="gzexc-fail-end ">下期活动敬请期待...</view>
+        </block>
+      </view>
+    </block>
+  </gzExcBackground>
+
+</van-popup>
+
+<!-- 广州战马兑奖活动相关 end -->

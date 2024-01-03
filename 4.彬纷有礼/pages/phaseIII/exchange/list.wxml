@@ -1,0 +1,87 @@
+<!--pages/phaseIII//exchange/list.wxml-->
+<view class="container">
+	<view class="list">
+		<view class="item {{idx>0?'mgt30' : ''}}" wx:for="{{list}}" wx:key="key" wx:for-item="item" wx:for-index="idx">
+			<!-- <view class="item {{idx>0?'mgt30' : ''}}" wx:for="{{[0,1,2,3,4,5,6,7]}}" wx:key="key" wx:for-item="item" wx:for-index="idx"> -->
+			<view class="orderMsg">
+				<view>配送申请：<text>{{item.create_time}}</text></view>
+				<view>产品名称：<text>{{hnTitle}}</text></view>
+				<view>数量：<text>{{item.count_dh}}罐</text></view>
+				<view>订单编号：<text class="orderNum">{{item.check_no}}</text></view>
+				<view>配送商：<text>{{item.a_jxs}}</text></view>
+				<view wx:if="{{item.a_jxsdh}}">联系方式：<text>{{item.a_jxsdh}}</text></view>
+			</view>
+			<view class="flex-center">
+				<button bindtap="cancel" class="cancel" data-index="{{idx}}">取消返货申请</button>
+				<button bindtap="remindMerchant" data-check_no="{{item.check_no}}" data-index="{{idx}}"
+					class="remind">提醒返货审核</button>
+			</view>
+		</view>
+
+		<view class="weui-loadmore " wx:if="{{noMore}}">
+			<text class="weui-loadmore__tips nomore">~~没有更多记录了~~</text>
+		</view>
+	</view>
+
+
+</view>
+<!-- 提醒返货审核弹窗 -->
+<mp-dialog title="" show="{{remindPop}}" ext-class="mp-dialog remind-pop" title="" mask-closable="{{true}}" buttons="{{remindBtn}}"
+	bindbuttontap="tapButton">
+	<view style="margin-bottom:80rpx;">
+		<view class="">
+			<image mode="aspectFit"  class="remind-icon" src="{{remindImg}}"></image>
+		</view>
+		<view class="bell">
+			<view class="font48 fontBold">提醒成功</view>
+		</view>
+		<view class="text-left font14 fontNormal mgt30 pdlr27">
+			<view>订单编号：<text class="orderNum">{{remindMsg.check_no}}</text></view>
+			<view class="mgtb20">产品名称：<text>{{hnTitle}}</text></view>
+			<view>产品数量：<text class="orderNum">{{remindMsg.count_dh}}</text>罐</view>
+		</view>
+	</view>
+
+</mp-dialog>
+<!-- 取消返货确认弹窗 -->
+<view class="fadeIn" wx:if="{{cancelPop}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog phase_pop phase_pop_redbull">
+		<view class="mg-pop pop_flex pop_box">
+			<view>
+				<image mode="aspectFit" class="cancelOrder-icon" src="{{cancelOrderImg}}"></image>
+				<view class="font40">取消兑换申请</view>
+				<view class="font33">您确定要取消兑换请求吗？</view>
+			</view>
+			<view class="text-left font26 pdlr20">
+				<view class="pop_content">产品名称：{{hnTitle}}</view>
+				<view class="pop_content">数量：<text class="orderNum">{{orderMsg.count_dh}}罐</text></view>
+				<view class="pop_content">订单编号：<text class="orderNum">{{orderMsg.check_no}}</text></view>
+				<view class="pop_content">配送商：<text class="">{{orderMsg.a_jxs}}</text></view>
+
+			</view>
+			<view class="mgt30">
+				<button bindtap="cancelOrder" data-check_no="{{orderMsg.check_no}}" class="confirm font28">确定</button>
+				<button bindtap="close" class="cancel font28">不了</button>
+			</view>
+		</view>
+
+	</view>
+</view>
+<!-- 取消成功/失败弹窗 -->
+<mp-dialog title="" show="{{successPop}}" ext-class="mp-dialog successPop" title="" mask-closable="{{true}}"
+	buttons="{{applyBtn}}" bindbuttontap="tapButton">
+	<view class="successImg">
+		<image mode="aspectFit" class="success-icon" src="{{successImg}}"></image>
+	</view>
+	<view>
+		<view><text class="font40">{{cancelMsg.code == 1?'取消成功':'取消失败'}}</text></view>
+		<view class="mgt30"><text class="font33">{{cancelMsg.msg}}</text></view>
+		<!-- <view class="mgt30"><text class="font33">订单取消成功</text></view> -->
+	</view>
+
+</mp-dialog>
+<!-- 悬浮导航 -->
+<!-- <movemenu bindmenuItemClick="menuItemClick" pageUrl="{{pageUrl}}"></movemenu> -->
+<!-- store Qrcode -->
+<!-- <qrcodeWidget></qrcodeWidget> -->

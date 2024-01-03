@@ -1,0 +1,7 @@
+<!--component/actCouponPop/gzExcBackground/index.wxml-->
+
+<view class="box">
+ 
+  <slot></slot>
+  <image class="icon-close" mode="aspectFit" bindtap="closePop" src="{{closeImg}}"></image>
+</view>

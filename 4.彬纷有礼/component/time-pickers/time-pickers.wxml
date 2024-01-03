@@ -1,0 +1,45 @@
+<!--components/time-pickers/time-pickers.wxml-->
+<view class="container">
+  <view bindtap="showModal" wx:if="{{showTime}}">{{sTime}}-{{eTime}}</view>
+  <view class="modals" wx:if="{{propDate}}">
+    <view class="mask" bindtap="hideModal" animation="{{animationMask}}" catchtouchmove="preventTouchMove"></view>
+    <view class="content bottom-pos" animation="{{animationData}}">
+      <view class="propTimeMain">
+        <view class="propTop" wx:if="{{isStart}}">
+          <view class="noBtn" bindtap="hideModal">取消</view>
+          <text class="expand">开始时间</text>
+          <view class="okBtn" bindtap="onNext">下一页</view>
+        </view>
+        <view class="propTop" wx:else>
+          <view class="noBtn" bindtap="onPre">上一页</view>
+          <text class="expand">结束时间</text>
+          <view class="okBtn" bindtap="okBtnTime" wx:if="{{pickEnd}}">确定</view>
+          <view class="okBtn-disabled" wx:else>确定</view>
+        </view>
+        <picker-view indicator-style="height: 50px;" style="width: 100%; height: 250px;" value="{{value}}" immediate-change="{{true}}"
+          bindchange="bindChange" bindpickstart="pickStart" bindpickend="pickEnd">
+          <picker-view-column>
+            <view wx:for="{{years}}" wx:key="years" style="line-height: 50px; text-align: center;">{{item}}年</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{months}}" wx:key="months" style="line-height: 50px; text-align: center;">{{item}}月</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{days}}" wx:key="days" style="line-height: 50px; text-align: center;">{{item}}日</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{hours}}" wx:key="hours" style="line-height: 50px; text-align: center;">{{item}}时</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{minutes}}" wx:key="minutes" style="line-height: 50px; text-align: center;">{{item}}分
+            </view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{seconds}}" wx:key="seconds" style="line-height: 50px; text-align: center;">{{item}}秒
+            </view>
+          </picker-view-column>
+        </picker-view>
+      </view>
+    </view>
+  </view>
+</view>

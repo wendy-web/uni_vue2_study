@@ -1,0 +1,67 @@
+<!--pages/voucher/component/filterPop/index.wxml-->
+<view class="box">
+  <!-- 换购券：红牛、战马条件筛选弹窗 custom-style="background-color: transparent;" -->
+  <van-popup show="{{filterShow}}" bind:close="onClose" data-popname="filterShow" position="bottom" z-index="999" custom-style="background-color: transparent;" custom-class="filter-pop">
+    <view bind:tap="onClose" data-popname="filterShow" class="icon_close_box">
+      <image class="icon_close" src="{{file_url_9m}}/icon_close.png" mode="aspectFit" />
+    </view>
+    <view class="exc-filter-box safeArea">
+      <view class="filter-title">选择筛选项</view>
+      <view class="filter-box">
+        <!-- 时间筛选 -->
+        <view class="filter-subtitle">时间筛选</view>
+        <!-- <view class="date-range-box">
+          <view class="date-range-item {{item.checked?'date-item-active':''}}" wx:for="{{dateRange}}" wx:key="key" bind:tap="selectDay" data-id="{{item.id}}">
+            {{item.label}}
+          </view>
+        </view> -->
+        <view class="date-range-box">
+          <view bind:tap="showTimePicker" data-type="0" class="date-range-item date-range-select-item">{{selectDate.start_time || '请选择开始时间'}}</view>
+          <view class="select-gap"></view>
+
+          <view bind:tap="showTimePicker" data-type="1" class="date-range-item date-range-select-item">{{selectDate.end_time || '请选择结束时间'}}</view>
+        </view>
+        <!-- 产品类型 -->
+        <view class="filter-subtitle">产品类型</view>
+        <block wx:for="{{goodTypeArr}}" wx:key="key">
+          <view class="good-name">{{item.name}}</view>
+          <view class="good-select-box">
+            <view class="good-select-item {{set.checked?'date-item-active':''}}" bind:tap="selectGood" data-name="{{item.name}}" data-arg="{{set.arg}}" wx:for="{{item.set}}" wx:key="id" wx:for-item="set" wx:for-index="idx">
+              {{set.sku}}
+            </view>
+          </view>
+        </block>
+        <!-- 卡券类型：换购券显示 -->
+        <block wx:if="{{swiperIdx==2}}">
+          <view class="filter-subtitle">卡券类型</view>
+          <view class="date-range-box">
+            <view class="date-range-item date-range-select-item {{item.checked?'date-item-active':''}}" bind:tap="selectCouponType" wx:for="{{couponTypeArr}}" wx:key="id" data-id="{{item.id}}">
+              {{item.label}}
+            </view>
+          </view>
+        </block>
+
+        <!-- 人员信息:核销中、已使用 显示-->
+        <block wx:if="{{swiperIdx<2 && crewArr.length}}">
+          <view class="filter-subtitle">{{ swiperIdx == 0?'申请人员':'核销人员'}}</view>
+          <view class="date-range-box">
+            <view class="date-range-item date-range-select-item {{item.checked?'date-item-active':''}}" bind:tap="selectCrew" wx:for="{{crewArr}}" wx:key="id" data-uid="{{item.uid}}">
+              {{item.nick_name}}
+            </view>
+          </view>
+        </block>
+      </view>
+      <!--  -->
+      <!-- 重置、确定 -->
+      <view class="operate-box">
+        <view class="operate-item" bind:tap="resetFilter">重置</view>
+        <view class="operate-item operate-item-confirm" bind:tap="confirmFilter">确定</view>
+      </view>
+    </view>
+
+  </van-popup>
+</view>
+<!-- 红牛日期选择组件 -->
+<timePicker pickerShow="{{isPickerShow}}" id="picker" bind:hidePicker="pickerHide" bind:setPickerTime="setPickerTime" config="{{pickerConfig}}"></timePicker>
+<!-- 折扣券、活动券 -->
+<timePicker pickerShow="{{actPickerShow}}" id="actPicker" bind:hidePicker="pickerHide" bind:setPickerTime="setActPickerTime" config="{{pickerConfig}}"></timePicker>

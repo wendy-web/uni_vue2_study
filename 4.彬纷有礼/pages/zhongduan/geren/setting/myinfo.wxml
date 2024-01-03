@@ -1,0 +1,84 @@
+<!--pages/zhongduan/geren/setting/myinfo.wxml-->
+<view class="container safeArea">
+  <view class="operate-box">
+    <view class="weui-cell weui-cell_access weui-cells" bindtap="modifyInfo" data-open_type="1">
+      <view class="weui-cell__bd">头像</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access black">
+        <image mode="aspectFill" class="avatar" src="{{userdata.avatar_url}}"></image>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_access weui-cells" bindtap="modifyInfo" data-open_type="2">
+      <view class="weui-cell__bd">昵称</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access black font24" style="max-width:300rpx;">{{userdata.nick_name}}</view>
+    </view>
+
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">ID号</view>
+        <view class="weui-cell__ft black font24">{{userdata.id}}</view>
+      </view>
+    </view>
+    <block wx:if="{{userdata.phoneStr}}">
+      <view bindtap="navigateTo" data-url="/pages/zhongduan/geren/bangding/mobile" class="weui-cell weui-cell_access afterLine" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">更换手机号</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access black font24">{{userdata.phoneStr}}</view>
+      </view>
+    </block>
+    <block wx:else>
+      <block wx:if="{{supportGetPhoneCode}}">
+        <button class="btn-getphone" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
+          <view class="weui-cell weui-cell_access afterLine btn-getphone-item" hover-class="weui-cell_active">
+            <view>绑定手机号</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access black font24"></view>
+          </view>
+        </button>
+      </block>
+      <block wx:else>
+
+        <view bindtap="openBindPhonePop" class="weui-cell weui-cell_access afterLine" hover-class="weui-cell_active">
+          <view class="weui-cell__bd">绑定手机号</view>
+          <view class="weui-cell__ft weui-cell__ft_in-access black font24"></view>
+        </view>
+      </block>
+    </block>
+    <block wx:if="{{userdata.condition==1}}">
+
+      <view bindtap="navigateTo" data-url="/pages/zhongduan/geren/setting/join" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">转入他人门店</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access black"></view>
+      </view>
+    </block>
+    <!-- <block wx:if="{{userdata.condition==1 && shopInfo.alias_id}}">
+      <view bindtap="navigateTo" data-url="/pages/zhongduan/geren/mendian/paperCode/unbind?alias_id={{shopInfo.alias_id}}" class="weui-cell weui-cell_access"
+        hover-class="weui-cell_active">
+        <view class="weui-cell__bd">解绑纸质码</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access black"></view>
+      </view>
+    </block> -->
+    <!-- <navigator url="/pages/zhongduan/geren/setting/index" class="weui-cell weui-cell_access afterLine"
+      hover-class="weui-cell_active">
+      <view class="weui-cell__bd">退出登录</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access black font24"></view>
+    </navigator> -->
+  </view>
+  <!-- 2023年10月16日 退出登录 -->
+  <view class="login-out-box " bind:tap="openLogOutPop">
+    <text>退出登录</text>
+  </view>
+</view>
+<!-- 悬浮导航 -->
+<!-- <movemenu bindmenuItemClick="menuItemClick" pageUrl="{{pageUrl}}"></movemenu> -->
+<!-- store Qrcode -->
+<!-- <qrcodeWidget></qrcodeWidget> -->
+<!-- 退出登录确认弹窗 -->
+<van-popup show="{{logOutPopShow}}" bind:close="onClose" round position="bottom" data-popname="logOutPopShow">
+  <view class="logoutpop-box safeArea">
+    <view class="title">确定退出登录？</view>
+    <view class="btn-confirm" bind:tap="logout">确定</view>
+    <view class="btn-cancel" bind:tap="onClose" data-popname="logOutPopShow">取消</view>
+  </view>
+</van-popup>
+<!-- 绑定手机号弹窗 -->
+<bindPhonePop id="bindPhonePop" bind:bindPhoneSuccess="bindPhoneSuccess"></bindPhonePop>
+<!-- 隐私弹窗 -->
+<privacyPop></privacyPop>

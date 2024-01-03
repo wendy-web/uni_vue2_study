@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "mp-dialog":"../components/dialog/dialog",
+    "time-picker": "../../../component/time-pickers/time-pickers"
+  },
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#ffffff",
+  "navigationBarTitleText": "使用记录"
+}

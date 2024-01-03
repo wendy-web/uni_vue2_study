@@ -1,0 +1,74 @@
+/* components/time-pickers/time-pickers.wxss */
+.container {
+  font-size: 28rpx;
+}
+
+.propTimeMain .propTop {
+  padding: 20rpx 20rpx;
+  display: flex;
+}
+
+.propTimeMain .propTop .expand {
+  flex: 1;
+  text-align: center;
+}
+
+.propTimeMain .propTop .noBtn {
+  color: #666;
+  width: 100rpx;
+}
+
+.propTimeMain .propTop .okBtn {
+  /* color: #0084ff; */
+  color: #e01b14;
+  width: 100rpx;
+  text-align: right;
+}
+.propTimeMain .propTop .okBtn-disabled {
+  /* color: #0084ff; */
+  color: grey;
+  width: 100rpx;
+  text-align: right;
+  
+}
+
+
+/* 弹出框 */
+
+.modals {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.mask {
+  position: absolute;
+  z-index: 110;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0,
+
+}
+
+.content {
+  position: absolute;
+  z-index: 120;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 580rpx;
+  background-color: #fff;
+}
+
+/*动画前初始位置*/
+
+.bottom-pos {
+  -webkit-transform: translateY(100%);
+  transform: translateY(100%);
+}

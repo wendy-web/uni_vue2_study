@@ -1,0 +1,277 @@
+<view class="align-center" style="height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;box-sizing:border-box; padding-top:{{navBarSystem?navBarSystem.statusBarHeight:'20'}}px">
+  <view bindtap="back" class=" nav-bar__button nav-bar__btn_goback "></view>
+</view>
+<!-- 活动规则 -->
+<view class="rule-title-box" style="margin-top: {{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'60'}}px;">
+  <image class="img-rule-title" src="{{file_cos_url}}/img_act_explain.png" mode="aspectFit" />
+  <image class="img-rule-can" src="{{file_cos_url}}/img_act_hn_zm.png" mode="aspectFit" />
+</view>
+<view class="act-rule-box">
+  <view class="act-rule-item">
+    <view class="head">活动说明</view>
+    <view class="rule-item">
+      <view class="subtitle">活动主题</view>
+      <view>
+        {{ actInfo.title || '兑奖冲榜赢激励' }}，{{ actInfo.sub_t1 || '更有机会赢手机' }}
+      </view>
+    </view>
+    <view class="rule-item rule-item-gap">
+      <view class="subtitle">活动时间</view>
+      <view>
+        {{ actInfo.act_start_date || '2023年8月8日' }}-{{ actInfo.act_end_date || '2023年8月31日' }}，共{{actInfo.act_state.total_day}}天。
+      </view>
+    </view>
+    <view class="rule-item rule-item-gap">
+      <view class="subtitle">活动对象</view>
+      <view>
+        凡在”彬纷有礼“小程序内显示该活动的店铺均可参加，活动区域深圳市、惠州市。
+      </view>
+    </view>
+    <view class="rule-item rule-item-gap">
+      <view class="subtitle">参与方式</view>
+      <view>
+        可进入“彬纷有礼”小程序，首页资讯－热门活动点击“{{actInfo.title || '兑奖冲榜赢激励'}}”，或从页面活动浮窗进入查看当前消费者兑奖进度。
+      </view>
+
+    </view>
+  </view>
+  <!-- 奖励发放说明 -->
+  <view class="act-rule-item">
+    <view class="head">奖励发放方式及使用有效期</view>
+    <view class="rule-item">
+      <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">1</view>
+        </view>
+        <view class="content-right">
+          <view>
+            活动结束后，系统将自动把活动奖券发放至您的彬纷有礼账户，您可到【我的-可用卡券-活动券】页面查看，
+            <text class="color-orange">1张奖券可兑换1罐红牛维生素功能饮料（250ml）或1罐战马能量型功能饮料（310ml）。</text>
+          </view>
+        </view>
+      </view>
+      <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">2</view>
+        </view>
+        <view class="content-right">
+          <view>
+            本次活动依据“彬纷有礼”现有活动券的核销流程，请在{{actInfo.exp_time}}前通过
+            <text class="color-orange">【彬纷有礼－可用卡券-活动券】</text>
+            向上级客户申请核销，逾期未申请核销作废。
+          </view>
+        </view>
+      </view>
+      <!-- 3 -->
+      <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">3</view>
+        </view>
+        <view class="content-right">
+          <view class="color-orange">
+            若您报名参与抽奖活动并赢得荣耀90手机，活动结束后，在您已填写身份信息的前提下（身份信息仅用于个人所得税扣除，由红牛公司依法代扣代缴），红牛公司业务人员将会在10个工作内与您联系，并为您当面核奖。
+          </view>
+          <!-- <view class="color-orange font-bold">（注：活动结束前未填写个人信息的，视为您自动放弃奖励）</view> -->
+        </view>
+      </view>
+
+    </view>
+
+  </view>
+  <!-- 活动规则 -->
+  <view class="act-rule-item">
+    <view class="head">活动规则</view>
+    <view class="rule-item">
+      <!-- 1 -->
+
+      <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">1</view>
+        </view>
+        <view class="content-right">
+          <view>
+            活动开始后，记录店铺成功兑换中国红牛（维生素功能饮料250ml）或战马（能量型功能饮料310ml）2023年促销产品的消费者人数，当兑奖人数≥{{actInfo.calc.ticket_num ||20}}人时，即可进入活动排行榜。活动结束后，按照最终兑奖人数及排名，获得相应等级的战马产品（战马能量型功能饮料310ml）和红牛产品（红牛维生素功能饮料250ml）奖励。
+          </view>
+        </view>
+      </view>
+
+      <!-- 2 -->
+      <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">2</view>
+        </view>
+        <view class="content-right">
+          <view>
+            当店铺兑奖人数≥{{actInfo.calc.ticket_num ||20}}人时，可报名参与抽奖活动。报名后您将随机获得一组10位数的幸运号码（此号码值取自超级大乐透前5个蓝色球的数字组合0102030405~3132333435之间），待第
+            <text class="color-orange">23101</text>期（
+            <text class="color-orange">2023-09-02 周三 21:25:00</text>）
+            开奖结果公布后，系统会将开奖号码从小到大重新组合，生成一组新的号码值作为此次活动的开奖号码，后取6个与本期开奖结果最为接近的店铺幸运号码（幸运号码值≤本期开奖号码值），作为本次抽奖活动的最终中奖号码，每个中奖号码对应的店铺将获得价值2499元的荣耀90手机一台，共计6台（奖品以实物为准）。
+          </view>
+        </view>
+      </view>
+      <!-- 3 -->
+      <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">3</view>
+        </view>
+        <view class="content-right">
+          <view class="color-orange">
+            抽奖活动截止报名时间为{{actInfo.act_end_date}}，逾期将不能报名。
+          </view>
+        </view>
+      </view>
+      <!-- 4 -->
+      <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">4</view>
+        </view>
+        <view class="content-right">
+          <view>
+            同一消费者活动期间多次兑奖的情况视为同一位兑奖人（以兑奖时使用的“彬纷享礼”小程序用户ID作为唯一判断标准）。
+          </view>
+        </view>
+      </view>
+      <!-- 5 -->
+      <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">5</view>
+        </view>
+        <view class="content-right">
+          <view>
+            同一店铺（同一店铺ID）店长、店员均可参与此次兑奖活动，不同的消费者（不同的用户ID）每兑换一罐战马产品（战马能量型维生素饮料310ml），则店铺的兑奖人数增加1人。
+          </view>
+        </view>
+      </view>
+      <!-- 6 -->
+      <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">6</view>
+        </view>
+        <view class="content-right">
+          <view>
+            若兑奖人数相同，以优先达到该人数的兑奖时间为准（时间取系统兑奖时间）。
+          </view>
+        </view>
+      </view>
+       <!-- 7 -->
+       <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">7</view>
+        </view>
+        <view class="content-right">
+          <view>
+            若在彬纷有礼上填写的店铺地址与实际店铺地址不在同一个城市（实际店铺地址非深圳市），此次活动兑奖人数视为无效，不予发放奖励。
+          </view>
+        </view>
+      </view>
+      <!-- 8 -->
+      <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">8</view>
+        </view>
+        <view class="content-right">
+          <view>
+            活动期间暂不能对店铺进行转让或加入其他店铺，带来的不便请您谅解。
+          </view>
+        </view>
+      </view>
+
+    </view>
+  </view>
+  <!-- 奖项设置 -->
+  <view class="act-rule-item" wx:if="{{prizeConfig}}">
+    <view class="head">奖项设置</view>
+    <view class="rule-item">
+      活动期间，成功兑换中国红牛（维生素功能饮料250ml）或战马（能量型功能饮料310ml）2023年促销产品的消费者人数的店铺排名：
+    </view>
+    <!-- 根据后台返回的配置 -->
+    <view class="prize-item " wx:for="{{prizeConfig}}" wx:key="index">
+      <!-- <view class="prize-title" wx:if="{{index+1 === prizeConfig.length}}">兑奖 {{item.min}} 人及以上</view> -->
+      <view class="prize-title">第 {{item.rank[0]}}~{{item.rank[1]}}名</view>
+      <view class="prize-item-coupon">
+        奖励活动券【红牛 <text class="color-orange">{{item.numArr[0]}}张</text>+战马<text class="color-orange">{{item.numArr[1]}}张</text>】
+      </view>
+    </view>
+    <view class="rule-item rule-item-gap">
+      我们将设置6个已报名参与抽奖活动的获奖名额，每个名额将获得荣耀90手机1台，共计6台，每台价值2499元。
+    </view>
+  </view>
+  <!-- 免责说明 -->
+  <view class="act-rule-item">
+    <view class="head">活动免责说明</view>
+    <view class="rule-item">
+      <view>
+        活动秉着公平、公正、公开、真实的原则，对于本次活动，我司声明以下免责条款，参加活动前请您仔细阅读以下条款，参加本次活动即表明您了解并接受以下所有条款：
+      </view>
+      <!-- 1 -->
+      <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">1</view>
+        </view>
+        <view class="content-right">
+          <view>
+            免责事项
+          </view>
+          <view>
+            （1）本活动期间发生任何不可抗力事件使本活动或本次目的不能实现，我司因此免责。不可抗力是指不能控制、不可预见或不能避免，即使预见亦无法避免的事件，该事件使任何一方根据本协议履行其全部或部分义务已不可能。包括社会异常事件、自然灾害或政府管制行为而造成的非基于我司过错的行为；
+          </view>
+          <view>
+            （2）您自身主观过错或恶意，或不按正常流程操作、填写信息不真实、不完整等类似情形致使此次活动无效、无法核验您真实信息而不能领取奖品的，我司免责；
+          </view>
+          <view>
+            （3）若由于您的原因，导致我司遭受损失的，我司有权向您追偿。本规则所称“损失”包括但不限于因涉诉、涉仲裁而产生的诉讼费、律师费、调查取证费、行政处罚或第三人索赔等。
+          </view>
+        </view>
+      </view>
+       <!-- 2 -->
+       <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">2</view>
+        </view>
+        <view class="content-right">
+          <view>
+            本活动的奖品不可退不折现，除非产品本身质量问题，一律不得退换。若奖品的价值需按照国家法律规定缴纳税费的，由您自行缴税。
+          </view>
+        </view>
+      </view>
+       <!-- 3 -->
+       <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">3</view>
+        </view>
+        <view class="content-right">
+          <view>
+            我司可以根据市场环境、参与情况随时暂停、终止活动。活动内容如果有调整或补充，请以最新公告为准。
+          </view>
+        </view>
+      </view>
+       <!-- 4 -->
+       <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">4</view>
+        </view>
+        <view class="content-right">
+          <view>
+            针对违规骗取奖励的行为，我司将不予发放奖励、追回相关奖励或封停账号，并追究其法律责任。
+          </view>
+        </view>
+      </view>
+       <!-- 5 -->
+       <view class="content">
+        <view class="content-left">
+          <view class="bg-num" style="background-image: url({{bg_num}});">5</view>
+        </view>
+        <view class="content-right">
+          <view>
+            本次活动在法律允许范围内，其修改权、更新权及最终解释权均属广东省深圳市天兴诚科技有限公司，如有任何问题，请与平台客服联系，客服热线400-870-7076。
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 返回顶部 -->
+<view class="back-to-top" bindtap="scrollTop">
+  <image class="icon-arrow-up" src="{{icon_arrow_up}}" mode="aspectFit"></image>
+  <view>返回顶部</view>
+</view>

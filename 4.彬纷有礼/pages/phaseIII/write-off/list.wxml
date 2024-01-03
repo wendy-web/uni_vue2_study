@@ -1,0 +1,99 @@
+<!--pages/phaseIII//write-off/list.wxml-->
+<view class="container">
+
+
+	<view class="header">
+		<view class="flex just-between align-center title">
+			<view class="flex align-center ">
+				<image mode="aspectFit" class="dhxleiji" src="{{file_phase_static}}/dhxleiji.png"></image>
+				<text class="font18px">累计：</text>
+			</view>
+			<view class=" flex just-between align-center" bindtap="dropdown">
+				<view class="dhxpeople">核销人员</view>
+			</view>
+		</view>
+		<view class="body weui-flex ">
+			<view class="weui-flex__item ">
+					<view class="font80 pdl20 text-center">{{countCard.order_2}}</view>
+					<view class="font30 flex align-center just-center">
+						<image class="dhxorder" mode="aspectFit" src="{{file_phase_static}}/dhxorder.png"></image>
+						<text class="text-grey">订单(笔)</text>
+				
+					</view>
+			</view>
+			<view class="weui-flex__item ">
+					<view class="font80 pdl20 text-center">{{countCard.order_num}}</view>
+				<view class="font30 flex align-center just-center">
+					<image class="dhxorder" mode="aspectFit" src="{{file_phase_static}}/dhxguan.png"></image>
+					<text class="text-grey">数量(罐)</text>
+				</view>
+			
+			</view>
+		</view>
+		<view class="foot flex just-center align-center">
+			<text class="font24 text-grey">*1张兑换券可兑换<text class="text-red">1罐</text>（{{hnTitle}}）</text>
+		</view>
+	</view>
+
+
+
+
+
+	<view class="content" wx:if="{{list.length>0}}">
+		<view class="order-body " wx:for="{{list}}" wx:key="keys" wx:for-item="item">
+			<view class="order-content">
+				<view class="flex just-between">
+					<text>{{hnTitle}}</text>
+					<text>{{item.count_sj}}张</text>
+				</view>
+				<view>
+					<text>申请数量：</text>
+					<text  class="text-green font-bold font50">{{item.count_dh}}</text><text>罐</text>
+				</view>
+				<view>
+					<text>实收数量：</text>
+					<text  class="{{item.count_dh>item.count_sj?'text-red' : 'text-green'}}  font-bold font50">{{item.count_sj}}</text><text>罐</text>
+				</view>
+				<view>
+					<text>核销人员：</text>
+					<text >{{item.nick_name}}</text>
+				</view>
+
+				<view>
+					<text>订单号：</text>
+					<text class="text-red">{{item.check_no}}</text>
+				</view>
+				<view>
+					<text>配送商：</text>
+					<text >{{item.a_jxs}} {{item.a_jxsdh}}</text>
+				</view>
+				<view>
+					<text>配送员：</text>
+					<text >{{item.a_psy}} {{item.a_psydh}}</text>
+				</view>
+				<view wx:if="{{item.check_time}}">
+					<text>核销时间：</text>
+					<text >{{item.check_time}}</text>
+				</view>
+				<!-- <view>
+					<text class="text-blue">备注：申请{{item.count_dh}}罐，实收{{item.count_sj}}罐，退换{{item.count_dh - item.count_sj}}罐（张返货券已返回至我的卡包—————我的兑换券）。</text>
+				</view> -->
+				<view wx:if="{{item.note}}">
+					<text class="text-blue">{{item.note}}</text>
+				</view>
+			</view>
+			<view class="seal">
+				<image class="ydhImg" mode="aspectFit" src="{{file_phase_static}}/ydh_green.png"></image>
+			</view>
+		</view>
+	</view>
+	<view class="noMore" wx:if="{{noMore}}">
+		<view class="text-center text-grey">没有更多数据了</view>
+	</view>
+</view>
+<!-- 底部弹出层(核销人员选择) -->
+<selectCrew crew="{{crew}}" boss="{{boss}}" bind:chooseCrew="chooseCrew" showTypePop="{{choosePop}}"></selectCrew>
+<!-- 悬浮导航 -->
+<!-- <movemenu bindmenuItemClick="menuItemClick" pageUrl="{{pageUrl}}"></movemenu> -->
+<!-- store Qrcode -->
+<!-- <qrcodeWidget></qrcodeWidget> -->

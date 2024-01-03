@@ -1,0 +1,47 @@
+<!--pages/storeOrder/pay/index.wxml-->
+<!-- 待支付 -->
+<view class="pay-box">
+  <view class="pay-detail">
+    <view class="pay-item">
+      <view>商品总价</view>
+      <view class="total-price-tag">
+        <text>￥</text>
+        <text class="total-price">{{orderInfo.total_amount}}</text> 
+      </view>
+    </view>
+    <view class="pay-item" wx:if="{{orderInfo.discount_amount}}">
+      <view>优惠</view>
+      <view class="discount-price-tag">
+        <text>-￥</text>
+        <text class="total-price">{{orderInfo.discount_amount}}</text>
+      </view>
+    </view>
+    <view class="pay-item" wx:if="{{orderInfo.d_amount}}"> 
+      <view>
+        <text class="icon-coupon">券</text>
+        <text>现金券</text>
+      </view>
+      <view class="discount-price-tag">
+        <text>-￥</text>
+        <text class="total-price">{{orderInfo.d_amount}}</text>
+      </view>
+    </view>
+    <!-- 实付款 -->
+    <view class="actual-pay">
+      <text>实付款</text>
+      <text class="pay-tag mgl50">￥</text>
+      <text class="pay-price">{{orderInfo.c_amount}}</text> 
+    </view>
+    <!-- 客单价 -->
+    <view class="per-customer-box">
+      <view class="per-customer-transcation">
+        <text>每罐平均客单价</text>
+        <text class="pay-tag">￥</text>
+        <text class="pay-tag font28">{{orderInfo.avg_price}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="footer">
+      <van-button bindtap="openMiniprogram" data-oid="{{orderInfo.id}}" round block type="default" custom-class="btn-pay">确认支付</van-button>
+  </view>
+</view>

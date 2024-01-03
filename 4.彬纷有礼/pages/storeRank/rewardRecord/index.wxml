@@ -1,0 +1,60 @@
+<!--pages/storeRank//rewardRecord.wxml-->
+<!-- <top-navbar title="奖励记录" bgImg="{{lanternImg}}" iconTheme="white" backgroundColor="unset" bindback="onBeforeBack" searchBar="" bindsearch='search'> -->
+<top-navbar title="奖励记录" backgroundColor="#f0512b" iconTheme="white" bindback="onBeforeBack">
+</top-navbar>
+<view class="container" style="--navBarHeight:{{navbarHeight || 70 }}px;">
+  <!-- 底层背景图 -->
+  <image class="award-record-bg" src="{{file_cos_url}}/bg_reward_record.png" />
+  <!-- 列表 -->
+  <image class="bg-record" src="{{file_cos_url}}/bg_reward_record_content.png" />
+  <!-- 右上角图标 -->
+  <!-- 标题 -->
+  <!-- <view class="record-title">
+    我的店铺奖励记录
+  </view> -->
+  <view class="content">
+    <view class="tab-box" style="--top:{{navbarHeight}}px;">
+      <view class="tab-item {{activeTab==1?'active-tab':''}}" style="--bg-color:{{activeTab==1?'#FF3401':''}};" bindtap="changeTab" data-index="1">奖券记录</view>
+      <view class="tab-item {{activeTab==2?'active-tab':''}}" style="--bg-color:{{activeTab==2?'#FF3401':''}};" bindtap="changeTab" data-index="2">本期开奖记录</view>
+    </view>
+    <block wx:if="{{activeTab == 1}}">
+      <view class="list-head">
+        <view class="flex_3">活动期数</view>
+        <view class="flex_2">排名</view>
+        <view class="flex_3">兑奖人数</view>
+        <view class="flex_2">奖品</view>
+        <view class="flex_2">状态</view>
+      </view>
+      <view class="list">
+        <scroll-view class="scroll" scroll-y scroll-top enable-flex refresher-enabled="{{true}}" refresher-triggered="{{refreshed}}" bindrefresherrefresh="refresh" bindscrolltolower="loadMore">
+          <!-- 活动信息 -->
+          <block wx:if="{{actInfo}}">
+            <!-- <view class="list-item" wx:if="{{actInfo&&actInfo.status!='已配送'}}"> -->
+            <view class="list-item">
+              <view class="flex_3">{{actInfo.issue_title||'-'}}</view>
+              <view class="flex_2">{{actInfo.rank || '-'}}</view>
+              <view class="flex_3">{{actInfo.kpi_num||'-'}}</view>
+              <block wx:if="{{actInfo.rev_msg.length>0}}">
+                <view wx:if="{{actInfo.act_state.act_end}}" class="flex_2">红牛{{actInfo.rev_msg[0]}}罐+战马{{actInfo.rev_msg[1]}}罐</view>
+                <view wx:else class="flex_2">-</view>
+              </block>
+              <block wx:else>
+                <view class="flex_2">-</view>
+              </block>
+              <!-- <view class="flex_2 dailingqu" bindtap="jumpTo" wx:if="{{actInfo.status=='待领取'}}">待领取</view>
+                <view class="flex_2 dailingqu" wx:else>{{actInfo.status}}</view> -->
+              <view class="flex_2 {{statusClass[actInfo.status]}}">{{actInfo.status}}</view>
+            </view>
+
+          </block>
+          <!-- 活动信息 -->
+          <view class="text-center noMore mini-height">~暂无更多记录~</view>
+
+        </scroll-view>
+      </view>
+    </block>
+    <view wx:if="{{activeTab == 2}}" class="raffle-box">
+      <raffleList actInfo="{{actInfo}}"></raffleList>
+    </view>
+  </view>
+</view>

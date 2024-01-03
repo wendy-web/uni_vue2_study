@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "easy-loadimage":"../../../component/easy-loadimage/easy-loadimage"
+  }
+}

@@ -1,0 +1,187 @@
+.reconfirmPop {
+  height: 680rpx;
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/remindBG.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: 50rpx;
+}
+
+.reconfirmPop .remindIcon {
+  width: 536rpx;
+  height: 227rpx;
+}
+
+.flex-align-around {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.flex-column-center {
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.width100 {
+  width: 100%;
+}
+
+.greyBG {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/greyBG.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 221rpx;
+  height: 81rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #404040;
+}
+
+.watchAdBG {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/btnBG.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 263rpx;
+  height: 82rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #ffec4e;
+}
+
+.yellowBG {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/yellowBG.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 263rpx;
+  height: 82rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #fb091b;
+}
+
+.popIn {
+  animation: fadeleftIn 0.4s;
+  animation-name: popIn;
+}
+
+.totalMoney {
+  font-size: 42rpx;
+  font-weight: 500;
+  text-align: center;
+  color: #FFDF99;
+}
+
+.font60 {
+  font-size: 60rpx;
+}
+.font-bold {
+  font-weight: bold;
+}
+
+.rewardHistory {
+  font-size: 24rpx;
+  /* font-size: 36rpx; */
+  font-weight: bold;
+  text-align: left;
+  color: #FFDF99;
+}
+.flex-row-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.scaleBtn {
+  transform: scale(0.5);
+  transform-origin: left top;
+  z-index: 1;
+}
+
+.scaleBox {
+  width: 130px;
+  /* width: 250rpx; */
+  height: 75px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+.scaleBtn-backup {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 20rpx;
+  margin: auto 0;
+  width: 100px;
+  height: 30px;
+  display: flex;
+  font-size: 22rpx;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+  border-color: #ff0500;
+  text-align: center;
+  color: white;
+  border-radius: 50rpx;
+  background: linear-gradient(0deg, #e60000, #e40001);
+  -webkit-box-shadow: 0 8rpx 0 0 rgba(14, 13, 13, 0.562);
+  box-shadow: 0 6rpx 0 0 rgba(14, 13, 13, 0.562);
+}
+.mgl70 {
+  margin-left: 70rpx;
+}
+.pdlr20 {
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+}
+@keyframes popIn {
+  0% {
+    transform: scale3d(0.5, 0.5, 0.5);
+    opacity: 0;
+  }
+
+  50% {
+    animation-timing-function: cubic-bezier(0.47, 0, 0.745, 0.715);
+  }
+
+  100% {
+    transform: scale3d(1, 1, 1);
+    animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 1;
+  }
+}
+.icon-zm-btn {
+  width: 240rpx;
+  height: 80rpx;
+}
+.msg-title {
+  font-size: 52rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #d97409;
+}
+.msg-name {
+  font-size: 52rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #a74307;
+}
+.msg-reward {
+  font-size: 86rpx;
+  font-weight: 700;
+  color: #fc0000;
+}
+.font120{
+  font-size: 120rpx;
+}
+.totalMoney-item{
+  color: #FFE300;
+  font-size: 58rpx;
+  font-weight: bold;
+}

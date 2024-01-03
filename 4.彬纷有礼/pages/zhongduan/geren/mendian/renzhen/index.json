@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "forbiddenTransShop": "../../../../../component/forbiddenTransShop/index",
+    "privacyPop":"../../../../../component/privacyPop/index",
+    "bindPhonePop":"../../../../../component/bindPhonePop/index"
+
+  },
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "店铺信息"
+}

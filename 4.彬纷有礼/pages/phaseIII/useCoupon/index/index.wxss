@@ -1,0 +1,185 @@
+/* pages/phaseIII/useCoupon/index/index.wxss */
+.box {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+}
+
+.deadline-box {
+  background-color: #f4f4f4;
+  box-sizing: border-box;
+  padding-left: 30rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 22rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #777777;
+  flex-shrink: 0;
+}
+
+.refresh-box {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  padding-right: 30rpx;
+  /* background-color: coral; */
+
+}
+
+.icon_refresh_thin {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.list-box {
+  flex: 1;
+  box-sizing: border-box;
+  background-color: #f4f4f4;
+  overflow: hidden;
+}
+
+.list-item {
+  box-sizing: border-box;
+  padding: 40rpx 40rpx 30rpx 40rpx;
+  margin-bottom: 10rpx;
+  background-color: #ffffff;
+}
+
+.list-info {
+  display: flex;
+  align-items: center;
+}
+
+.icon_coupon_hn {
+  width: 152rpx;
+  height: 140rpx;
+}
+
+.usable-box {
+  flex: 1;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding-left: 32rpx;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.usable-title {
+  font-size: 32rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #000018;
+}
+
+.unable-unit {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #777777;
+}
+
+.unable-num {
+  font-size: 44rpx;
+  font-family: PingFang SC, PingFang SC-Heavy;
+  font-weight: 800;
+  text-align: left;
+  color: #000018;
+}
+
+.sku-info {
+  display: flex;
+  align-items: baseline;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #555561;
+}
+
+.sku-unused {
+  font-size: 32rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #000018;
+}
+
+.expire-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  margin-top: 20rpx;
+}
+
+.expire-item {
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #777777;
+}
+
+.expire-num {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #000018;
+  text-align: center;
+}
+
+.expire-day-7 {
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+}
+
+.day-7 {
+  color: #e3001b;
+}
+
+.day-15 {
+  color: #FF711F;
+}
+
+.day-30 {
+  color: #1777FE;
+}
+
+.operate-box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 20rpx;
+}
+
+.btn-apply {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 234rpx;
+  height: 60rpx;
+  background: #e3001b;
+  border: 1rpx solid #e3001b;
+  border-radius: 31rpx;
+
+
+  font-size: 28rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #ffffff;
+}
+.empty-img {
+  width: 428rpx!important;
+  height: 428rpx!important;
+}

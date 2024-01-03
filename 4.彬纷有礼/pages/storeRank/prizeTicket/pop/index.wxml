@@ -1,0 +1,16 @@
+<!--pages/storeRank/prizeTicket/pop/index.wxml-->
+<van-popup show="{{confirmPopShow}}" bind:close="onClose" data-popname="confirmPopShow" custom-style="background-color: transparent;">
+  <view class="icon-box">
+    <image class="icon-confirm" src="./static/icon_confirm.png" mode="aspectFit" />
+  </view>
+  <view class="confirm-box">
+    <view class="confirm-title">信息确认</view>
+    <view class="confirm-tips">
+      请确认姓名身份证号、联系地址、手机号码是否正确无误，该信息将作为奖品领取核对凭证，一经确认不得修改。
+    </view>
+    <view class="operate-box">
+      <van-button bindtap="onClose" data-popname="confirmPopShow" round type="default" custom-class="operate-btn">取消</van-button>
+      <van-button round type="danger" bindtap="onConfirm" custom-class="operate-btn">确定</van-button>
+    </view>
+  </view>
+</van-popup>

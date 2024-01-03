@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "forbiddenTransShop": "../../../component/forbiddenTransShop/index",
+    "privacyPop":"../../../component/privacyPop/index"
+  },
+  "navigationBarTitleText": "加入店铺邀请"
+}

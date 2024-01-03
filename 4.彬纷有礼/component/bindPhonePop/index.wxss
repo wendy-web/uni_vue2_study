@@ -1,0 +1,51 @@
+/* component/bindPhonePop/index.wxss */
+.bindphone-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+
+  padding-top: 50rpx;
+  min-height: 300rpx;
+}
+
+.bindphone-box .title {
+  font-size: 44rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #000018;
+  letter-spacing: 0.53rpx;
+  padding: 0 20rpx 50rpx 20rpx;
+
+}
+
+.getphone-box{
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.at-button {
+  margin: 0;
+  font-size: 32rpx;
+  font-weight: 500;
+  border-radius:50rpx;
+  background: linear-gradient(180deg,#e71919 26%, #a31015 100%);
+  color: white;
+  width: 430rpx;
+  line-height: 96rpx;
+  height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.send-sms-box{
+  padding-bottom: 40rpx;
+  box-sizing: border-box;
+}
+.send-sms-box .van-cell::after{
+  border-bottom: 1px solid #7a7a7a;
+}

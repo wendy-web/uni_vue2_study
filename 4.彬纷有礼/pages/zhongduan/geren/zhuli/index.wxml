@@ -1,0 +1,199 @@
+<block wx:if="{{pageReady}}">
+  <view wx:if="{{RECORD_TYPE != 3}}" class="help-head" style="background-image:url({{helpBg}});">
+    <!-- 红牛战马全部显示 -->
+    <view wx:if="{{RECORD_TYPE===0}}" class="help-head-all" style="background-image:url({{helpMask}});">
+      <view class="head-all-content">
+        <view bindtap="goHistory" data-type="1" class="history"><text>历史助力记录></text></view>
+        <view class="head-all-num">￥<text>{{redpacketcount.all}}</text></view>
+        <view>累计助力红包（元）</view>
+      </view>
+      <view class="head-all-footer">
+        <view class="footer-top">
+          <view class="footer-hn">
+            <view class="footer-num">￥{{redpacketcount.hn}}</view>
+            <view>红牛</view>
+          </view>
+          <view class="footer-zm">
+            <view class="footer-num">￥{{redpacketcount.zm}}</view>
+            <view>战马</view>
+          </view>
+        </view>
+        <view class="footer-bottom">
+          <view>助力次数（次）：{{redpacketcount.hn_num >999?'999+':redpacketcount.hn_num|| '0'}}</view>
+          <view>助力次数（次）：{{redpacketcount.zm_num >999?'999+':redpacketcount.zm_num || '0'}}</view>
+        </view>
+      </view>
+    </view>
+    <!-- 红牛、战马单独显示 -->
+    <view wx:if="{{RECORD_TYPE===1||RECORD_TYPE===2}}" class="help-head-one" style="background-image:url({{helpMaskone}});">
+      <view class="head-one-content">
+        <view class="head-one-content-title">
+          <image wx:if="{{RECORD_TYPE===1}}" class="hn-icon" mode="aspectFit" src="{{hnIcon}}"></image>
+          <image wx:if="{{RECORD_TYPE===2}}" class="hn-icon" mode="aspectFit" src="{{zmIcon}}"></image>
+          <view wx:if="{{RECORD_TYPE===1}}">红牛</view>
+          <view wx:if="{{RECORD_TYPE===2}}">战马</view>
+        </view>
+        <view class="head-one-content-money">￥<text class="font36">{{redpacketcount.hn||redpacketcount.zm}}</text></view>
+        <view class="head-one-content-tips">累计助力红包（元）</view>
+      </view>
+      <view class="head-one-content-footer">
+        <view>助力次数（次）：{{redpacketcount.hn_num || redpacketcount.zm_num}}</view>
+        <view bindtap="goHistory" data-type="1">历史助力记录</view>
+      </view>
+    </view>
+  </view>
+  <!-- 红包分类查询  -->
+  <view class="red-type-query" wx:if="{{RECORD_TYPE === 0}}">
+    <view bindtap="changeType" data-type="1" class="red-type-query-hn {{query_type==1?'red-type-query-active':''}}">
+      <!-- red_hn_icon.png -->
+      <image class="red-type-query-icon" src="{{COS}}/public/img/WarHorse/0917/red_hn_icon.png" mode="aspectFit">
+      </image>
+      <view class="red-type-title">红牛</view>
+      <view class="{{query_type==1?'red-type-line-hns':'red-type-line-hn'}}"></view>
+    </view>
+    <view bindtap="changeType" data-type="2" class="red-type-query-zm {{query_type==2?'red-type-query-active':''}}">
+      <!-- red_zm_icon.png -->
+      <image class="red-type-query-icon" src="{{COS}}/public/img/WarHorse/0917/red_zm_icon.png" mode="aspectFit">
+      </image>
+      <view class="red-type-title">战马</view>
+      <view class="{{query_type==2?'red-type-line-zms':'red-type-line-zm'}}"></view>
+    </view>
+  </view>
+
+  <!-- 判断 如果红牛有数据 显示tab -->
+  <view wx:if="{{query_type == 1 && RECORD_TYPE<=1}}" class="hn2in1-tab-box">
+    <view bindtap="hn2in1TabChange" data-type="1" class="hn2in1-tab-item {{hn2in1_tab_active == 1?'hn2in1-tab-active':''}}">随机红包</view>
+    <view bindtap="hn2in1TabChange" data-type="2" class="hn2in1-tab-item {{hn2in1_tab_active == 2?'hn2in1-tab-active':''}}">固定红包</view>
+  </view>
+  <!-- 余额记录筛选 -->
+  <view class="balance-record-query" wx:if="{{RECORD_TYPE !== 3}}">
+    <!-- 日期筛选 -->
+    <view class="date-select" bindtap="selectDate">
+      <image class="date-icon" src="{{dateIcon}}" mode="aspectFit"></image>
+      <block wx:if="{{selectData.last}}">
+        {{selectData.last}}~{{selectData.now}}
+      </block>
+      <block wx:else>
+        时间筛选
+      </block>
+    </view>
+    <!-- <view class="oneEnjoy" wx:if="{{query_type==1}}">
+        <navigator url="/pages/zhongduan/geren/storesRecord/index" class="oneEnjoy">换购记录></navigator>
+
+      </view> -->
+  </view>
+  <!-- 助力记录 -->
+  <view class="hongbao-record">
+    <!-- 数据列表 -->
+    <scroll-view scroll-y="true" wx:if="{{hn2in1_tab_active == 1}}" class="list-box " bindscrolltolower="scrolltolower" scroll-top enable-flex refresher-enabled="{{true}}" refresher-triggered="{{refreshed}}" bindrefresherrefresh="refresh">
+      <view class="list-data-item" wx:for="{{listData}}" wx:key="key">
+        <!-- header -->
+        <view class="list-item-header">
+          <view class="list-item-header-left">
+            <view>{{item.title}}</view>
+          </view>
+          <view class="list-item-header-right" data-index="{{index}}" bindtap="tastOpen">
+            <text class="lihr-text ">+{{item.money}}</text>
+            <text class="text iconfont iconarrow {{item.isOpen?'iconarrow-active':''}}" wx:if="{{item.isIcon}}"></text>
+          </view>
+        </view>
+        <!-- task 任务 -->
+        <view class="task-list" wx:if="{{item.isOpen}}">
+          <view class="task-item" wx:for="{{item.task}}" wx:key="key">
+            <block wx:if="{{index>0}}">
+              {{item.user_msg[0]}}<text class="task-item-money">{{item.user_msg[1]}}</text>
+            </block>
+          </view>
+        </view>
+        <!-- 扫码人 -->
+        <view class="code-sweeper">{{item.nick_name}}</view>
+        <!-- 日期 -->
+        <view class="list-item-date">{{item.create_time}}</view>
+      </view>
+      <view class="is-data-bottom" wx:if="{{ !_IS_DATA_BOTTOM&& listData.length>0}}">
+        <view>
+          ———————— 没有更多记录了~ ————————
+        </view>
+      </view>
+      <view class="is-data-bottom" wx:if="{{_IS_DATA_BOTTOM}}">
+        <block wx:if="{{listData.length == 0 && RECORD_TYPE != 3 }}">
+          <image mode="aspectFit" src="{{img_nopoint}}"></image>
+          <navigator wx:if="{{haveEnjoyData}}" class="goyuerBtn" url="/pages/zhongduan/geren/storesRecord/index">
+            查看换购记录
+          </navigator>
+        </block>
+        <!-- <view wx:if="{{RECORD_TYPE != 3}}">
+          ———————— 没有更多记录了~ ————————
+        </view> -->
+      </view>
+    </scroll-view>
+    <scroll-view scroll-y="true" wx:if="{{hn2in1_tab_active == 2}}" class="list-box " bindscrolltolower="scrolltolower2y" scroll-top enable-flex refresher-enabled="{{true}}" refresher-triggered="{{refreshed2y}}" bindrefresherrefresh="refresh">
+      <view class="list-data-item" wx:for="{{list2y}}" wx:key="key">
+        <!-- header -->
+        <view class="list-item-header">
+          <view class="list-item-header-left">
+            <view>{{item.title}}</view>
+          </view>
+          <view class="list-item-header-right" data-index="{{index}}" bindtap="tastOpen">
+            <text class="lihr-text ">+{{item.money}}</text>
+            <text class="text iconfont iconarrow {{item.isOpen?'iconarrow-active':''}}" wx:if="{{item.isIcon}}"></text>
+          </view>
+        </view>
+
+        <!-- 扫码人 -->
+        <view class="code-sweeper">{{item.nick_name}}</view>
+        <!-- 日期 -->
+        <view class="list-item-date">{{item.create_time}}</view>
+      </view>
+      <view class="is-data-bottom" wx:if="{{ list2y_nomore&& list2y.length>0}}">
+        <view>
+          ———————— 没有更多记录了~ ————————
+        </view>
+      </view>
+      <view class="is-data-bottom" wx:if="{{list2y_nomore && list2y.length == 0}}">
+        <image mode="aspectFit" src="{{img_nopoint}}"></image>
+      </view>
+    </scroll-view>
+    <!-- 空布局情况 -->
+    <view class="empty-view" wx:if="{{RECORD_TYPE === 3}}">
+      <!-- <navigator wx:if="{{haveEnjoyData}}" class="goyuerBtn" url="/pages/zhongduan/geren/storesRecord/index">红牛兑换
+      </navigator> -->
+      <view>
+        <image class="hbNoDataImg" mode="aspectFit" src="{{hbNodataIcon}}"></image>
+        <view class="text-center">~~暂无记录~~</view>
+        <navigator wx:if="{{haveEnjoyData}}" class="goyuerBtn" url="/pages/zhongduan/geren/storesRecord/index">
+          查看换购记录
+        </navigator>
+      </view>
+    </view>
+    <!-- 弹窗 --- 日历弹窗 -->
+    <view class="fadeIn" wx:if="{{dateDialog}}">
+      <view class="weui-mask" bindtap="closeDateDialog"></view>
+      <view class="weui-dialog">
+        <calendar bind:onRangePick="onRangePick" mode="range"></calendar>
+        <view class="weui-dialog__ft">
+          <a class="weui-dialog__btn weui-dialog__btn_default" bindtap="closeDateDialog">取消</a>
+          <a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="chooseDate">确定</a>
+        </view>
+      </view>
+    </view>
+    <!-- 筛选下拉展示 -->
+    <mp-halfScreenDialog show="{{halfScreenDialog}}" maskClosable="{{true}}">
+      <view slot="title">
+        <text>{{halfScreenDialogTitle}}</text>
+      </view>
+      <view slot="desc">
+        <view class='half-screen-list'>
+          <view class="half-screen-item" wx:for="{{halfScreenList}}" wx:key="key" data-result="{{item}}" bindtap="halfScreencTab">
+            <image class="half-screen-item-img" src="{{item.img}}" />
+            <view>{{item.name}}</view>
+          </view>
+        </view>
+      </view>
+    </mp-halfScreenDialog>
+
+  </view>
+</block>
+
+<!-- 红牛25周年弹窗 -->
+<AdPopups show="{{adShow}}" popImg="{{popImg}}" openType="switch" pagePath="/pages/tabBar/shouye/index"></AdPopups>

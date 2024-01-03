@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "确认收货",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle":"black",
+  "usingComponents": {
+    "refuse-goods":"./common/refuseGoods/index",
+    "confirm-goods":"./common/confirmGoods/index"
+  }
+}

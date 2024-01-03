@@ -1,0 +1,776 @@
+<!--pages/phaseIII/order/order.wxml-->
+<view class="head-fixed">
+  <!-- 日期选择 -->
+  <view class="date-box">
+    <view bindtap="chooseDate" class="date-left">
+      <image mode="aspectFit" class="date-icon" src="{{date_icon}}"></image>{{defaultDate}}
+    </view>
+  </view>
+  <!-- tabbar类型:全部，待受理，待核销，已核销，已取消 -->
+  <view class="tab-box">
+    <view class="tab-item {{activeTab==0 ? 'tab-active' :''}}" bindtap="changeTab" data-index="0">
+      <text>全部</text>
+      <view wx:if="{{activeTab==0}}" class="tab-bottom"></view>
+    </view>
+    <view class="tab-item {{activeTab==1 ? 'tab-active' :''}}" bindtap="changeTab" data-index="1">
+      <text>待受理</text>
+      <view wx:if="{{activeTab==1}}" class="tab-bottom"></view>
+      <view class="reddot" wx:if="{{count.order_0}}">{{count.order_0}}</view>
+
+    </view>
+    <view class="tab-item {{activeTab==2 ? 'tab-active' :''}}" bindtap="changeTab" data-index="2">
+      <text>待核销</text>
+      <view wx:if="{{activeTab==2}}" class="tab-bottom"></view>
+      <view class="reddot" wx:if="{{count.order_1}}">{{count.order_1}}</view>
+
+    </view>
+    <view class="tab-item {{activeTab==3 ? 'tab-active' :''}}" bindtap="changeTab" data-index="3">
+      <text>已核销</text>
+      <view wx:if="{{activeTab==3}}" class="tab-bottom"></view>
+      <view class="reddot" wx:if="{{count.order_2}}">{{count.order_2>99?'99+':count.order_2}}</view>
+
+    </view>
+    <view wx:if="{{condition !=2}}" class="tab-item {{activeTab==4 ? 'tab-active' :''}}" bindtap="changeTab" data-index="4">
+      <text>已取消</text>
+      <view wx:if="{{activeTab==4}}" class="tab-bottom"></view>
+    </view>
+
+  </view>
+</view>
+<!-- tab-list -->
+
+<view class="list-box {{(activeTab==1 || activeTab == 2 || activeTab ==3)?'list-bottom':''}} ">
+  <!-- 全部列表 -->
+  <block wx:if="{{activeTab == 0}}">
+    <block wx:if="{{list0.length>0}}">
+      <block wx:for="{{list0}}" wx:key="key">
+        <!-- condition:2店员和掌柜数据展示不通 -->
+        <block wx:if="{{condition==2}}">
+          <!-- 店员待受理 -->
+          <view class="list-item" wx:if="{{item.status ==0}}">
+            <!-- 订单内容 -->
+            <view class="list-item-content">
+              <view class="list-item-dy">
+                <view class="dy-dsl">待受理</view>
+                <view>
+                  配送商：<text>{{item.a_jxs}} </text>
+                </view>
+                <view>联系电话：<text>{{item.a_jxsdh}}</text></view>
+                <view>数量：<text class="green font40">{{item.count_dh}}</text>罐</view>
+                <view>订单编号：<text>{{item.check_no}}</text></view>
+                <view>产品名称：<text>{{item.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+                <view>兑换申请：<text>{{item.create_time}}</text></view>
+              </view>
+            </view>
+            <!-- 彩带 -->
+            <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar.png"></image>
+          </view>
+          <!-- 店员待核销 -->
+          <view class="list-item" wx:elif="{{item.status ==1}}">
+            <!-- 订单内容 -->
+            <view class="list-item-content">
+              <view class="list-item-dy">
+                <view class="dy-dhx">待核销</view>
+                <view>配送商：<text>{{item.a_jxs}}</text></view>
+                <view wx:if="{{item.a_psy}}">配送员：<text>{{item.a_psy}}</text></view>
+                <view wx:if="{{item.a_psydh}}">联系电话：<text>{{item.a_psydh}}</text></view>
+                <view>数量：<text class="green font40">{{item.count_dh}}</text>罐</view>
+                <view>状态：<text class="order-status-ysl">{{item.a_status}}</text></view>
+                <view>订单编号：<text>{{item.check_no}}</text></view>
+                <view>产品名称：{{item.prizeratetype==105 ? zmTitle: hnTitle}}</view>
+                <view>发起时间：<text>{{item.create_time}}</text></view>
+                <view>受理时间：<text>{{item.a_stime}}</text></view>
+                <view wx:if="{{item.a_ptime}}">配送时间：<text>{{item.a_ptime}}</text></view>
+
+                <!-- 操作按钮 -->
+                <view class="list-item-btn-dy mgb20">
+                  <!-- 操作按钮：配送中可核销，其他灰色不可操作 -->
+                  <view wx:if="{{item.status ==1 && item.count_sj}}" bindtap="getMyLocation" data-id="{{item.id}}" class="btn-operate">立即核销</view>
+                  <view wx:else class="btn-operate btn-operate-disabled">立即核销</view>
+
+                </view>
+              </view>
+            </view>
+            <!-- 彩带 -->
+            <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar.png"></image>
+          </view>
+          <!-- 店员已核销 -->
+          <view class="list-item" wx:elif="{{item.status ==2}}">
+            <!-- 订单内容 -->
+            <view class="list-item-content">
+              <view class="list-item-content-left-finish">
+                <view>
+                  <text>申请数量（罐）</text>
+                </view>
+                <view>
+                  <text class="item-num green">{{item.count_dh || 0}}</text>
+                </view>
+                <view>
+                  <text>实收数量（罐）</text>
+                </view>
+                <view>
+                  <text class="item-num {{item.count_sj==item.count_dh ? 'green' :'red'}}">{{item.count_sj ||
+                    0}}</text>
+                </view>
+
+              </view>
+              <view class="list-item-content-right">
+                <view>配送商：<text>{{item.a_jxs}}</text></view>
+                <view>配送人员：<text>{{item.a_psy}}</text></view>
+                <view class="list-call-box">联系电话：<text>{{item.a_psydh}}</text>
+                  <image bindtap="callUp" data-phone="{{item.a_psydh}}" class="list-call" mode="aspectFit" src="{{file_phase_static}}/call.png"></image>
+                </view>
+                <view>订单编号：<text>{{item.check_no}}</text></view>
+                <view>产品名称：<text>{{item.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+                <view>核销人员：<text>{{item.nick_name}}</text></view>
+                <view wx:if="{{item.check_time}}">核销时间：<text>{{item.check_time}}</text></view>
+                <!-- 已核销 -->
+                <image class="dsl-stamp" mode="aspectFit" src="{{file_phase_static}}/yhx-stamp.png"></image>
+              </view>
+            </view>
+            <!-- 备注 -->
+            <view wx:if="{{item.note}}" class="list-tips">备注：{{item.note}}</view>
+            <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar.png"></image>
+          </view>
+
+        </block>
+        <!-- condition:1/0 掌柜或者普通用户 -->
+        <block wx:else>
+          <block wx:if="{{item.status ==0}}">
+            <!-- 待受理  -->
+            <view class="list-item">
+              <!-- 订单内容 -->
+              <view class="list-item-content">
+                <view class="list-item-content-left">
+                  <!-- 卡券类型type：1红牛，3惠让券，4活动券 -->
+                  <view class="{{voucherTitle[item.type].class}}" wx:if="{{voucherTitle[item.type]}}">{{voucherTitle[item.type].title}}</view>
+                  <view class="mgt20">
+                    <text class="item-num">{{item.count_dh||0}}</text>
+                    <text class="item-type">罐</text>
+                  </view>
+                </view>
+                <view class="list-item-content-right">
+                  <view>
+                    配送商：<text>{{item.a_jxs}}</text>
+                  </view>
+                  <view>联系电话：<text>{{item.a_jxsdh}}</text></view>
+                  <view>订单编号：<text>{{item.check_no}}</text></view>
+                  <view>产品名称：<text>{{item.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+                  <view>申请时间：<text>{{item.create_time}}</text></view>
+                  <!-- 待受理 -->
+                  <image class="dsl-stamp" mode="aspectFit" src="{{file_phase_static}}/dsl-stamp.png"></image>
+                </view>
+              </view>
+              <!-- 操作按钮 -->
+              <view class="list-item-btn">
+                <!-- <view class="item-btn-left"></view> -->
+                <view class="item-btn-right" wx:if="{{condition != 2}}">
+                  <!-- 取消按钮 -->
+                  <view class="btn-cancel" bindtap="cancel" data-index="{{index}}">取消申请</view>
+                  <!-- 操作按钮 -->
+                  <view bindtap="remindMerchant" data-check_no="{{item.check_no}}" data-index="{{index}}" class="btn-operate">提醒配送商</view>
+                </view>
+              </view>
+              <!-- 彩带 -->
+              <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar.png"></image>
+            </view>
+          </block>
+          <block wx:elif="{{item.status ==1}}">
+            <!-- 待核销 -->
+            <view class="list-item">
+              <!-- 订单内容 -->
+              <view class="list-item-content">
+                <view class="list-item-content-left">
+                  <view class="{{voucherTitle[item.type].class}}" wx:if="{{voucherTitle[item.type]}}">{{voucherTitle[item.type].title}}</view>
+                  <view class="mgt20">
+                    <text class="item-num">{{item.count_dh || 0}}</text>
+                    <text class="item-type">罐</text>
+                  </view>
+                </view>
+                <view class="list-item-content-right">
+                  <view>配送商：<text>{{item.a_jxs}}</text></view>
+                  <view wx:if="{{item.a_psy}}">配送员：<text>{{item.a_psy}}</text></view>
+                  <view wx:if="{{item.a_psydh}}" class="list-call-box">联系电话：<text>{{item.a_psydh}}</text>
+                    <image bindtap="callUp" data-phone="{{item.a_psydh}}" class="list-call" mode="aspectFit" src="{{file_phase_static}}/call.png"></image>
+                  </view>
+                  <view>状态：<text class="order-status-ysl">{{item.a_status}}</text></view>
+                  <view>订单编号：<text>{{item.check_no}}</text></view>
+                  <view>产品名称：<text>{{item.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+                  <view wx:if="{{item.a_ptime}}">配送时间：<text>{{item.a_ptime}}</text></view>
+                  <view>受理时间：<text>{{item.a_stime}}</text></view>
+                  <!-- 待核销 -->
+                  <image class="dsl-stamp" mode="aspectFit" src="{{file_phase_static}}/dhx-stamp.png"></image>
+                </view>
+              </view>
+              <!-- 操作按钮 -->
+              <view class="list-item-btn">
+                <!-- <view class="item-btn-left"></view> -->
+                <view class="item-btn-right">
+                  <!-- 取消按钮：condition:1掌柜可显示 -->
+                  <view wx:if="{{condition!= 2 && item.status ==1 && !item.a_ptime}}" bindtap="cancelHX" data-check_no="{{item.check_no}}" class="btn-cancel">取消订单</view>
+                  <!-- 操作按钮：配送中可核销，其他灰色不可操作 -->
+                  <view wx:if="{{item.status ==1 && item.count_sj}}" style="{{(item.a_ptime)?'margin-left:0rpx;':''}}" bindtap="getMyLocation" data-id="{{item.id}}" class="btn-operate">立即核销</view>
+                  <view wx:else style="{{(item.a_ptime)?'margin-left:0rpx;':''}}" class="btn-operate btn-operate-disabled">立即核销</view>
+                </view>
+              </view>
+              <!-- 彩带 -->
+              <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar.png"></image>
+            </view>
+          </block>
+          <block wx:elif="{{item.status ==2}}">
+            <!-- 已核销 -->
+            <view class="list-item">
+              <!-- <view class="list-item" wx:if="{{activeTab == 2}}"> -->
+              <!-- 订单内容 -->
+              <view class="list-item-content">
+                <view class="list-item-content-left-finish">
+                  <view class="{{voucherTitle[item.type].class}}" wx:if="{{voucherTitle[item.type]}}">{{voucherTitle[item.type].title}}</view>
+                  <view class="mgt20">
+                    <text>申请数量（罐）</text>
+                  </view>
+                  <view>
+                    <text class="item-num green">{{item.count_dh || 0}}</text>
+                  </view>
+                  <view>
+                    <text>实收数量（罐）</text>
+                  </view>
+                  <view>
+                    <text class="item-num {{item.count_sj==item.count_dh ? 'green' :'red'}}">{{item.count_sj ||
+                      0}}</text>
+                  </view>
+
+                </view>
+                <view class="list-item-content-right">
+                  <view>配送商：<text>{{item.a_jxs}}</text></view>
+                  <view>配送人员：<text>{{item.a_psy}}</text></view>
+                  <view class="list-call-box">联系电话：<text>{{item.a_psydh}}</text>
+                    <image bindtap="callUp" data-phone="{{item.a_psydh}}" class="list-call" mode="aspectFit" src="{{file_phase_static}}/call.png"></image>
+                  </view>
+                  <view>订单编号：<text>{{item.check_no}}</text></view>
+                  <view>产品名称：<text>{{item.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+                  <view>核销人员：<text>{{item.nick_name}}</text></view>
+                  <view wx:if="{{item.check_time}}">核销时间：<text>{{item.check_time}}</text></view>
+                  <!-- 已核销 -->
+                  <image class="dsl-stamp" mode="aspectFit" src="{{file_phase_static}}/yhx-stamp.png"></image>
+                </view>
+              </view>
+              <!-- 备注 -->
+              <view wx:if="{{item.note}}" class="list-tips">备注：{{item.note}}</view>
+              <!-- 彩带 -->
+              <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar.png"></image>
+            </view>
+          </block>
+          <block wx:elif="{{item.status ==3}}">
+            <!-- 已取消 -->
+            <view class="list-item">
+              <!-- 订单内容 -->
+              <view class="list-item-content">
+                <view class="list-item-content-left">
+                  <view class="{{voucherTitle[item.type].class}}" wx:if="{{voucherTitle[item.type]}}">{{voucherTitle[item.type].title}}</view>
+                  <view class="mgt20">
+                    <text class="item-num">{{item.count_dh}}</text>
+                    <text class="item-type">罐</text>
+                  </view>
+                </view>
+                <view class="list-item-content-right">
+                  <view wx:if="{{item.a_jxs}}">
+                    配送商：<text>{{item.a_jxs}}</text>
+                  </view>
+                  <view>联系电话：<text>{{item.a_jxsdh}}</text></view>
+                  <view>订单编号：<text>{{item.check_no}}</text></view>
+                  <view>产品名称：<text>{{item.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+                  <view>申请时间：<text>{{item.create_time}}</text></view>
+                  <!-- 已取消 -->
+                  <image class="dsl-stamp" mode="aspectFit" src="{{file_phase_static}}/yqx-stamp.png"></image>
+                </view>
+              </view>
+              <!-- 彩带 -->
+              <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar-grey.png"></image>
+            </view>
+          </block>
+        </block>
+      </block>
+      <!-- 没有更多数据 -->
+      <view wx:if="{{noMore}}" class="text-center noData safeArea">~~没有更多记录了~~</view>
+    </block>
+    <block wx:else>
+      <!-- 暂无数据 -->
+      <view class="empty">
+        <image class="empty-nodata" mode="aspectFit" src="{{nodataImg}}"></image>
+
+        <view>
+          <text>暂无数据</text>
+        </view>
+      </view>
+    </block>
+  </block>
+  <!-- 待受理列表 -->
+  <block wx:elif="{{activeTab == 1}}">
+    <block wx:if="{{list1.length>0}}">
+      <block wx:for="{{list1}}" wx:key="key">
+        <block wx:if="{{condition==2}}">
+          <!-- 店员待受理 -->
+          <view class="list-item" wx:if="{{item.status ==0}}">
+            <!-- 订单内容 -->
+            <view class="list-item-content">
+              <view class="list-item-dy">
+                <view>
+                  配送商：<text>{{item.a_jxs}}</text>
+                </view>
+                <view>联系电话：<text>{{item.a_jxsdh}}</text></view>
+                <view>数量：<text class="green font40">{{item.count_dh}}</text>罐</view>
+                <view>订单编号：<text>{{item.check_no}}</text></view>
+                <view>产品名称：<text>{{item.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+                <view class="mgb20">兑换申请：<text>{{item.create_time}}</text></view>
+
+              </view>
+            </view>
+            <!-- 彩带 -->
+            <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar.png"></image>
+
+          </view>
+        </block>
+        <block wx:else>
+          <block wx:if="{{item.status ==0}}">
+            <!-- 待受理  -->
+            <view class="list-item">
+              <!-- 订单内容 -->
+              <view class="list-item-content">
+                <view class="list-item-content-left">
+                  <view class="{{voucherTitle[item.type].class}}" wx:if="{{voucherTitle[item.type]}}">{{voucherTitle[item.type].title}}</view>
+                  <view class="mgt20">
+                    <text class="item-num">{{item.count_dh||0}}</text>
+                    <text class="item-type">罐</text>
+                  </view>
+                </view>
+                <view class="list-item-content-right">
+                  <view>
+                    配送商：<text>{{item.a_jxs}}</text>
+                  </view>
+                  <view>联系电话：<text>{{item.a_jxsdh}}</text></view>
+                  <view>订单编号：<text>{{item.check_no}}</text></view>
+                  <view>产品名称：<text>{{item.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+                  <view>申请时间：<text>{{item.create_time}}</text></view>
+                  <!-- 待受理 -->
+                  <image class="dsl-stamp" mode="aspectFit" src="{{file_phase_static}}/dsl-stamp.png"></image>
+                </view>
+              </view>
+              <!-- 操作按钮 -->
+              <view class="list-item-btn">
+                <!-- <view class="item-btn-left"></view> -->
+                <view class="item-btn-right" wx:if="{{condition != 2}}">
+                  <!-- 取消按钮 -->
+                  <view class="btn-cancel" bindtap="cancel" data-index="{{index}}">取消申请</view>
+                  <!-- 操作按钮 -->
+                  <view bindtap="remindMerchant" data-check_no="{{item.check_no}}" data-index="{{index}}" class="btn-operate">提醒配送商</view>
+                </view>
+              </view>
+              <!-- 彩带 -->
+              <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar.png"></image>
+            </view>
+          </block>
+        </block>
+
+      </block>
+      <!-- 没有更多数据 -->
+      <view wx:if="{{noMore}}" class="text-center noData safeArea">~~没有更多记录了~~</view>
+    </block>
+    <block wx:else>
+      <!-- 暂无数据 -->
+      <view class="empty">
+        <image class="empty-nodata" mode="aspectFit" src="{{nodataImg}}"></image>
+        <view>
+          <text>暂无数据</text>
+        </view>
+      </view>
+    </block>
+  </block>
+  <!-- 待核销列表 -->
+  <block wx:elif="{{activeTab == 2}}">
+    <block wx:if="{{list2.length>0}}">
+      <block wx:for="{{list2}}" wx:key="key">
+        <block wx:if="{{condition==2}}">
+          <!-- 店员待核销 -->
+          <view class="list-item" wx:if="{{item.status ==1}}">
+            <!-- 订单内容 -->
+            <view class="list-item-content">
+              <view class="list-item-dy">
+                <view>配送商：<text>{{item.a_jxs}} </text></view>
+                <view wx:if="{{item.a_psy}}">配送员：<text>{{item.a_psy}}</text></view>
+                <view wx:if="{{item.a_psydh}}">联系电话：<text>{{item.a_psydh}}</text></view>
+                <view>数量：<text class="green font40">{{item.count_dh}}</text>罐</view>
+                <view>状态：<text class="order-status-ysl">{{item.a_status}}</text></view>
+                <view>订单编号：<text>{{item.check_no}}</text></view>
+                <view>产品名称：{{item.prizeratetype==105 ? zmTitle: hnTitle}}</view>
+                <view>发起时间：<text>{{item.create_time}}</text></view>
+                <view>受理时间：<text>{{item.a_stime}}</text></view>
+                <view wx:if="{{item.a_ptime}}">配送时间：<text>{{item.a_ptime}}</text></view>
+
+                <!-- 操作按钮 -->
+                <view class="list-item-btn-dy mgb20">
+                  <!-- 操作按钮：配送中可核销，其他灰色不可操作 -->
+                  <view wx:if="{{item.status ==1 && item.count_sj}}" bindtap="getMyLocation" data-id="{{item.id}}" class="btn-operate">立即核销</view>
+                  <view wx:else class="btn-operate btn-operate-disabled">立即核销</view>
+
+                </view>
+              </view>
+            </view>
+            <!-- 彩带 -->
+            <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar.png"></image>
+          </view>
+        </block>
+        <block wx:else>
+          <block wx:if="{{item.status ==1}}">
+            <!-- 待核销 -->
+            <view class="list-item">
+              <!-- 订单内容 -->
+              <view class="list-item-content">
+                <view class="list-item-content-left">
+                  <view class="{{voucherTitle[item.type].class}}" wx:if="{{voucherTitle[item.type]}}">{{voucherTitle[item.type].title}}</view>
+                  <view class="mgt20">
+                    <text class="item-num">{{item.count_dh || 0}}</text>
+                    <text class="item-type">罐</text>
+                  </view>
+                </view>
+                <view class="list-item-content-right">
+                  <view>配送商：<text>{{item.a_jxs}}</text></view>
+                  <view wx:if="{{item.a_psy}}">配送员：<text>{{item.a_psy}}</text></view>
+                  <view wx:if="{{item.a_psydh}}" class="list-call-box">联系电话：<text>{{item.a_psydh}}</text>
+                    <image bindtap="callUp" data-phone="{{item.a_psydh}}" class="list-call" mode="aspectFit" src="{{file_phase_static}}/call.png"></image>
+                  </view>
+                  <view>状态：<text class="order-status-ysl">{{item.a_status}}</text></view>
+                  <view>订单编号：<text>{{item.check_no}}</text></view>
+                  <view>产品名称：<text>{{item.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+                  <view wx:if="{{item.a_ptime}}">配送时间：<text>{{item.a_ptime}}</text></view>
+                  <view>受理时间：<text>{{item.a_stime}}</text></view>
+                  <!-- 待核销 -->
+                  <image class="dsl-stamp" mode="aspectFit" src="{{file_phase_static}}/dhx-stamp.png"></image>
+                </view>
+              </view>
+              <!-- 操作按钮 -->
+              <view class="list-item-btn">
+                <!-- <view class="item-btn-left"></view> -->
+                <view class="item-btn-right">
+                  <!-- 取消按钮：condition:1掌柜可显示 -->
+                  <view wx:if="{{condition !=2 && item.status ==1 && !item.a_ptime}}" bindtap="cancelHX" data-check_no="{{item.check_no}}" class="btn-cancel">取消订单</view>
+                  <!-- 操作按钮：配送中可核销，其他灰色不可操作 -->
+                  <!-- <view wx:if="{{item.status ==1 && item.count_sj}}" style="{{(item.a_ptime)?'margin-left:0rpx;':''}}"
+                    bindtap="getMyLocation" data-id="{{index}}" data-item="{{item}}" class="btn-operate">立即核销</view>
+                  <view wx:else style="{{(item.a_ptime)?'margin-left:0rpx;':''}}"
+                    class="btn-operate btn-operate-disabled">立即核销</view> -->
+                  <block wx:if="{{item.status ==1 && item.count_sj}}">
+                    <button data-id="{{item.id}}" bindtap="getMyLocation" class="btn-operate-active">立即核销</button>
+                  </block>
+                  <block wx:else>
+                    <button class="btn-operate btn-operate-disabled">立即核销</button>
+                  </block>
+
+                </view>
+              </view>
+              <!-- 彩带 -->
+              <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar.png"></image>
+            </view>
+          </block>
+        </block>
+
+
+      </block>
+      <!-- 没有更多数据 -->
+      <view wx:if="{{noMore}}" class="text-center noData safeArea">~~没有更多记录了~~</view>
+    </block>
+    <block wx:else>
+      <!-- 暂无数据 -->
+      <view class="empty">
+        <image class="empty-nodata" mode="aspectFit" src="{{nodataImg}}"></image>
+        <view>
+          <text>暂无数据</text>
+        </view>
+      </view>
+    </block>
+  </block>
+  <!-- 已核销列表 -->
+  <block wx:elif="{{activeTab == 3}}">
+    <block wx:if="{{list3.length>0}}">
+      <block wx:for="{{list3}}" wx:key="key">
+        <block wx:if="{{condition==2}}">
+
+          <!-- 已核销 -->
+          <view class="list-item" wx:if="{{item.status ==2}}">
+            <!-- 订单内容 -->
+            <view class="list-item-content">
+              <view class="list-item-content-left-finish">
+                <view>
+                  <text>申请数量（罐）</text>
+                </view>
+                <view>
+                  <text class="item-num green">{{item.count_dh || 0}}</text>
+                </view>
+                <view>
+                  <text>实收数量（罐）</text>
+                </view>
+                <view>
+                  <text class="item-num {{item.count_sj==item.count_dh ? 'green' :'red'}}">{{item.count_sj ||
+                    0}}</text>
+                </view>
+
+              </view>
+              <view class="list-item-content-right">
+                <view>配送商：<text>{{item.a_jxs}}</text></view>
+                <view>配送人员：<text>{{item.a_psy}}</text></view>
+                <view class="list-call-box">联系电话：<text>{{item.a_psydh}}</text>
+                  <image bindtap="callUp" data-phone="{{item.a_psydh}}" class="list-call" mode="aspectFit" src="{{file_phase_static}}/call.png"></image>
+                </view>
+                <view>订单编号：<text>{{item.check_no}}</text></view>
+                <view>产品名称：<text>{{item.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+                <view>核销人员：<text>{{item.nick_name}}</text></view>
+                <view wx:if="{{item.check_time}}">核销时间：<text>{{item.check_time}}</text></view>
+                <!-- 已核销 -->
+                <image class="dsl-stamp" mode="aspectFit" src="{{file_phase_static}}/yhx-stamp.png"></image>
+              </view>
+            </view>
+            <!-- 备注 -->
+            <view wx:if="{{item.note}}" class="list-tips">备注：{{item.note}}</view>
+            <!-- 彩带 -->
+            <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar.png"></image>
+          </view>
+        </block>
+        <block wx:else>
+          <block wx:if="{{item.status ==2}}">
+            <!-- 已核销 -->
+            <view class="list-item">
+              <!-- <view class="list-item" wx:if="{{activeTab == 2}}"> -->
+              <!-- 订单内容 -->
+              <view class="list-item-content">
+                <view class="list-item-content-left-finish">
+                  <view class="{{voucherTitle[item.type].class}}" wx:if="{{voucherTitle[item.type]}}">{{voucherTitle[item.type].title}}</view>
+                  <view class="mgt20">
+                    <text>申请数量（罐）</text>
+                  </view>
+                  <view>
+                    <text class="item-num green">{{item.count_dh || 0}}</text>
+                  </view>
+                  <view>
+                    <text>实收数量（罐）</text>
+                  </view>
+                  <view>
+                    <text class="item-num {{item.count_sj==item.count_dh ? 'green' :'red'}}">{{item.count_sj ||
+                      0}}</text>
+                  </view>
+
+                </view>
+                <view class="list-item-content-right">
+                  <view>配送商：<text>{{item.a_jxs}}</text></view>
+                  <view>配送人员：<text>{{item.a_psy}}</text></view>
+                  <view class="list-call-box">联系电话：<text>{{item.a_psydh}}</text>
+                    <image bindtap="callUp" data-phone="{{item.a_psydh}}" class="list-call" mode="aspectFit" src="{{file_phase_static}}/call.png"></image>
+                  </view>
+                  <view>订单编号：<text>{{item.check_no}}</text></view>
+                  <view>产品名称：<text>{{item.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+                  <view>核销人员：<text>{{item.nick_name}}</text></view>
+                  <view wx:if="{{item.check_time}}">核销时间：<text>{{item.check_time}}</text></view>
+                  <!-- 已核销 -->
+                  <image class="dsl-stamp" mode="aspectFit" src="{{file_phase_static}}/yhx-stamp.png"></image>
+                </view>
+              </view>
+              <!-- 备注 -->
+              <view wx:if="{{item.note}}" class="list-tips">备注：{{item.note}}</view>
+              <!-- <view wx:if="{{item.note}}" class="list-tips">备注：<text class="list-tips-text fontBold">2</text>张未返货的兑换券已退回至您的<text
+                class="list-tips-text">【可用兑换券】</text>中</view> -->
+              <!-- 彩带 -->
+              <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar.png"></image>
+            </view>
+          </block>
+        </block>
+
+      </block>
+      <!-- 没有更多数据 -->
+      <view wx:if="{{noMore}}" class="text-center noData safeArea">~~没有更多记录了~~</view>
+    </block>
+    <block wx:else>
+      <!-- 暂无数据 -->
+      <view class="empty">
+        <image class="empty-nodata" mode="aspectFit" src="{{nodataImg}}"></image>
+        <view>
+          <text>暂无数据</text>
+        </view>
+      </view>
+    </block>
+  </block>
+  <!-- 已取消列表 -->
+  <block wx:elif="{{activeTab == 4 && condition!=2}}">
+    <block wx:if="{{list4.length>0}}">
+      <block wx:for="{{list4}}" wx:key="key">
+        <block wx:if="{{item.status ==3}}">
+          <!-- 已取消 -->
+          <view class="list-item">
+            <!-- 订单内容 -->
+            <view class="list-item-content">
+              <view class="list-item-content-left">
+                <view class="{{voucherTitle[item.type].class}}" wx:if="{{voucherTitle[item.type]}}">{{voucherTitle[item.type].title}}</view>
+                <view class="mgt20">
+                  <text class="item-num">{{item.count_dh}}</text>
+                  <text class="item-type">罐</text>
+                </view>
+              </view>
+              <view class="list-item-content-right">
+                <view wx:if="{{item.a_jxs}}">
+                  配送商：<text>{{item.a_jxs}}</text>
+                </view>
+                <view>联系电话：<text>{{item.a_jxsdh}}</text></view>
+                <view>订单编号：<text>{{item.check_no}}</text></view>
+                <view>产品名称：<text>{{item.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+                <view>申请时间：<text>{{item.create_time}}</text></view>
+                <!-- 已取消 -->
+                <image class="dsl-stamp" mode="aspectFit" src="{{file_phase_static}}/yqx-stamp.png"></image>
+              </view>
+            </view>
+            <!-- 彩带 -->
+            <image class="colour-bar" mode="widthFix" src="{{file_phase_static}}/colour-bar-grey.png"></image>
+          </view>
+        </block>
+      </block>
+      <!-- 没有更多数据 -->
+      <view wx:if="{{noMore}}" class="text-center noData safeArea">~~没有更多记录了~~</view>
+    </block>
+    <block wx:else>
+      <!-- 暂无数据 -->
+      <view class="empty">
+        <image class="empty-nodata" mode="aspectFit" src="{{nodataImg}}"></image>
+        <view>
+          <text>暂无数据</text>
+        </view>
+      </view>
+    </block>
+  </block>
+
+
+
+</view>
+<!-- 订单底部统计 -->
+<view class="footer" wx:if="{{activeTab == 1 || activeTab ==2 || activeTab ==3}}">
+  <view class="item oneLine">
+    <text>订单累计（笔）：</text>
+    <block wx:if="{{activeTab == 1}}">
+      <text class="num">{{count.order_0}}</text>
+    </block>
+    <block wx:elif="{{activeTab == 2}}">
+      <text class="num">{{count.order_1}}</text>
+    </block>
+    <block wx:elif="{{activeTab == 3}}">
+      <text class="num">{{count.order_2}}</text>
+    </block>
+  </view>
+  <view class="item oneLine">
+    <text>数量累计（罐）：</text>
+    <block wx:if="{{activeTab == 1}}">
+      <text class="num">{{count.order_0_num}}</text>
+    </block>
+    <block wx:elif="{{activeTab == 2}}">
+      <text class="num">{{count.order_1_num}}</text>
+    </block>
+    <block wx:elif="{{activeTab == 3}}">
+      <text class="num">{{count.order_num}}</text>
+    </block>
+  </view>
+</view>
+
+
+<!-- 日历弹窗 -->
+<mp-dialog title="" show="{{showCalendar}}" ext-class="calendar-box" buttons="{{buttons}}" bindbuttontap="tapDateButton">
+  <calendar id="calendar" bind:onPickDateChange="onPickDateChange" bind:onControl="onControl" bind:onPickDay="onPickDay" bind:onRangePick="onRangePick" dateRange="{{dateRange}}" mode="range">
+  </calendar>
+</mp-dialog>
+<!-- 取消订单弹窗 -->
+<view class="fadeIn" wx:if="{{cancelPop}}">
+  <view class="weui-mask"></view>
+  <view class="weui-dialog orderPop">
+    <image mode="aspectFit" class="cancelOrder-icon" src="{{cancelOrderImg}}"></image>
+    <view class="orderPop-title">取消换购申请</view>
+    <view class="orderPop-tips">您确定要取消换购请求吗？</view>
+    <view class="orderPop-box">
+      <view>产品名称：{{orderMsg.prizeratetype==105 ? zmTitle: hnTitle}}</view>
+      <view>数量：<text class="orderNum font48">{{orderMsg.count_dh}}</text>罐</view>
+      <view>订单编号：<text class="orderNum">{{orderMsg.check_no}}</text></view>
+      <view>配送商：<text class="">{{orderMsg.a_jxs}}</text></view>
+    </view>
+    <view class="orderPop-btn">
+      <button bindtap="cancelOrder" data-check_no="{{orderMsg.check_no}}" class="orderPop-cancel">确定</button>
+      <button bindtap="close" class="orderPop-confirm">不了</button>
+    </view>
+
+  </view>
+</view>
+<!-- 取消成功/失败弹窗 -->
+<view class="fadeIn" wx:if="{{successPop}}">
+  <view class="weui-mask" bindtap="close"></view>
+  <view class="weui-dialog orderPop successPop">
+    <image mode="aspectFit" class="success-icon" src="{{successImg}}"></image>
+    <view class="orderPop-title mgt30">{{cancelMsg.code == 1?'取消成功':'取消失败'}}</view>
+    <view class="orderPop-tips mgt30">订单取消成功</view>
+    <view class="iknow mgt30" bindtap="reapply">重新申请换购</view>
+  </view>
+</view>
+<!-- 提醒返货审核弹窗 -->
+<view class="fadeIn" wx:if="{{remindPop}}">
+  <view class="weui-mask"></view>
+  <view class="weui-dialog orderPop ">
+    <image mode="aspectFit" class="remind-icon" src="{{remindImg}}"></image>
+    <view class="orderPop-title">提醒成功</view>
+    <view class="orderPop-box mgt42">
+      <view>订单编号：<text class="orderNum">{{remindMsg.check_no}}</text></view>
+      <view class="mgtb20">产品名称：<text>{{remindMsg.prizeratetype==105 ? zmTitle: hnTitle}}</text></view>
+      <view>产品数量：<text class="orderNum">{{remindMsg.count_dh}}</text>罐</view>
+    </view>
+    <view class="orderPop-confirm mgt92" bindtap="close">确定</view>
+  </view>
+</view>
+<!-- 核销确认弹窗 -->
+<view class="fadeIn mp-dialog" wx:if="{{checkPop}}">
+  <view class="weui-mask" bindtap="close"></view>
+  <view class="weui-dialog orderPop">
+    <image class="hx-icon" mode="aspectFit" src="{{hxCheckImg}}"></image>
+    <view class="orderPop-title mgt42">
+      <text>核销确认</text>
+    </view>
+    <view class="orderPop-box mgt42 flex-center">
+      <view>您申请的{{checkMsg.prizeratetype==105 ? zmTitle: hnTitle}}</view>
+      <view>申请数量：<text class="text-green font72">{{checkMsg.count_dh}}</text>罐</view>
+      <block wx:if="{{checkMsg.count_dh == checkMsg.count_sj}}">
+        <view>配送数量：<text class="text-green font72">{{checkMsg.count_sj}}</text>罐</view>
+      </block>
+      <block wx:else>
+        <view>配送数量：<text class="text-red font72">{{checkMsg.count_sj}}</text>罐</view>
+      </block>
+    </view>
+    <view class="orderPop-btn pdlr80">
+      <view bindtap="tapCancelHX" data-num="{{checkMsg.check_no}}" class="orderPop-cancel orderPop-btn-mini">否</view>
+      <view bindtap="hxConfirm" data-num="{{checkMsg.check_no}}" class="orderPop-confirm orderPop-btn-mini">是</view>
+    </view>
+
+
+  </view>
+</view>
+<!-- 核销成功弹窗 -->
+<view class="fadeIn" wx:if="{{hxSuccessPop}}">
+  <view class="weui-mask"></view>
+
+  <view class="weui-dialog orderPop">
+    <image mode="aspectFit" class="success-icon" src="{{successImg}}"></image>
+    <view class="orderPop-title mgt42">核销成功</view>
+    <view class="orderPop-box">
+      <view>产品名称：<text>红牛维生素功能饮料</text></view>
+      <view>数量：<text class="{{successMsg.count_sj<successMsg.count_dh ?'text-red' : 'text-green' }} font72">{{successMsg.count_sj}}</text>罐
+      </view>
+      <view>核销日期：<text>{{currentTime}}</text></view>
+      <view wx:if="{{successMsg.count_sj<successMsg.count_dh}}">
+        <text class="text-red ">备注：未核销的卡券将返还至您的卡包</text>
+      </view>
+
+
+    </view>
+    <view>
+      <view class="iknow mgt42" bindtap="close">确定</view>
+    </view>
+
+  </view>
+</view>

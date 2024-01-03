@@ -1,0 +1,44 @@
+/* component/storeExchangePop/background/index.wxss */
+.box {
+  box-sizing: border-box;
+  border-radius: 20rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+}
+
+.icon-close {
+  width: 64rpx;
+  height: 64rpx;
+  flex-shrink: 1;
+  margin-top: 60rpx;
+}
+
+.box .box-item {
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+  overflow: hidden;
+  min-width: 690rpx;
+  min-height: 572rpx;
+  /* background: #fc7e41; */
+  border-radius: 26rpx;
+  padding: 20rpx;
+}
+
+.box-item .box-inner {
+  /* background-color: #fefbf2; */
+  box-sizing: border-box;
+  min-width: 650rpx;
+  min-height: 532rpx;
+  /* background: #fefbf2; */
+  border-radius: 26rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 30rpx;
+}

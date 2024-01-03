@@ -1,0 +1,106 @@
+<!--pages/phaseIII//write-off/reward.wxml-->
+<!-- 兑换红包收益累计 -->
+<view class="dh-hb-box">
+	<view class="dh-hb-head">
+		<image class="dh-hb-icon" mode="aspectFit" src="{{file_phase_static}}/dh-hb-icon.png"></image>
+		<view class="dh-hb-count">
+			<view class="count-num" wx:if="{{userShopInfo}}">￥{{userShopInfo.card_m}}</view>
+			<view>换购红包收益累计</view>
+		</view>
+	</view>
+	<image class="dh-hb-bar" mode="aspectFit" src="{{file_phase_static}}/dh-hb-bar.png"></image>
+</view>
+<!-- 兑奖列表 -->
+<view class="dh-hb-title-box">
+	<view class="dh-hb-title">换购红包</view>
+</view>
+<view class="dh-list">
+	<!-- <mp-cell>
+		<view>
+			<view>
+				<view bindtap="chooseDate" class="dateBorder">
+					<text class="iconfont iconrili  "> </text> {{defaultDate}}
+				</view>
+			</view>
+
+		</view>
+		<view slot="footer" class="font30" bindtap="chooseType" wx:if="{{userInfo.condition==1 }}">
+			<text class="iconfont iconrenqun"></text>
+			<text>人员类型</text>
+		</view>
+	</mp-cell> -->
+
+
+	<view wx:for="{{list}}" wx:for-item="item" wx:key="key">
+		<view class="dh-list-item">
+			<!-- <view class="title" >{{item.prizeratetype==2?'1元享红牛':'1元轻松享'}}</view> -->
+			<view class="title">
+				<block wx:if="{{item.prizeratetype==null || item.prizeratetype==0 || item.prizeratetype==1}}">1元轻松享</block>
+				<block wx:if="{{item.prizeratetype==2}}">1元享红牛</block>
+				<block wx:if="{{item.prizeratetype==3}}">1元乐享</block>
+				<block wx:if="{{item.prizeratetype==11}}">1元乐享</block>
+			</view>
+			<view class="content">
+				<view class="left">
+					<!-- <view wx:if="{{item.nick_name2&&item.uid2}}">兑换人：{{item.nick_name2}} （CUID:{{item.uid2}}）</view> -->
+					<view class="left-item" wx:if="{{item.nick_name2&&item.uid2}}">
+						<text class="oneLine nickName_width">换购人：{{item.nick_name2}}</text>
+						<text>（CID:{{item.uid2}}）</text>
+					</view>
+					<view>换购时间：{{item.create_time}}</view>
+				</view>
+				<view class="right">
+					<a wx:if="{{!hide}}" data-id="{{item.id}}" bindtap="getReward" class="btn">开红包</a>
+				</view>
+			</view>
+		</view>
+
+	</view>
+	<view class="text-center" wx:if="{{list.length==0}}">
+		<image class="hb-nodata" mode="aspectFit" src="{{file_phase_static}}/hb-nodata.png"></image>
+		<view>
+			<text class="goyuerBtn " bindtap="goYuer">点击查看收益</text>
+		</view>
+	</view>
+	<view class="noMore" wx:if="{{list.length>0&&noMore}}">
+		<view class="text-center">~~没有更多数据了~~</view>
+	</view>
+
+</view>
+<!-- 线上banner -->
+<view class="adCustom-bottom safeArea ">
+	<ad wx:if="{{blockAd}}" unit-id="adunit-6d67b68431abb84a"></ad>
+</view>
+
+
+
+
+<!-- 日历弹窗 -->
+<mp-dialog title="" show="{{showCalendar}}" ext-class="mp-dialog" buttons="{{buttons}}" bindbuttontap="tapDateButton">
+	<calendar bind:onPickDateChange="onPickDateChange" bind:onControl="onControl" bind:onPickDay="onPickDay" bind:onRangePick="onRangePick" defaultSelectDate="" mode="range">
+	</calendar>
+</mp-dialog>
+<!-- 底部弹出层(人员选择) -->
+<selectCrew crew="{{crew}}" boss="{{boss}}" bind:chooseCrew="chooseCrew" showTypePop="{{showTypePop}}"></selectCrew>
+
+<!-- 开红包弹窗 自定义 -->
+<view class="fadeIn" wx:if="{{getRewardPop}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog getRewardPop">
+		<!-- <view class="weui-dialog getRewardPop " style="display:{{getRewardPop?'flex':'none'}};"> -->
+		<image mode="aspectFit" src="{{file_phase_static}}/getreward.png" class="{{getRewardPop? 'fromTop' : 'backTop'}}">
+		</image>
+		<view class="rewardMsg {{getRewardPop? 'fromtop' : 'backTop'}}">
+			<view class="font36">恭喜您获得!</view>
+			<view>¥ <text class="font36"> 0.50</text></view>
+		</view>
+		<view class="foot_btn">
+			<!-- <a class="weui-dialog__btn phase_btn text-center" bindtap="closePop">点击查看</a> -->
+			<a class="weui-dialog__btn phase_btn text-center" bindtap="closePop">确定</a>
+		</view>
+	</view>
+</view>
+<!-- 悬浮导航 -->
+<!-- <movemenu bindmenuItemClick="menuItemClick" pageUrl="{{pageUrl}}"></movemenu> -->
+<!-- store Qrcode -->
+<!-- <qrcodeWidget></qrcodeWidget> -->

@@ -1,0 +1,330 @@
+/* pages/couponActivity/gzUnbox/ranklist/index.wxss */
+/* pages/storeRank//djRecord.wxss */
+page {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  /* height: 100%; */
+  width: 100%;
+  /* flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; */
+}
+
+.bg_rank {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+}
+
+
+.container {
+  height: var(--content-height);
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  padding-bottom: 30rpx;
+  box-sizing: border-box;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.content {
+  flex: 1;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* padding: 0rpx 14rpx 24rpx 14rpx; */
+}
+
+
+
+.font20 {
+  font-size: 20rpx;
+}
+
+.listBox {
+  background-color: #fff7f6;
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: 0 0 35rpx 35rpx;
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  /* height: 100%; */
+  overflow: auto;
+}
+
+.foot {
+  position: relative;
+  margin: 48rpx auto 0;
+  flex-shrink: 0;
+}
+
+.tips {
+  background: #c65448;
+  border-radius: 50rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8rpx 8rpx 8rpx 104rpx;
+  position: relative;
+  font-size: 20rpx;
+  font-weight: 700;
+  text-align: left;
+  color: #ffffff;
+
+}
+
+.tips .text-shadow {
+  text-shadow: -2px 0 #9a342a, 0 2px #9a342a, 2px 0 #9a342a, 0 -2px #9a342a;
+}
+
+.gifBox {
+  width: 127rpx;
+  height: 101rpx;
+  position: absolute;
+  left: -30rpx;
+  z-index: 1;
+}
+
+.fontWeight600 {
+  font-weight: 600;
+}
+
+.font28 {
+  font-size: 28rpx;
+}
+
+.listBox .text-shadow {
+  /* text-shadow: 3rpx 3rpx #9a342a, -3rpx 3rpx #9a342a, 0 -3rpx #9a342a, 3rpx -3rpx #9a342a; */
+  /* color: transparent;
+  -webkit-text-stroke: 1px #9a342a; */
+  font-size: 30rpx;
+  font-weight: bolder;
+  color: white;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #A25037;
+}
+
+.subtitle {
+  padding-top: 20rpx;
+  font-size: 30rpx;
+  font-weight: bolder;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background-color: #fff7f6;
+  border-radius:35rpx 35rpx 0 0;
+
+}
+
+.flexOne {
+  flex: 1;
+}
+
+.flexNum {
+  flex: 0.7;
+}
+
+.flexTwo {
+  flex: 2;
+}
+
+
+.rankNum {
+  text-align: center;
+  font-size: 36rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #000018;
+}
+
+.color-brown {
+  color: #9B1800;
+}
+
+.color-white {
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.bgLine {
+  /* background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAATcAAAABCAYAAAC7duk2AAAAMUlEQVQ4T2PcMbXsHwMDIyMDEcAju5ModUQYxTBqL+5QGg1nYlIQdjWj6Wo0XcFCAAAn4irFFughhQAAAABJRU5ErkJggg==");
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: 89%;
+  margin-left: 10rpx;
+  margin-right: 10rpx; */
+  position: relative;
+  min-height: 80rpx;
+  margin: 0 20rpx;
+  box-sizing: border-box;
+}
+
+.bgLine::after {
+  content: '';
+  position: absolute;
+  left: 20rpx;
+  right: 20rpx;
+  bottom: 0;
+  width: 630rpx;
+  height: 1rpx;
+  border-bottom: 1rpx solid #ffe8c8;
+
+}
+
+.bgLine .flex-row {
+  min-height: 80rpx;
+}
+
+.myRankItem {
+  color: #9B1800;
+  height: 80rpx;
+  background: #ffe0b7;
+  border-radius: 12rpx;
+  box-sizing: border-box;
+}
+.myRankItem::after{
+  border: unset;
+}
+
+
+
+.weui-loadmore_line .weui-loadmore__tips {
+  background-color: #fff7f6;
+}
+
+
+.width100 {
+  width: 100%;
+}
+
+
+.height40 {
+  height: 40rpx;
+}
+
+/* 滚动条样式 */
+/* ::-webkit-scrollbar {
+  width: 8rpx;
+  height: 8rpx;
+  color: #DFDFDF;
+} */
+
+/*定义滚动条轨道 内阴影+圆角*/
+/* ::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background-color: #DFDFDF;
+} */
+
+/*定义滑块 内阴影+圆角*/
+/* ::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #cf2928;
+} */
+
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 500;
+
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  color: #000018;
+}
+
+.list-box {
+  box-sizing: border-box;
+  flex: 1;
+  flex-shrink: 0;
+  border-radius: 0 0 35rpx 35rpx;
+  z-index: 10;
+  overflow: scroll;
+  min-height: 500rpx;
+
+}
+
+/* 2023年5月28日 6月开箱冲榜活动 */
+.table-head-title {
+  font-size: 28rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #4e4d52;
+  line-height: 34rpx;
+}
+
+.text-stroke {
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1rpx;
+  -webkit-text-stroke-color: #A25037;
+}
+
+.myrank-num {
+  text-align: center;
+  font-size: 36rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Heavy;
+  font-weight: 800;
+  color: #CB3A00;
+}
+
+/* 2023年8月26日 广州开箱活动 */
+.rank-head-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  font-size: 22rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #ffffff;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  z-index: 1;
+  min-height: 220rpx;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.rank-head-box .rank_title {
+  width: 360rpx;
+  height: 144rpx;
+  display: block;
+}
+
+.bg_rank_grail {
+  width: 272rpx;
+  height: 272rpx;
+  position: absolute;
+  right: 20rpx;
+  bottom: -80rpx;
+  z-index: -1;
+}
+.rank_icon{
+  width: 60rpx;
+  height: 48rpx;
+}

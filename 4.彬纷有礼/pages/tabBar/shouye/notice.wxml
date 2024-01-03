@@ -1,0 +1,37 @@
+<!-- 订单通知、系统通知 -->
+<view class="tabbar-box">
+  <view class="tabbar-container-content">
+    <view class="notice-tab">
+      <view class="notice-item {{activeTab == 1?'grey':''}}" data-index="0" bindtap="changeTab">
+        <!-- <image class="notice-icon" src="../../../assets/images/notice_left.png" mode="aspectFit"></image> -->
+        <text>订单通知</text>
+        <view wx:if="{{activeTab ==0}}" class="tab-line"></view>
+        <view wx:else class="tab-line-default"></view>
+
+      </view>
+      <view class="notice-item {{activeTab == 0?'grey':''}}" data-index="1" bindtap="changeTab">
+        <!-- <image class="notice-icon" src="../../../assets/images/notice_right.png" mode="aspectFit"></image> -->
+        <text>系统通知</text>
+        <view wx:if="{{activeTab ==1}}" class="tab-line"></view>
+        <view wx:else class="tab-line-default"></view>
+      </view>
+    </view>
+    <swiper class="swiper-box" current="{{activeTab}}" bind:change="swiperChange" id="innerbox">
+      <swiper-item class="swiper-item">
+        <view class="inner-box">
+          <orderNotice></orderNotice>
+        </view>
+      </swiper-item>
+      <swiper-item class="swiper-item">
+        <view class="inner-box">
+          <sysNotice wx:if="{{showSysItem }}"></sysNotice>
+        </view>
+      </swiper-item>
+    </swiper>
+
+  </view>
+  <!-- 自定义导航 -->
+  <!-- <view class="tabbar-container-foot">
+    <tabbar active="1" id="tabbar"></tabbar>
+  </view> -->
+</view>

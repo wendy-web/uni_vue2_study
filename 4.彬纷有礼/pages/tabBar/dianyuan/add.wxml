@@ -1,0 +1,437 @@
+<block wx:if="{{pageReady}}">
+  <view class="{{!pageReady?'preventTouchMove':''}}">
+    <!-- <view class="{{noStore?'preventTouchMove':''}}"> -->
+    <block>
+      <!-- 店主信息 begin-->
+      <block wx:if="{{!shidy}}">
+
+        <view class="weui-panel weui-panel_access " wx:if="{{userInfo.condition == 1}}">
+          <view class="weui-panel__bd">
+            <button class="weui-media-box weui-media-box_appmsg " bindtap="share" open-type="share">
+              <view class="weui-media-box__hd">
+                <image class="weui-media-box__thumb" src="{{shareimg}}" alt></image>
+              </view>
+              <view class="weui-media-box__bd btn-flex">
+                <h4 class="weui-media-box__title">转发微信添加</h4>
+                <view class="weui-media-box__desc">一键转发店员，即可加入</view>
+              </view>
+            </button>
+            <view bindtap="inviteCrew" data-url="/pages/zhongduan/geren/mendian/dianyuan/add/face">
+              <!-- <navigator url="/pages/zhongduan/geren/mendian/dianyuan/add/face"> -->
+              <button class="weui-media-box weui-media-box_appmsg ">
+                <view class="weui-media-box__hd">
+                  <image class="weui-media-box__thumb" src="{{mdmimg}}" alt></image>
+                </view>
+                <view class="weui-media-box__bd btn-flex">
+                  <h4 class="weui-media-box__title">面对面添加</h4>
+                  <view class="weui-media-box__desc">面对面加店员，即可加入</view>
+                </view>
+              </button>
+              <!-- </navigator> -->
+            </view>
+          </view>
+
+        </view>
+        <!-- <view class=" min-height"> -->
+        <view>
+          <!-- 背景条 -->
+          <view class="bgGrey"></view>
+          <view class="weui-panel__hd" id="Test">
+            <h4>人员列表</h4>
+            <text class="{{member.length==999?'redText':''}}">（{{member.length||1}}）</text>
+          </view>
+          <!-- 掌柜、店员列表显示 start -->
+          <view class="boss">
+            <view class="avatarBox">
+              <image mode="aspectFit" class="avatar" lazy-load="{{true}}" src="{{userInfo.avatar_url}}"></image>
+            </view>
+            <view class="flex-column pdl20">
+              <view class="flex-row">
+                <text class="text-break-line crewName ">{{userInfo.nick_name}}</text>
+                <view class="zhanggui">{{userRoleMap[userInfo.condition]['name']}}</view>
+              </view>
+              <view class="crewPhone">{{userInfo.phoneStr||''}}</view>
+            </view>
+
+
+          </view>
+          <!-- 店员列表 -->
+          <view wx:if="{{crew.length>0}}" class="online-top-close"></view>
+          <view wx:if="{{crew.length>0}}" class="crew-list ">
+            <block wx:for="{{crew}}" wx:key="key">
+              <view wx:if="{{index == 0 && crew.length != 1}}" class="list-item-top">
+                <view class="online-X"></view>
+                <view class="circle-closing"></view>
+                <view class="avatarBox">
+                  <block wx:if="{{item.loaded}}">
+                    <image mode="aspectFit" class="avatarMini animation-fade" lazy-load="{{true}}" src="{{item['avatar_url']?item['avatar_url']:dydf}}"></image>
+                  </block>
+                  <block wx:else>
+                    <image mode="aspectFit" class="avatarMini animation-fade" lazy-load="{{true}}" src="{{dydf}}">
+                    </image>
+                  </block>
+
+                </view>
+                <view class="flex-column">
+                  <view class="flex-row">
+                    <text class="text-break-line crewName ">{{item['shop_note']?item['shop_note']:item['nick_name']||''}}</text>
+                    <view class="crew-avatar ">{{userRoleMap[item.condition]['name']}}</view>
+                  </view>
+                  <view class="crewPhone">{{item.phoneStr||''}}</view>
+                </view>
+              </view>
+              <view wx:if="{{index>0 && index < crew.length-1}}" class="list-item">
+                <view class="online-X"></view>
+                <view class="circle-closing"></view>
+                <view class="avatarBox">
+                  <block wx:if="{{item.loaded}}">
+                    <image mode="aspectFit" class="avatarMini animation-fade" lazy-load="{{true}}" src="{{item['avatar_url']?item['avatar_url']:dydf}}"></image>
+                  </block>
+                  <block wx:else>
+                    <image mode="aspectFit" class="avatarMini animation-fade" lazy-load="{{true}}" src="{{dydf}}">
+                    </image>
+                  </block>
+                </view>
+                <view class="flex-column">
+                  <view class="flex-row">
+                    <text class="text-break-line crewName ">{{item['shop_note']?item['shop_note']:item['nick_name']||''}}</text>
+                    <view class="crew-avatar ">{{userRoleMap[item.condition]['name']}}</view>
+                  </view>
+                  <view class="crewPhone">{{item.phoneStr||''}}</view>
+                </view>
+              </view>
+              <view wx:if="{{index == crew.length-1}}" class="list-item-bottom">
+                <view class="online-bottom"></view>
+                <view class="online-X"></view>
+                <view class="circle-closing"></view>
+                <view class="avatarBox">
+                  <block wx:if="{{item.loaded}}">
+                    <image mode="aspectFit" class="avatarMini animation-fade" lazy-load="{{true}}" src="{{item['avatar_url']?item['avatar_url']:dydf}}"></image>
+                  </block>
+                  <block wx:else>
+                    <image mode="aspectFit" class="avatarMini animation-fade" lazy-load="{{true}}" src="{{dydf}}">
+                    </image>
+                  </block>
+                </view>
+                <view class="flex-column">
+                  <view class="flex-row">
+                    <text class="text-break-line crewName ">{{item['shop_note']?item['shop_note']:item['nick_name']||''}}</text>
+                    <view class="crew-avatar">{{userRoleMap[item.condition]['name']}}</view>
+                  </view>
+                  <view class="crewPhone">{{item.phoneStr||''}}</view>
+                </view>
+
+
+              </view>
+            </block>
+          </view>
+          <!-- 店员列表显示 end -->
+        </view>
+
+
+        <!-- 转让掌柜/移除店员 begin -->
+        <!-- <block wx:if="{{(crew.length!=0 || deputy.length!=0) && userInfo.condition ==1}}"> -->
+        <block wx:if="{{userInfo.condition ==1}}">
+          <view class="weui-flex mt20">
+            <view class="weui-flex__item">
+              <block wx:if="{{crew.length>0}}">
+                <view>
+                  <button class="btn-transform" data-status='1' bindtap="beforeTransferTap">转让掌柜</button>
+                </view>
+              </block>
+              <block wx:if="{{hasStaff}}">
+                <view>
+                  <button class="btn-remove-crew" data-status='3' bindtap="transferTap">设置副掌柜</button>
+                </view>
+              </block>
+              <view wx:if="{{crew.length>0}}">
+                <button class="btn-remove-crew" data-status='2' bindtap="transferTap">移除人员</button>
+              </view>
+            </view>
+          </view>
+        </block>
+        <!-- 副掌柜：退出店铺 -->
+        <view wx:if="{{userInfo.condition == 3}}">
+          <button class="greyBtn" style="margin-top:30rpx;margin-bottom:20rpx;" bindtap="quitShop">退出店铺</button>
+        </view>
+      </block>
+      <!-- 店主信息 end  -->
+      <block wx:else>
+        <block wx:if="{{storeInfo}}">
+          <!-- 店员门店资料 -->
+          <import src="../../template/storeInfo.wxml" />
+          <!--使用 template-->
+          <template is="storeInfo" data="{{storeInfo,boss}}" />
+        </block>
+      </block>
+    </block>
+
+    <!-- 提示完善店铺信息 -->
+    <view class="fadeIn" wx:if="{{noStore}}">
+      <view class="weui-mask"></view>
+      <view class="weui-dialog">
+        <view class="weui-dialog__hd">
+          <view>
+            <!-- <image class="completeImg" mode="aspectFit" src="../../../assets/emoji/complete.png"></image> -->
+            <image class="completeImg" mode="aspectFit" src="{{storeImg}}"></image>
+          </view>
+          <view>
+            <text class="title">您尚未创建自己店铺信息</text>
+          </view>
+        </view>
+        <view class="weui-dialog__bd">
+          <view class="title-grey">
+            <text>创建店铺可添加店员\n</text>
+            <text>店员帮您扫红包，掌柜您得红包</text>
+          </view>
+          <view class="title-small"></view>
+        </view>
+
+        <view class="weui-flex">
+          <view class="weui-flex__item">
+            <!-- <navigator url="/pages/zhongduan/geren/mendian/renzhen/index"> -->
+            <a bindtap="gocreate" class="weui-btn weui-btn_mini redbtn ">去创建店铺</a>
+            <!-- </navigator> -->
+          </view>
+
+        </view>
+        <view class="weui-flex">
+          <view class="weui-flex__item" style="margin-top:20rpx;">
+            <text color="#888888" class="grey" bindtap="gohome">暂不创建</text>
+          </view>
+        </view>
+        <view class="weui-flex">
+          <view class="weui-flex__item">
+            <text class="shoptip">*信息仅用于身份验证，彬纷有礼保障您的信息安全</text>
+          </view>
+        </view>
+
+      </view>
+    </view>
+    <!-- 转让掌柜 -->
+    <!-- tranfser=1 转让掌柜 =2 移除店员 -->
+    <view class="fadeIn" wx:if="{{transferPop}}">
+      <view class="weui-mask"></view>
+      <view class="weui-dialog">
+        <view class="weui-dialog__hd" style="margin-top:40rpx;">
+          <view>
+            <strong class="weui-dialog__title transferName">
+              <block wx:if="{{transfer == 1}}">转让掌柜</block>
+              <block wx:if="{{transfer == 2}}">移除人员</block>
+              <block wx:if="{{transfer == 3}}">设置副掌柜</block>
+            </strong>
+          </view>
+          <block wx:if="{{transfer == 1 }}">
+            <view>请选择您店铺的新任掌柜</view>
+          </block>
+          <block wx:if="{{transfer == 2 }}">
+            <view>请选择你要移除的人</view>
+          </block>
+          <!-- <block wx:if="{{transfer == 3 }}">
+						<view>设置副掌柜</view>
+					</block> -->
+        </view>
+        <view class="weui-dialog__bd" style="color:#888888;font-size:32rpx;">
+          <scroll-view scroll-x class="scroll-box weui-cells_checkbox weui-cells_after-title">
+            <view class="scroll-x weui-cells_checkbox weui-cells_after-title" style="justify-content:{{crew.length<3 ? 'center' :''}};">
+              <!-- 转让副掌柜：隐藏已经是副掌柜的身份 -->
+              <block wx:if="{{transfer==3}}">
+                <radio-group bindchange="radioChange" wx:for="{{crew}}" wx:key="value">
+                  <label class="weui-cell weui-check__label" wx:if="{{item.condition ==2}}">
+                    <view class="weui-flex__item checkBox">
+                      <view>
+                        <image mode="aspectFit" class="avatar" src="{{item.avatar_url?item.avatar_url:dydf}}"></image>
+                        <view class="ident">{{userRoleMap[item.condition]['name']}}</view>
+                        <view class="top30">
+                          <view class="name weui-grid__label">{{item.shop_note?item.shop_note:item.nick_name}}</view>
+                          <view>
+                            <radio class="weui-check" value="{{item.value}}" checked="{{item.checked}}" />
+                            <i class="weui-icon-checked"></i>
+                          </view>
+                        </view>
+
+                      </view>
+                    </view>
+                  </label>
+                </radio-group>
+              </block>
+              <!-- 转让店铺、移除店员 -->
+              <block wx:elif="{{transfer<3}}">
+                <radio-group bindchange="radioChange" wx:for="{{crew}}" wx:key="value">
+                  <label class="weui-cell weui-check__label">
+                    <view class="weui-flex__item checkBox">
+                      <view>
+                        <image mode="aspectFit" class="avatar" src="{{item.avatar_url?item.avatar_url:dydf}}"></image>
+                        <view class="ident">{{userRoleMap[item.condition]['name']}}</view>
+                        <view class="top30">
+                          <view class="name weui-grid__label">{{item.shop_note?item.shop_note:item.nick_name}}</view>
+                          <view>
+                            <radio class="weui-check" value="{{item.value}}" checked="{{item.checked}}" />
+                            <i class="weui-icon-checked"></i>
+                          </view>
+                        </view>
+
+                      </view>
+                    </view>
+                  </label>
+                </radio-group>
+              </block>
+            </view>
+          </scroll-view>
+          <view class="slip-tips" wx:if="{{crew.length > 2}}">左右滑动查看更多内容</view>
+        </view>
+
+        <view class="weui-flex">
+          <view class="weui-flex__item">
+            <!-- <navigator url="/pages/zhongduan/geren/mendian/renzhen/index"> -->
+            <a bindtap="changeIdent" class="weui-btn weui-btn_mini transferBtn ">
+              <block wx:if="{{transfer == 1}}">确认转让</block>
+              <block wx:if="{{transfer == 2}}">确认移除</block>
+              <block wx:if="{{transfer == 3}}">确认成为副掌柜</block>
+            </a>
+            <!-- </navigator> -->
+          </view>
+
+        </view>
+        <view class="weui-flex">
+          <view class="weui-flex__item" style="margin-top:20rpx;">
+            <text color="#888888" bindtap="closeTransferPop">不了</text>
+          </view>
+        </view>
+
+
+      </view>
+    </view>
+    <!-- 二次确认转让/移除/设置副掌柜操作 -->
+    <view class="fadeIn secondPop" wx:if="{{secondPop}}">
+      <view class="weui-mask"></view>
+      <view class="weui-dialog">
+        <view class="weui-dialog__hd">
+          <strong class="weui-dialog__title transferName">
+            <block wx:if="{{transfer == 1}}">确认转让</block>
+            <block wx:if="{{transfer == 2}}">移除人员</block>
+            <block wx:if="{{transfer == 3}}">设置副掌柜</block>
+          </strong>
+        </view>
+        <view class="weui-dialog__bd">
+          <block wx:if="{{transfer == 1 }}">
+            <view>
+              <text>确保您的账户余额已全部提现！\n</text>
+              <text>您的积分将保留于您的账户！\n</text>
+              <text wx:if="{{isBindPaperCode}}">您店铺绑定的纸质码将与店铺一同转让！\n</text>
+            </view>
+          </block>
+          <block wx:if="{{transfer == 2 }}">
+            <view>是否确认移除店员？</view>
+          </block>
+          <block wx:if="{{transfer == 3 }}">
+            <view>是否确认设置副掌柜？</view>
+          </block>
+        </view>
+        <view class="weui-dialog__ft space-between">
+          <a class="  sure" bindtap="postData">
+            <block wx:if="{{transfer == 1}}">确认转让</block>
+            <block wx:if="{{transfer == 2}}">确定移除</block>
+            <block wx:if="{{transfer == 3}}">确定</block>
+          </a>
+          <a class="  cancel" bindtap="closeSecondPop">取消</a>
+        </view>
+      </view>
+    </view>
+    <!-- 退出店铺 -->
+    <view class="fadeIn secondPop" wx:if="{{quitPop}}">
+      <view class="weui-mask"></view>
+      <view class="weui-dialog">
+        <view class="weui-dialog__hd"> <strong class="weui-dialog__title transferName">退出店铺</strong></view>
+        <view class="weui-dialog__bd">
+          <view>
+            <text>您确定要退出店铺？\n</text>
+            <text>（可重新注册成为掌柜）\n</text>
+          </view>
+
+        </view>
+        <view class="weui-dialog__ft space-between">
+          <a class="  sure" bindtap="quitnow">确认退出</a>
+          <a class="  cancel" bindtap="closequitPop">取消</a>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{!noStore}}" id="Adc" class="adContainer-bottom mgt100">
+      <!-- 广告位 -->
+      <ad wx:if="{{blockAd}}" unit-id="adunit-091520b68c6ff2fd"></ad>
+    </view>
+  </view>
+</block>
+
+
+
+
+<!-- 退店铺激励弹窗 -->
+<view class="fadeIn" wx:if="{{tdPop}}">
+  <view class="weui-mask"></view>
+  <!-- <view class="weui-dialog" style="max-height:55%;height:100%">
+		<view class="mglr40 popBG"></view> -->
+  <view class="weui-dialog h-pop">
+    <view class="mg-pop">
+      <image bindload="imgLoaded" mode="aspectFit" src="{{tdPopUrl}}"></image>
+    </view>
+    <view class="flex-end" style="justify-content:center;">
+      <image mode="acspectFit" class="cpPopbtn mgr20" src="{{tdPopBtl}}" bindtap="close"></image>
+      <image mode="acspectFit" class="cpPopbtn mgl20" bindload="imgLoaded" bindtap="wtachAd" src="{{tdPopBtr}}"></image>
+    </view>
+  </view>
+</view>
+
+<!-- 转让店铺激励弹窗 -->
+<view class="fadeIn" wx:if="{{zrPop}}">
+  <view class="weui-mask"></view>
+  <!-- <view class="weui-dialog" style="max-height:55%;height:100%"> -->
+  <!-- <view class="mglr40 zrpopBG"></view> -->
+  <view class="weui-dialog h-pop">
+    <view class="mg-pop">
+      <image bindload="imgLoaded" mode="aspectFit" src="{{zrPopUrl}}"></image>
+    </view>
+    <view class="flex-end" style="justify-content:center;">
+      <image mode="acspectFit" class="cpPopbtn mgr20" src="{{zrPopBtl}}" bindtap="closeZrPop"></image>
+      <image mode="acspectFit" class="cpPopbtn mgl20" bindload="imgLoaded" bindtap="wtachAdZrPop" src="{{zrPopBtr}}">
+      </image>
+    </view>
+  </view>
+</view>
+<!-- 移除店员激励弹窗 -->
+<view class="fadeIn" wx:if="{{ycPop}}">
+  <view class="weui-mask"></view>
+  <!-- <view class="weui-dialog" style="max-height:55%;height:100%">
+		<view class="mglr40 ycpopBG"></view> -->
+  <view class="weui-dialog h-pop">
+    <view class="mg-pop ">
+      <image bindload="imgLoaded" mode="aspectFit" src="{{ycPopUrl}}"></image>
+    </view>
+    <view class="flex-end" style="justify-content:center;">
+      <image mode="acspectFit" class="cpPopbtn mgr20" src="{{ycPopBtl}}" bindtap="closeYcPop"></image>
+      <image mode="acspectFit" class="cpPopbtn mgl20" bindload="imgLoaded" bindtap="wtachAdYcPop" src="{{ycPopBtr}}">
+      </image>
+    </view>
+  </view>
+</view>
+<!-- 悬浮导航 -->
+<!-- <movemenu bindmenuItemClick="menuItemClick" pageUrl="{{pageUrl}}"></movemenu> -->
+<!-- 红牛25周年弹窗 -->
+<!-- <AdPopups show="{{adShow}}" popImg="{{popImg}}" openType="switch" pagePath="/pages/tabBar/shouye/index"></AdPopups> -->
+<!-- 已报名兑奖排行榜不可转店 -->
+<!-- <activityPop show="{{storeRankingPop}}" bgImg="{{storeRankingImg}}">
+	<view  class="colorFFF3C1 activityContainer">
+		<view class="fontBold font40 letter-space colorFFF3C1"><text>您已报名参加</text></view>
+		<view class="fontBold font40 letter-space colorFFF3C1"><text>“二十八星宿封神榜”活动</text></view>
+		<view class="fontBold font40 letter-space colorFFF3C1"><text>暂不能转让店铺</text></view>
+		<view class="iKnowBox" bindtap="close">
+			<image class="iKnow" mode="aspectFit" src="{{iKnowImg}}"></image>
+		</view>
+	</view>
+</activityPop> -->
+<!-- 兑奖冲榜悬浮 -->
+<!-- <activityWidget wx:if="{{activitySZ}}"></activityWidget> -->
+<!-- 店铺码浮标 -->
+<!-- <qrcodeWidget wx:if="{{phaseIII&&userInfo.shop_id}}"></qrcodeWidget> -->
+<!-- 禁止转让店铺：多个活动判断 -->
+<forbiddenTransShop id="forbiddenTransShop"></forbiddenTransShop>

@@ -1,0 +1,5 @@
+<template name="scratch" >
+	<view class="scratch_wp" style="position:fixed;width: {{scratch.width}}px; height: {{scratch.height}}px;  top: 60%;left: 50%;transform: translate(-50%,-50%);z-index: 2;background-color: transparent;" >
+		<canvas style="position:fixed;z-index:1;left:0;top:0;width: {{scratch.width}}px; height: {{scratch.height}}px; background-color: transparent;" canvas-id="scratch" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd" disable-scroll ="{{isScroll}}"></canvas>
+	</view>
+</template> 

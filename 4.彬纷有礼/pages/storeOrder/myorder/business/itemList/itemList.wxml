@@ -1,0 +1,322 @@
+<pull-refresh-view class="list-container" bindloadData="loadData" bindonrefresh="refresh" pullText="下拉可以刷新" loadmoreText="加载中..." autoLoad="{{false}}">
+  <block wx:for="{{feedList}}" wx:for-item="list" wx:for-index="page" wx:key="key">
+    <block wx:for="{{list}}" wx:key="key">
+      <!-- list_type:1 商城订单 item.list_type== 1 暂时隐藏-->
+      <block wx:if="{{false}}">
+        <view class="store-list-box" bindtap="storeOrderDetail" data-oid="{{item.id}}">
+          <!-- 订单类型、申请时间、状态 -->
+          <view class="list-item-head">
+            <view>
+              <!-- 货到付款：pay_type=1 -->
+              <block wx:if="{{item.pay_type ==1}}">
+                <text class="order-type-title-hdfk">货到付款</text>
+              </block>
+              <!-- 先付后货：pay_type=0 -->
+              <block wx:else>
+                <!-- <text class="order-type-title-xfhh">先付后货</text> -->
+                <text class="order-type-title-xfhh">在线支付</text>
+              </block>
+              <text class="order-create-time">{{item.create_time}}申请</text>
+            </view>
+            <!-- 订单状态：判断pay_type区分订单类型+status -->
+            <view class="{{orderStatusCalss[item.status]}}">
+              <block wx:if="{{item.pay_type == 1}}">
+                <block wx:if="{{item.status == 1}}">
+                  <block wx:if="{{item.type==0}}">
+                    <block wx:if="{{item.b_uid<=0 || item.isPaid}}">待接单</block>
+                    <block wx:else>待付款</block>
+
+                  </block>
+                  <block wx:if="{{item.type==1}}">待确认</block>
+                  <block wx:if="{{item.type==2}}">待接单</block>
+                </block>
+              </block>
+              <block wx:else>
+                <block wx:if="{{item.status == 1}}">
+                  <block wx:if="{{item.isPaid}}">待接单</block>
+                  <block wx:else>待付款</block>
+                </block>
+              </block>
+              <block wx:if="{{item.status == 2}}">待配送</block>
+              <block wx:elif="{{item.status == 3}}">
+                <text>{{item.rev_status == 2?'待收货':'待核销'}}</text>
+              </block>
+              <block wx:elif="{{item.status == 4}}">已完成</block>
+              <block wx:elif="{{item.status == 5}}">已取消</block>
+            </view>
+          </view>
+          <!-- 下单配送信息 -->
+          <view class="order-info-box order-info-box-border-top ">
+            <image class="order-icon" src="{{icon_salesman}}" mode="aspectFit" lazy-load></image>
+            <text class="order-color-grey mglr10">代下单</text>
+            <text>{{item.y_name}}</text>
+          </view>
+          <view class="order-info-box">
+            <image class="order-icon" src="{{icon_delivery}}" mode="aspectFit" lazy-load></image>
+            <text class="order-color-grey mglr10">配送</text>
+            <text>{{item.b_sname||''}}</text>
+          </view>
+          <!-- 商品信息 -->
+          <view class="goods-info-box ">
+            <view class="sku-info-box">
+              <!-- sku logo,数量：超过3个隐藏··· -->
+              <view class="sku-box">
+                <block wx:for="{{item.sku_img}}" wx:key="key" wx:for-item="itm">
+                  <block wx:if="{{index<2}}">
+                    <image class="goods-logo" src="{{itm}}" lazy-load mode="aspectFit"></image>
+                  </block>
+                </block>
+                <block wx:if="{{item.sku_img.length>2}}">
+                  <text class="icon-dot">···</text>
+                </block>
+              </view>
+              <view class="sku-count">{{item.sku_num}}个商品 共{{item.buy_num}}箱</view>
+              <!-- 惠让信息 -->
+              <view wx:if="{{item.hr}}" class="hr-info-box">进货已满{{item.hr.need_num}}箱赠送{{item.hr.awarded_num}}罐</view>
+            </view>
+            <view class="pay-info-box">
+              <view class="pay-item">
+                <view class="flex-half sub-title ">商品总价：</view>
+                <view class="flex-half"><text class="icon-coin">￥</text> {{item.total_amount}}</view>
+              </view>
+              <view class="pay-item" wx:if="{{item.discount_amount}}">
+                <view class="flex-half sub-title ">优惠：</view>
+                <view class="flex-half discount-color"><text class="icon-coin">-￥</text>{{item.discount_amount}}</view>
+              </view>
+              <view class="pay-item" wx:if="{{item.d_amount}}">
+                <view class="flex-half sub-title ">
+                  <text class="icon-ticket">券</text>
+                  <text>现金券：</text>
+                </view>
+                <view class="flex-half discount-color "><text class="icon-coin">-￥</text>{{item.d_amount}}</view>
+              </view>
+              <view class="pay-item">
+                <block wx:if="{{item.isPaid}}">
+                  <view class="flex-half">实付款：</view>
+                  <view class="flex-half pay-price"><text class="icon-coin">￥</text>{{item.p_amount}}</view>
+                </block>
+                <block wx:else>
+                  <view class="flex-half">应付款：</view>
+                  <view class="flex-half pay-price"><text class="icon-coin">￥</text>{{item.c_amount}}</view>
+                </block>
+              </view>
+            </view>
+
+          </view>
+          <!-- 操作按钮需要判断：订单类型、订单状态、用户身份、支付状态 -->
+          <view class="store-operate-btn-box">
+
+            <!-- 订单类型pay_type:，1货到付款 -->
+            <block wx:if="{{item.pay_type==1}}">
+              <!-- 待接单：判断接单未接单 -->
+              <block wx:if="{{item.status==1}}">
+                <!-- status:1 再根据type判断 -->
+                <block wx:if="{{item.type==0}}">
+                  <block wx:if="{{item.b_uid<=0 || item.isPaid}}">
+                    <van-button wx:if="{{condition !=2 }}" custom-class="store-btn-cancel" catchtap="storeOrderRefuse" data-item="{{item}}" round type="default">取消订单</van-button>
+                    <van-button custom-class="store-btn-cancel mgl40" catchtap="storeOrderPress" data-item="{{item}}" data-type="1" round type="default">催接单</van-button>
+                  </block>
+                  <block wx:else>
+                    <block wx:if="{{condition != 2}}">
+                      <van-button custom-class="store-btn-cancel" catchtap="storeOrderRefuse" data-item="{{item}}" round type="default">拒绝</van-button>
+                      <van-button catchtap="storePay" data-item="{{item}}" custom-class="store-btn-operate mgl40" round type="default">去支付</van-button>
+                    </block>
+                  </block>
+                </block>
+                <block wx:if="{{item.type==1}}">
+                  <block wx:if="{{condition != 2}}">
+                    <van-button custom-class="store-btn-cancel" catchtap="storeOrderRefuse" data-item="{{item}}" round type="default">拒绝</van-button>
+                    <van-button catchtap="storeOrderConfirm" data-item="{{item}}" custom-class="store-btn-operate mgl40" round type="default">确认订单</van-button>
+                  </block>
+                </block>
+                <block wx:if="{{item.type==2}}">
+                  <van-button wx:if="{{condition !=2 }}" custom-class="store-btn-cancel" catchtap="storeOrderRefuse" data-item="{{item}}" round type="default">取消订单</van-button>
+                  <van-button custom-class="store-btn-cancel mgl40" catchtap="storeOrderPress" data-item="{{item}}" data-type="1" round type="default">催接单</van-button>
+                </block>
+              </block>
+              <!-- 待配送 -->
+              <block wx:if="{{item.status==2}}">
+                <van-button catchtap="storeOrderPress" data-item="{{item}}" data-type="2" custom-class="store-btn-cancel" round type="default">催送货</van-button>
+              </block>
+              <!-- 待收货：判断有没有付款，以及用户身份 -->
+              <block wx:if="{{item.status==3}}">
+                <!-- 是否核销 -->
+                <block wx:if="{{item.rev_status == 2}}">
+                  <!-- 订单是否支付 -->
+                  <block wx:if="{{item.isPaid}}">
+                    <van-button catchtap="storeOrderConfirmReceipt" data-oid="{{item.id}}" custom-class="store-btn-operate " round type="default">确认收货</van-button>
+                  </block>
+                  <block wx:else>
+                    <van-button catchtap="storeOrderConfirmReceipt" data-oid="{{item.id}}" custom-class="store-btn-operate " round type="default">{{condition!=2?'确认收货':'通知店长'}}</van-button>
+                  </block>
+                </block>
+                <!-- 未支付：店长可支付，店员需要转发给店长支付 -->
+                <!-- <block wx:else>
+                  <block wx:if="{{condition==1}}">
+                    <van-button custom-class="store-btn-operate" round type="default">确认收货</van-button>
+                  </block>
+                  <block wx:else>
+                    <van-button custom-class="store-btn-operate" round type="default">通知店长</van-button>
+                  </block>
+                </block> -->
+              </block>
+            </block>
+
+
+
+            <!-- 订单类型pay_type0先付后货-->
+            <block wx:if="{{item.pay_type==0}}">
+              <!-- 待接单 -->
+              <block wx:if="{{item.status==1}}">
+                <!-- 已支付:店员只有催接单 -->
+                <block wx:if="{{item.isPaid}}">
+                  <!-- type:1 支付未确认 -->
+                  <block wx:if="{{item.type ==1 &&condition!=2}}">
+                    <van-button custom-class="store-btn-operate mgl40" catchtap="storeOrderdxdConfirm" data-item="{{item}}" round type="default">确认订单</van-button>
+                  </block>
+                  <!-- type:2 支付已确认 -->
+                  <block wx:if="{{item.type ==2}}">
+                    <van-button wx:if="{{condition !=2}}" catchtap="storeOrderRefuse" data-item="{{item}}" custom-class="store-btn-cancel" round type="default">取消订单</van-button>
+                    <van-button custom-class="store-btn-cancel mgl40" catchtap="storeOrderPress" data-item="{{item}}" data-type="1" round type="default">催接单</van-button>
+                  </block>
+                </block>
+                <!-- 未支付：condition:1店长显示 付款，拒绝操作 -->
+                <block wx:else>
+                  <block wx:if="{{condition!=2}}">
+                    <van-button custom-class="store-btn-cancel" catchtap="storeOrderRefuse" data-item="{{item}}" round type="default">拒绝</van-button>
+                    <van-button catchtap="storePay" data-item="{{item}}" custom-class="store-btn-operate mgl40" round type="default">去支付</van-button>
+                  </block>
+                </block>
+              </block>
+              <!-- 待配送 -->
+              <block wx:if="{{item.status==2}}">
+                <van-button catchtap="storeOrderPress" data-item="{{item}}" data-type="2" custom-class="store-btn-cancel" round type="default">催送货</van-button>
+              </block>
+              <!-- 待收货 -->
+              <block wx:if="{{item.status==3}}">
+                <!-- item.rev_status == 2 显示操作按钮 -->
+                <van-button wx:if="{{item.rev_status == 2}}" catchtap="storeOrderConfirmReceipt" data-oid="{{item.id}}" custom-class="store-btn-operate" round type="default">确认收货</van-button>
+              </block>
+            </block>
+          </view>
+        </view>
+
+      </block>
+
+      <!-- list_type:0 返货订单 -->
+      <block wx:if="{{item.list_type==0}}">
+        <view class="hx-list-box" bindtap="fhOrderDetail" data-order_no="{{item.check_no}}" data-id="{{item.id}}">
+          <!-- 订单类型、申请时间、状态 -->
+          <view class="list-item-head">
+            <view>
+              <text class="order-type-title-fh">返货订单</text>
+              <text class="order-create-time">{{item.create_time}}申请</text>
+            </view>
+            <view class="order-status-red" wx:if="{{item.status == 0 || item.status == 1}}">
+              <block wx:if="{{item.status ==0}}">
+                <text>待受理</text>
+              </block>
+              <!-- 待核销、待配送、待收货 -->
+              <block wx:if="{{item.status ==1}}">
+                <block wx:if="{{!item.a_ptime}}">待配送</block>
+                <block wx:else>
+                  <block wx:if="{{!item.count_sj}}">待核销</block>
+                  <block wx:else>待收货</block>
+                </block>
+              </block>
+
+            </view>
+            <view class="order-status-green" wx:if="{{item.status ==2}}">已完成</view>
+            <view class="order-status-grey" wx:if="{{item.status ==3}}">已取消</view>
+          </view>
+          <!-- 订单内容 -->
+          <view class="list-item-content">
+            <view class="list-item-content-left">
+              <view class="goods-thumb-box">
+                <image class="goods-thumb" src="{{ item.sku_info.sku_icon || item.cp_img}}" mode="aspectFit" lazy-load></image>
+                <view class="prize-example" wx:if="{{item.sku_info.sku_arg==1}}">奖品如图</view>
+              </view>
+              <view class="order-apply-num">
+                <text>申请</text>
+                <text class="order-status-green">{{item.count_dh||0}}</text>
+                <text>{{item.sku_info.unit}}</text>
+              </view>
+              <view class="order-apply-num" wx:if="{{item.status == 2}}">
+                  <text>实收</text>
+                  <text class="order-status-green {{item.count_sj==item.count_dh ? 'green' :'red'}}">{{item.count_sj||0}}</text>
+                  <text>{{item.sku_info.unit}}</text>
+                </view>
+            </view>
+            <view class="list-item-content-right">
+              <view>
+                <text class="item-sub-title">订单编号：</text>
+                <text>{{item.check_no}}</text>
+              </view>
+              <view>
+                <text class="item-sub-title">配送商：</text>
+                <text>{{item.a_jxs}}</text>
+              </view>
+              <block wx:if="{{item.status == 0|| item.status == 3}}">
+                <view>
+                  <text class="item-sub-title">联系电话：</text>
+                  <text catchtap="callUp" data-phone="{{item.a_jxsdh}}">{{item.a_jxsdh_str}}</text>
+                  <van-icon custom-class="list-call" name="phone-circle" color="#e3001b" catchtap="callUp" data-phone="{{item.a_jxsdh}}" />
+                </view>
+              </block>
+              <block wx:if="{{item.status >= 1}}">
+                <view wx:if="{{item.a_psy}}">
+                  <text class="item-sub-title">配送员：</text>
+                  <text>{{item.a_psy}}</text>
+                </view>
+                <view wx:if="{{item.a_psydh}}" class="list-call-box">
+                  <text class="item-sub-title">联系电话：</text>
+                  <text catchtap="callUp" data-phone="{{item.a_psydh}}">{{item.a_psydh_str}}</text>
+                  <van-icon custom-class="list-call" name="phone-circle" color="#e3001b" catchtap="callUp" data-phone="{{item.a_psydh}}" />
+                </view>
+              </block>
+
+              <view>
+                <text class="item-sub-title">产品名称：</text>
+                <text>{{item.sku_info.sku_short || ''}}</text>
+              </view>
+            </view>
+          </view>
+          <!-- 待受理  -->
+          <block wx:if="{{item.status ==0}}">
+            <!-- 操作按钮 -->
+            <view class="list-item-btn" wx:if="{{condition != 2}}">
+              <view class="item-btn-right">
+                <!-- 取消按钮 -->
+                <view class="btn-cancel" catchtap="cancel" data-item="{{item}}">取消申请</view>
+                <!-- 操作按钮 -->
+                <view catchtap="remindMerchant" data-item="{{item}}" class="btn-operate">提醒配送商</view>
+              </view>
+            </view>
+          </block>
+          <!-- 待核销 -->
+          <block wx:elif="{{item.status ==1}}">
+            <!-- 操作按钮 -->
+            <view class="list-item-btn">
+              <view class="item-btn-right">
+                <!-- 取消按钮：condition:1掌柜可显示 -->
+                <view wx:if="{{condition !=2  && !item.a_ptime}}" catchtap="cancelHX" data-check_no="{{item.check_no}}" class="btn-cancel">取消订单</view>
+                <!-- 操作按钮：配送中可核销，其他灰色不可操作 -->
+                <view wx:if="{{item.status ==1 && item.count_sj}}" style="{{(item.a_ptime)?'margin-left:0rpx;':''}}" catchtap="getMyLocation" data-item="{{item}}" class="btn-operate">立即核销</view>
+                <view wx:else style="{{(item.a_ptime)?'margin-left:0rpx;':''}}" catchtap='catchTapEmpty' class="btn-operate btn-operate-disabled">立即核销</view>
+              </view>
+            </view>
+          </block>
+          <!-- 已核销 -->
+          <!-- <block wx:elif="{{item.status ==2}}">
+          </block> -->
+          <!-- 已取消：店员不显示 -->
+          <!-- <block wx:elif="{{item.status ==3}}">
+            
+          </block> -->
+        </view>
+      </block>
+
+    </block>
+  </block>
+
+</pull-refresh-view>

@@ -1,0 +1,258 @@
+/* pages/warhorse//goldenEgg/index.wxss */
+@import '../style.wxss';
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url(https://file.y1b.cn/public/img/WarHorse/0917/goldenEgg/bg_hd.png) no-repeat;
+  background-size: 100% 100%;
+
+}
+.title{
+  text-align: center;
+  position: fixed;
+  top: 38rpx;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 2;
+}
+.title image{
+  height: 200rpx;
+}
+
+.content_bg {
+  background: url(https://file.y1b.cn/public/img/WarHorse/0917/goldenEgg/hb_rain.png) no-repeat;
+  background-size: 100% 100%;
+  height: 284rpx;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  bottom:370rpx;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 1;
+}
+
+.eggImg {
+
+  position: fixed;
+  bottom:382rpx;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+.eggImg .egg{
+  width: 297rpx;
+  height: 410rpx;
+}
+.breakImg{
+  height: 480rpx;
+  margin-bottom: 21rpx;
+  margin-left: -70rpx;
+}
+.brokenImg{
+  height: 434rpx;
+  position: relative;
+  top: 68rpx;
+}
+.warhorse{
+  position: fixed;
+  bottom:522rpx;
+  left: 20px;
+  z-index: 1;
+}
+.warhorse image{
+  width:218rpx;
+  height: 425rpx;
+  transform: rotateZ(7deg);
+  /* width:257rpx;
+  height: 500rpx; */
+}
+.hammer{
+  display: inline-block;
+  position: fixed;
+  right: 96rpx;
+  /* bottom: 674rpx; */
+  bottom: 618rpx;
+  z-index: 12;
+  animation-name: hammer;
+  animation-duration: .6s;
+  animation-fill-mode: both;
+  transform-origin: bottom right;
+  transform: rotate(30deg);
+}
+.hammer image{
+  height:330rpx;
+  width: 340rpx;
+  /* height:157rpx;
+  width: 298rpx; */
+  transform: rotateZ(-30deg);
+}
+.init-hammer{
+  height:330rpx;
+  width: 340rpx;
+  position: fixed;
+  right: 0rpx;
+  bottom: 470rpx;
+  z-index: 10;
+}
+.btnImg {
+  background: url(https://file.y1b.cn/public/img/WarHorse/0917/goldenEgg/btn.png) no-repeat;
+  background-size: 100% 100%;
+  height: 164rpx;
+  font-size: 41rpx;
+  font-weight: 800;
+  color: #fde63a;
+  letter-spacing: 9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left:0;
+  right: 0;
+  bottom: 118rpx;
+  z-index: 2;
+}
+.footer{
+  background: url(https://file.y1b.cn/public/img/WarHorse/0917/goldenEgg/footer.png) no-repeat;
+  background-size: 100% 100%;
+  height: 521rpx;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+
+
+.rewardPop {
+  z-index: 2;
+  width: 632rpx;
+  height: 713rpx;
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/rotate/reward_bg_front.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom:280rpx;
+  margin: auto;
+}
+
+.rewardPop_content {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/goldenEgg/reward_content.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 632rpx;
+  height: 713rpx;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom:280rpx;
+  margin: auto;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content:flex-start ;
+  
+}
+
+.rewardPop_content .msg {
+  font-size: 51rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #CA0000;
+  margin-top: 200rpx;
+}
+
+.rewardPop_content .msg text {
+  font-size: 80rpx;
+}
+
+.flex-column-around {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+.flex-column-between {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.height52{
+  height: 52%;
+}
+.getReward{
+  position: fixed;
+  bottom: 16%;
+  z-index: 5000;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+.rewardHistory{
+  margin-top: 40rpx;
+  color: #FFE777;
+  font-size:30rpx;
+}
+.getReward .btn {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/btnBG.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 327rpx;
+  height: 94rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #ffe300;
+}
+
+.totalMoney {
+  color: #CA0000;
+  font-weight: 700;
+}
+
+.lotteryPop {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/goldenEgg/count_bg.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 594rpx;
+  height:930rpx;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 70rpx;
+}
+
+
+
+@keyframes hammer {
+  0%{
+    transform: rotate(30deg);
+  }
+  33%{
+    transform: rotate(0deg);
+  }
+  66% {
+    /* transform: rotate(50deg); */
+    transform: rotate(90deg);
+  }
+  100%{
+    transform: rotate(0deg);
+  }
+}

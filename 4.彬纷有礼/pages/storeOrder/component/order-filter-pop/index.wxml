@@ -1,0 +1,33 @@
+<!--pages/storeOrder/component/order-filter-pop/index.wxml-->
+<van-popup show="{{ show }}" round position="bottom" bind:close="onClose">
+  <view class="title">
+    <text>订单筛选</text>
+    <image class="icon-close" mode="aspectFit" bindtap="onClose" src="{{icon_close}}"></image>
+  </view>
+  <view class="box">
+    <view class="sub-title">下单时间</view>
+    <!-- 起始-终止时间 -->
+    <view class="date-box">
+      <view class="date-item {{start_time||end_time ?'color-black':''}}" bindtap="openCalendar">{{start_time||'起始时间'}}</view>
+      <view class="date-item-gap"></view>
+      <view class="date-item {{start_time||end_time ?'color-black':''}}" bindtap="openCalendar">{{end_time||'终止时间'}}</view>
+    </view>
+    <view class="sub-title">订单类型</view>
+    <view class="type-box">
+      <block wx:for="{{filter_type_arr}}" wx:key="key">
+        <view class="type-item {{activeIndex == (index+1) ?'active-item':''}}" bindtap="chooseOrderType" data-type="{{item.type}}" data-index="{{index+1}}">{{item.name}}</view>
+      </block>
+    </view>
+    <!-- 操作按钮 -->
+    <view class="operate-box">
+      <van-button bind:click="reset" custom-class="btn-grey" type="default" round>重置</van-button>
+      <van-button bind:click="confirm" custom-class="btn-confirm" type="default" round>确定</van-button>
+    </view>
+  </view>
+</van-popup>
+
+
+<!-- 日历 -->
+<block wx:if="{{minDate}}">
+  <van-calendar min-date="{{ minDate }}" max-date="{{maxDate}}" allow-same-day show="{{ calendarShow }}" type="range" bind:close="onCloseCalender" bind:confirm="chooseDate" />
+</block>

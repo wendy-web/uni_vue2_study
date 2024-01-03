@@ -1,0 +1,8 @@
+<!--component/easy-loadimage.wxml-->
+<view class="easy-loadimage {{imageClass}}"  bindtap="imageClick">
+  <image wx:if="{{!isLoadError}}"
+    class="origin-img {{!openTransition? 'no-transition' :''}} {{showTransition&&openTransition ? 'show-transition' :''}}"
+    src="{{imgsrc}}" mode="{{mode}}" bindload="handleImgLoad" binderror="handleImgError" lazy-load></image>
+    <view class="loadfail-img" wx:if="{{isLoadError}}"></view>
+    <image class="loading-gif " mode="aspectFit" src="./images/loading.gif" wx:if="{{loadImg}}"></image>
+</view>

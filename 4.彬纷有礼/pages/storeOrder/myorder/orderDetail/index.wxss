@@ -1,0 +1,353 @@
+/* pages/storeOrder/orderDetail/index.wxss */
+
+.store-box {
+  box-sizing: border-box;
+}
+
+.store-box .order-item {
+  background-color: #ffffff;
+  border-bottom: 10rpx solid #f7f7f7;
+  padding: 10rpx 30rpx;
+}
+.store-box .unset-border-bottom {
+  border-bottom: unset;
+}
+
+.store-box .order-item:first-child {
+  padding: 10rpx 0rpx;
+}
+
+.order-item .order-status-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #E3001B;
+  font-size: 28rpx;
+}
+
+.order-item .order-status-tips {
+  font-size: 24rpx;
+  font-weight: 400;
+  text-align: center;
+  color: #797979;
+  margin-top: 10rpx;
+}
+
+.order-item .order-status-box .icon-status {
+  width: 50rpx;
+  height: 50rpx;
+  margin-right: 10rpx;
+}
+
+.order-item .color-green {
+  color: #00AF29;
+}
+
+/*  进度条 css  start */
+.steps-box {
+  /* display: flex;
+  align-items: center;
+  justify-content: space-between; */
+  position: relative;
+  /* margin-top: 30rpx; */
+}
+
+.steps-box .steps-item {
+  text-align: center;
+  width: 100%;
+  position: relative;
+  color: #797979;
+  font-size: 24rpx;
+  min-height: 80rpx;
+  padding-top: 20rpx;
+}
+
+.steps-box .steps-item::before {
+  content: "";
+  width: 100%;
+  height: 1rpx;
+  /* border-top: 5rpx solid #00AF29; */
+  border-top: 3rpx dashed #b7b7b7;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.steps-box .steps-item .steps-item-date {
+  font-size: 20rpx;
+}
+
+.steps-box .steps-item-active {
+  color: #00AF29;
+}
+
+.steps-box .steps-item-active::before {
+  border-top: 3rpx solid #00AF29;
+}
+
+.steps-box .steps-item .icon-dot {
+  width: 20rpx;
+  height: 20rpx;
+  background-color: #B7B7B7;
+  border-radius: 50%;
+  position: absolute;
+  margin: 0 auto;
+  top: -8rpx;
+  left: 0;
+  right: 0;
+
+}
+
+.steps-box .steps-item .icon-dot-active {
+  background-color: #00AF29;
+
+}
+
+.steps-box .steps-item:first-child::before {
+  width: 50%;
+}
+
+.steps-box .steps-item:last-child::before {
+  width: 50%;
+  left: 0;
+  right: unset;
+}
+
+/*  进度条 css  end */
+
+/* 下单配送信息 */
+.store-box .order-info-box {
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  height: 60rpx;
+  /* padding: 0 30rpx; */
+}
+
+.store-box .order-info-box .order-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.store-box .order-info-box .order-color-grey {
+  color: #A3A2A8;
+}
+
+.store-box .mglr10 {
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+}
+
+/* 商品sku信息 */
+.store-box .sku-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 28rpx;
+  color: #a3a2a8;
+  letter-spacing: 0.17px;
+}
+
+.sku-box .sku-item {
+  /* background-color: #797979; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: right;
+  margin-right: 20rpx;
+}
+
+.sku-box .sku-item .icon-sku {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 20rpx;
+  filter: brightness(0.9);
+}
+
+.sku-item-placeholder {
+  font-weight: bold;
+  letter-spacing: 10rpx;
+  font-size: 30rpx;
+  margin-left: 10rpx;
+}
+
+.sku-item .icon-arrow {
+  margin-left: 10rpx;
+}
+
+.goods-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #797979;
+  margin-top: 20rpx;
+  padding-right: 30rpx;
+  box-sizing: border-box;
+}
+
+.goods-info .icon-ticket {
+  text-align: center;
+  background: linear-gradient(180deg, #ffa169, #fc1b12);
+  font-size: 24rpx;
+  color: #ffffff;
+  padding: 1rpx 6rpx;
+  border-radius: 8rpx;
+  margin-right: 10rpx;
+}
+
+.pay-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 28rpx;
+  font-weight: 700;
+  text-align: right;
+  color: #e3001b;
+  padding-right: 30rpx;
+  box-sizing: border-box;
+  min-height: 90rpx;
+}
+
+.pay-info .name {
+  font-size: 32rpx;
+  color: #000000;
+  margin-right: 40rpx;
+}
+
+/* 订单信息 */
+.order-info-item {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  font-weight: 500;
+  text-align: left;
+  color: #797979;
+  padding-bottom: 26rpx;
+}
+.order-info-item-space-between{
+  justify-content: space-between;
+}
+
+.mgt20 {
+  margin-top: 20rpx;
+}
+
+.order-info-item .order-info-value {
+  color: #000000;
+  margin: 0 20rpx;
+}
+
+.order-info-item .order-info-note {
+  color: #000000;
+  text-align: right;
+  word-wrap: break-word;
+
+}
+
+.order-info-item .order-info-subtitle {
+  flex-shrink: 0;
+}
+
+.order-info-item .icon-copy {
+  width: 26rpx;
+  height: 26rpx;
+}
+
+.order-item .border-bottom-dashed {
+  border-bottom: 1rpx dashed #d8d6d6;
+}
+
+/* 操作按钮 */
+.operate-box {
+  min-height: 100rpx;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: sticky;
+  bottom: 0;
+  background-color: #ffffff;
+  padding: 20rpx 0rpx;
+}
+
+.operate-box .btn-cancel {
+  width: 314rpx;
+  height: 96rpx;
+  opacity: 0.8;
+  border: 1px solid #000018;
+  color: #000000;
+  font-size: 32rpx;
+}
+
+.operate-box .btn-cancel-block {
+  width: 80vw;
+  height: 96rpx;
+  opacity: 0.8;
+  border: 1px solid #000018;
+  color: #000000;
+  font-size: 32rpx;
+}
+
+.operate-box .btn-operate {
+  width: 314rpx;
+  height: 96rpx;
+  border-radius: 24px;
+  color: #ffffff;
+  background-color: #e3001b;
+  border: 1px solid #e3001b;
+  font-size: 32rpx;
+
+}
+
+.operate-box .btn-operate-block {
+  height: 96rpx;
+  width: 80vw;
+  border-radius: 24px;
+  color: #ffffff;
+  background-color: #e3001b;
+  border: 1px solid #e3001b;
+  font-size: 32rpx;
+}
+
+.hr-info-box {
+  font-size: 24rpx;
+  color: #FD2B1E;
+  letter-spacing: 0.29px;
+  border: 1px solid #FD2B1E;
+  padding: 0rpx 10rpx;
+  display: inline-block;
+  border-radius: 10rpx;
+}
+
+.sku-info-box {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #797979;
+}
+
+.sku-info-box .sku-info-img {
+  width: 182rpx;
+  height: 182rpx;
+  margin-right: 20rpx;
+  filter: brightness(0.9);
+  border-radius: 10rpx;
+}
+
+.sku-info-box .sku-info-title {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #000000;
+}
+.btn-display-none{
+  display: none;
+}
+.order-item .color-grey {
+  color: #A3A2A8;
+}
+.min-width-100{
+  min-width: 100rpx;
+}

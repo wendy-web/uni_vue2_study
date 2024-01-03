@@ -1,0 +1,1541 @@
+/* pages/couponActivity/gzUnbox/index/index.wxss */
+/* pages/storeRank/rank/index.wxss */
+page {
+  /* height: 100%; */
+  width: 100%;
+  background: linear-gradient(180deg, #ffeedc, #ffeedc 45%, #ffcc95);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+
+.weui-loadmore_line .weui-loadmore__tips {
+  background-color: #fdebe9;
+}
+
+::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  color: transparent;
+  /* display: none; */
+}
+
+.minHeight134 {
+  min-height: 98px;
+}
+
+.hat_shop_box {
+  max-width: 84px;
+  position: relative;
+  top: -10px;
+}
+
+.hat_item {
+  position: absolute;
+  top: -20px;
+  left: -11px;
+  width: 61px;
+  height: 61px;
+}
+
+.hat_item_side {
+  position: absolute;
+  top: -18px;
+  left: -9px;
+  width: 50px;
+  height: 50px;
+}
+
+
+
+.flex_2_5 {
+  flex: 0.25;
+}
+
+.dj_item {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dj_item view {
+  width: 140rpx;
+}
+
+.width60 {
+  width: 60rpx;
+}
+
+.pdl16 {
+  padding-left: 16rpx;
+}
+
+.refreshBox {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 30rpx;
+  height: 39.5px;
+  /* background-color: #f36c3d; */
+  color: #FFFFFF;
+  font-size: 12px;
+  box-sizing: border-box;
+  padding-bottom: 8px;
+}
+
+
+
+.pdt10 {
+  padding-top: 10rpx;
+}
+
+.color4361 {
+  color: #4361b8;
+}
+
+.width60_vw {
+  width: 60vw;
+}
+
+.width120 {
+  width: 120rpx;
+}
+
+.space-left {
+  justify-content: flex-start;
+}
+
+
+
+
+
+
+
+/*箭头部分*/
+.align-center {
+  position: fixed;
+  left: 20rpx;
+  top: 0;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+.navigator {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.nav-bar__button {
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  font-size: 12px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 1em 2em;
+}
+
+.nav-bar__btn_goback {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='24' viewBox='0 0 12 24'%3E  %3Cpath fill-opacity='.9' fill-rule='evenodd' d='M10 19.438L8.955 20.5l-7.666-7.79a1.02 1.02 0 0 1 0-1.42L8.955 3.5 10 4.563 2.682 12 10 19.438z'/%3E%3C/svg%3E");
+}
+
+.nav-bar__btn_goback.white {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='24' viewBox='0 0 12 24'%3E  %3Cpath fill-opacity='.9' fill-rule='evenodd' d='M10 19.438L8.955 20.5l-7.666-7.79a1.02 1.02 0 0 1 0-1.42L8.955 3.5 10 4.563 2.682 12 10 19.438z' fill='%23ffffff'/%3E%3C/svg%3E");
+}
+
+
+.box {
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+  background: linear-gradient(180deg, #ffeedc, #ffeedc 45%, #ffcc95);
+  padding-bottom: 36rpx;
+}
+
+.box .head {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+  /* background: linear-gradient(179deg, #ffbb68 1%, #ff612d 47%, #d12e28 87%); */
+}
+
+.head .bg_home_banner {
+  width: 100%;
+  height: 882rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+
+.head .icon_28th {
+  width: 158rpx;
+  height: 88rpx;
+  /* position: absolute; */
+}
+
+.head .icon_coin {
+  width: 82rpx;
+  height: 100rpx;
+  position: absolute;
+  right: 0;
+  top: 20rpx;
+}
+
+.head .icon_hb {
+  width: 86rpx;
+  height: 92rpx;
+  position: absolute;
+  top: 368rpx;
+  left: 0rpx;
+}
+
+.head .act_subtitle {
+  width: 705rpx;
+  height: 212rpx;
+}
+
+.head .act_title {
+  width: 600rpx;
+  height: 95rpx;
+}
+
+.head .home-unbox-box {
+  width: 100%;
+  position: relative;
+  height: 550rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.home-unbox-box .bg_home_unbox {
+  width: 592rpx;
+  height: 480rpx;
+  margin: 0 auto;
+  display: block;
+  z-index: -1;
+  position: absolute;
+  left: 20rpx;
+  right: 0;
+  bottom: 100rpx;
+}
+
+.home-unbox-box .icon_coupon {
+  position: absolute;
+  top: 50rpx;
+  left: 80rpx;
+  width: 123rpx;
+  height: 127rpx;
+
+}
+
+.home-unbox-box .bg_home_bottom {
+  width: 100%;
+  height: 270rpx;
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.home-unbox-box .title_act_end {
+  width: 238rpx;
+  height: 80rpx;
+  display: block;
+  margin: 0 auto;
+}
+
+.head .btn_apply {
+  width: 280rpx;
+  height: 92rpx;
+  display: block;
+  margin: 0 auto;
+  z-index: 2;
+}
+
+
+.head .count-down-box {
+  font-size: 32rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #6e2c04;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10rpx;
+}
+
+.count-down-box .count-down-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* head end */
+
+.rebBull_badge {
+  writing-mode: vertical-lr;
+  transform: rotate(10deg);
+  position: absolute;
+  right: 240rpx;
+  bottom: 336rpx;
+  text-align: center;
+  display: inline-block;
+  width: 40rpx;
+  font-size: 20rpx;
+}
+
+.pure_top {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  overflow: hidden;
+  margin-top: -40rpx;
+  z-index: 1;
+}
+
+.pure_top::after {
+  content: '';
+  width: 140%;
+  height: 120px;
+  position: absolute;
+  left: -20%;
+  top: 0;
+  border-radius: 50% 50% 0 0;
+  background: #c12621;
+}
+
+
+.color-white {
+  color: #ffffff;
+}
+
+.font28 {
+  font-size: 28rpx;
+}
+
+.font30 {
+  font-size: 30rpx;
+}
+
+.font35 {
+  font-size: 35rpx;
+}
+
+.font26 {
+  font-size: 26rpx;
+}
+
+.font40 {
+  font-size: 40rpx;
+}
+
+.font88 {
+  font-size: 88rpx;
+}
+
+.font25 {
+  font-size: 25rpx;
+}
+
+.font22 {
+  font-size: 22rpx;
+}
+
+.fontWeight600 {
+  font-weight: 600;
+}
+
+.tabs {
+  height: 36px;
+  background-color: #de3a20;
+  border-radius: 10rpx 10rpx 0 0;
+  color: #ffdc86;
+  z-index: 0;
+  font-size: 15px;
+}
+
+
+
+.rankTab {
+  width: 100%;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 10rpx 0 0 0;
+  position: relative;
+}
+
+
+
+.rewardTab {
+  width: 100%;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 0 10rpx 0 0;
+}
+
+.avatarBox {
+  background-color: #ffffff;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  border: 2.5rpx solid #090202;
+  padding: 2.5rpx;
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.showMsgPop {
+  padding: 30rpx 70rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.img-box {
+  position: relative;
+}
+
+.rule-tips {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  position: absolute;
+  right: 0px;
+  bottom: 240rpx;
+  z-index: 99;
+}
+
+.tips-bg {
+  width: 52rpx;
+  height: 162rpx;
+  background: #f6792e;
+  border: 2rpx solid #fedda4;
+  border-right: unset;
+  border-radius: 40rpx 0rpx 0rpx 40rpx;
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Medium;
+  font-weight: 500;
+  text-align: left;
+  color: #ffffff;
+  writing-mode: vertical-lr;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28rpx;
+}
+
+.tips-bg:first-child {
+  margin-top: 0rpx;
+}
+
+
+.color-brown {
+  color: #632700;
+}
+
+.rankBg {
+  background-color: #f16c55;
+}
+
+
+
+
+.color-red {
+  color: #f13b1b;
+}
+
+.rank_scan {
+  width: 230rpx;
+  height: 80rpx;
+}
+
+.rank_warn {
+  width: 20rpx;
+  height: 20rpx;
+}
+
+.refresh {
+  width: 17rpx;
+  height: 20rpx;
+}
+
+.see {
+  width: 20rpx;
+  height: 12rpx;
+}
+
+.text-stroke {
+  color: #ffffff;
+  font-weight: bolder;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #A25037;
+}
+
+.rank_crown {
+  width: 38rpx;
+  height: 31rpx;
+}
+
+.flexOne {
+  flex: 0.4;
+}
+
+.flex_3 {
+  flex: 0.3;
+}
+
+.flex_4 {
+  flex: 0.4;
+}
+
+.flex_2 {
+  flex: 0.2;
+}
+
+.pdl20 {
+  padding-left: 20rpx;
+}
+
+.pdl10 {
+  padding-left: 10rpx;
+}
+
+
+
+.clickMe {
+  width: 148rpx;
+  height: 71rpx;
+  position: relative;
+  top: 5px;
+}
+
+.clickMeBox {
+  position: absolute;
+  bottom: 0rpx;
+  right: 0rpx;
+}
+
+.noDataBox {
+  height: 30vh;
+  line-height: 30vh;
+}
+
+.color-orange {
+  color: #fdd622;
+}
+
+.colorOrange {
+  color: #FFDA03;
+}
+
+.getAward {
+  width: 136rpx;
+  height: 52rpx;
+}
+
+.end_time {
+  font-size: 20rpx;
+  font-family: Source Han Sans CN Medium, Source Han Sans CN Medium-Medium;
+  text-align: right;
+}
+
+.color53 {
+  color: #a09b9b;
+}
+
+.pdr30 {
+  padding-right: 30rpx;
+}
+
+.diyContainer {
+  overflow: unset;
+}
+
+.deleteIcon {
+  width: 64rpx;
+  height: 64rpx;
+}
+
+.deleteIconBox {
+  position: absolute;
+  bottom: -83rpx;
+  z-index: 20;
+  left: 0;
+  right: 0;
+}
+
+.width110rpx {
+  width: 110rpx;
+}
+
+.heightLight {
+  background-color: #d53b37;
+  border-radius: 10rpx;
+  color: #ffffff;
+}
+
+.checkAwardHistoryBtn {
+  width: 246rpx;
+  height: 56rpx;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.navBar-wapper {
+  background: transparent;
+  position: fixed;
+  top: 0px;
+  z-index: 500;
+}
+
+.mgt10 {
+  margin-top: 10rpx;
+}
+
+.mgt5 {
+  margin-top: 5rpx;
+}
+
+.pdb10 {
+  padding-bottom: 10rpx;
+}
+
+.mgb10 {
+  margin-bottom: 10rpx;
+}
+
+.fontBolder {
+  font-weight: bolder;
+}
+
+.font50 {
+  font-size: 50rpx;
+}
+
+.font16 {
+  font-size: 16rpx;
+}
+
+.marked {
+  font-weight: 700;
+  background-color: #ff9000;
+  color: #4361b8;
+  /* font-size:35rpx ; */
+}
+
+.colorE {
+  color: #002aff;
+}
+
+.minHeight {
+  height: 28rpx;
+}
+
+.pdb20 {
+  padding-bottom: 20rpx;
+}
+
+.pdl12 {
+  padding-left: 12rpx;
+}
+
+
+.prizeM_box {
+  position: relative;
+  font-size: 11px;
+}
+
+.prizeM_box_top {
+  top: 0px;
+}
+
+.shop_logo {
+  border: 2px solid #f36c3d;
+  border-radius: 50%;
+  width: 58px;
+  height: 58px;
+}
+
+.shop_logo_side {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.pdlr36 {
+  padding-left: 26px;
+  padding-right: 26px;
+}
+
+.prizeM {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+
+
+
+
+.table_head {
+  width: 100%;
+  z-index: 1;
+  position: relative;
+  top: -31px;
+  /* background-color: #fdebe9; */
+}
+
+.table_head_end_time {
+  font-size: 7px;
+  /* position: absolute;
+  bottom: -28px;
+  left: 0;
+  right: 0; */
+}
+
+.prizeName {
+  position: relative;
+  /* top: -20px; */
+}
+
+.prizeNameText {
+  width: 36px;
+  height: 12px;
+}
+
+.prizeNameText_box {
+  position: relative;
+  top: -15px;
+}
+
+.firstName_color {
+  color: #6890b0;
+}
+
+.secondName_color {
+  color: #d10b19;
+}
+
+.thirdName_color {
+  color: #ce38c1;
+}
+
+.positionTop {
+  position: relative;
+  z-index: 1;
+  justify-content: space-around;
+  top: 38px;
+  left: 0;
+  right: 0;
+  /* background-color: #fdebe9; */
+  /* height: 140px; */
+}
+
+.textRight {
+  text-align: right;
+  padding-right: 30rpx;
+}
+
+
+.hat_shop_one {
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #6890b0;
+  border-radius: 17px;
+  color: #FFFFFF;
+}
+
+.hat_shop_two {
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #d10b19;
+  border-radius: 17px;
+  color: #FFFFFF;
+}
+
+.hat_shop_three {
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #ce38c1;
+  border-radius: 17px;
+  color: #FFFFFF;
+}
+
+.shop_signs_box {
+  position: relative;
+}
+
+
+.warnIcon {
+  width: 12px;
+  height: 12px;
+}
+
+
+.bottomContent {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 88px;
+}
+
+.activityContainer {
+  height: 380px;
+}
+
+/* 2023年8月2日 深圳兑奖活动 */
+
+
+
+.color-yellow {
+  color: #FFFF00;
+}
+
+
+
+
+
+.operate-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 340rpx;
+
+}
+
+
+
+
+
+
+.head .btn-get-reward {
+  width: 228rpx;
+  height: 80rpx;
+}
+
+.content {
+  box-sizing: border-box;
+  margin: 20rpx 10rpx 0 10rpx;
+  border-radius: 20rpx;
+  position: relative;
+  z-index: 10;
+  /* background: linear-gradient(180deg, #ffead5, #ffcc95); */
+  background: linear-gradient(#ffffff, #ffcc95);
+  border-radius: 30rpx;
+  border: 20rpx solid #ffa66b;
+}
+
+.content .tab-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  border-radius: 30rpx 30rpx 0px 0px;
+  font-size: 32rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  text-align: center;
+  color: #000018;
+  font-weight: bold;
+  overflow: hidden;
+  z-index: 10;
+  background-color: #FEFBF2;
+  position: relative;
+}
+
+.tab-box .tab-item {
+  flex: 1;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100rpx;
+  /* background-color: brown; */
+}
+
+.tab-item::after {
+  content: '';
+  width: 48rpx;
+  height: 6rpx;
+  background: #fefbf2;
+  border-radius: 4rpx;
+  position: absolute;
+  bottom: 14rpx;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.tab-box .activeTab {
+  font-size: 32rpx;
+  font-family: PingFang SC, PingFang SC-Heavy;
+  font-weight: 800;
+  color: #ef3a1b;
+  position: relative;
+}
+
+.activeTab::after {
+  background: #ef3a1b;
+}
+
+.tabRankLeft {
+  background-color: #f87f35;
+}
+
+.triangleA {
+  border: 10rpx solid transparent;
+  border-left: 5rpx solid #f87f35;
+  border-bottom: 49rpx solid #f87f35;
+
+}
+
+.triangleActiveA {
+  border-left: 5rpx solid #fddfb6;
+  border-bottom: 49rpx solid #fddfb6;
+  /* border-left: 5rpx solid #ec1e00;
+  border-bottom: 49rpx solid #ec1e00; */
+}
+
+.triangleB {
+  border: 10rpx solid transparent;
+  border-right: 5rpx solid #f87f35;
+  border-top: 50rpx solid #f87f35;
+  /* border-right: 5rpx solid #b20000;
+  border-top: 50rpx solid #b20000; */
+  margin-left: -14rpx;
+
+}
+
+.triangleActiveB {
+  border-right: 5rpx solid #fddfb6;
+  border-top: 50rpx solid #fddfb6;
+  /* border-right: 5rpx solid #ec1e00;
+  border-top: 50rpx solid #ec1e00; */
+
+}
+
+
+.rank-box {
+  z-index: 10;
+  /* background-color: #f13814; */
+  background-color:#fefbf2;
+  padding-top: 20rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* 活动店铺信息 */
+.rank-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 20rpx;
+  background: #fff0dc;
+  border: 1rpx solid #ffdaa8;
+  box-sizing: border-box;
+  margin: 0 20rpx;
+  border-radius: 10rpx;
+  position: relative;
+  min-height: 110rpx;
+}
+
+.rank-info::before {
+  content: '';
+  width: 20rpx;
+  height: 16rpx;
+  background-color: #ffffff;
+  border-right: 1rpx solid #ffdaa8;
+  border-left: unset;
+  border-radius: 45rpx;
+  position: absolute;
+  left: -10rpx;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.rank-info::after {
+  content: '';
+  width: 20rpx;
+  height: 16rpx;
+  background-color: #ffffff;
+  border-left: 1rpx solid #ffdaa8;
+  border-radius: 45rpx;
+  position: absolute;
+  right: -10rpx;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.rank-info .shop-avatar {
+  width: 82rpx;
+  height: 82rpx;
+  box-sizing: border-box;
+  /* border: 2rpx solid #000000; */
+  /* padding: 4rpx; */
+  border-radius: 50%;
+  background-color: #ffffff;
+  margin-right: 16rpx;
+}
+
+.rank-right {
+  flex: 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rank-right .rank-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 20rpx;
+  font-weight: normal;
+  color: #686868;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+}
+
+.rank-item .raffle-result-box {
+  position: absolute;
+  right: 0;
+  top: -20rpx;
+  width: 88rpx;
+  height: 42rpx;
+  font-size: 20rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  box-sizing: border-box;
+  padding-bottom: 10rpx;
+}
+
+.raffle-result-box .bg-raffle-win {
+  width: 88rpx;
+  height: 42rpx;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+}
+
+.rank-num-box {
+  font-size: 28rpx;
+  color: #000018;
+}
+
+.rank-item .rank-num {
+  font-size: 40rpx;
+  font-weight: normal;
+  text-align: center;
+  font-weight: 700;
+  color: #000018;
+  line-height: 48rpx;
+}
+
+.rank-item .lucky-num {
+  font-size: 40rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #d12e28;
+  display: flex;
+  align-items: center;
+}
+
+.rank-item .greater-than {
+  color: #D12E28;
+  font-size: 30rpx;
+}
+
+.rank-item .rank-tips {
+  display: flex;
+  align-items: center;
+  font-size: 20rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #686868;
+}
+
+.rank-tips .icon-warn {
+  width: 18rpx;
+  height: 18rpx;
+  margin-top: 2rpx;
+  margin-left: 4rpx;
+}
+
+.img-content-mask {
+  position: absolute;
+  width: 100%;
+  min-height: 2520rpx;
+  left: 0rpx;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+.container {
+  box-sizing: border-box;
+  /* min-height: 1150rpx; */
+
+  /* min-height: 1008rpx; */
+}
+
+/* 排行榜 */
+.rank-list-box {
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 0 0 14rpx 14rpx;
+  margin: 0 20rpx;
+  min-height: 650rpx;
+  background:#fffcf8;
+  border: 1rpx solid #ffdaa8;
+  border-top: unset;
+  padding-top: 10rpx;
+}
+
+.img-rank-tag {
+  width: 298rpx;
+  height: 83rpx;
+  margin: 0 auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -35rpx;
+}
+
+.rank-list-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  /* padding: 0 30rpx; */
+  margin: 30rpx 30rpx 0 30rpx;
+  font-size: 20rpx;
+  font-weight: normal;
+  color: #686868;
+}
+
+.rank-list-head .list-head-item {
+  display: flex;
+  align-items: center;
+}
+
+.list-head-item .icon-refresh {
+  width: 22rpx;
+  height: 22rpx;
+  margin-right: 4rpx;
+}
+
+.check-all {
+  color: #000CFF;
+}
+
+.list-head-item .icon-eye {
+  width: 22rpx;
+  height: 22rpx;
+  margin-right: 8rpx;
+}
+
+/* 排名、门店名称、兑奖人数 */
+.bg-head-bar {
+  height: 50rpx;
+  width: 720rpx;
+  position: absolute;
+  left: -15rpx;
+  right: -10rpx;
+  top: 0rpx;
+  bottom: 0rpx;
+  z-index: 1;
+}
+
+.list-title-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 34rpx 0 0;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #000000;
+  z-index: 2;
+  margin: 10rpx 20rpx 0 20rpx;
+
+  position: relative;
+  height: 70rpx;
+  background: #fff0dc;
+  border-radius: 14rpx 14rpx 0rpx 0rpx;
+  border: 1rpx solid #ffdaa8;
+  border-bottom: unset;
+
+}
+
+/* .list-title-box::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  bottom: -15rpx;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 15rpx solid transparent;
+  border-top: 15rpx solid #9D1E09;
+}
+
+.list-title-box::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  bottom: -15rpx;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-right: 15rpx solid transparent;
+  border-top: 15rpx solid #9D1E09;
+} */
+
+.flex-center-start {
+  display: flex;
+  align-items: center;
+
+  justify-content: center;
+}
+
+.flex-center-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.list-item-rank {
+  flex: 0.2;
+  flex-shrink: 0;
+  z-index: 2;
+  text-align: center;
+}
+
+.list-item-name {
+  flex: 0.3;
+  flex-shrink: 0;
+  z-index: 2;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #000000;
+  text-align: center;
+}
+
+.list-item-shop {
+  flex: 0.3;
+  flex-shrink: 0;
+  z-index: 2;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #000000;
+  text-align: center;
+}
+
+.list-item-own {
+  color: #FF0000;
+}
+
+.list-item-exc {
+  flex: 0.5;
+  flex-shrink: 0;
+  text-align: right;
+  z-index: 2;
+}
+
+.img-text-rank {
+  height: 30rpx;
+  width: 48rpx;
+}
+
+.img-text-shop-name {
+  height: 30rpx;
+  width: 94rpx;
+}
+
+.img-text-exc-num {
+  height: 30rpx;
+  width: 94rpx;
+}
+
+.list-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 8rpx;
+  padding-bottom: 8rpx;
+  box-sizing: border-box;
+  border-bottom: 0.6rpx dashed #ffddd7;
+  background-color: #fffcf8;
+  color: #000000;
+}
+
+.item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 34rpx 0 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.list-item .img-crown {
+  width: 48rpx;
+  height: 40rpx;
+}
+
+.list-item .item-date {
+  font-size: 20rpx;
+  font-weight: 500;
+  color: #535353;
+  width: 100%;
+  text-align: right;
+  padding-right: 34rpx;
+  box-sizing: border-box;
+}
+
+.flex-column-end {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* 奖励列表 */
+.prize-box-bg {
+  /* background-color: #f23e1d; */
+  background-color: #fffcf8;
+  box-sizing: border-box;
+  padding-bottom: 34rpx;
+  border-radius: 0 0 20rpx 20rpx;
+}
+
+.prize-box {
+  background-color: #fffcf8;
+
+  border-radius: 14rpx;
+  padding: 20rpx 36rpx 40rpx 36rpx;
+  /* margin: 0 30rpx; */
+  box-sizing: border-box;
+
+}
+
+.prize-head {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #000000;
+  text-align: center;
+}
+
+.prize-box .prize-item {
+  position: relative;
+  margin-top: 28rpx;
+  display: flex;
+  align-items: flex-end;
+  /* padding-left: 22rpx; */
+  padding-bottom: 10rpx;
+  box-sizing: border-box;
+
+  height: 124rpx;
+  background: #fff6ec;
+  border: 1rpx solid #ffa66b;
+  border-radius: 14rpx;
+}
+
+.prize-box .prize-item:nth-child(1) {
+  margin-top: 10rpx;
+}
+
+.prize-item .rank-range {
+  position: absolute;
+  top: -4rpx;
+  left: -10rpx;
+  /* background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAAAmCAMAAABd010YAAAAQlBMVEUAAADxOhryOxvwPBryOxryOxvxOhjrORm+KhDDKxDQKBC2Jw61Jw7bMRTwOhryOhq6KA+2JA23Jw7hNRbxOhnxOxvaDb1LAAAAFXRSTlMA4OdE+740+d1YDfvqIbHUuECHd4TtPUz8AAAAZ0lEQVRIx+3MyQ3AIAwEwM0NBnMm/bcaiZTAfiJ5ChikhSV5AY79IdnzNjqapNRuOa2zzjrrrLPOup90WZnd2gXp+qzT8q2AL27o2ywVAFJLDCFEDxJtkdlBvBsdTS3UDtoqmETA8AIkwLYFi5AcFgAAAABJRU5ErkJggg==');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0rpx 10rpx;
+  box-sizing: border-box;
+  font-size: 20rpx;
+  font-weight: 700;
+  color: #ffffff;
+  background: #ff6448;
+  border-radius: 0rpx 6rpx 6rpx 0rpx;
+  font-size: 28rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+
+}
+
+.rank-range:after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  bottom: -10rpx;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 10rpx solid transparent;
+  border-top: 10rpx solid#C23D24;
+}
+.rank-range .icon_prize_badge{
+  width: 26rpx;
+  height: 26rpx;
+}
+.prize-item .prize-tips {
+  font-size: 18rpx;
+  font-weight: normal;
+  text-align: left;
+  color: #494949;
+  position: absolute;
+  right: 10rpx;
+  top: 4rpx;
+}
+
+.img-hn-box {
+  width: 82rpx;
+  height: 54rpx;
+}
+
+.img-hn-can {
+  width: 46rpx;
+  height: 66rpx;
+  margin-right: 4rpx;
+}
+
+.img-zm-can {
+  width: 38rpx;
+  height: 98rpx;
+  margin: 0 4rpx;
+}
+
+.prize-item .prize-title {
+  font-weight: 700;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #000000;
+
+}
+
+.prize-item .prize-num {
+  font-size: 58rpx;
+  font-weight: 700;
+  color: #F23E1D;
+  margin: 0 2rpx;
+}
+
+.no-data {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #535353;
+  min-height: 400rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nomore-data {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #535353;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80rpx;
+}
+
+.icon-award-star {
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.table-head-title {
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #000018;
+}
+
+.zhuli-box {
+  margin-left: 170rpx;
+  margin-top: 4rpx;
+  box-sizing: border-box;
+}
+
+.btn-zhuli {
+  width: 130rpx;
+  height: 48rpx;
+}
+
+.img-hn-28th {
+  width: 262rpx;
+  height: 88rpx;
+  position: absolute;
+}
+
+.btn-see-all {
+  /* width: 140rpx;
+  height: 48rpx; */
+  /* background: #f23e1d; */
+  border-radius: 22rpx;
+
+  font-size: 20rpx;
+  font-weight: 700;
+  color: #d12e28;
+}

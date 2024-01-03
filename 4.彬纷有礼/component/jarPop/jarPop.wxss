@@ -1,0 +1,67 @@
+/* component/jarPop/jarPop.wxss */
+.weui-mask, .weui-mask_transparent {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+.weui-mask {
+  background: rgba(0,0,0,.6);
+}
+.pop-container {
+  background-color: unset;
+  margin: 0 auto;
+  position: fixed;
+  z-index: 5000;
+  top: 50%;
+  left: 16px;
+  right: 16px;
+  transform: translateY(-50%);
+  text-align: center;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 90%;
+  height: 380px;
+  width: 286px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.AdPopups{
+  width: 600rpx;
+  height: 800rpx;
+}
+.icon-close {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 1001;
+  text-align: center;
+}
+.icon-close .image {
+  width:70rpx ;
+  height: 425px;
+}
+.click_btn{
+  height: 90rpx;
+  width: 332rpx;
+  /* background-color: rebeccapurple; */
+  position: absolute;
+  bottom:20px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+.pop-content{
+  position: absolute;
+  bottom: 75px;
+  left: 15px;
+  right: 15px;
+  margin: 0 auto;
+}

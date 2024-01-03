@@ -1,0 +1,359 @@
+{
+	"insetLoader": {
+		"config": {
+			"privacy": "<privacy ref='privacy'></privacy>"
+		},
+		"label": ["privacy"],
+		"rootEle": "view"
+	},
+	"pages": [
+		{
+			"path": "pages/tabBar/home/index",
+			"style": {
+				"navigationStyle": "custom",
+				"disableScroll": true
+			}
+		},
+		{
+			"path": "pages/tabBar/love/index",
+			"style": {
+				"navigationBarTitleText": "我的能量",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/tabBar/user/index",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationBarBackgroundColor": "#2B7FDA",
+				"navigationBarTextStyle": "white",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/tabBar/webview/webview",
+			"style": {
+				"navigationBarBackgroundColor": "#2B7FDA",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/tabBar/login/index",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationBarBackgroundColor": "#FEEBD2",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/tabBar/shareCard/index",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom"
+			}
+		}
+	],
+	"subPackages": [
+		{
+			"root": "pages/scanModular/",
+			"name": "scanModular",
+			"pages": [
+				{
+					"path": "index/index",
+					"style": {
+						"navigationBarTitleText": "罐底码信息",
+						"navigationStyle": "custom",
+						"disableScroll": true
+					}
+				},
+				{
+					"path": "details/index",
+					"style": {
+						"navigationBarTitleText": "罐底码信息详情",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "lightScan/index",
+					"style": {
+						"navigationBarTitleText": "lightScan",
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/advertising/",
+			"name": "advertising",
+			"pages": [
+				{
+					"path": "scanTutorBanner",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom",
+						"disableScroll": true
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/love/",
+			"name": "love",
+			"pages": [
+				{
+					"path": "loveDetails/index",
+					"style": {
+						"navigationBarTitleText": "捐能量，助力公益",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"navigationBarTextStyle": "black",
+						"disableScroll": true,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "loveRecord/index",
+					"style": {
+						"navigationBarTitleText": "我的能量",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"navigationBarTextStyle": "black",
+						"disableScroll": true
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/user/",
+			"name": "user",
+			"pages": [
+				{
+					"path": "volunteer/index",
+					"style": {
+						"navigationBarTitleText": "我的公益",
+						"navigationBarBackgroundColor": "#3E8DE2",
+						"navigationBarTextStyle": "white",
+						"disableScroll": true,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "volunteerCard/index",
+					"style": {
+						"navigationBarTitleText": "我的公益证书",
+						"navigationBarBackgroundColor": "#3E8DE2",
+						"navigationBarTextStyle": "white",
+						"disableScroll": true,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "benefitPlan/index",
+					"style": {
+						"navigationBarTitleText": "公益计划",
+						"navigationBarTextStyle": "white",
+						"disableScroll": true,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "achievement/index",
+					"style": {
+						"navigationBarTitleText": "我的成就",
+						"navigationBarTextStyle": "white",
+						"disableScroll": true,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "myTeam/index",
+					"style": {
+						"navigationBarTitleText": "我的团队",
+						"navigationBarBackgroundColor": "#3E8DE2",
+						"navigationBarTextStyle": "white"
+					}
+				},
+				{
+					"path": "teamMange/index",
+					"style": {
+						"navigationBarTitleText": "团队管理",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "medal/index",
+					"style": {
+						"navigationBarTitleText": "勋章",
+						"navigationStyle": "custom",
+						"disableScroll": true
+					}
+				},
+				{
+					"path": "allCities/index",
+					"style": {
+						"navigationBarTitleText": "全部城市",
+						"navigationBarBackgroundColor": "#FCECCD",
+						"navigationBarTextStyle": "black"
+					}
+				},
+				{
+					"path": "lightRecord/index",
+					"style": {
+						"navigationBarTitleText": "点亮记录",
+						"navigationStyle": "custom",
+						"disableScroll": true
+					}
+				},
+				{
+					"path": "rankingList/index",
+					"style": {
+						"navigationBarTitleText": "排行榜",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black"
+					}
+				},
+				{
+					"path": "strategy/index",
+					"style": {
+						"navigationBarTitleText": "帮助中心",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black"
+					}
+				},
+				{
+					"path": "service/service",
+					"style": {
+						"navigationBarTitleText": "客服中心",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black"
+					}
+				},
+				{
+					"path": "aboutUs/index",
+					"style": {
+						"navigationBarTitleText": "关于我们",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black"
+					}
+				},
+				{
+					"path": "currentlyLit/index",
+					"style": {
+						"navigationBarTitleText": "解锁勋章",
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/game/",
+			"name": "game",
+			"pages": [
+				{
+					"path": "askAnswer/index",
+					"style": {
+						"navigationBarTitleText": "问答游戏",
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/originalScan/",
+			"name": "originalScan",
+			"pages": [
+				{
+					"path": "scan/scan",
+					"style": {
+						"navigationBarTitleText": "红牛扫码验证",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "cmScanResult/scanResult",
+					"style": {
+						"navigationBarTitleText": "彩膜扫码",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "gdScanResult/scanResult",
+					"style": {
+						"navigationBarTitleText": "罐底扫码",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "scanError/scanError",
+					"style": {
+						"navigationBarTitleText": "异常详情",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/rankBoard/",
+			"name": "rankBoard",
+			"pages": [
+				{
+					"path": "index",
+					"style": {
+						"navigationBarTitleText": "榜单",
+						"disableScroll": true
+					}
+				}
+			]
+		}
+	],
+	"preloadRule": {
+		"pages/tabBar/home/index": {
+			"network": "all",
+			"packages": [
+				"love",
+				"user",
+				"rankBoard",
+				"game",
+				"scanModular"
+			]
+		}
+	},
+	// "tabBar": {
+	// 	"custom":true,
+	// 	"selectedColor": "#000000",
+	// 	"backgroundColor": "#000000",
+	// 	"list": [{
+	// 			"pagePath": "pages/tabBar/home/index"
+	// 		},
+	// 		{
+	// 			"pagePath": "pages/tabBar/user/index"
+	// 		}
+	// 	]
+	// },
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "点亮中国",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"usingComponents": {
+			"van-tab": "/wxcomponents/vant/tab/index",
+			"van-tabs": "/wxcomponents/vant/tabs/index",
+			"van-sticky": "/wxcomponents/vant/sticky/index",
+			"van-icon": "/wxcomponents/vant/icon/index",
+			"van-popup": "/wxcomponents/vant/popup/index",
+			"van-button": "/wxcomponents/vant/button/index",
+			"van-share-sheet": "/wxcomponents/vant/share-sheet/index",
+			"van-switch": "/wxcomponents/vant/switch/index",
+			"van-dialog": "/wxcomponents/vant/dialog/index",
+			"van-toast": "/wxcomponents/vant/toast/index",
+			"van-image": "/wxcomponents/vant/image/index",
+			"van-loading": "/wxcomponents/vant/loading/index",
+			"van-field": "/wxcomponents/vant/field/index",
+			"van-collapse": "/wxcomponents/vant/collapse/index",
+			"van-collapse-item": "/wxcomponents/vant/collapse-item/index",
+			"van-cell": "/wxcomponents/vant/cell/index",
+			"van-checkbox": "/wxcomponents/vant/checkbox/index",
+			"painter": "/wxcomponents/Kujiale-Mobile-painter/painter",
+			"van-overlay": "/wxcomponents/vant/overlay/index"
+		}
+	}
+}

@@ -1,0 +1,98 @@
+<!--pages/storeAllowance/clerkHelp/index.wxml-->
+<top-navbar iconTheme="{{iconTheme}}" title="{{title}}" backgroundColor="{{background}}" bindback="onBeforeBack"></top-navbar>
+
+<!-- 渐变背景 -->
+<view class="gradient-box" style="top:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;"></view>
+<view class="box">
+  <view class="stick-box" style="top:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight+20:'100'}}px;">
+    <!-- 可用现金券 -->
+    <view class="head-box" style="background-image: url({{bg_cash_help}});">
+      <view class="title-box align-center justify-between">
+        <view class="title align-center">
+          <text>*现金券已发放至店铺“掌柜-可用现金券”</text>
+          <!-- <view class="icon-info-box" bindtap="showRule">
+            <van-icon name="info-o" size="26rpx" />
+          </view> -->
+        </view>
+        <!-- <view class="btn-refresh align-center" bindtap="refresh">
+          <image class="icon-refresh" mode="aspectFit" src="{{icon_refresh}}"></image>
+          <text>刷新</text>
+        </view> -->
+      </view>
+      <view class="zl-box">
+        <view class="zl-total">￥<text class="zl-num">{{total.total}}</text></view>
+        <view class="zl-title">助力现金券</view>
+      </view>
+      <view class="help-time-box">助力次数(次)：<text class="font28">{{total.zl_hx_box_num+total.zl_zm_box_num}}</text></view>
+    </view>
+
+    <!-- 筛选时间-->
+    <view class="filter-box align-center justify-between">
+      <view class="align-center" bindtap="openCalendar">
+        <image class="icon-date" mode="aspectFit" src="{{icon_date}}"></image>
+        <block wx:if="{{selectDateRange}}">
+          <text>{{selectDateRange}}</text>
+        </block>
+        <block wx:else>
+          <text>筛选时间</text>
+        </block>
+      </view>
+
+    </view>
+  </view>
+  <!-- 现金券列表 -->
+  <view class="list-box">
+    <block wx:if="{{list.length}}">
+      <van-cell-group border="{{false}}">
+        <block wx:for="{{list}}" wx:key="index" wx:for-item="item">
+          <van-cell border="{{false}}" title-class="minWidth400" value="+{{item.money}}" value-class="text-green">
+            <view slot="title">
+              <view class="van-cell-text">
+                <text>{{item.title}}</text>
+              </view>
+              <view class="van-cell-text color-grey">
+                <text>扫码人：自己</text>
+
+                <!-- <block wx:if="{{userdata.id == item.uid}}">自己</block>
+                <block wx:else>其他人(UID{{item.uid}})</block> -->
+              </view>
+              <view class="van-cell-text color-grey">日期：{{item.create_time}}</view>
+            </view>
+          </van-cell>
+        </block>
+        <block wx:if="{{nomore}}">
+          <view class="nomore">~没有更多记录了~</view>
+        </block>
+      </van-cell-group>
+    </block>
+    <block wx:else="">
+      <van-empty description="" image="{{img_no_record}}">
+      </van-empty>
+    </block>
+  </view>
+</view>
+<!-- 规则说明 -->
+<van-dialog use-slot show="{{ showDialog }}" bind:close="onClose" confirmButtonText="知道了">
+  <view class="dialog-title">现金券规则</view>
+  <view class="dialog-content">1.适用平台 : 彬纷有礼小程序 / APP</view>
+  <view class="dialog-content">2.使用条件：仅用于业务员代订购商品，可抵扣相应的货款</view>
+  <view class="dialog-content">3.订单取消，现金券将退回至【我的-可用现金券】</view>
+  <view class="dialog-content">4.如有任何问题，请咨询平台客服电话:4008-7070-76</view>
+</van-dialog>
+<!-- 日历 -->
+<van-calendar min-date="{{ minDate }}" allow-same-day show="{{ calendarShow }}" type="range" bind:close="onClose" bind:confirm="chooseDate" />
+<!-- 类型选择 -->
+
+
+<!-- 图标位置 -->
+<van-popup show="{{ typeSheetShow }}" closeable round close-icon-position="top-left" position="bottom" bind:close="onClose">
+  <view class="sheet-title">类型选择</view>
+  <view class="type-box ">
+    <view wx:for="{{typeArr}}" wx:key="key" class="item " bindtap="chooseType" data-name="{{item.name}}" data-status="{{item.status}}">
+      <image class="type-icon" mode="aspectFit" src="{{item.icon}}"></image>
+      <text>{{item.name}}</text>
+    </view>
+    <view class="item item-placeholder">占位1</view>
+    <view class="item item-placeholder">占位2</view>
+  </view>
+</van-popup>

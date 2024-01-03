@@ -1,0 +1,14 @@
+{
+  "usingComponents": {
+    "scroller": "coolui-scroller/scroller/index",
+    "item": "coolui-scroller/item/index",
+    "refresh": "coolui-scroller/refresh/index",
+    "loadmore": "coolui-scroller/loadmore/index",
+    "empty": "coolui-scroller/empty/index",
+    "van-icon": "@vant/weapp/icon/index"
+  },
+  "enablePullDownRefresh":false,
+  "navigationBarTitleText": "",
+  "disableScroll": true
+
+}

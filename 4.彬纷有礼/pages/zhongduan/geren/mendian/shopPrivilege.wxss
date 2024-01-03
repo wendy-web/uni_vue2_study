@@ -1,0 +1,129 @@
+/* pages/zhongduan/geren/mendian/shopPriv.wxss */
+page {
+  padding: 30px 24rpx 42rpx 24rpx;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.box {
+  background-color: #d30303;
+  border-radius: 10rpx;
+  height: 100%;
+  padding-top: 8px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.box .box-bg {
+  border-radius: 10rpx;
+  box-sizing: border-box;
+  height: 218px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  margin: 0 5px;
+  /* margin: 0 10rpx; */
+}
+
+.box .box-head {
+  padding: 30px 20rpx 0 20rpx;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: 43% 71%;
+  background-position-x: 5%;
+  background-position-y: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  color: #333;
+  font-size: 28rpx;
+}
+
+.box .box-head .box-avatar {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 50%;
+  border: 2rpx solid #fee9d4;
+  margin-bottom: 24rpx;
+}
+
+.box .box-head .box-id {
+  margin-top: 5px;
+}
+
+.box .box-list-position {
+  background-repeat: no-repeat;
+  /* background-size: 101% 100%; */
+  background-size:100% 100%;
+  background-position: bottom;
+  position: absolute;
+  left: -11px;
+  right: -11px;
+  bottom: -14px;
+}
+
+.box .box-list {
+  position: relative;
+  /* margin-top: 40rpx; */
+  top: 12%;
+}
+
+.box .box-star {
+  width: 104rpx;
+  height: 25rpx;
+}
+
+.box .box-star-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box .box-star-title {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #333;
+  margin: 0 24rpx;
+}
+.box .box-line{
+  height: 62rpx;
+}
+.box .box-lines{
+  background-repeat: no-repeat;
+  background-size: 124% 100%;
+  background-position: bottom;
+  height: 31px;
+  box-sizing: border-box;
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  top: 15px;
+}
+.box .box-list-item{
+  color: #707070;
+  font-size: 28rpx;
+  display: flex;
+  justify-content: space-between;
+  /* flex-direction: row; */
+  flex-wrap: wrap;
+  margin: 60rpx 0rpx;
+}
+.box .box-list-item .box-list-item-icon{
+  width: 152rpx;
+  height: 152rpx;
+}
+.box .box-list-item .list-item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  margin-bottom: 66rpx;
+}
+.box .greyImg{
+  filter: grayscale(100%);
+  filter: grey;
+}

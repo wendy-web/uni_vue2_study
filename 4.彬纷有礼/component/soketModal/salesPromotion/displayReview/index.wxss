@@ -1,0 +1,63 @@
+/* pages/tabBar/geren/salesPromotion/displayReview/index.wxss */
+.display-review-box{
+  width: 600rpx;
+  height: 460rpx;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.display-review-title{
+  font-size: 36rpx;
+  font-weight: 400;
+  text-align: center;
+  color: #000000;
+  padding-top: 80rpx;
+  padding-bottom: 40rpx;
+}
+
+.display-review-tips{
+  font-size: 32rpx;
+  font-weight: 400;
+  color: #a3a2a8;
+  padding: 0 40rpx;
+}
+
+.display-review-box .tools{
+  display: flex;
+  justify-content:space-between;
+  padding: 0 20rpx;
+  position: absolute;
+  left: 0;
+  bottom: 40rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+.display-review-box .tools-btn{
+  width: 240rpx;
+  height: 80rpx;
+  border-radius: 20px;
+  text-align: center;
+  line-height: 80rpx;
+}
+
+.display-review-box .tools-btn.info{
+  font-size: 32rpx;
+  font-weight: 400;
+  color: #636266;
+  border: 1rpx solid #636266;
+
+}
+.display-review-box .tools-btn.sign{
+  font-size: 32rpx;
+  font-weight: 400;
+  color: #ffffff;
+  background-color: #E3001B;
+  border: 1rpx solid #E3001B;
+}
+
+.display-review-close{
+  text-align: center;
+  margin-top: 30rpx;
+}

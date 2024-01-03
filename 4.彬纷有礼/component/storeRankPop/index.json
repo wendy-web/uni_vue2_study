@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "background":"./background/index",
+    "unbox-background":"./unboxBackground/index",
+    "szExc-background":"./szExcbackground/index",
+    "van-count-down": "@vant/weapp/count-down/index"
+  }
+}

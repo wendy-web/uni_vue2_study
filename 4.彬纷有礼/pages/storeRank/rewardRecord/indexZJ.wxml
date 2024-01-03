@@ -1,0 +1,202 @@
+<!--pages/storeRank//rewardRecord.wxml-->
+<top-navbar title="奖励记录" bgImg="{{lanternImg}}" iconTheme="white" backgroundColor="unset" bindback="onBeforeBack" searchBar="" bindsearch='search'>
+</top-navbar>
+<view class="container" style="--navBarHeight:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;">
+  <!-- 背景图 -->
+  <image class="bg-record" src="{{img_cos_url}}/recordBg.png" />
+  <view class="content">
+    <view class="list-head">
+      <view class="flex_3">活动期数</view>
+      <view class="flex_2">排名</view>
+      <view class="flex_3">兑奖人数</view>
+      <view class="flex_2">奖品</view>
+      <view class="flex_2">状态</view>
+    </view>
+    <view class="list">
+      <block wx:if="{{rewardList&&rewardList.length>0}}">
+        <scroll-view class="scroll" scroll-y scroll-top enable-flex refresher-enabled="{{true}}" refresher-triggered="{{refreshed}}" bindrefresherrefresh="refresh" bindscrolltolower="loadMore">
+          <block wx:for="{{rewardList}}" wx:key="key">
+            <!-- 5 逾期未领取 -->
+            <block wx:if="{{item.status == 5}}">
+              <view class="list-item">
+                <view class="flex_3">{{item.title||'-'}}</view>
+                <view class="flex_2">{{item.rank || '-'}}</view>
+                <view class="flex_3">{{item.uid_num||'-'}}</view>
+                <block wx:if="{{item.prize_num}}">
+                  <view class="flex_2">红牛{{item.prize_num}}箱</view>
+                </block>
+                <block wx:else>
+                  <view class="flex_2">-</view>
+                </block>
+                <view class=" flex_2 yuqiweiling">逾期未领</view>
+              </view>
+            </block>
+            <!-- 6 待领取 -->
+            <block wx:if="{{item.status == 6}}">
+              <view class="list-item">
+                <view class="flex_3">{{item.title||'-'}}</view>
+                <view class="flex_2">{{item.rank || '-'}}</view>
+                <view class="flex_3">{{item.uid_num||'-'}}</view>
+                <block wx:if="{{item.prize_num}}">
+                  <view class="flex_2">红牛{{item.prize_num}}箱</view>
+                </block>
+                <block wx:else>
+                  <view class="flex_2">-</view>
+                </block>
+                <view class="flex_2 dailingqu" bindtap="jumpTo">待领取</view>
+              </view>
+            </block>
+            <!-- 2待收货 -->
+            <block wx:if="{{item.status == 2}}">
+              <view class="list-item">
+                <view class="flex_3">{{item.title||'-'}}</view>
+                <view class="flex_2">{{item.rank || '-'}}</view>
+                <view class="flex_3">{{item.uid_num||'-'}}</view>
+                <block wx:if="{{item.prize_num}}">
+                  <view class="flex_2">红牛{{item.prize_num}}箱</view>
+                </block>
+                <block wx:else>
+                  <view class="flex_2">-</view>
+                </block>
+                <view class="color-orange flex_2 daishouhuo">待收货</view>
+              </view>
+            </block>
+            <!-- 3已收货 -->
+            <block wx:if="{{item.status == 3}}">
+              <view class="kind-list-item borderBottom">
+                <view id="{{item.id}}" class="kind-list-item-hd {{item.open ? 'kind-list-item-hd-show' : ''}}" bindtap="{{item.a_time?'kindToggle':''}}">
+                  <view class="flex-row space-around  color-brown text-center">
+                    <view class="flex_3">{{item.title||'-'}}</view>
+                    <view class="flex_2">{{item.rank || '-'}}</view>
+                    <view class="flex_3">{{item.uid_num}}</view>
+                    <view class="flex_2">红牛{{item.prize_num}}箱</view>
+
+                    <block wx:if="{{item.a_time}}">
+                      <view class="positionRelative flex_2 yishouhuo">
+                        <view class="yishouhuo-titile">已收货</view>
+                        <image class="yishouhuo-arrow-right {{item.open?'iconarrow-active':''}}" mode="aspectFit" src="{{img_cos_url}}/arrow_right.png"></image>
+                        <!-- <text class="text iconfont iconarrow {{item.open?'iconarrow-active':''}}"></text> -->
+                      </view>
+                    </block>
+                    <block wx:else>
+                      <view class="color-orange flex_2">待收货</view>
+                    </block>
+                  </view>
+                </view>
+                <view class="kind-list-item-bd {{item.open ? 'kind-list-item-bd-show' : ''}}">
+                  <view class="navigator-box color-red {{item.open ? 'navigator-box-show' : ''}} font20">
+                    <view>
+                      <text class="colorBrown">奖品数量：</text>
+                      <text>{{item.prize_num}}箱</text>
+                    </view>
+                    <view>
+                      <text class="colorBrown">奖品名称：</text>
+                      <text>{{item.title_name}}</text>
+                    </view>
+                    <view>
+                      <text class="colorBrown">配送人员：</text>
+                      <text>{{item.a_psy||''}}</text>
+                      <text>{{item.a_psydh || ''}}</text>
+                    </view>
+                    <view>
+                      <block wx:if="{{userInfo.id == item.cnee_uid}}">
+                        <text class="colorBrown">收货人员：</text>
+                        <text>{{item.cnee_name}}</text>
+                      </block>
+                      <block wx:else>
+                        <text class="colorBrown">收货人员：</text>
+                        <text>{{item.cnee_name}}</text>
+                      </block>
+                    </view>
+                    <view>
+                      <text class="colorBrown">收货时间：</text>
+                      <text>{{item.a_time ||''}}</text>
+                    </view>
+
+                  </view>
+                </view>
+              </view>
+            </block>
+          </block>
+
+          <view class="text-center noMore">~暂无更多记录~</view>
+          <view class="weui-loadmore" wx:if="{{loadMore}}">
+            <i class="weui-loading"></i>
+            <text class="weui-loadmore__tips">正在加载</text>
+          </view>
+          <view class="weui-loadmore weui-loadmore_line" wx:if="{{noMore}}">
+            <text class="weui-loadmore__tips">没有更多了</text>
+          </view>
+        </scroll-view>
+      </block>
+      <block wx:else>
+        <scroll-view class="scroll" scroll-y scroll-top enable-flex refresher-enabled="{{true}}" refresher-triggered="{{refreshed}}" bindrefresherrefresh="refresh" bindscrolltolower="loadMore">
+          <!-- 活动信息 -->
+          <block wx:if="{{rankInfo}}">
+            <view class="list-item" wx:if="{{rankInfo&&rankInfo.status!='已配送'}}">
+              <view class="flex_3">{{rankInfo.issue_title||'-'}}</view>
+              <view class="flex_2">{{rankInfo.rank || '-'}}</view>
+              <view class="flex_3">{{rankInfo.uid_num||'-'}}</view>
+              <block wx:if="{{rankInfo.prize_msg}}">
+                <view class="flex_2">红牛{{rankInfo.prize_msg}}</view>
+              </block>
+              <block wx:else>
+                <view class="flex_2">-</view>
+              </block>
+              <view class="flex_2 dailingqu" bindtap="jumpTo" wx:if="{{rankInfo.status=='待领取'}}">待领取</view>
+              <view class="flex_2 dailingqu" wx:else>{{rankInfo.status}}</view>
+            </view>
+            <!-- 已配送 -->
+            <block wx:else>
+              <view class="kind-list-item borderBottom">
+                <view id="{{rankInfo.id}}" class="kind-list-item-hd {{rankInfo.open ? 'kind-list-item-hd-show' : ''}}" bindtap="kindToggle">
+                  <view class="flex-row space-around  color-brown text-center">
+                    <view class="flex_3">{{rankInfo.issue_title||'-'}}</view>
+                    <view class="flex_2">{{rankInfo.rank || '-'}}</view>
+                    <view class="flex_3">{{rankInfo.uid_num}}</view>
+                    <view class="flex_2">红牛{{rankInfo.prize_msg}}</view>
+
+                    <view class="positionRelative flex_2 yishouhuo">
+                      <view class="yishouhuo-titile">已配送</view>
+                      <image class="yishouhuo-arrow-right {{rankInfo.open?'iconarrow-active':''}}" mode="aspectFit" src="{{img_cos_url}}/arrow_right.png"></image>
+                    </view>
+                  </view>
+                </view>
+                <view class="kind-list-item-bd {{rankInfo.open ? 'kind-list-item-bd-show' : ''}}">
+                  <view class="navigator-box color-red {{rankInfo.open ? 'navigator-box-show' : ''}} font20">
+                    <view>
+                      <text class="colorBrown">奖品：</text>
+                      <text>红牛{{rankInfo.prize_msg}}</text>
+                    </view>
+
+                    <view wx:if="{{rankInfo.a_psy}}">
+                      <text class="colorBrown">配送人员：</text>
+                      <text>{{rankInfo.a_psy}}</text>
+                      <text wx:if="{{rankInfo.a_psydh}}">{{rankInfo.a_psydh}}</text>
+                    </view>
+                    <view wx:if="{{rankInfo.cnee_name}}">
+                      <text class="colorBrown">收货人员：</text>
+                      <text>{{rankInfo.cnee_name}}</text>
+                    </view>
+                    <view wx:if="{{rankInfo.a_time}}">
+                      <text class="colorBrown">收货时间：</text>
+                      <text>{{rankInfo.a_time}}</text>
+                    </view>
+
+                  </view>
+                </view>
+              </view>
+            </block>
+          </block>
+          <!-- 活动信息 -->
+          <view class="text-center noMore mini-height">~暂无更多记录~</view>
+
+        </scroll-view>
+
+
+
+      </block>
+
+    </view>
+  </view>
+</view>

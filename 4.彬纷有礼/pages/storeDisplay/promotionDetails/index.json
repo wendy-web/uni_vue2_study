@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "店铺促销任务列表",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "show-goods-modal":"../component/showGoodsModal/index"
+  }
+}

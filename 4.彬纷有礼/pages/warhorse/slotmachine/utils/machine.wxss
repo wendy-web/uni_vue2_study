@@ -1,0 +1,46 @@
+.machine_wp {
+  display: flex;
+  width: 100%;
+  margin: 0px 60rpx;
+  justify-content: space-around;
+  height: 83%;
+  align-items: center;
+}
+
+.machine_wp .machine_item_wp {
+  width: 85px;
+  height: 142px;
+  /* height: 117px; */
+  position: relative;
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.machine_item_wp image {
+  width: 109rpx;
+  height: 141rpx;
+}
+
+.machine_wp .machine_item_wp:last-child {
+  margin-right: 0;
+}
+
+.machine_wp .machine_item_wp .machine_item_slide {
+  position: absolute;
+  width: 85px;
+  height: 148px;
+  top: 0;
+  left: 0;
+}
+
+.machine_wp .machine_item_wp .machine_item_ele {
+  width: 85px;
+  height: 148px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}

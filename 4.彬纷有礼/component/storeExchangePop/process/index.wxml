@@ -1,0 +1,52 @@
+<!--component/storeExchangePop/process/index.wxml-->
+<view class="process-box">
+  <!-- 兑奖信息 -->
+  <view class="exc-info-box">
+    <!-- 活动预热、结束时候显示已活动券数 -->
+    <view wx:if="{{actInfo.act_state.act_yure}}">
+
+      当前已获得<text class="color-red">{{actInfo.total_coupons}}</text>张活动奖券
+    </view>
+    <view wx:if="{{actInfo.act_state.act_end}}">
+      已获得<text class="color-red">{{actInfo.total_coupons}}</text>张活动奖券
+    </view>
+    <block wx:if="{{actInfo.act_state.act_ing}}">
+      <view>
+        当前已获得<text class="color-red">{{actInfo.total_coupons}}</text>张活动奖券
+      </view>
+      <view wx:if="{{excPrizeInfo.nextLevelCoupon}}">
+        再兑<text class="color-green">{{excPrizeInfo.nextLevelExchange}}</text>人，即可获得<text class="color-red">{{excPrizeInfo.nextLevelCoupon}}</text>张活动奖券
+      </view>
+    </block>
+  </view>
+  <!-- 兑奖进度 -->
+  <view class="exc-process">
+    <!-- 左侧：当前兑奖人数 -->
+    <view class="current-exc-box">
+      <view class="color-green">{{actInfo.kpi_num}}</view>
+      <view>当前</view>
+      <view>兑奖人数</view>
+    </view>
+    <!-- 右侧：奖励进度条 -->
+    <view class="prize-bar-box">
+      <view wx:for="{{prizeConfig}}" class="prize-item {{excPrizeInfo.level > index ? 'prize-item-active' :''}}" wx:key="index">
+        <!-- 小进度bar -->
+        <view class="coupon-bar {{index==0?'coupon-bar-first':''}} "></view>
+        <view class="coupon-box">
+          <view class=" coupon-num-box {{(excPrizeInfo.level > index+1) ? 'coupon-num-box-invisible' :''}}">
+            <text class="coupon-num">{{item.hn_coupon+item.zm_coupon}}</text>
+            <text>张</text>
+          </view>
+          <!-- 卡券图标 -->
+          <image class="icon-coupon" src="./static/{{(excPrizeInfo.level >= index+1) ? 'icon_coupon' :'icon_coupon_grey'}}.png" mode="aspectFit" />
+          <!-- 奖励区间最新值 -->
+          <view class="prize-min-box">
+            <text class="prize-min-num">{{item.min}}</text>
+            <text>人</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

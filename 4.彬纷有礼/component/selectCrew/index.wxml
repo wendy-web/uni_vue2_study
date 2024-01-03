@@ -1,0 +1,51 @@
+<!--component/selectCrew/index.wxml-->
+<!-- 底部弹出层(人员选择) -->
+<mp-halfScreenDialog bindbuttontap="buttontap" show="{{showTypePop}}" maskClosable="{{true}}" title="" subTitle=""
+  desc="" tips="" buttons="">
+
+  <view slot="title">
+    请选择
+  </view>
+  <view slot="desc" class="scrollHeight">
+    <!-- 全部，店员 -->
+    <view class="weui-flex flex_warp">
+      <view class="weui-flex__item" data-uid='0' bindtap="chooseCrew">
+        <view class="iconSize placeholder">
+          <view class="box">
+            <image class="img" src="{{icon_alls}}" alt></image>
+          </view>
+          <view class="box">全部</view>
+        </view>
+      </view>
+      <view wx:if="{{boss.uid}}" class="weui-flex__item" data-uid='{{boss.uid}}' bindtap="chooseCrew">
+        <view class="iconSize placeholder">
+          <view class="box">
+            <image class="img" src="{{boss.avatar_url}}" alt></image>
+          </view>
+          <view class="weui-grid__label box">{{boss.nick_name}}</view>
+        </view>
+      </view>
+      <!-- 店员信息 -->
+      <block wx:for="{{crew}}" wx:key="key">
+        <view class="weui-flex__item {{index>=2 || boss&&index>=1 ? 'mgt50' : ''}}" data-uid='{{item.uid}}'
+          bindtap="chooseCrew">
+          <view class="iconSize placeholder">
+            <view class="box">
+              <block wx:if="{{item.loaded}}">
+                <image mode="aspectFit" class="img animation-fade" lazy-load="{{true}}" src="{{item.avatar_url}}"></image>
+              </block>
+              <block wx:else>
+                <image mode="aspectFit" class="img" lazy-load="{{true}}" src="{{dydf}}">
+                </image>
+              </block>
+
+            </view>
+            <view class="weui-grid__label box">{{item.shop_note?item.shop_note:item.nick_name}}</view>
+          </view>
+        </view>
+
+      </block>
+
+    </view>
+  </view>
+</mp-halfScreenDialog>

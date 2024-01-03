@@ -1,0 +1,225 @@
+<block wx:if="{{pageReady}}">
+	<view class="page {{cashNotice || guideMask ? 'preventTouchMove':''}}">
+		<!-- 到账微信 -->
+		<view class="weui-flex">
+			<view class="weui-flex__item flex-center" style="margin-right:-50rpx;">
+				<view>
+					<text class="font32">到账微信：</text>
+				</view>
+				<view class="flex-center">
+					<image class="avatar" src="{{cashInfo.avatar_url}}"></image>
+					<text class="name"> {{cashInfo.nick_name||''}}</text>
+				</view>
+			</view>
+			<view class="flex-center" style="justify-content:flex-end;">
+				<view bindtap="cashNotice">
+					<button class="font32 tixianBtn flex-center">提现须知 <icon class="icon-box-img" type="warn" size="15"
+							color="#E02020"></icon></button>
+				</view>
+			</view>
+		</view>
+		<!-- 提现金额 -->
+		<view class="weui-flex mgt100">
+			<h4><strong>提现金额（元）</strong></h4>
+		</view>
+		<view class="weui-flex mgt30">
+			<view class="weui-flex__item">
+				<view class="weui-cell weui-cell_vcode">
+					<view class="weui-cell__hd width40">
+						<view class="weui-label">¥</view>
+					</view>
+					<view class="weui-cell__bd" style="display:flex;">
+						<input class="weui-input cash" focus="{{inputFocus}}" placeholder="0" type="digit" value="{{value}}"
+							bindinput="onInput" />
+						<!-- <input class="weui-input cash"  focus="{{inputFocus}}" placeholder="0" type="number"   value="{{value}}" bindinput="onInput" /> -->
+						<view wx:if="{{showClearBtn}}" class="weui-btn_reset weui-btn_icon weui-btn_input-clear" bindtap="onClear">
+							<i class="weui-icon-clear" style="width:54rpx;"></i>
+						</view>
+					</view>
+					<view class="lineBox"></view>
+					<view class="weui-cell__ft" bindtap="all">
+						<view class="weui-vcode-btn">全部提现</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- Tips -->
+		<view class="weui-flex mgt30">
+			<view class="weui-flex__item tips">
+				<text>当前可提现余额：<text class="redText"> {{cashInfo.sum||0}} </text>元</text>
+			</view>
+		</view>
+		<view class="weui-flex mgt20">
+			<view class="weui-flex__item tips">
+				<text>每日可提现<text class="redText">{{cashInfo.pay_num||0}}</text><text>次（当前剩余提现次数<text
+							class="redText">{{cashInfo.num||0}}</text>）,</text></text><text>每日最高可提现额度<text
+						class="redText">≤{{cashInfo.pay_max||0}}</text>元</text>
+			</view>
+		</view>
+		<!-- 提现 -->
+		<view class="weui-flex">
+			<view class="weui-flex__item">
+				<!-- <button class="redBtn" bindopensetting="onOpenSetting" bindtap="checkTixian">确认提现</button> -->
+        <!-- 有手机号的情况 -->
+        <block wx:if="{{userInfo.mobile}}">
+				  <button class="redBtn" bindtap="getMoney">确认提现</button>
+        </block>
+        <block wx:else>
+				  <button wx:if="{{supportGetPhoneCode}}" class="redBtn" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">确认提现</button>
+				  <button wx:else class="redBtn" bind:tap="beforeWithdraw">确认提现</button>
+        </block>
+			</view>
+		</view>
+	</view>
+	<!-- 提现须知弹窗 -->
+	<view class="fadeIn" wx:if="{{cashNotice}}">
+		<view class="weui-mask"></view>
+		<view class="weui-dialog">
+			<view class="weui-dialog__hd"><strong class="weui-dialog__title">提现须知</strong></view>
+			<view class="weui-dialog__bd" style="color:#888888;font-size:32rpx;">
+
+				<text class="text-indent">提现通常会在2小时之内到账，但您理解并同意如遇双休日、节假日或提现高峰期，提现到账时长可能会延迟，请您耐心等待。</text>
+
+
+				<text class="text-indent">如48小时内未到账，请联系在线客服或拨打热线电话咨询。</text>
+
+				<text> <text class="redStar">*</text>提现需完成认证手机号避免未实名认证无法及时到账。</text>
+
+				<!-- <text><text class="redStar">*</text>提现时，需确认绑定的银行卡是否可正常使用。</text> -->
+
+				<text><text class="redStar">*</text>禁止通过不诚实手段获取红包，违规者禁止提现！</text>
+
+				<text><text class="redStar">*</text>如该个人微信号日常使用频率较低，系统会极大概率判定为作弊导致提现失败（注意：多使用该个人微信）。</text>
+
+				<text><text class="redStar">*</text>显示“提现成功”但没到账，高峰期微信提现人数较多导致网络拥堵，请耐心等待！</text>
+
+			</view>
+
+			<view class="weui-flex">
+				<view class="weui-flex__item">
+					<a bindtap="iKnow" data-pop="1" class="weui-btn weui-btn_mini redbtn ">知道了</a>
+				</view>
+
+			</view>
+			<view class="weui-flex" style="margin: 50rpx 0 30rpx 0;">
+				<checkbox-group bindchange="checkBox">
+					<view class="weui-flex__item">
+						<label class="weui-agree">
+							<checkbox class="weui-agree__checkbox-check" value="1" checked="{{checked}}" />
+							<span class="weui-agree__checkbox"></span>
+							<span class="weui-agree__text">我已经阅读，不再提示！</span>
+						</label>
+
+					</view>
+				</checkbox-group>
+			</view>
+
+		</view>
+	</view>
+	<!-- 提现申请成功/失败 -->
+	<view class="fadeIn" wx:if="{{Msg&&txInfo.code=='0'}}">
+		<view class="weui-mask"></view>
+		<view class="weui-dialog">
+			<view class="weui-dialog__hd" style="padding-bottom:0px;">
+				<block wx:if="{{txInfo.code=='0'}}">
+					<image mode="aspectFit" class="sad" src="{{txFail}}">提现失败</image>
+				</block>
+				<block wx:else>
+					<view class="successBox">
+						<image mode="aspectFit" class="sad" src="{{txSuccess}}">提现成功</image>
+					</view>
+				</block>
+			</view>
+			<view class="weui-dialog__hd" style="padding-top:0px;"><strong
+					class="weui-dialog__title">{{txInfo.code=='0'?'提现失败':'提现成功'}}</strong></view>
+			<view class="weui-dialog__bd " style="color:#888888;font-size:32rpx;padding-top:0px;">
+				<text style="text-align:center;">{{txInfo.msg}}</text>
+			</view>
+
+			<view class="weui-flex" style="padding-bottom:50rpx;">
+				<view class="weui-flex__item">
+					<a bindtap="iKnow" data-pop="2" class="weui-btn weui-btn_mini redbtn ">我知道了</a>
+				</view>
+			</view>
+		</view>
+	</view>
+	<!-- 提示完善店铺信息 -->
+	<!-- <view class="fadeIn" wx:if="{{storeInfo}}">
+		<view class="weui-mask"></view>
+		<view class="weui-dialog">
+			<view class="weui-dialog__hd">
+				<view>
+					<image class="completeImg" mode="aspectFit" src="{{storePop}}"></image>
+				</view>
+				<view>
+					<strong class="weui-dialog__title">完善店铺信息</strong>
+				</view>
+			</view>
+			<view class="weui-dialog__bd" style="color:#888888;font-size:32rpx;">
+				<text class="text-indent">您提现已达一定次数，为确保您的账户安全，需完善您的店铺信息。</text>
+			</view>
+
+			<view class="weui-flex">
+				<view class="weui-flex__item">
+					<navigator url="/pages/zhongduan/geren/mendian/renzhen/index">
+						<a bindtap="iKnow" data-pop="3" class="weui-btn weui-btn_mini redbtn ">去完善信息</a>
+					</navigator>
+				</view>
+
+			</view>
+			<view class="weui-flex">
+				<view class="weui-flex__item" style="margin-top:20rpx;">
+					<text color="#888888" bindtap="iKnow" data-pop="3" data-close="">暂不完善</text>
+				</view>
+			</view>
+			<view class="weui-flex" style="margin: 10rpx 0 30rpx 0;">
+				<view class="weui-flex__item">
+					<text class="shoptip">*信息仅用于身份验证，彬纷有礼保障您的信息安全</text>
+				</view>
+			</view>
+
+		</view>
+	</view> -->
+</block>
+<!-- 引导提现guide3 -->
+<view class="fadeIn guideMask " wx:if="{{guideMask}}">
+	<view class="weui-mask " bindtap="closeGuide">
+		<image mode="widthFix" style="width:{{sysWidth}}px;height:{{sysHeight}}px;"
+			src="../../../../../assets/emoji/guide3_2.png"></image>
+	</view>
+	<!-- <view class="weui-dialog guide3" >
+		<view class="weui-dialog__bd">
+		</view>
+	</view> -->
+</view>
+<!-- 提现4次弹窗 -->
+<view class="fadeIn" wx:if="{{txsPop}}">
+	<view class="weui-mask"></view>
+	<!-- <view class="weui-dialog" style="max-height:55%;height:100%">
+		<view class="mglr40 popBG"></view> -->
+	<view class="weui-dialog h-pop">
+		<view class="mg-pop">
+			<image mode="aspectFit" bindload="imgLoaded" src="{{txsBg}}"></image>
+		</view>
+		<view class="flex-end" style="justify-content:center;">
+			<image mode="acspectFit" class="cpPopbtn mgr20" src="{{txsPopBtl}}" bindtap="close"></image>
+			<image mode="acspectFit" class="cpPopbtn mgl20" bindload="imgLoaded" bindtap="wtachAd" src="{{txsPopBtr}}">
+			</image>
+		</view>
+	</view>
+</view>
+<!-- 红牛25周年弹窗 -->
+<AdPopups show="{{adShow}}" popImg="{{popImg}}" openType="switch" pagePath="/pages/tabBar/shouye/index"></AdPopups>
+<!-- jarPop -->
+<jarPop show="{{storeInfo}}" pagePath="/pages/zhongduan/geren/mendian/renzhen/index" bgImg="{{jarPop_bgImg}}">
+	<view class="shopPop-msg">您提现已达一定次数，为确保您的账户安全，需完善您的店铺信息。</view>
+	<view class="shopPop-tips">*信息仅用于身份验证，彬纷有礼保障您的信息安全</view>
+</jarPop>
+<jarPop show="{{txInfo.code=='1'}}" openType="switch" pagePath="/pages/tabBar/geren/index"  bgImg="{{jarPop_txImg}}">
+	<!-- <view class="weui-dialog__bd " >
+		<text class="shopPop-msg">{{txInfo.msg}}</text>
+	</view> -->
+
+</jarPop>
+<!-- 绑定手机号弹窗 -->
+<bindPhonePop id="bindPhonePop" bind:bindPhoneSuccess="bindPhoneSuccess"></bindPhonePop>

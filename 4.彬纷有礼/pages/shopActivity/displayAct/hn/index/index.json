@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "easy-loadimage": "../../../../../component/easy-loadimage/easy-loadimage",
+    "van-count-down": "@vant/weapp/count-down/index",
+    "step-bar":"../../../../../component/step-bar/step-bar"
+  },
+  "navigationStyle":"custom",
+  "navigationBarTitleText": "活动",
+  "backgroundColorTop":"#ff2826",
+  "backgroundColorBottom":"#ffeedc",
+  "navigationBarBackgroundColor": "#ff2826"
+}

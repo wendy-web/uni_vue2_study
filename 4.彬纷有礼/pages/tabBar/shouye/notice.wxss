@@ -1,0 +1,101 @@
+/* pages/zongduan/geren/notice/index.wxss */
+page {
+  height: 100%;
+  box-sizing: border-box;
+}
+.tabbar-box{
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100vh;
+  width: 100%;
+  background-color: #ffffff;
+}
+
+
+
+/* 新版UI */
+.notice-tab {
+  height: 120rpx;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #E10404;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  z-index: 1;
+  background-color: #fff;
+  flex-shrink: 0;
+}
+
+.notice-tab .notice-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.notice-tab .notice-item .tab-line {
+  width: 78rpx;
+  height: 1px;
+  border-bottom: 2px solid #e10404;
+}
+.notice-tab .notice-item .tab-line-default {
+  width: 78rpx;
+  height: 1px;
+  border-bottom: 2px solid #fff;
+}
+.notice-tab .notice-item .notice-icon {
+  width: 77rpx;
+  height: 77rpx;
+}
+
+.notice-tab .grey {
+  color: #333;
+  filter: grayscale(100%);
+  filter: grey;
+}
+
+.page__desc {
+  font-size: 24rpx;
+  color: #999;
+}
+.tabbar-container-content{
+  /* height: calc(100vh - 100rpx);
+  padding-top: 120rpx; */
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex: 1;
+}
+.list-container{
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+/* 2023年9月25日 重构 */
+.swiper-box {
+  overflow: hidden;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  align-self: stretch;
+  flex: 1;
+  height: 100%;
+}
+
+.swiper-item {
+  touch-action: pan-y;
+  display: flex;
+  flex-direction: column;
+}
+.inner-box{
+  /* background-color: darkblue; */
+  /* height: 100%; */
+  flex: 1;
+  flex-shrink: 0;
+  position: relative;
+}

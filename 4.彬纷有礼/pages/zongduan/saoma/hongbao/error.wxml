@@ -1,0 +1,290 @@
+<block wx:if="{{pageReady}}">
+  <view>
+    <!-- 红牛箱内码 -->
+    <block wx:if="{{isRedBullType}}">
+      <view class="containe error-hn-box">
+        <!-- 红牛27周年标题 -->
+        <block wx:if="{{pre_act_hn<=27}}">
+          <!-- 第27及以前的图标 -->
+          <image class="icon-hn-27th" mode="aspectFit" src="{{logo_hn_path+pre_act_hn+'.png'}}"></image>
+          <image class="icon-hn-title" mode="aspectFit" src="{{icon_hn_title}}"></image>
+          <image class="error-hn-banner" mode="aspectFit" src="{{type == '56'?hn_banner_type56:error_hn_banner}}"></image>
+          <!-- 活动规则27周年之前 -->
+          <view wx:if="{{type}}" class="hn-rule-box" bindtap="showRule">
+            <image class="icon-question" mode="aspectFit" src="{{icon_question}}"></image>
+            <view class="text-vertical">活动规则</view>
+          </view>
+          <!-- 异常信息 -->
+          <view class="hn-msg-box {{!goYuer? 'flex-align-start':''}}" style="background-image: url({{error_hn_msgbox}});">
+            <view class="center2">
+              <view class="err">
+                <text class="title">{{msg}}</text>
+                <block wx:if="{{tips}}">
+                  <view class="hn-tip-28y"> <text>{{tips}}</text> </view>
+                </block>
+                <!-- <view wx:if="{{goYuer}}" class="goYuer">
+                  <text class="goyuerBtn ">{{yuerText}}</text>
+                </view> -->
+                <!--  2023年5月19日 话费福利 -->
+                <view bindtap="openXdyh" wx:if="{{config}}" data-type="img">
+                  <image class="banner-reward" src="{{config.ad1.img1}}" mode="aspectFit" />
+                </view>
+              </view>
+              <!-- 2023年5月19日 引流 小店有惠 -->
+              <view wx:if="{{goYuer}}" class="btn-group" style="justify-content: {{config?'space-between':'center'}};">
+                <!-- <image class="btn-check-hn btn-check-hn-27" src="{{btn_check_hn}}" mode="aspectFit" /> -->
+                <image class="btn-check-hn" src="{{btn_check_hn}}" mode="aspectFit" />
+                <image wx:if="{{config}}" class="btn-check-hn" bindtap="openXdyh" data-type="btn" src="{{btn_get_benefit}}" mode="aspectFit" />
+              </view>
+              <view wx:else>
+                <image wx:if="{{config}}" class="btn-go-receive" bindtap="openXdyh" data-type="btn" src="{{btn_go_receive}}" mode="aspectFit" />
+              </view>
+            </view>
+          </view>
+        </block>
+
+        <!-- 28周年 -->
+        <block wx:if="{{pre_act_hn == 28}}">
+          <view class="box-hn-28y">
+            <!-- 顶部28图标 -->
+            <image class="icon-hn-28y" mode="aspectFit" src="{{icon_hn_28y}}"></image>
+            <!-- 28banner -->
+            <image class="img-hn-banner-28y" src="{{img_hn_banner_28y}}"></image>
+            <!-- 底部坐台 -->
+            <image class="img-hn-bg-28y" src="{{img_hn_bg_28y}}"></image>
+            <!-- 右侧活动规则 -->
+            <view class="hn-rule-box-28y" bindtap="showRule">
+              <image class="icon-question" mode="aspectFit" src="{{icon_query}}"></image>
+              <view class="text-vertical">活动规则</view>
+            </view>
+          </view>
+          <!-- 异常信息 -->
+          <view class="hn-msg-box-28y " style="background-image: url({{hn_28y_msgbox}});">
+            <view class="msg-box-28y">
+              <view class="title-28y">{{msg}}</view>
+
+              <block wx:if="{{tips}}">
+                <view class="hn-tip-28y">{{tips}}</view>
+              </block>
+              <!--  2023年5月19日 话费福利 -->
+              <view bindtap="openXdyh"  wx:if="{{config}}" data-type="img">
+                <image class="banner-reward" src="{{config.ad1.img1}}" mode="aspectFit" />
+              </view>
+            </view>
+            <!-- 按钮 -->
+            <!-- 2023年5月19日 引流 小店有惠 -->
+            <view wx:if="{{goYuer}}" class="btn-group" style="justify-content: {{config?'space-between':'center'}};">
+              <image class="btn-check-hn" bindtap="goYuer" src="{{btn_check_hn}}" mode="aspectFit" />
+              <image wx:if="{{config}}" class="btn-check-hn" bindtap="openXdyh" data-type="btn" src="{{btn_get_benefit}}" mode="aspectFit" />
+            </view>
+            <view wx:else>
+              <image class="btn-go-receive"  wx:if="{{config}}" bindtap="openXdyh" data-type="btn" src="{{btn_go_receive}}" mode="aspectFit" />
+            </view>
+            <!-- 水印 -->
+            <image class="icon-hn-28y-clear" src="{{icon_hn_28y_clear}}" mode="aspectFit" />
+          </view>
+        </block>
+
+
+
+
+        <!-- 底部icon -->
+        <!-- <image class="error-hn-foot" mode="scaleToFill" src="{{error_hn_foot}}"></image> -->
+      </view>
+    </block>
+    <!-- 战马箱内码 -->
+    <block wx:else>
+      <view class="containe" style="background-image: url({{img_bg_zm}});">
+        <!-- 战马logo -->
+        <image class="icon-zm-logo" mode="aspectFit" src="{{icon_zm_logo}}"></image>
+        <!-- 战马活动规则图标 -->
+        <view wx:if="{{type}}" class="rulebt" bindtap="showRule">
+          <image class="icon-zm-actrule" src="{{icon_zm_actrule}}"></image>
+        </view>
+        <!-- 主图 -->
+        <block wx:if="{{pre_act_zm}}">
+          <image class="icon-zm-activity" src="{{icon_zm_activity}}" mode="aspectFit"></image>
+        </block>
+        <block wx:else>
+          <view class="img-zm-main-box">
+            <image class="img-zm-main" src="{{img_zm_main}}" mode="aspectFit"></image>
+          </view>
+        </block>
+
+        <!-- 战马扫码结果信息 -->
+        <view class="zm-result-box" style="background-image: url({{error_zm_msgbox}});">
+
+          <view class="zm-result-item">
+            <view class="zm-result">
+              <text class="title">{{msg}}</text>
+              <view wx:if="{{goYuer}}" class="zm-goYuer-box">
+                <image bindtap="goYuer" class="icon-zm-btn" mode="aspectFit" src="{{icon_zm_btn}}"></image>
+              </view>
+            </view>
+            <block wx:if="{{tips}}">
+              <view class="zmtip"> <text>{{tips}}</text> </view>
+            </block>
+          </view>
+        </view>
+        <!-- 底部图标 -->
+        <image class="icon-zm-bottom" mode="scaleToFill" src="{{icon_zm_bottom}}"></image>
+      </view>
+    </block>
+  </view>
+  <!-- 一期活动规则弹窗 -->
+  <view class="fadeIn" wx:if="{{rule}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog">
+      <view class="weui-dialog__hd"><strong class="weui-dialog__title title">活动说明</strong></view>
+      <view class="weui-dialog__bd">
+        <scroll-view scroll-y="true" class="h50vh">
+          <view id="demo1" class="scroll-view-item demo-text-1">
+            <text>{{shuoming}}</text>
+            <text>2元或3元</text>
+            <text>{{shuoming2}}</text>
+            <text>2元红包或3元</text>
+            <text>{{shuoming3}}</text>
+          </view>
+          <view id="demo2" class="scroll-view-item demo-text-2">
+            <view class="text-left">
+              <text class="head">\n注意事项</text>
+              <text>
+                {{zhuyi}}
+              </text>
+            </view>
+          </view>
+          <view id="demo3" class="scroll-view-item demo-text-3">
+            <view class="text-left">
+              <text class="head">\n兑奖说明</text>
+              <text>
+                {{duijiang}}
+              </text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class="weui-flex pdb35">
+        <view class="weui-flex__item ">
+          <a bindtap="iknow" class="weui-btn weui-btn_mini iknow">我知道了</a>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 二期活动规则弹窗 -->
+  <view class="fadeIn" wx:if="{{rules}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog bgc-yellow">
+      <!-- <view class="weui-dialog__hd"><strong class="weui-dialog__title title">活动说明</strong></view> -->
+      <!-- 活动规则 -->
+      <view class="huodongrule">
+        <image mode="aspectFit" src="{{huodongrule}}"></image>
+      </view>
+      <view class="weui-dialog__bd bgc-orange">
+        <scroll-view scroll-y="true" class="h50vh text-white">
+          <block wx:if="{{type == 2 || type ==3}}">
+
+            <view id="demo1" class="scroll-view-item demo-text-1">
+              <text>{{shuomings}}</text>
+              <text>{{shuomings2}}</text>
+              <text>{{shuomings3}}</text>
+            </view>
+            <view id="demo2" class="scroll-view-item demo-text-2">
+              <view class="text-left">
+                <text>\n</text>
+                <span class="head">注意事项</span>
+                <text>
+                  {{zhuyis}}
+                </text>
+              </view>
+            </view>
+            <view id="demo3" class="scroll-view-item demo-text-3">
+              <view class="text-left">
+                <text>\n</text>
+                <span class="head">兑换说明</span>
+                <text>
+                  {{duijiangs}}
+                </text>
+              </view>
+            </view>
+          </block>
+          <block wx:if="{{type==50 || type == 51 || type == 52}}">
+            <view>
+              <text>红牛进入中国已经26周年，为感谢广大消费者长期以来的支持和厚爱，即日起至2021年12月31日止，凡在活动区域购买带有“箱内码红包”标识的24罐装红牛维生素功能饮料，可通过微信扫描箱内二维码获得相应金额的红包，最高有机会赢取25元
+                红包。</text>
+            </view>
+            <view class="text-left">
+              <text>\n</text>
+              <span class="head">注意事项</span>
+              <view>请在参加本活动前仔细阅读本规则中的各项条款，如果您参加了本活动，则红牛公司认为您已理解并同意该规则中的各条款。</view>
+              <view>1．红牛公司对促销包装的真实性有鉴定及确认权。</view>
+              <view>2．纸箱图样以实物为准，活动站点及相关宣传资料上提供的图片仅供参考。</view>
+              <view>3．红牛公司有权按照中华人民共和国个人所得税的相关规定代扣代缴获奖者在本次活动中依法应当缴纳的个人所得税。本次活动所产生的个人所得税由红牛公司依法代扣代缴，奖金和奖品均为税后所得。</view>
+              <view>
+                4．如遇不可抗力事件，包括但不限于地震、台风、水灾或其他自然灾害、火灾、爆炸事故、骚乱、战争、政府政策的改变、任何国家主管机关就此次活动做出任何判决、决定、命令，或未能合理控制的任何其他不可预见事件，红牛公司有权在不事先通知的前提下变更或取消本活动。
+              </view>
+              <view>5．如果参加者在活动中使用任何不正当的手段参加活动，红牛公司有权在不事先通知的情况下取消其参加活动的资格，同时保留依法追究其法律责任的权利。</view>
+              <view>6．红牛公司保留对争议和异议的处理权利。红牛公司对于获奖者因参加本活动所发生的任何直接、间接费用和产生的任何损害不负任何责任。</view>
+              <view>7．本规则的解释与适用，以及与规则有关的任何争议，均以中华人民共和国法律为依据。</view>
+              <view>活动咨询热线：400-810-1128/010-85288201</view>
+              <view>（周一至周五8：30-17：30，法定节假日除外）。</view>
+            </view>
+            <view class="text-left">
+              <text>\n</text>
+              <span class="head">兑换说明</span>
+              <view>
+                1.参与活动:微信扫描纸箱内二维码，即可进入【彬纷有礼】小程序，按照页面指引操作，点击【扫一扫】再次扫描箱内二维码，即可领取红包。领取红包后，可在【我的余额】里查看红包记录。余额大于等于0.5元即可提现（金额需为0.5的整数倍），提现后金额将直接转到微信零钱，提现金额48小时内到账。每日提现次数不得超过5次，每日提现总金额不得超过200元。
+              </view>
+              <view>2.活动截止时间：2021年12月31日，逾期视为自动放弃。</view>
+              <view>本次活动范围：广东省、广西壮族自治区、海南省、湖南省、湖北省、江西省、浙江省、江苏省、福建省、上海市</view>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+      <!-- 知道了 -->
+      <view class="knowed">
+        <image mode="aspectFit" bindtap="iknow" src="{{ikonw}}"></image>
+      </view>
+
+    </view>
+  </view>
+  <!-- 战马活动规则弹窗 -->
+  <view class="fadeIn" wx:if="{{zmrule}}">
+    <view class="weui-mask"></view>
+    <view class="weui-dialog rule-bg">
+      <!-- 活动规则 -->
+      <view class="weui-dialog__hd ">
+        <view class="rule-title">
+          <text>活动规则</text>
+        </view>
+        <scroll-view scroll-y="{{true}}" show-scrollbar="{{false}}" class="text-purple mgt100 text-left">
+          <view id="demo1" class="scroll-view-item">
+            <text>{{zmshuoming}}</text>
+          </view>
+          <view id="demo2" class="scroll-view-item ">
+            <view class="text-left">
+              <view class="ruleY"><span>活动说明</span></view>
+              <text>
+                {{zmshuoming2}}
+              </text>
+            </view>
+          </view>
+          <view id="demo3" class="scroll-view-item ">
+            <view class="text-left">
+              <view class="ruleY"><span>注意事项</span></view>
+              <text>
+                {{zmzhuyi}}
+              </text>
+            </view>
+          </view>
+          <view class="flex-align-center">
+            <view class="zmiknow flex-align-center" bindtap="iknow">知道了</view>
+          </view>
+        </scroll-view>
+      </view>
+
+    </view>
+  </view>
+
+
+</block>

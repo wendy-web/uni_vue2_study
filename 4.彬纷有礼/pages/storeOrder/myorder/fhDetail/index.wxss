@@ -1,0 +1,403 @@
+/* pages/storeOrder/fhDetail/index.wxss */
+/* 返货订单样式 */
+page {
+  /* padding-bottom: 128rpx; */
+  box-sizing: border-box;
+}
+.page-box{
+  box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.order-info-box{
+  flex: 1;
+  flex-shrink: 0;
+  align-self: stretch;
+  overflow: scroll;
+}
+.fh-order-item {
+  background-color: #ffffff;
+  border-bottom: 10rpx solid #f7f7f7;
+  padding: 30rpx;
+}
+
+.fh-order-item .fh-order-status-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #E3001B;
+  font-size: 28rpx;
+}
+
+.fh-order-item .fh-order-status-box .icon-fh-status {
+  width: 50rpx;
+  height: 50rpx;
+  margin-right: 10rpx;
+}
+
+.fh-order-item .color-green {
+  color: #00AF29;
+}
+
+.color-red {
+  color: #E3001B;
+}
+
+.fh-order-item .fh-shopinfo-box {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.fh-order-item .fh-shopinfo-box .icon-location {
+  width: 34rpx;
+  height: 36rpx;
+  margin-top: 6rpx;
+  margin-right: 10rpx;
+}
+
+.fh-shopinfo-box .fh-shopinfo-name {
+  font-size: 24rpx;
+  text-align: left;
+  color: #000018;
+}
+
+.fh-shopinfo-box .fh-shopinfo-address {
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Medium;
+  font-weight: 500;
+  text-align: left;
+  color: #797979;
+  margin-top: 6rpx;
+}
+
+.font28 {
+  font-size: 28rpx;
+}
+
+.mgl10 {
+  margin-left: 10rpx;
+}
+
+.fh-orderinfo-box {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #6f6f6f;
+  display: flex;
+  align-items: center;
+}
+
+.fh-orderinfo-title {
+  font-weight: normal;
+  color: #000018;
+  font-size: 28rpx;
+}
+
+.fh-orderinfo-box .icon-copy {
+  width: 26rpx;
+  height: 26rpx;
+  margin-left: 10rpx;
+}
+
+.fh-order-item .sku-box {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: 20rpx;
+  margin-top: 20rpx;
+}
+
+.sku-box .sku-img {
+  box-sizing: border-box;
+  position: relative;
+  width: 120rpx;
+  height: auto;
+  border-radius: 10rpx;
+  margin-top: 10rpx;
+  margin-right: 20rpx;
+  background-color: #f7f7f7;
+}
+
+.prize-example {
+  font-size: 18rpx;
+  font-family: PingFang SC, PingFang SC-Light;
+  font-weight: 300;
+  text-align: center;
+  color: #a3a2a8;
+  letter-spacing: 0.22rpx;
+}
+
+.sku-img .img-sku {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 10rpx;
+}
+
+.sub-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  text-align: left;
+  color: #000018;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+}
+
+.last-schedule {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #797979;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.icon_arrow_down {
+  width: 26rpx;
+  height: 26rpx;
+  margin-left: 10rpx;
+}
+
+.fold-box {
+  box-sizing: border-box;
+  overflow: hidden;
+  height: 0;
+  transition: height 3s ease-out;
+}
+
+
+/* vant 进度条 css 覆盖 start */
+.van-step--vertical:after {
+  border-bottom-width: 0rpx !important;
+}
+
+.van-step__circle {
+  width: 20rpx !important;
+  height: 20rpx !important;
+  background-color: #2eac6d !important;
+}
+
+.van-steps--vertical {
+  padding-left: 0rpx !important;
+}
+
+.van-step .van-step__circle-container {
+  height: 0rpx !important;
+}
+
+.van-icon-more {
+  color: #2eac6d !important;
+}
+
+.van-step__line {
+  background-color: #2eac6d !important;
+
+}
+
+.steps-text van-step__title {
+  font-size: 28rpx;
+  color: #000018 !important;
+}
+
+.steps-desc {
+  font-size: 20rpx;
+  color: #6f6f6f;
+}
+
+/* vant 进度条 css 覆盖 end */
+
+.footer {
+  /* position: sticky; */
+  /* position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 28rpx;
+  background-color: #ffffff;
+  font-size: 32rpx;
+  height: 128rpx;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+}
+
+.footer .btn-call {
+  color: #000018;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.footer .btn-call:after {
+  background-color: #d4d4d4;
+  content: "";
+  width: 2rpx;
+  height: 82rpx;
+  position: absolute;
+  right: -10rpx;
+}
+
+
+.footer .btn-call .icon-phone {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 10rpx;
+}
+
+.footer .btn-cancel {
+  width: 200rpx;
+  height: 70rpx;
+  border: 0.5px solid #636266;
+  color: #636266;
+}
+
+.footer .btn-operate {
+  background-color: #e3001b;
+  width: 200rpx;
+  height: 70rpx;
+  padding: 0 1px;
+}
+
+.footer .btn-disabled {
+  background-color: #adadad;
+  color: #ffffff;
+  border-color: #adadad;
+  width: 200rpx;
+  height: 70rpx;
+  padding: 0 1px;
+
+}
+
+/* 卡券类型 */
+.voucher-title-dh {
+  width: 100%;
+  height: 30rpx;
+  line-height: 30rpx;
+  color: #ffffff;
+  background-color: #f55b21;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.voucher-title-hr {
+  width: 100%;
+  height: 30rpx;
+  line-height: 30rpx;
+  color: #ffffff;
+  background-color: #625acd;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.voucher-title-hd {
+  width: 100%;
+  height: 30rpx;
+  line-height: 30rpx;
+  color: #ffffff;
+  background-color: #1777fe;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+/* 卡券信息 start*/
+.counpon-info-box {
+  overflow: hidden;
+  height: 0;
+  transition: height 3s ease-out;
+  box-sizing: border-box;
+}
+
+.counpon-info-item {
+  box-sizing: border-box;
+  font-size: 28rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #939393;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56rpx;
+}
+
+.pr-50 {
+  padding-right: 40rpx;
+}
+
+.counpon-info-item .title {
+  color: #181818;
+}
+
+.counpon-info-item .subtitle {
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #797979;
+}
+
+.count-num {
+  font-size: 32rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  color: #181818;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  align-self: stretch;
+  flex: 1;
+}
+
+.sub-count-num {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #181818;
+}
+
+.fold-box-expand {
+  height: auto;
+}
+
+.coupon-total-count {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  font-size: 36rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #181818;
+}
+
+.title-unit {
+  font-size: 24rpx;
+  font-weight: 400;
+  text-align: left;
+  color: #181818;
+}
+.sku-count-item{
+  border-bottom: 1rpx dashed #cbcbcb;
+  margin-bottom: 20rpx;
+  padding-bottom: 10rpx;
+}
+/* 卡券信息 end */

@@ -1,0 +1,8 @@
+<!--pages/zhongduan/yingdao/video.wxml-->
+
+<view class="container">
+	<video src="{{url || ''}}" controls="{{true}}" autoplay="{{true}}" poster='' initialTime='0' id='video' loop="{{false}}" muted="{{false}}"
+		show-mute-btn="{{true}}"
+	 ></video>
+
+</view>

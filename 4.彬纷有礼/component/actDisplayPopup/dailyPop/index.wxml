@@ -1,0 +1,69 @@
+<!--component/actDisplayPopup/dailyPop/index.wxml-->
+<view class="container">
+  <van-popup show="{{ show }}" bind:close="onClose" custom-style="background-color: transparent;" z-index="{{10000}}">
+    <!-- 每日进度弹窗内容:开箱进行中&&陈列已解锁，显示2个，否则只显示1个，进行中的开箱，陈列,未中奖 -->
+    <view class="daily-pop-box {{actInfo.act_state.act_ing&&displayInfo.act_state.act_ing&&actInfo.d_id&&!displayInfo.rev_num?'daily-pop-box-height':''}}">
+      <!-- 开箱每日进度:需要判断活动状态进行中act_ing -->
+      <view class="unbox-pack {{!baseProgressShow?'no-progress-box':''}}" wx:if="{{actInfo.act_state.act_ing}}" style="background-image: url({{unbox_pop_bg}});">
+        <!-- <view class="unbox-pack" style="background-image: url({{unbox_pop_bg}});"> -->
+        <!-- 每日开箱进度标题 -->
+        <image class="unbox-pop-title" mode="aspectFit" src="{{unbox_pop_title_process}}"></image>
+        <!-- 活动倒计时 -->
+        <view class="unbox-pop-timer">
+          <text>——距离活动结束还剩：</text>
+          <van-count-down style="--count-down-text-color:#f5a262;--count-down-font-size:24rpx;" time="{{ actInfo.act_state.count_down_timestamp }}" bind:finish="actTimerFinished" format="{{ actInfo.act_state.count_down_format }}"></van-count-down>
+          <text>——</text>
+        </view>
+        <view class="unbox-progress-box">
+          <!-- 开箱进度组件区分：issues=4基数还是issues=6区间 -->
+          <box-progress baseProgressShow="{{baseProgressShow}}" actInfo="{{actInfo}}"></box-progress>
+        </view>
+        <!-- <button class="btn-scan-box">点击开箱扫码得红牛</button> -->
+        <view class="text-center">
+          <view bindtap="goscan" class="{{actInfo.d_id?'btn-take-photo':'btn-scan-box'}}">点击开箱扫码得红牛</view>
+          <!-- <van-button custom-class="{{actInfo.d_id?'btn-take-photo':'btn-scan-box'}}" round type="default">点击开箱扫码得红牛</van-button> -->
+        </view>
+      </view>
+      <!-- 开箱和陈列同时存在 -->
+      <block wx:if="{{actInfo.act_state.act_ing&&displayInfo.act_state.act_ing}}">
+        <!-- 解锁陈列每日进度:d_id -->
+        <view class="display-pack" wx:if="{{actInfo.d_id&&!displayInfo.rev_num}}">
+          <!-- 连接的2个bar -->
+          <view class="connect-bar-box">
+            <view class="item-bar"></view>
+            <view class="item-bar"></view>
+          </view>
+          <!-- 陈列进度条 -->
+          <view class="display-step-box">
+            <step-bar actInfo="{{displayInfo}}" showTakePhoto="{{true}}" type="{{displayInfo.photo_state.step_bar_type}}" nextDisplay="{{displayInfo.photo_state.next_display_date}}"></step-bar>
+          </view>
+
+        </view>
+      </block>
+      <block wx:else>
+        <!-- 判断是否解锁陈列 -->
+        <view class="pop-content" wx:if="{{actInfo.d_id}}">
+          <view class="display-pack">
+            <!-- 陈列进度条 -->
+            <step-bar classDaily="step-box-width" actInfo="{{displayInfo}}" type="{{displayInfo.photo_state.step_bar_type}}" nextDisplay="{{displayInfo.photo_state.next_display_date}}"></step-bar>
+          </view>
+          <!-- 倒计时 -->
+          <view class="display-pop-timer">
+            <text>距离活动结束还剩:</text>
+            <van-count-down style="--count-down-text-color:#FF3F3B;--count-down-font-size:32rpx;" time="{{ actInfo.act_state.count_down_timestamp }}" format="{{ actInfo.act_state.count_down_format }}"></van-count-down>
+
+          </view>
+          <!-- 查看详情 step_bar_type:2 查看详情，3去拍照 -->
+          <block wx:if="{{displayInfo.photo_state.step_bar_type==2}}">
+            <view bindtap="toDisplayHome" data-issues="{{displayInfo.issues}}" class="act-display-btn" style="background-image: url({{img_bg_apply_btn}});">查看详情</view>
+          </block>
+          <block wx:if="{{displayInfo.photo_state.step_bar_type==3}}">
+            <view bindtap="takePhoto" data-issues="{{displayInfo.issues}}" class="act-display-btn" style="background-image: url({{img_bg_apply_btn}});">去拍照</view>
+          </block>
+        </view>
+      </block>
+    </view>
+    <!-- 关闭按钮 -->
+    <image class="icon-close" bindtap="onClose" mode="aspectFit" src="../static/close.png"></image>
+  </van-popup>
+</view>

@@ -1,0 +1,183 @@
+<!--pages/couponActivity/gzExc/actRule/index.wxml-->
+
+<view class="align-center" style="height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;box-sizing:border-box; padding-top:{{navBarSystem?navBarSystem.statusBarHeight:'20'}}px">
+  <view bindtap="back" class=" nav-bar__button nav-bar__btn_goback white"></view>
+</view>
+<!-- 顶部背景 -->
+<image class="bg_act_rule" src="{{file_url_gzexc}}/bg_act_rule.png" mode="aspectFit" />
+
+<!-- 活动规则 -->
+
+<view class="act-explain-box">
+  <view class="act-rule-title-box">
+    <image class="bg_act_explain" src="{{file_url_gzexc}}/head_act_rule.png" mode="aspectFit" />
+  </view>
+  <view class="inner-box mt-50">
+    <view class="act-one-line">
+      <text class="title">活动主题：</text>
+      <text class=" color-red">{{ actInfo.title || '战马兑奖送奖励'}}</text>
+    </view>
+    <view class="act-one-line">
+      <text class="title">活动时间：</text>
+      <text class=" color-red">{{ actInfo.act_start_date || '2023年9月1日' }}至{{ actInfo.act_end_date || '2023年9月30日' }}
+        <!-- ，共{{actInfo.act_state.total_day}}天。 -->
+      </text>
+    </view>
+    <view class="act-one-line">
+      <text class="title">活动对象：</text>
+      <text>凡在”彬纷有礼“小程序内显示该活动的店铺均可参加；</text>
+    </view>
+    <view class="act-one-line">
+      <text class="title">活动区域：</text>
+      <text class="color-red">广州市、肇庆市、清远市、佛山市、韶关市、珠海市、中山市</text>
+    </view>
+    <view class="title">参与方式</view>
+    <view class="content">
+      <view>
+        可进入<text class="color-red">“彬纷有礼”小程序，首页资讯－热门活动”点击“战马兑奖送奖励”，或从页面活动浮窗进入</text> 查看当前消费者兑奖进度。
+      </view>
+    </view>
+    <view class="title">奖励发放方式及使用有效期</view>
+    <!-- 1 -->
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">1</view>
+      </view>
+      <view class="content-right">
+        <view>
+          活动结束后，系统将自动把活动奖券发放至您的彬纷有礼账户，您可到【我的-可用卡券-活动券】页面查看，
+          <text class="color-red">1张奖券可兑换1罐战马能量型功能饮料（310ml）。</text>
+        </view>
+      </view>
+    </view>
+    <!-- 2 -->
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">2</view>
+      </view>
+      <view class="content-right">
+        <view>
+          本次活动依据“彬纷有礼”现有活动券的核销流程，请在 <text class="color-red"> {{actInfo.exp_time || '2023-12-31 23:59:59'}}</text>前通过【彬纷有礼－可用卡券－活动券】向上级客户申请核销，逾期未申请核销作废。
+        </view>
+      </view>
+    </view>
+    <view class="title">活动规则</view>
+    <!-- 活动规则 -->
+    <!-- 1 -->
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">1</view>
+      </view>
+      <view class="content-right">
+        <view>
+          活动开始后，记录店铺成功兑换2023年“码上换购，1元乐享”战马产品（战马能量型功能饮料310ml）的兑奖罐数，每兑奖5罐，即可获得2张战马产品活动券。活动结束后，按照最终兑奖罐数，获得相应数量的战马产品（战马能量型功能饮料310ml）奖励券。
+        </view>
+      </view>
+    </view>
+    <!-- 2 -->
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">2</view>
+      </view>
+      <view class="content-right">
+        <view>
+          同一店铺（同一店铺ID）店长、店员均可参与此次兑奖活动。
+        </view>
+      </view>
+    </view>
+    <!-- 3 -->
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">3</view>
+      </view>
+      <view class="content-right">
+        <view>
+          若在彬纷有礼上填写的店铺地址与实际店铺地址不在同一个城市（实际店铺地址非活动城市），此次活动兑奖数据视为无效，不予发放奖励。
+        </view>
+      </view>
+    </view>
+    <!-- 4 -->
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">4</view>
+      </view>
+      <view class="content-right">
+        <view>
+          活动期间暂不能对店铺进行转让或加入其他店铺，带来的不便请您谅解。
+        </view>
+      </view>
+    </view>
+
+    <view class="title">免责声明</view>
+    <view class="content">
+      <!-- <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">1</view>
+      </view> -->
+      <view class="content-right">
+        活动秉着公平、公正、公开、真实的原则，对于本次活动，我司声明以下免责条款，参加活动前请您仔细阅读以下条款，参加本次活动即表明您了解并接受以下所有条款：
+      </view>
+    </view>
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">1</view>
+      </view>
+      <view class="content-right">
+        <view>免责事项</view>
+        <view>
+          （1）本活动期间发生任何不可抗力事件使本活动或本次目的不能实现，我司因此免责。不可抗力是指不能控制、不可预见或不能避免，即使预见亦无法避免的事件，该事件使任何一方根据本协议履行其全部或部分义务已不可能。包括社会异常事件、自然灾害或政府管制行为而造成的非基于我司过错的行为；
+        </view>
+        <view>（2）您自身主观过错或恶意，或不按正常流程操作、填写信息不真实、不完整等类似情形致使此次活动无效、无法核验您真实信息而不能领取奖品的，我司免责；
+        </view>
+        <view>
+          （3）若由于您的原因，导致我司遭受损失的，我司有权向您追偿。本规则所称“损失”包括但不限于因涉诉、涉仲裁而产生的诉讼费、律师费、调查取证费、行政处罚或第三人索赔等。
+        </view>
+      </view>
+    </view>
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">2</view>
+      </view>
+      <view class="content-right">
+        <view>
+          本活动的奖品不可退不折现，除非产品本身质量问题，一律不得退换。若奖品的价值需按照国家法律规定缴纳税费的，由您自行缴税。
+        </view>
+      </view>
+    </view>
+
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">3</view>
+      </view>
+      <view class="content-right">
+        <view>
+          我司可以根据市场环境、参与情况随时暂停、终止活动。活动内容如果有调整或补充，请以最新公告为准。
+        </view>
+      </view>
+    </view>
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">4</view>
+      </view>
+      <view class="content-right">
+        <view>
+          针对违规骗取奖励的行为，我司将不予发放奖励、追回相关奖励或封停账号，并追究其法律责任。
+        </view>
+      </view>
+    </view>
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">5</view>
+      </view>
+      <view class="content-right">
+        <view>
+          本次活动在法律允许范围内，其修改权、更新权及最终解释权均属广东省深圳市天兴诚科技有限公司，如有任何问题，请与平台客服联系，客服热线400-870-7076。
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 返回顶部 -->
+<view class="back-to-top" bindtap="scrollTop">
+  <image class="icon-arrow-up" src="{{icon_arrow_up}}" mode="aspectFit"></image>
+  <view>返回顶部</view>
+</view>

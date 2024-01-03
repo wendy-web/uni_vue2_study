@@ -1,0 +1,180 @@
+/* component/storeExchangePop/process/index.wxss */
+.process-box {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.unbox-info-box {
+  font-size: 24rpx;
+  font-weight: 400;
+  text-align: center;
+  color: #000018;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.color-red {
+  font-weight: bold;
+  color: #E3001B;
+  /* margin: 0 12rpx; */
+}
+
+.color-green {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #00A17C;
+}
+
+.unbox-process {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* margin-top: 30rpx; */
+  width: 610rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.unbox-process .current-box {
+  font-size: 18rpx;
+  font-weight: 400;
+  text-align: center;
+  color: #4E4D52;
+}
+
+
+
+
+.font40 {
+  font-size: 40rpx;
+}
+
+.font48 {
+  font-size: 48rpx;
+}
+
+.color-grey {
+  color: #4e4d52;
+}
+
+.color-blue {
+  color: #111CFE;
+  font-weight: bold;
+  /* margin: 0 12rpx; */
+}
+
+.current-unbox-num {
+  font-size: 42rpx;
+  font-weight: 700;
+  color: #e3001b;
+}
+
+/* 右侧开箱进度 */
+.right-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 450rpx;
+  min-height: 150rpx;
+  margin-right: -55rpx;
+  z-index: 1;
+  box-sizing: border-box;
+  /* margin-right: 38rpx; */
+}
+
+.right-box .progress-box {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 22rpx;
+  background: #fef1e1;
+  border: 1rpx solid #f08331;
+  border-radius: 13rpx;
+  
+  box-sizing: border-box;
+  padding: 4rpx;
+  margin: auto;
+  z-index: -1;
+}
+
+.progress-box .inner-bar {
+  width: 100%;
+  height: 100%;
+  background: #fbba7a;
+  border-radius: 8rpx;
+  flex: 1;
+}
+
+.inner-bar .progress-inner {
+  height: 100%;
+  width: var(--width);
+  border-radius: 8rpx;
+  background: linear-gradient(0deg, #fd6913 0%, #fd2d0e 100%);
+  border-radius: 7px;
+}
+
+.icon-box {
+  width: 66rpx;
+  height: 46rpx;
+  flex-shrink: 0;
+}
+
+.unbox-item {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--left);
+  margin: auto;
+  z-index: 1;
+}
+
+.unbox-goal-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  color: #ff4200;
+  padding-bottom: 10rpx;
+}
+
+.unbox-num {
+  font-weight: 700;
+  font-size: 28rpx;
+}
+
+.unbox-name {
+  font-size: 20rpx;
+  font-weight: 400;
+  color: #4e4d52;
+  margin-top: 6rpx;
+}
+
+.unbox-goal-min {
+  margin-left: var( --left );
+}
+
+.unbox-goal-max {
+  /* position: absolute;
+  right: -40rpx;
+  top: 0;
+  bottom: 0;  */
+  /* margin: auto; */
+  width: 100rpx;
+  z-index: 3;
+}
+
+.unbox-tips {
+  font-size: 18rpx;
+  font-weight: 400;
+  color: #fd8111;
+}

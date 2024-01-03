@@ -1,0 +1,180 @@
+<!--pages/storeDisplay/promotionDetails/index.wxml-->
+<view class="promotion-details">
+  <!-- 活动时间 -->
+  <view class="promotion-date">
+    {{dateText}}
+  </view>
+  <!-- 参与促销活动结果 -->
+  <view class="partake-result" wx:if="{{pageStatus==3&&partakeResult}}">
+    <view class="partake-result-title">参与促销活动结果</view>
+    <view class="partake-result-box">
+      <view class="partake-result-box-item" wx:if="{{partakeResult.isNoPurchase}}">
+        <view class="result-text">—</view>
+        <view class="result-title">进货</view>
+      </view>
+       <view wx:else class="partake-result-box-item {{partakeResult.isPurchaseOk?'result-ok':'result-bad'}}">
+            <view class="result-text">{{partakeResult.isPurchaseOk?'合格':'不合格'}}</view>
+            <view class="result-title">进货</view>
+       </view>
+       <view class="partake-result-box-item" wx:if="{{partakeResult.isNoDisplay}}">
+        <view class="result-text">—</view>
+        <view class="result-title">陈列</view>
+      </view>
+       <view wx:else class="partake-result-box-item {{partakeResult.isDisplayOk?'result-ok':'result-bad'}}">
+            <view class="result-text">{{partakeResult.isDisplayOk?'合格':'不合格'}}</view>
+            <view class="result-title">陈列</view>
+       </view>
+       <view class="partake-result-box-item result-huirang">
+            <view class="result-text">{{partakeResult.award_num}}罐</view>
+            <view class="result-title">惠让罐数</view>
+       </view>
+    </view>
+  </view>
+  <!-- 进货套餐 展示 -->
+  <view class="pur-list" wx:if="{{pur_list.length>0}}">
+    <view class="pur-list-title">进货套餐</view>
+    <!-- 表头 -->
+    <view class="pur-list-th">
+      <view class="pur-list-th-cell">套餐名称</view>
+      <view class="pur-list-th-cell" style="width: 28%;">要求</view>
+      <view class="pur-list-th-cell" style="width: 22%;">惠让</view>
+      <view class="pur-list-th-cell" bindtap="tipsToast"><text class="pltc-r">完成情况</text>
+        <van-icon name="warning-o" color="#FF3D1F" />
+      </view>
+    </view>
+    <!-- 列表展示 -->
+    <block wx:for="{{pur_list}}" wx:key="key">
+      <view class="pur-list-tr">
+        <!-- 套餐名称与进货渠道 -->
+        <view class="pur-list-tr-cell pltc-text-center">
+          <view class="pur-name">{{item.pur_name}}</view>
+          <view class="channel-item" wx:for="{{item.s_type}}" wx:key="key" wx:for-item="_item">{{_item}}渠道</view>
+        </view>
+        <!-- 进货要求 -->
+        <view class="pur-list-tr-cell" style="width: 28%;" bindtap="showGoodsList" data-pur-id="{{item.pur_id}}">
+          <!-- 多品多指标 -->
+          <view class="purchase-many-require-box" wx:if="{{item.t_type == 2}}">
+            <view class="prb-many-item" wx:for="{{item.goods_list}}" wx:for-item="good" wx:key="key">
+              <image class="pmi-many-shop-icon" src="{{good.s_icon}}" mode="aspectFill"></image>
+              <view class="pmi-many-need-num">{{good.num}}箱</view>
+            </view>
+          </view>
+          <!-- 多品一指标 -->
+          <view class="purchase-require-box" wx:else>
+            <view class="prb-many-item" >
+              <image wx:for="{{item.goods_list}}" wx:key="key" wx:for-item="good" class="pmi-shop-icon" src="{{good.s_icon}}" mode="aspectFill"></image>
+            </view>
+            <view class="pmi-need-num">共{{item.need_num}}箱</view>
+            <!-- 单商品最低要求 -->
+            <view class="pmi-good-need-item" wx:for="{{item.good_needs}}" wx:for-item="needGood" wx:key="key">
+              <text>其中</text>
+              <image class="pmi-gni-icon" src="{{needGood.s_icon}}" mode="aspectFill"></image>
+              <text>≥</text>
+              <text class="pmi-gni-num">{{needGood.num}}箱</text>
+            </view>
+          </view>
+        </view>
+        <!-- 惠让 -->
+        <view class="pur-list-tr-cell" style="width: 22%;">
+          <view class="huirang-box">
+            <view class="huirang-info">
+              <image class="huirang-info-icon" mode="aspectFill" src="{{item.huirang.icon}}"></image>
+              <view>{{item.huirang.pur_award_num}}罐</view>
+            </view>
+            <view class="huirang-completed-dis" wx:if="{{item.huirang.isCompletedDis}}">需同时完成以下陈列</view>
+          </view>
+        </view>
+        <!-- 完成情况 -->
+        <view class="pur-list-tr-cell">
+          <view class="execution-box" bindtap="goOrder" data-islinkorder="{{item.completeData.isLinkOrder}}">
+            <view class="complete-info">
+              <text class="box-num">{{item.completeData.completed_num}}箱</text>
+              <van-icon name="arrow" wx:if="{{item.completeData.isLinkOrder}}" />
+            </view>
+            <view wx:if="{{item.completeData.isSendSecurities}}" class="returned-securities">已发放{{item.completeData.awarded_num}}张惠让劵</view>
+            <view wx:elif="{{item.completeData.isWaitSendSecurities}}" class="sait-send-securities">待发劵</view>
+            <view wx:elif="{{item.completeData.isNoStandard}}" class="no-standard">未达标</view>
+          </view>
+        </view>
+      </view>
+      <!-- 进货套餐陈列展示 -->
+      <view class="pur-dis-box" wx:if="{{item.dis_list.length>0}}">
+              <view class="pur-dis-show" wx:if="{{!item.isShowDis}}" bindtap="showDis" data-pur-id="{{item.pur_id}}" data-showStatus="{{true}}">
+                <text class="pur-dis-show-text">陈列</text>
+                <van-icon name="arrow-down" />
+              </view>
+              <view class="pur-dis-list" wx:if="{{item.isShowDis}}"> 
+                 <view class="pdl-th">
+                  <view class="pdl-th-cell">陈列名称</view>
+                  <view class="pdl-th-cell2">陈列标准<text wx:if="{{item.dis_min_num>0}}" class="dis-min-num">（选择{{item.dis_min_num}}个陈列）</text></view>
+                  <view class="pdl-th-cell" bindtap="showDis" data-pur-id="{{item.pur_id}}" data-showStatus="{{false}}"><van-icon name="arrow-up"/></view>
+                 </view>
+                 <view class="pdl-tr" wx:for="{{item.dis_list}}" wx:for-item="dis" wx:key="key">
+                  <view class="pdl-tr-cell">
+                   <text class="pdl-dis-name">{{dis.dis_name}}</text>
+                  </view>
+                  <view class="pdl-tr-cell2">
+                    <text class="pdl-dis-label">{{dis.dis_label}}</text>
+                  </view>
+                  <view class="pdl-tr-cell pdl-dis-link" bindtap="goShopDis" data-dis-id="{{dis.dis_id}}">
+                    <text class="pdl-completed-num">{{dis.dis_completed_num}}</text>
+                    <text class="pdl-need-num">/{{dis.dis_need_num}}</text>
+                    <van-icon name="arrow" />
+                  </view>
+                 </view>
+              </view>
+      </view>
+      <!-- 闭合线 -->
+      <view class="closed-line"></view>
+    </block>
+  </view>
+  <!-- 单独陈列套餐展示 -->
+  <view class="dis-list" wx:if="{{dis_list.length>0}}">
+    <view class="dis-list-title">陈列套餐</view>
+    <!-- 表头 -->
+    <view class="dis-list-th">
+      <view class="dis-list-th-cell">套餐名称</view>
+      <view class="dis-list-th-cell">陈列标准</view>
+      <view class="dis-list-th-cell">惠让</view>
+      <view class="dis-list-th-cell">完成情况</view>
+    </view>
+    <!-- 表行 -->
+    <view class="dis-list-tbody">
+      <view class="dis-list-tr" wx:for="{{dis_list}}" wx:key="key">
+        <view class="dis-list-tr-cell">
+          <view class="dis-name">{{item.dis_name}}</view>
+        </view>
+        <view class="dis-list-tr-cell">
+           <view class="dis-standard-box">
+             <view class="dis-good-icons">
+                <image wx:for="{{item.dis_standard.shopIcons}}"  wx:key="key" class="dis-gicon" mode="aspectFill" src="{{item}}"></image>
+             </view>
+             <view class="dis-label">{{item.dis_standard.dis_label}}</view>
+           </view>
+        </view>
+        <view class="dis-list-tr-cell">
+          <view class="huirang-box">
+            <view class="dis-huirang">
+              <image class="dis-huirang-icon" mode="aspectFill" src="{{item.huirang.icon}}"></image>
+              <text>{{item.huirang.dis_award_num}}罐</text>
+            </view>
+          </view>
+        </view>
+        <view class="dis-list-tr-cell" bindtap="goShopDis" data-dis-id="{{item.dis_id}}">
+          <view class="dis-execution-box">
+            <view class="dis-complete-info">
+                <text class="pdl-completed-num">{{item.dis_completed_num}}</text>
+                <text class="pdl-need-num">/{{item.dis_need_num}}</text>
+                <van-icon name="arrow" />
+            </view>
+            <view wx:if="{{item.completeData.isSendSecurities}}" class="returned-securities">已发放{{item.awarded_num}}张惠让劵</view>
+            <view wx:elif="{{item.completeData.isWaitSendSecurities}}" class="sait-send-securities">待发劵</view>
+            <view wx:elif="{{item.completeData.isNoStandard}}" class="no-standard">未达标</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 商品展示弹窗 -->
+<show-goods-modal id="showGoodsModal"/>

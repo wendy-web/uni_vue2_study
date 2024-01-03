@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "van-stepper": "@vant/weapp/stepper/index",
+    "van-button": "@vant/weapp/button/index"
+  },
+  "navigationStyle": "custom"
+}

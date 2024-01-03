@@ -1,0 +1,58 @@
+<!--pages/tabBar/component/noticeItem/index.wxml-->
+<view class="box" >
+  <view class="order-box">
+    <scroller wx:if="{{!isEmpty}}" enhanced="{{false}}" background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" bind:loadmore="loadmore" bind:refresh="refresh">
+      <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+      <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+      <block wx:for="{{noticeList}}" wx:key="key">
+        <view class="list-item">
+          <view class="list-title">{{item.tip}}</view>
+          <view class="list-date">{{item.create_time}}</view>
+          <view class="list-msg">
+            <block wx:for="{{item.content}}" wx:for-item="content" wx:key="index">
+              <block>
+                <view>
+                  <block wx:if="{{item.status ==0 && index=='状态'}}">
+                    <text class="text-yellow">{{index}}：</text>
+                    <text class="text-yellow">{{content}}</text>
+                  </block>
+                  <block wx:elif="{{item.status ==1 && index=='状态'}}">
+                    <text class="text-yellow">{{index}}：</text>
+                    <text class="text-yellow">{{content}}</text>
+                  </block>
+                  <block wx:elif="{{item.status ==2 && index=='状态'}}">
+                    <text class="text-green">{{index}}：</text>
+                    <text class="text-green">{{content}}</text>
+                  </block>
+                  <block wx:elif="{{item.status ==3 && index=='状态'}}">
+                    <text class="text-red">{{index}}：</text>
+                    <text class="text-red">{{content}}</text>
+                  </block>
+                  <block wx:else>
+                    <text>{{index}}：</text>
+                    <text>{{content}}</text>
+                  </block>
+
+                </view>
+              </block>
+            </block>
+          </view>
+        </view>
+
+      </block>
+      <!-- 加载更多区域，可使用加载更多组件或自定义 -->
+      <loadmore slot="loadmore" status="{{loadMoreSetting.status}}" loading="{{loadMoreSetting.loading}}" noMore="{{loadMoreSetting.noMore}}" more="{{loadMoreSetting.more}}" />
+      <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+      <view class="empty-box" wx:if="{{noticeList.length == 0}}">
+        <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+      </view>
+    </scroller>
+    <scroller wx:else background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" bind:refresh="refresh">
+      <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+      <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+      <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+      <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+    </scroller>
+  </view>
+
+</view>

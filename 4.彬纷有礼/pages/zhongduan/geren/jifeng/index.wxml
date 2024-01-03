@@ -1,0 +1,90 @@
+<view class="credits-head">
+	<view class="credits-store" bindtap="switchToCreditsStore">
+		<image class="credits-store-icon" mode="aspectFit" src="{{creditsStoreIcon}}"></image>
+		<text>积分商城</text>
+	</view>
+	<view class="credits-info">
+		<view class="credits-count">{{userInfo.credits}}</view>
+		<view class="credits-tips">
+			<image class="credits-num-icon" mode="aspectFit" src="{{creditsNumIcon}}"></image>
+			<view class="credits-tips-title">可用积分</view>
+			<image bindtap="showRule" class="credits-tips-icon" mode="aspectFit" src="{{creditsTipsIcon}}"></image>
+		</view>
+	</view>
+	<!-- <view class="credits-water">
+		<view class="credits-water-c">
+			<view class="credits-water-1"> </view>
+			<view class="credits-water-2"> </view>
+		</view>
+	</view> -->
+</view>
+
+
+
+<!-- 个人积分 -->
+<view class="list-box">
+	<block wx:for="{{creditInfo}}" wx:key="key" wx:for-item="item" wx:for-index="idx">
+		<view class="list-item">
+			<view class="list-item-left">
+				<view class="item-title">{{item.ext_record}}</view>
+				<view class="item-time">{{item.create_time}}</view>
+			</view>
+			<view class="list-item-right">
+				<block wx:if="{{item.change>0}}">
+					<view class="item-credits green ">+{{item.change}}</view>
+				</block>
+				<block wx:else>
+					<view class="item-credits red">{{item.change}}</view>
+				</block>
+				<view>积分：{{item.after}}</view>
+			</view>
+		</view>
+	</block>
+
+	<!-- 加载更多 -->
+	<view class="weui-loadmore" wx:if="{{loadmore}}">
+		<i class="weui-loading"></i>
+		<text class="weui-loadmore__tips text-grey">正在加载</text>
+	</view>
+	<block wx:if="{{creditInfo.length>0&&noMore}}">
+		<view class="noMore">
+			<text class="">~没有更多记录了~</text>
+		</view>
+	</block>
+</view>
+
+
+
+<!-- 日历弹窗 -->
+<view class="fadeIn" wx:if="{{rili}}">
+	<view class="weui-mask" bindtap="close"></view>
+	<view class="weui-dialog">
+		<view class="">
+			<calendar bind:onPickDateChange="onPickDateChange" bind:onControl="onControl" bind:onPickDay="onPickDay"
+				bind:onRangePick="onRangePick" defaultSelectDate="" mode="range" showToday="{{true}}"></calendar>
+		</view>
+		<view class="weui-dialog__ft">
+			<a class="weui-dialog__btn weui-dialog__btn_default" bindtap="close">取消</a>
+			<a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="chooseDate">确定</a>
+		</view>
+		<!-- <calendar bind:onPickDateChange="onPickDateChange" bind:onControl="onControl" bind:onPickDay="onPickDay" bind:onRangePick="onRangePick" defaultSelectDate="2019-08-28" mode="range" showToday="{{true}}"></calendar> -->
+	</view>
+</view>
+<!-- 积分banner广告位 -->
+<view class="adContainer-bottom safeArea">
+	<ad width="100%" wx:if="{{blockAd}}" unit-id="adunit-0261ef8a5cad4705"></ad>
+</view>
+
+<!-- 积分规则弹窗 -->
+<view class="fadeIn" wx:if="{{rulePop}}">
+	<view class="weui-mask" bindtap="close"></view>
+	<view class="weui-dialog rulePop">
+		<view>
+			<view class="rulePop-title">积分规则：</view>
+			<view class="rulePop-title">使用说明：</view>
+		</view>
+		<view class="iknow">
+			<a bindtap="close" class="iknow-btn">我知道了</a>
+		</view>
+	</view>
+</view>

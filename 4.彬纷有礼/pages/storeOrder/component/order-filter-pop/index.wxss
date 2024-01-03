@@ -1,0 +1,115 @@
+/* pages/storeOrder/component/order-filter-pop/index.wxss */
+.title {
+  font-size: 36rpx;
+  color: #000018;
+  letter-spacing: 0.43px;
+  text-align: center;
+  height: 100rpx;
+  line-height: 100rpx;
+  box-sizing: border-box;
+  position: relative;
+
+}
+
+.title .icon-close {
+  position: absolute;
+  right: 40rpx;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  width: 44rpx;
+  height: 44rpx;
+}
+
+.box {
+  box-sizing: border-box;
+  padding: 20rpx 40rpx;
+}
+
+.box .sub-title {
+  font-size: 32rpx;
+  color: #636266;
+  letter-spacing: 0.38px;
+}
+
+/* 日期选择 */
+.box .date-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 40rpx 0rpx;
+}
+
+.date-box .date-item {
+  width: 300rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  background: #ebebeb;
+  border-radius: 30rpx;
+  text-align: center;
+  box-sizing: border-box;
+  color: #919191;
+  font-size: 28rpx;
+}
+.date-box .color-black{
+  color: #000000;
+}
+
+.date-box .date-item-gap {
+  height: 4rpx;
+  width: 36rpx;
+  background-color: #ebebeb;
+  box-sizing: border-box;
+  border: 1rpx dashed #919191;
+}
+
+/* 类型选择 */
+.box .type-box {
+  display: flex;
+  justify-content: space-between;
+  margin: 40rpx 0;
+}
+
+.type-box .type-item {
+  width: 180rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 28rpx;
+  border-radius: 32rpx;
+  background: #ebebeb;
+  border: 2rpx solid #ebebeb;
+  color: #000018;
+  box-sizing: border-box;
+}
+
+.type-box .active-item {
+  background: #feebeb;
+  border: 2rpx solid #ff0000;
+  color: #FF0000;
+}
+
+/* 操作按钮 */
+.operate-box{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+.btn-grey {
+  width: 314rpx;
+  height: 96rpx;
+  border: 2rpx solid #000000;
+  border-radius: 50rpx;
+  color: #000000;
+  font-size: 32rpx;
+}
+.btn-confirm{
+  width: 314rpx;
+  height: 96rpx;
+  border: 2rpx solid #e3001b;
+  border-radius: 50rpx;
+  color: #ffffff;
+  font-size: 32rpx;
+  background-color: #e3001b;
+}

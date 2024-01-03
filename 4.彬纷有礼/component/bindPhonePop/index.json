@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "privacyPop":"../privacyPop/index",
+    "van-field": "@vant/weapp/field/index"
+    
+  }
+}

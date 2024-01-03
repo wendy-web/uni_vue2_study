@@ -1,0 +1,351 @@
+/* pages/phaseIII/couponStats/index/index.wxss */
+.box {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(178deg, #f4eeea 5%, #ffffff 58%, #f4f4f4 53%);
+  overflow: hidden;
+}
+
+.page-content {
+  flex: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* 顶部tab start */
+.tab-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 20rpx 46rpx 0 46rpx;
+}
+
+.tab-item {
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #4a4a4a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2rpx solid #f2f4f6;
+  min-height: 50rpx;
+  /* border-bottom: 2rpx solid #E3001B; */
+}
+
+
+/* 顶部tab end */
+/* 筛选条件 start*/
+.filter-box {
+  box-sizing: border-box;
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #4a4a4a;
+}
+
+.filter-box .filter-inner {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  padding: 32rpx 20rpx 20rpx 40rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.filter-inner .keyword-box {
+  flex-shrink: 0;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  flex: 1;
+}
+
+.keyword-box .scroll-tag {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.keyword-box .tag-box {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.tag-item {
+  padding: 0 20rpx;
+  height: 52rpx;
+  border-radius: 27rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  background: #ffebec;
+  border: 1rpx solid #e3001b;
+  color: #e3001b;
+  position: relative;
+  z-index: 1;
+  margin-right: 18rpx;
+}
+
+.tag-item-default {
+  width: 114rpx;
+  height: 52rpx;
+  border: 1rpx solid #939393;
+  border-radius: 27rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #181818;
+  margin-right: 18rpx;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.tag-item-active {
+  background: #ffebec;
+  border: 1rpx solid #e3001b;
+  color: #e3001b;
+}
+
+.icon-tag {
+  position: absolute;
+  right: -10rpx;
+  top: -4px;
+}
+
+.filter-inner .filter-item {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #4a4a4a;
+  flex: 1;
+  padding-top: 20rpx;
+}
+
+.filter-item-active {
+  color: #e3001b;
+}
+
+.tab-item-active {
+  border-bottom: 2rpx solid #E3001B;
+  font-weight: 700;
+  color: #E3001B;
+}
+.icon_filter {
+  width: 26rpx;
+  height: 26rpx;
+}
+
+
+/* 筛选条件 end*/
+
+/* 统计数据列表 start */
+
+.count-box {
+  box-sizing: border-box;
+  background-color: #ffffff;
+  padding-top: 40rpx;
+  overflow: hidden;
+  flex: 1;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+.scroller-box{
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 2;
+}
+.border-box {
+  border-bottom: 0.1px dashed #c2c2c2;
+  box-sizing: border-box;
+  margin: 0 46rpx;
+  display: flex;
+  align-items: flex-start;
+}
+
+.count-item {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  justify-content: flex-start;
+  box-sizing: border-box;
+  flex: 1;
+}
+.total-count-box{
+  min-height: 112rpx;
+}
+.icon_title_coupon {
+  width: 64rpx;
+  height: 64rpx;
+  margin-right: 32rpx;
+}
+
+.total-title {
+  font-size: 36rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #181818;
+}
+
+.total-title-unit {
+  font-size: 32rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #181818;
+}
+
+.total-num {
+  font-size: 48rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: right;
+  color: #181818;
+  display: flex;
+  align-items: center;
+  line-height: 50rpx;
+}
+
+.icon_arrow_down {
+  margin-left: 20rpx;
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.counpon-info-box {
+  overflow: hidden;
+  height: 0;
+  transition: height 3s ease-out;
+  box-sizing: border-box;
+}
+
+.counpon-info-item {
+  box-sizing: border-box;
+  font-size: 28rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #939393;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56rpx;
+}
+.pr-50{
+  padding-right: 50rpx;
+  padding-left: 88rpx;
+}
+.counpon-info-item .title {
+  /* color: #000000; */
+  color: #000018;
+}
+
+.counpon-info-item .subtitle {
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #939393;
+}
+
+ .count-num {
+  font-size: 32rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  color: #181818;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  align-self: stretch;
+  flex: 1;
+}
+
+ .sub-count-num {
+  font-size: 32rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #939393;
+}
+
+.is_toggle {
+  height: auto;
+}
+.normal-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  align-self: stretch;
+  min-height: 112rpx;
+}
+.normal-title {
+  font-size: 28rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #000018;
+}
+
+.normal-title-unit {
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #4a4a4a;
+}
+
+.normal-num {
+  font-size: 32rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: right;
+  color: #000018;
+  display: flex;
+  align-items: center;
+}
+.sku-count-item:last-child{
+  padding-bottom: 20rpx;
+}
+/* 统计数据列表 end */
+.color-red{
+  color: #FE324B;
+}

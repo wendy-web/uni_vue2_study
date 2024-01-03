@@ -1,0 +1,5 @@
+<!--component/banner-ads/index.wxml-->
+<view class="ads" wx:if="{{!isError}}">
+  <ad-custom binderror="adError" bindload="adLoad" unit-id="adunit-2c807ca64ef6c342"></ad-custom>
+  <!-- <ad-custom binderror="adError" bindload="adLoad" unit-id="adunit-1984f6e1a66f81fa"></ad-custom> -->
+</view>

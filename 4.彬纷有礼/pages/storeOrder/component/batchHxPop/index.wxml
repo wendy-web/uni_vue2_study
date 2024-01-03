@@ -1,0 +1,261 @@
+<!--pages/phaseIII/useCoupon/component/checkOrder/index.wxml-->
+<view class="box">
+  <!-- 核销确认弹窗 -->
+  <van-popup show="{{confirmPopShow}}" data-popname="confirmPopShow" z-index="999" custom-style="background-color: transparent;" lock-scroll>
+    <view class="icon-warn-box" wx:if="{{reqResultCode < 1 || reqResultCode == 2}}">
+      <image class="icon_warn" wx:if="{{reqResultCode < 1}}" src="{{file_url_9m}}/icon_warn.png" mode="aspectFit" />
+      <image class="icon_warn" wx:if="{{reqResultCode == 2}}" src="{{file_url_9m}}/icon_success.png" mode="aspectFit" />
+    </view>
+    <view class="order-box {{reqResultCode >0 ?'apply-success':''}}">
+      <view class="head-box">
+        <block wx:if="{{reqResultCode == -1}}">
+          <view class="head-title">
+            <text>确认核销</text>
+            <text class="apply-fail">{{reqSuccessCount.order}}个</text>
+            <text>订单</text>
+          </view>
+          <view class="head-title">
+            <text>共</text>
+            <text class="apply-fail">{{reqSuccessCount.num}}{{reqSuccessCount.unit}}</text>
+            <text>？</text>
+          </view>
+        </block>
+        <!-- 成功提交信息 -->
+        <block wx:else>
+          <view class="apply-title">
+            <text>成功提交</text>
+            <text class="{{reqSuccessCount.order>0?'apply-ok':'apply-fail'}}">{{reqSuccessCount.order}}个</text>
+            <text>订单</text>
+          </view>
+          <view class="apply-title">
+            <text>共</text>
+            <text class="{{reqSuccessCount.order>0?'apply-ok':'apply-fail'}}">{{reqSuccessCount.num}}{{reqSuccessCount.unit}}</text>
+          </view>
+        </block>
+      </view>
+      <view class="sku-box">
+        <!-- reqResultCode == -1 未核销前，按照sku归类显示总数 -->
+        <block wx:if="{{reqResultCode == -1}}">
+          <block wx:for="{{group_sku_arr}}" wx:key="key">
+            <view class="sku-group" wx:if="{{item.count>0}}">
+              <view>{{item.group}}</view>
+              <view>
+                <text class="sku-group-num">{{item.count}}</text>
+                <text class="sku-group-unit">{{item.group_unit}}</text>
+              </view>
+            </view>
+            <view class="sku-item" wx:for="{{item.list}}" wx:key="key" wx:for-item="orderInfo" wx:if="{{orderInfo.checked}}">
+              <block wx:if="{{orderInfo.checked}}">
+                <view>
+                  <text>核销数量：</text>
+                  <text class="sku-num">{{orderInfo.count_sj_all}}</text>
+                  <text space="nbsp"> {{orderInfo.sku_info.unit}}</text>
+                </view>
+                <!-- <view>
+                  <text>配送商：</text>
+                  <text class="sku-item-title">{{orderInfo.a_jxs}}</text>
+                </view> -->
+                <view>
+                  <text>产品名称：</text>
+                  <text class="sku-item-title">{{orderInfo.sku_info.sku_name}}</text>
+                </view>
+                
+              </block>
+            </view>
+
+          </block>
+        </block>
+        <block wx:else>
+
+          <block wx:for="{{reqList}}" wx:key="key">
+            <view class="sku-group" wx:if="{{item.count>0}}">
+              <view>{{item.group}}</view>
+              <view>
+                <text wx:if="{{reqResultCode != -1}}" class="sku-group-unit">成功核销</text>
+                <text class="sku-group-num">{{item.count}}</text>
+                <text class="sku-group-unit">{{item.group_unit}}</text>
+              </view>
+            </view>
+            <view class="sku-item" wx:for="{{item.list}}" wx:key="key" wx:for-item="orderInfo" wx:if="{{orderInfo.checked}}">
+              <block wx:if="{{orderInfo.checked}}">
+                <view>
+                  <text>核销数量：</text>
+                  <text class="sku-num">{{orderInfo.count_sj}}</text>
+                  <text space="nbsp"> {{orderInfo.sku_info.unit}}</text>
+                </view>
+                <view>
+                  <text>配送商：</text>
+                  <text class="sku-item-title">{{orderInfo.a_jxs}}</text>
+                </view>
+                <view>
+                  <text>产品名称：</text>
+                  <text class="sku-item-title">{{orderInfo.sku_info.sku_name}}</text>
+                </view>
+                <!-- 订单号 || 失败原因 -->
+                <view>
+                  <text>订单号：</text>
+                  <text>{{orderInfo.check_no}}</text>
+                </view>
+                <block wx:if="{{orderInfo.reqResult.code==0&&orderInfo.reqResult.msg}}">
+                  <view class="apply-fail">
+                    <text>失败原因：</text>
+                    <text>{{orderInfo.reqResult.msg}}</text>
+                  </view>
+                </block>
+                <!-- 右上角的提交状态 -->
+                <!-- <view class="apply-status {{item.reqResult.code==0?'apply-status-fail':''}}" wx:if="{{item.reqResult.code==1 || item.reqResult.code==0}}"> -->
+                <view class="apply-status {{orderInfo.reqResult.code==0?'apply-status-fail':''}}" wx:if="{{orderInfo.reqResult.code==1 || orderInfo.reqResult.code==0}}">
+                  <text>{{orderInfo.reqResult.code==1?'核销成功':'核销失败'}}</text>
+                </view>
+              </block>
+            </view>
+
+          </block>
+        </block>
+      </view>
+      <view class="foot-box">
+        <!-- reqResultCode: -1默认，0全部失败，1部分成功，2全部成功  -->
+        <block wx:if="{{reqResultCode == -1}}">
+          <view class="shop-address">
+            <text>为保障核销数准确，请清点数量后再确认 核销收货</text>
+          </view>
+          <view class="operate-box">
+            <view class="btn-cancel" bind:tap="onClose" data-popname="confirmPopShow">返回</view>
+            <view class="btn-confirm" bind:tap="confirmHxAll">确定</view>
+          </view>
+        </block>
+        <!-- 关闭操作：回到一键返货页面 -->
+        <block wx:else>
+          <view class="operate-box">
+            <view class="btn-cancel" bind:tap="goBackApply" data-popname="confirmPopShow">关闭</view>
+          </view>
+        </block>
+      </view>
+    </view>
+
+  </van-popup>
+  <!-- 批量核销弹窗：多选 -->
+  <van-popup show="{{selectPopShow}}" bind:close="onClose" data-popname="selectPopShow" position="bottom" z-index="999" custom-style="background-color: transparent;" custom-class="select-hx-pop" lock-scroll>
+    <view bind:tap="onClose" data-popname="selectPopShow" class="icon_close_box">
+      <image class="icon_close" src="{{file_url_9m}}/icon_close.png" mode="aspectFit" />
+    </view>
+    <view class="select-hx-box ">
+      <view class="select-hx-title" catch:touchmove="nopeTouch">核销确认</view>
+      <!-- 当前选中的 订单 -->
+      <view class="current-select-box" wx:if="{{defaultItem}}" catch:touchmove="nopeTouch">
+        <van-checkbox value="{{currentBox}}" checked-color="#009944" custom-class="radio-container" label-class="radio-label" bind:change="checkboxChange" data-id="{{defaultItem.id}}" data-boxname="currentBox" data-boxvalue="{{currentBox}}">
+          <view class="select-item-box {{currentBox ? 'radio-active' : ''}} ">
+            <view class="apply-info-box">
+              <view>
+                <text>申请：</text>
+                <text class="apply-num">{{defaultItem.count_dh}}</text>
+                <text space="nbsp"> {{defaultItem.sku_info.unit}}</text>
+              </view>
+              <view>
+                <text>核销：</text>
+                <text class="apply-num">{{defaultItem.count_sj}}</text>
+                <text space="nbsp"> {{defaultItem.sku_info.unit}}</text>
+
+              </view>
+            </view>
+            <view class="order-info-item">
+              <text>配送商：</text>
+              <text class="order-info-name">{{defaultItem.a_jxs}}</text>
+            </view>
+            <view class="order-info-item">
+              <text>产品名称：</text>
+              <text class="order-info-name">{{defaultItem.sku_info.sku_name}}</text>
+            </view>
+            <view class="order-info-item">
+              <text>订单号：</text>
+              <text class="order-info-name">{{defaultItem.check_no}}</text>
+            </view>
+          </view>
+        </van-checkbox>
+      </view>
+      <!-- 还有其它待核销的订单 -->
+      <view class="more-select-box " wx:if="{{hxList.length}}">
+        <view class="more-select-title" catch:touchmove="nopeTouch">
+          <text>您还有以下</text>
+          <text class="title-red">{{hxListLength}}个返货订单</text>
+          <text>可以确认核销，可勾选批量确认</text>
+        </view>
+        <block wx:for="{{hxList}}" wx:key="key">
+          <view class="brand-box">
+            <van-checkbox value="{{item.checked}}" checked-color="#009944" custom-class="radio-container" label-class="radio-label" bind:change="checkboxGroup" data-groupname="{{item.group}}" data-boxvalue="{{item.checked}}">
+              <view class="brand-title">{{item.group}}</view>
+            </van-checkbox>
+          </view>
+          <view class="current-select-box">
+            <van-checkbox-group value="{{ item.checkBoxList }}" bind:change="onChangeGroup" data-groupname="{{item.group}}">
+              <van-checkbox data-id="id" name="{{orderItem.id}}" checked-color="#009944" custom-class="radio-container" label-class="radio-label" wx:for="{{item.list}}" wx:key="key" wx:for-item="orderItem">
+                <view class="select-item-box {{orderItem.checked ? 'radio-active' : ''}} ">
+                  <view class="apply-info-box">
+                    <view>
+                      <!-- <text>id：{{orderItem.id}}；{{ item.checkBoxList }}</text> -->
+                      <text>申请：</text>
+                      <text class="apply-num">{{orderItem.count_dh}}</text>
+                      <text space="nbsp"> {{orderItem.sku_info.unit}}</text>
+                    </view>
+                    <view>
+                      <text>核销：</text>
+                      <text class="apply-num">{{orderItem.count_sj}}</text>
+                      <text space="nbsp"> {{orderItem.sku_info.unit}}</text>
+                    </view>
+                  </view>
+                  <view class="order-info-item">
+                    <text>配送商：</text>
+                    <text class="order-info-name">{{orderItem.a_jxs}}</text>
+                  </view>
+                  <view class="order-info-item">
+                    <text>产品名称：</text>
+                    <text class="order-info-name">{{orderItem.sku_info.sku_name}}</text>
+                  </view>
+                  <view class="order-info-item">
+                    <text>订单号：</text>
+                    <text class="order-info-name">{{orderItem.check_no}}</text>
+                  </view>
+                </view>
+              </van-checkbox>
+            </van-checkbox-group>
+          </view>
+        </block>
+        
+      </view>
+      <!-- 底部操作按钮：全部，拒绝核销，提交 -->
+      <view class="footer-box safeArea">
+        <view class="select-all-box">
+          <!-- <van-checkbox-group value="{{ allBox }}" bind:change="checkboxChange" data-boxname="allBox" data-boxvalue="{{allSelected}}">
+            <van-checkbox name="all" >全选</van-checkbox>
+          </van-checkbox-group> -->
+          <van-checkbox value="{{ allSelected }}" bind:change="checkboxSelectAll" checked-color="#009944">全选</van-checkbox>
+        </view>
+        <view class="footer-operate-box ">
+          <van-button custom-class="btn-refuse-hx" bind:click="openRefusePop" disabled="{{!all_selected_count}}">拒绝核销</van-button>
+          <van-button custom-class="btn-submit ml-40" bind:click="openConfirmPop" disabled="{{!all_selected_count}}">提交</van-button>
+        </view>
+      </view>
+    </view>
+
+  </van-popup>
+  <!-- 拒绝核销 提醒弹窗 -->
+  <van-popup show="{{refusePopShow}}" bind:close="onClose" data-popname="refusePopShow" z-index="999" custom-style="background-color: transparent;" lock-scroll>
+    <view class="icon-warn-box">
+      <image class="icon_warn" wx:if="{{reqResultCode < 1}}" src="{{file_url_9m}}/icon_warn.png" mode="aspectFit" />
+      <image class="icon_warn" wx:if="{{reqResultCode == 2}}" src="{{file_url_9m}}/icon_success.png" mode="aspectFit" />
+    </view>
+    <view class="refuse-hx-box">
+      <view class="remind-title">是否确认取消核销订单?</view>
+      <view class="operate-box">
+        <view class="btn-cancel" bind:tap="onClose" data-popname="refusePopShow">取消</view>
+        <view class="btn-confirm" bind:tap="cancelHx" data-popname="refusePopShow">确定</view>
+      </view>
+    </view>
+  </van-popup>
+  <!-- 取消核销弹出提示语 -->
+  <van-popup show="{{cancelHxTipsShow}}" bind:close="onClose" data-popname="cancelHxTipsShow" z-index="999" style="--overlay-background-color:'#ffffff';" custom-style="background-color: transparent;">
+    <view class="cancel-hx-box">
+      <view>{{cancelHxTips}}</view>
+    </view>
+  </van-popup>
+</view>

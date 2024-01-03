@@ -1,0 +1,359 @@
+<!--pages/shopActivity/unboxAct/base/index.wxml-->
+<view class="align-center" style="height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;box-sizing:border-box; padding-top:{{navBarSystem?navBarSystem.statusBarHeight:'20'}}px">
+  <view bindtap="back" class=" nav-bar__button nav-bar__btn_goback white"></view>
+</view>
+<view class="empty-head" style="height:35px;box-sizing:border-box; ">
+<!-- <view class="empty-head" style="height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;box-sizing:border-box; "> -->
+</view>
+<view class="banner-box">
+  <!-- banner图 -->
+  <easy-loadimage index="3" imageSrc="{{banner}}" imageClass="banner" mode="aspectFit"></easy-loadimage>
+  <!-- 右侧活动规则、奖励浮标 -->
+  <view class="buoy-box">
+    <view class="buoy-item" bindtap="actRule">活动规则</view>
+    <view class="buoy-item" bindtap="goToRecord">奖励记录</view>
+  </view>
+
+  <!-- 活动未结束:距离结束倒数天 -->
+  <block wx:if="{{!act_state.act_end}}">
+    <!-- 活动进行中倒计时模块 -->
+    <view class="act-time-box">
+      <!-- 大背景 -->
+      <easy-loadimage index="2" wx:if="{{act_state.count_down_timestamp}}" imageSrc="{{bg_countdown}}" imageClass="bg-countdown" mode="scaleToFill">
+      </easy-loadimage>
+      <view class="act-timer-box" wx:if="{{act_state.count_down_timestamp}}">
+        <!-- 预热 -->
+        <block wx:if="{{act_state.act_yure}}">
+          <view>距离活动开始</view>
+          <view class="unbox-count-down-box">
+            <van-count-down time="{{ act_state.count_down_timestamp }}" bind:finish="actTimerFinished" format="DD天HH时mm分ss秒" style="--count-down-text-color:#E21E00;--count-down-font-size:32rpx;"></van-count-down>
+          </view>
+        </block>
+        <!-- 进行中 -->
+        <block wx:if="{{act_state.act_ing}}">
+          <block wx:if="{{act_state.count_down_format == 'DD天'}}">
+            <view>活动进行中</view>
+            <view class="unbox-count-down-box">
+              <text>距离活动结束还剩</text>
+              <van-count-down time="{{ act_state.count_down_timestamp }}" bind:finish="actTimerFinished" format="{{ act_state.count_down_format }}" style="--count-down-text-color:#E21E00;--count-down-font-size:32rpx;"></van-count-down>
+            </view>
+          </block>
+          <block wx:else>
+            <view>距离活动结束还剩</view>
+            <view class="unbox-count-down-box">
+              <van-count-down time="{{ act_state.count_down_timestamp }}" bind:finish="actTimerFinished" format="{{ act_state.count_down_format }}" style="--count-down-text-color:#E21E00;--count-down-font-size:32rpx;"></van-count-down>
+            </view>
+          </block>
+        </block>
+      </view>
+
+    </view>
+  </block>
+  <!-- 活动已结束 -->
+  <block wx:else>
+    <block wx:if="{{actInfo.rev_num}}">
+      <!-- 中奖已领奖 -->
+      <view class="act-end-box" wx:if="{{actInfo.rev_num || actInfo.rev_time}}">
+        <block wx:if="{{userInfo.condition != 2}}">
+          <view class="btn-get-award" bindtap="useCoupon">去使用</view>
+        </block>
+        <block wx:else>
+          <view class="btn-get-award" bindtap="goToRecord">查看详情</view>
+        </block>
+      </view>
+
+    </block>
+    <!-- 未中奖 -->
+    <block wx:else>
+      <view class="act-time-box">
+        <!-- 活动已结束 -->
+        <easy-loadimage index="2" imageSrc="{{bg_title_end}}" imageClass="bg-countdown" mode="scaleToFill">
+        </easy-loadimage>
+
+      </view>
+    </block>
+  </block>
+
+</view>
+<!-- 1张券兑换1罐红牛 -->
+<view class="act-remind-box">
+  <easy-loadimage index="2" imageSrc="{{unbox_banner_rule}}" imageClass="title-exchange-rule" mode="scaleToFill">
+  </easy-loadimage>
+
+</view>
+<!-- 活动开箱进度模块 -->
+<view class="act-progress-box {{act_state.act_yure?'flex-column-evenly':''}}">
+  <!-- 活动开箱内容 -->
+  <!-- 当前累计获得券数 -->
+  <view class="act-progress ">
+    <!-- 进度条:num minNum maxNum -->
+    <view wx:if="{{actInfo}}" class="box-progress ">
+      <box-progress wx:if="{{actInfo}}" actInfo="{{actInfo}}"></box-progress>
+      <!-- <block wx:if="{{act_state.act_end}}">
+        <block wx:if="{{actInfo.rev_num}}">
+          <view class="act_updatePop_title"></view>
+          <view class="act_updatePop_title">累计获得<text class="act_updatePop_num"> {{actInfo.rev_num}}</text>张红牛活动券</view>
+        </block>
+        <block wx:else>
+          <view class="act_updatePop_title mgt20">未能获得开箱奖励</view>
+          <view class="act_updatePop_title">您的店铺未达到开箱目标</view>
+        </block>
+      </block>
+      <block wx:if="{{act_state.act_ing}}">
+        <block wx:if="{{actInfo.s_num >= actInfo.kpi_num}}">
+          <view class="act_updatePop_title">您的店铺已达到开箱目标</view>
+          <view class="act_updatePop_title">累计可获得<text class="act_updatePop_num">{{actInfo.act_coupon_num||0}}</text>张红牛活动券</view>
+        </block>
+        <block wx:else>
+          <view class="act_updatePop_title"></view>
+          <view class="act_updatePop_title">再开<text class="act_updatePop_num">{{actInfo.kpi_num-actInfo.s_num}}</text>箱，即可获得<text class="act_updatePop_num">{{actInfo.act_coupon_num}}</text>张红牛活动券</view>
+        </block>
+      </block>
+      <view class="box ">
+        <view class="num-box">
+          <view class="num">{{actInfo.s_num}}</view>
+          <view class="title">当前开箱</view>
+        </view>
+        <view class="progress-box">
+          <view class="progress-item">
+            <view class="progress-border">
+              <view class="progress">
+                <view class="progress-inner" style="--width:{{progressPercent}}%"></view>
+              </view>
+            </view>
+          </view>
+          <view class="act-tips">获得的活动券 = 开箱目标 × {{actInfo.kpi_1}}倍</view>
+          <view class="max-box">
+            <view class="min-num">{{actInfo.kpi_num}}箱</view>
+            <image class="icon-box" src="{{icon_box}}" mode="aspectFit"></image>
+            <view class="title ">开箱目标</view>
+          </view>
+        </view>
+      </view> -->
+
+    </view>
+  </view>
+  <view wx:if="{{act_state.act_end}}" class="btn-scan-box">活动已结束</view>
+  <view wx:if="{{act_state.act_ing}}" class="btn-scan-box" bindtap="goScan">点击开箱扫码得红牛</view>
+  <easy-loadimage index="4" imageSrc="{{bg_act_progress}}" imageClass="bg-act-progress" >
+  </easy-loadimage>
+</view>
+<view id="act-rule"></view>
+<!-- 活动说明模块 -->
+<view class="act-explain-box">
+  <!-- 活动说明 icon-->
+  <easy-loadimage index="5" imageSrc="{{icon_act_explain}}" imageClass="icon-act" mode="aspectFit">
+  </easy-loadimage>
+  <view class="inner-box">
+    <view class="title">活动主题</view>
+    <view class="content">开箱扫码赢红牛，中国红牛大回馈</view>
+    <view class="title">活动时间</view>
+    <!-- 活动时间取接口数据 -->
+    <view class="content">{{actInfo.s_time}}至{{actInfo.e_time}}</view>
+    <!-- <view class="content">{{actInfo.s_time}}至2021-09-26 23:59:59</view> -->
+    <view class="title">活动对象</view>
+    <view class="content">本活动参与对象为系统随机选择的深圳市及惠州市范围内店铺，凡在“彬纷有礼”小程序内显示该活动页面的店铺均可参加。</view>
+    <view class="title">参与方式</view>
+    <view class="content">活动开始后，有效开箱数≥1，即为参加活动。（有效开箱数指开箱扫码得到的有效红包个数）。</view>
+  </view>
+</view>
+<!-- 活动奖励规则模块 -->
+<view class="act-explain-box">
+  <!-- 活动奖励规则 icon-->
+  <easy-loadimage index="6" imageSrc="{{icon_act_rule}}" imageClass="icon-act" mode="aspectFit">
+  </easy-loadimage>
+  <view class="inner-box">
+    <view class="title">奖券发放方式及说明</view>
+    <view class="content">
+      根据店铺在活动期间累计的有效红牛开箱数，达到相应的开箱目标进行奖励，系统将在活动结束后，自动发放红牛活动券到活动达标的“彬纷有礼”店铺账户。（1张活动券可兑换1罐250ml红牛维生素功能饮料）
+    </view>
+
+    <view class="title">开箱奖励规则</view>
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">1</view>
+      </view>
+      <view class="content-right">
+        <view>
+          活动结束后，店铺累计的有效红牛开箱数达到相应的开箱目标，按照开箱目标进行奖励；有效开箱数达到5箱奖励5张活动券，10箱奖励12张活动券，20箱奖励24张活动券，30箱奖励36张活动券。（有效开箱数＞30箱按照30箱发放奖励）
+        </view>
+      </view>
+    </view>
+    <!-- <view class="content">
+      <view class="content-left">
+      </view>
+      <view class="content-right">
+        <view>
+          1）开箱目标在5-20箱的区间，按照1箱1张券的标准奖励；
+        </view>
+      </view>
+    </view>
+
+    <view class="content">
+      <view class="content-left">
+      </view>
+      <view class="content-right">
+        <view>
+          2）开箱目标在21-50箱的区间，按照1箱1.2张券的标准奖励；（不为整数的情况，以四舍五入计算后的结果进行奖励）；
+        </view>
+      </view>
+    </view>
+    <view class="content">
+      <view class="content-left">
+      </view>
+      <view class="content-right">
+        <view>
+          3）开箱目标在51-100箱的区间，按照1箱1.5张券的标准奖励；（不为整数的情况，以四舍五入计算后的结果进行奖励）；
+        </view>
+      </view>
+    </view> -->
+
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">2</view>
+      </view>
+      <view class="content-right">
+        <view>
+          若店铺累计的红牛有效开箱数未能达到开箱目标 ，则无法赢得红牛活动券；
+        </view>
+      </view>
+    </view>
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">3</view>
+      </view>
+      <view class="content-right">
+        <view>
+          若活动期间活动店铺有效开箱数达到20箱，可参与“陈列中国红牛 奖红牛一箱”活动（可前往彬纷有礼小程序“热门活动”模块了解相应活动详情）
+        </view>
+      </view>
+    </view>
+    <view class="title">奖券使用及有效期</view>
+    <view class="content">本次活动依据“彬纷有礼”现有拉环奖券的核销流程，请在{{actInfo.exp_time}}前向上级配送商申请核销红牛活动券，逾期未申请核销作废。</view>
+
+  </view>
+</view>
+<!-- 活动注意事项模块 -->
+<!-- <view class="act-explain-box">
+  <easy-loadimage index="6" imageSrc="{{icon_act_attention}}" imageClass="icon-act" mode="aspectFit">
+  </easy-loadimage>
+  <view class="inner-box">
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">1</view>
+      </view>
+      <view class="content-right">
+        <view>
+          活动期间暂不能对店铺进行转让、加入其他店铺或修改店铺信息，带来的不便请您谅解。
+        </view>
+      </view>
+    </view>
+
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">2</view>
+      </view>
+      <view class="content-right">
+        <view>
+          活动结束后，3日内掌柜（店长）需在"彬纷有礼"小程序活动页面领取开箱活动奖励，逾期未领取，视为放弃奖励。
+        </view>
+      </view>
+    </view>
+
+
+
+  </view>
+</view> -->
+
+<!-- 活动免责说明模块 -->
+<view class="act-explain-box">
+  <!-- 活动免责说明 icon-->
+  <easy-loadimage index="7" imageSrc="{{icon_act_note}}" imageClass="icon-act" mode="aspectFit">
+  </easy-loadimage>
+  <view class="inner-box">
+    <view class="color-black">活动秉着公平、公正、公开、真实的原则，对于本次活动，我司声明以下免责条款，参加活动前请您仔细阅读以下条款，参加本次活动即表明您了解并接受以下所有条款：</view>
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">1</view>
+      </view>
+      <view class="content-right">
+        <view>免责事项</view>
+        <view>
+          （1）本活动期间发生任何不可抗力事件使本活动或本次目的不能实现，我司因此免责。不可抗力是指不能控制、不可预见或不能避免，即使预见亦无法避免的事件，该事件使任何一方根据本协议履行其全部或部分义务已不可能。包括社会异常事件、自然灾害或政府管制行为而造成的非基于我司过错的行为。
+        </view>
+        <view>（2）您自身主观过错、恶意或不按正常流程操作、填写信息不真实、不完整等类似情形致使此次活动无效、无法核验您真实信息而不能领取奖品的，我司免责。
+        </view>
+        <view>
+          （3）若由于您的原因，导致我司遭受损失的，我司有权向您追偿。本规则所称“损失”包括但不限于因涉诉、涉仲裁而产生的诉讼费、律师费、调查取证费、行政处罚或第三人索赔等。
+        </view>
+      </view>
+    </view>
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">2</view>
+      </view>
+      <view class="content-right">
+        <view>
+          本活动的奖品不可退不折现，除非产品本身质量问题，一律不得退换。若奖品的价值需按照国家法律规定缴纳税费的，由您自行缴税。
+        </view>
+      </view>
+    </view>
+
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">3</view>
+      </view>
+      <view class="content-right">
+        <view>
+          我司可以根据市场环境、参与情况随时暂停或终止活动。活动内容如果有调整或补充，请以最新公告为准。
+        </view>
+      </view>
+    </view>
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">4</view>
+      </view>
+      <view class="content-right">
+        <view>
+          针对违规骗取奖励的行为，我司将不予发放奖励、追回相关奖励或封停账号，并追究其法律责任。
+        </view>
+      </view>
+    </view>
+    <view class="content">
+      <view class="content-left">
+        <view class="bg-num" style="background-image: url({{bg_num}});">5</view>
+      </view>
+      <view class="content-right">
+        <view>
+          本次活动在法律允许范围内，其修改权、更新权及最终解释权均属深圳市天兴诚科技有限公司，如有任何问题，请与平台客服联系，客服热线400-870-7076。
+        </view>
+      </view>
+    </view>
+
+
+  </view>
+</view>
+
+
+
+<!-- 返回顶部 -->
+<view class="back-to-top" bindtap="scrollTop">
+  <image class="icon-arrow-up" src="{{icon_arrow_up}}" mode="aspectFit"></image>
+  <view>返回顶部</view>
+</view>
+<!-- 领奖成功弹窗 -->
+<actCouponPop show="{{act_pop_success}}" extClass="dailyPop2" top="top20" titleImg="{{bg_act_get_award}}" iconImg="{{bg_act_get_award_icon}}">
+  <!-- 活动倒计时天数-->
+  <view class="act_pop_prize_title">红牛活动券：<text class="act_updatePop_num">{{prizeInfo.rev_num}}</text>张</view>
+  <!-- <view class="act_pop_prize_subtitle mgt20">本期活动开箱累计：{{actInfo.s_num}}箱</view> -->
+  <view class="act_pop_prize_tips mgt30">活动券将发放到“彬纷有礼-可用卡券”</view>
+  <view class="act_pop_prize_tips">有效期至{{actInfo.exp_date}}</view>
+  <view class="btn-scan-box mgt70" bindtap="useCoupon">去使用</view>
+</actCouponPop>
+<!-- 活动已结束 -->
+<actCouponPop show="{{act_EndPop}}">
+  <view class="act-endpop-box">
+    <view class="act-endpop-title">活动已结束</view>
+    <view class="act-endpop-tips">下期活动敬请期待····</view>
+  </view>
+</actCouponPop>

@@ -1,0 +1,88 @@
+@import './reset.scss';
+// page {
+//     width: 100vw;
+//     height: 100vh;
+//     overflow: hidden;
+//     background: linear-gradient(180deg,#ffffff, #fafbfd 45%, #fafbfd);
+//     >view {
+//         height: 100%;
+//         overflow: auto;
+//     }
+// }
+// 更多icon与文本
+.text_arrow_icon {
+    font-size: 26rpx;
+    line-height: 40rpx;
+    display: flex;
+    align-items: center;
+    .close_icon {
+        margin-left: 6rpx;
+        line-height: 20rpx;
+    }
+}
+
+// 弹窗
+.dia {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dia_cont {
+    width: 622rpx;
+    background: #ffffff;
+    border-radius: 24rpx;
+}
+
+// 文本显示一会，超出省略，需要自行给width
+.one-line {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+// 自定义tabbar的底部留白
+// .nav_cont {
+// 	padding-bottom: 110rpx;
+// 	padding-bottom: calc(110rpx + constant(safe-area-inset-bottom)); /* 兼容 IOS<11.2 */
+// 	padding-bottom: calc(110rpx + env(safe-area-inset-bottom)); /* 兼容 IOS>11.2 */
+// }
+
+/*一像素边框*/
+
+.border-b {
+    position: relative;
+}
+
+.border-b:after {
+    position: absolute;
+    content: '';
+    width: 100%;
+    left: 0;
+    top: 0;
+    height: 1px;
+    background-color: #e3e5e9;
+    -webkit-transform: scale(1, 0.5);
+    transform: scale(1, 0.5);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+}
+
+// .van-submit-bar__safe {
+//     padding-bottom: 32rpx;
+//     height: constant(safe-area-inset-bottom);
+//     height: env(safe-area-inset-bottom);
+//     background-color: #FFFFFF;
+//     box-sizing: border-box;
+// }
+.van-submit-bar-safe {
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+}
