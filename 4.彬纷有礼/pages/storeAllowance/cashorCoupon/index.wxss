@@ -1,0 +1,578 @@
+/* pages/storeAllowance/cashorCoupon/index.wxss */
+page{
+  box-sizing: border-box;
+  background-color: #fed3ad;
+}
+/*箭头部分*/
+.align-center {
+  position: fixed;
+  left: 20rpx;
+  top: 0;
+  display: flex;
+  align-items: center;
+  z-index: 25;
+  font-size: 32rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #ffffff;
+  line-height: 36rpx;
+  letter-spacing: 3.2rpx;
+  width: 100%;
+}
+
+.navigator {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.nav-bar__button {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  font-size: 12px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 1em 2em;
+}
+
+.nav-bar__btn_goback {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='24' viewBox='0 0 12 24'%3E  %3Cpath fill-opacity='.9' fill-rule='evenodd' d='M10 19.438L8.955 20.5l-7.666-7.79a1.02 1.02 0 0 1 0-1.42L8.955 3.5 10 4.563 2.682 12 10 19.438z'/%3E%3C/svg%3E");
+}
+
+.nav-bar__btn_goback.white {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='24' viewBox='0 0 12 24'%3E  %3Cpath fill-opacity='.9' fill-rule='evenodd' d='M10 19.438L8.955 20.5l-7.666-7.79a1.02 1.02 0 0 1 0-1.42L8.955 3.5 10 4.563 2.682 12 10 19.438z' fill='%23ffffff'/%3E%3C/svg%3E");
+}
+
+.bg-head-28th {
+  /* width: 384rpx;
+  height: 106rpx; */
+  width: 307rpx;
+  height: 84rpx;
+  position: absolute;
+  left:20%;
+  margin: 0 auto;
+}
+
+page {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.box {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+}
+
+.box .box-content {
+  flex: 1;
+  overflow: scroll;
+  flex-shrink: 0;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+}
+
+/* page 背景 */
+.bg-page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 顶部背景 */
+.head-box {
+  width: 100%;
+  height: var(--height);
+  box-sizing: border-box;
+  position: relative;
+}
+
+.head-box .bg-head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: var(--height);
+  width: 100%;
+
+}
+
+.box-content .rule-box {
+  position: relative;
+  height: 105rpx;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.rule-box .bg-28th {
+  width: 100%;
+  height: 105rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.rule-box .rule-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 168rpx;
+  height: 64rpx;
+  border-radius: 46rpx 0 0 46rpx;
+  background-color: #ffb66e;
+  color: #c90023;
+  font-size: 24rpx;
+
+}
+
+.rule-item .icon-q {
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 10rpx;
+}
+
+.box-code-unopen {
+  box-sizing: border-box;
+  width: 100%;
+  /* min-height: 1140rpx; */
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  flex-shrink: 0;
+  z-index: 1;
+  position: relative;
+  padding-top: 50rpx;
+}
+
+.box-code-unopen .bg-select-box {
+  position: absolute;
+  top: 0;
+  /* bottom: 0; */
+  margin: auto;
+  width: 100%;
+  /* height: 100%; */
+  min-height: 1140rpx;
+  z-index: -1;
+}
+
+.box-code-unopen .select-box {
+  /* background-color: teal; */
+  /* flex: 1; */
+  box-sizing: border-box;
+  margin: 0rpx 50rpx 0rpx 50rpx;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.select-box .coupon-box {
+  position: relative;
+  width: 100%;
+  /* flex: 0.68; */
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 600rpx;
+}
+
+.box-code-unopen .reward-box {
+  /* background-color: thistle; */
+  position: relative;
+  /* width: 100%;
+  height: 100%; */
+  width: 100%;
+  height: 416rpx;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.coupon-title {
+  font-size: 40rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #ca8249;
+
+}
+
+.coupon-title .coupon-title-key {
+  color: #B95100;
+}
+
+.coupon-box .coupon-title-tips {
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #a66940;
+}
+
+.coupon-box .coupon-item {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  padding-top: 3.5%;
+}
+
+.coupon-item .coupon-item-top {
+  flex-shrink: 0;
+  width: 600rpx;
+  position: relative;
+  box-sizing: border-box;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 120rpx;
+}
+
+
+
+.coupon-item-top .coupon-item-title {
+  font-size: 38rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #000000;
+}
+
+.coupon-item-top .coupon-item-num {
+  font-size: 96rpx;
+  font-family: Alimama ShuHeiTi, Alimama ShuHeiTi-Bold;
+  font-weight: 700;
+  color: #f51e19;
+}
+
+.coupon-item-top .coupon-item-unit {
+  font-size: 28rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  color: #000000;
+}
+
+.gap-unopen-coupon-box{
+  position: relative;
+  z-index: 1;
+  /* background-color: #000000; */
+  height: 33rpx;
+  width: 588rpx;
+}
+.gap-unopen-coupon-box .gap-unopen-coupon{
+  height: 35rpx;
+  width: 590rpx;
+}
+.coupon-item .coupon-item-bottom {
+  flex-shrink: 0;
+  width: 600rpx;
+  border-radius: 0 0 46rpx 46rpx;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.coupon-item-bottom .coupon-explain {
+  font-size: 32rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #000000;
+  margin-bottom: 10rpx;
+}
+
+.coupon-explain .coupon-explain-num {
+  color: #F51E19;
+}
+
+.coupon-item-bottom .coupon-item-tips {
+  font-size: 22rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #ef3b13;
+
+}
+.coupon-item-tips:last-child{
+  margin-bottom: 15rpx;
+}
+
+.bg-unopen-coupon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+
+.bg-select-reward {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* height: 100%;
+  width: 100%; */
+  z-index: -1;
+  width: 620rpx;
+height: 400rpx;
+margin: 0 auto;
+}
+
+.reward-box .reward-money {
+  font-size: 68rpx;
+  font-family: Alimama ShuHeiTi, Alimama ShuHeiTi-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #f51e19;
+  margin-top: 20rpx;
+  box-sizing: border-box;
+}
+
+.reward-money .reward-num {
+  font-size: 96rpx;
+  font-family: Alimama ShuHeiTi, Alimama ShuHeiTi-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #f51e19;
+}
+
+.opened-btn-box {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex: 1;
+}
+
+.unopen-btn-reward {
+  width: 328rpx;
+  height: 98rpx !important;
+  border-radius: 56rpx;
+  font-size: 40rpx !important;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #000000;
+  margin: 0 auto;
+  /* background: linear-gradient(139deg, #fd7a14 9%, #f11617 87%) !important; */
+  border: unset !important;
+  padding: unset !important;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-want-reward {
+  width: 328rpx;
+  height: 98rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+/* 箱内码已开 */
+.box-code-opened {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  align-items: center;
+  position: relative;
+  padding-top: 180rpx;
+  flex: 1;
+  flex-shrink: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.box-code-opened .opened-content {
+  height: 410rpx;
+  width: 528rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.box-code-opened .bg-opened {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1320rpx;
+  z-index: -1;
+}
+
+.box-code-opened .opened-title {
+  font-size: 52rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #000000;
+  margin: 0 auto;
+  word-break: break-all;
+}
+
+.box-code-opened .opened-tips {
+  font-size: 28rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #93643c;
+}
+
+.opened-operate-box {
+  width: 100%;
+  position: relative;
+  margin-top: 460rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.opened-operate-box .opened-btn {
+  width: 458rpx;
+  height: 112rpx!important;
+  border-radius: 56rpx;
+  font-size: 40rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #000000;
+  margin: 0 auto;
+  /* background: linear-gradient(139deg, #fd7a14 9%, #f11617 87%); */
+  border: unset;
+  padding: unset;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: unset!important;
+}
+
+.btn-scan-col {
+  width: 458rpx;
+  height: 112rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.opened-operate-box .opened-btn-mini {
+  width: 314rpx;
+  height: 112rpx;
+  border-radius: 56rpx;
+  font-size: 40rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  text-align: center;
+  color: #000000;
+  margin: 0 auto;
+  /* background: linear-gradient(139deg, #fd7a14 9%, #f11617 87%); */
+  background-color: unset!important;
+  border: unset;
+  padding: unset;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-scan {
+  width: 314rpx;
+  height: 112rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.unopen-head-box {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  padding-top: 30rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.img-unopen-title {
+  width: 688rpx;
+  /* height: 97rpx; */
+  height: 84rpx;
+}
+
+.img-2in1 {
+  width: 420rpx;
+  /* height: 86rpx; */
+  height: 74rpx;
+}
+/* 未领取时候的活动规则显示 */
+.unopen-rule{
+  width: 48rpx;
+  height: 192rpx;
+  padding: 0 10rpx;
+  box-sizing: border-box;
+  border-radius: 16rpx 0 0 16rpx;
+  position: absolute;
+  right: 0;
+  top: 28rpx;
+  background-color: #ffb66e;
+  text-align: center;
+  writing-mode: vertical-lr;
+  color: #c90023;
+  font-size: 24rpx;
+  display: flex;
+  align-items:center;
+  justify-content: center;
+  letter-spacing: 4rpx;
+}
+.unopen-rule .icon-q{
+  width: 24rpx;
+  height: 24rpx;
+  margin-bottom: 10rpx;
+}

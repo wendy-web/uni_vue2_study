@@ -1,0 +1,13 @@
+<!-- 活动弹窗 -->
+<view class="fadeIn" wx:if="{{show&&bgImg}}">
+	<view class="weui-mask" bindtap="closePop"></view>
+	<view class="icon-close-box">
+		<image class="icon-close" mode="aspectFit" bindtap="closePop" src="{{closeImg}}"></image>
+		<view class="weui-dialog pop-container" style="background-image:url({{bgImg}});" bindtap="listenTap">
+			<view class="pop-content" style="{{isBottom ? 'bottom:75px;':''}}">
+				<slot></slot>
+			</view>
+			<view wx:if="{{isBottom}}" class="click_btn" bindtap="listenTap"></view>
+		</view>
+	</view>
+</view>

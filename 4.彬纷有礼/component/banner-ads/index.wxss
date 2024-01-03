@@ -1,0 +1,13 @@
+/* component/banner-ads/index.wxss */
+
+.ads{
+  background-color: #FFFFFF;
+  margin: 0rpx 25rpx;
+  /* padding: 8rpx 0px 20rpx 0px; */
+  border-radius: 15rpx;
+  position: relative;
+  overflow: hidden;
+  transform: translate3d(0,0,0);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}

@@ -1,0 +1,59 @@
+/* component/selectCrew/index.wxss */
+.iconSize .img {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+}
+
+.placeholder .box {
+  width: 180rpx;
+  text-align: center;
+}
+
+.placeholder {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.flex_warp{
+  flex-wrap: wrap;
+  display: flex;
+}
+.weui-flex__item{
+  flex: 1;
+}
+.weui-half-screen-dialog__ft{
+  display: none!important;
+}
+.mgt50{
+  margin-top: 50rpx;
+}
+.weui-grid__label {
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 28rpx;
+}
+.scrollHeight{
+  max-height: 50vh;
+  width: 100%;
+  overflow:scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.animation-fade {
+  animation-name: fade;
+  animation-duration: .8s;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+@keyframes fade {
+  0% {
+      opacity: 0
+  }
+
+  100% {
+      opacity: 1
+  }
+}

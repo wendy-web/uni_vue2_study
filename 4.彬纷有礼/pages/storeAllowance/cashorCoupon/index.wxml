@@ -1,0 +1,159 @@
+<!--pages/storeAllowance/cashorCoupon/index.wxml-->
+<view class="align-center" style="height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;box-sizing:border-box; padding-top:{{navBarSystem?navBarSystem.statusBarHeight:'20'}}px">
+  <view bindtap="back" class=" nav-bar__button nav-bar__btn_goback white"></view>
+  <view wx:if="{{openType == 0}}">扫码领奖励</view>
+  <image wx:else class="bg-head-28th" src="{{cashcoupon_file_url}}/bg_head_28th.png" mode="aspectFit" />
+</view>
+<view class="box">
+
+  <!-- 顶部背景 -->
+  <view class="head-box" style="--height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;">
+    <image class="bg-head" src="{{cashcoupon_file_url}}/bg_head.png" />
+  </view>
+  <view class="box-content">
+    <!-- page背景 -->
+    <image class="bg-page" src="{{cashcoupon_file_url}}/bg_page.png" />
+    <!-- 已领取 -->
+    <view class="rule-box" wx:if="{{openType == 0}}">
+      <image class="bg-28th" src="{{cashcoupon_file_url}}/bg_28th.png" mode="aspectFit" />
+      <view class="rule-item" bindtap="openRule">
+        <image class="icon-q" src="{{cashcoupon_file_url}}/icon_q.png" mode="aspectFit" />
+        <view>活动规则</view>
+      </view>
+    </view>
+    <!-- 未领取 -->
+    <view class="unopen-head-box" wx:if="{{openType == 1}}">
+      <image class="img-unopen-title" src="{{cashcoupon_file_url}}/img_unopen_title.png" mode="aspectFit" />
+      <image class="img-2in1" src="{{cashcoupon_file_url}}/img_2in1.png" mode="aspectFit" />
+    </view>
+    <view class="box-code-unopen" wx:if="{{openType == 1}}">
+      <!-- 背景图 -->
+      <image class="bg-select-box" src="{{cashcoupon_file_url}}/bg_select_box.png" />
+      <!-- 活动规则 -->
+      <view class="unopen-rule" bindtap="openRule">
+        <image class="icon-q" src="{{cashcoupon_file_url}}/icon_q.png" mode="aspectFit" />
+        <view>活动规则</view>
+      </view>
+      <view class="select-box">
+        <view class="coupon-box">
+          <view class="coupon-title">
+            <text>可选好礼一：【</text>
+            <text class="coupon-title-key">产品兑换券</text>
+            <text>】</text>
+            <text class="coupon-title-key">额度</text>
+          </view>
+          <view class="coupon-item">
+            <!-- 橙色背景 -->
+            <image class="bg-unopen-coupon" src="{{cashcoupon_file_url}}/bg_unopen_coupon.png" />
+            <view class="coupon-item-top">
+              <view class="coupon-item-title">
+                <text>额度</text>
+                <text class="coupon-item-num">1</text>
+                <text class="coupon-item-unit">个</text>
+              </view>
+            </view>
+            <view class="gap-unopen-coupon-box">
+              <image class="gap-unopen-coupon" src="{{cashcoupon_file_url}}/gap_unopen_coupon2.png" />
+            </view>
+            <view class="coupon-item-bottom">
+              <view class="coupon-explain">
+                <text>每满</text>
+                <text class="coupon-explain-num">3个</text>
+                <text>额度</text>
+                <text>可兑换</text>
+                <text class="coupon-explain-num">2张</text>
+              </view>
+              <view class="coupon-explain">
+                <text>每满</text>
+                <text class="coupon-explain-num">5个</text>
+                <text>额度</text>
+                <text>可兑换</text>
+                <text class="coupon-explain-num">4张</text>
+              </view>
+              <view>
+                <view class="coupon-item-tips">*1张【产品兑换券】可兑换</view>
+                <view class="coupon-item-tips">1罐原味型红牛维生素功能饮料250ml</view>
+              </view>
+              <view class="opened-btn-box" style="flex:0;">
+                <van-button custom-class="unopen-btn-reward" round plain bind:click="chooseType" data-type="2">
+                  <text>我要券</text>
+                  <image class="btn-want-reward" src="{{cashcoupon_file_url}}/btn_want_coupon.png" mode="aspectFit" />
+                </van-button>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="reward-box">
+          <image class="bg-select-reward" src="{{cashcoupon_file_url}}/bg_select_reward_1.png" />
+          <view class="coupon-title">
+            <text>可选好礼二：【</text>
+            <text class="coupon-title-key">现金红包</text>
+            <text>】</text>
+          </view>
+          <view class="reward-money">
+            <text>¥</text>
+            <text space="nbsp" class="reward-num">2.00</text>
+          </view>
+          <view class="opened-btn-box">
+            <van-button custom-class="unopen-btn-reward" round plain bind:click="chooseType" data-type="0">
+              <text>我要红包</text>
+              <image class="btn-want-reward" src="{{cashcoupon_file_url}}/btn_want_reward.png" mode="aspectFit" />
+            </van-button>
+          </view>
+
+        </view>
+      </view>
+    </view>
+    <!-- 箱内码已扫码 -->
+    <view wx:if="{{openType !=1 && openType != -1}}" class="box-code-opened">
+      <image class="bg-opened" src="{{cashcoupon_file_url}}/bg_opened.png" mode="aspectFit" />
+      <view class="opened-content">
+        <view class="opened-title">{{boxdata.msg}}</view>
+        <view class="opened-tips" wx:if="{{boxdata.data.tips}}">{{boxdata.data.tips}}</view>
+      </view>
+      <!-- 操作按钮 -->
+      <view class="opened-operate-box safeArea">
+        <!-- 不是自己扫的箱内码只显示：继续扫码按钮 || 红包类型切店员身份  -->
+        <!-- <block wx:if="{{!isOwner || (hbdata.RewardType==0 && userdata.condition == 2)}}"> -->
+        <block wx:if="{{!isOwner}}">
+          <van-button custom-class="opened-btn" round plain bind:click="goScan">
+            <text>继续扫码</text>
+            <image class="btn-scan-col" src="{{cashcoupon_file_url}}/btn_scan_col.png" mode="aspectFit" />
+          </van-button>
+
+        </block>
+
+        <!-- 自己扫码的显示：查看余额+继续扫码 -->
+        <block wx:else>
+          <!-- 查看余额：判断红包还是卡券，卡券所有人都可以跳转，红包店员不可跳 -->
+          <block wx:if="{{hbdata&&hbdata.RewardType==0 && userdata.condition != 2}}">
+            <van-button custom-class="opened-btn-mini" round plain bind:click="checkYue" data-url="/pages/zhongduan/geren/yuer/index">
+              <text>查看余额</text>
+              <image class="btn-scan" src="{{cashcoupon_file_url}}/btn_check.png" mode="aspectFit" />
+            </van-button>
+          </block>
+          <!-- 如果是红包并且是店员领取，跳转我的助力页面 -->
+          <block wx:if="{{hbdata&&hbdata.RewardType==0 && userdata.condition == 2}}">
+            <van-button custom-class="opened-btn-mini" round plain bind:click="checkYue" data-url="/pages/zhongduan/geren/zhuli/index?hn2in1_tab=2">
+              <text>查看余额</text>
+              <image class="btn-scan" src="{{cashcoupon_file_url}}/btn_to_view.png" mode="aspectFit" />
+            </van-button>
+          </block>
+          <block wx:if="{{hbdata&&hbdata.RewardType==2}}">
+            <van-button custom-class="opened-btn-mini" round plain bind:click="checkYue" data-url="/pages/storeAllowance/cashorCoupon/exchange/index">
+              <text>查看余额</text>
+              <image class="btn-scan" src="{{cashcoupon_file_url}}/btn_check.png" mode="aspectFit" />
+            </van-button>
+          </block>
+          <van-button custom-class="opened-btn-mini" round plain bind:click="goScan">
+            <text>继续扫码</text>
+            <image class="btn-scan" src="{{cashcoupon_file_url}}/btn_scan.png" mode="aspectFit" />
+          </van-button>
+        </block>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 领取成功弹窗 -->
+<successPop id="successPop"></successPop>

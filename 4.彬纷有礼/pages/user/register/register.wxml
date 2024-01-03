@@ -1,0 +1,114 @@
+<view class="page">
+
+  <view class="weui-form">
+    <view class="weui-form__control-area">
+      <view class="weui-cells__group weui-cells__group_form">
+        <form bindsubmit="updateUserInfo">
+          <!-- 手机号短信验证码 -->
+          <view class="form-box">
+            <van-cell-group>
+              <view class="avatar-box">
+                <view class="name">头像</view>
+                <view class="avatar-item">
+                  <image class="avatar" mode="aspectFill" src="{{userdata.avatar_url || defaultUrl}}"></image>
+                  <image class="icon-camer" src="{{icon_camer}}" mode="aspectFit" />
+                  <button wx:if="{{supportAvatarInput}}" class="opacity-button" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar"></button>
+                  <button wx:else class="opacity-button" catchtap="shot"></button>
+                </view>
+              </view>
+              <!-- <van-field value="{{userdata.nick_name || defaultName}}" type="nickname" clearable label="用户名" placeholder="请输入用户名" bindinput="inputName" bindnicknamereview="nicknamereview" error-message="" /> -->
+              <van-field label="用户名">
+                <input type="nickname" slot="input" name="nickname" placeholder="编辑昵称" placeholder-class="input-name-placeholder" maxlength="15" bindnicknamereview="nicknamereview" bindinput="inputName" class=" input-nick-name oneLine" value="{{userdata.nick_name || defaultName}}" />
+              </van-field>
+              <van-field value="{{ mobile }}" type="number" clearable label="手机号" placeholder="请输入手机号" error-message="" bindinput="inputMobile" />
+              <van-field value="{{ smsCode }}" center clearable label="短信验证码" bindinput="inputVcode" placeholder="请输入短信验证码" use-button-slot>
+                <van-button disabled="{{resend}}" slot="button" size="small" type="primary" bindtap="getVcode">
+                  {{resend?'重新发送'+ countdown + 's':'获取验证码'}}
+                </van-button>
+              </van-field>
+            </van-cell-group>
+          </view>
+          <!-- 默认用户头像昵称 -->
+          <!-- <view class="user-info-box">
+            <view class="__input-wrapper">
+              <image class="avatar" mode="aspectFill" src="{{userdata.avatar_url || defaultUrl}}"></image>
+              <image class="icon-camer" src="{{icon_camer}}" mode="aspectFit" />
+              <button wx:if="{{supportAvatarInput}}" class="opacity-button" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar"></button>
+              <button wx:else class="opacity-button" catchtap="shot"></button>
+            </view>
+            <view class="user-info-name oneLine">
+              <input type="nickname" name="nickname" placeholder="编辑昵称" placeholder-class="input-name-placeholder" maxlength="15" bindnicknamereview="nicknamereview" bindinput="inputName" class=" input-nick-name oneLine" value="{{userdata.nick_name || defaultName}}" />
+              <view class="icon-edit-box">
+                <image class="icon-edit" wx:if="{{!defaultName}}" src="{{icon_edit}}" mode="aspectFit" />
+              </view>
+            </view>
+          </view> -->
+          <!-- 登录、取消 -->
+          <view class="weui-form__opr-area pdt40 page_bd_spacing">
+            <block wx:if="{{yinsiChecked&&defaultName&&newUrl}}">
+              <!-- 用户信息无手机的绑定手机号 -->
+              <block wx:if="{{userdata&&!userdata.mobile}}">
+                <button class="at-button" bindtap="yinsiCheck">
+                  <image src="{{icon_wechat}}" class="icon-wechat" mode="aspectFit" />
+                  微信授权一键登录
+                </button>
+              </block>
+              <!-- 有手机的用户直接走更新头像昵称流程 -->
+              <block wx:else>
+                <button class="at-button" form-type="submit">
+                  <image src="{{icon_wechat}}" class="icon-wechat" mode="aspectFit" />
+                  微信授权一键登录
+                </button>
+              </block>
+            </block>
+            <block wx:else>
+              <button class="at-button" bindtap="yinsiCheck">
+                <image src="{{icon_wechat}}" class="icon-wechat" mode="aspectFit" />
+                微信授权一键登录
+              </button>
+            </block>
+            <button type="default" bindtap="cancel" class="cancle" plain="true">取消</button>
+          </view>
+          <!-- 用户协议 -->
+          <view class="weui-flex flex-center">
+            <view class="weui-cells weui-cells_checkbox checkbox">
+              <checkbox-group bindchange="checkboxChange">
+                <label class="weui-cell weui-check__label" wx:for="{{checkItem}}" style="padding:0px" wx:key="name">
+                  <view class="weui-cell__hd">
+                    <block wx:if="{{yinsiChecked}}">
+                      <checkbox class="weui-check" value="{{item.name}}" checked="checked" />
+                      <i class="weui-icon-checked checked"></i>
+                    </block>
+                    <block wx:else>
+                      <checkbox class="weui-check" value="{{item.name}}" checked="{{item.checked}}" />
+                      <i class="weui-icon-checked "></i>
+                    </block>
+                  </view>
+                  <text>我已阅读并同意</text>
+                </label>
+              </checkbox-group>
+            </view>
+            <view class="flexBox font24">
+              <text class=" red " data-id="1" bindtap="checkDeal">《个人信息保护政策》</text>
+              <text class=" red " data-id="2" bindtap="checkDeal">《平台服务协议》</text>
+            </view>
+          </view>
+        </form>
+
+      </view>
+    </view>
+
+  </view>
+</view>
+
+
+<view class="weui-flex flex-center safeArea fixed-bottom">
+  <view class="flex-center " bindtap="contactService">
+    <image class="warn" mode="aspectFit" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAiCAYAAADRcLDBAAACL0lEQVRYhc3YTYhNYRzH8c/cGTOayEtioYgkrLzUWCgvKZZmRPK2UgpZeNtY2pINsSAbkYVCsmEWE0mhvCUvocTCggVmJAz661ydbjNz5zz3jvGrW0/d8/+d73me5/+c//809HRNUVDjMA/zMR0taMAHPMMD3Cni2VTg2qXYhA6Mr3LtY1zGMbypZjyYmViOnVhVALis7ziC43jR30WlKibn0JkIEBqB3XiOvUUhYt3vYl3izSsVe+YgTg4WYhIeYUGdAPLaggvVIEbiNiYPAUBZ7Tg7EESsf+GcTdB6bOgLItJvUUG/t3iKJ3hfMPYMZuYhGnE04Ykia2ZjDg4kxJ/OQ+zHmASTb7nxj4T4Nswo5XI5Ra25mJZEj/aAWImxiQb10LZStp7DqWkBMXWYIbpL5TQZTgXEhP8BormG+E+58ZdaILprgJiYpWlrLRnWlFU+bYnxV9CbjVPPiT8Qce6nalR66F81xnK8q4NRLWqOmbhRg8H23EyuwY4Ej86YiYe4nwgRVVJX9ruV6HGi/BbdlWjQmxv/TPS4Vu474kmuYkVBg81ZJR1algAQNcjnfN8R3dTLBKNURbc2S0V59wr7/iHEwvKgstA9FBvlHwBsxMf+IEJbcXgIATqqlfxl7cn6z3qqB0twsdJzoF40qu/VuFcHkPNZVX69rz+rNcRxGMV3iIC5mXDzU5iLtQN9Iij6kST60+icFmet4uisHvmFr9lmizSPKb+E11Ud8Rs3YV2Qr3ygKgAAAABJRU5ErkJggg==">
+    </image>
+    <view class="font13 pdl7">
+      <text class="color-grey">遇到问题请</text>
+      <text class="color-blue underLine">联系客服</text>
+    </view>
+  </view>
+</view>

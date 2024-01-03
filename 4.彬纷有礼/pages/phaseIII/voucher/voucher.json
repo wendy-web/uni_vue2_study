@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "mp-dialog":"../components/dialog/dialog",
+    "van-popup": "@vant/weapp/popup/index",
+    "time-picker": "../../../component/time-pickers/time-pickers"
+  },
+  "enablePullDownRefresh":true,
+ 
+  "navigationBarTitleText": "卡券"
+}

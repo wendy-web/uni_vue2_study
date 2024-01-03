@@ -1,0 +1,15 @@
+{
+  "name": "vant-weapp",
+  "version": "1.0.0",
+  "description": "vant-weapp",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vant/weapp": "^1.10.23",
+    "coolui-scroller": "^3.3.2"
+  }
+}

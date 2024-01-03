@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "van-icon": "@vant/weapp/icon/index",
+    "van-action-sheet": "@vant/weapp/action-sheet/index",
+    "van-calendar": "@vant/weapp/calendar/index"
+  },
+  "disableScroll": true,
+  "navigationBarTitleText": "箱内码兑换券额度",
+  "navigationBarBackgroundColor": "#f4f4f4"
+}

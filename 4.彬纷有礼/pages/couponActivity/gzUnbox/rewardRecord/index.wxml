@@ -1,0 +1,44 @@
+<!--pages/couponActivity/gzUnbox/rewardRecord/index.wxml-->
+<top-navbar title="奖励记录" bgImg="" iconTheme="white" backgroundColor="unset" bindback="onBeforeBack" searchBar="" bindsearch='search'>
+</top-navbar>
+<!-- 背景图 -->
+<image class="bg-record" src="{{file_url_gzunbox}}/bg_reward_record.png" />
+<!-- 右上角礼物图标 -->
+<image class="icon_gift" src="{{file_url_gzunbox}}/icon_gift.png" />
+
+<view class="container" style="--top:{{navBarSystem?navBarSystem.headHeight+50:'70'}}px;">
+  <view class="content">
+    <view class="list-head">
+      <view class="flex_3">活动期数</view>
+      <view class="flex_2">排名</view>
+      <view class="flex_3">红牛开箱数</view>
+      <view class="flex_2">奖品</view>
+      <view class="flex_2">状态</view>
+    </view>
+    <view class="list">
+
+      <scroll-view class="scroll" scroll-y scroll-top enable-flex refresher-enabled="{{true}}" refresher-triggered="{{refreshed}}" bindrefresherrefresh="refresh">
+        <!-- 活动信息 -->
+        <block wx:if="{{actInfo}}">
+          <view class="list-item" wx:if="{{actInfo&&actInfo.status!='未报名'}}">
+            <view class="flex_3">{{actInfo.issue_title||'-'}}</view>
+            <view class="flex_2">{{actInfo.rank || '-'}}</view>
+            <view class="flex_3">{{actInfo.s_num||'-'}}</view>
+            <block wx:if="{{actInfo.rev_time&&actInfo.rev_num}}">
+              <view class="flex_2">强化型红牛{{actInfo.rev_num / 24}}箱</view>
+            </block>
+            <block wx:else>
+              <view class="flex_2">-</view>
+            </block>
+            <view class="flex_2 {{statusClass[actInfo.status]}}">{{actInfo.status}}</view>
+          </view>
+
+        </block>
+        <!-- 活动信息 -->
+        <view class="text-center noMore mini-height">~暂无更多记录~</view>
+
+      </scroll-view>
+
+    </view>
+  </view>
+</view>

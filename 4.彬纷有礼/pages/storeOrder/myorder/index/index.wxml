@@ -1,0 +1,48 @@
+<!--pages/storeOrder/index/index.wxml-->
+<!-- page-meta 只能是页面内的第一个节点 -->
+<page-meta page-style="{{ batchHxPopShow ? 'overflow: hidden;' : '' }}">
+  <view class="index page-box">
+    <!-- 筛选+月结订单 -->
+    <!-- <view class="filter-box">
+    <view class="filter-item" bindtap="openFilterPop">
+      <image class="icon-filter" src="{{isFilter?icon_filter_active:icon_filter}}" mode="aspectFit"></image>
+      <text>筛选</text>
+    </view>
+    <view class="monthly-item" bindtap="openMonthlyOrder">
+      <image class="icon-monthly-order" src="{{icon_monthly_order}}" mode="aspectFit"></image>
+      <text>月结订单</text>
+    </view>
+  </view> -->
+    <!-- <van-tabs active="{{ active }}" bind:change="tabChange" use-before-change bind:before-change="beforeChange">
+    <van-tab wx:for="{{tabs}}" wx:key="index" title="{{item.title}}" name="{{item.id}}" info="{{index>0&&index<4&&item.count>0?item.count:''}}"></van-tab>
+  </van-tabs> -->
+    <!-- 2023年9月21日 重构顶部tab,van-tabs 时不时的闪烁bug很难复现 -->
+    <view class="tab-box">
+      <view class="tab-item {{active== item.id?'tab-active':''}}" wx:for="{{tabs}}" wx:key="key" bind:tap="changeTabs" data-id="{{item.id}}">
+        <view>
+          <text>{{item.title}}</text>
+        </view>
+        <view wx:if="{{item.count>0}}" class="tab-info">{{index>0&&index<4&&item.count>0?item.count:''}}</view>
+      </view>
+    </view>
+    <!-- swiper -->
+    <swiper class="page-list" current="{{active}}" bind:change="swiperChange">
+      <swiper-item wx:for="{{tabs}}" wx:key="index">
+        <item-list class="item-list" bind:myevent="refreshAll" bind:storeOrderTrigger="storeOrderTrigger" bind:fhTrigger="fhTrigger" bind:batchTrigger="batchTrigger" bind:getcount="getCount" id="item-list-{{item.id}}" tab="{{item.id}}" />
+      </swiper-item>
+    </swiper>
+  </view>
+</page-meta>
+
+<!-- 筛选 底部弹窗 -->
+<!-- <order-filter-pop id="order-filter" bind:myevent="filterOrder"></order-filter-pop> -->
+
+<!-- 返货弹窗 -->
+<fh-popup id="fhPopup" bind:myevent="refreshAll"></fh-popup>
+
+<!-- 订单弹窗 -->
+<order-popup id="orderPopup" bind:myevent="refreshAll"></order-popup>
+<!-- 2023年8月30日 用户隐私保护授权弹窗 -->
+<privacyPop></privacyPop>
+<!-- 批量核销弹窗 2023年9月11日 -->
+<batchHxPop id="batchHxPop" bind:refreshAll="refreshAll" bind:batchHxPopClose="batchHxPopClose"></batchHxPop>

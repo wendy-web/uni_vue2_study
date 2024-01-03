@@ -1,0 +1,222 @@
+/* component/storeExchangePop/dgzmExc.wxss */
+.store-exchange-box {
+  box-sizing: border-box;
+}
+
+.head-box {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  min-width: 500rpx;
+  height: 94rpx;
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #ffffff;
+  padding-bottom: 10rpx;
+}
+
+.head-box .bg-pop-title {
+  position: absolute;
+  left: 0;
+  top: 0rpx;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.head-box .icon-star {
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.head-box .title {
+  margin: 0 10rpx;
+}
+
+.count-down-box {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10rpx;
+  margin-top: 10rpx;
+  font-size: 26rpx;
+  font-weight: 400;
+  text-align: center;
+  color: #fc7e41;
+}
+
+.count-down-box .icon-bar {
+  width: 50rpx;
+  height: 4rpx;
+}
+
+.flex-row-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.act-end-title {
+  font-size: 48rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #000000;
+}
+
+
+.box-flex-center {
+  flex: 1;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.head-box-win {
+  padding: 0 10rpx 10rpx 10rpx;
+}
+
+.prize-box {
+  display: flex;
+  align-items: baseline;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #fd3520;
+  box-sizing: border-box;
+  margin-left: 8rpx;
+}
+
+.icon-check-mark {
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.coupon-name {
+  font-size: 42rpx;
+}
+
+.prize-num {
+  font-size: 54rpx;
+}
+
+.prize-unit {
+  font-size: 32rpx;
+}
+
+.total-exchange {
+  font-size: 32rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #000000;
+  margin-bottom: 20rpx;
+}
+
+.exchange-num {
+  font-size: 44rpx;
+}
+
+.use-tips {
+  font-size: 28rpx;
+  font-weight: 400;
+  text-align: center;
+  color: #6a6a6a;
+
+}
+
+.mt-20 {
+  margin-top: 20rpx;
+}
+
+.mb-20 {
+  margin-bottom: 20rpx;
+}
+
+.act-end-box {
+  position: relative;
+  width: 666rpx;
+  height: 180rpx;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bg-bits-pop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.act-end-item {
+  width: 338rpx;
+  height: 98rpx;
+  line-height: 98rpx;
+  background: #f86f33;
+  border-radius: 22rpx;
+  box-sizing: border-box;
+  margin-top: 50rpx;
+  font-size: 48rpx;
+  font-weight: 400;
+  text-align: center;
+  color: #ffffff;
+}
+
+.img-bar-box {
+  box-sizing: border-box;
+  margin-bottom: -20rpx;
+  width: 300rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -20rpx;
+  margin: auto;
+}
+
+.img-bar {
+  width: 12rpx;
+  height: 72rpx;
+}
+
+.mr-16 {
+  margin-right: 16rpx;
+}
+
+.ml-16 {
+  margin-left: 16rpx;
+}
+
+.btn-view-detail {
+  width: 378rpx;
+  height: 110rpx;
+}
+
+.img_sorry {
+  width: 264rpx;
+  height: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.title-end-tips {
+  font-size: 40rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #764f30;
+  margin-top: 20rpx;
+  margin-bottom: 40rpx;
+}

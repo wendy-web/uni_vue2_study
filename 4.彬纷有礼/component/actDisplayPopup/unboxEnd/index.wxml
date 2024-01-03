@@ -1,0 +1,69 @@
+<!--component/actDisplayPopup/unboxEnd/index.wxml-->
+<view class="container">
+  <van-popup show="{{ show}}" bind:close="onClose" custom-style="background-color: transparent;" z-index="{{10000}}">
+    <!-- 每日进度弹窗内容:开箱进行中&&陈列已解锁，显示2个，否则只显示1个，进行中的开箱，或者陈列 -->
+    <view class="{{unboxWin||unlockDisplay?'unbox-pop-box-win':'unbox-pop-box'}}">
+      <!-- 开箱活动中奖弹窗 -->
+
+      <view class="unbox-pack" wx:if="{{unboxWin}}" style="background-image: url({{unbox_pop_bg}});">
+        <!-- 碎花图标 -->
+        <image class="icon-ticker-tape" mode="aspectFit" src="{{icon_ticker_tape}}"></image>
+
+        <!-- 恭喜您获得 -->
+        <image class="unbox-pop-title" mode="aspectFit" src="{{unbox_pop_title_earned}}"></image>
+        <view class="unbox-pop-prize">中国红牛活动券:<text class="unbox-rev-num">{{actInfo.rev_num}}</text>张</view>
+        <view class="unbox-pop-s-num">本期活动开箱累计: {{actInfo.s_num}}箱</view>
+        <view class="unbox-pop-tips">
+          <view>活动券已发放到您“彬纷有礼-可用卡券”</view>
+          <view>有效期至{{actInfo.exp_time_date}}</view>
+        </view>
+        <view class="text-center">
+          <!-- 店长去使用 -->
+          <block wx:if="{{userdata.condition != 2}}">
+            <navigator url="/pages/phaseIII/voucher/index?activeTab=2" hover-class="none">
+              <view bindtap="onClose" class="btn-to-use" bindtap="">去使用</view>
+            </navigator>
+          </block>
+          <!-- 店员无权限 -->
+          <block wx:else>
+            <view bindtap="onClose" class="btn-to-use" bindtap="">请通知店长查收</view>
+          </block>
+        </view>
+      </view>
+      <!-- 开箱活动未中奖 -->
+      <view class="unbox-pack unbox-fail-box" wx:if="{{unboxFail}}" style="background-image: url({{unbox_pop_bg}});">
+        <view>
+          <view class="unbox-fail-title">很遗憾</view>
+          <view class="unbox-fail-title">您未获得开箱奖励</view>
+        </view>
+        <view class="unbox-fail-tips" wx:if="{{actInfo.act_state.act_end}}">活动已结束</view>
+        <view bindtap="toUnboxHome" data-issues="{{actInfo.issues}}" class="btn-to-use">查看详情</view>
+      </view>
+      <!-- 开箱已达到20箱，解锁陈列 -->
+      <view class="unbox-pack" wx:if="{{unlockDisplay}}" style="background-image: url({{unbox_pop_bg}});">
+        <!-- 碎花图标 -->
+        <image class="icon-ticker-tape" mode="aspectFit" src="{{icon_ticker_tape}}"></image>
+
+        <!-- 恭喜您获得 -->
+        <image class="unbox-pop-title" mode="aspectFit" src="{{unbox_pop_title_earned}}"></image>
+        <view class="unbox-pop-prize">开箱已达到:<text class="unbox-rev-num">{{actInfo.s_num}}</text>箱</view>
+        <view class="unbox-pop-prize">获得陈列赢{{actInfo.issues==4?'战马':'红牛'}}活动资格</view>
+        <view class="unbox-pop-tips">
+          <view>完成4次陈列活动即可获得<text style="color:#E21E00;">1箱{{actInfo.issues==4?'战马':'红牛'}}</text></view>
+        </view>
+        <view class="text-center">
+            <view bindtap="to" class="btn-to-use" bindtap="takePhoto" data-issues="{{actInfo.issues}}">去陈列拍照</view>
+        </view>
+      </view>
+      <!-- 陈列未解锁弹窗 -->
+      <view class="display-lock-box" wx:if="{{lockDisplay}}" style="background-image: url({{unbox_pop_bg}});">
+        <view>
+          <view class="display-lock-title">9月10日前，在活动中有效开箱扫码20箱</view>
+          <view class="display-lock-title">即可解锁此活动</view>
+        </view>
+      </view>
+    </view>
+    <!-- 关闭按钮 -->
+    <image class="icon-close" bindtap="onClose" mode="aspectFit" src="../static/close.png"></image>
+  </van-popup>
+</view>

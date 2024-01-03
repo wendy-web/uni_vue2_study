@@ -1,0 +1,117 @@
+<!--pages/storeRank/component/rank-list-item.wxml-->
+<view class="box">
+  <!-- 1：奎狼 -->
+  <block wx:if="{{index==1}}">
+    <easy-loadimage index="{{index}}" imageSrc="{{starInfo.src}}" mode="aspectFit" imageClass="icon-star-one">
+    </easy-loadimage>
+    <easy-loadimage wx:if="{{rankInfo.signs_url}}" index="{{index+1}}" imageSrc="{{rankInfo.signs_url}}"
+      mode="aspectFill" imageClass="shop-sign-one">
+    </easy-loadimage>
+    <view class="star-one">
+      <!-- 店铺信息 -->
+      <view wx:if="{{rankInfo.shop_name}}" class="oneLine">店铺名称：{{rankInfo.shop_name}}</view>
+      <!-- 星宿名 -->
+      <view class="star-box" style="background-image: url({{icon_rank_one}});">
+        <view class="star-num">{{index}}</view>
+        <view class="star-name">{{starInfo.name}}星君</view>
+      </view>
+      <block wx:if="{{rankInfo.uid_num}}">
+        <!-- 进度条 total:260 -->
+        <view class="progress-bar-box">
+          <progress percent="{{(( 28 - index + 1)/28)*100}}" border-radius="10" active-mode="forwards"
+            activeColor="#ffb300" backgroundColor="#ffe77f" duration="12" stroke-width="5" />
+        </view>
+        <!-- 兑奖人数、兑奖时间 -->
+        <view class="prize-info-box">
+          <view>法力值(兑奖人数)：{{rankInfo.uid_num}}</view>
+          <view>{{rankInfo.end_time}}</view>
+        </view>
+      </block>
+    </view>
+
+  </block>
+  <!-- 2：亢龙 -->
+  <block wx:if="{{index==2}}">
+    <easy-loadimage index="{{index}}" imageSrc="{{starInfo.src}}" mode="aspectFit" imageClass="icon-star-two">
+    </easy-loadimage>
+    <easy-loadimage wx:if="{{rankInfo.signs_url}}" index="{{index+1}}" imageSrc="{{rankInfo.signs_url}}"
+      mode="aspectFill" imageClass="shop-sign-two">
+    </easy-loadimage>
+    <view class="star-two">
+      <view wx:if="{{rankInfo.shop_name}}" class="oneLine">店铺名称：{{rankInfo.shop_name}}</view>
+      <!-- 星宿名 -->
+      <view class="star-box" style="background-image: url({{icon_rank_two}});">
+        <view class="star-num">{{index}}</view>
+        <view class="star-name">{{starInfo.name}}星君</view>
+      </view>
+      <block wx:if="{{rankInfo.uid_num}}">
+        <!-- 进度条 total:260 -->
+        <view class="progress-bar-box">
+          <progress percent="{{((28 - index + 1 )/28)*100}}" border-radius="10" active-mode="forwards"
+            activeColor="#a6a4a4" backgroundColor="#e0e0e0" duration="12" stroke-width="5" />
+        </view>
+        <!-- 兑奖人数、兑奖时间 -->
+        <view class="prize-info-box">
+          <view>法力值(兑奖人数)：{{rankInfo.uid_num}}</view>
+          <view>{{rankInfo.end_time}}</view>
+        </view>
+      </block>
+    </view>
+
+  </block>
+  <!-- 3：角蛟 -->
+  <block wx:if="{{index==3}}">
+    <easy-loadimage index="{{index}}" imageSrc="{{starInfo.src}}" mode="aspectFit" imageClass="icon-star-two">
+    </easy-loadimage>
+    <easy-loadimage wx:if="{{rankInfo.signs_url}}" index="{{index+1}}" imageSrc="{{rankInfo.signs_url}}"
+      mode="aspectFill" imageClass="shop-sign-two">
+    </easy-loadimage>
+    <view class="star-three">
+      <view wx:if="{{rankInfo.shop_name}}" class="oneLine">店铺名称：{{rankInfo.shop_name}}</view>
+      <!-- 星宿名 -->
+      <view class="star-box" style="background-image: url({{icon_rank_three}});">
+        <view class="star-num">{{index}}</view>
+        <view class="star-name">{{starInfo.name}}星君</view>
+      </view>
+      <block wx:if="{{rankInfo.uid_num}}">
+        <!-- 进度条 total:260 -->
+        <view class="progress-bar-box">
+          <progress percent="{{((28 - index + 1)/28)*100}}" border-radius="10" active-mode="forwards"
+            activeColor="#ffb450" backgroundColor="#ffcf90" duration="12" stroke-width="5" />
+        </view>
+        <!-- 兑奖人数、兑奖时间 -->
+        <view class="prize-info-box">
+          <view>法力值(兑奖人数)：{{rankInfo.uid_num}}</view>
+          <view>{{rankInfo.end_time}}</view>
+        </view>
+      </block>
+    </view>
+  </block>
+  <!-- 其它 -->
+  <block wx:if="{{index>3}}">
+    <easy-loadimage index="{{index}}" imageSrc="{{starInfo.src}}" mode="aspectFit" imageClass="icon-star">
+    </easy-loadimage>
+    <!-- 店铺信息 -->
+      <easy-loadimage wx:if="{{rankInfo.signs_url}}" index="{{index+1}}" imageSrc="{{rankInfo.signs_url}}"
+        mode="aspectFill" imageClass="shop-sign-item">
+      </easy-loadimage>
+    <view wx:if="{{rankInfo.shop_name}}" class="oneLine">店铺名称：{{rankInfo.shop_name}}</view>
+    <!-- 星宿名 -->
+    <view class="star-box" style="background-image: url({{icon_rank_item}});">
+      <view class="star-num">{{index}}</view>
+      <view class="star-name">{{starInfo.name}}星君</view>
+    </view>
+    <block wx:if="{{rankInfo.uid_num}}">
+      <!-- 进度条 total:260 -->
+      <view class="progress-bar-box">
+        <progress percent="{{((28 - index + 1)/28)*100}}" border-radius="10" active-mode="forwards"
+          activeColor="#f89b1a" backgroundColor="#fcecd5" duration="12" stroke-width="5" />
+      </view>
+      <!-- 兑奖人数、兑奖时间 -->
+      <view class="prize-info-box">
+        <view>法力值(兑奖人数)：{{rankInfo.uid_num}}</view>
+        <view>{{rankInfo.end_time}}</view>
+      </view>
+    </block>
+  </block>
+</view>

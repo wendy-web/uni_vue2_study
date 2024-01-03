@@ -1,0 +1,153 @@
+<!--pages/couponActivity/component/box-progress.wxml-->
+<!-- 开箱统计：基数类型 -->
+<block wx:if="{{type==1}}">
+  <block wx:if="{{actInfo.act_state.act_end}}">
+    <!-- 活动结束 -->
+    <block wx:if="{{num >= maxNum}}">
+      <view class="act_updatePop_title">累计已获得<text class="act_updatePop_num"> {{maxCoupon}}</text>张红牛活动券</view>
+     
+    </block>
+    <block wx:else>
+      <view class="act_updatePop_title mgt20">未能获得开箱奖励</view>
+      <view class="act_updatePop_title">您的店铺未达到开箱目标</view>
+    </block>
+  </block>
+  <block wx:if="{{actInfo.act_state.act_ing}}">
+    <!-- 活动进行中:已达最高,低于最高,低于最低 -->
+    <block wx:if="{{num>=maxNum}}">
+      <!-- <view class="act_updatePop_title mgt20">您的店铺已达到开箱目标</view> -->
+      <view class="act_updatePop_title {{!baseProgressShow?'font34':''}}">累计已获得<text class="act_updatePop_num {{!baseProgressShow?'font34':''}}">{{maxCoupon||0}}</text>张红牛活动券</view>
+      <block wx:if="{{maxNum < 20 && num < 20}}">
+        <view class="unlock_display_title">再开<text class="act_updatePop_num font60">{{20-num}}</text>箱，即可参加陈列活动</view>
+        <!-- <view class="unlock_display_title">当前开箱<text class="act_updatePop_num">{{num}}</text>箱，再开<text class="act_updatePop_num">{{20-num}}</text>箱，即可参加陈列活动</view> -->
+      </block>
+    </block>
+    <block wx:else>
+      <!-- 低于最低 -->
+      <view class="act_updatePop_title mgt20">再开<text class="act_updatePop_num">{{maxNum-num}}</text>箱，即可获得<text class="act_updatePop_num">{{maxCoupon}}</text>张红牛活动券</view>
+    </block>
+  </block>
+  <view class="box " wx:if="{{baseProgressShow}}">
+    <!-- 当前开箱数 -->
+    <view class="num-box">
+      <view class="num">{{num}}</view>
+      <view class="title">当前开箱</view>
+    </view>
+    <!-- 进度条模块：最低开箱、最高开项目标 -->
+    <view class="progress-box">
+      <view class="progress-item">
+        <!-- 进度条边框 -->
+        <view class="progress-border">
+          <!-- 进度条背景 -->
+          <view class="progress">
+            <!-- 进度条渐变色 -->
+            <view class="progress-inner" style="--width:{{progressPercent}}%"></view>
+          </view>
+        </view>
+      </view>
+      <!-- 可获得券数说明 -->
+      <view class="act-tips">获得的活动券 = 开箱目标 × 0.5倍</view>
+      <!-- 最低开箱icon -->
+      <!-- <view class="min-box" style="--percent:{{percent*0.56}}%">
+        <view class="min-num">{{minNum}}箱</view>
+        <image class="icon-box" src="{{icon_box}}" mode="aspectFit"></image>
+        <view class="title mgt10">最低有奖</view>
+        <view class="title ">开箱目标</view>
+      </view> -->
+      <!-- 最高开箱icon -->
+      <view class="max-box">
+        <view class="min-num">{{maxNum}}箱</view>
+        <image class="icon-box" src="{{icon_box}}" mode="aspectFit"></image>
+        <!-- <view class="title mgt10">最高有奖</view> -->
+        <view class="title ">开箱目标</view>
+      </view>
+    </view>
+  </view>
+</block>
+<!-- 开箱统计：区间类型 -->
+<block wx:if="{{type==2}}">
+  <!-- 开箱统计 -->
+  <block wx:if="{{actInfo.act_state.act_end}}">
+    <!-- 活动结束 -->
+    <block wx:if="{{num >= maxNum}}">
+      <view class="act_updatePop_title">累计已获得<text class="act_updatePop_num_section "> {{maxCoupon}}</text>张红牛活动券</view>
+    </block>
+    <block wx:else>
+      <block wx:if="{{num>= minNum}}">
+        <view class="act_updatePop_title">累计已获得<text class="act_updatePop_num_section ">{{num||0}}</text>张红牛活动券</view>
+      </block>
+      <block wx:else>
+        <view class="act_updatePop_title">未能获得开箱奖励</view>
+        <view class="act_updatePop_title">您的店铺未达到开箱目标</view>
+      </block>
+    </block>
+  </block>
+  <block wx:if="{{actInfo.act_state.act_ing}}">
+    <!-- 活动进行中:已达最高,低于最高,低于最低 -->
+    <!-- <view>num:{{num}},maxNum:{{maxNum}},minNum:{{minNum}},curTarget:{{curTarget}},maxCoupon:{{maxCoupon}}</view> -->
+    <block wx:if="{{num>=maxNum}}">
+      <!-- <view class="act_updatePop_title">您的店铺已达到开箱目标</view> -->
+      <view class="act_updatePop_title">累计已获得<text class="act_updatePop_num_section ">{{maxCoupon||0}}</text>张红牛活动券</view>
+    </block>
+    <block wx:else>
+      <!-- 低于最低 -->
+      <block wx:if="{{num >= minNum}}">
+        <view class="act_updatePop_title">累计已获得<text class="act_updatePop_num_section ">{{curRewardNum}}</text>张红牛活动券</view>
+        <block wx:if="{{nextSectionArr.length}}">
+          <view class="act_updatePop_title">再开<text class="act_updatePop_num_section  font50">{{nextSectionArr[0]-num}}</text>箱，可再获得<text class="act_updatePop_num_section color-blue font50">{{nextSectionArr[2]-curRewardNum}}</text>张红牛活动券</view>
+        </block>
+      </block>
+      <block wx:else>
+        <view class="act_updatePop_title">再开<text class="act_updatePop_num_section  font50">{{minNum-num}}</text>箱，即可获得<text class="act_updatePop_num_section color-blue font50">{{minNum}}</text>张红牛活动券</view>
+
+        <!-- 大于最低，低于最高 -->
+        <!-- <view class="act_updatePop_title  mgt20" wx:if="{{curTarget}}">
+          <view class="item-box">
+            再开<text class="act_updatePop_num ">{{curTarget-num}}</text>箱，即可获得<text class="act_updatePop_num ">{{maxCoupon}}</text>张红牛活动券
+          </view>
+        </view> -->
+      </block>
+    </block>
+
+  </block>
+  <view class="box ">
+    <!-- 当前开箱数 -->
+    <view class="num-box">
+      <view class="num">{{num}}</view>
+      <view class="title">当前开箱</view>
+    </view>
+    <!-- 进度条模块：最低开箱、最高开项目标 -->
+    <view class="progress-box-section">
+      <view class="progress-item-section">
+        <!-- 进度条边框 -->
+        <view class="progress-border-section">
+          <!-- 进度条背景 -->
+          <view class="progress">
+            <!-- 进度条渐变色 -->
+            <view class="progress-inner" style="--width:{{progressPercent}}%"></view>
+          </view>
+        </view>
+      </view>
+      <!-- 开箱icon -->
+      <!-- <block wx:for="{{actInfo.calc.mode}}" wx:key="key">
+        <view class="min-box" style="--percent:{{index*25}}%">
+          <view class="min-num">{{item[0]}}箱</view>
+          <image class="icon-box" src="{{icon_box}}" mode="aspectFit"></image>
+        </view>
+      </block> -->
+      <block wx:for="{{sectionArr}}" wx:key="key">
+        <view class="min-box-section" style="--percent:{{item['percent']}}%">
+          <view class="min-num">{{item['num']}}箱</view>
+          <image class="icon-box" src="{{actInfo.s_num<item['num']?icon_box_grey:icon_box_section}}" mode="aspectFit"></image>
+        </view>
+      </block>
+
+      <!-- 最高开箱icon -->
+      <!-- <view class="max-box2">
+        <view><text class="max-num">{{maxNum}}</text></view>
+        <image class="icon-box" src="{{icon_box}}" mode="aspectFit"></image>
+        <view class="title">开箱目标</view>
+      </view> -->
+    </view>
+  </view>
+</block>

@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "mp-dialogModal": "../../../../component/dialogModal/index",
+    "mp-dialog": "../../../../component/dialog/dialog",
+    "easy-loadimage": "../../../../component/easy-loadimage/easy-loadimage"
+  },
+  "navigationBarTitleText": "客服中心"
+}

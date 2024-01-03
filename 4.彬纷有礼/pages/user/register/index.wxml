@@ -1,0 +1,146 @@
+<view class="page">
+
+  <view class="weui-form">
+    <view class="weui-form__control-area">
+      <view class="weui-cells__group weui-cells__group_form">
+        <form bindsubmit="submitInfo">
+          <!-- 默认用户头像昵称 -->
+          <view class="user-info-box">
+            <view class="__input-wrapper">
+              <image class="avatar" mode="aspectFill" src="{{userdata.avatar_url || defaultUrl}}"></image>
+              <image class="icon-camer" src="{{icon_camer}}" mode="aspectFit" />
+              <button wx:if="{{supportAvatarInput}}" class="opacity-button" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar"></button>
+              <button wx:else class="opacity-button" catchtap="shot"></button>
+            </view>
+            <view class="user-info-name oneLine" catch:touchstart="handleTouchInput">
+              <input type="nickname" name="nickname" focus="{{focus}}" placeholder="编辑昵称" placeholder-class="input-name-placeholder" maxlength="15" bindnicknamereview="nicknamereview" bindinput="inputName" class=" input-nick-name oneLine" value="{{userdata.nick_name || defaultName}}" />
+              <view class="icon-edit-box">
+                <image class="icon-edit" wx:if="{{!defaultName}}" src="{{icon_edit}}" mode="aspectFit" />
+              </view>
+            </view>
+            <!-- <view class="send-sms-box" wx:if="{{!supportGetPhoneCode}}">
+              <van-field value="{{ mobile }}" type="number" clearable label="" placeholder="请输入手机号" error-message="" bindinput="inputMobile" />
+              <van-field value="{{ smsCode }}" center  label="" bindinput="inputVcode" placeholder="请输入短信验证码" use-button-slot>
+                <van-button wx:if="{{sendMsgTimes < 2 }}" disabled="{{resend}}" slot="button" size="small" type="primary" bindtap="getVcode" round color="linear-gradient(180deg,#e71919 26%, #a31015 100%)">
+                  {{resend?'重新发送'+ countdown + 's':'获取验证码'}}
+                </van-button>
+                <van-button wx:else slot="button" size="small" type="primary" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" round color="linear-gradient(180deg,#e71919 26%, #a31015 100%)">
+                  获取验证码
+                </van-button>
+              </van-field>
+            </view> -->
+          </view>
+          <!-- 登录、取消 -->
+          <view class="weui-form__opr-area pdt40 page_bd_spacing">
+            <block wx:if="{{yinsiChecked}}">
+              <!-- 用户信息无手机的绑定手机号、基础库版本是否支持获取手机号code参数 -->
+              <!-- <block wx:if="{{userdata&&!userdata.mobile}}">
+                <block wx:if="{{supportGetPhoneCode}}">
+                  <button class="at-button" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">
+                    手机号快捷登录
+                  </button>
+                </block>
+                <block wx:else>
+                  <button class="at-button" bindtap="bindPhoneSMS">
+                    手机号快捷登录
+                  </button>
+                </block>
+              </block> -->
+              <!-- 有手机的用户直接走更新头像昵称流程 -->
+              <!-- <block wx:else> -->
+              <button class="at-button" form-type="submit">
+                快捷登录
+              </button>
+              <!-- </block> -->
+            </block>
+            <block wx:else>
+              <button class="at-button" bindtap="yinsiCheck">
+                <!-- <image src="{{icon_wechat}}" class="icon-wechat" mode="aspectFit" /> -->
+                <!-- 手机号快捷登录 -->
+                快捷登录
+              </button>
+            </block>
+            <button type="default" bindtap="cancel" class="cancle" plain="true">取消</button>
+          </view>
+
+          <!-- 用户协议 -->
+          <view class="weui-flex privacy-box">
+            <view class="weui-cells weui-cells_checkbox checkbox">
+              <checkbox-group bindchange="checkboxChange">
+                <label class="weui-cell weui-check__label" wx:for="{{checkItem}}" style="padding:0px" wx:key="name">
+                  <view class="weui-cell__hd">
+                    <block wx:if="{{yinsiChecked}}">
+                      <checkbox class="weui-check" value="{{item.name}}" checked="checked" />
+                      <i class="weui-icon-checked checked"></i>
+                    </block>
+                    <block wx:else>
+                      <checkbox class="weui-check" value="{{item.name}}" checked="{{item.checked}}" />
+                      <i class="weui-icon-checked "></i>
+                    </block>
+                  </view>
+                  <text>我已阅读、理解并接受以下规定</text>
+                </label>
+              </checkbox-group>
+            </view>
+            <view class="font24 privacy-item">
+              <text class=" red " data-id="1" bindtap="checkDeal">《个人信息保护政策》</text>
+            </view>
+            <view class="font24 privacy-item">
+              <text class=" red " data-id="2" bindtap="checkDeal">《平台服务协议》</text>
+            </view>
+          </view>
+        </form>
+      </view>
+    </view>
+
+  </view>
+</view>
+
+
+<view class="weui-flex flex-center safeArea fixed-bottom">
+  <view class="flex-center " bindtap="contactService">
+    <image class="warn" mode="aspectFit" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAiCAYAAADRcLDBAAACL0lEQVRYhc3YTYhNYRzH8c/cGTOayEtioYgkrLzUWCgvKZZmRPK2UgpZeNtY2pINsSAbkYVCsmEWE0mhvCUvocTCggVmJAz661ydbjNz5zz3jvGrW0/d8/+d73me5/+c//809HRNUVDjMA/zMR0taMAHPMMD3Cni2VTg2qXYhA6Mr3LtY1zGMbypZjyYmViOnVhVALis7ziC43jR30WlKibn0JkIEBqB3XiOvUUhYt3vYl3izSsVe+YgTg4WYhIeYUGdAPLaggvVIEbiNiYPAUBZ7Tg7EESsf+GcTdB6bOgLItJvUUG/t3iKJ3hfMPYMZuYhGnE04Ykia2ZjDg4kxJ/OQ+zHmASTb7nxj4T4Nswo5XI5Ra25mJZEj/aAWImxiQb10LZStp7DqWkBMXWYIbpL5TQZTgXEhP8BormG+E+58ZdaILprgJiYpWlrLRnWlFU+bYnxV9CbjVPPiT8Qce6nalR66F81xnK8q4NRLWqOmbhRg8H23EyuwY4Ej86YiYe4nwgRVVJX9ruV6HGi/BbdlWjQmxv/TPS4Vu474kmuYkVBg81ZJR1algAQNcjnfN8R3dTLBKNURbc2S0V59wr7/iHEwvKgstA9FBvlHwBsxMf+IEJbcXgIATqqlfxl7cn6z3qqB0twsdJzoF40qu/VuFcHkPNZVX69rz+rNcRxGMV3iIC5mXDzU5iLtQN9Iij6kST60+icFmet4uisHvmFr9lmizSPKb+E11Ud8Rs3YV2Qr3ygKgAAAABJRU5ErkJggg==">
+    </image>
+    <view class="font13 pdl7">
+      <text class="color-grey">遇到问题请</text>
+      <text class="color-blue underLine">联系客服</text>
+    </view>
+  </view>
+</view>
+<!-- 隐私授权弹窗 -->
+<privacyPop></privacyPop>
+
+<van-popup show="{{nameAvatarDialogShow}}" bind:close="onClosePop" round data-popname="nameAvatarDialogShow">
+  <view class="privacy-confirm-box">
+    <view class="name-avatar-tips">
+      <!-- <text>我们未获得您的微信昵称或头像使用授权，将为您随机创建昵称和头像，是否同意继续？</text> -->
+      <text style="color: #e71919;">同意授权使用您的"微信和昵称"可以带来更加友好的体验，</text>
+      <text>点击不同意将为您随机创建昵称或头像</text>
+    </view>
+
+  </view>
+  <view class="btn-group">
+    <view class="btn-cancel" bind:tap="nameAvatarConfirm" data-popname="nameAvatarDialogShow">不同意</view>
+    <!-- 判断用户头像昵称是否授权 -->
+    <block wx:if="{{!newUrl}}">
+      <button wx:if="{{supportAvatarInput}}" class="btn-confirm" open-type="chooseAvatar" bind:tap="goAuthorize"  data-popname="nameAvatarDialogShow" bind:chooseavatar="onChooseAvatar">去授权</button>
+      <button wx:else class="btn-confirm" catchtap="shot">去授权</button>
+    </block>
+    <block wx:else>
+      <view class="btn-confirm" bind:tap="focusInputName" data-popname="nameAvatarDialogShow">去授权</view>
+    </block>
+  </view>
+</van-popup>
+<!-- 同意授权弹窗 -->
+<van-popup show="{{privacyConfirmShow}}" bind:close="onClosePop" round data-popname="privacyConfirmShow">
+  <view class="privacy-confirm-box">
+    <text>请阅读</text>
+    <text class="color-blue" data-id="1" catch:tap="checkDeal">《个人信息保护政策》</text>
+    <text class="color-blue" data-id="2" catch:tap="checkDeal">《平台服务协议》</text>
+    <text>的全部条款，接受后可开始使用我们的服务</text>
+  </view>
+  <view class="btn-group">
+    <view class="btn-cancel" bind:tap="onClosePop" data-popname="privacyConfirmShow">不同意</view>
+    <view class="btn-confirm" bind:tap="confirmPrivacy">同意</view>
+  </view>
+</van-popup>

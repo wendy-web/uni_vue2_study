@@ -1,0 +1,95 @@
+<!--pages/storeDisplay/photoRecord/index.wxml-->
+<!--pages/storeDisplay/displayShopComple/index.wxml-->
+<view class="photo-record">
+  <!-- head -->
+  <view class="pr-head">
+     <view class="pr-dis-info">
+       <image class="ice-box" src="../static/iceBox.png" mode="aspectFill"></image>
+       <view class="dis-name">{{basicInfo.dis_name}}</view>
+     </view>
+  </view>
+  <!-- content -->
+  <view class="pr-content">
+       <!-- 基本信息 -->
+       <view class="basic-info">
+          <!-- 拍照要求 -->
+          <view class="photo-require">
+             <view class="photo-require-title">拍照要求</view>
+             <view class="photo-require-details">
+               <text class="prd-stress">{{basicInfo.date_num}}天</text>
+               <text>内需合格拍照</text>
+               <text class="prd-stress">{{basicInfo.need_num}}次</text>
+               <text>，每</text>
+               <text class="prd-stress">{{basicInfo.periodic_date}}天</text>
+               <text>合格</text>
+               <text class="prd-stress">{{basicInfo.periodic_times}}次</text>
+               <text>即可</text>
+             </view>
+          </view>
+          <!--陈列要求  -->
+          <view class="dis-require">
+             <view class="photo-require-title">陈列要求</view>
+             <view class="photo-require-details">
+              {{basicInfo.label}}
+             </view>
+          </view>
+          <!-- 陈列商品 -->
+          <view class="dis-shop" bindtap="showDisGoods">
+             <view class="photo-require-title">陈列商品</view>
+              <scroll-view class="dis-goods" scroll-x="{{true}}">
+                <block wx:for="{{basicInfo.goods_list}}" wx:key="key">
+                    <van-image class="goods-icon" width="92rpx" height="92rpx" src="{{item.icon}}" fit="cover" radius="6px"  use-loading-slot>
+                     <van-loading slot="loading" type="spinner" size="20" vertical />
+                    </van-image>
+                </block>
+              </scroll-view>
+          </view>
+       </view>
+  </view>
+  <!-- 統計 or 拍照記錄 -->
+  <view class="total-record-box">
+          <!-- 统计 -->
+          <view class="photo-total">
+              <view class="photo-total-item">
+                <view class="pti-value">
+                   <text class="pti-num">{{photoTotal.standard_date_num}}</text>
+                   <text class="pti-day">天</text>
+                </view>
+                <view class="pti-label">合格</view>
+              </view>
+              <view class="photo-total-item">
+                <view class="pti-value">
+                   <text class="pti-num">{{photoTotal.no_standard_date_num}}</text>
+                   <text class="pti-day">天</text>
+                </view>
+                <view class="pti-label">不合格</view>
+              </view>
+              <view class="photo-total-item">
+                <view class="pti-value">
+                   <text class="pti-num">{{photoTotal.rote}}</text>
+                   <text class="pti-rate">%</text>
+                </view>
+                <view class="pti-label">完成率</view>
+              </view>
+          </view>
+          <!-- 拍照記錄 -->
+          <scroll-view class="photo-record-box" scroll-y="{{true}}">
+            <view class="photo-record-list">
+                <view class="prl-item" wx:for="{{date_list}}" data-date="{{item.date}}" wx:key="key" bindtap="goDisComple">
+                  <van-icon class="prl-left-icon" name="{{item.icon}}" color="{{item.iconColor}}" size="40rpx"/>
+                  <view class="prl-time">
+                    <text class="prl-time-day">{{item.date}}</text>
+                    <text class="prl-time-label prl-time-{{item.icon}}">{{item.timeLabel}}</text>
+                  </view>
+                  <view class="prl-photo-user">
+                    <image class="prl-puser-icon" src="{{item.picture}}"></image>
+                    <text class="prl-puser-label">{{item.tempText}}</text>
+                  </view>
+                  <van-icon class="ppu-right-arrow" name="arrow" size="25rpx" color="#000018"/>
+                </view>
+            </view>
+          </scroll-view>
+  </view>
+</view>
+<!-- 展示陈列商品 -->
+<show-dis-goods id="showDisGoods"/>

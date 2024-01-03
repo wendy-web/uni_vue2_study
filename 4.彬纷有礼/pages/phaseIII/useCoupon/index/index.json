@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "scroller": "coolui-scroller/scroller/index",
+    "item": "coolui-scroller/item/index",
+    "refresh": "coolui-scroller/refresh/index",
+    "empty": "coolui-scroller/empty/index"
+  },
+  "navigationBarTitleText": "使用卡券申请返货",
+  "enablePullDownRefresh":false
+}

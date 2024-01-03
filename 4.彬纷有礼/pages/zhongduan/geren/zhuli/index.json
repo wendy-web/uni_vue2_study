@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "mp-halfScreenDialog": "../../../../component/half-screen-dialog/half-screen-dialog"
+  },
+  "disableScroll": true,
+  "navigationBarTitleText": "我的助力"
+}

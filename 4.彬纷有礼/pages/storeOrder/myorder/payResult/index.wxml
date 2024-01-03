@@ -1,0 +1,54 @@
+<!--pages/storeOrder/payResult/index.wxml-->
+<view class="pay-result-box">
+  <image class="icon-result" mode="aspectFit" src="{{orderInfo.isPaid?icon_result_success:icon_result_fail}}"></image>
+  <view class="pay-result-title">{{orderInfo.isPaid?'支付成功':'支付失败'}}</view>
+  <block wx:if="{{orderInfo.isPaid || orderInfo.payTime}}">
+    <view class="order-detail-box">
+      <view class="order-item">
+        <view class="item-left">订单号</view>
+        <view class="item-right">{{orderInfo.out_trade_no}}</view>
+      </view>
+      <view class="order-item">
+        <view class="item-left">商品*数量</view>
+        <view class="item-right line-feed">{{orderInfo.goods_name}}</view>
+      </view>
+      <view class="order-item">
+        <view class="item-left">商品总价</view>
+        <view class="item-right">
+          <text class="font28">￥</text>
+          <text class="font34">{{orderInfo.total_amount}}</text>
+        </view>
+      </view>
+      <!-- 优惠：应付款小于商品总价 -->
+      <view class="order-item" wx:if="{{orderInfo.discount_amount}}">
+        <view class="item-left">优惠</view>
+        <view class="item-right color-orange">
+          <text class="font28">-￥</text>
+          <text class="font34">{{orderInfo.discount_amount}}</text>
+        </view>
+      </view>
+      <view class="order-item" wx:if="{{orderInfo.d_amount}}">
+        <view class="item-left">
+          <text class="icon-coupon">券</text>
+          <text>现金券</text>
+        </view>
+        <view class="item-right color-orange">
+          <text class="font28">-￥</text>
+          <text class="font34">{{orderInfo.d_amount}}</text>
+        </view>
+      </view>
+      <!-- 实付款 -->
+      <view class="actual-pay mgt60">
+        <text>实付款</text>
+        <text class="pay-tag mgl50">￥</text>
+        <text class="pay-price">{{orderInfo.p_amount}}</text>
+      </view>
+
+    </view>
+  </block>
+  <block wx:else>
+    <view>请重新支付</view>
+  </block>
+  <!-- 查看订单：订单详情页 -->
+    <view class="btn-check-result" bindtap="goOrderDetail">查看订单</view>
+</view>

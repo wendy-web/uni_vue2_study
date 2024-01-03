@@ -1,0 +1,5 @@
+/* pages/storeRank/component/flip-card.wxss */
+.card-box{
+  position: relative;
+  perspective: 1000px;
+}

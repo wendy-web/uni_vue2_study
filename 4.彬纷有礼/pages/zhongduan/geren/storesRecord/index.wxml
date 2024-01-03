@@ -1,0 +1,135 @@
+<!--pages/zhongduan//geren/storesRecord/index.wxml-->
+<view class="stores-record">
+  <view class="swiper-box">
+    <swiper class="swiper" wx:if="{{bannerArr}}" circular="{{true}}" indicator-dots="{{indicatorDots}}" indicator-color="{{indicatorColor}}" indicator-active-color="{{indicatorActiveColor}}" autoplay="{{autoplay}}" interval="{{interval}}">
+      <block wx:for="{{bannerArr}}" wx:key="*this">
+        <swiper-item>
+          <image class="swiper-item" src="{{item}}" mode="aspectFit" />
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <!-- 余额记录筛选 -->
+  <view class="{{hideCalendar?'stores-record-querys':'stores-record-query'}}">
+    <!-- 日期筛选 -->
+    <view wx:if="{{!hideCalendar}}" class="date-select" bindtap="selectDate">
+      <image class="date-icon" src="{{dateIcon}}" mode="aspectFit"></image>
+      {{selectData.last}}~{{selectData.now}}
+    </view>
+
+    <!-- <view  class="font30" bindtap="chooseType" wx:if="{{userInfo.condition==2 || condition ==2}}"> -->
+    <!-- <view class="font30" bindtap="chooseType">
+      <text class="iconfont iconrenqun"></text>
+      <text>人员类型</text>
+    </view> -->
+    <!-- 类型筛选 -->
+    <view class="drop-box {{excPop?'excPop':''}}">
+      <view class="drop-title" bindtap="openExcType">
+        <text>{{excTitle}}</text>
+        <image class="icon-delta-down" src="{{excPop?icon_delta_up:icon_delta_down}}" mode="aspectFit" />
+      </view>
+      <view class="drop-content {{excPop?'drop-content-show':''}}">
+        <block wx:for="{{excOptions}}" wx:key="key">
+          <view bindtap="selectExcType" class="drop-item" data-item="{{item}}">{{item.name}}</view>
+        </block>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{hideCalendar}}" class="tips fontSize22 color-red">
+    <text>*当前列表为兑奖支付明细记录，非兑奖人数明细。（记录条数≠排行榜兑奖人数）</text>
+  </view>
+  <!-- 数据列表 -->
+  <scroll-view scroll-y="true" class="{{hideCalendar?'list-boxs':'list-box'}}" bindscrolltolower="scrolltolower">
+    <!-- 列表item -->
+    <view class="list-item" wx:for="{{listData}}" wx:key="key">
+      <!-- 标题 -->
+      <view class="list-item-title">
+        <text wx:if="{{item.type == 1}}">红牛换购</text>
+        <text wx:if="{{item.type == 2}}">战马换购</text>
+      </view>
+      <view class="center-info">
+        <!-- 左边信息 -->
+        <view class="list-item-left">
+          <!-- 支付金额 -->
+          <view class="play-money">
+            换购支付金额：<text class="money">{{item.pay_money}}元</text>
+          </view>
+          <!-- 支付用户 -->
+          <view class="play-user ellipsis">
+            换购用户：{{item.nick_name}}
+            <!-- <view>
+              (CUID:{{item.uid}})
+            </view> -->
+          </view>
+        </view>
+        <!-- 右边信息 -->
+        <view class="list-item-right ">
+          <!-- 未核销 -->
+          <!-- <view wx:if="{{item.notWritten}}" class="ellipsis not-written-off">核销状态：未核销</view> -->
+          <!-- 支付金额 -->
+          <!-- <view wx:if="{{!item.notWritten}}" class="play-money"> -->
+          <view class="play-money" wx:if="{{item.type == 1}}">
+            <!--  2月1号以前 显示0.5元-->
+            <block wx:if="{{item.old_record}}">
+              换购红包：<text class="lihr-text">0.5元</text><text class="lihr-text">X{{item.card_count}}</text>
+            </block>
+            <block wx:else>
+              <!--  2月1号之后 显示0.15罐-->
+              换购奖励：<text class="lihr-text">0.15罐</text><text class="lihr-text">X{{item.card_count}}</text>
+            </block>
+          </view>
+          <view class="play-money" wx:if="{{item.type == 2}}">
+            <block wx:if="{{(item.card_count - item.exc_num)>0}}">
+              <view>
+                换购红包：<text class="lihr-text">{{item.call_money}}元</text><text class="lihr-text">X{{item.card_count- item.exc_num}}</text>
+              </view>
+            </block>
+            <block wx:if="{{item.exc_num}}">
+              <view>
+                换购奖励：<text class="lihr-text">0.15罐</text><text class="lihr-text">X{{item.exc_num}}</text>
+              </view>
+            </block>
+          </view>
+          <!-- 支付用户 -->
+          <!-- <view wx:if="{{!item.notWritten}}" class="play-user ellipsis"> -->
+          <view class="play-user ellipsis">
+            到账账户：{{item.c_nick_name}}
+            <!-- <view>
+              (UID:{{item.check_uid}})
+            </view> -->
+          </view>
+        </view>
+      </view>
+      <!-- 支付时间 -->
+      <view class="play-user">
+        到账时间：{{item.pay_time}}
+      </view>
+    </view>
+    <!-- 到底了 -->
+    <view class="is-data-bottom" wx:if="{{_IS_DATA_BOTTOM && listData.length>0}}">
+      <view>
+        ———————— 没有更多记录了~ ————————
+      </view>
+    </view>
+  </scroll-view>
+  <!-- 无数据情况 -->
+  <view class="empty-view" wx:if="{{listData.length == 0}}">
+    <image class="hbNoDataImg" mode="aspectFit" src="{{hbNodataIcon}}"></image>
+    <view>
+      ~~暂无记录~~
+    </view>
+  </view>
+  <!-- 弹窗 --- 日历弹窗 -->
+  <view class="fadeIn" wx:if="{{dateDialog}}">
+    <view class="weui-mask" bindtap="closeDateDialog"></view>
+    <view class="weui-dialog">
+      <calendar bind:onRangePick="onRangePick" mode="range"></calendar>
+      <view class="weui-dialog__ft">
+        <a class="weui-dialog__btn weui-dialog__btn_default" bindtap="closeDateDialog">取消</a>
+        <a class="weui-dialog__btn weui-dialog__btn_primary" bindtap="chooseDate">确定</a>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 底部弹出层(人员选择) -->
+<selectCrew crew="{{crew}}" bind:chooseCrew="chooseCrew" showTypePop="{{showTypePop}}"></selectCrew>

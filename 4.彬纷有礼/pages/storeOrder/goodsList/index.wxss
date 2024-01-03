@@ -1,0 +1,40 @@
+/* pages/storeOrder/goodsList/index.wxss */
+.goods-total{
+  font-size: 28rpx;
+  font-weight: 400;
+  color: #000000;
+  padding-left: 40rpx;
+  padding-top: 20rpx;
+}
+
+.goods-list-item{
+  padding: 0 30rpx 50rpx 250rpx;
+  position: relative;
+  height: 200rpx;
+  box-sizing: border-box;
+  margin-top: 20rpx;
+}
+
+.gli-icon{
+  width: 200rpx;
+  height: 200rpx;
+  position: absolute;
+  left: 30rpx;
+  top: 0;
+  filter: brightness(0.9);
+  border-radius: 5px;
+}
+
+.gli-name{
+  font-size: 28rpx;
+  color: #000;
+}
+.gli-attr{
+  font-size: 24rpx;
+  color: #a3a2a8;
+}
+
+.gli-num{
+  font-size: 24rpx;
+  color: #000018;
+}

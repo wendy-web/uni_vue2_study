@@ -1,0 +1,522 @@
+/* pages/randomdraw/rotate/rotate.wxss */
+@import "./utils/dial.wxss";
+
+page {
+  height: 100%;
+}
+
+.container {
+  /* background-size: 100% 100%; */
+  position: fixed;
+  top: var(--navBarHeight);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #c60719;
+}
+
+.title {
+  text-align: center;
+  margin-top: 40rpx;
+}
+
+/* rotate dial_wp css */
+.rotate {
+  text-align: center;
+  margin-top: 0rpx;
+  z-index: 3;
+}
+
+.dial_wp {
+  width: 700rpx;
+  height: 700rpx;
+  position: relative;
+  margin: 0 auto;
+}
+
+.dial_wp image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.dial_wp .dial_pointer {
+  position: absolute;
+  width: 150rpx;
+  height: 150rpx;
+  top: 50%;
+  left: 50%;
+  margin: -75rpx 0 0 -75rpx;
+  transform-origin: 50% 50%;
+}
+
+.dial_wp .dial_pointer image {
+  position: absolute;
+  width: 186rpx;
+  height: 216rpx;
+  left: -20rpx;
+  top: -64rpx;
+}
+
+
+/* fanbei翻倍按钮样式 */
+
+
+.goldBtn {
+  display: inline-block;
+  border-color: #fff000;
+  text-align: center;
+  z-index: 1000;
+  color: #e81910;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  padding: 14rpx 10rpx;
+  /* padding: 15rpx 10rpx; */
+  width: 200rpx;
+  background: linear-gradient(0deg, #fff000, #fec401);
+  -webkit-box-shadow: 0 8rpx 0 0 rgba(14, 13, 13, 0.562);
+  box-shadow: 0 6rpx 0 0 rgba(14, 13, 13, 0.562);
+}
+
+.rebBtn {
+  display: inline-block;
+  border-color: #ff0500;
+  text-align: center;
+  z-index: 1000;
+  color: white;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  padding: 14rpx 10rpx;
+  width: 200rpx;
+  background: linear-gradient(0deg, #ff0500, #ff4801);
+  -webkit-box-shadow: 0 8rpx 0 0 rgba(14, 13, 13, 0.562);
+  box-shadow: 0 6rpx 0 0 rgba(14, 13, 13, 0.562);
+}
+
+/* 二次确认弹窗样式 */
+.reconfirmPop {
+  height:370px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding-bottom: 10px;
+}
+
+.rewardPop {
+  max-height: 100%;
+  position: fixed;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+}
+
+.getRewarded {
+  position: fixed;
+  width: 100%;
+  top: 59%;
+  z-index: 60000;
+}
+
+.flex-row-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.totalMoney {
+  color: #ffe400;
+  font-weight: 700;
+}
+
+.letter-spacing {
+  letter-spacing: 10rpx;
+}
+
+.font72 {
+  font-size: 72rpx;
+}
+
+.rewardHistory {
+  color: #fff496;
+  width: 100%;
+}
+
+.rewardPop .contents {
+  width: 100%;
+  position: relative;
+  top: 62%;
+}
+
+.imgBtn {
+  height: 74rpx;
+  width: 372rpx;
+}
+
+.rewardBox {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0%;
+  z-index: 60000;
+}
+
+.rewardGif {
+  height: 100%;
+  position: relative;
+}
+
+.rewardMsg {
+  position: absolute;
+  top: 34%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rewardMsg view {
+  /* width: 300rpx; */
+  width: 405rpx;
+  color: #e81910;
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.rewardGif .rewardImg {
+  width: 100%;
+  min-height: 942rpx;
+}
+
+.lotteryPop {
+  max-height: 100%;
+  position: fixed;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.lotteryPop .lotteryImg image {
+  min-height: 800rpx;
+  width: 100%;
+}
+
+#lottery {
+  position: fixed;
+}
+
+#reward {
+  position: fixed;
+}
+
+
+.reconfirmPop .flex-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.reconfirmPop .flex-cloumn {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.brown-text {
+  color: #faf6aa;
+  font-size: 36rpx;
+  font-weight: 700;
+  letter-spacing: 5rpx;
+}
+
+/* shake button */
+/* Animation css */
+[class*="animation-"] {
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+.animation-shake {
+  animation-name: shake;
+  animation: shake 1s infinite linear;
+  -webkit-animation: shake 1s infinite linear;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10% {
+    transform: translateX(-9px);
+  }
+
+  20% {
+    transform: translateX(8px);
+  }
+
+  30% {
+    transform: translateX(-7px);
+  }
+
+  40% {
+    transform: translateX(6px);
+  }
+
+  50% {
+    transform: translateX(-5px);
+  }
+
+  60% {
+    transform: translateX(4px);
+  }
+
+  70% {
+    transform: translateX(-3px);
+  }
+
+  80% {
+    transform: translateX(2px);
+  }
+
+  90% {
+    transform: translateX(-1px);
+  }
+}
+
+@keyframes animated-border {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 148, 8, 0.7);
+    transform: translateX(0);
+  }
+
+  10% {
+    transform: translateX(-9px);
+  }
+
+  20% {
+    transform: translateX(8px);
+  }
+
+  30% {
+    transform: translateX(-7px);
+  }
+
+  40% {
+    transform: translateX(6px);
+  }
+
+  50% {
+    transform: translateX(-5px);
+  }
+
+  60% {
+    transform: translateX(4px);
+  }
+
+  70% {
+    transform: translateX(-3px);
+  }
+
+  80% {
+    transform: translateX(2px);
+  }
+
+  90% {
+    transform: translateX(-1px);
+  }
+
+  100% {
+    /* box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); */
+    box-shadow: 0 0 0 20px rgba(255, 148, 8, 0.5);
+    transform: translateX(0);
+  }
+}
+
+.font80 {
+  font-size: 56rpx;
+}
+
+/* 倾斜 */
+.weui-dialog__hd {
+  padding: 32px 24rpx;
+}
+
+.slant {
+  color: #fced0a;
+  font-size: 70rpx;
+  font-style: oblique;
+  padding: 0rpx 10rpx;
+  /* font-style: italic; */
+}
+
+.lingquBtn {
+  color: #e81910;
+  background: #fff000;
+  width: 235rpx;
+  height: 66rpx;
+  display: inline-block;
+  border-radius: 50rpx;
+  line-height: 66rpx;
+}
+
+/* 2020-09-10 */
+.scaleBtn {
+  transform: scale(0.5);
+  transform-origin: left top;
+  z-index: 1;
+}
+
+.width300 {
+  width: 156px;
+  height: 75px;
+  text-align: center;
+}
+
+.scaleBox {
+  width: 150px;
+  height: 75px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+.scaleBtn-backup {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 20rpx;
+  margin: auto 0;
+  width: 100px;
+  height: 30px;
+  display: flex;
+  font-size: 22rpx;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+  border-color: #ff0500;
+  text-align: center;
+  color: white;
+  border-radius: 50rpx;
+  background: linear-gradient(0deg, #e60000, #e40001);
+  -webkit-box-shadow: 0 8rpx 0 0 rgba(14, 13, 13, 0.562);
+  box-shadow: 0 6rpx 0 0 rgba(14, 13, 13, 0.562);
+}
+
+.flex-row-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.fixed-bottom {
+  position: fixed;
+  bottom: 5%;
+  z-index: 60000;
+}
+.fixed-bottom0 {
+  position: fixed;
+  bottom: 0%;
+  z-index: 60000;
+}
+.height138 {
+  height: 97rpx;
+}
+.height187 {
+  height: 127rpx;
+}
+/* 2022年1月21日 27周年改版 */
+.img-hn-rotate-box {
+  width: 100%;
+  height: 666rpx;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+.img-hn-rotate-packet {
+  width: 100%;
+  height: 624rpx;
+  position: absolute;
+  bottom: 107rpx;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+.img-hn-rotate-foot {
+  width: 100%;
+  height: 100rpx;
+  position: absolute;
+  bottom: 0rpx;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+.reconfirmPop .btn-group{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 25rpx;
+}
+.btn-group .btn-giveup{
+  display: inline-block;
+  text-align: center;
+  z-index: 1000;
+  color: white;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  box-sizing: border-box;
+  width: 250rpx;
+  height: 83rpx;
+  line-height: 83rpx;
+  background: #cfb7a6;
+}
+.gif-btn-watchvideo{
+  width: 270rpx;
+  height:92rpx;
+}
+.icon-hn-btn {
+  width: 260rpx;
+  height: 90rpx;
+}
+.text-right{
+  margin-right: 20rpx;
+}
+.text-left{
+  margin-left: 20rpx;
+}
+.img-hn-rotate-bg-28y{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+}
+@media screen and (min-height: 736px) {
+  .rotate {
+    margin-top: 100rpx;
+  }
+  .fixed-bottom0 {
+    bottom: 4%;
+  }
+}

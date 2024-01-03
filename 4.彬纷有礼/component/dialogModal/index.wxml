@@ -1,0 +1,12 @@
+<view class="container" wx:if="{{isShow}}" catchtouchmove="preventTouchMove" class="{{diyClass}}">
+  <view class="back-model"></view>
+  <view class="conent-model">
+    <text class="title" wx:if="{{title}}">{{title}}</text>
+    <text class="content" wx:if="{{content}}">{{content}}</text>
+    <slot></slot>
+    <view class="quickBtn">
+      <button class="cancel-btn buttonAfter" open-type="{{cancelType}}" bindtap="cancel">{{cancelText}}</button>
+      <button class="confirm-btn buttonAfter" open-type="{{confirmType}}" bindtap="confirm">{{confirmText}}</button>
+    </view>
+  </view>
+</view>

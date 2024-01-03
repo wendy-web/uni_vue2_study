@@ -1,0 +1,166 @@
+<!-- <view class="tabbar-container box backgr "> -->
+  <view class="box backgr ">
+  <!-- <view class="tabbar-container-content"> -->
+  <image class="bg_shop_qr_t" src="{{bg_shop_qr_t}}" mode="widthFix"/>
+  <view class="conta">
+    <image class="bg_shop_qr_m" src="{{bg_shop_qr_m}}" />
+    <view class="card">
+      <view class="weui-flex shop_name_box">
+        <view class="align-center ">
+          <image class="avatar" mode="aspectFill" src="{{userdata.avatar_url}}"></image>
+          <text class="username oneLine text-break">{{userdata.nick_name}}</text>
+        </view>
+        <view class="weui-flex__item content">
+          <view class="text-left" style="width:100%">门店名称：{{shopInfo.shop_name}}</view>
+          <view class="text-left text-break">门店地址：{{shopInfo.address}}</view>
+        </view>
+      </view>
+      <view class="bindStampBox" wx:if="{{shopInfo.alias_id}}">
+        <image mode="aspectFit" class="bindStamp" src="https://file.y1b.cn/public/img/bfyl/202201/icon_bind_paperQr.png">
+        </image>
+      </view>
+      <view class="qrcode text-center" bindtap="createShareImage">
+        <image mode="aspectFit" binderror="imgLoadError" src="{{qrcode}}" class="{{shopInfo.alias_id?'qrcodeSize2':'qrcodeSize'}}" style="background:#fff;"></image>
+      </view>
+      <view class="shop_id text-center">
+        <text class="font24">点击二维码保存</text>
+        <view>
+          店铺ID：{{userdata.shop_id}}
+        </view>
+        <view wx:if="{{shopInfo.alias_id}}" class="font24">纸质码ID:{{shopInfo.alias_id}}</view>
+        <view wx:if="{{shopInfo.alias_id}}" class="font24 color-red">*纸质码与小程序店铺码功能相同</view>
+        <!-- <view wx:if="{{shopInfo.alias_id}}" class="font24 color-red">*已绑定纸质版店铺码</view> -->
+      </view>
+      <!-- 免扫罐底码vip -->
+      <image class="img-can-vip" wx:if="{{shopInfo&&shopInfo.bottom_num != -1}}" src="{{img_can_vip}}" mode="aspectFit" />
+    </view>
+  </view>
+  <image class="bg_shop_qr_b" src="{{bg_shop_qr_b}}" mode="aspectFit"/>
+
+  <!-- </view> -->
+  <!-- <view class="tabbar-container-foot">
+    <tabbar active="2" id="tabbar"></tabbar>
+  </view> -->
+</view>
+
+<!-- 悬浮导航 -->
+<!-- <movemenu bindmenuItemClick="menuItemClick" pageUrl="{{pageUrl}}"></movemenu> -->
+<!-- 生成分享海报 -->
+<share-box isCanDraw="{{isCanDraw}}" visible="{{visible}}" bind:initData="createShareImage" />
+<!-- 待核销弹窗 -->
+<view class="fadeIn" wx:if="{{dhxPop}}">
+  <view class="weui-mask" bindtap="closePop"></view>
+  <view class="weui-dialog dhxpop">
+    <view class="mg-pop pop_flex">
+      <view>
+        <view class="pop_title">
+          <image mode="aspectFit" class="dhxImg" src="{{dhxbg}}"></image>
+        </view>
+        <view class="pop_content">
+          <view class="dhxMsg">您有新的收货核销订单！</view>
+        </view>
+        <view class="flex-center">
+          <a bindtap="goHx" class="dhxbtn flex-center">点击立即前往</a>
+        </view>
+      </view>
+    </view>
+
+  </view>
+</view>
+<!-- 兑奖配送确认弹窗 -->
+<activityPop show="{{prizeConfirmPop}}" bgImg="{{prizeConfirmImg}}" showCloseBtn="{{false}}">
+  <view class="activityBox colorFFF3C1">
+    <view class="subtitle fontBold font40">确认配送信息</view>
+    <view class="item" wx:if="{{prizeInfo.act_name}}">活动名称：<text class=" font30">{{prizeInfo.act_name}}</text></view>
+    <view class="item">奖品数量：<text class="fontBold font40">{{prizeInfo.prize_num}}</text>箱</view>
+    <view class="item">配送数量：<text class="fontBold font40">{{prizeInfo.prize_num}}</text>箱</view>
+    <view class="item">奖品名称：<text>{{prizeInfo.title_name}}</text></view>
+    <view class="item">配送人员：<text>{{prizeInfo.a_psy}}</text> <text>{{prizeInfo.a_psydh}}</text></view>
+    <view class="item">核奖时间：<text>{{prizeInfo.h_time}}</text></view>
+    <view class="flex-row space-around confirmBtnBox">
+      <image mode="aspectFit" class="confirmBtn" bindtap="getPrize" data-type="0" src="{{noBtn}}"></image>
+      <image mode="aspectFit" class="confirmBtn" bindtap="getPrize" data-type="1" src="{{yesBtn}}"></image>
+    </view>
+  </view>
+</activityPop>
+<!-- 兑奖收货成功弹窗 -->
+<activityPop show="{{getprizeSuccessPop}}" bgImg="{{prizeSuccessImg}}" showCloseBtn="{{false}}">
+  <view class="checkAwardHistoryBox colorFFF3C1">
+    <view>恭喜您已收到奖品</view>
+    <image bindtap="goAwardHistory" mode="aspectFit" class="checkAwardHistory" src="{{checkAwardHistoryImg}}"></image>
+  </view>
+</activityPop>
+<mp-dialogModal title="温馨提示" isShow="{{act_dialogShow}}" content="{{act_msg}}" cancelText="暂不查看" confirmText="查看签收" bind:confirm="goAwardHistory">
+</mp-dialogModal>
+<!-- 免扫罐底码弹窗 -->
+<view class="fadeIn" wx:if="{{getMsg_bottomPop}}">
+  <view class="weui-mask" bindtap="closePop"></view>
+  <view class="weui-dialog">
+    <view class="mg-pop pop_flex">
+      <view>
+        <view class="pop_title">
+          <image mode="aspectFit" class="tickImg" src="{{getMsgInfo.type==1?'../../../../assets/images/trick.png':'../../../../assets/images/warn.png'}}">
+          </image>
+        </view>
+        <view class="getMsg_bottomBox">
+          <block wx:if="{{getMsgInfo.type==1}}">
+            <view class="dhxMsg">业务员已为您的店铺</view>
+            <!-- <view class="dhxMsg">开通免扫罐底码权限</view> -->
+            <view class="dhxMsg">开通罐底码权限</view>
+            <view class="tips">*消费者在批量兑换红牛时仅需扫一次红牛罐底码</view>
+            <view class="flex-row">
+              <view class="detail">
+                <text>开通人员：{{getMsgInfo.name}}\n</text>
+                <text>开通时间：{{getMsgInfo.time}}</text>
+              </view>
+            </view>
+            <view class="tips">
+              <text>此权限仅在【彬纷有礼APP-店铺码】生效</text>
+              <!-- <text>开通权限后，消费者兑换红牛时可免扫红牛罐底码\n</text>
+							<text>此权限仅在[彬纷有礼APP-店铺码】生效</text> -->
+            </view>
+          </block>
+          <block wx:else>
+            <view class="dhxMsg">业务员已关闭了您店铺</view>
+            <view class="dhxMsg">罐底码权限</view>
+            <!-- <view class="dhxMsg">免扫罐底码的权限</view> -->
+            <view class="flex-row">
+              <view class="detail">
+                <text>关闭人员：{{getMsgInfo.name}}\n</text>
+                <text>关闭时间：{{getMsgInfo.time}}</text>
+              </view>
+            </view>
+            <view class="tips">
+              <!-- <text>关闭权限后，消费者兑换红牛时，需扫红牛\n</text>
+							<text>罐底码进行兑换</text> -->
+              <text>关闭权限后，消费者兑换红牛时，\n</text>
+              <text>需按照兑换数量扫相应的罐底码进行兑换</text>
+            </view>
+          </block>
+
+        </view>
+        <view class="flex-center">
+          <a bindtap="closePop" class="iKonw flex-center">我知道了</a>
+        </view>
+      </view>
+    </view>
+
+  </view>
+</view>
+
+
+<!-- 促销活动相关 -->
+<sign-notice id="signNotice" bindreleaseQueueTaskBack="releaseQueueTaskBack" />
+<activity-execution id="activityExecution" bindreleaseQueueTaskBack="releaseQueueTaskBack" />
+<award-grant id="awardGrant" bindreleaseQueueTaskBack="releaseQueueTaskBack" />
+<display-review id="displayReview" bindreleaseQueueTaskBack="releaseQueueTaskBack" />
+<!-- 促销活动相关 -->
+<!-- 订单相关 -->
+<order-task id="orderTask" bindreleaseQueueTaskBack="releaseQueueTaskBack" />
+<!-- 订单相关 -->
+<!-- 2023年8月5日 深圳兑奖抽奖活动 -->
+<block wx:if="{{actInfoRaffle}}">
+  <storeRankPop id="storeRankPop"></storeRankPop>
+</block>
+<!-- 2023年8月30日 用户隐私保护弹窗 -->
+<privacyPop></privacyPop>

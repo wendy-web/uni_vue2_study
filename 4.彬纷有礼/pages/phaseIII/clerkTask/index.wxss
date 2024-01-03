@@ -1,0 +1,271 @@
+/* pages/phaseIII//clerkTask/index.wxss */
+@import '../common.wxss';
+page {
+  background: #f4f4f4;
+  height: 100%;
+}
+
+.container {
+  padding: 25rpx 29rpx 0rpx 29rpx;
+}
+
+/* 自定义tab-bar 样式 */
+.weui-tabs-bar__content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 80rpx;
+  background: #d1d1d1;
+  border-radius: 50rpx;
+  padding:7rpx 0px;
+  
+}
+.weui-tabs-bar__content .weui-tabs-bar__item{
+  width: 34%;
+  border-radius: 50rpx;
+  height: 75rpx;
+  /* background: #e02020; */
+}
+.weui-tabs-bar__wrp {
+  border-bottom: 1px solid #eee;
+  margin-top: 10px;
+  background: #d1d1d1;
+  border-radius: 50rpx;
+}
+
+.mp-tabs {
+  font-size: 30rpx;
+}
+
+.weui-tabs-swiper {
+  width: 100%;
+  /* height: inherit; */
+  font-size: 28rpx;
+}
+
+
+.weui-tabs-swiper,swiper-item{
+  overflow: scroll;
+  /* overflow: hidden; */
+  /* height:100vh!important; */
+  height:calc(100vh - 140rpx) !important;
+}
+
+.tab-content {
+  width: 100%;
+  height: 100%;
+  padding: 40rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.weui-tabs-bar__title {
+  margin: 0px 10rpx;
+  height: 100%;
+  display: flex!important;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab-bar-title__selected {
+  font-size: 30rpx;
+ background: #e02020;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 50rpx;
+  border-bottom-width: unset!important;
+border-bottom-style: unset!important;
+}
+.tabs-badge{
+  height: 80rpx;
+}
+
+/* tab bar 内容 */
+.orderNum {
+  color: #ec0000;
+}
+.orderMsg{
+  margin-bottom: 50rpx;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+.font-bold {
+  font-weight: bold;
+}
+
+.text-green {
+  color: #079f01;
+}
+.text-yellow{
+  color: #fcd132;
+}
+
+.font30 {
+  font-size: 30rpx;
+}
+
+.font27 {
+  font-size: 27rpx;
+}
+.font70{
+  font-size: 70rpx;
+}
+.text-red {
+  color: #e02020;
+}
+.operation {
+  position: absolute;
+  display: flex;
+  /* justify-content: space-between; */
+  justify-content: flex-end;
+  align-items: center;
+  right: 0rpx;
+  bottom: 60rpx;
+  width: 70%;
+}
+.grey-btn {
+  width: 196rpx;
+  height: 63rpx;
+  line-height: 63rpx;
+  display: inline-block;
+  border-radius: 50rpx;
+  color: #ffffff;
+  text-align: center;
+  background: linear-gradient(180deg, #dcdcdc, #898989);
+  font-size: 25rpx;
+}
+
+.red-btn {
+  width: 196rpx;
+  height: 63rpx;
+  line-height: 63rpx;
+  display: inline-block;
+  border-radius: 50rpx;
+  color: #ffffff;
+  text-align: center;
+  background: linear-gradient(180deg, #FF0000, #A90000);
+  font-size: 25rpx;
+}
+.text-blue{
+  color: #3fc9ff;
+}
+
+.order-body {
+  /* height: 239px; */
+  position: relative;
+  border-top: 1px dashed #bcbcbc;
+  padding-top: 8px;
+  margin-bottom: 35rpx;
+}
+.total{
+  padding-bottom: 30rpx;
+}
+/* 核销确认弹窗 */
+.mp-dialog .weui-dialog{
+  top: 55%;
+  height: 768rpx;
+}
+
+
+.flex-around {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.font72{
+  font-size: 72rpx;
+}
+/* 核销成功弹窗 */
+.success_pop{
+  height: 411px;
+}
+.success_pop .mg-pop{
+  margin: 30rpx 0;
+  height: 100%;
+  border-radius:14rpx ;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.pdlr57{
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+}
+.tick{
+  width: 96rpx;
+  height: 96rpx;
+}
+.red-btn2 {
+  width: 264rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+  display: inline-block;
+  border-radius: 50rpx;
+  color: #ffffff;
+  text-align: center;
+  background: linear-gradient(180deg, #FF0000, #A90000);
+  font-size: 32rpx;
+}
+/* 隐藏scrol-view  滚动条*/
+scroll-view ::-webkit-scrollbar {
+  width:0;
+  height:0;
+  color:transparent;
+  display: none;
+}
+
+.scrollView{
+  height: 100%;
+}
+.order-content{
+  position: relative;
+  /* padding-bottom: 25rpx;
+  margin-bottom: 25rpx;
+  border-bottom: 1px dotted #D1D1D1; */
+}
+.phase_pop{
+  overflow: unset;
+}
+.cancelBtn{
+  width: 196rpx;
+  height: 63rpx;
+  line-height: 63rpx;
+  display: inline-block;
+  border-radius: 50rpx;
+  color: #ffffff;
+  text-align: center;
+  background: linear-gradient(180deg, #dcdcdc, #898989);
+  font-size: 25rpx;
+  padding-left: 7rpx;
+  padding-right: 7rpx;
+}
+.weui-loadmore image{
+  width: 100%;
+}
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+  display: none;
+}
+.hx-check .hx-check-icon{
+  width: 148rpx;
+  height: 146rpx;
+}
+.mgt20{
+  margin-top: 20rpx;
+}
+.success-icon{
+  width: 142rpx;
+  height: 142rpx;
+}
+.hx-title{
+  margin-bottom:30rpx ;
+}
+.pop_flex{
+  margin: 20rpx 0 60rpx 0;
+}

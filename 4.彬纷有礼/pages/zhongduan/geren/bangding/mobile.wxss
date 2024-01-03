@@ -1,0 +1,151 @@
+/* pages/zhongduan/geren/bangding/mobile.wxss */
+
+.color333 {
+  color: #333;
+}
+
+.avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+}
+
+.font24 {
+  font-size: 24rpx;
+
+  font-weight: 400;
+  color: #333;
+  line-height: 34rpx;
+}
+
+.mt30 {
+  margin-top: 30rpx;
+}
+
+.weui-input__placeholder {
+  font-size: 28rpx;
+  font-weight: 400;
+  /* color: rgba(190, 190, 190, 1); */
+  color: #333;
+  line-height: 40rpx;
+}
+
+.vcode-btn {
+  background-color: white !important;
+  /* color: rgba(224, 32, 32, 1) !important; */
+  color: #333 !important;
+  font-size: 24rpx !important;
+  font-weight: 400;
+}
+.getPhoneNumber-btn{
+  background-color: white;
+  color: #333;
+  font-size: 24rpx;
+  font-weight: 400;
+}
+.getPhoneNumber-btn::after{
+  border:unset;
+}
+
+.iconfont {
+  font-size: 47rpx;
+  font-weight: 700;
+
+}
+
+.grey-btn {
+  color: grey !important;
+  background-color: white !important;
+  font-size: 24rpx !important;
+  font-weight: 400;
+}
+
+.weui-btn_input-clear {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+.weui-cells_form::after {
+  border-bottom: 0px;
+}
+
+.afterline::after {
+  content: " ";
+  position: absolute;
+  bottom: 0;
+  height: 1px;
+  border-bottom: 1px solid var(--weui-FG-3);
+  -webkit-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-transform: scaleY(.5);
+  transform: scaleY(.5);
+  width: 83%;
+}
+
+.weui-cells::before {
+  border-top: 0px;
+}
+
+
+.cpPopbtn {
+  max-width: 242rpx;
+  max-height: 93rpx;
+}
+
+.mgr20 {
+  margin-right: 20rpx;
+}
+
+.mgl20 {
+  margin-left: 20rpx;
+}
+
+.mglr40 {
+  margin: 0px 40rpx;
+}
+
+.flex-end {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  margin-bottom: 50rpx;
+
+}
+
+.mg-pop {
+  margin: 50rpx 0px 0px 0px;
+}
+
+.mg-pop image {
+  width: 90%;
+}
+
+.colorFFF3C1 {
+  color: #FFF3C1;
+}
+
+.fontBold {
+  font-weight: 500;
+}
+
+.font40 {
+  font-size: 40rpx;
+}
+
+.letter-space {
+  letter-spacing: 3rpx;
+}
+
+.iKnowBox {
+  position: absolute;
+  bottom: 100rpx;
+}
+
+.iKnow {
+  width: 289rpx;
+  height: 83rpx;
+}
+.redbtn{
+  background: linear-gradient(0deg, #a30702 0, #f93326 100%);
+}

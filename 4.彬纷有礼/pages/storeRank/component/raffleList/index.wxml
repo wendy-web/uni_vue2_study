@@ -1,0 +1,70 @@
+<!--pages/storeRank/component/raffleList/index.wxml-->
+<!-- 彩票开奖才显示记录 -->
+<view wx:if="{{actInfo.calc.lottery_number.length>0}}" class="raffle-box">
+  <view class="my-raffle-code-box">
+    <block wx:if="{{raffle_code_arr.length>0}}">
+      <view class="left-bar"></view>
+      <view>我的幸运号码</view>
+      <view class="right-bar"></view>
+      <image class="icon-raffle-win" src="{{file_cos_url}}/icon_raffle_{{actInfo.raffle_win?'win':'unwin'}}1.png" mode="" />
+    </block>
+    <block wx:else>
+      <image class="icon-raffle-win" src="{{file_cos_url}}/icon_raffle_unsign2.png" mode="aspectFit" />
+    </block>
+  </view>
+  <view class="my-raffle-code" wx:if="{{raffle_code_arr.length>0}}">
+    <view wx:for="{{raffle_code_arr}}" wx:key="index" class="my-raffle-code-item">{{item}}</view>
+  </view>
+
+  <!-- 超级DLT 开奖结果 -->
+  <view class="lottery-box">
+    <view>
+      <view class="raffle-tips">{{actInfo.calc.lottery_date || '第23101期 2023-09-02 周六'}}</view>
+      <view>超级大乐透开奖结果</view>
+    </view>
+    <view class="lottery-ball">
+      <view class="img-ball-box" wx:for="{{actInfo.calc.lottery_number}}" wx:key="index">
+        <text class="{{index>=5?'text-black':''}}">{{item}}</text>
+        <image class="img-ball" src="{{index>=5?img_ball_yellow:img_ball_blue}}" mode="aspectFit" />
+      </view>
+    </view>
+  </view>
+  <!-- 本期开奖结果 -->
+  <view class="lottery-box">
+    <view>
+      <view class="raffle-tips">大乐透前5个数从小到大的数字组合</view>
+      <view>本期开奖结果</view>
+    </view>
+    <view class="raffle-code">{{actInfo.calc.lottery_number_str}}</view>
+  </view>
+  <!-- 列表 -->
+  <view class="raffle-list-box" wx:if="{{list.length}}">
+    <view class="flex-item list-head">
+      <view class="item-index">序号</view>
+      <view class="item-shop">中奖门店</view>
+      <view class="item-num">门店幸运号码</view>
+    </view>
+    <block wx:for="{{list}}" wx:key="index">
+      <view class="flex-item {{item.sid == actInfo.shop_id?'my-lucky-item':''}}">
+        <view class="item-index">{{index+1}}</view>
+        <view class="item-shop oneLine">{{item.shop_name}}</view>
+        <view class="item-num">
+          <view>{{item.lucky_number}}</view>
+          <view class="item-time">{{item.create_time}}</view>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view class="check-all-list" bindtap="goPage" data-url="pages/storeRank/raffle/list/index">
+    <text>查看所有门店获取的幸运号码</text>
+    <van-icon name="arrow" />
+  </view>
+  <!-- 获奖规则 -->
+  <view class="raffle-rule-box">
+    <view class="rule-title">获奖规则</view>
+    <view>当店铺兑奖人数≥{{actInfo.calc.ticket_num ||20}}人时，可报名参与抽奖活动。报名后您将随机获得一组10位数的幸运号码（此号码值取自超级大乐透前5个蓝色球的数字组合0102030405~3132333435之间），待第23101期（2023-09-02 周三 21:25:00）开奖结果公布后，系统会将开奖号码从小到大重新组合，生成一组新的号码值作为此次活动的开奖号码，后取6个与本期开奖结果最为接近的店铺幸运号码（幸运号码值≤本期开奖号码值），作为本次抽奖活动的最终中奖号码，每个中奖号码对应的店铺将获得价值2499元的荣耀90手机一台，共计6台（奖品以实物为准）。</view>
+  </view>
+</view>
+<view wx:else class="no-data">
+  <text>~暂无记录~</text>
+</view>

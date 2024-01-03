@@ -1,0 +1,123 @@
+.ss {
+  z-index: 1000;
+  margin-bottom: 100rpx; }
+
+.secure, page {
+  height: 100%;
+  position: relative; }
+
+.header {
+  position: absolute;
+  width: 1200rpx;
+  height: 1200rpx;
+  border-radius: 1200rpx;
+  background-color: #fa7298;
+  top: -800rpx;
+  left: 50%;
+  margin-left: -600rpx; }
+
+.header-content {
+  position: absolute;
+  bottom: 240rpx;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #fff;
+  font-size: 36rpx; }
+
+.container {
+  padding-top: 100rpx;
+  margin: 0 40rpx; }
+
+.secure-btn-save {
+  width: 90%;
+  margin: 60rpx auto; }
+
+.secure-btn-save .btn-save {
+  background-color: #ff6140;
+  color: #fff; }
+
+.hint {
+  font-size: 30rpx;
+  color: gray;
+  margin-bottom: 20rpx; }
+
+.regi {
+  margin: 5rpx;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  font-size: 30rpx;
+  color: gray; }
+
+.at-input {
+  margin-left: 0;
+  margin-bottom: 50rpx; }
+
+.at-input input {
+    font-size: 36rpx; }
+
+.at-button {
+  height: 100rpx;
+  line-height: 100rpx;
+  width: 330rpx;
+  margin: 0;
+  font-size: 36rpx;
+  font-weight: 500; }
+
+.at-button2 {
+  height: 100rpx;
+  line-height: 100rpx;
+  margin: 0;
+  font-size: 36rpx;
+  font-weight: 500; }
+
+.account-login__page {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 100vh;
+  padding: 280rpx 30rpx 0;
+  background-color: #fff;
+  background-image: url(https://www.leidenglai.com/image/weapp/cdn/bg-login.png);
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: bottom center; }
+
+.account-login__input-group {
+  width: 100%;
+  height: 540rpx;
+  padding: 30rpx 30rpx 90rpx;
+  margin-bottom: 30rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  background-color: #fff;
+  -webkit-box-shadow: 0 23rpx 54rpx 16rpx rgba(0, 0, 0, 0.1);
+          box-shadow: 0 23rpx 54rpx 16rpx rgba(0, 0, 0, 0.1);
+  border-radius: 24rpx; }
+
+.account-login__title {
+  font-size: 50rpx;
+  font-weight: 500;
+  margin-bottom: 80rpx;
+  color: #3e4a59; }
+
+.account-login__action {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.account-login__jicha {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+

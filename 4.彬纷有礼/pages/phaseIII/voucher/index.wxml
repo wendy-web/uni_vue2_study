@@ -1,0 +1,61 @@
+<!--pages/voucher/index.wxml-->
+<view class="page-box">
+  <view class="tab-box">
+    <view class="tab-coupon-box">
+      <view bind:tap="tabCouponChange" data-id="{{item.id}}" wx:for="{{tabCouponList}}" wx:key="id" class="tab-coupon-item ">
+        <view class="tab-coupon-title {{tabCoupon == item.id ? 'tab-active':''}}">{{item.name}}</view>
+        <view class="tab-count-info" wx:if="{{item.count>0}}">{{item.count>99?'99+':item.count}}</view>
+      </view>
+    </view>
+    <block wx:if="{{tabCoupon == 0}}">
+      <view class="tab-coupon-box">
+        <view bind:tap="tabExcChange" data-id="{{item.id}}" wx:for="{{tabExcList}}" wx:key="id" class="tab-coupon-item tab-exc-item ">
+          <view class="tab-coupon-title tab-exc-title {{tabExc == item.id ? 'tab-active':''}}">{{item.name}}</view>
+          <view class="tab-count-info" wx:if="{{item.count>0}}">{{item.count>99?'99+':item.count}}</view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <swiper class="swiper-box" current="{{swiperIdx}}" bind:change="swiperChange">
+    <swiper-item class="swiper-item">
+      <excItemHn id="excHn" hnExcCount="{{hnExcCount}}" bind:showFilterPop="showFilterPop" bind:deleteTag="deleteTag" bind:initCount="initCount" bind:showExcExpirePop="showExcExpirePop" bind:resetFilterPop="resetFilterPop"></excItemHn>
+    </swiper-item>
+    <swiper-item>
+      <excItemZm id="excZm" zmExcCount="{{zmExcCount}}" bind:showFilterPop="showFilterPop" bind:deleteTag="deleteTag" bind:initCount="initCount" bind:resetFilterPop="resetFilterPop"></excItemZm>
+    </swiper-item>
+    <swiper-item>
+      <!-- 此处用条件渲染方式红牛、战马tab隐藏后导致scroll-view 高度未初始化 -->
+      <discountItem wx:if="{{swiperIdx>1 || discountCount.total_unused}}" id="discountItem" discountCount="{{discountCount}}" bind:showFilterPop="showFilterPop" bind:deleteTag="deleteTag" bind:initCount="initCount" bind:resetFilterPop="resetFilterPop"></discountItem>
+    </swiper-item>
+    <swiper-item>
+      <actItem wx:if="{{swiperIdx>1 || actCount.total_unused}}" id="actItem" actCount="{{actCount}}" bind:showFilterPop="showFilterPop" bind:deleteTag="deleteTag" bind:initCount="initCount" bind:resetFilterPop="resetFilterPop"></actItem>
+    </swiper-item>
+  </swiper>
+  <!-- 底部使用卡券 -->
+  <view class="footer-box">
+    <view class="coupon-stat-box" bind:tap="openPage" data-url="pages/phaseIII/couponStats/list/index">
+      <image class="icon_coupon_data" src="{{file_url_9m}}/icon_coupon_data.png" mode="aspectFit"/>
+      <view>卡券统计</view>
+    </view>
+    <view class="coupon-stat-box" bind:tap="openPage" data-url="pages/phaseIII/useCoupon/record/index">
+      <image class="icon_coupon_data" src="{{file_url_9m}}/icon_coupon_record.png" mode="aspectFit"/>
+      <view>使用记录</view>
+    </view>
+    <block wx:if="{{btnDisabled}}">
+      <view class="coupon-use-box coupon-use-grey">
+      <view>去使用卡券</view>
+    </view>
+    </block>
+    <block wx:else>
+      <view class="coupon-use-box" bind:tap="openPage" data-url="pages/phaseIII/useCoupon/index/index">
+        <view>去使用卡券</view>
+        <view class="coupon-expire-tips" wx:if="{{countcardInfo.day_30>0}}">有券即将过期</view>
+      </view>
+    </block>
+  </view>
+
+
+</view>
+<!-- 条件筛选弹窗 -->
+<filterPop id="filterPop" bind:initFilterData="initFilterData"  skuParams="{{skuParams}}"></filterPop>

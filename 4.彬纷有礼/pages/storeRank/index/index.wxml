@@ -1,0 +1,232 @@
+<!--pages/storeRank/index.wxml 活动详情/报名参与-->
+<view class="align-center" style="height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;box-sizing:border-box; padding-top:{{navBarSystem?navBarSystem.statusBarHeight:'20'}}px">
+  <view bindtap="back" class=" nav-bar__button nav-bar__btn_goback white"></view>
+</view>
+<view class="container">
+  <!-- <view class="head" style="background-image:url({{bg_head}})"> -->
+  <view class="head" style="background-image:url({{img_banner}})">
+    <!-- 蒙层 -->
+    <image class="img-head-mask" src="{{img_head_mask}}" mode="aspectFit" />
+    <!-- 红牛+28周年logo -->
+    <image class="img-hn-28th" style="top:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight-10:'60'}}rpx;" src="{{img_hn_28th}}" mode="aspectFit" />
+    <!-- 标题+罐装 -->
+    <!-- <image class="img-title-can" src="{{img_title_can}}" mode="aspectFit" /> -->
+    <!-- 奖品如图 -->
+    <!-- <view class="color-white rebBull_badge"><text>（奖品如图）</text></view> -->
+    <!-- 活动未结束：都可报名 -->
+    <view class="sign-up-box">
+      <block wx:if="{{!rankInfo.act_state.act_end}}">
+        <image bindtap="signup" wx:if="{{rankInfo.status == '未报名'}}" class="btn-signup" src="{{img_cos_url}}/btn_signup.png" mode="aspectFit"></image>
+        <image bindtap="goRankIndex" wx:else class="btn-signup" src="{{btnCheckDetail}}" mode="aspectFit"></image>
+      </block>
+      <!-- 测试需删除 -->
+      <image bindtap="tapTest" class="btn-signup" src="{{img_cos_url}}/btn_signup.png" mode="aspectFit"></image>
+    </view>
+  </view>
+  <!-- 活动时间 -->
+  <view class="act-time-box" wx:if="{{rankInfo}}">
+    <!-- <view class="title">{{rankInfo.act_state.status_title}}</view> -->
+    <view>活动时间：{{rankInfo.rank_start_date}}-{{rankInfo.rank_end_date}}</view>
+    <view class="count-down-box">
+      <block wx:if="{{rankInfo.act_state.act_end}}">
+        <text>活动已结束</text>
+      </block>
+      <block wx:else>
+        <block wx:if="{{rankInfo.act_state.act_yure}}">
+          <text>距离活动开始:</text>
+        </block>
+        <block wx:else>
+          <text>距离活动结束:</text>
+        </block>
+        <van-count-down time="{{ rankInfo.act_state.count_down_timestamp ||0 }}" bind:finish="rankTimerFinished" format="DD天HH时mm分ss秒" style="--count-down-text-color:#FEFCE3;--count-down-font-size:28rpx;"></van-count-down>
+      </block>
+
+    </view>
+  </view>
+  <view class="act-rule-box safeArea">
+
+    <!-- 蒙层 -->
+    <image class="img-content-mask" src="{{img_content_mask}}" />
+    <view class="act-rule-item">
+      <view class="tag" style="background-image:url({{title_bg}});">
+        <text>如何参与</text>
+      </view>
+      <view class="flex-row mgt30 space-around width100">
+        <view class="flex-column">
+          <image mode="aspectFit" class="tag-ImgM pdt30" src="{{img_cos_url}}/people.png"></image>
+          <view class="pdtb30"><text>1.报名参加活动</text></view>
+        </view>
+        <view class="flex-column">
+          <image mode="aspectFit" class="tag-Img pdt30" src="{{icon_unbox}}"></image>
+          <view class="pdtb30"><text>2.开箱数排名参与</text></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="act-rule-item">
+      <view class="tag font23" style="background-image:url({{title_bg}});">
+        <text>活动规则</text>
+      </view>
+      <view class="rule-item">
+        <!-- <view class="rule-content">
+          <view class="fontBold">活动说明：</view>
+          <view>报名参与活动，即有机会赢得红牛维生素功能饮料；</view>
+        </view> -->
+        <view class="rule-content">
+          <view class="fontBold">活动日期：</view>
+          <view>{{rankInfo.rank_start_date}}-{{rankInfo.rank_end_date}}，共{{rankInfo.act_state.total_day}}天；</view>
+        </view>
+        <view class="rule-content">
+          <view class="fontBold">活动区域：</view>
+          <view>广东省{{storeRankArea}}。</view>
+        </view>
+        <view class="rule-content">
+          <view class="fontBold">活动对象：</view>
+          <view><text>凡在"彬纷有礼"小程序内显示该活动页面的店铺均可参加。</text></view>
+        </view>
+        <view class="rule-content">
+          <view class="fontBold">参与方式：</view>
+          <view>您可进入【彬纷有礼】，【首页资讯－热门活动】点击“28周年开箱冲榜赢奖励”，或从页面活动浮窗进入，报名参与此活动（店长、店员均可报名）；也可在活动页面查看店铺排名情况；</view>
+        </view>
+        <view class="rule-content">
+          <view class="fontBold">奖励发放方式及说明：</view>
+          <!-- <view><text>活动结束后，<text class="fontBold">店长</text>须在30日内在“彬纷有礼”小程序活动页面领取奖励，业务员会根据您的店铺地址，在<text class="fontBold">15个工作日</text>内安排配送，届时请注意查收。</text></view> -->
+          <view>
+            <text>本次活动依据“彬纷有礼”现有活动券的核销流程，请在{{rankInfo.exp_time || '2023-08-31 23:59:59'}}前通过【彬纷有礼－可用卡券】向上级客户申请核销，逾期未申请核销作废。</text>
+          </view>
+        </view>
+        <view class="rule-content">
+          <view class="fontBold">活动说明：</view>
+          <text>1、活动开始后，记录店铺红牛有效开箱数并进行排名。（红牛有效开箱数指开箱扫码领取的红包、现金券个数），若存在店铺开箱数相同的情况，以优先达到此开箱数的时间先后顺序进行排名（具体以活动系统时间为准）；</text>
+        </view>
+        <view class="rule-content">
+          <text>2、活动结束后，以店铺最终的红牛有效开箱数作为排名依据，系统将按照活动奖项设置的规则自动发放对应的活动券至您的彬纷有礼账户，届时请注意查收。（1张红牛券可兑换1罐250ml红牛维生素功能饮料（原味）、1张战马券可兑换1罐310ml战马能量型维生素饮料 ）；</text>
+        </view>
+        <view class="rule-content">
+          <text class="color-orange">3、报名时，请务必仔细核对店铺地址信息的真实性并确认所属地为上述活动城市。</text>
+        </view>
+        <view class="rule-content">
+          <text class="color-orange">4、经由红牛公司审核后，确认门店为真实终端店铺，即发放奖励（若因店铺地址信息有误、不完整、不清晰，或与所在城市不匹配，而导致奖励不能正常发放或奖励不能正常核销的情况，由您自行承担后果）。</text>
+        </view>
+        <view class="rule-content">
+          <text>5、活动期间暂不能对店铺进行转让、加入其他店铺或修改店铺信息，带来的不便请您谅解。</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 奖品设置 -->
+    <view class="act-rule-item">
+      <view class="tag" style="background-image:url({{title_bg}});">
+        <text>奖励设置</text>
+      </view>
+      <view class="rule-item">
+        <view class="rule-content">
+          <text>1、广州市、东莞市、深圳市、佛山市，分别设置80个奖励名额：</text>
+        </view>
+        <view class="rule-content ">
+          <text>（1）特等奖1名，奖励12箱红牛+12箱战马；</text>
+        </view>
+        <view class="rule-content text-indent">
+          <text>（2）一等奖9名，奖励8箱红牛+8箱战马；</text>
+        </view>
+        <view class="rule-content text-indent">
+          <text>（3）二等奖20名，奖励5箱红牛+5箱战马；</text>
+        </view>
+        <view class="rule-content text-indent">
+          <text>（4）三等奖50名，奖励2箱红牛+2箱战马；</text>
+        </view>
+        <view class="rule-content">
+          <text>2、中山市、惠州市、湛江市，分别设置50个奖励名额：</text>
+        </view>
+        <view class="rule-content ">
+          <text>（1）特等奖1名，奖励8箱红牛+8箱战马；</text>
+        </view>
+        <view class="rule-content text-indent">
+          <text>（2）一等奖9名，奖励5箱红牛+5箱战马；</text>
+        </view>
+        <view class="rule-content text-indent">
+          <text>（3）二等奖10名，奖励2箱红牛+2箱战马；</text>
+        </view>
+        <view class="rule-content text-indent">
+          <text>（4）三等奖30名，奖励1箱红牛+2箱战马；</text>
+        </view>
+        <view class="rule-content">
+          <text>3、江门市、珠海市、汕头市、肇庆市、清远市、茂名市、揭阳市、阳江市、河源市、梅州市、韶关市、云浮市、汕尾市、潮州市，分别设置30个奖励名额：</text>
+        </view>
+        <view class="rule-content ">
+          <text>（1）特等奖1名，奖励5箱红牛+5箱战马；</text>
+        </view>
+        <view class="rule-content text-indent">
+          <text>（2）一等奖4名，奖励2箱红牛+3箱战马；</text>
+        </view>
+        <view class="rule-content text-indent">
+          <text>（3）二等奖10名，奖励2箱红牛+1箱战马；</text>
+        </view>
+        <view class="rule-content text-indent">
+          <text>（4）三等奖15名，奖励1箱红牛+1箱战马；</text>
+        </view>
+      </view>
+      <!-- <view class="prize-title">活动期间兑奖≥{{rankInfo.kpi_1}}罐，可参与排名</view>
+      <view class="prize-item">
+        <view class="prize-rank">排名</view>
+        <view class="prize-name">奖品</view>
+      </view>
+
+      <view class="prize-item" wx:for="{{prizeConfig}}" wx:key="index">
+        <view class="prize-rank">{{item.rank}}</view>
+        <view class="prize-img-list">
+          <block wx:for="{{item.num}}" wx:for-index="idx" wx:for-item="itm" wx:key="idx">
+            <image class="{{item.unit=='箱'?'img-hn-box':'img-hn-can'}}" src="{{item.unit==='箱'?img_hn_box:img_hn_can}}" mode="aspectFit" />
+          </block>
+        </view>
+        <view class="prize-name">{{item.num}}{{item.unit}}红牛</view>
+      </view> -->
+
+
+    </view>
+    <!-- 活动免责说明 -->
+    <view class="act-rule-item">
+      <view class="tag font23" style="background-image:url({{title_bg}});">
+        <text>活动免责说明</text>
+      </view>
+      <view class="rule-item">
+        <view class="rule-content">
+          <text>活动秉着公平、公正、公开、真实的原则，对于本次活动，我司声明以下免责条款，参加活动前请您仔细阅读以下条款，参加本次活动即表明您了解并接受以下所有条款：</text>
+        </view>
+        <view class="rule-content ">
+          <text>1、免责事项</text>
+        </view>
+        <view class="rule-content text-indent">
+          <text>（1）本活动期间发生任何不可抗力事件使本活动或本次目的不能实现，我司因此免责。不可抗力是指不能控制、不可预见或不能避免，即使预见亦无法避免的事件，该事件使任何一方根据本协议履行其全部或部分义务已不可能。包括社会异常事件、自然灾害或政府管制行为而造成的非基于我司过错的行为。</text>
+        </view>
+        <view class="rule-content text-indent">
+          <text>（2）您自身主观过错或恶意，或不按正常流程操作、填写信息不真实、不完整等类似情形致使此次活动无效、无法核验您真实信息而不能领取奖品的，我司免责。</text>
+        </view>
+        <view class="rule-content text-indent">
+          <text>（3）若由于您的原因，导致我司遭受损失的，我司有权向您追偿。本规则所称“损失”包括但不限于因涉诉、涉仲裁而产生的诉讼费、律师费、调查取证费、行政处罚或第三人索赔等。\n</text>
+
+        </view>
+        <view class="rule-content">
+          <text>2、本活动的奖品不可退不折现，除非产品本身质量问题，一律不得退换。若奖品的价值需按照国家法律规定缴纳税费的，<text class="fontBold">由您自行缴税</text>。</text>
+
+        </view>
+        <view class="rule-content">
+          <text>3、我司可以根据市场环境、参与情况随时暂停或终止活动。活动内容如果有调整或补充，请以最新公告为准。</text>
+
+        </view>
+        <view class="rule-content">
+          <text>4、针对违规骗取奖励的行为，我司将不予发放奖励、追回相关奖励或封停账号，并追究其法律责任。\n</text>
+        </view>
+        <view class="rule-content">
+          <text>5、本次活动在法律允许范围内，其修改权、更新权及最终解释权均属广东省深圳市天兴诚科技有限公司，如有任何问题，请与平台客服联系，客服热线400-870-7076。</text>
+        </view>
+
+      </view>
+    </view>
+    <!-- 活动注意事项 -->
+
+    <view class="back-top" bindtap="scrollTop">返回顶部</view>
+  </view>
+</view>
+<!-- 店铺排行榜弹窗 -->
+<storeRankPop id="storeRank" bind:refresh="initOptions"></storeRankPop>

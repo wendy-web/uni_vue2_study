@@ -1,0 +1,75 @@
+<!--pages/storeOrder/confirmReceipt/index.wxml-->
+<view class="confirm-receipt">
+  <!-- 订货单信息 -->
+  <view class="order-info">
+    <view class="order-no">
+      订货单号：{{out_trade_no}}
+    </view>
+    <view class="order-total">
+      <text class="ot-label">货品清单：</text>
+      共{{sku_num}}个商品、应收{{buy_num}}箱、实收<text class="ot-box-num">{{buy_num}}</text>箱
+    </view>
+  </view>
+  <!-- 商品展示 -->
+  <view class="shop-list">
+   
+   <!-- <view class="shop-list-box" style="max-height: {{isOpen?'none':'665rpx'}};"> -->
+    <view class="shop-list-box" >
+      <view class="shop-list-item" wx:for="{{sku}}" wx:key="key">
+        <image class="gli-icon" src="{{item.icon}}"></image>
+        <view class="gli-name">{{item.title}}</view>
+        <view class="gli-num"><text class="sli-label">款式：</text>{{item.attr}}</view>
+        <view class="gli-num"><text class="sli-label">需求数量：</text>{{item.buy_num}}箱</view>
+        <view class="gli-num"><text class="sli-label">交货数量：</text>{{item.buy_num}}箱</view>
+        <view class="gli-num"><text class="sli-label">小计金额：</text>￥{{item.price}}</view>
+      </view>
+  </view>
+
+    <!-- 超过三个显示 -->
+    <!-- <view wx:if="{{sku.length>3}}" class="drop-down" bindtap="expand">全部{{sku.length}}个商品
+      <van-icon wx:if="{{!isOpen}}" name="arrow-down" />
+      <van-icon wx:else name="arrow-up" />
+    </view> -->
+
+  </view>
+  <!-- 价格信息 -->
+  <view class="price-info">
+    <!-- 商品总价 -->
+    <view class="goods-price-total">
+      <view>商品总价：</view>
+      <view>￥{{total_amount}}</view>
+    </view>
+    <!-- 商品优惠 -->
+    <view class="goods-price-yh">
+      <view>优惠：</view>
+      <view>-￥{{yh_amount}}</view>
+    </view>
+    <!-- 现金劵  -->
+    <view class="goods-price-xjj" wx:if="{{d_amount}}">
+      <view class="gpi-right-label">
+        <image class="coupons-icon" src="../../static/coupons.png" mode="aspectFill"></image>
+        <text>现金劵：</text>
+      </view>
+      <view class="gpi-right-value cash-coupon">-￥{{d_amount}}</view>
+    </view>
+    <!-- 应付 -->
+    <view class="goods-price-yf">
+      <text>应付款：</text>
+      <text class="price-red">￥{{c_amount}}</text>
+    </view>
+    <!-- 操作按鈕 -->
+    <view class="tools">
+    <view class="tools-btn-item">
+       <van-button  block  plain  round bindtap="refuse">拒绝</van-button>
+    </view>
+    <view class="tools-btn-item">
+      <van-button   type="danger" block  round bindtap="confirm">确认收货</van-button>
+    </view>
+  </view>
+  </view>
+</view>
+
+<!-- 拒绝收货 -->
+<refuse-goods id="refuseGoods" bindrefuseBack="goback"/>
+<!-- 确认收货 -->
+<confirm-goods id="confirmGoods" bindconfirmBack="goback"/>

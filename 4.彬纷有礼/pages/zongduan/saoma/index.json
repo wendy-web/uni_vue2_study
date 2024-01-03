@@ -1,0 +1,13 @@
+{
+  "usingComponents": {
+    "css-animation": "../../../component/css-animation/index",
+    "mp-dialogModal": "../../../component/dialogModal/index",
+    "tabbar":"../../../component/tabbar/index",
+    "activityWidget":"../../../component/activityWidget/movemenu",
+    "gzUnboxBouy":"../../../component/actCouponPop/gzUnboxBuoy/index",
+    "privacyPop":"../../../component/privacyPop/index"
+
+  },
+  
+  "navigationBarTitleText": "扫一扫"
+}

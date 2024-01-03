@@ -1,0 +1,13 @@
+<!--pages/storeOrder/monthlyOrder/details/components/steps/index.wxml-->
+<view class="steps">
+  <!-- 进度 -->
+  <view class="steps-progress-box" style="width:{{100*(timeline.length-1)/timeline.length+'%'}}">
+    <view class="steps-progress" style="width: {{100/(timeline.length-1)*active+'%'}};"></view>
+  </view>
+   <!-- 进度描述 -->
+   <view class="steps-item {{active>=index&&'steps-active'}}" wx:for="{{timeline}}" wx:key="key">
+       <view class="steps-icon"></view>
+       <view class="text" wx:if="{{item.name}}">{{item.name}}</view>
+       <view class="desc" wx:if="{{item.date}}">{{item.date}}</view>
+   </view>
+</view>

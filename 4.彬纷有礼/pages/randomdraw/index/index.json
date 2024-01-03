@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "xdBenefit":"../../../component/xdBenefit/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "扫码领红包",
+  "onReachBottomDistance": 100
+}

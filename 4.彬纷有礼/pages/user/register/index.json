@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "van-field": "@vant/weapp/field/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "privacyPop": "../../../component/privacyPop/index"
+  },
+  "navigationBarTitleText": "绑定微信",
+  "disableScroll": true
+}

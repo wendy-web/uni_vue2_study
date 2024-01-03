@@ -1,0 +1,161 @@
+<!--pages/storeOrder/fhDetail/index.wxml-->
+<view class="page-box">
+  <view class="order-info-box">
+    <!-- 订单状态 -->
+    <view class="fh-order-item">
+      <view class="fh-order-status-box {{orderInfo.status==9?'color-green':''}}">
+        <image class="icon-fh-status" mode="aspectFit" src="{{status_icon_path}}"></image>
+        <text>{{status_name}}</text>
+      </view>
+    </view>
+    <!-- 店铺信息 -->
+    <view class="fh-order-item">
+      <view class="fh-shopinfo-box">
+        <image class="icon-location" src="{{icon_location}}" mode="aspectFit"></image>
+        <view>
+          <view class="fh-shopinfo-name">
+            <text class="font28">{{orderInfo.f_name}}</text>
+            <text class="mgl10">{{orderInfo.f_mobile_str}}</text>
+          </view>
+          <view class="fh-shopinfo-address">
+            <text>送货地址：{{orderInfo.f_address}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 订单信息 -->
+    <view class="fh-order-item">
+      <view class="fh-orderinfo-box">
+        <text>订单编号：</text>
+        <text class="fh-orderinfo-title">{{orderInfo.order_no}}</text>
+        <image bindtap="copyText" data-text="{{orderInfo.order_no}}" class="icon-copy" mode="aspectFit" src="{{icon_copy}}"></image>
+      </view>
+      <view class="sku-box">
+        <view class="sku-img">
+          <image class="img-sku" src="{{orderInfo.picture}}" mode="aspectFit"></image>
+          <!-- <view class="{{voucherTitle[orderInfo.t_type]['class']}}">{{voucherTitle[orderInfo.t_type]['title']}}</view> -->
+          <view class="prize-example" wx:if="{{orderInfo.sku_no=='ND1-1'}}">奖品如图</view>
+        </view>
+        <view>
+          <view class="fh-orderinfo-title">{{orderInfo.goods_name}}</view>
+          <view class="fh-orderinfo-title">申请<text class="color-green">{{orderInfo.num}}</text>{{orderInfo.unit}}</view>
+          <view class="fh-orderinfo-title" wx:if="{{orderInfo.s_num && orderInfo.status==9}}">实收<text class="color-red">{{orderInfo.s_num}}</text>{{orderInfo.unit}}</view>
+        </view>
+      </view>
+    </view>
+    <!-- 配送商信息 -->
+    <view class="fh-order-item">
+      <view class="sub-title">配送商信息</view>
+      <view class="fh-orderinfo-box mgt20">
+        <text>配送商：</text>
+        <text class="fh-orderinfo-title">{{orderInfo.name}}</text>
+      </view>
+      <block wx:if="{{orderInfo.d_name}}">
+        <view class="fh-orderinfo-box mgt20">
+          <text>配送员：</text>
+          <text class="fh-orderinfo-title">{{orderInfo.d_name}}</text>
+        </view>
+      </block>
+      <view class="fh-orderinfo-box mgt20">
+        <text>联系电话：</text>
+        <text class="fh-orderinfo-title">{{orderInfo.d_mobile_str || orderInfo.mobile_str }}</text>
+      </view>
+    </view>
+    <!-- 2023年9月15日 新增卡券信息 -->
+    <view class="fh-order-item">
+      <view class="sub-title" bind:tap="foldStep" data-name="coupon_toggle">
+        <view>
+          <text>卡券信息</text>
+          <text class="title-unit">(张)</text>
+        </view>
+        <view class="coupon-total-count">
+          <text>{{card_list_total||0}}</text>
+          <image class="icon_arrow_down" src="{{file_url_9m}}/{{coupon_toggle?'icon_arrow_down':'icon_arrow_up'}}.png" mode="aspectFit" />
+        </view>
+      </view>
+      <view class="fold-box {{setp_toggle?'':'fold-box-expand'}}">
+      </view>
+      <view class="counpon-info-box pr-50 {{coupon_toggle ? '':'fold-box-expand'}}">
+        <!-- 换购券 -->
+        <view class="sku-count-item">
+          <block wx:for="{{cardList}}" wx:key="key">
+            <view class="counpon-info-item">
+              <view>
+                <text class="title">{{item.name}}</text>
+              </view>
+              <view class="count-num">{{item.num|| 0}}</view>
+            </view>
+            <block wx:for="{{item.list}}" wx:key="index" wx:for-item="itm">
+              <view class="counpon-info-item">
+                <view>
+                  <text class="subtitle">{{itm.name}}</text>
+                </view>
+                <view class="sub-count-num">{{itm.num || 0}}</view>
+              </view>
+            </block>
+          </block>
+        </view>
+
+        <!-- end -->
+      </view>
+    </view>
+    <!-- 订单进度 -->
+    <view class="fh-order-item">
+      <view class="sub-title" bind:tap="foldStep" data-name="setp_toggle">
+        <view>订单进度</view>
+        <view wx:if="{{steps.length}}" class="last-schedule">
+          <text>{{steps[0]['text']}}</text>
+          <text space="nbsp"> {{steps[0]['desc']}}</text>
+          <image class="icon_arrow_down" src="{{file_url_9m}}/{{setp_toggle?'icon_arrow_down':'icon_arrow_up'}}.png" mode="aspectFit" />
+        </view>
+      </view>
+      <view class="fold-box {{setp_toggle?'':'fold-box-expand'}}">
+        <van-steps custom-class='steps-text' desc-class='steps-desc' steps="{{ steps }}" active-color="#000018" inactive-color="#000018" direction="vertical" />
+      </view>
+    </view>
+  </view>
+  <!-- 底部操作按钮 -->
+  <view class="footer">
+    <view class="btn-call" bindtap="call" data-phone="{{orderInfo.d_mobile||orderInfo.mobile}}">
+      <image class="icon-phone" src="{{icon_phone}}" mode="aspectFit"></image>
+      <text>联系配送商</text>
+    </view>
+    <!-- 待受理 -->
+    <block wx:if="{{orderInfo.status ==1 && userInfo.condition !=2}}">
+      <van-button bindtap="openCancelPop" custom-class="btn-cancel" type="default" round>取消申请</van-button>
+      <van-button bindtap="remindMerchant" data-check_no="{{orderInfo.order_no}}" custom-class="btn-operate" type="danger" round>提醒配送商</van-button>
+    </block>
+    <!-- 待核销 -->
+    <block wx:if="{{orderInfo.status > 2 &&orderInfo.status < 9}}">
+      <van-button custom-class="btn-cancel" data-check_no="{{orderInfo.order_no}}" bindtap="cancelOrder" type="default" wx:if="{{userInfo.condition!=2&&!orderInfo.s_num}}" round>取消订单</van-button>
+      <!-- 没有实收数量 s_num 时不可核销 -->
+      <block wx:if="{{orderInfo.s_num&&orderInfo.status == 7}}">
+        <van-button bindtap="getMyLocation" custom-class="btn-operate" type="danger" round>立即核销</van-button>
+      </block>
+      <block wx:else>
+        <van-button custom-class="btn-disabled" type="danger" round>立即核销</van-button>
+      </block>
+    </block>
+
+  </view>
+</view>
+<!-- <view class="fh-order-item">
+  <view class="sub-title" bind:tap="foldStep" data-name="setp_toggle">
+    <view>订单进度</view>
+    <view wx:if="{{steps.length}}" class="last-schedule">
+      <text>{{steps[0]['text']}}</text>
+      <text space="nbsp"> {{steps[0]['desc']}}</text>
+      <image class="icon_arrow_down" src="{{file_url_9m}}/{{setp_toggle?'icon_arrow_down':'icon_arrow_up'}}.png" mode="aspectFit" />
+    </view>
+  </view>
+  <view class="fold-box {{setp_toggle?'':'fold-box-expand'}}">
+    <van-steps custom-class='steps-text' desc-class='steps-desc' steps="{{ steps }}" active-color="#000018" inactive-color="#000018" direction="vertical" />
+  </view>
+</view> -->
+
+<!-- 返货弹窗 -->
+<fh-popup id="fhPopup" bind:myevent="getDetail"></fh-popup>
+<!-- 2023年8月30日 用户隐私保护弹窗 -->
+<privacyPop></privacyPop>
+<!-- 批量核销弹窗 2023年9月15日 -->
+<batchHxPop id="batchHxPop" bind:refreshAll="getDetail"></batchHxPop>

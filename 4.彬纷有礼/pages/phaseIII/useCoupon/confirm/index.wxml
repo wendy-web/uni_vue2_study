@@ -1,0 +1,117 @@
+<!--pages/phaseIII/useCoupon/confirm/index.wxml-->
+
+<page-meta page-style="{{ dealerPopShow ? 'overflow: hidden;' : '' }}">
+  <view class="box safeArea">
+    <top-navbar title="确认订单" backgroundColor="" iconTheme="{{iconTheme}}" bindback="back"></top-navbar>
+    <view class="page-content">
+      <!-- 店铺信息 -->
+      <view class="shopinfo-box">
+        <image class="icon_shop_avatar" src="{{shopInfo.signs_url || file_url_9m + '/icon_shop_avatar.png'}} " mode="aspectFill" />
+        <view class="shopinfo" bind:tap="collapseChange">
+          <view class="shop-name">
+            <view class="max-name-width oneLine">{{shopInfo.shop_name}}</view>
+            <image class="icon_arrow_down" src="{{file_url_9m}}/{{shopInfoCollapse?'icon_arrow_down':'icon_arrow_up'}}.png" mode="aspectFit" />
+          </view>
+          <view class="shop-item">
+            <text>店铺ID：</text>
+            <text class="shop-id">{{shopInfo.id}}</text>
+          </view>
+          <block wx:if="{{!shopInfoCollapse}}">
+
+            <view class="shop-item">
+              <text>联系电话：</text>
+              <text class="shop-id">{{shopInfo.phoneStr}}</text>
+            </view>
+            <view class="shop-item">
+              <text>{{shopInfo.address}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+      <!-- 配送商信息 -->
+      <view class="dealer-outer">
+        <view class="dealer-inner">
+          <!-- 无配送商信息 -->
+          <view class="no-dealer" wx:if="{{!dealerInfo}}" bind:tap="showSelectDealerPop">
+            <text>暂无配送商信息,去选择</text>
+            <image class="icon_arrow_down" src="{{file_url_9m}}/icon_arrow_right.png" mode="aspectFit" />
+          </view>
+          <!-- 有配送商信息 -->
+          <view class="dealer-info" bind:tap="showSelectDealerPop" wx:else>
+            <!-- 右上角的标识：默认 -->
+            <view class="tag-default" wx:if="{{dealerInfo.is_def == 1}}">默认</view>
+            <!-- 右上角的标识：上次送货 -->
+            <view class="tag-default  tag-last-send" wx:if="{{dealerInfo.is_verify == 1}}">上次送货</view>
+            <view class="dealer-title">
+              <text wx:if="{{dealerInfo.name ||dealerInfo.contact}}" class="mr-30">{{dealerInfo.name || dealerInfo.contact}}</text>
+              <image class="icon_arrow_down" src="{{file_url_9m}}/icon_arrow_right.png" mode="aspectFit" />
+            </view>
+            <view class="dealer-contact" catch:touchstart="mkPhoneCall" data-phonestr="{{dealerInfo.phoneStr}}" data-phone="{{dealerInfo.mobile}}">
+              <text>{{dealerInfo.contact}}</text>
+              <text class="dealer-mobile">{{dealerInfo.phoneStr}}</text>
+              <image class="icon_call" src="{{file_url_9m}}/icon_call.png" mode="aspectFit" />
+            </view>
+            <view class="dealer-address-box">
+              <view class="dealer-address oneLine ">{{dealerInfo.address}}</view>
+              <view class="dealer-distance" wx:if="{{dealerInfo.dist&& dealerInfo.condition != 0 }}">{{dealerInfo.dist}}km</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!-- 产品信息 -->
+      <view class="coupon-box" wx:if="{{couponInfo}}">
+        <view class="coupon-title">产品信息</view>
+        <view class="couponinfo-box">
+          <view class="coupon-total-box">
+            <image class="icon_title_coupon" src="{{file_url_9m}}/icon_title_coupon.png" mode="aspectFit" />
+            <view class="usable-title">
+              <text>可用卡券</text>
+              <text class="unable-unit">（张）</text>
+              <text class="unable-num">{{couponInfo.unused}}</text>
+            </view>
+          </view>
+          <view class="sku-list-box" wx:for="{{couponInfo.sku_list}}" wx:key="key">
+            <view class="sku-pic-box {{item.show_pic?'pb-10':''}}">
+              <image class="sku_pic" src="{{item.sku_pic}}" mode="aspectFit" />
+              <view wx:if="{{item.show_pic}}" class="show-pic">奖品如图</view>
+            </view>
+            <view class="sku-info">
+              <view>
+                <text class="sku-name">{{item.sku_short}}：</text>
+                <text class="sku-unused">{{item.unused}}</text>
+              </view>
+              <view class="stepper-box">
+                <view>返货数量</view>
+                <view class="stepper-item">
+                  <van-stepper minus-class="stepper-minus" input-class="stepper-input" plus-class="stepper-plus" bind:change="stepperChange" data-skuarg="{{item.sku_arg}}" value="{{ item.unused }}" min="0" max="{{item.unused}}" integer />
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!-- 备注信息 -->
+      <view class="note-box">
+        <view class="note-title">订单备注</view>
+        <view class="note-info-box">
+          <van-field custom-class="note-info" bind:change="noteChange" value="{{ noteInfo }}" label="" type="textarea" placeholder="请输入备注信息" autosize maxlength="50" show-word-limit />
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部按钮 -->
+    <view class="operate-box">
+      <block wx:if="{{total_apply_num>0}}">
+        <view class="btn-confirm" bind:tap="showConfrimPop">确定</view>
+      </block>
+      <block wx:else>
+        <view class="btn-confirm btn-confirm-disabled">确定</view>
+      </block>
+    </view>
+  </view>
+</page-meta>
+
+<!-- 选择配送商弹窗 -->
+<selectDealer id="selectDealer" dealerList="{{dealerList}}" bind:refreshDealerList="refreshDealerList" bind:selectDealer="selectDealer" bind:setDefault="setDefault" bind:dealerPopClose="dealerPopClose"></selectDealer>
+<!-- 确认订单弹窗 -->
+<checkOrder id="checkOrder" shopInfo="{{shopInfo}}"></checkOrder>

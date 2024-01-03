@@ -1,0 +1,12 @@
+<!--pages/storeOrder/operaRecord/index.wxml-->
+<view class="opera-record">
+   
+    <view class="opera-record-item {{index === 0&&'opera-record-first'}}" wx:for="{{act}}" wx:key="key">
+      <view class="ori-name">{{item.name}}</view>
+      <view class="ori-left">
+        <text class="ori-event">{{item.event}}</text>
+        <text>{{item.update_time}}</text>
+      </view>
+    </view>
+
+</view>

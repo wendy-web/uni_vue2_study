@@ -1,0 +1,46 @@
+<!-- 我的店铺奖励记录 -->
+<view class="me-shop-record">
+
+  <view class="align-center" style="height:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px;box-sizing:border-box; padding-top:{{navBarSystem?navBarSystem.statusBarHeight:'20'}}px">
+    <view bindtap="back" class=" nav-bar__button nav-bar__btn_goback white"></view>
+  </view>
+  <view class="shop-record">
+    <!--  table-head -->
+    <view class="msr-table-head">
+      <view class="msr-table-head-item">陈列目标</view>
+      <view class="msr-table-head-item">完成陈列</view>
+      <view class="msr-table-head-item">奖励</view>
+      <view class="msr-table-head-item">状态</view>
+    </view>
+    <!-- 记录列表 -->
+    <scroll-view class="shop-record-list" scroll-y>
+      <!-- table-cell -->
+      <block wx:if="{{list.length>0}}">
+        <view class="msr-table-cell" wx:for="{{list}}" wx:key="key">
+          <view class="msr-table-cell-item">{{item.kpi_num}}次</view>
+          <view class="msr-table-cell-item">{{item.s_num || 0}}次</view>
+          <view class="msr-table-cell-item">战马劵{{item.rev_num||0}}张</view>
+          <view class="msr-table-cell-item">
+            <block wx:if="{{item.rev_time}}">已发放</block>
+            <block wx:else>
+            <!-- 除了已发放：活动未结束：进行中，已结束：未中奖 -->
+              <block wx:if="{{item.act_End}}">未中奖</block>
+              <block wx:else>进行中</block>
+            </block>
+          </view>
+        </view>
+      </block>
+      <!-- 暂无更多记录 -->
+      <view class="no-more-records">—— 暂无更多记录 ——</view>
+    </scroll-view>
+    <!-- head -->
+    <image class="shop-record-head" src="{{me_shop_record_head}}"></image>
+    <!-- 背景 -->
+    <image class="shop-record-bg" src="{{me_shop_record_board}}"></image>
+  </view>
+
+  <!-- 背景 -->
+  <image class="me-shop-record-bg" src="{{me_shop_record_bg}}"></image>
+  <!-- 底部Icon -->
+  <image class="me-shop-record-icon" src="{{me_shop_record_icon}}"></image>
+</view>

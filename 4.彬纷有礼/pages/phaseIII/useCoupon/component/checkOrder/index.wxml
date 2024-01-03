@@ -1,0 +1,95 @@
+<!--pages/phaseIII/useCoupon/component/checkOrder/index.wxml-->
+<view class="box">
+  <van-popup show="{{confirmPopShow}}" data-popname="confirmPopShow" z-index="999" custom-style="background-color: transparent;">
+    <view class="icon-warn-box" wx:if="{{reqResultCode < 1 || reqResultCode ==2}}">
+      <image class="icon_warn" wx:if="{{reqResultCode < 1}}" src="{{file_url_9m}}/icon_warn.png" mode="aspectFit" />
+      <image class="icon_warn" wx:if="{{reqResultCode == 2}}" src="{{file_url_9m}}/icon_success.png" mode="aspectFit" />
+    </view>
+    <view class="order-box {{reqResultCode >0 ?'apply-success':''}}">
+      <view class="head-box {{reqResultCode == 1 ?'pt-40':''}}">
+        <block wx:if="{{reqResultCode == -1}}">
+          <view class="head-title">确定发起返货申请吗?</view>
+          <view>提交返货申请后将尽快为您配送请留意系统通知</view>
+        </block>
+        <!-- 成功提交信息 -->
+        <block wx:else>
+          <view class="apply-title">
+            <text>成功提交</text>
+            <text class="{{reqSuccessCount.order>0?'apply-ok':'apply-fail'}}">{{reqSuccessCount.order}}个</text>
+            <text>订单</text>
+          </view>
+          <view class="apply-title">
+            <text>共</text>
+            <text class="{{reqSuccessCount.order>0?'apply-ok':'apply-fail'}}">{{reqSuccessCount.num}}罐</text>
+          </view>
+        </block>
+      </view>
+      <view class="content-box">
+        <view class="sku-box">
+          <view class="sku-item" wx:for="{{skuList}}" wx:key="key">
+            <view>
+              <text>返货数量：</text>
+              <block wx:if="{{item.reqResult.code==1&&item.reqResult.data.num}}">
+                <text class="sku-num">{{item.reqResult.data.num}}</text>
+              </block>
+              <block wx:else>
+                <text class="sku-num">{{item.unused}}</text>
+              </block>
+              <text space="nbsp"> 罐</text>
+            </view>
+            <view>
+              <text>产品名称：</text>
+              <block wx:if="{{item.reqResult.code==1&&item.reqResult.data.goods_name}}">
+                <text class="sku-item-title">{{item.reqResult.data.goods_name}}</text>
+              </block>
+              <block wx:else>
+                <text class="sku-item-title">{{item.sku_name}}</text>
+              </block>
+            </view>
+            <!-- 订单号 || 失败原因 -->
+            <block wx:if="{{item.reqResult.code==1&&item.reqResult.data.order_no}}">
+              <view>
+                <text>订单号：</text>
+                <text>{{item.reqResult.data.order_no}}</text>
+              </view>
+            </block>
+            <block wx:if="{{item.reqResult.code==0&&item.reqResult.msg}}">
+              <view class="apply-fail">
+                <text>失败原因：</text>
+                <text>{{item.reqResult.msg}}</text>
+              </view>
+            </block>
+            <!-- 右上角的提交状态 -->
+            <view class="apply-status {{item.reqResult.code==0?'apply-status-fail':''}}" wx:if="{{item.reqResult.code==1 || item.reqResult.code==0}}">
+              <text>{{item.reqResult.code==1?'提交成功':'提交失败'}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="shop-address" wx:if="{{reqResultCode == -1}}">
+          <text>收货地址：</text>
+          <text>{{shopInfo.address}}</text>
+        </view>
+      </view>
+      <view class="foot-box">
+        <!-- reqResultCode: -1默认，0全部失败，1部分成功，2全部成功  -->
+        <block wx:if="{{reqResultCode == -1}}">
+          <!-- <view class="shop-address" wx:if="{{reqResultCode == -1}}">
+            <text>收货地址：</text>
+            <text>{{shopInfo.address}}</text>
+          </view> -->
+          <view class="operate-box">
+            <view class="btn-cancel" bind:tap="onClose" data-popname="confirmPopShow">取消</view>
+            <view class="btn-confirm" bind:tap="applyFor">确定</view>
+          </view>
+        </block>
+        <!-- 关闭操作：回到一键返货页面 -->
+        <block wx:else>
+          <view class="operate-box">
+            <view class="btn-cancel" bind:tap="goBackApply" data-popname="confirmPopShow">关闭</view>
+          </view>
+        </block>
+      </view>
+    </view>
+
+  </van-popup>
+</view>

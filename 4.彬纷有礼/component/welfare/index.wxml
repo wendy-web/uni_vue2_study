@@ -1,0 +1,3 @@
+<!--component/welfare/index.wxml-->
+<!-- 福利弹窗组件 -->
+<ad-custom unit-id="adunit-cf10c8115484f5fc" type="welfare" is-welfare-show="{{welfareAdShow}}" bindload="welfareLoad" binderror="welfareError" bindclose="welfareClose" ></ad-custom>

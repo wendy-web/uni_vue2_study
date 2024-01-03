@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "mp-halfScreenDialog":"../../../component/half-screen-dialog/half-screen-dialog",
+    "van-icon": "@vant/weapp/icon/index"
+
+  },
+  "disableScroll": true,
+  "navigationBarTitleText": "换购奖励"
+}

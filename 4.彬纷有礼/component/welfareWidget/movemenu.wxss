@@ -1,0 +1,126 @@
+/* components/menu/menu.wxss */
+.menuarea {
+  pointer-events: none;
+  position: fixed;
+  left: .0rpx;
+  right: .0rpx;
+  top: .0rpx;
+  bottom: .0rpx;
+  height: 100%;
+  width: 100%;
+  /* z-index: 2; */
+}
+
+.menu_box {
+  pointer-events: auto;
+  position: fixed;
+  bottom: 150rpx;
+  right: 70rpx;
+  text-align: center;
+  /* 定义movable-area */
+  width: 158rpx;
+  height: 158rpx;
+  /* width: 140rpx;
+  height: 140rpx; */
+}
+
+.menu_main {
+  height: 100%;
+  width: 100%;
+  /* background-color: rgb(214, 216, 221); */
+}
+
+.menu_img {
+  margin-top: 10rpx;
+  width: 100%;
+  height: 100%;
+}
+
+.menu_title {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 30rpx;
+
+}
+
+.menuarea .yellow {
+  color: #ffffff;
+  background: #d90000;
+  border-radius: 50px;
+  width: 57rpx;
+  height: 57rpx;
+  line-height: 57rpx;
+  position: absolute;
+  left: 7px;
+  top: -2px;
+}
+.color-orange{
+  color: #FEF1C9;
+}
+.fontBold{
+  font-weight: 600;
+}
+.font40{
+  font-size: 40rpx;
+}
+.font30{
+  font-size: 30rpx;
+}
+.letter-space{
+  letter-spacing:2px
+}
+.check_reward_historyBtn{
+  width: 246rpx;
+  height: 56rpx;
+}
+.iKnowBtn{
+  width: 289rpx;
+  height: 83rpx;
+}
+.bottomBtn{
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  bottom: 100rpx;
+}
+.mgt150{
+  margin-top: 150rpx;
+}
+.mgt70{
+  margin-top: 70rpx;
+}
+.mgt30{
+  margin-top: 30rpx;
+}
+.mgt50{
+  margin-top: 50rpx;
+}
+.yureMsg{
+  font-size: 40rpx;
+  padding: 0 112rpx;
+}
+.award_box{
+  height: 410rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding-top: 140rpx;
+}
+.mgt100{
+  margin-top: 100rpx;
+}
+
+.activityContainer{
+  position: absolute;
+  top: 0;
+  height:783rpx;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}

@@ -1,0 +1,293 @@
+<view class="tabbar-container">
+  <view class="tabbar-container-content safeArea">
+    <view class="flex-container">
+      <view class="containe">
+        <image class="containe-img" mode="aspectFit" src="{{backimg}}"></image>
+        <button class="containe-btn" disabled="{{disabled}}" bindtap="openScan">继续开箱扫码</button>
+      </view>
+      <!-- 广告位 -->
+      <view class="adContainer-bottom">
+        <ad wx:if="{{blockAd}}" unit-id="adunit-1093c35353d3f459"></ad>
+        <ad wx:if="{{blockAd}}" unit-id="adunit-0cd0006f68e77d56" ad-type="grid" grid-opacity="0.8" grid-count="5" ad-theme="white"></ad>
+      </view>
+    </view>
+  </view>
+  <view class="tabbar-container-foot safeArea">
+    <tabbar active="2"></tabbar>
+  </view>
+</view>
+
+<!-- 增加拆红包次数弹窗 -->
+<view class="fadeIn" wx:if="{{csPop}}">
+  <view class="weui-mask"></view>
+  <!-- <view class="weui-dialog" style="max-height:55%;height:100%">
+		<view class="mglr40 popBG"></view> -->
+  <view class="weui-dialog">
+    <view class="mg-pop">
+      <image mode="aspectFit" bindload="imgLoaded" src="{{csPopUrl}}"></image>
+    </view>
+    <view class="flex-end">
+      <!-- <image mode="acspectFit" class="cpPopbtn mgr20" src="{{csPopBtl}}" bindtap="close"></image> -->
+      <a class="chokeDown mgr20" bindtap="close">强忍控制</a>
+      <!-- <image mode="acspectFit" class="cpPopbtn mgl20" bindload="imgLoaded" bindtap="wtachAd" src="{{csPopBtr}}"></image> -->
+      <view class="scaleBox" bindtap="wtachAd">
+        <view class="scaleBtn pdl50 click_double" data-pop="1" bindtap="watchAd">
+          <css-animation class="animation-qi" width="240" height="150" count="35" duration="7" url="{{btnurl}}">
+          </css-animation>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 悬浮导航 -->
+<!-- <movemenu bindmenuItemClick="menuItemClick" pageUrl="{{pageUrl}}"></movemenu> -->
+<!-- 领券成功弹窗 -->
+<view class="fadeIn" wx:if="{{getCouponPop}}">
+  <view class="weui-mask"></view>
+  <!-- <image mode="aspectFit" bindload="imgLoaded" class="oneEnjoy oneEnjoy_redbull" src="{{oneenjoy1}}"></image> -->
+  <!-- <view class="weui-dialog phase_pop phase_pop_redbull">
+		<view class="mg-pop pop_flex pop_box">
+			<view>
+				<block wx:if="{{userInfo.condition==2}}">
+					<block wx:if="{{writeOffInfo.money !=0 || writeOffInfo.money != '0.00'}}">
+						<view class="pop_content">恭喜您为掌柜助力</view>
+						<view>
+							<view class="pop_content">
+								<text class="pop_msg">{{writeOffInfo.money}}</text>元红包
+							</view>
+						</view>
+					</block>
+					<block wx:else>
+						<view class="pop_content">恭喜您核销成功</view>
+					</block>
+
+				</block>
+				<block wx:if="{{userInfo.condition==1}}">
+					<block wx:if="{{writeOffInfo.money !=0 || writeOffInfo.money != '0.00'}}">
+						<view class="pop_content">恭喜您获得</view>
+						<view class="pop_content"><text class="pop_msg">{{writeOffInfo.money}}</text>元红包</view>
+					</block>
+					<block wx:else>
+						<view class="pop_content">恭喜您核销成功</view>
+					</block>
+				</block>
+			</view>
+			<view>
+				<block wx:if="{{userInfo.condition==2}}">
+					<a bindtap="goCoupon" class="phase_btn">确定</a>
+				</block>
+				<block wx:if="{{userInfo.condition==1}}">
+					<a bindtap="goCoupon" class="phase_btn">点击前往领取</a>
+				</block>
+			</view>
+		</view>
+	</view> -->
+  <view class="weui-dialog hxPop">
+    <block wx:if="{{writeOffInfo.code==1}}">
+      <!-- 扫码重复提示语：此码已被核销，请勿重复扫码 -->
+      <view class="text-center">
+        <image wx:if="{{writeOffInfo.call_time}}" mode="aspectFit" class="trickIcon" src="{{hxWarnIcon}}"></image>
+        <image wx:else mode="aspectFit" class="trickIcon" src="{{hxSuccessIcon}}"></image>
+      </view>
+      <block wx:if="{{writeOffInfo.call_time}}">
+        <view class="text-center">
+          <text class="h4 color333">此码已被核销，请勿重复扫码</text>
+        </view>
+        <view class="hx-warn-tips">
+          <text>核销时间：{{writeOffInfo.call_time}}</text>
+        </view>
+      </block>
+      <view class="text-center mgb29" wx:else>
+        <block wx:if="{{userInfo.condition !=2}}">
+          <text class="h4 color333">恭喜您换购确认成功</text>
+        </block>
+        <block wx:else>
+          <text class="h4 color333">恭喜您为店铺助力成功</text>
+        </block>
+      </view>
+      <view class="redBG mgb17">
+        <view class="bg-white-box">
+          <view class="hxMsgBox ">
+            <view class="title text-green mgb34">{{userInfo.condition==2?'店铺':''}}获得以下活动奖励</view>
+            <view class="flex-between mgb34">
+              <view>{{writeOffInfo.title}}</view>
+              <view class="money text-green">{{writeOffInfo.card_count}}</view>
+            </view>
+            <view class="flex-between mgb34">
+              <view>换购支付金额</view>
+              <view class="money text-green">￥{{writeOffInfo.pay_money}}</view>
+            </view>
+            <!-- 红牛0.15 罐数 、旧版红包 -->
+            <block wx:if="{{writeOffInfo.type == 1 && writeOffInfo.card_count}}">
+              <view class="flex-between ">
+                <view>{{writeOffInfo.exc_title}}</view>
+                <view class="money text-green">{{writeOffInfo.bonus}}</view>
+              </view>
+              <view class="  text-right mgb34 detail" wx:if="{{writeOffInfo.call_money}}">
+                <text>({{writeOffInfo.call_money}}元*{{writeOffInfo.card_count}})</text>
+              </view>
+              <view class="  text-right mgb34 detail" wx:else>
+                <text>(0.15罐*{{writeOffInfo.card_count}})</text>
+              </view>
+            </block>
+            <!-- 战马 exc_num 0.15罐数、红包 -->
+            <block wx:if="{{writeOffInfo.type == 2}}">
+              <view class="flex-between " wx:if="{{writeOffInfo.exc_num}}">
+                <view>{{writeOffInfo.exc_title}}</view>
+                <view class="money text-green">{{writeOffInfo.bonus}}</view>
+              </view>
+              <block wx:if="{{writeOffInfo.exc_num}}">
+                <view class="  text-right mgb34 detail">
+                  <text>(0.15罐*{{writeOffInfo.exc_num}})</text>
+                </view>
+              </block>
+              <block wx:if="{{writeOffInfo.half_y_count>0}}">
+                <view class="flex-between ">
+                  <view>战马换购红包</view>
+                  <view class="money text-green">{{writeOffInfo.bonus_y}}</view>
+                </view>
+                <view class="  text-right mgb34 detail">
+                  <text>(0.5元*{{writeOffInfo.half_y_count}})</text>
+                </view>
+              </block>
+            </block>
+          </view>
+          <!-- 背景缺口+虚线 -->
+          <view class="gap-dash-box">
+            <view class="dash-line-box"></view>
+          </view>
+          <view class="tips text-green receipt-time-box">
+            <text>到账时间：</text>
+            <text>{{writeOffInfo.pay_time}}</text>
+          </view>
+        </view>
+
+      </view>
+
+      <view class="explain mgb34">
+        <block wx:if="{{userInfo.condition !=2 }}">
+          <view>查看到账路径：</view>
+          <view>【我的-可用卡券】查看换购券</view>
+          <view>【我的-收益累计】查看换购支付金额</view>
+          <view>【我的-换购奖励】查看罐数奖励</view>
+        </block>
+        <block wx:else>
+          <view wx:if="{{writeOffInfo.type==1}}">【我的-我的助力-红牛兑换】查看换购支付金额、换购红包记录</view>
+          <view wx:if="{{writeOffInfo.type==2}}">【我的-我的助力-战马换购】查看换购支付金额、换购奖励记录</view>
+          <!-- <view>【我的-我的助力-红牛兑换】查看兑换支付金额、兑换红包记录</view> -->
+          <view class="color-red">*以上所有活动奖励均发放至店铺“掌柜”账户</view>
+        </block>
+
+      </view>
+      <view class="flex-center">
+        <a class="btn" bindtap="hxNavigate">前往查看</a>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="failBox">
+        <view class="text-center">
+          <image mode="aspectFit" class="failIcon" src="{{hxFailIcon}}"></image>
+        </view>
+        <view class="text-center mgb29">
+          <block wx:if="{{writeOffInfo.code ==2}}">
+            <text>该券的"换购店铺"与您店铺信息不匹配\n</text>
+            <text>请与换购用户确认</text>
+          </block>
+          <block wx:else>
+            <text class="h4 color333">{{writeOffInfo.msg}}</text>
+          </block>
+        </view>
+        <view class="flex-center">
+          <a class="btn" bindtap="close">知道了</a>
+        </view>
+      </view>
+    </block>
+
+
+
+
+  </view>
+</view>
+<!-- 红牛25周年弹窗 -->
+<AdPopups show="{{adShow}}" popImg="{{popImg}}" openType="switch" pagePath="/pages/tabBar/shouye/index"></AdPopups>
+<!-- 纸质码相关弹窗 -->
+<mp-dialogModal wx:if="{{paper_codeInfo}}" title="{{paper_code_title || '温馨提示'}}" isShow="{{paper_code_pop}}" content="" data-sid="{{paperSid}}" data-code="{{paper_codeInfo.code}}" cancelText="{{paper_code_cancelText}}" confirmText="{{paper_code_confirmText}}" bind:confirm="checkPaperCodeStatus" bind:cancel="checkPaperCodeStatus" diyClass="paper_code_pop" data-confirm="{{paper_codeInfo.confirm}}">
+
+  <view class="paper_code_pop_content">
+    <view wx:if="{{paper_codeInfo.code==4 && userInfo.condition !=2 &&onlyOnce}}">*纸质码ID:{{paperSid}}</view>
+    <view>
+      {{paper_codeInfo.msg}}
+    </view>
+    <view wx:if="{{paper_codeInfo.code==2 && userInfo.condition !=2&&onlyOnce}}">*该纸质码ID:{{paperSid}}</view>
+  </view>
+</mp-dialogModal>
+
+<!-- 店铺基本信息弹窗 -->
+<view class="fadeIn" wx:if="{{bindedShopInfo}}">
+  <view class="weui-mask" bindtap="close"></view>
+  <view class="weui-dialog bindedShopInfoBox">
+    <!-- 先判断是否纸质码 -->
+    <block wx:if="{{shopInfo.isPaperCode}}">
+      <!-- 判断是不是自己店铺 -->
+      <block wx:if="{{notMyShop}}">
+        <view class="fontBold">该纸质码已被其他店铺绑定</view>
+      </block>
+      <block wx:else>
+        <!-- 是自己的店铺判断店长店员身份 -->
+        <block wx:if="{{userInfo.condition != 2 }}">
+          <view class="fontBold"><text>您的店铺已绑定该纸质码</text></view>
+        </block>
+        <block wx:else>
+          <view class="fontBold"><text>您所在的店铺已绑定该纸质码</text></view>
+        </block>
+      </block>
+    </block>
+    <block wx:else>
+      <block wx:if="{{notMyShop}}">
+        <view class="fontBold">店铺信息</view>
+      </block>
+      <block wx:else>
+        <!-- 是自己的店铺判断店长店员身份 -->
+        <block wx:if="{{userInfo.condition !=2 }}">
+          <view class="fontBold"><text>不支持扫自己的店铺码</text></view>
+          <!-- <view class="fontBold"><text>您的店铺信息</text></view> -->
+        </block>
+        <block wx:else>
+          <!-- <view class="fontBold"><text>您所在的店铺信息</text></view> -->
+          <view class="fontBold"><text>不支持扫所属商户的店铺码</text></view>
+        </block>
+      </block>
+    </block>
+
+
+
+    <view class="flex-row ">
+      <image mode="aspectFill" bindtap="previewImg" data-url="{{shopInfo.signs_url}}" class="shop_signs" src="{{shopInfo.signs_url}}"></image>
+      <view class="text-left pdl24">
+        <view class="oneLine" style="max-width:188px;">店铺名称：{{shopInfo.shop_name}}</view>
+        <view>店铺ID：{{shopInfo.sid}}</view>
+        <view wx:if="{{alias_id}}">纸质码ID：{{alias_id}}</view>
+      </view>
+    </view>
+    <view class="colorGrey" wx:if="{{shopInfo.isPaperCode && notMyShop}}">*以上为绑定纸质码的店铺信息</view>
+
+    <view class="text-center">
+      <image mode="aspectFit" bindtap="close" class="shopInfo_btn" src="data:image/png;base64,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">
+      </image>
+    </view>
+  </view>
+</view>
+
+<!-- 店铺码浮标 -->
+<!-- <qrcodeWidget wx:if="{{activitySZ&&userInfo.shop_id}}"></qrcodeWidget> -->
+<!-- 开箱活动券浮标:和店铺排行榜同时存在时需要调整位置 -->
+
+<!-- 解锁陈列弹窗 -->
+<!-- <unboxEnd unlockDisplay="{{unlock_display}}" show="{{unlock_display}}" actInfo="{{actInfo}}"></unboxEnd> -->
+<!-- <activityWidget wx:if="{{rankInfo}}"></activityWidget> -->
+<!-- 8月深圳开箱活动 活动存在 && 未过期（结束超过7天） -->
+<actCouponWidget wx:if="{{actInfo&& !actInfo.act_state.act_expire}}"></actCouponWidget>
+<!-- 广州开箱活动浮标 buoy -->
+<gzUnboxBouy wx:if="{{actInfoGZ}}"></gzUnboxBouy>
+<!-- 用户隐私授权弹窗 -->
+<privacyPop></privacyPop>

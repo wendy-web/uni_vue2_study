@@ -1,0 +1,97 @@
+<view class="rongqi">
+	<view>
+		<view class="logo">
+			<image class="image" mode="aspectFit" src="{{bdimg}}"></image>
+		</view>
+		<view class="head">未登录</view>
+		<view class="jiesao">请点击下方按钮跳转微信授权登录</view>
+		<view class="kefu">
+			<form catchreset="formReset">
+				<!-- 判断是否点击隐私协议 -->
+				<block wx:if="{{yinsiChecked}}">
+          <!-- 2.27.0版本以上用新的登录逻辑：有头像直接登录，无头像获取默认头像 -->
+          <block wx:if="{{supportAvatarInput}}">
+            <block wx:if="{{userdata&&userdata.avatar_url}}">
+              <button  class="at-button" bindtap="refreshToken">一键登录</button>
+              <!-- <button  class="at-button" bindtap="getUserProfile">一键登录</button> -->
+            </block>
+            <block wx:else>
+              <button  class="at-button" bindtap="getUserProfile">一键登录</button>
+            </block>
+          </block>
+          <block wx:else>
+            
+            <!-- canIUse:true,可以使用wx.getUserProfile 基础库大于2.10.4  -->
+            <button wx:if="{{canIUse}}"  class="at-button" bindtap="getUserProfile">一键登录</button>
+            <!-- 低版本暂时先用旧接口：wx.getUserInfo -->
+            <button  wx:else form-type="submit" class="at-button" bindopensetting="onOpenSetting"
+              open-type="getUserInfo" bindgetuserinfo="checkSession">一键登录</button>
+          </block>
+				</block>
+				<block wx:else>
+					<button class="at-button" bindtap="yinsiCheck">
+          <!-- <image src="{{icon_wechat}}" class="icon-camer" mode="aspectFit"/> -->
+          一键登录
+          </button>
+				</block>
+			</form>
+
+
+		</view>
+		<view>
+			<button type="default" bindtap="cancel" class="cancle" plain="true">取消</button>
+		</view>
+	</view>
+</view>
+<view class="weui-flex flex-center">
+	<view class="weui-cells weui-cells_checkbox checkbox">
+		<checkbox-group bindchange="checkboxChange">
+			<label class="weui-cell weui-check__label" wx:for="{{checkItem}}" style="padding:0px" wx:key="name">
+				<view class="weui-cell__hd">
+					<block wx:if="{{yinsiChecked}}">
+						<checkbox class="weui-check" value="{{item.name}}" checked="checked" />
+						<i class="weui-icon-checked checked"></i>
+					</block>
+					<block wx:else>
+						<checkbox class="weui-check" value="{{item.name}}" checked="{{item.checked}}" />
+						<i class="weui-icon-checked "></i>
+					</block>
+
+				</view>
+		      <text>我已阅读并同意</text>
+
+			</label>
+		</checkbox-group>
+	</view>
+	<view class="flexBox font26">
+		<!-- <text bindchange="checkboxChange">我已阅读并同意</text> -->
+    <text class=" red height20" data-id="1" bindtap="checkDeal">《个人信息保护政策》</text>
+		<text class=" red height20" data-id="2" bindtap="checkDeal">《平台服务协议》</text>
+	</view>
+</view>
+<view class="weui-flex flex-center safeArea fixed-bottom">
+	<view class="flex-center " bindtap="contactService">
+		<image class="warn" mode="aspectFit"
+			src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAiCAYAAADRcLDBAAACL0lEQVRYhc3YTYhNYRzH8c/cGTOayEtioYgkrLzUWCgvKZZmRPK2UgpZeNtY2pINsSAbkYVCsmEWE0mhvCUvocTCggVmJAz661ydbjNz5zz3jvGrW0/d8/+d73me5/+c//809HRNUVDjMA/zMR0taMAHPMMD3Cni2VTg2qXYhA6Mr3LtY1zGMbypZjyYmViOnVhVALis7ziC43jR30WlKibn0JkIEBqB3XiOvUUhYt3vYl3izSsVe+YgTg4WYhIeYUGdAPLaggvVIEbiNiYPAUBZ7Tg7EESsf+GcTdB6bOgLItJvUUG/t3iKJ3hfMPYMZuYhGnE04Ykia2ZjDg4kxJ/OQ+zHmASTb7nxj4T4Nswo5XI5Ra25mJZEj/aAWImxiQb10LZStp7DqWkBMXWYIbpL5TQZTgXEhP8BormG+E+58ZdaILprgJiYpWlrLRnWlFU+bYnxV9CbjVPPiT8Qce6nalR66F81xnK8q4NRLWqOmbhRg8H23EyuwY4Ej86YiYe4nwgRVVJX9ruV6HGi/BbdlWjQmxv/TPS4Vu474kmuYkVBg81ZJR1algAQNcjnfN8R3dTLBKNURbc2S0V59wr7/iHEwvKgstA9FBvlHwBsxMf+IEJbcXgIATqqlfxl7cn6z3qqB0twsdJzoF40qu/VuFcHkPNZVX69rz+rNcRxGMV3iIC5mXDzU5iLtQN9Iij6kST60+icFmet4uisHvmFr9lmizSPKb+E11Ud8Rs3YV2Qr3ygKgAAAABJRU5ErkJggg==">
+		</image>
+		<view class="font13 pdl7">
+			<text class="color-grey">登录遇到问题</text>
+			<text class="color-blue underLine">联系客服</text>
+		</view>
+	</view>
+</view>
+<!-- 隐私协议 -->
+<view class="fadeIn" wx:if="{{yinsiPop}}">
+	<view class="weui-mask" bindtap="close"></view>
+	<view class="weui-dialog">
+		<view class="weui-dialog__hd">
+			<text class="title">隐私协议</text>
+		</view>
+		<view class="weui-dialog__bd text-left" style="color:black;font-size:32rpx; ">
+			<rich-text nodes="{{nodes}}"></rich-text>
+		</view>
+		<view class="weui-dialog__hd">
+			<a bindtap="iKnow" data-pop="1" class="weui-btn weui-btn_mini redbtn text-center">我已阅读</a>
+		</view>
+	</view>
+</view>

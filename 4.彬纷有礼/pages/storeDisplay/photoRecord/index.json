@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "拍照记录",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "show-dis-goods":"../component/showDisGoods"
+  }
+}

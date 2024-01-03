@@ -1,0 +1,263 @@
+/* pages/randomdraw/rotate/rotate.wxss */
+@import './utils/dial.wxss';
+@import '../style.wxss';
+
+page {
+  height: 100%;
+}
+
+.container {
+  /* background: url('h
+  
+  ttps://file.y1b.cn/public/img/WarHorse/0917/rotate/bg_hd0929.png') no-repeat; */
+  background-size: 100% 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bg_front {
+  background: url('https://file.y1b.cn/public/img/WarHorse/0917/rotate/rotate_bg_front.png') no-repeat;
+  background-size: 100% 100%;
+  height: 750rpx;
+  width: 105.5%;
+  position: fixed;
+  top: 192rpx;
+  left: -5.5%;
+  right: 0;
+}
+
+.bg_round {
+  background: url('https://file.y1b.cn/public/img/WarHorse/0917/rotate/rotate_bg_one.png') no-repeat;
+  /* background-size: cover; */
+  background-size: 100% 100%;
+  height: 750rpx;
+  width: 100%;
+  position: fixed;
+  top: 192rpx;
+  left: 0;
+  right: 0;
+}
+
+.bgRound {
+  position: fixed;
+  width: 100%;
+  top:0;
+  bottom:0;
+  margin: auto;
+}
+
+/* rotate dial_wp css */
+.rotate {
+  text-align: center;
+  margin-top: 30rpx;
+}
+
+.dial_wp {
+  width: 653rpx;
+  height: 653rpx;
+  position: relative;
+  margin: 0 auto;
+}
+
+.dial_wp image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.dial_wp .dial_pointer {
+  position: absolute;
+  width: 150rpx;
+  height: 150rpx;
+  top: 50%;
+  left: 50%;
+  margin: -75rpx 0 0 -75rpx;
+  transform-origin: 50% 50%;
+}
+
+.dial_wp .dial_pointer image {
+  position: absolute;
+  width: 170rpx;
+  height: 286rpx;
+  left: -9rpx;
+  top: -120rpx;
+  transform: rotate(-2deg);
+}
+
+
+/* 二次确认弹窗样式 */
+
+
+
+.getRewarded {
+  position: fixed;
+  width: 100%;
+  top: 59%;
+  z-index: 60000;
+}
+
+.flex-row-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+}
+
+.totalMoney {
+  color: #CA0000;
+  font-weight: 700;
+}
+
+.letter-spacing {
+  letter-spacing: 2rpx;
+}
+
+.font72 {
+  font-size: 72rpx;
+}
+
+
+.reward_bg {
+  /* background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/rotate/reward_bg.png); */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.rewardPop {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5000;
+  width: 100%;
+  height: 100%;
+  /* background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/rotate/reward_bg_front.png); */
+  background-repeat: no-repeat;
+  background-size: 100% 51%;
+  background-position-y: 208rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.rewardPop_content {
+  background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/rotate/reward_content0929.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 706rpx;
+  height: 706rpx;
+  position: fixed;
+  top: 10%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 5000;
+}
+
+.rewardPop_content .msg {
+  font-size: 51rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #ffe300;
+}
+
+.rewardPop_content .msg text {
+  font-size: 80rpx;
+}
+
+.flex-column-around {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.flex-column-between {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.height52 {
+  height: 52%;
+}
+
+.getReward {
+  position: fixed;
+  bottom: 16%;
+  z-index: 5000;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.rewardHistory {
+  margin-top: 40rpx;
+  color: #FFE777;
+}
+
+.getReward .btn {
+  /* background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/btnBG.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%; */
+  width: 327rpx;
+  height: 94rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  text-align: center;
+  color: #ffe300;
+}
+
+.lotteryPop {
+  /* background-image: url(https://file.y1b.cn/public/img/WarHorse/0917/rotate/count_bg.png); */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 676rpx;
+  height: 930rpx;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 70rpx;
+}
+.icon-zm-pot{
+  width: 112rpx;
+  height: 290rpx;
+  position: absolute;
+  bottom: 20rpx;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+.bg-zm-rotate-title{
+  width: 542rpx;
+  height: 190rpx;
+  position: absolute;
+  top: 4.5vh;
+}
+@media screen and (min-height:600px){
+  .bgRound{
+    bottom: 88rpx;
+  }
+  .rotate{
+    margin-top: unset;
+    margin-bottom: 60rpx;
+  }
+  
+}
+@media screen and (max-height:700px){
+  
+  .icon-zm-pot{
+    width: 75rpx;
+    height: 194rpx;
+  }
+}

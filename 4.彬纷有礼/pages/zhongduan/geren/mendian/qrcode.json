@@ -1,0 +1,11 @@
+{
+  "usingComponents": {
+    "activityPop":"../../../../component/activityPop/index",
+    "mp-dialogModal": "../../../../component/dialogModal/index",
+    "share-box": "../../../../component/shareBox/index",
+    "storeRankPop":"../../../../component/storeRankPop/index",
+    "privacyPop":"../../../../component/privacyPop/index"
+
+  },
+  "navigationBarTitleText": "我的店铺码"
+}

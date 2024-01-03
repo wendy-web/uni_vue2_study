@@ -1,0 +1,62 @@
+<!--pages/zhongduan/geren/annualBill/list.wxml-->
+<top-navbar title="{{title}}" backgroundColor="#e62318" iconTheme="white" bindback="onBeforeBack" searchBar=""
+  bindsearch='search'></top-navbar>
+<view class="main-bg">
+  <view wx:for="{{billList}}" wx:key="index" class="section">
+    <block wx:if="{{item.list.length>0}}">
+
+      <view class="header"
+        style="--navBarHeight:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight+'px':'70px'}};"
+        id="header" data-selectdata="{{item.Year}}">
+        <picker mode="multiSelector" value="{{item.datePickerIndex}}" fields="month"
+          bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}" bindchange="pickerChanged">
+          <view class="picker-box">
+            <view class="month pdr20 text-justify width100px">
+              {{item.Year}}{{item.Month}}
+            </view>
+            <view class="navigator-arrow-down"></view>
+          </view>
+        </picker>
+        <view class="subtitle">
+          <text> 共收益{{item.count || '0'}}笔</text>
+          <text class="pdl40"> 总计{{item.money || '￥0.00'}}</text>
+        </view>
+      </view>
+      <!-- <block wx:for="{{item.list}}" wx:key="index" > -->
+
+      <view wx:for="{{item.list}}" wx:key="index" class="cell" bindtap="ClickCell" data-selectdata="{{item}}">
+        <view class="align-center">
+          <block wx:if="{{item.type == 'box'}}">
+            <image data-name="box" binderror="imgError" mode="aspectFit" src="{{boxImg || '../../static/box_icon.png'}}"
+              class="img"></image>
+          </block>
+          <block wx:if="{{item.type == 'yy'}}">
+            <image data-name="yy" binderror="imgError" mode="aspectFit" src="{{yyImg || '../../static/yy_icon.png'}}"
+              class="img"></image>
+          </block>
+          <block wx:if="{{item.type == 'hx'}}">
+            <image data-name="hx" binderror="imgError" mode="aspectFit" src="{{hxImg || '../../static/hx_icon.png'}}"
+              class="img"></image>
+          </block>
+        </view>
+        <view class="item">
+          <view class="title-box">
+            <!-- <text class="title">{{item.title}}</text>
+              <text class='money'>+{{item.change}} </text> -->
+            <view class="title">{{item.title}}</view>
+            <view class='money'>+{{item.change}} </view>
+          </view>
+          <view class="create-time">{{item.create_time}}</view>
+        </view>
+      </view>
+
+      <!-- </block> -->
+    </block>
+  </view>
+  <view wx:if="{{noMore}}" class="text-center noMore">
+    <text>没有更多数据了~</text>
+  </view>
+</view>
+<view wx:if="{{billList.length==0}}" class="text-center noMore">
+  <text>没有更多数据了~</text>
+</view>

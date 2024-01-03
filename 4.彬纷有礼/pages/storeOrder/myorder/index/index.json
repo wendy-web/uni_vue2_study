@@ -1,0 +1,13 @@
+{
+  "usingComponents": {
+    "order-filter-pop": "../../component/order-filter-pop/index",
+    "item-list": "../business/itemList/itemList",
+    "fh-popup": "../../component/fh_popup/index",
+    "order-popup": "../../component/order_popup/index",
+    "privacyPop":"../../../../component/privacyPop/index",
+    "batchHxPop":"../../component/batchHxPop/index"
+  },
+  "navigationBarTitleText": "我的订单",
+  "navigationBarBackgroundColor": "#E10404",
+  "navigationBarTextStyle": "white"
+}

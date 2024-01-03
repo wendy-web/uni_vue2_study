@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "mp-dialog":"../components/dialog/dialog"
+  },
+  "enablePullDownRefresh":true,
+  "navigationBarBackgroundColor":"#e10404",
+  "navigationBarTextStyle":"white",
+  "navigationBarTitleText": "我的订单"
+}

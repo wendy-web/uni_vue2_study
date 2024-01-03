@@ -1,0 +1,60 @@
+<!--component/storeExchangePop/process/index.wxml-->
+<view class="process-box">
+  <!-- 开箱信息 -->
+  <view class="unbox-info-box">
+    <!-- 活动进行中、结束时候显示已活动券数 -->
+    <view wx:if="{{actInfo.act_state.act_end}}">
+      累计获得<text class="color-red font40">{{actInfo.rev_num }}</text>张红牛活动券
+    </view>
+    <block wx:if="{{actInfo.act_state.act_ing}}">
+      <view>
+        累计已获得<text class="color-red font40">{{actInfo.rev_num || 0 }}</text>张红牛活动券
+      </view>
+      <view wx:if="{{actInfo.next_unbox_num > 0 && actInfo.next_coupon_num > 0}}" class="color-grey">
+        再开 <text class="color-red font48"> {{actInfo.next_unbox_num }} </text>箱，可再获得 <text class="color-blue font48"> {{actInfo.next_coupon_num }} </text>张红牛活动券
+      </view>
+    </block>
+  </view>
+  <!-- 兑奖进度 -->
+  <view class="unbox-process">
+    <!-- 左侧：当前兑奖人数 -->
+    <view class="current-box">
+      <view class="current-unbox-num">{{actInfo.s_num || 0}}</view>
+      <view>当前开箱</view>
+    </view>
+    <!-- 右侧：开箱进度 -->
+    <view class="right-box">
+      <!-- 进度条 -->
+      <view class="progress-box">
+        <view class="inner-bar">
+          <!-- 进度条渐变色 -->
+          <view class="progress-inner" style="--width:{{actInfo.progressPercent}}%"></view>
+        </view>
+      </view>
+      <!-- 当前开箱数 -->
+      <!-- <image class="icon-box unbox-item" style="--left:{{actInfo.progressPercent||0}}%" wx:if="{{(actInfo.s_num < actInfo.kpi_1) &&actInfo.kpi_1 > 5 && actInfo.s_num>0}}" src="./static/icon_box.png" mode="aspectFit"/> -->
+      <!-- 开箱目标 -->
+      <view class="unbox-goal-box unbox-goal-min" style="--left:{{actInfo.min_traget_left-6}}%">
+        <!-- <view class="unbox-goal-box unbox-goal-min" style="--left:50%"> -->
+        <view>
+          <text class="unbox-num">{{actInfo.kpi_1}}</text>
+          <text>箱</text>
+        </view>
+        <image class="icon-box" wx:if="{{actInfo.s_num>= actInfo.kpi_1}}" src="./static/icon_box.png" mode="aspectFit" />
+        <image class="icon-box" wx:else src="./static/icon_box_grey.png" mode="aspectFit" />
+        <view class="unbox-name">最低目标</view>
+      </view>
+    </view>
+    <view class="unbox-goal-box unbox-goal-max">
+      <view>
+        <text class="unbox-num">{{actInfo.kpi_2}}</text>
+        <text>箱</text>
+      </view>
+      <image class="icon-box" wx:if="{{actInfo.s_num>= actInfo.kpi_2}}" src="./static/icon_box.png" mode="aspectFit" />
+      <image class="icon-box" wx:else src="./static/icon_box_grey.png" mode="aspectFit" />
+      <view class="unbox-name">最高目标</view>
+    </view>
+  </view>
+  <!-- 开箱提示 -->
+  <!-- <view class="unbox-tips">获得的活动券=开箱目标 X{{actInfo.coupon_reward_rule}}</view> -->
+</view>

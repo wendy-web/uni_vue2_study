@@ -1,0 +1,74 @@
+<!-- Template -->
+
+<template name="storeInfo" data="{{storeInfo,boss}}">
+		<view class="page storeInfo">
+			<view class="page__bd">
+				<view class="weui-cells weui-cells_affter-title">
+					<!-- <view class="bgGrey10"></view> -->
+					<view class="weui-cell">
+						<view class="weui-cell__bd">
+							<text class="iconfont iconren fontweight700 mgr10"></text>掌柜头像
+						</view>
+						<view class="weui-cell__ft">
+							<image mode="aspectFit" class="avatar" src="{{boss[0].avatar_url}}"></image>
+						</view>
+					</view>
+					<view class="weui-cell">
+						<view class="weui-cell__bd">
+							<text class="iconfont iconren fontweight700 mgr10"></text>掌柜昵称
+						</view>
+						<view class="weui-cell__ft">
+							{{boss[0].nick_name}}
+
+						</view>
+					</view>
+
+					<view class="weui-cell">
+						<view class="weui-cell__bd">
+							<text class="iconfont iconhouse mgr10"></text>门店名称
+						</view>
+						<view class="weui-cell__ft">{{storeInfo.shop_name}}</view>
+					</view>
+					<view class="weui-cell">
+						<view class="weui-cell__bd">
+							<text class="iconfont iconren fontweight700 mgr10"></text>联系人
+						</view>
+						<view class="weui-cell__ft">{{storeInfo.contact}}</view>
+					</view>
+
+					<view class="weui-cell">
+						<view class="weui-cell__bd">
+							<text class="iconfont iconflod imgIcon fontweight700"></text>门店地址
+						</view>
+						<view class="weui-cell__ft maxWidth450">{{storeInfo.address}}</view>
+					</view>
+
+
+
+					<view class="weui-cell">
+						<view class="weui-cell__bd">
+							<text class="iconfont iconphone fontweight700 mgr10"></text>手机号
+						</view>
+						<view class="weui-cell__ft">
+							{{boss[0].phoneStr}}
+						</view>
+					</view>
+
+					<view class="weui-cell">
+						<view class="weui-cell__bd">
+							<text class="iconfont iconphoto mgr10"></text>门店招牌
+						</view>
+						<view class="weui-cell__ft">
+							<image mode="aspectFit" bindtap='previewImg' data-img="{{storeInfo.signs_url}}" class="storeLogo" src="{{storeInfo.signs_url}}"></image>
+						</view>
+					</view>
+
+				</view>
+			</view>
+
+			<view>
+				<button class="redBtn" bindtap="quitShop">退出店铺</button>
+			</view>
+		</view>
+	
+</template>

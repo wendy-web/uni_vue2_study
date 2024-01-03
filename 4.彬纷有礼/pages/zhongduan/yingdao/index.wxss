@@ -1,0 +1,60 @@
+page{
+  height: 100%;
+  width: 100%;
+}
+.favored-movie {
+  /* position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0; */
+  width: 100%;
+  height: 97%;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  /* background-color: #eca742; */
+}
+
+
+.content{
+  /* background: url("https://file.y1b.cn/public/img/phaseIII/dhguide082701.png"); */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 92%;
+  height: 57%;
+  position: relative;
+
+}
+.content .box{
+
+  width: 89%;
+  height:240rpx;
+  margin-top: 24rpx;
+}
+.inner{
+  height: 77%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+}
+.contents{
+  /* background: url("https://file.y1b.cn/public/img/phaseIII/dhguide082704.png"); */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 92%;
+  height: 40%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+}
+.content .inner-bottom{
+  width: 100%;
+  height: 160rpx;
+  position: absolute;
+  bottom: 0;
+}

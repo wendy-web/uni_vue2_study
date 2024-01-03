@@ -1,0 +1,151 @@
+<template name="machine">
+	<view class="machine_wp">
+		<view class="machine_item_wp">
+			<view class="machine_item_slide" style="transform: translateY({{transY2}}px);-webkit-transform: translateY({{transY2}}px)">
+				<!-- 0 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{ewaiimg}}"></image>
+				</view>
+				<!-- 1 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{fanbeiimg}}"></image>
+				</view>
+				<!-- 2 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{jindouimg}}"></image>
+				</view>
+				<!-- 3 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{ewaiimg}}"></image>
+				</view>
+				<!-- 4 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{ewaiimg}}"></image>
+				</view>
+				<!-- 5 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{ewaiimg}}"></image>
+				</view>
+				<!-- 6 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{ewaiimg}}"></image>
+				</view>
+				<!-- 7 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{ewaiimg}}"></image>
+				</view>
+				<!-- 8 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{ewaiimg}}"></image>
+				</view>
+				<!-- 9 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{ewaiimg}}"></image>
+				</view>
+				<!-- 0 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{ewaiimg}}"></image>
+				</view>
+
+			</view>
+		</view>
+		<view class="machine_item_wp">
+			<view class="machine_item_slide" style="transform: translateY({{transY1}}px);-webkit-transform: translateY({{transY1}}px)">
+				<!-- 0 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{fanbeiimg}}"></image>
+				</view>
+				<!-- 1 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{ewaiimg}}"></image>
+				</view>
+				<!-- 2 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{jindouimg}}"></image>
+				</view>
+				<!-- 3 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{fanbeiimg}}"></image>
+				</view>
+				<!-- 4 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{fanbeiimg}}"></image>
+				</view>
+				<!-- 5 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{fanbeiimg}}"></image>
+				</view>
+				<!-- 6 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{fanbeiimg}}"></image>
+				</view>
+				<!-- 7 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{fanbeiimg}}"></image>
+				</view>
+				<!-- 8 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{fanbeiimg}}"></image>
+				</view>
+				<!-- 9 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{fanbeiimg}}"></image>
+				</view>
+				<!-- 0 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{fanbeiimg}}"></image>
+				</view>
+
+			</view>
+		</view>
+		<view class="machine_item_wp">
+			<view class="machine_item_slide" style="transform: translateY({{transY3}}px);-webkit-transform: translateY({{transY3}}px)">
+				<!-- 0 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{jindouimg}}"></image>
+				</view>
+				<!-- 1 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{ewaiimg}}"></image>
+				</view>
+				<!-- 2 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{fanbeiimg}}"></image>
+				</view>
+				<!-- 3 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{jindouimg}}"></image>
+				</view>
+				<!-- 4 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{jindouimg}}"></image>
+				</view>
+				<!-- 5 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{jindouimg}}"></image>
+				</view>
+				<!-- 6 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{jindouimg}}"></image>
+				</view>
+				<!-- 7 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{jindouimg}}"></image>
+				</view>
+				<!-- 8 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{jindouimg}}"></image>
+				</view>
+				<!-- 9 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{jindouimg}}"></image>
+				</view>
+				<!-- 0 -->
+				<view class="machine_item_ele">
+					<image mode="aspect" src="{{jindouimg}}"></image>
+				</view>
+
+			</view>
+		</view>
+	</view>
+</template>

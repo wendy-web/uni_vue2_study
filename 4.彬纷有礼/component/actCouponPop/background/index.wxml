@@ -1,0 +1,28 @@
+<!--component/storeExchangePop/background/index.wxml-->
+<view class="box">
+  <!-- openType:1每日进度，2中奖弹窗，3店铺转让 -->
+  <image wx:if="{{openType == 3}}" class="img-shop-head" src="{{img_shop_head}}" mode="aspectFit"/>
+  <block wx:if="{{openType&&openType<3}}">
+    <image wx:if="{{openType == 2}}" class="icon-ticker-tape" src="{{icon_ticker_tape}}" mode="aspectFit" />
+    <view class="title-box">
+      <image class="title-bg" src="{{bg_record_title}}" />
+      <view wx:if="{{openType == 1}}">每日开箱进度</view>
+      <view wx:if="{{openType == 2}}" class="title-win">恭喜您</view>
+    </view>
+  </block>
+  <!-- 4核对店铺信息 -->
+  <block wx:if="{{openType == 4}}">
+    <view class="title-box">
+      <image class="title-bg" src="{{bg_record_title}}" />
+      <view>核对店铺信息</view>
+    </view>
+  </block>
+  <!-- 5报名成功弹窗 -->
+  <block wx:if="{{ openType == 5 }}">
+    <image class="icon-ticker-tape" src="{{icon_ticker_tape}}" mode="aspectFit" style="z-index: 0;" />
+  </block>
+  <view class="box-item {{boxItemClass}}" style="background-image:url({{bgImg}});">
+    <slot></slot>
+  </view>
+  <image class="icon-close" mode="aspectFit" bindtap="closePop" src="{{closeImg}}"></image>
+</view>

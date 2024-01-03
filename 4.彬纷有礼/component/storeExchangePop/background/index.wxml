@@ -1,0 +1,9 @@
+<!--component/storeExchangePop/background/index.wxml-->
+<view class="box">
+  <view class="box-item {{boxItemClass}}" style="background-image:url({{bgImg}});">
+    <view class="box-inner">
+      <slot></slot>
+    </view>
+  </view>
+  <image class="icon-close" mode="aspectFit" bindtap="closePop" src="{{closeImg}}"></image>
+</view>

@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "van-count-down": "@vant/weapp/count-down/index",
+    "storeRankPop":"../../../../component/storeRankPop/index"
+  },
+  "navigationStyle": "custom",
+  "backgroundColorTop":"#ffb967",
+  "backgroundColorBottom":"#ffb967",
+  "enablePullDownRefresh":true,
+  "navigationBarTitleText": " ",
+  "onReachBottomDistance":100
+}

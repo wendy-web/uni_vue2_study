@@ -1,0 +1,13 @@
+{
+  "usingComponents": {
+    "scroller": "coolui-scroller/scroller/index",
+    "item": "coolui-scroller/item/index",
+    "refresh": "coolui-scroller/refresh/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "filterPop":"../component/filterPop/index"
+  },
+  "navigationStyle": "custom",
+  "enablePullDownRefresh":false,
+  "navigationBarTitleText": "卡券统计",
+  "disableScroll": true
+}

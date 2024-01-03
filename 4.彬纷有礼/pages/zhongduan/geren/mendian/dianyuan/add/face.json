@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "mp-navigation-bar": "../../../../../../component/navigation-bar/navigation-bar"
+  },
+  "navigationBarTitleText": "添加店员",
+  "navigationStyle": "custom"
+}

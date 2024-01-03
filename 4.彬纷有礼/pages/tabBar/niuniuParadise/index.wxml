@@ -1,0 +1,10 @@
+<view class="niuniu-paradise">
+   <!-- title -->
+   <image mode="aspectFit"  class="niuniu-paradise-head" src="{{headImage}}"></image>
+   <!-- <image mode="aspectFill"  class="niuniu-paradise-bg" src="{{bgImage}}"></image> -->
+   <!-- 跳转按钮 -->
+   <!-- <image class="niuniu-paradise-btn  btn-shake" src="{{btnImage}}" bindtap="goNiuniuParadise"></image> -->
+
+</view>
+<!-- 悬浮导航 -->
+<!-- <movemenu bindmenuItemClick="menuItemClick" pageUrl="{{pageUrl}}"></movemenu> -->

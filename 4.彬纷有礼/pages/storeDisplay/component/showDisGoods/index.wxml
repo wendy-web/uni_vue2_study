@@ -1,0 +1,20 @@
+<!--pages/storeDisplay/component/showDisGoods/index.wxml-->
+<view class="show-dis-goods">
+		<van-popup show="{{show}}"   bind:close="onClose" custom-style="background-color: transparent;"   z-index="{{10000}}">
+			  <view class="show-dis-goods-box">
+            <view class="sgmb-title">陈列商品</view>
+            <scroll-view scroll-y="{{true}}" class="sgmb-content-box">
+              <view class="goods-box">
+                 <view class="goods-item" wx:for="{{goods_list}}" wx:key="key">
+                    <image class="goods-icon" src="{{item.icon}}" mode="aspectFill"></image>
+                    <view class="goods-name">{{item.name}}</view>
+                    <view class="attr-str">
+                      <text class="attr-text" wx:for="{{item.attr_str}}" wx:key="key" wx:for-item="attr">{{attr}}</text>
+                    </view>
+                 </view>
+              </view>
+            </scroll-view>       
+         </view>
+         <image class="close" src="/pages/storeDisplay/static/close.png" mode="aspectFill" bindtap="onClose"></image>
+		</van-popup>
+	</view>

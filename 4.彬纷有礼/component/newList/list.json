@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "easy-loadimage":"../easy-loadimage/easy-loadimage",
+    "banner-ads":"../banner-ads/index"
+  }
+}

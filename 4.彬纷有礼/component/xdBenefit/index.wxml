@@ -1,0 +1,14 @@
+<!--component/xdBenefitPop/index.wxml-->
+<view class="benefit-box">
+  <van-popup show="{{show}}" bind:close="closeBenefitPop" custom-style="background-color:transparent;">
+    <!-- <view class="benefit-pop">
+      <view>恭喜获得话费充值96折权益</view>
+      <view class="benefit-btn" bindtap="openXdyh">去领取</view>
+    </view> -->
+    <image class="pop-bg-reward" mode="aspectFit" bindtap="openXdyh" src="{{config.ad1.img2}}"></image>
+
+    <view class="benefit-close-box">
+      <image class="benefit-icon-close" mode="aspectFit" bindtap="closeBenefitPop" src="{{icon_close_fill}}"></image>
+    </view>
+  </van-popup>
+</view>

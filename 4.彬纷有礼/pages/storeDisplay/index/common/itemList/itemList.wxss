@@ -1,0 +1,8 @@
+/* pages/storeDisplay/business/itemList.wxss */
+.list-container{
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 40rpx 30rpx 0;
+}
+

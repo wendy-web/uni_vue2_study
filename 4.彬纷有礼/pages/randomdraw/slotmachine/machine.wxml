@@ -1,0 +1,204 @@
+<!--pages/randomdraw/slotmachine/machine.wxml-->
+<top-navbar title="{{title}}" bindback="onBeforeBack" searchBar="" bindsearch='search'></top-navbar>
+<import src="utils/machine.wxml" />
+
+<view class="container " style="background-image: url({{pre_act_hn==28?img_hn_machine_bg_28y:img_hn_machine_bg}});--navBarHeight:{{navBarSystem?navBarSystem.navBarHeight+navBarSystem.statusBarHeight:'70'}}px">
+
+	<view class="content">
+		<!-- 中国红牛27周年 -->
+		<view class="ggltitle">
+			<image mode="aspectFit" binderror="imgError" src="{{pre_act_hn==28?img_hn_title_28y:img_hn_title_27th}}"></image>
+		</view>
+		<!-- 金币背景 -->
+		<image class="img-hn-machine-coin"  binderror="imgError" mode="aspectFit" src="{{pre_act_hn==28?img_hn_machine_coin_28y:img_hn_machine_coin}}"></image>
+		<!-- 红牛罐装 -->
+		<image mode="aspectFit" binderror="imgError" class="redBullImg" src="{{redBullImg}}"></image>
+		<!-- 抽奖模块 -->
+		<view class="machine-box">
+			<template is="machine" data="{{...machine}}"></template>
+			<image bindtap="onStart" binderror="imgError" src="{{cjImg}}" class="cjImg button3D" mode="aspectFit"></image>
+			<button bindtap="onStart">开始抽奖</button>
+		</view>
+		<!-- 底部元宝元素 -->
+		<image bindtap="onStart" class="img-hn-machine-gold" mode="aspectFit" src="{{img_hn_machine_gold}}"></image>
+	</view>
+</view>
+<!-- 视频广告弹窗 -->
+<videoAd videoPop="{{videoPop}}" videoUrls="{{videoUrl}}" capsule="{{capsule}}" bind:myevent="playGame"></videoAd>
+<!-- 跳转余额二次确认弹窗 -->
+<view class="fadeIn" wx:if="{{reconfirmPop}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog reconfirmPop" style="background-image: url({{pre_act_hn==28?img_hn_alert_reconfirm_28y:img_hn_alert_reconfirm}});">
+		<view class="weui-dialog__hd"></view>
+
+
+		<view class="btn-group">
+			<a class="btn-giveup" data-go="2" bindtap="goYuer">放弃翻倍</a>
+			<block wx:if="{{image_load_failed}}">
+				<image bindtap="watchAd" binderror="imgError" data-pop="1" class="icon-hn-btn btn-watchAd" src="{{icon_btn_video}}" mode="aspectFit"></image>
+			</block>
+			<block wx:else>
+				<image bindtap="watchAd" data-pop="1" class="gif-btn-watchvideo" src="{{gif_btn_watchvideo}}" mode="aspectFit"></image>
+			</block>
+		</view>
+
+	</view>
+</view>
+<!-- 开奖弹窗 -->
+<view class="fadeIn" wx:if="{{rewardPop}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog rewardPop">
+		<!-- 序列帧暂未实现停留最后一帧，文件较大不考虑 -->
+		<view class="rewardBox" wx:if="{{!rewardCanvas}}">
+
+			<view class="rewardMsg ">
+				<view class="">恭喜您获得</view>
+				<!-- <view >{{methodName}}<text class="font80">{{aprizeName}}</text>元</view> -->
+				<!-- <view>{{methodName}}<text class="font80">{{rewardMsg}}</text></view> -->
+				<block wx:if="{{taskKey==1}}">
+					<view>红包翻<text class="font80">{{rewardMsg}}</text>奖励</view>
+				</block>
+				<block wx:if="{{taskKey==2}}">
+					<view>{{methodName}}<text class="font80">{{rewardMsg}}</text></view>
+				</block>
+			</view>
+			<!-- <image mode="aspectFill" class="goldlightImg" src="{{goldlight1}}"></image> -->
+
+			<view class="contents">
+				<view class="weui-flex">
+					<view class="weui-flex__item text-center">
+						<view class="lingquBtn" bindtap="closePop">确定</view>
+						<!-- <image class="imgBtn" mode="aspectFit" bindtap="closePop" src="{{lingquImg}}"></image> -->
+					</view>
+				</view>
+			</view>
+
+		</view>
+		<image style="width:{{systemWidth}}px;height:100%;" src="{{rewardImg}}"></image>
+		<canvas wx:if="{{rewardCanvas}}" id="reward" type="2d" style="display:block; width:{{systemWidth}}px; height:100%;"></canvas>
+	</view>
+</view>
+<!-- 获奖弹窗  lottery -->
+<view class="fadeIn" wx:if="{{lotteryPop}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog lotteryPop">
+		<view class="{{gameOver ? 'getRewarded20': 'getRewarded'}} " wx:if="{{!lotteryCanvas}}">
+			<view class="lotteryImg">
+				<view class="">
+					<view class=" totalMoney letter-spacing">恭喜您累计获得</view>
+					<view class="totalMoney">¥<text class="font72">{{totalMoney}}.00</text>
+					</view>
+					<view class="flex-row-center">
+						<view style="width:500rpx">
+							<!-- <view class="rewardHistory" wx:for="{{rewardHistory}}" wx:for-item="item" wx:key="index">{{item}}</view> -->
+							<text class="rewardHistory">{{rewardHistory}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+
+			<view class="contents">
+				<view class="weui-flex {{gameOver?'mgt20':''}} ">
+					<block wx:if="{{!gameOver}}">
+						<view class="weui-flex__item text-right flex-row-end">
+							<view class="width300  flex-row-end">
+								<view class="">
+									<a class="weui-dialog__btn  rebBtn goYuer" data-go="1" bindtap="goYuer">{{!gameOver?'放弃翻倍':
+										yuerText}}</a>
+								</view>
+							</view>
+						</view>
+					</block>
+					<block wx:else>
+						<view class="weui-flex__item text-right ">
+							<view class="">
+								<a class="weui-dialog__btn  rebBtn goYuer" data-go="1" bindtap="goYuer">{{!gameOver?'放弃翻倍':
+									yuerText}}</a>
+							</view>
+						</view>
+					</block>
+
+					<view class="weui-flex__item text-left zindex1" wx:if="{{!gameOver}}">
+						<view class="scaleBox">
+							<view class="scaleBtn pdl20 click_double" data-pop="2" bindtap="watchAd">
+								<css-animation class="animation-qi" width="250" height="150" count="35" duration="7" url="{{btnurl}}">
+								</css-animation>
+							</view>
+							<view class="scaleBtn-backup" bindtap="watchAd">看视频红包翻倍</view>
+
+						</view>
+					</view>
+					<view class="weui-flex__item text-left zindex1" wx:if="{{gameOver}}">
+						<a class="weui-dialog__btn goldBtn ">
+							<navigator url="/pages/zongduan/saoma/index?hide=1" open-type="reLaunch" hover-class="other-navigator-hover goScan"> 继续开箱扫码</navigator>
+						</a>
+
+					</view>
+				</view>
+			</view>
+		</view>
+		<image wx:if="{{!lotteryCanvas}}" style="width:{{systemWidth}}px;height:100%;" src="{{lotteryImg}}"></image>
+		<canvas wx:if="{{lotteryCanvas}}" id="lottery" type="2d" style="display:block; width:{{systemWidth}}px; height:100%;"></canvas>
+		<!-- <canvas id="lottery" type="2d" style="display:block; width:{{systemWidth}}px; height:{{systemHeight}}px;"></canvas> -->
+	</view>
+</view>
+<!-- 倒计时弹窗  countdownPop -->
+<view class="fadeIn" wx:if="{{countdownPop}}">
+	<view class="weui-mask"></view>
+	<view class="weui-dialog lotteryPop">
+		<view class="{{gameOver ? 'getRewarded20': 'getRewarded'}} ">
+			<view class="lotteryImg">
+				<view class="">
+					<view class=" totalMoney letter-spacing">恭喜您累计获得</view>
+					<view class="totalMoney">¥<text class="font72">{{totalMoney}}.00</text>
+					</view>
+					<view class="flex-row-center">
+						<view style="width:500rpx">
+							<text class="rewardHistory">{{rewardHistory}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="contents">
+				<view class="weui-flex mgt20">
+					<block wx:if="{{!gameOver}}">
+						<view class="weui-flex__item text-right flex-row-end">
+							<view class="width300  flex-row-end">
+								<view class="">
+									<a class="weui-dialog__btn  rebBtn goYuer" data-go="1" bindtap="goYuer">{{!gameOver?'放弃翻倍':
+										yuerText}}</a>
+								</view>
+							</view>
+						</view>
+					</block>
+					<block wx:else>
+						<view class="weui-flex__item text-right ">
+							<view class="">
+								<a class="weui-dialog__btn  rebBtn goYuer" data-go="1" bindtap="goYuer">{{!gameOver?'放弃翻倍':
+									yuerText}}</a>
+							</view>
+						</view>
+					</block>
+
+					<view class="weui-flex__item text-left zindex1" wx:if="{{!gameOver}}">
+						<view class="scaleBox">
+							<view class="scaleBtn pdl20 click_double" data-pop="2" bindtap="watchAd">
+								<css-animation class="animation-qi" width="250" height="150" count="35" duration="7" url="{{btnurl}}">
+								</css-animation>
+							</view>
+							<view class="scaleBtn-backup" bindtap="watchAd">看视频红包翻倍</view>
+
+						</view>
+					</view>
+					<view class="weui-flex__item text-left zindex1" wx:if="{{gameOver}}">
+						<a class="weui-dialog__btn goldBtn ">
+							<navigator url="/pages/zongduan/saoma/index?hide=1" open-type="reLaunch" hover-class="other-navigator-hover goScan"> 继续开箱扫码</navigator>
+						</a>
+
+					</view>
+				</view>
+			</view>
+		</view>
+		<image style="width:{{systemWidth}}px;height:100%;" src="{{lotteryImg}}"></image>
+	</view>
+</view>

@@ -1,0 +1,15 @@
+<!--pages/storeOrder/monthlyOrder/common/refuseOrder/index.wxml-->
+<view class="refuse-order">
+		<van-popup show="{{show}}"   bind:close="onClose" custom-style="background-color: transparent;"   z-index="{{10000}}">
+			  <view class="refuse-order-box">
+            <view class="rob-tips">是否拒绝该订单?</view>
+            <view class="rob-tools">
+              <van-button custom-class="rob-tools-btn" loading="{{loading}}" plain  round size="small" bindtap="refuse">拒绝</van-button>
+              <van-button  custom-class="rob-tools-btn" plain round size="small" bindtap="onClose">
+                  再想想
+              </van-button>
+            </view>    
+         </view>
+         <image class="close" src="/pages/storeOrder/static/close.png" mode="aspectFill" bindtap="onClose"></image>
+		</van-popup>
+	</view>

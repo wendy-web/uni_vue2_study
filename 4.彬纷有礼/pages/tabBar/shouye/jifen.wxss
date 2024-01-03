@@ -1,0 +1,43 @@
+/* pages/tabBar/shouye/jifen.wxss */
+.box {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  padding-top: 830rpx;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nodata {
+  width: 100%;
+  height: 100%;
+}
+
+.bg-credit {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.btn-credit-exc {
+  width: 406rpx;
+  height: 124rpx;
+  z-index: 2;
+}
+
+.usable-credit {
+  font-size: 30rpx;
+  font-family: PingFang SC, PingFang SC-Semibold;
+  font-weight: 600;
+  text-align: center;
+  color: #ffffff;
+  line-height: 42rpx;
+  margin-top: 32rpx;
+}

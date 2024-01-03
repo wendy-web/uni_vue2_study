@@ -1,0 +1,109 @@
+<!--pages/storeOrder/myorder/confirmReceipt/index.wxml-->
+<!-- 确认收货页面：货到付款 -->
+<view class="container">
+  <!-- 送货单、货品清单 -->
+  <view class="order-box">
+    <view class="order-name">
+      <text>订货单号：</text>
+      <text>{{orderInfo.order.out_trade_no || '无数据'}}</text>
+    </view>
+    <view class="mgt20">
+      <text class="order-name">货品清单：</text>
+      <block wx:if="{{orderInfo.order}}">
+        <text>共{{orderInfo.order.sku_num}}个商品、</text>
+        <text>应收{{orderInfo.order.buy_num}}箱、</text>
+        <text>实收<text class="color-red">{{orderInfo.order.buy_num}}</text>箱</text>
+      </block>
+      <block wx:else>
+        <text class="order-name">无数据</text>
+      </block>
+    </view>
+  </view>
+  <!-- 商品详情 -->
+  <view class="goods-box">
+    <block wx:if="{{orderInfo.sku}}">
+      <view class="goods-item" wx:for="{{orderInfo.sku}}" wx:key="index" wx:for-item="item" wx:for-index="idx">
+        <image class="goods-icon" mode="aspectFill" src="{{item.icon}}">
+        </image>
+        <view class="goods-detail">
+          <view class="goods-title bold700">{{item.title}}</view>
+          <view>
+            <text class="goods-sub-title">款式：</text>
+            <text>{{item.attr_str[0][1]}}{{item.attr_str[1][1]}}*{{item.attr_str[2][1]}}</text>
+          </view>
+          <view>
+            <text class="goods-sub-title">需求数量：</text>
+            <text>{{item.buy_num}}箱</text>
+          </view>
+          <view>
+            <text class="goods-sub-title">交货数量：</text>
+            <text>{{item.buy_num}}箱</text>
+          </view>
+          <view>
+            <text class="goods-sub-title">小计金额：</text>
+            <text class="bold700 color-red">￥{{item.buy_price}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="flex-center">
+        <text>暂无数据</text>
+      </view>
+    </block>
+
+  </view>
+
+  <!-- 商品总价 -->
+  <view class="goods-price-box">
+    <view class="price-item">
+      <text class="color-grey">商品总价</text>
+      <text class="bold700">￥{{orderInfo.order.total_amount}}</text>
+    </view>
+    <view class="price-item" wx:if="{{orderInfo.order.discount_amount}}">
+      <text class="color-grey">优惠</text>
+      <text class="bold700">-￥{{orderInfo.order.discount_amount }}</text>
+    </view>
+    <view class="price-item" wx:if="{{orderInfo.order.d_amount}}">
+      <view>
+        <text class="icon-ticket">券</text>
+        <text>现金券</text>
+      </view>
+      <view>-￥{{orderInfo.order.d_amount}}</view>
+    </view>
+    <view class="price-item flex-end">
+      <view>
+        <text>{{orderInfo.order.isPaid?'实付款':'应付款'}}</text>
+        <text class="color-red bold700">￥{{orderInfo.order.isPaid?orderInfo.order.p_amount:orderInfo.order.c_amount}}</text>
+      </view>
+    </view>
+
+    <!-- 确认收款按钮 -->
+    <view class="operate-box" wx:if="{{orderInfo.order.status&&orderInfo.order.status==3}}">
+      <!-- <view class="tips">请与店员核对货物数量后再付款</view> -->
+      <!-- 已核销，待付款并收货，店员显示拒绝和通知店长 wx:if="{{orderInfo.order.rev_status == 2}}" -->
+      <block wx:if="{{orderInfo.order.rev_status == 2}}">
+        <view class="width-100">
+          <van-button bind:click="storeOrderRefuse" data-item="{{orderInfo.order}}" plain round block>拒绝</van-button>
+        </view>
+        <view class="width-100">
+          <block wx:if="{{condition !=2}}">
+            <van-button bind:click="confirmReceipt" data-item="{{orderInfo.order}}" round block type="danger">确认收货</van-button>
+          </block>
+          <block wx:else>
+            <!-- 店员需要判断该订单是否支付，未支付通知店长支付，已支付，确认收货 -->
+            <van-button wx:if="{{orderInfo.order.isPaid}}" bind:click="confirmReceipt" data-item="{{orderInfo.order}}" round block type="danger">确认收货</van-button>
+            <van-button wx:else  open-type="share" data-item="{{orderInfo.order}}" round block type="danger">通知店长</van-button>
+          </block>
+        </view>
+      </block>
+
+    </view>
+
+
+  </view>
+</view>
+
+
+<!-- 订单弹窗 -->
+<order-popup id="orderPopup" bind:myevent="goback"></order-popup>

@@ -1,0 +1,11 @@
+{
+  "component": true,
+  "usingComponents": {
+    "scroller": "coolui-scroller/scroller/index",
+    "refresh": "coolui-scroller/refresh/index",
+    "loadmore": "coolui-scroller/loadmore/index",
+    "empty": "coolui-scroller/empty/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "filterPop":"../filterPop/index"
+  }
+}

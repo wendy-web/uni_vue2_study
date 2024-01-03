@@ -1,0 +1,79 @@
+/* component/forbiddenTransShop/index.wxss */
+.no-trans-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40rpx;
+}
+
+.no-trans-title {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: #000018;
+}
+
+.no-trans-tips {
+  display: flex;
+  align-items: center;
+  font-size: 44rpx;
+  color: #f5222d;
+  margin-top: 34rpx;
+}
+
+.icon-no-trans {
+  width: 68rpx;
+  height: 68rpx;
+  margin-right: 12rpx;
+}
+
+.icon_no_transfer {
+  width: 514rpx;
+  height: 268rpx;
+  display: block;
+  margin: 0 auto -180rpx auto;
+  position: relative;
+  z-index: 20;
+}
+
+.gz-zm-exc-box {
+  box-sizing: border-box;
+  width: 658rpx;
+  height: 558rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  padding: 24rpx;
+}
+
+.pop_bg_gz_exc {
+  width: 658rpx;
+  height: 558rpx;
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+}
+
+.gz-zm-exc-tips {
+  color: #ff002a;
+  font-weight: bolder;
+  font-size: 50rpx;
+  text-align: center;
+}
+
+.gz-zm-exc-title {
+  font-size: 36rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  font-weight: 400;
+  color: #764f30;
+  text-align: center;
+}
+
+.icon-close {
+  width: 66rpx;
+  height: 66rpx;
+  display: block;
+  margin: 48rpx auto 0 auto;
+}

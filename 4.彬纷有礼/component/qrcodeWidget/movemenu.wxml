@@ -1,0 +1,192 @@
+<!--components/movemenu/movemenu.wxml-->
+<movable-area class='menuarea'>
+	<movable-view class='menu_box' direction="all" x="{{width}}" y="{{screenHeight?screenHeight*0.7:height*0.7}}" out-of-bounds="{{false}}">
+		<view hidden='{{showmenus}}' class=''>
+			<block wx:for='{{menulist}}' wx:key='menulist'>
+				<view class='menu_main' catchtap='itemclick' data-item='{{item}}'>
+					<image class='menu_img' src='{{item.url}}' />
+					<text class='menu_title' hidden='{{mainmodel.title.length > 0 ? flase:true}}'>{{item.title}}</text>
+				</view>
+			</block>
+		</view>
+		<view catchtap='showclick' class='menu_main' data-trigger="{{trigger}}">
+		<!-- <view catchtap='showclick' class='menu_main' data-url='{{pageUrl?pageUrl:defaultUrl}}'> -->
+			<image class='menu_img' mode="aspectFit" src='{{mainmodel.url?mainmodel.url:url}}' />
+			<block wx:if="{{noticeUnread>99}}">
+				<text class='menu_title yellow'>99+</text>
+			</block>
+			<block wx:else>
+				<text class='menu_title yellow' wx:if="{{noticeUnread>0}}">{{noticeUnread}}</text>
+			</block>
+			<text class='menu_title' hidden='{{mainmodel.title.length > 0 ? flase:true}}'>{{mainmodel.title}}</text>
+		</view>
+	</movable-view>
+</movable-area>
+
+
+<!-- 活动预热 -->
+<activityPop show="{{yurePop}}" bgImg="{{unapplyImg}}">
+	<view bindtap="findOutDetail" class="color-orange activityContainer">
+		<view wx:if="{{notInArea}}" class="yureMsgBox flex-column flex-center">
+			<view class="yureMsg mgt150">
+				<text class="font40">您当前所在地区\n</text>
+				<text class="font40">暂未开始此活动\n</text>
+			</view>
+			<view class="fontBold font40 mgt30">
+				<text>敬请期待···\n</text>
+			</view>
+			<image mode="aspectFit" class="iKnowBtn mgt50" bindtap="findOutDetail" src="{{iKnow}}"></image>
+		</view>
+	</view>
+</activityPop>
+<!-- 活动结束弹窗：未报名：下期活动敬请期待，已报名：累计兑奖人数，排名信息 -->
+<block wx:if="{{activityEnd}}">
+	<activityPop show="{{activityEndPop}}" bgImg="{{activityEndImg}}" >
+		<view class="flex-column color-orange activityContainer"  style="justify-content:{{end_more_three?'center':'space-around'}}">
+			<!-- isWin 活动结束中奖 -->
+			<block wx:if="{{isWin}}">
+				<!-- 中奖三天内 -->
+				<block wx:if="{{!end_more_three}}">
+					<view class="font30 award_box">
+						<view class=" fontBold  font40">恭喜您的店铺中奖了！</view>
+						<view>【二十八星宿封神榜】战况</view>
+						<view>累计兑奖人数：<text>{{applyInfo.uid_num}}</text>人</view>
+						<block wx:if="{{applyInfo.uid_num>= storeRankNum}}">
+							<view>店铺排名：<text>{{applyInfo.rank}}</text>名</view>
+						</block>
+						<block wx:else>
+							<view>店铺排名：<text>未上榜</text></view>
+						</block>
+						<view>活动已结束！</view>
+						<view class="mgt70">
+							<image mode="aspectFit" bindtap="findOutDetail" class="iKnowBtn" src="{{get_award}}"></image>
+						</view>
+					</view>
+				</block>
+				<block wx:else>
+					<!-- 中奖三天后 -->
+					<view class="fontBold font40 letter-space mgt150" wx:if="{{unclaimed}}">
+						<text>很遗憾\n</text>
+						<text>您的活动奖励逾期未领取</text>
+					</view>
+					<view wx:if="{{unclaimed}}">
+						<text>(中奖结果公布后3天内未领取奖励)</text>
+					</view>
+					<view class="mgt150">
+						<image mode="aspectFit" bindtap="findOutDetail" class="iKnowBtn" src="{{check_reward_history}}">
+						</image>
+					</view>
+				</block>
+			</block>
+			<block wx:else>
+				<!-- 活动结束未中奖，3天，3天后弹窗判断 -->
+				<block wx:if="{{!end_more_three}}">
+					<view class="fontBold font40 letter-space mgt100">
+						<!-- <block wx:if="{{applyInfo&&applyInfo.uid_num<26}}"> -->
+						<block wx:if="{{applyInfo&&applyInfo.uid_num<storeRankNum}}">
+							<text>很遗憾\n</text>
+							<text>您的店铺未上榜！</text>
+						</block>
+						<block wx:else>
+							<text>很遗憾\n</text>
+							<text>您的店铺未中奖！</text>
+						</block>
+					</view>
+					<view>
+						<image mode="aspectFit" bindtap="findOutDetail" class="iKnowBtn bottomBtn" src="{{check_detail}}"></image>
+					</view>
+				</block>
+				<block wx:else>
+					<view class="fontBold font40 letter-space">
+						<text>活动已结束</text>
+					</view>
+					<view class="fontBold font30 letter-space">
+						<text>下期活动敬请期待······</text>
+					</view>
+				</block>
+			</block>
+		</view>
+	</activityPop>
+</block>
+<!-- 已报名活动：预热：活动还未开始倒计时，进行中：活动兑奖人数详情更新 ，已结束：活动奖励-->
+<activityPop show="{{applyedPop}}" bgImg="{{applyedImg}}" >
+	<view  class="color-orange activityContainer" bindtap="findOutDetail">
+		<block wx:if="{{!activityEnd && yure}}">
+			<view class="fontBold font40 letter-space"><text>您的店铺已报名</text></view>
+		</block>
+		<block wx:if="{{yure}}">
+			<view class="fontBold font30 letter-space">活动还未开始</view>
+			<view class="font30 letter-space">距离活动开始还剩：</view>
+			<view class="fontBold font30 letter-space">{{countDown}}</view>
+		</block>
+		<block wx:else>
+			<block wx:if="{{activityEnd}}">
+				<view wx:if="{{applyInfo.uid_num>= storeRankNum}}">恭喜您的店铺中奖了</view>
+				<view>【二十八星宿封神榜】战况</view>
+				<view>累计兑奖人数：<text>{{applyInfo.uid_num}}</text>人</view>
+				<block wx:if="{{applyInfo.uid_num>= storeRankNum}}">
+					<view>店铺排名：<text>{{applyInfo.rank}}</text>名</view>
+				</block>
+				<block wx:else>
+					<view>店铺排名：<text>未上榜</text></view>
+				</block>
+				<view>活动已结束！</view>
+			</block>
+			<block wx:else>
+				<view>【二十八星宿封神榜】战况</view>
+				<view>累计兑奖人数：<text>{{applyInfo.uid_num}}</text>人</view>
+				<block wx:if="{{applyInfo.uid_num>= storeRankNum}}">
+					<view>当前店铺排名：<text>{{applyInfo.rank}}</text>名</view>
+				</block>
+				<block wx:else>
+					<view>当前店铺排名：<text>未上榜</text></view>
+				</block>
+				<view>距离活动结束还剩：</view>
+				<view>{{countDown}}</view>
+			</block>
+		</block>
+
+	</view>
+
+</activityPop>
+<!-- 已报名每天弹窗战况 -->
+<activityPop show="{{undateApplyedPop}}" bgImg="{{applyedImg}}" >
+	<view  class="color-orange activityContainer" bindtap="findOutDetail">
+		<block wx:if="{{!activityEnd && yure}}">
+			<view class="fontBold font40 letter-space"><text>您的店铺已报名</text></view>
+		</block>
+		<block wx:if="{{yure}}">
+			<view class="fontBold font30 letter-space">活动还未开始</view>
+			<view class="font30 letter-space">距离活动开始还剩：</view>
+			<view class="fontBold font30 letter-space">{{countDown}}</view>
+		</block>
+		<block wx:else>
+			<block wx:if="{{activityEnd}}">
+				<view wx:if="{{applyInfo.uid_num>= storeRankNum}}">恭喜您的店铺中奖了！</view>
+				<view>【二十八星宿封神榜】战况</view>
+				<view>累计兑奖人数：<text>{{applyInfo.uid_num}}</text>人</view>
+				<block wx:if="{{applyInfo.uid_num>= storeRankNum}}">
+					<view>店铺排名：<text>{{applyInfo.rank}}</text>名</view>
+				</block>
+				<block wx:else>
+					<view>店铺排名：<text>未上榜</text></view>
+				</block>
+				<view>活动已结束！</view>
+			</block>
+			<block wx:else>
+				<view>【二十八星宿封神榜】战况</view>
+				<view>累计兑奖人数：<text>{{applyInfo.uid_num}}</text>人</view>
+				<block wx:if="{{applyInfo.uid_num>= storeRankNum}}">
+					<view>当前店铺排名：<text>{{applyInfo.rank}}</text>名</view>
+				</block>
+				<block wx:else>
+					<view>当前店铺排名：<text>未上榜</text></view>
+				</block>
+				<view>距离活动结束还剩：</view>
+				<view>{{countDown}}</view>
+			</block>
+		</block>
+
+	</view>
+
+</activityPop>

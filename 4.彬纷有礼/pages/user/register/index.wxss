@@ -1,0 +1,369 @@
+.weui-form{
+    padding-top: 80rpx;
+}
+.weui-form__control-area {
+    margin: 0px;
+}
+
+.weui-cells__group_form .weui-cell {
+    padding: 20px;
+}
+
+.btn {
+    background: linear-gradient(180deg, rgba(231, 25, 25, 1) 0%, rgba(163, 16, 21, 1) 100%);
+    border-radius: 25px;
+    color: #ffffff;
+    font-weight: normal;
+    width: 100%;
+    height: 100rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.vcode-btn {
+    background-color: #ffffff !important;
+    color: #E02020 !important;
+    font-size: 24rpx !important;
+    font-weight: 400;
+}
+.getPhoneNumber-btn{
+    background-color: #ffffff;
+    color: #E02020;
+    font-size: 24rpx;
+    font-weight: 400;
+    height: 50rpx;
+}
+.getPhoneNumber-btn::after{
+    border:unset;
+    position: relative;
+}
+
+.grey-btn {
+    background-color: grey !important;
+}
+
+/* input {
+    font-size: 28rpx !important;
+} */
+
+.page_bd_spacing {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.page_desc {
+    color: #989898;
+}
+
+.pdb50 {
+    padding-bottom: 50rpx;
+}
+
+.weui-cells__group_form .weui-cell {
+    padding: 30rpx 40rpx;
+}
+
+.flex-center {
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.font28 {
+    font-size: 28rpx;
+}
+
+.red {
+    color: #E02020;
+}
+
+.checked {
+    background-color: #E02020;
+}
+
+.weui-dialog {
+    min-height: 60%;
+}
+
+.pdb40 {
+    padding-bottom: 40rpx;
+}
+
+.weui-dialog__hd {
+    padding: 30rpx 20rpx;
+}
+
+.weui-dialog__bd {
+    margin-bottom: 30rpx;
+}
+
+.yinsibtn {
+    height: 100rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 30rpx;
+}
+
+.redbtn {
+    width: 525rpx;
+}
+
+.beforeLine::before {
+    border-top: 0px;
+}
+
+.pdlr60 {
+    padding-left: 60rpx;
+    padding-right: 60rpx;
+}
+
+
+
+.warn {
+    width: 13px;
+    height: 13px;
+}
+
+.pdl7 {
+    padding-left: 7px;
+}
+
+.font13 {
+    font-size: 13px;
+}
+
+.color-grey {
+    color: #99abb4;
+}
+
+.color-blue {
+    color: #5ea8f2;
+}
+
+.fixed-bottom {
+    position: fixed;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.underLine {
+    text-decoration: underline;
+}
+
+.cancle {
+    border-radius: 50rpx;
+    margin-top: 40rpx;
+    color:#545454 !important;
+    border-color: #afafaf !important;
+    font-size: 32rpx;
+    width: 630rpx;
+    line-height: 96rpx;
+    height: 96rpx;
+}
+
+.weui-form__opr-area{
+    margin-bottom:30rpx;
+}
+.weui-cells_checkbox .weui-cell__hd{
+  padding-right: 5px;
+}
+.checkbox {
+  margin-top: 0px;
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  line-height:normal;
+}
+
+.checkbox label {
+  padding: 0px;
+}
+.weui-check__label:active {
+  background-color: unset;
+}
+.weui-cells:before {
+  border-top: unset;
+}
+.weui-cells:after {
+  border-bottom: unset;
+}
+.font24{
+  font-size: 24rpx;
+}
+.weui-icon-checked{
+  width: 20px;
+  height: 20px;
+}
+.at-button {
+  margin: 0;
+  font-size: 32rpx;
+  font-weight: 500;
+  border-radius:50rpx;
+  background: linear-gradient(180deg,#e71919 26%, #a31015 100%);
+  color: white;
+  width: 630rpx;
+  line-height: 96rpx;
+  height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.icon-wechat{
+  width: 56rpx;
+  height: 44rpx;
+  margin-right: 10rpx;
+}
+.icon-camer{
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+.__input-wrapper{
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 90px;
+  height: 90px;
+}
+.__input-wrapper .avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+}
+.__input-wrapper  .opacity-button{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  opacity: 0;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.user-info-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.user-info-name{
+  margin-top: 30rpx;
+  display: flex;
+  align-items: center;
+  border-bottom:0.5px solid #7a7a7a;
+  width: 90px;
+  text-align: center;
+  position: relative;
+}
+.input-nick-name{
+  text-align: center;
+  display: inline;
+  caret-color:#E3001B;
+  font-size: 28rpx;
+  z-index: 1;
+  /* position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0; */
+}
+.input-label{
+  position: relative;
+  border-bottom:0.5px solid #7a7a7a;
+  min-width: 90px;
+  display: inline-block;
+}
+.icon-edit-box{
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 2px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  z-index: 0;
+}
+.icon-edit{
+  width: 14px;
+  height: 14px;
+
+}
+.input-name-placeholder{
+  font-size: 28rpx;
+  /* text-align: left; */
+}
+.send-sms-box{
+  margin-top: 20rpx;
+}
+.send-sms-box .van-cell::after{
+  border-bottom: 1px solid #7a7a7a;
+}
+/* 修改隐私协议UI 2023年10月19日 */
+.privacy-box{
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 80rpx;
+}
+
+.privacy-item{
+  box-sizing: border-box;
+  padding-left: 30rpx;
+  margin-top: 10rpx;
+}
+.privacy-confirm-box{
+  box-sizing: border-box;
+  padding:40rpx 40rpx;
+  width: 90vw;
+}
+.pop-title{
+  font-size: 32rpx;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+}
+.name-avatar-tips{
+  text-align: justify;
+}
+.btn-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: 40rpx;
+}
+.btn-confirm{
+  box-sizing: border-box;
+  border-radius: 50rpx;
+  width: 280rpx;
+  height: 90rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e3001b;
+  color: #ffffff;
+  margin: unset;
+}
+.btn-cancel{
+  box-sizing: border-box;
+  border-radius: 50rpx;
+  width: 280rpx;
+  height: 90rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1rpx solid #e4e4e4;
+
+}

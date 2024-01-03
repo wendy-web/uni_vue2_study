@@ -1,0 +1,644 @@
+/* pages/randomdraw/slotmachine/machine.wxss */
+@import './utils/machine.wxss';
+
+page {
+  height: 100%;
+}
+
+.machine-box {
+  position: relative;
+  /* top: 171rpx;
+*/
+  top: 122rpx;
+}
+
+.machine-box button {
+  height: 122rpx;
+  width: 100%;
+  top: 27rpx;
+  background: unset;
+  color: transparent;
+}
+
+.machine-box button::after {
+  /* border: 1px solid black; */
+  border: 0;
+}
+
+.container {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  overflow: scroll;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  /* top: 64px; */
+  top: var(--navBarHeight);
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.content {
+  background: url('https://file.y1b.cn/public/img/to2/tiger/bg.png') no-repeat;
+  /* background:url('https://file.y1b.cn/public/img/to2/laohuji1.png')  no-repeat; */
+  background-size: contain;
+  background-position: center center;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 弹窗背景样式 begin*/
+.bgc-yellow {
+  background-color: #fccf00;
+  padding: 50rpx 30rpx 0rpx 30rpx;
+  overflow: unset;
+}
+
+.bgc-yellow .bgc-orange {
+  background-color: #f27a0c;
+  padding: 100rpx 30rpx 30rpx 30rpx;
+  border-radius: 25rpx;
+  margin-bottom: 30rpx;
+}
+
+.bgc-yellow .knowed {
+  position: fixed;
+  bottom: -70rpx;
+  width: 91%;
+}
+
+.bgc-yellow .knowed image {
+  width: 240rpx;
+  height: 112rpx;
+}
+
+.text-white {
+  color: #ffffff;
+  font-weight: normal;
+}
+
+.huodongrule {
+  position: fixed;
+  z-index: 5000;
+  top: -285rpx;
+}
+
+.redbull25 {
+  text-align: right;
+}
+
+.redbull25 image {
+  width: 177rpx;
+  height: 177rpx;
+}
+
+/* fanbei翻倍按钮样式 */
+.fanbei {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  position: relative;
+  top: 177rpx;
+  width: 100%;
+}
+
+.clickHere {
+  animation: animated-border 1.5s infinite;
+}
+
+.fanbei .btn {
+  border-color: #ff9408;
+  text-align: center;
+  z-index: 1000;
+  color: white;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  padding: 15rpx 10rpx;
+  width: 200rpx;
+  background: linear-gradient(0deg, #ff4800, #fec401);
+  -webkit-box-shadow: 0 8rpx 0 0 rgba(14, 13, 13, 0.562);
+  box-shadow: 0 6rpx 0 0 rgba(14, 13, 13, 0.562);
+}
+
+.goldBtn {
+  display: inline-block;
+  border-color: #fff000;
+  text-align: center;
+  z-index: 1000;
+  color: #e81910;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  padding: 15rpx 10rpx;
+  width: 200rpx;
+  background: linear-gradient(0deg, #fff000, #fec401);
+  -webkit-box-shadow: 0 8rpx 0 0 rgba(14, 13, 13, 0.562);
+  box-shadow: 0 6rpx 0 0 rgba(14, 13, 13, 0.562);
+}
+
+.rebBtn {
+  display: inline-block;
+  border-color: #ff0500;
+  text-align: center;
+  z-index: 1000;
+  color: white;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  padding: 15rpx 10rpx;
+  width: 200rpx;
+  background: linear-gradient(0deg, #ff0500, #ff4801);
+  -webkit-box-shadow: 0 8rpx 0 0 rgba(14, 13, 13, 0.562);
+  box-shadow: 0 6rpx 0 0 rgba(14, 13, 13, 0.562);
+}
+
+/* 二次确认弹窗样式 */
+.reconfirmPop {
+  height:370px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding-bottom: 10px;
+}
+
+.rewardPop {
+  max-height: 100%;
+  position: fixed;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+
+}
+
+.getRewarded {
+  position: fixed;
+  width: 100%;
+  bottom: 14%;
+  z-index: 60000;
+}
+
+.getRewarded20 {
+  position: fixed;
+  width: 100%;
+  bottom: 17%;
+  z-index: 60000;
+}
+
+.flex-row-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+}
+
+.totalMoney {
+  color: #ffe400;
+  font-weight: 700;
+}
+
+.letter-spacing {
+  letter-spacing: 10rpx;
+}
+
+.font72 {
+  font-size: 72rpx;
+}
+
+.rewardHistory {
+  color: #fff496;
+  width: 100%;
+}
+
+/* .rewardPop .contents{
+  width: 100%;
+  position: absolute;
+  top: 66%;
+} */
+.imgBtn {
+  height: 74rpx;
+  width: 372rpx;
+}
+
+.rewardGif {
+  height: 100%;
+  position: relative;
+}
+
+.rewardPop .contents {
+  width: 100%;
+  position: relative;
+  top: 62%;
+}
+
+.rewardMsg {
+  position: absolute;
+  top: 37%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rewardMsg view {
+  /* width: 300rpx; */
+  width: 405rpx;
+  color: #e9180d;
+  /* color: #fff496; */
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.rewardGif .rewardImg {
+  width: 100%;
+  min-height: 942rpx;
+}
+
+.lotteryPop {
+  max-height: 100%;
+  position: fixed;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#lottery {
+  position: fixed;
+}
+
+#reward {
+  position: fixed;
+
+}
+
+.rewardBox {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0%;
+  z-index: 60000;
+
+}
+
+.lotteryPop .lotteryImg image {
+  height: 700rpx;
+  width: 100%;
+}
+
+.reconfirmPop .flex-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.reconfirmPop .flex-cloumn {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.brown-text {
+  color: #faf6aa;
+  font-size: 36rpx;
+  font-weight: 700;
+  letter-spacing: 5rpx;
+}
+
+/* shake button */
+/* Animation css */
+[class*=animation-] {
+  animation-duration: .5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both
+}
+
+.animation-shake {
+  animation-name: shake;
+  animation: shake 1s infinite linear;
+  -webkit-animation: shake 1s infinite linear;
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0)
+  }
+
+  10% {
+    transform: translateX(-9px)
+  }
+
+  20% {
+    transform: translateX(8px)
+  }
+
+  30% {
+    transform: translateX(-7px)
+  }
+
+  40% {
+    transform: translateX(6px)
+  }
+
+  50% {
+    transform: translateX(-5px)
+  }
+
+  60% {
+    transform: translateX(4px)
+  }
+
+  70% {
+    transform: translateX(-3px)
+  }
+
+  80% {
+    transform: translateX(2px)
+  }
+
+  90% {
+    transform: translateX(-1px)
+  }
+}
+
+@keyframes animated-border {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 148, 8, .7);
+    transform: translateX(0)
+  }
+
+  10% {
+    transform: translateX(-9px)
+  }
+
+  20% {
+    transform: translateX(8px)
+  }
+
+  30% {
+    transform: translateX(-7px)
+  }
+
+  40% {
+    transform: translateX(6px)
+  }
+
+  50% {
+    transform: translateX(-5px)
+  }
+
+  60% {
+    transform: translateX(4px)
+  }
+
+  70% {
+    transform: translateX(-3px)
+  }
+
+  80% {
+    transform: translateX(2px)
+  }
+
+  90% {
+    transform: translateX(-1px)
+  }
+
+  100% {
+    /* box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); */
+    box-shadow: 0 0 0 20px rgba(255, 148, 8, .5);
+    transform: translateX(0)
+  }
+}
+
+.cjImg {
+  height: 126rpx;
+  margin-top: 50rpx;
+}
+
+/* 测试按钮点击效果 */
+.button3D {
+  animation-name: press;
+  animation: press 0.2s infinite linear;
+  -webkit-animation: press 0.2s infinite linear;
+}
+
+@keyframes press {
+  0% {
+    transform: translateY(10rpx);
+  }
+
+  100% {
+    transform: translateX(10rpx);
+
+  }
+}
+
+.ggltitle {
+  text-align: center;
+  /* position: fixed;
+  top: 12%; */
+  position: absolute;
+  top: 50rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.ggltitle image {
+  height: 120rpx;
+}
+
+.redBull-box {
+  position: fixed;
+}
+
+.redBull-box image {
+  height: 100rpx;
+}
+
+.redBullImg {
+  height: 100rpx;
+  margin-top: -35rpx;
+}
+
+.font80 {
+  font-size: 56rpx;
+}
+
+/* 倾斜 */
+.weui-dialog__hd {
+  padding: 32px 24rpx;
+}
+
+.slant {
+  color: #fced0a;
+  font-size: 70rpx;
+  font-style: oblique;
+  padding: 0rpx 10rpx;
+  /* font-style: italic; */
+}
+
+.lingquBtn {
+  color: #e81910;
+  background: #fff000;
+  width: 235rpx;
+  height: 66rpx;
+  display: inline-block;
+  border-radius: 50rpx;
+  line-height: 66rpx;
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 370px) and (orientation : portrait) {
+
+  /*iPhone 5 Portrait*/
+  .redBullImg {
+    margin-top: 15rpx;
+  }
+}
+
+/* 2020-09-10 */
+.scaleBtn {
+  transform: scale(0.5);
+  transform-origin: left top;
+  z-index: 1;
+}
+
+.width300 {
+  width: 156px;
+  height: 75px;
+  text-align: center;
+}
+
+.scaleBox {
+  width: 150px;
+  height: 75px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+.scaleBtn-backup {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 30rpx;
+  margin: auto 0;
+  width: 100px;
+  height: 30px;
+  display: flex;
+  font-size: 22rpx;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+  border-color: #ff0500;
+  text-align: center;
+  color: white;
+  border-radius: 50rpx;
+  background: linear-gradient(0deg, #e60000, #e40001);
+  -webkit-box-shadow: 0 8rpx 0 0 rgba(14, 13, 13, 0.562);
+  box-shadow: 0 6rpx 0 0 rgba(14, 13, 13, 0.562);
+}
+
+.greyBtns {
+  display: inline-block;
+  text-align: center;
+  z-index: 1000;
+  color: white;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  padding: 14rpx 10rpx;
+  width: 182rpx;
+  background: #d0b5a5;
+
+}
+
+.pdl50 {
+  padding-left: 50rpx;
+}
+
+.pdl20 {
+  padding-left: 20rpx;
+}
+
+.flex-row-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+/* 2022年1月22日 27周年UI改版 */
+.img-hn-machine-coin{
+  width: 100%;
+  height: 528rpx;
+  position: absolute;
+  top: 170rpx;
+  z-index: -1;
+}
+.img-hn-machine-gold{
+  width: 100%;
+  height: 348rpx;
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+}
+.reconfirmPop .btn-group{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 25rpx;
+}
+.btn-group .btn-giveup{
+  display: inline-block;
+  text-align: center;
+  z-index: 1000;
+  color: white;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  box-sizing: border-box;
+  width: 250rpx;
+  height: 83rpx;
+  line-height: 83rpx;
+  background: #cfb7a6;
+}
+.gif-btn-watchvideo{
+  width: 270rpx;
+  height:92rpx;
+}
+.icon-hn-btn {
+  width: 260rpx;
+  height: 90rpx;
+}
+@media screen and (min-height:740px) {
+  .getRewarded {
+    position: fixed;
+    width: 100%;
+    bottom: 17%;
+    z-index: 60000;
+  }
+  .img-hn-machine-gold{
+    bottom: 110rpx;
+  }
+  .getRewarded20{
+    bottom: 21%;
+  }
+}

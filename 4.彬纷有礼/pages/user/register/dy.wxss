@@ -1,0 +1,189 @@
+.dianyuan {
+  margin: 170rpx 75rpx;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  text-align: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.dianyuan .head image {
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.dianyuan .head .desc {
+  margin-top: 20rpx;
+  font-size: 26rpx;
+  color: gray;
+}
+
+.dianyuan .xia {
+  margin-top: 40rpx;
+}
+
+.dianyuan .xia .qita {
+  margin-top: 40rpx;
+  font-size: 26rpx;
+  color: gray;
+}
+
+.at-button {
+  margin: 0;
+  font-size: 28rpx;
+  font-weight: 500;
+  border-radius: 40rpx;
+  background: -webkit-gradient(linear, left bottom, left top, from(#a10f16), to(#e71a19));
+  background: -webkit-linear-gradient(bottom, #a10f16 0%, #e71a19 100%);
+  background: -o-linear-gradient(bottom, #a10f16 0%, #e71a19 100%);
+  background: linear-gradient(0deg, #a10f16 0%, #e71a19 100%);
+  color: white;
+  width: 600rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+}
+
+.mol .tt {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.mol .head {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin: 30rpx auto 40rpx auto;
+  text-align: center;
+  width: 100%;
+}
+
+.mol image {
+  width: 100%;
+}
+
+.mol .at-button {
+  margin: 50rpx auto;
+  font-size: 28rpx;
+  font-weight: 500;
+  border-radius: 40rpx;
+  background: -webkit-gradient(linear, left bottom, left top, from(#a10f16), to(#e71a19));
+  background: -webkit-linear-gradient(bottom, #a10f16 0%, #e71a19 100%);
+  background: -o-linear-gradient(bottom, #a10f16 0%, #e71a19 100%);
+  background: linear-gradient(0deg, #a10f16 0%, #e71a19 100%);
+  color: white;
+  width: 80%;
+  height: 80rpx;
+}
+
+button {
+  position: relative;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0;
+  padding-right: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+  text-decoration: none;
+  line-height: normal;
+  border-radius: 5rpx;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+  color: gray;
+  background-color: white;
+  font-size: 30rpx;
+}
+
+button:after {
+  width: 0;
+  height: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+  line-height: normal;
+  -webkit-transform: scale(0.5);
+  -ms-transform: scale(0.5);
+  transform: scale(0.5);
+  -webkit-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  transform-origin: 0 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 10rpx;
+  background: white;
+}
+
+/* 红牛背景弹窗 */
+.redbullBG {
+  height: 270rpx;
+  width: 100%;
+}
+
+.weui-dialog__hd {
+  padding: 0px;
+  margin-bottom: 30rpx;
+}
+
+.weui-dialog {
+  width: 560rpx;
+  padding-bottom: 30rpx;
+}
+
+.weui-dialog__bd {
+  margin-bottom: 27rpx;
+}
+
+.redbtn {
+  width: 390rpx !important;
+  border-radius: 50rpx;
+  color: white;
+  background: linear-gradient(0deg, #a10f16 0, #e71a19 100%);
+  font-size: 28rpx;
+  height: 70rpx;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+
+}
+
+.mgtb20 {
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+
+.colorFFF3C1 {
+  color: #FFF3C1;
+}
+
+.fontBold {
+  font-weight: 500;
+}
+
+.font40 {
+  font-size: 40rpx;
+}
+
+.letter-space {
+  letter-spacing: 3rpx;
+}
+
+.iKnowBox {
+  position: absolute;
+  bottom: 100rpx;
+}
+
+.iKnow {
+  width: 289rpx;
+  height: 83rpx;
+}

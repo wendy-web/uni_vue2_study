@@ -1,0 +1,188 @@
+/* pages/couponActivity/dgExcZm/rewardRecord/index.wxss */
+page {
+  background-color: #e7420d;
+}
+
+/*箭头部分*/
+.align-center {
+  position: fixed;
+  left: 20rpx;
+  top: 0;
+  display: flex;
+  align-items: center;
+  z-index: 25;
+}
+
+.navigator {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.nav-bar__button {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  font-size: 12px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 1em 2em;
+}
+
+.nav-bar__btn_goback {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='24' viewBox='0 0 12 24'%3E  %3Cpath fill-opacity='.9' fill-rule='evenodd' d='M10 19.438L8.955 20.5l-7.666-7.79a1.02 1.02 0 0 1 0-1.42L8.955 3.5 10 4.563 2.682 12 10 19.438z'/%3E%3C/svg%3E");
+}
+
+.nav-bar__btn_goback.white {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='24' viewBox='0 0 12 24'%3E  %3Cpath fill-opacity='.9' fill-rule='evenodd' d='M10 19.438L8.955 20.5l-7.666-7.79a1.02 1.02 0 0 1 0-1.42L8.955 3.5 10 4.563 2.682 12 10 19.438z' fill='%23ffffff'/%3E%3C/svg%3E");
+}
+
+.container {
+  position: fixed;
+  left: 10px;
+  right: 10px;
+  bottom: 50rpx;
+  background-color: #fcf7e8;
+  border-radius: 20rpx;
+}
+
+.row-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 28rpx 0;
+  box-sizing: border-box;
+  padding: 0 20rpx;
+  height: 93rpx;
+  background: #ffeedc;
+  font-size: 24rpx;
+  color: #ff4200;
+}
+
+.row-title .item {
+  text-align: center;
+}
+
+.flex_one {
+  flex: 0.2;
+}
+
+.flex_two {
+  flex: 0.2;
+}
+
+.flex_three {
+  flex: 0.2;
+}
+
+.flex_four {
+  flex: 0.3;
+}
+
+.flex_five {
+  flex: 0.2;
+}
+
+.noMore {
+  font-size: 20rpx;
+  text-align: center;
+  color: #fcb57e;
+  letter-spacing: 0px;
+}
+
+.mgt30 {
+  margin-top: 30rpx;
+}
+
+.mgt50 {
+  margin-top: 50rpx;
+}
+
+.list-box {
+  box-sizing: border-box;
+  padding: 0 20rpx;
+  background: #fcf7e8;
+  min-height: 600rpx;
+}
+
+.list-box .list-item {
+  height: 93rpx;
+  opacity: 1;
+  /* box-shadow: -1px 0px 0px 0px #fb7f1d; */
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  letter-spacing: 0px;
+  /* border-bottom: 1rpx solid #FB7F1D; */
+
+  font-size: 24rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Regular;
+  color: #000018;
+}
+
+.scroll-view {
+  width: 100%;
+  height: calc(100vh * 0.55);
+}
+
+.color-warn {
+  color: #E21E00;
+}
+
+.page-title-box {
+  position: relative;
+  width: 100%;
+  height: 102rpx;
+  line-height: 102rpx;
+  font-size: 36rpx;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+  color: #fefbf2;
+  text-align: center;
+  z-index: 1;
+  margin-top: -38rpx;
+}
+
+.page-title-box .bg-record-title {
+  width: 452rpx;
+  height: 102rpx;
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.img-record-bottom-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+}
+
+.img-record-bottom {
+  width: 750rpx;
+  height: 204rpx;
+}
+
+.color-red {
+  color: #E3001B;
+}
+
+.kpi-num {
+  font-size: 28rpx;
+  color: #ff4200;
+}
+.act-ing{
+  color: #f17701;
+}
+.act-end{
+  color: #2EAC6D;
+}
+
+.act-fail{
+  color: #E3001B;
+}

@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "店铺陈列完成情况",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "show-dis-goods":"../component/showDisGoods",
+    "dis-qualified-state":"../component/disQualifiedState"
+  },
+  "disableScroll": true
+}

@@ -1,0 +1,19 @@
+{
+  "usingComponents": {
+    "privacyPop":"../../../component/privacyPop/index",
+    "easy-loadimage":"../../../component/easy-loadimage/easy-loadimage",
+    "welfare":"../../../component/welfare/index",
+    "welfareWidget":"../../../component/welfareWidget/movemenu",
+    "van-count-down": "@vant/weapp/count-down/index",
+    "activityWidget":"../../../component/activityWidget/movemenu",
+    "storeExchangePop":"../../../component/storeExchangePop/index",
+    "storeRankPop":"../../../component/storeRankPop/index",
+    "gzUnboxBouy":"../../../component/actCouponPop/gzUnboxBuoy/index",
+    "gzExcBuoy":"../../../component/actCouponPop/gzExcBuoy/index",
+    "dgzmExcPop":"../../../component/storeExchangePop/dgzmExc"
+  },
+  "navigationBarTitleText": "活动",
+  "disableScroll": true
+
+ 
+}

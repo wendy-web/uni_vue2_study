@@ -1,0 +1,382 @@
+{
+  "pages": [
+    "pages/tabBar/shouye/index",
+    "pages/tabBar/shouye/webview/index",
+    "pages/tabBar/dianyuan/add",
+    "pages/tabBar/niuniuParadise/index",
+    "pages/tabBar/geren/index",
+    "pages/zongduan/saoma/index",
+    "pages/zongduan/geren/bangding/index",
+    "pages/zongduan/saoma/hongbao/error",
+    "pages/zongduan/saoma/hongbao/index",
+    "pages/user/register/index",
+    "pages/user/register/dy",
+    "pages/user/register/register",
+    "pages/tabBar/shouye/notice",
+    "pages/tabBar/shouye/storeQr",
+    "pages/tabBar/shouye/jifen"
+  ],
+  "subPackages": [
+    {
+      "root": "pages/zhongduan/",
+      "name": "zhongduan",
+      "pages": [
+        "geren/banben/index",
+        "geren/bangding/mobile",
+        "geren/guanyu/index",
+        "geren/guanyu/faq",
+        "geren/history/index",
+        "geren/hongbao/index",
+        "geren/jifeng/index",
+        "geren/mendian/qrcode",
+        "geren/mendian/dianyuan/add/face",
+        "geren/mendian/renzhen/index",
+        "geren/notice/index",
+        "geren/setting/index",
+        "geren/setting/join",
+        "geren/setting/myinfo",
+        "geren/storesRecord/index",
+        "geren/yuer/index",
+        "geren/yuer/tixian/index",
+        "geren/zhuli/index",
+        "jifen/index",
+        "shouye/Ad",
+        "shouye/detail",
+        "yingdao/index",
+        "yingdao/video",
+        "geren/annualBill/index",
+        "geren/annualBill/list",
+        "geren/notice/subscribe",
+        "geren/mendian/paperCode/unbind",
+        "geren/yuer/yuerdetail",
+        "geren/mendian/shopPrivilege",
+        "geren/jifeng/rule",
+        "geren/setting/modifyInfo"
+      ]
+    },
+    {
+      "root": "pages/randomdraw",
+      "name": "randomdraw",
+      "pages": [
+        "index/index",
+        "goldenEgg/goldenEgg",
+        "rotate/rotate",
+        "scratch-off/scratch",
+        "marquee/index",
+        "slotmachine/machine"
+      ]
+    },
+    {
+      "root": "pages/phaseIII/",
+      "name": "phaseIII",
+      "pages": [
+        "write-off/index",
+        "write-off/list",
+        "write-off/reward",
+        "exchange/index",
+        "exchange/list",
+        "distributor/index",
+        "clerkTask/index",
+        "voucher/voucher",
+        "distributor/saleman",
+        "order/order",
+        "voucher/history",
+        "voucher/webview",
+        "voucher/index",
+        "useCoupon/index/index",
+        "useCoupon/confirm/index",
+        "useCoupon/record/index",
+        "couponStats/list/index",
+        "couponStats/detail/index"
+      ]
+    },
+    {
+      "name": "warhorse",
+      "root": "pages/warhorse/",
+      "pages": [
+        "index/index",
+        "goldenEgg/index",
+        "rotate/index",
+        "slotmachine/index",
+        "exchange/list",
+        "exchange/redeem"
+      ]
+    },
+    {
+      "name": "storeRank",
+      "root": "pages/storeRank/",
+      "pages": [
+        "index/index",
+        "rank/index",
+        "rankList/index",
+        "rankListBack/index",
+        "rewardRecord/index",
+        "historyRank/index",
+        "actRule/index",
+        "rewardRecord/indexZJ",
+        "prizeTicket/index/index",
+        "raffle/apply/index",
+        "raffle/list/index"
+      ]
+    },
+    {
+      "name": "couponActivity",
+      "root": "pages/couponActivity/",
+      "pages": [
+        "index/index",
+        "actRule/index",
+        "rewardRecord/index",
+        "gzUnbox/signUp/index",
+        "gzUnbox/ranklist/index",
+        "gzUnbox/rewardRecord/index",
+        "gzUnbox/index/index",
+        "gzUnbox/actRule/index",
+        "gzExc/index/index",
+        "gzExc/actRule/index",
+        "gzExc/rewardRecord/index",
+        "dgExcZm/index/index",
+        "dgExcZm/actRule/index",
+        "dgExcZm/rewardRecord/index"
+      ]
+    },
+    {
+      "name": "shopDisplay",
+      "root": "pages/shopDisplay/",
+      "pages": [
+        "apply",
+        "displayRecord",
+        "display",
+        "record"
+      ]
+    },
+    {
+      "name": "storeAllowance",
+      "root": "pages/storeAllowance/",
+      "pages": [
+        "list/index",
+        "scanQr/index",
+        "clerkHelp/index",
+        "cashorCoupon/index",
+        "cashorCoupon/exchange/index",
+        "cashorCoupon/list/index",
+        "cashorCoupon/exchange/redeem"
+      ]
+    },
+    {
+      "name": "storeOrder",
+      "root": "pages/storeOrder/",
+      "pages": [
+        "myorder/index/index",
+        "myorder/pay/index",
+        "myorder/orderDetail/index",
+        "myorder/payResult/index",
+        "myorder/fhDetail/index",
+        "monthlyOrder/index/index",
+        "monthlyOrder/details/index",
+        "monthlyOrder/confirmReceipt/index",
+        "goodsList/index",
+        "operaRecord/index",
+        "myorder/confirmReceipt/index"
+      ]
+    },
+    {
+      "name": "storeDisplay",
+      "root": "pages/storeDisplay/",
+      "pages": [
+        "index/index",
+        "promotionDetails/index",
+        "displayShopComple/index",
+        "photoRecord/index"
+      ]
+    },
+    {
+      "name": "shopActivity",
+      "root": "pages/shopActivity/",
+      "pages": [
+        "displayAct/hn/index/index",
+        "displayAct/displayRecord/index",
+        "displayAct/awardRecord/index",
+        "displayAct/hn/display/index",
+        "unboxAct/base/index",
+        "unboxAct/section/index",
+        "unboxAct/awardRecord/index",
+        "displayAct/zm/display/index",
+        "displayAct/zm/index/index",
+        "unboxAct/actRule/index"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/tabBar/geren/index": {
+      "network": "all",
+      "packages": [
+        "zhongduan",
+        "phaseIII",
+        "storeOrder",
+        "storeAllowance",
+        "warhorse",
+        "couponActivity"
+      ]
+    },
+    "pages/zongduan/saoma/hongbao/error": {
+      "network": "all",
+      "packages": [
+        "warhorse",
+        "randomdraw",
+        "zhongduan",
+        "shopActivity",
+        "couponActivity"
+      ]
+    },
+    "pages/zongduan/saoma/index": {
+      "network": "all",
+      "packages": [
+        "warhorse",
+        "randomdraw",
+        "zhongduan",
+        "shopActivity",
+        "couponActivity",
+        "storeAllowance"
+      ]
+    },
+    "pages/tabBar/dianyuan/add": {
+      "network": "all",
+      "packages": [
+        "zhongduan",
+        "shopActivity",
+        "couponActivity",
+        "storeRank"
+      ]
+    },
+    "pages/zongduan/geren/bangding/index": {
+      "network": "all",
+      "packages": [
+        "warhorse",
+        "randomdraw",
+        "zhongduan",
+        "shopActivity",
+        "shopDisplay"
+      ]
+    },
+    "pages/tabBar/shouye/index": {
+      "network": "all",
+      "packages": [
+        "zhongduan",
+        "phaseIII",
+        "storeOrder",
+        "couponActivity",
+        "storeAllowance",
+        "warhorse"
+      ]
+    },
+    "pages/user/register/index": {
+      "network": "all",
+      "packages": [
+        "warhorse",
+        "randomdraw",
+        "zhongduan"
+      ]
+    },
+    "pages/tabBar/shouye/storeQr": {
+      "network": "all",
+      "packages": [
+        "warhorse",
+        "randomdraw",
+        "zhongduan",
+        "phaseIII",
+        "couponActivity"
+      ]
+    }
+  },
+  "tabBar": {
+    "custom": false,
+    "color": "#606266",
+    "borderStyle": "black",
+    "selectedColor": "#111111",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/tabBar/shouye/index",
+        "text": "资讯",
+        "iconPath": "./assets/tabs/activity.png",
+        "selectedIconPath": "./assets/tabs/activitys.png"
+      },
+      {
+        "pagePath": "pages/tabBar/shouye/notice",
+        "text": "消息",
+        "iconPath": "./assets/tabs/notice.png",
+        "selectedIconPath": "./assets/tabs/notices.png"
+      },
+      {
+        "pagePath": "pages/tabBar/shouye/storeQr",
+        "text": "店铺码",
+        "iconPath": "./assets/tabs/storeQr.png",
+        "selectedIconPath": "./assets/tabs/storeQr.png"
+      },
+      {
+        "pagePath": "pages/tabBar/shouye/jifen",
+        "text": "积分商城",
+        "iconPath": "./assets/tabs/jifen.png",
+        "selectedIconPath": "./assets/tabs/jifens.png"
+      },
+      {
+        "pagePath": "pages/tabBar/geren/index",
+        "text": "我的",
+        "iconPath": "./assets/tabs/mine.png",
+        "selectedIconPath": "./assets/tabs/mines.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "将获取你的位置信息，用于提供配送服务或向您推荐附近的活动信息"
+    }
+  },
+  "requiredPrivateInfos": [
+    "chooseLocation",
+    "getLocation"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "cloud": true,
+  "usingComponents": {
+    "calendar": "./component/calendar/calendar",
+    "movemenu": "./component/movemenu/movemenu",
+    "activityWidget": "./component/activityWidget/movemenu",
+    "qrcodeWidget": "./component/qrcodeWidget/movemenu",
+    "AdPopups": "./component/AdPopups/AdPopups",
+    "top-navbar": "./component/top-navbar/top-navbar",
+    "videoAd": "./component/videoAd/videoAd",
+    "jarPop": "./component/jarPop/jarPop",
+    "actCouponPop": "./component/actCouponPop/index",
+    "actCouponWidget": "./component/actCouponWidget/index",
+    "pull-refresh-view": "./component/pull-refresh-view/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-image": "@vant/weapp/image/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-calendar": "@vant/weapp/calendar/index",
+    "sign-notice": "./component/soketModal/salesPromotion/signNotice/index",
+    "activity-execution": "./component/soketModal/salesPromotion/activityExecution/index",
+    "award-grant": "./component/soketModal/salesPromotion/awardGrant/index",
+    "display-review": "./component/soketModal/salesPromotion/displayReview/index",
+    "order-task": "./component/soketModal/orderTask/index"
+  },
+  "sitemapLocation": "sitemap.json",
+  "requiredBackgroundModes": [
+    "audio"
+  ],
+  "plugins": {},
+  "embeddedAppIdList": [
+    "wxfeae7ff917675ffe",
+    "wx90c41e1f393af0ff"
+  ],
+  "__usePrivacyCheck__": true
+}

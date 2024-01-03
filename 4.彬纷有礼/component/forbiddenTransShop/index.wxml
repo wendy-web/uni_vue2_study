@@ -1,0 +1,28 @@
+<!--component/forbiddenTransShop/index.wxml-->
+<!-- 活动期间：店铺不可转让 -->
+<van-popup show="{{notTransferShow}}" bind:close="onClose" data-popname="notTransferShow" custom-style="background-color: transparent;">
+  <background bind:close="onClose" data-popname="notTransferShow" bgImg="{{popBG}}" img_shop_head="{{img_shop_head}}">
+    <view class="no-trans-box">
+      <view class="no-trans-title">您已参加</view>
+      <view class="no-trans-title">“{{(actInfo.title )|| '中国红牛促销大回馈'}}”活动</view>
+      <view class="no-trans-tips">
+        <image class="icon-no-trans" src="{{icon_no_trans}}" mode="aspectFit" />
+        {{noTransferTips}}
+      </view>
+    </view>
+  </background>
+
+</van-popup>
+<van-popup show="{{gzZmExcPopShow}}" bind:close="onClose" data-popname="gzZmExcPopShow" custom-style="background-color: transparent;">
+  <image class="icon_no_transfer" src="{{file_url_gzexc}}/icon_no_transfer.png" mode="aspectFit"/>
+  <view class="gz-zm-exc-box">
+    <image class="pop_bg_gz_exc" mode="aspectFit"  src="{{file_url_gzexc}}/pop_bg_gz_exc.png"></image>
+
+    <view class="gz-zm-exc-tips">
+      {{noTransferTips}}
+    </view>
+    <view class="gz-zm-exc-title">您已参加【{{actInfo.title || '战马兑奖送奖励'}}】活动</view>
+  </view>
+  <image class="icon-close" mode="aspectFit" bindtap="onClose" data-popname="gzZmExcPopShow"  src="{{closeImg}}"></image>
+
+</van-popup>

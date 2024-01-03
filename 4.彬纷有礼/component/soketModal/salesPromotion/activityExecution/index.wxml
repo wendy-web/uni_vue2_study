@@ -1,0 +1,45 @@
+<!--pages/tabBar/geren/salesPromotion/activityExecution/index.wxml-->
+<view class="activity-execution">
+		<van-popup show="{{show}}"   bind:close="onClose" custom-style="background-color: transparent;"   z-index="{{10000}}">
+			  <view class="activity-execution-box">
+             <view class="activity-execution-title">
+               <text>活动完成情况</text>
+             </view>
+             <!-- 情况列表 -->
+             <scroll-view class="activity-execution-list" scroll-y="{{true}}">
+                <view class="ael-item" wx:for="{{list}}" wx:key="key">
+                     <view class="ael-item-head">
+                        <view class="ael-item-head-title">{{item.title}}</view>
+                        <view class="ael-item-head-day">活动剩余天数：<text class="day-num">{{item.day}}天</text></view>
+                     </view>
+                     <view class="ael-item-content">
+                       <view class="ael-ic-item">
+                         <view class="ael-ic-item-value">
+                          <text class="value" wx:if="{{item.purValue}}">{{item.purValue}}<text class="sign">%</text></text>
+                          <text class="empty" wx:else>—</text>
+                         </view>
+                         <view class="ael-ic-item-label">进货完成率</view>
+                       </view>
+                       <view class="ael-ic-item">
+                         <view class="ael-ic-item-value">
+                          <text class="value" wx:if="{{item.disValue}}">{{item.disValue}}</text>
+                           <text wx:else>—</text>
+                         </view>
+                         <view class="ael-ic-item-label">陈列完成次数</view>
+                       </view>
+                     </view>
+                </view>
+             </scroll-view>
+             <!-- 查看详情 -->
+             <view class="activity-execution-look">
+               <view class="ael-btn" bindtap="lookInfo">立即查看</view>
+             </view>
+         </view>
+          <!-- 关闭 按钮-->
+          <view class="activity-execution-close">
+            <van-icon  name="close"  size="30px" color="#ffffff" bindtap="onClose"/>
+          </view>
+		</van-popup>
+	</view>
+
+

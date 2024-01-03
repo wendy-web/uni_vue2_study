@@ -1,0 +1,441 @@
+<!--pages/phaseIII/voucher/history.wxml-->
+<!-- <view class="page {{exc_active_tab==2?'page-white':''}}"> -->
+<view class="page page-white">
+  <!-- 换购券、惠让券、活动券 -->
+  <view class="tab-stick-box">
+
+    <view class="tabs">
+      <view class="tab-item oneLine {{activeTab == '0' ? 'active' : 'unactive'}}" data-index="0" bindtap="changeTab">
+        <view>换购券</view>
+        <view class="{{activeTab == '0' ? 'bottom_line' : 'unbottom_line'}}"></view>
+        <!-- icon箭头 -->
+        <!-- <image wx:if="{{ activeTab == 0}}" class="icon-arrow-up" mode="aspectFit" src="{{icon_arrow_up}}"></image> -->
+      </view>
+      <!-- <view class="tab-item oneLine {{activeTab == '1' ? 'active' : 'unactive'}}" data-index="1" bindtap="changeTab">
+      <view>惠让券</view>
+      <view class="{{activeTab == '1' ? 'bottom_line' : 'unbottom_line'}}"></view>
+      <view class="tab-item-num">{{countcardInfo.act3_used}}<text class="tab-item-unit">张</text></view>
+      <image wx:if="{{ activeTab == 1}}" class="icon-arrow-up" mode="aspectFit" src="{{icon_arrow_up}}"></image>
+    </view> -->
+      <view class="tab-item oneLine {{activeTab == '2' ? 'active' : 'unactive'}}" data-index="2" bindtap="changeTab">
+        <view>活动券</view>
+        <view class="{{activeTab == '2' ? 'bottom_line' : 'unbottom_line'}}"></view>
+        <!-- icon箭头 -->
+        <!-- <image wx:if="{{ activeTab == 2}}" class="icon-arrow-up" mode="aspectFit" src="{{icon_arrow_up}}"></image> -->
+      </view>
+
+    </view>
+    <!-- 只有选择换购券的时候显示：战马、红牛 -->
+    <view class="exc-tab" wx:if="{{activeTab==0}}">
+      <view bindtap="excTabChange" data-index="1" class="exc-tab-item {{exc_active_tab==1?'exc-tab-active':''}}">
+        <view>中国红牛</view>
+        <view class="exc-bottom-line {{exc_active_tab==1?'exc-bottom-line-active':''}}"></view>
+      </view>
+      <view bindtap="excTabChange" data-index="2" class="exc-tab-item {{exc_active_tab==2?'exc-tab-active':''}}">
+        <view>战马</view>
+        <view class="exc-bottom-line {{exc_active_tab==2?'exc-bottom-line-active':''}}"></view>
+      </view>
+    </view>
+    <!-- 换购券：已使用，已过期 tab -->
+    <view class="act-tab " wx:if="{{activeTab == 0}}">
+      <view bindtap="listTabChange" data-index="0" class="act-tab-item {{listTab == 0 ? 'used-active':''}}">
+        <view class="item-title">已使用</view>
+        <view>
+          <text class="item-num">{{count_used}}张</text>
+        </view>
+        <view wx:if="{{listTab == 0}}" class="border-line"></view>
+      </view>
+      <view bindtap="listTabChange" data-index="1" class="act-tab-item {{ listTab == 1 ? 'used-active':''}}">
+        <view class="item-title">已过期</view>
+        <view>
+          <text class="item-num">{{count_expire}}张</text>
+        </view>
+        <view wx:if="{{listTab == 1}}" class="border-line"></view>
+      </view>
+    </view>
+    <!-- 活动券：已使用，已过期 tab -->
+    <view class="act-tab " wx:if="{{activeTab == 2}}">
+      <view bindtap="actListTabChange" data-index="0" class="act-tab-item {{actListTab == 0 ? 'used-active':''}}">
+        <view class="item-title">已使用</view>
+        <view>
+          <text class="item-num">{{count_used}}张</text>
+        </view>
+        <view wx:if="{{actListTab == 0}}" class="border-line"></view>
+      </view>
+      <view bindtap="actListTabChange" data-index="1" class="act-tab-item {{ actListTab == 1 ? 'used-active':''}}">
+        <view class="item-title">已过期</view>
+        <view>
+          <text class="item-num">{{count_expire}}张</text>
+        </view>
+        <view wx:if="{{actListTab == 1}}" class="border-line"></view>
+      </view>
+    </view>
+    <!-- 战马换购券：换购券、换购券奖励 -->
+    <view class="exc-count" wx:if="{{activeTab==0}}">
+      <view class="exc-count-item">
+        <text>换购券：</text>
+        <text class="exc-count-num">{{exc_count}}</text>
+      </view>
+      <view class="exc-count-item">
+        <text>换购奖励券：</text>
+        <text class="exc-award-num">{{exc_award}}</text>
+      </view>
+      <!-- 2023年8月19日 红牛新增产品兑换券 -->
+      <view class="exc-count-item" style="text-align: right;" wx:if="{{exc_active_tab==1}}">
+        <text>产品兑换券：</text>
+        <text class="exc-count-num">{{ product_exc_coupon}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="content safeArea">
+    <!-- 换购券列表 -->
+    <!-- <view class="{{exc_active_tab==1?'usedList':'exc-zm-list-box'}}" wx:if="{{activeTab==0}}"> -->
+    <view class="exc-zm-list-box" wx:if="{{activeTab==0}}">
+      <!-- 红牛换购券 -->
+      <block wx:if="{{exc_active_tab==1}}">
+        <view class="exc-zm-box">
+          <view class="filter-box">
+            <view class="filter-date" bindtap="chooseDate">
+              <image class="icon-date" src="{{icon_date}}" mode="aspectFit" />
+              <text>{{defaultDate || '时间筛选'}}</text>
+              <image class="icon-arrow-right" src="{{icon_arrow_right}}" mode="aspectFit" />
+            </view>
+          </view>
+          <!-- 换购券已使用 -->
+          <view wx:if="{{listTab==0}}" class="list">
+            <block wx:if="{{list.length<1}}">
+              <view class="text-center noData">~~没有更多记录了~~</view>
+            </block>
+            <block wx:else>
+              <block wx:for="{{list}}" wx:key="key">
+
+                <view class="item" style="background-image:url({{ydhBG}});">
+                  <view class="item_left">
+                    <view class="title-name-box">
+                      <text class="title">【红牛换购券】</text>
+                      <text class="name">红牛维生素功能饮料250ml</text>
+                    </view>
+                    <!-- <view class="title-name-box explain">
+                      <text space="nbsp">{{hnTitle}}</text>
+                    </view> -->
+                    <view class="explain" wx:if="{{item.a_psy}}">
+                      <text>配送商：</text>
+                      <text>{{item.a_psy}}</text>
+                    </view>
+                    <view class="explain" wx:if="{{item.create_time}}">
+                      <text>使用时间：</text>
+                      <text>{{item.create_time}}</text>
+                    </view>
+                    <view class="orderNumber" wx:if="{{item.check_no}}">
+                      <text>订单编号：</text>
+                      <text>{{item.check_no}}</text>
+                    </view>
+                    <view class="exc-zm-item-count pdl14">
+                      <view class="exc-zm-count-item">
+                        <text>换购券(张):</text>
+                        <text class="exc-zm-item-num">{{item.hn_hgq_num}}</text>
+                      </view>
+                      <view class="exc-zm-count-item">
+                        <text>换购券奖励(张):</text>
+                        <text class="exc-zm-item-num">{{item.hn_jl_num}}</text>
+                      </view>
+                    </view>
+                    <!-- 2023年8月17日 新增箱内码产品券  2023年8月21日 和app保持同步默认0-->
+                    <view class="box-coupon-count">
+                      <text>产品兑换券(张):</text>
+                      <text class="box-coupon-num">{{item.hn_dhq_num || 0}}</text>
+                    </view>
+                  </view>
+                  <image mode="aspectFit" class="ydh" src="{{ydh}}"></image>
+                  <view class="stampBox flex-column ">
+                    <view>
+                      <text class="used">{{item.count_sj?item.count_sj:item.count_dh}}</text>
+                    </view>
+                    <view>
+                      <text class="type">（张）</text>
+                    </view>
+                  </view>
+                </view>
+              </block>
+              <block wx:if="{{noMore && list.length>0}}">
+                <view class="text-center noData">~~没有更多记录了~~</view>
+              </block>
+            </block>
+          </view>
+          <!-- 换购券已过期 -->
+          <view wx:if="{{listTab==1}}">
+            <block wx:if="{{dh_expireList.length<1}}">
+              <view class="text-center noData">~~没有更多记录了~~</view>
+            </block>
+            <block wx:else>
+              <!-- 箱内码产品兑换券 -->
+
+              <block wx:for="{{dh_expireList}}" wx:key="key">
+                <view class="box-coupon-expire-item" wx:if="{{item.prizeratetype == 9}}">
+                  <image class="bg-box-coupon" src="{{cashcoupon_file_url}}/bg_box_coupon_grey.png" />
+                  <image mode="aspectFit" class="ygq" src="{{icon_overdue}}"></image>
+                  <view class="box-coupon-inner">
+                    <view class="box-coupon-expire-left">
+                      <view>
+                        <text>箱内码【产品兑换券】</text>
+                      </view>
+                      <view class="explain">
+                        <text>领券时间：</text>
+                        <text>{{item.create_time}}</text>
+                      </view>
+                      <view class="explain">
+                        <text>*兑换用户：</text>
+                        <text class="oneLine nick-name-width">{{item.nick_name2}}</text>
+                        <text wx:if="{{item.uid2}}">（CID:{{item.uid2}}）</text>
+                      </view>
+                      <view class="explain" wx:if="{{item.exp_time}}">
+                        <text class="exp-time">有效期至：{{item.exp_time}}</text>
+                      </view>
+                    </view>
+                    <image class="box-coupon-bar" src="{{cashcoupon_file_url}}/box_coupon_bar_grey.png" />
+                    <view class="box-coupon-expire-right">
+                      <image class="box-coupon-stamp" src="{{cashcoupon_file_url}}/box_coupon_stamp_grey.png" />
+                    </view>
+                  </view>
+                </view>
+                <view wx:else class="item item-expire" style="background-image:url({{ydhBG}});">
+                  <view class="item_left">
+                    <view>
+                      <!-- 红牛25、26、27 ，要根据券类型判断 -->
+                      <text class="title">{{item.prizeratetype == null?'【1元轻松享】':titleMap[item.prizeratetype]}}</text>
+                    </view>
+                    <view class="explain" wx:if="{{item.create_time}}">
+                      <text>领券时间：</text>
+                      <text>{{item.create_time}}</text>
+                    </view>
+                    <view class="explain oneLine name-width-box" wx:if="{{item.nick_name2}}">
+                      <text>换购用户：</text>
+                      <text>{{item.nick_name2}}</text>
+                    </view>
+                    <view class="explain" wx:if="{{item.exp_time}}">
+                      <text>有效期至：</text>
+                      <text>{{item.exp_time}}</text>
+                    </view>
+
+
+                  </view>
+                  <image mode="aspectFit" class="ygq" src="{{icon_overdue}}"></image>
+                  <view class="stampBox flex-column">
+                    <image mode="aspectFit" class="{{stampMap[item.prizeratetype]['class']}}" src="{{item.prizeratetype == null ? icon_stamp_25 : stampMap[item.prizeratetype]['img']}}">
+                    </image>
+                  </view>
+                </view>
+              </block>
+              <block wx:if="{{dh_exp_noMore && dh_expireList.length>0}}">
+                <view class="text-center noData">~~没有更多记录了~~</view>
+              </block>
+            </block>
+          </view>
+        </view>
+      </block>
+      <!-- 战马换购券 -->
+      <block wx:if="{{exc_active_tab==2}}">
+        <view class="exc-zm-box">
+          <view class="filter-box">
+            <view class="filter-date" bindtap="chooseDate">
+              <image class="icon-date" src="{{icon_date}}" mode="aspectFit" />
+              <text>{{defaultDate || '时间筛选'}}</text>
+              <image class="icon-arrow-right" src="{{icon_arrow_right}}" mode="aspectFit" />
+            </view>
+          </view>
+          <!-- 已使用 -->
+          <block wx:if="{{listTab==0}}">
+            <block wx:if="{{exc_zm_used_list.length<1}}">
+              <view class="text-center noData">~~没有更多记录了~~</view>
+            </block>
+            <block wx:else>
+              <view class="exc-zm-item" wx:for="{{exc_zm_used_list}}" wx:key="key">
+                <view class="exc-zm-item-left" style="background-image: url({{bg_zm_exc_used}});">
+                  <view class="exc-zm-item-tips">
+                    <text class="exc-zm-title">【1元乐享】</text>
+                    <text>{{item.cp_title}}</text>
+                  </view>
+                  <view class="exc-zm-item-tips">
+                    <text>配送商：</text>
+                    <text>{{item.a_jxs}}</text>
+                  </view>
+                  <view class="exc-zm-item-tips">
+                    <text>使用时间：</text>
+                    <text>{{item.create_time}}</text>
+                  </view>
+                  <view class="exc-zm-item-tips">
+                    <text>订单编号：</text>
+                    <text>{{item.id}}</text>
+                  </view>
+                  <view class="exc-zm-item-count">
+                    <view class="exc-zm-count-item">
+                      <text>换购券(张):</text>
+                      <text class="exc-zm-item-num">{{item.zm_hgq_num}}</text>
+                    </view>
+                    <view class="exc-zm-count-item">
+                      <text>换购券奖励(张):</text>
+                      <text class="exc-zm-item-num">{{item.zm_jl_num}}</text>
+                    </view>
+                  </view>
+                </view>
+                <view class="exc-zm-item-right">
+                  <image class="icon-zm-exc-used" src="{{icon_zm_exc_used}}" mode="aspectFit" />
+                  <view class="exc-zm-item-right-count">
+                    <view class="exc-zm-item-right-num">{{item.zm_hgq_num+item.zm_jl_num}}</view>
+                    <view>(张)</view>
+                  </view>
+                </view>
+                <!-- 定位 -->
+                <image class="icon-stamp-exc" src="{{icon_stamp_exc}}" mode="aspectFit" />
+              </view>
+            </block>
+            <block wx:if="{{exc_zm_used_nomore && exc_zm_used_list.length>0}}">
+              <view class="text-center noData">~~没有更多记录了~~</view>
+            </block>
+
+          </block>
+          <!-- 已过期 -->
+          <block wx:if="{{listTab==1}}">
+            <block wx:if="{{exc_zm_expire_list.length<1}}">
+              <view class="text-center noData">~~没有更多记录了~~</view>
+            </block>
+            <block wx:else>
+              <view class="exc-zm-item" wx:for="{{exc_zm_expire_list}}" wx:key="key">
+                <view class="exc-zm-item-left" style="background-image: url({{bg_zm_exc_used}});">
+                  <view class="exc-zm-item-tips">
+                    <text class="exc-zm-title">{{item.title}}</text>
+                  </view>
+                  <view class="exc-zm-item-tips">
+                    <text>领券时间：</text>
+                    <text>{{item.create_time}}</text>
+                  </view>
+                  <view class="exc-zm-item-tips">
+                    <text>换购用户：</text>
+                    <text>{{item.ext_record}}(CID:{{item.ext_id}})</text>
+                  </view>
+                  <view class="exc-zm-item-tips" wx:if="{{item.exp_time}}">
+                    <text>有效期至：</text>
+                    <text>{{item.exp_time}}</text>
+                  </view>
+
+                </view>
+                <view class="exc-zm-item-right">
+                  <image class="icon-zm-exc-used" src="{{icon_zm_exc_used}}" mode="aspectFit" />
+                  <view class="exc-zm-item-right-count">
+                    <view class="exc-zm-item-right-num">1</view>
+                    <view>(张)</view>
+                  </view>
+                </view>
+                <!-- 定位 -->
+                <image class="icon-stamp-exc-expire" src="{{icon_overdue}}" mode="aspectFit" />
+              </view>
+            </block>
+            <block wx:if="{{exc_zm_expire_nomore && exc_zm_expire_list.length>0}}">
+              <view class="text-center noData">~~没有更多记录了~~</view>
+            </block>
+          </block>
+        </view>
+      </block>
+    </view>
+    <!-- 惠让券列表 -->
+    <!-- <view class="hrList" wx:if="{{activeTab==1}}">
+      <block wx:if="{{hrList.length<1}}">
+        <view class="text-center noData">~~没有更多记录了~~</view>
+      </block>
+      <block wx:else>
+        <block wx:for="{{hrList}}" wx:key="key">
+          <view class="hrlist-box">
+            <view class="hrlist-left">
+              <view class="hrlist-tips">1张券可换购1罐 <text class="title-redbull">{{hnTitle}}</text></view>
+              <view wx:if="{{item.a_psy}}" class="hrlist-time">配送商：{{item.a_psy}}</view>
+              <view wx:if="{{item.create_time}}" class="hrlist-time">使用时间：{{item.create_time}}</view>
+              <view wx:if="{{item.check_no}}" class="hrlist-time">订单编号：{{item.check_no}}</view>
+            </view>
+            <image mode="aspectFit" class="ydh" src="{{ydh}}"></image>
+            <view class="hrlist-right">
+              <image class="icon-hr" mode="aspectFit" src="{{icon_hr}}"></image>
+              <view>
+                <text class="hr-num">{{item.count_sj?item.count_sj:item.count_dh}}</text>张
+              </view>
+            </view>
+          </view>
+
+        </block>
+        <block wx:if="{{noMore_hr && hrList.length>0}}">
+          <view class="text-center noData">~~没有更多记录了~~</view>
+        </block>
+      </block>
+    </view> -->
+    <!-- 活动券列表 -->
+    <view class="actList exc-zm-list-box" wx:if="{{activeTab==2}}">
+      <view class="exc-zm-box">
+        <!-- 已用活动券列表 -->
+        <view wx:if="{{actListTab == 0}}" class="act-coupon-used-box">
+          <block wx:if="{{actList.length<1}}">
+            <view class="text-center noData">~~没有更多记录了~~</view>
+          </block>
+          <block wx:else>
+            <block wx:for="{{actList}}" wx:key="key">
+              <view class="actlist-box">
+                <view class="actlist-left">
+                  <view class="actlist-title">{{item.couponTitle}}</view>
+                  <view wx:if="{{item.a_psy}}" class="actlist-tips">配送商：{{item.a_psy}}</view>
+                  <view wx:if="{{item.create_time}}" class="actlist-tips">使用时间：{{item.create_time}}</view>
+                  <view wx:if="{{item.check_no}}" class="actlist-tips">订单编号：{{item.check_no}}</view>
+                </view>
+                <image mode="aspectFit" class="ydh" src="{{ydh}}"></image>
+                <view class="actlist-right">
+                  <!-- <image class="bg-stamp" mode="aspectFit" src="{{icon_stamp_zm}}"></image> -->
+                  <!-- <image class="bg-stamp" mode="aspectFit" src="{{item.prizeratetype==105?icon_stamp_zm:icon_stamp_hn_27}}"></image> -->
+                  <view class="act-title">【活动奖励券】</view>
+                  <view>
+                    <text class="act-num">{{item.count_sj?item.count_sj:item.count_dh}}</text>张
+                  </view>
+                </view>
+              </view>
+
+            </block>
+            <view class="text-center noData">~~没有更多记录了~~</view>
+          </block>
+        </view>
+        <!-- 已过期活动券列表 -->
+        <view wx:if="{{actListTab == 1}}" class="act-coupon-used-box">
+          <block wx:if="{{expiredList.length<1}}">
+            <view class="text-center noData">~~没有更多记录了~~</view>
+          </block>
+          <block wx:else>
+            <block wx:for="{{expiredList}}" wx:key="key">
+              <view class="actlist-box">
+                <view class="actlist-left">
+                  <view class="actlist-title">{{item.couponTitle}}</view>
+                  <view wx:if="{{item.rev_time}}" class="actlist-tips">领券时间：{{item.rev_time}}</view>
+                  <view wx:if="{{item.exp_time}}" class="actlist-tips">有效期至：{{item.exp_time}}</view>
+                  <view wx:if="{{item.title}}" class="actlist-tips">卡券来源：{{item.title}}</view>
+                </view>
+                <image mode="aspectFit" class="ygq" src="{{icon_overdue}}"></image>
+                <view class="actlist-right">
+                  <!-- <image class="bg-stamp" mode="aspectFit" src="{{item.prizeratetype==105?icon_stamp_zm:icon_stamp_hn_27}}"></image> -->
+                  <view class="act-title">【活动奖励券】</view>
+                  <view>
+                    <text class="act-num">{{item.num}}</text>张
+                  </view>
+                </view>
+              </view>
+
+            </block>
+            <view class="text-center noData">~~没有更多记录了~~</view>
+          </block>
+        </view>
+      </view>
+    </view>
+
+  </view>
+</view>
+
+<!-- 日历弹窗 -->
+<mp-dialog title="" show="{{showCalendar}}" ext-class="mp-dialog" buttons="{{buttons}}" bindbuttontap="tapDateButton">
+  <calendar bind:onPickDateChange="onPickDateChange" bind:onControl="onControl" bind:onPickDay="onPickDay" bind:onRangePick="onRangePick" defaultSelectDate="" mode="range">
+  </calendar>
+</mp-dialog>
+<!-- 日期范围时分秒选择 -->
+<time-picker id="timePicker" bindtime="timeRangeSelect" showTime="{{false}}"></time-picker>

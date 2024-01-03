@@ -1,0 +1,26 @@
+<view class="sign-notice">
+		<van-popup show="{{show}}"   bind:close="onClose" custom-style="background-color: transparent;"   z-index="{{10000}}">
+			  <view class="sign-notice-box">
+            <view class="sgmb-title">
+            <image class="notice-icon" src="https://file.y1b.cn//public/img/bfyl/202208/sales_pro_sign_notice.png"></image>
+             <text>签约通知</text>
+            </view>
+            <view class="tips">{{config.tip}}</view>
+            <!-- 活动名称 -->
+            <view class="pro-name">活动名称：{{config.title}}</view>
+            <!-- 按钮 -->
+            <view class="tools">
+              <view class="tools-btn info" bindtap="lookInfo">查看详情</view> 
+              <view class="tools-btn sign" bindtap="sign">
+                <van-loading wx:if="{{loading}}"/>
+                <text wx:else>确认签约</text>
+              </view>
+            </view>
+         </view>
+         <view class="sign-notice-close">
+            <!-- 关闭 按钮-->
+            <van-icon name="close"  size="30px" color="#ffffff" bindtap="onClose"/>
+         </view>
+		</van-popup>
+	</view>
+

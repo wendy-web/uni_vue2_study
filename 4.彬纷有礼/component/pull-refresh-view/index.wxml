@@ -1,0 +1,39 @@
+<!--支持下拉刷新-上拉加载的组件-->
+
+<scroll-view scroll-y="{{scrollY}}" class="prv-container" refresher-enabled="{{refresherEnable}}" bindrefresherrefresh="_onRefresh" refresher-triggered="{{refreshing}}" bindscrolltolower="_onLoadmore" bindrefresherpulling="_onPulling" refresher-default-style="none" bindrefresherrestore="_onClose" bindscrolltoupper="_onScrollTop" refresher-threshold="{{pullDownHeight}}" scroll-into-view="{{scrollToView}}" scroll-with-animation="{{scrollWithAnimation}}" lower-threshold="{{lowerThreshold}}" enable-passive="{{enablePassive}}" paging-enabled="{{pagingEnabled}}" enhanced="{{enhanced}}" enable-flex>
+
+  <slot slot="refresher" name="refresher" wx:if="{{refresherType=='custom'}}"></slot>
+  <view slot="refresher" class="prv-pulldown" style="height:{{pullDownHeight}}px;line-height:{{pullDownHeight}}px;" wx:else>
+    <view wx:if="{{refresherType=='default'}}">
+      <block wx:if="{{pullState==0||pullState==1}}">
+        <view class="prv-pull-icon prv-pulldown-text" style='transform:rotate({{pullState==0?0:180}}deg);'></view>
+        <text class="prv-pulldown-text" wx:if="{{pullState==0}}"> {{pullText}}</text>
+        <text class="prv-pulldown-text" wx:if="{{pullState==1}}" space="nbsp"> {{releaseText}}</text>
+      </block>
+      <block wx:if="{{pullState==2}}">
+        <view class="prv-loading"></view><text> {{refreshText}}</text>
+      </block>
+    </view>
+    <view wx:elif="{{refresherType=='circle'}}" class="prv-loading prv-dot-loading">
+    </view>
+  </view>
+  <!-- list-view -->
+  <slot></slot>
+  <!-- list-view -->
+  <slot name="loader" wx:if="{{loadType=='custom'&&showPrvTemp}}"></slot>
+  <view class="prv-loadmore" wx:if="{{showPrvTemp}}">
+    <!-- 没有更多了 -->
+    <block wx:if="{{nomore&&listAllSize>0}}">
+      <text class="prv-loadmore-text">{{nomoreText}}</text>
+    </block>
+    <!-- 加载中 -->
+    <block wx:elif="{{!nomore}}">
+      <view class="prv-loading"></view><text> {{loadmoreText}}</text>
+    </block>
+  </view>
+  <!-- 缺省佈局 -->
+  <view wx:if="{{nomore&&listAllSize===0&&emptyImg}}" class="img-empty-box">
+    <image class="img-empty" src="{{emptyImg}}"></image>
+  </view>
+
+</scroll-view>

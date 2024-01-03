@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "orderNotice":"../component/noticeItem/orderNotice",
+    "sysNotice":"../component/noticeItem/sysNotice"
+  },
+  "navigationBarTitleText": "消息通知",
+  "enablePullDownRefresh":false,
+  "disableScroll": true
+}

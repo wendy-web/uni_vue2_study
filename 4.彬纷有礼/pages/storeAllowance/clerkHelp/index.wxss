@@ -1,0 +1,234 @@
+/* pages/storeAllowance/clerkHelp/index.wxss */
+.box {
+  box-sizing: border-box;
+  position: relative;
+  top: -170rpx;
+}
+
+.box .stick-box {
+  position: sticky;
+  z-index: 2;
+
+}
+
+.gradient-box {
+  background: linear-gradient(52deg, #ff9b60 1%, #d72019 96%);
+  height: 210rpx;
+  position: sticky;
+  z-index: 1;
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.head-box {
+  margin: 0rpx 20rpx;
+  box-sizing: border-box;
+  height: 342rpx;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  padding: 45rpx 45rpx 0rpx 55rpx;
+  background-color: #ffffff;
+  border-radius: 35rpx 35rpx 0rpx 0rpx;
+}
+
+.head-box .title-box {
+  color: #fff4df;
+}
+
+.title-box .title {
+  font-size: 22rpx;
+  color: #F5782F;
+}
+
+.title-box .icon-info-box {
+  width: 70rpx;
+  height: 40rpx;
+  display: inline-block;
+  background-color: black;
+  text-align: center;
+}
+
+.title-box .btn-refresh {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #ffd9a9;
+  background-color: #de2a1b;
+  box-sizing: border-box;
+  padding: 10rpx;
+}
+
+.title-box .btn-refresh .icon-refresh {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 10rpx;
+}
+
+.head-box .zl-box {
+  text-align: center;
+  font-size: 32rpx;
+  color: #fd2b1e;
+}
+
+.zl-box .zl-total {
+  font-weight: bold;
+  font-size: 48rpx;
+}
+
+.zl-box .zl-num {
+  font-size: 76rpx;
+}
+
+.head-box .help-time-box {
+  font-size: 24rpx;
+  text-align: left;
+  color: #f5782f;
+}
+.head-box .font28{
+  font-size: 28rpx;
+}
+
+.box .cell-title {
+  color: #333;
+  font-weight: bold;
+  font-size: 30rpx;
+}
+
+.box .cell-value {
+  font-size: 24rpx;
+}
+
+.bottom-button {
+  width: 160px;
+  height: 40px;
+}
+
+.text-red {
+  color: #CF0000 !important;
+  font-weight: bold;
+}
+
+.text-green {
+  color: #00CF23 !important;
+  font-weight: bold;
+
+}
+
+.list-box .nomore {
+  text-align: center;
+  font-size: 22rpx;
+  color: #9a9a9a;
+}
+.list-box .minWidth400{
+  min-width: 400rpx;
+}
+.list-box .color-grey {
+  color: #707070;
+}
+
+/* 现金券规则css */
+.dialog-title {
+  font-size: 32rpx;
+  text-align: center;
+  color: #000000;
+  font-weight: bold;
+  height: 100rpx;
+  margin-top: 30rpx;
+  line-height: 100rpx;
+}
+
+.dialog-content {
+  font-size: 24rpx;
+  text-align: left;
+  color: #000018;
+  padding: 0rpx 30rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 筛选样式 */
+.filter-box {
+  font-size: 24rpx;
+  color: #000000;
+  height: 60rpx;
+  line-height: 60rpx;
+  padding: 0 35rpx;
+  background-color: #ffffff;
+  
+}
+
+.filter-box .icon-date {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 10rpx;
+}
+
+/* 类型选择 */
+.type-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 20rpx;
+}
+
+.type-box>.item {
+  width: 30%;
+  height: 170rpx;
+  box-sizing: border-box;
+  margin: 20rpx 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  color: #4f4f4f;
+}
+
+.type-box .item .type-icon {
+  width: 90rpx;
+  height: 90rpx;
+  margin-bottom: 10rpx;
+}
+
+.type-box>.item+.item-placeholder {
+  visibility: hidden;
+}
+
+/* 数量3n + 2的情况start */
+.type-box>.item:nth-child(3n+2):nth-last-child(3)+.item-placeholder+.item-placeholder {
+  display: none;
+  background-color: black;
+  color: hotpink;
+  font-size: 28rpx;
+  font-weight: bold;
+  text-align: center;
+  line-height: 100rpx;
+}
+
+/* 数量3n + 2的情况end */
+/* ps. 3n 和 3n + 2 的情况可以合到一起start */
+.type-box>.item:nth-child(3n):nth-last-child(3)+.item-placeholder,
+.item:nth-child(3n):nth-last-child(3)+.item-placeholder+.item-placeholder,
+.item:nth-child(3n+2):nth-last-child(3)+.item-placeholder+.item-placeholder {
+  display: none;
+}
+
+/* ps. 3n 和 3n + 2 的情况可以合到一起start */
+.sheet-title {
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #000000;
+}
+
+/* 覆盖自定义导航背景颜色 */
+.navBar-container {
+  background: linear-gradient(138deg, #ff9b60 1%, #d72019 96%);
+}

@@ -1,0 +1,24 @@
+<!--pages/storeRank/raffle/apply/index.wxml-->
+<view class="box">
+<view class="content">
+  <view class="rule-item">1、当店铺兑奖人数≥20人时，可报名参与抽奖活动。报名后您将随机获得一组10位数的幸运号码（此号码值取自超级大乐透前5个蓝色球的数字组合0102030405~3132333435之间），待第23101期（2023-09-02 周三 21:25:00）开奖结果公布后，系统会将开奖号码从小到大重新组合，生成一组新的号码值作为此次活动的开奖号码，后取6个与本期开奖结果最为接近的店铺幸运号码（幸运号码值≤本期开奖号码值），作为本次抽奖活动的最终中奖号码，每个中奖号码对应的店铺将获得价值2499元的荣耀90手机一台，共计6台（奖品以实物为准）。</view>
+  <view class="rule-item">2、抽奖活动截止报名时间{{actInfo.act_end_date || '2023年8月31日23:59:59'}}，逾期将不能报名。</view>
+  <view class="rule-item">3、若您报名参与抽奖活动并赢得荣耀90手机，活动结束后，在您已填写身份信息的前提下（身份信息仅用于个人所得税扣除，由红牛公司依法代扣代缴），红牛公司业务人员将会在10个工作内与您联系，并为您当面核奖。</view>
+</view>
+  <view class="operate-box">
+    <view class="btn-apply btn-gray " wx:if="{{applyDisabled}}">
+      <image class="bg-btn bg-grey" src="{{file_cos_url}}/bg_btn_yellow.png"></image>
+      <text>立即报名</text>
+      <text class="curve"> (</text>
+      <van-count-down time="{{countTime}}" bind:finish="countTimeFinished" format="ss" style="display: inline;--count-down-text-color:#000000;font-weight: normal;--count-down-font-size: 28rpx;"></van-count-down>
+      <text class="curve">)</text>
+    </view>
+    <view wx:else class="btn-apply" bindtap="clickApply">
+      <image class="bg-btn" src="{{file_cos_url}}/bg_btn_yellow.png"></image>
+      <text>立即报名</text>
+    </view>
+  </view>
+</view>
+
+<!-- 店铺排行榜弹窗 -->
+<storeRankPop id="storeRank"></storeRankPop>

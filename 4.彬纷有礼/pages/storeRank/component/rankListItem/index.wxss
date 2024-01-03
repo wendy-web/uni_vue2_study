@@ -1,0 +1,54 @@
+/* pages/storeRank/component/rank-list-item.wxss */
+.box {
+  position: relative;
+  font-size: 15rpx;
+  color: #ffce8f;
+  text-align: center;
+}
+.icon-star-one {
+  width: 138rpx;
+  height: 184rpx;
+}
+.box .icon-star {
+  width: 106rpx;
+  height: 106rpx;
+}
+.box .star-box {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 96rpx;
+  height: 26rpx;
+  margin: 5rpx auto 0;
+  display: flex;
+  align-items: center;
+  color: #222;
+  font-size: 15rpx;
+  text-align: center;
+}
+.star-box .star-num {
+  flex: 0.3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12rpx;
+}
+.star-box .star-name {
+  flex: 0.7;
+  display: flex;
+  align-items: center;
+}
+.box .star-one{
+  color: #fdb600;
+}
+.box .star-two {
+  color: #dfdfdf;
+}
+.box .progress-bar-box {
+  width: 110rpx;
+  margin: 6rpx auto 0;
+}
+.box .prize-info-box {
+  margin-top: 4rpx;
+  font-size: 11rpx;
+  text-align: center;
+}

@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "mp-halfScreenDialog": "../../../../component/half-screen-dialog/half-screen-dialog",
+    "selectCrew":"../../../../component/selectCrew/index"
+
+  },
+  "disableScroll": true,
+  "navigationBarTitleText": "红包记录"
+}

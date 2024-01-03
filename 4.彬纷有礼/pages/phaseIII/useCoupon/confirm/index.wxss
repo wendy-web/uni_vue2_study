@@ -1,0 +1,468 @@
+/* pages/phaseIII/useCoupon/confirm/index.wxss */
+.box {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  /* background: linear-gradient(178deg, #f4eeea 5%, #ffffff 29%, #f4f4f4 100%); */
+  background: linear-gradient(178deg, #f4eeea 5%, #f4f4f4 29%, #f4f4f4 100%);
+}
+
+.page-content {
+  flex: 1;
+  box-sizing: border-box;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 店铺信息  start */
+
+.shopinfo-box {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 30rpx 36rpx;
+
+}
+
+.icon_shop_avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 10rpx;
+}
+
+.shopinfo {
+  flex: 1;
+  box-sizing: border-box;
+  padding-left: 20rpx;
+}
+
+.shop-name {
+  font-size: 32rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #181818;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.max-name-width {
+  max-width: 580rpx;
+  display: inline-block;
+  /* background-color: rosybrown; */
+}
+
+.icon_arrow_down {
+  width: 26rpx;
+  height: 26rpx;
+}
+
+.shop-item {
+  font-size: 22rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #676767;
+}
+
+.shop-id {
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #000018;
+}
+
+/* 店铺信息  end */
+
+
+/* 配送商信息  start */
+.dealer-outer {
+  box-sizing: border-box;
+  border: 4rpx solid #ffffff;
+  border-radius: 42rpx;
+  margin: 0rpx 20rpx;
+  padding: 10rpx;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dealer-inner {
+  flex: 1;
+  flex-shrink: 0;
+  align-self: stretch;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-radius: 30rpx;
+  /* padding: 10rpx; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.no-dealer {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #676767;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx;
+  min-height: 126rpx;
+}
+
+.dealer-info {
+  background-color: #ffffff;
+  flex: 1;
+  align-self: stretch;
+  position: relative;
+  z-index: 1;
+  padding: 20rpx;
+  box-sizing: border-box;
+  border-radius: 30rpx;
+}
+
+.tag-default {
+  background-color: #e3001b;
+  box-sizing: border-box;
+  padding: 4rpx 20rpx;
+  font-size: 20rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #ffffff;
+  border-radius: 0rpx 20rpx 0 20rpx;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.tag-last-send{
+  background-color: #03c48a;
+}
+
+.dealer-title {
+  display: flex;
+  align-items: center;
+  font-size: 32rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #181818;
+}
+
+.dealer-contact {
+  display: inline-flex;
+  align-items: center;
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #1592E6;
+  margin-top: 10rpx;
+}
+mr-30{
+  margin-right: 30rpx;
+}
+.dealer-mobile {
+  margin-right: 20rpx;
+}
+
+.icon_call {
+  width: 26rpx;
+  height: 26rpx;
+}
+
+.dealer-address-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #676767;
+  flex: 1;
+}
+
+.dealer-address {
+  flex: 0.8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dealer-distance {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: right;
+  color: #000000;
+  flex: 0.2;
+  flex-shrink: 0;
+}
+
+/* 配送商信息  end */
+/* 产品信息 start */
+.coupon-box {
+  box-sizing: border-box;
+  margin-top: 30rpx;
+  display: flex;
+  flex-direction: column;
+  /* flex: 1; */
+}
+
+.coupon-title {
+  font-size: 32rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #181818;
+  padding-left: 46rpx;
+}
+
+.couponinfo-box {
+  background: #ffffff;
+  border-radius: 20rpx 20rpx 0rpx 0rpx;
+  box-sizing: border-box;
+  flex: 1;
+  margin: 20rpx 20rpx 0 20rpx;
+  padding: 40rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.coupon-total-box {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #777777;
+}
+
+.usable-title {
+  font-size: 32rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  text-align: left;
+  color: #000018;
+  line-height: 40rpx;
+
+}
+
+.unable-unit {
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #777777;
+}
+
+.unable-num {
+  font-size: 44rpx;
+  font-family: PingFang SC, PingFang SC-Heavy;
+  font-weight: 800;
+  text-align: left;
+  color: #000018;
+}
+
+.icon_title_coupon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 30rpx;
+}
+
+.sku-list-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40rpx;
+}
+
+.sku-pic-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 18rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #656565;
+  background: #ececec;
+  border-radius: 10rpx;
+  box-sizing: border-box;
+  width: 122rpx;
+  min-height: 140rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.show-pic {
+  position: absolute;
+  z-index: -1;
+  bottom: 1px;
+}
+
+.pb-10 {
+  padding-bottom: 10rpx;
+}
+
+.sku_pic {
+  width: 77rpx;
+  height: 114rpx;
+}
+
+.sku-info {
+  box-sizing: border-box;
+  flex: 1;
+  flex-shrink: 0;
+  align-self: stretch;
+  margin-left: 50rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.sku-name {
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #000000;
+}
+
+.sku-unused {
+  font-size: 32rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #4a4a4a;
+}
+
+.stepper-box {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #000000;
+  margin-top: 24rpx;
+}
+
+.stepper-item {
+  box-sizing: border-box;
+  margin-left: 30rpx;
+}
+
+/* 步进器 减号 自定义样式 */
+.stepper-minus {
+  margin: 0rpx !important;
+  width: 80rpx !important;
+  height: 80rpx !important;
+  border: 1rpx solid #707070 !important;
+  border-radius: 10rpx 0rpx 0rpx 10rpx !important;
+  background-color: #ffffff !important;
+}
+
+/* 步进器 输入框 自定义样式 */
+.stepper-input {
+  background-color: #ffffff !important;
+  border-top: 1rpx solid #707070 !important;
+  border-bottom: 1rpx solid #707070 !important;
+  min-width: 170rpx !important;
+  min-height: 80rpx !important;
+  font-size: 44rpx !important;
+  margin: 0rpx !important;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #000000;
+}
+
+/* 步进器 加号 自定义样式 */
+.stepper-plus {
+  margin: 0rpx !important;
+  width: 80rpx !important;
+  height: 80rpx !important;
+  border: 1rpx solid #707070 !important;
+  border-radius: 0rpx 10rpx 10rpx 0rpx !important;
+  background-color: #ffffff !important;
+}
+
+/* 产品信息 end */
+/* 备注信息 start */
+.note-box {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+
+  flex: 1;
+  margin: 0rpx 20rpx;
+  padding: 0rpx 40rpx 50rpx 40rpx;
+}
+
+.note-title {
+  font-size: 24rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: left;
+  color: #000000;
+}
+
+.note-info-box {
+  margin-top: 16rpx;
+  box-sizing: border-box;
+
+}
+
+.note-info {
+  background-color: #f5f5f5 !important;
+  /* min-height: 200rpx; */
+  border-radius: 10rpx;
+}
+
+/* 备注信息 end */
+
+/* 底部操作按钮 */
+.operate-box {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 96rpx;
+  background-color: #ffffff;
+  margin: 0 20rpx 30rpx 20rpx;
+}
+
+.btn-confirm {
+  width: 670rpx;
+  height: 96rpx;
+  background: #e3001b;
+  border-radius: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 36rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #ffffff;
+
+}
+
+.btn-confirm-disabled {
+  background: #939393;
+}
+/* 备注输入框定位 */
+/* .van-field__word-limit{
+  position: absolute;
+  bottom: 4px;
+  right: 10px;
+} */

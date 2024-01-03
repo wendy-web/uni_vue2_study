@@ -1,0 +1,112 @@
+<!--pages/storeOrder/component/fh_cancelPop/index.wxml-->
+<!-- 取消订单弹窗 -->
+<!-- <van-popup show="{{ cancelPop }}" custom-style="background-color: transparent;" z-index="{{2001}}" bind:close="onClose" data-popname="rejectReceiptShow">
+  <view class="orderPop">
+    <image mode="aspectFit" class="cancelOrder-icon" src="{{cancelOrderImg}}"></image>
+    <view class="orderPop-title">取消换购申请</view>
+    <view class="orderPop-tips">您确定要取消换购请求吗？</view>
+    <view class="orderPop-box">
+      <view>产品名称：{{orderMsg.cp_title}}</view>
+      <view>数量：<text class="orderNum font48">{{orderMsg.count_dh}}</text>罐</view>
+      <view>订单编号：<text class="orderNum">{{orderMsg.check_no}}</text></view>
+      <view>配送商：<text class="">{{orderMsg.a_jxs}}</text></view>
+    </view>
+    <view class="orderPop-btn">
+      <button bindtap="cancelOrder" data-check_no="{{orderMsg.check_no}}" class="orderPop-cancel">确定</button>
+      <button bindtap="onClose" class="orderPop-confirm">不了</button>
+    </view>
+
+  </view>
+</van-popup> -->
+<view class="fadeIn" wx:if="{{cancelPop}}">
+  <view class="weui-mask" bindtap="onClose"></view>
+  <view class="weui-dialog orderPop">
+    <image mode="aspectFit" class="cancelOrder-icon" src="{{cancelOrderImg}}"></image>
+    <view class="orderPop-title">取消换购申请</view>
+    <view class="orderPop-tips">您确定要取消换购请求吗？</view>
+    <view class="orderPop-box">
+      <view>产品名称：{{orderMsg.sku_info.sku_name}}</view>
+      <view>数量：<text class="orderNum font48">{{orderMsg.count_dh}}</text>{{orderMsg.sku_info.unit}}</view>
+      <view>订单编号：<text class="orderNum">{{orderMsg.check_no}}</text></view>
+      <view>配送商：<text class="">{{orderMsg.a_jxs}}</text></view>
+      <view>联系方式：<text class="">{{orderMsg.mobile_str}}</text></view>
+    </view>
+    <view class="orderPop-btn">
+      <button bindtap="cancelOrder" data-check_no="{{orderMsg.check_no}}" class="orderPop-cancel">确定</button>
+      <button bindtap="onClose" class="orderPop-confirm">不了</button>
+    </view>
+
+  </view>
+</view>
+<!-- 取消成功/失败弹窗 -->
+<view class="fadeIn" wx:if="{{successPop}}">
+  <view class="weui-mask" bindtap="onClose"></view>
+  <view class="weui-dialog orderPop successPop">
+    <image mode="aspectFit" class="success-icon" src="{{successImg}}"></image>
+    <view class="orderPop-title mgt30">{{cancelMsg.code == 1?'取消成功':'取消失败'}}</view>
+    <view class="orderPop-tips mgt30">订单取消成功</view>
+    <view class="iknow mgt30" bindtap="reapply">重新申请换购</view>
+  </view>
+</view>
+<!-- 提醒返货审核弹窗 -->
+<view class="fadeIn" wx:if="{{remindPop}}">
+  <view class="weui-mask"></view>
+  <view class="weui-dialog orderPop ">
+    <image mode="aspectFit" class="remind-icon" src="{{remindImg}}"></image>
+    <view class="orderPop-title">提醒成功</view>
+    <view class="orderPop-box mgt42">
+      <view>订单编号：<text class="orderNum">{{remindMsg.check_no}}</text></view>
+      <view>产品名称：<text>{{remindMsg.sku_info.sku_name}}</text></view>
+      <view>产品数量：<text class="orderNum {{remindMsg.exc_type==2?'exc-zm-green':''}}">{{remindMsg.count_dh}}</text>{{remindMsg.sku_info.unit}}</view>
+    </view>
+    <view class="orderPop-confirm mgt92" bindtap="onClose">确定</view>
+  </view>
+</view>
+
+<!-- 核销确认弹窗 -->
+<view class="fadeIn mp-dialog" wx:if="{{checkPop}}">
+  <view class="weui-mask" bindtap="onClose"></view>
+  <view class="weui-dialog orderPop">
+    <image class="hx-icon" mode="aspectFit" src="{{hxCheckImg}}"></image>
+    <view class="orderPop-title mgt42">
+      <text>核销确认</text>
+    </view>
+    <view class="orderPop-box mgt42 flex-center">
+      <view>您申请的{{checkMsg.sku_info.sku_name}}</view>
+      <view>申请数量：<text class="text-green font72">{{checkMsg.count_dh}}</text>{{checkMsg.sku_info.unit}}</view>
+      <block wx:if="{{checkMsg.count_dh == checkMsg.count_sj}}">
+        <view>配送数量：<text class="text-green font72">{{checkMsg.count_sj}}</text>{{checkMsg.sku_info.unit}}</view>
+      </block>
+      <block wx:else>
+        <view>配送数量：<text class="text-red font72">{{checkMsg.count_sj}}</text>{{checkMsg.sku_info.unit}}</view>
+      </block>
+    </view>
+    <view class="orderPop-btn pdlr80">
+      <view bindtap="tapCancelHX" data-num="{{checkMsg.check_no}}" class="orderPop-cancel orderPop-btn-mini">否</view>
+      <view bindtap="hxConfirm" data-num="{{checkMsg.check_no}}" class="orderPop-confirm orderPop-btn-mini">是</view>
+    </view>
+
+  </view>
+</view>
+
+<!-- 核销成功弹窗 -->
+<view class="fadeIn" wx:if="{{hxSuccessPop}}">
+  <view class="weui-mask"></view>
+  <view class="weui-dialog orderPop">
+    <image mode="aspectFit" class="success-icon" src="{{successImg}}"></image>
+    <view class="orderPop-title mgt42">核销成功</view>
+    <view class="orderPop-box">
+      <view>产品名称：<text>{{successMsg.sku_info.sku_name}}</text></view>
+      <view>数量：<text class="{{successMsg.count_sj<successMsg.count_dh ?'text-red' : 'text-green' }} font72">{{successMsg.count_sj}}</text>{{successMsg.sku_info.unit}}
+      </view>
+      <view>核销日期：<text>{{currentTime}}</text></view>
+      <view wx:if="{{successMsg.count_sj<successMsg.count_dh}}">
+        <text class="text-red ">备注：未核销的卡券将返还至您的卡包</text>
+      </view>
+    </view>
+    <view>
+      <view class="iknow mgt42" bindtap="onClose">确定</view>
+    </view>
+
+  </view>
+</view>

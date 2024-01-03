@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "order-popup": "../../component/order_popup/index"
+
+  },
+  "navigationBarTitleText": "确认收货"
+}

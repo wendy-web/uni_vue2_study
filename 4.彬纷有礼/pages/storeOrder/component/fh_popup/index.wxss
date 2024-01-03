@@ -1,0 +1,189 @@
+/* pages/storeOrder/component/fh_cancelPop/index.wxss */
+.weui-mask,
+.weui-mask_transparent {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .6);
+}
+
+.weui-dialog {
+  position: fixed;
+  z-index: 5000;
+  top: 50%;
+  left: 16px;
+  right: 16px;
+  transform: translateY(-50%);
+  background-color: var(--weui-BG-2);
+  text-align: center;
+  border-radius: 12px;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  max-height: 90%;
+}
+/* orderPop css */
+.orderPop {
+  height: 850rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 92%;
+}
+
+.orderPop .orderPop-title {
+  font-size: 48rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 700;
+  color: #333;
+}
+
+.orderPop .orderPop-tips {
+  font-size: 36rpx;
+  font-family: PingFang SC, PingFang SC-Bold;
+  font-weight: 500;
+  color: #333;
+  margin-top: 10rpx;
+}
+
+.orderPop .orderPop-box {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  text-align: left;
+  margin: 20rpx auto 0 auto;
+  /* width: 100%; */
+  box-sizing: border-box;
+  padding: 0 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.orderPop .orderNum {
+  color: #ec0000;
+}
+
+.orderPop .font48 {
+  font-size: 48rpx;
+}
+
+.orderPop .orderPop-btn {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 56rpx;
+}
+
+.orderPop .orderPop-confirm {
+  display: inline-block;
+  border-radius: 50rpx;
+  width: 240rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+  background: linear-gradient(180deg, #ff0000, #ac0000);
+  color: #ffffff;
+  font-size: 32rpx;
+}
+
+.orderPop .orderPop-btn .orderPop-cancel {
+  display: inline-block;
+  border-radius: 50rpx;
+  width: 240rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+  background: linear-gradient(180deg, #dcdcdc, #898989);
+  color: #ffffff;
+  font-size: 32rpx;
+
+}
+
+.orderPop .iknow {
+  width: 264rpx;
+  height: 84rpx;
+  color: #ffffff;
+  line-height: 84rpx;
+  font-size: 32rpx;
+  font-weight: normal;
+  background: linear-gradient(180deg, #ff0000 2%, #a90000);
+  border-radius: 42rpx;
+  display: inline-block !important;
+  flex: unset;
+}
+
+.orderPop .orderPop-btn .orderPop-btn-mini {
+  width: 200rpx;
+}
+
+.orderPop .pdlr80 {
+  padding-left: 80rpx;
+  padding-right: 80rpx;
+  box-sizing: border-box;
+}
+
+.success-icon {
+  width: 142rpx;
+  height: 142rpx;
+}
+
+.cancelOrder-icon {
+  width: 192rpx;
+  height: 152rpx;
+}
+
+.remind-icon {
+  width: 240rpx;
+  height: 220rpx;
+}
+
+.hx-icon {
+  width: 148rpx;
+  height: 146rpx;
+}
+
+.successPop {
+  height: 600rpx;
+}
+
+.mgt20 {
+  margin-top: 20rpx;
+}
+
+.mgt30 {
+  margin-top: 30rpx;
+}
+
+.mgt42 {
+  margin-top: 42rpx;
+}
+
+.mgt92 {
+  margin-top: 92rpx;
+}
+
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.font72 {
+  font-size: 72rpx;
+}
+
+.text-red {
+  color: #e02020;
+}
+
+.text-green {
+  color: #079f01;
+}
+.orderPop  .exc-zm-green{
+  color: #00ff00;
+}

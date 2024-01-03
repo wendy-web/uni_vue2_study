@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "pull-refresh-view":"../../../../component/pull-refresh-view/index"
+  },
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "排行榜",
+  "enablePullDownRefresh":false,
+  "backgroundColorBottom":"#cf2928",
+  "disableScroll": false
+}

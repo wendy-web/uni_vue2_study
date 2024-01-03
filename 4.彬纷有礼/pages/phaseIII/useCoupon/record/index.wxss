@@ -1,0 +1,87 @@
+/* pages/phaseIII/useCoupon/record/index.wxss */
+page {
+  height: 100%;
+  box-sizing: border-box;
+}
+.page-box {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100vh;
+  width: 100%;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.tab-coupon-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.tab-coupon-item {
+  position: relative;
+  min-height: 80rpx;
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  text-align: center;
+  color: #000000;
+}
+.tab-coupon-title{
+  position: relative;
+  box-sizing: border-box;
+}
+.tab-coupon-title::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 100%;
+  height: 8rpx;
+  border-radius: 45rpx;
+  background-color: #ffffff;
+}
+.tab-active {
+  color: #E3001B;
+}
+
+.tab-active::after {
+  background-color: #e3001b;
+}
+
+.tab-coupon-item .tab-count-info {
+  width: 48rpx;
+  height: 30rpx;
+  background: #fe324b;
+  border-radius: 16rpx 16rpx 16rpx 0rpx;
+  position: absolute;
+  right: -50rpx;
+  top: 10rpx;
+
+
+  font-size: 20rpx;
+  font-family: PingFang SC, PingFang SC-Regular;
+  font-weight: 400;
+  color: #ffffff;
+  text-align: center;
+}
+.tab-exc-item{
+  margin-top: 16rpx;
+}
+.tab-exc-item::after {
+  height: 6rpx;
+  width: 50rpx;
+}
+.tab-exc-title::after{
+  height: 6rpx;
+  width: 60rpx;
+}
+.swiper-box {
+  flex: 1;
+  overflow: hidden;
+}

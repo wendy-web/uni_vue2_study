@@ -1,0 +1,433 @@
+<!--pages/phaseIII/couponStats/index/index.wxml-->
+<view class="box">
+  <top-navbar title="卡券统计" backgroundColor="" iconTheme="{{iconTheme}}" bindback="back"></top-navbar>
+  <view class="page-content ">
+    <!-- 顶部时间筛选 -->
+    <view class="tab-box">
+      <view wx:for="{{dateRangeArr}}" wx:key="key" class="tab-item {{item.checked?'tab-item-active':''}}" bind:tap="tabChange" data-id="{{item.id}}">
+        {{item.label}}
+      </view>
+      <view class="filter-item" bind:tap="showFilterPop">
+        <view class="flex-center tab-item {{filterPopObj.selectDate?'tab-item-active':''}}">
+          <!-- <image class="icon_filter" src="{{file_url_9m}}/{{filterArr.length?'icon_filter_active.png':'icon_filter.png'}}" mode="aspectFit" /> -->
+          <text>自定义</text>
+        </view>
+      </view>
+    </view>
+    <view class="filter-box">
+      <view class="filter-inner">
+        <view class="keyword-box">
+          <scroll-view class="scroll-tag" scroll-x>
+            <view class="tag-box">
+              <view wx:for="{{brandTypeArr}}" wx:key="id" class="tag-item-default {{item.checked?'tag-item-active':''}}" data-arg="{{item.arg}}" bind:tap="selectGoodType">
+                <text>{{item.label}}</text>
+              </view>
+              <block wx:if="{{filterPopObj.selectDate}}" >
+                <view class="tag-item {{filterPopObj.selectDate.checked?'tag-item-active':''}}" data-id="{{filterPopObj.selectDate.id}}" bind:tap="deleteTag" data-name="selectDate">
+                  <text>{{filterPopObj.selectDate.label}}</text>
+                  <view class="icon-tag">
+                    <van-icon name="clear" />
+                  </view>
+                </view>
+              </block>
+              <block wx:if="{{filterPopObj.goodTypeArr}}" >
+                <view class="tag-item {{filterPopObj.goodTypeArr.checked?'tag-item-active':''}}" data-id="{{filterPopObj.goodTypeArr.id}}" bind:tap="deleteTag" data-name="goodTypeArr">
+                  <text>{{filterPopObj.goodTypeArr.label}}</text>
+                  <view class="icon-tag">
+                    <van-icon name="clear" />
+                  </view>
+                </view>
+              </block>
+            </view>
+          </scroll-view>
+        </view>
+
+      </view>
+    </view>
+    <view class="count-box " id="innerbox">
+      <scroller wx:if="{{!isEmpty}}" innerBoxHeight="{{innerBoxHeight}}" background="{{background}}" isBackBtn="{{isBackBtn}}" bind:refresh="resetRefresh" class="scroller-box">
+        <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+        <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+        <!-- 累计获得 -->
+        <view class="border-box">
+          <image class="icon_title_coupon" src="{{file_url_9m}}/icon_title_coupon.png" mode="aspectFit" />
+          <view class="count-item total-count-box" bind:tap="toggleChange" data-name='total_toggle'>
+            <view class="flex-between">
+
+              <view class="total-title">
+                <text>累计获得</text>
+                <text class="total-title-unit">(张)</text>
+              </view>
+              <view class="total-num {{not_today_filter ? 'color-red' :''}}">
+                <text>{{totalReward.total || 0}}</text>
+                <image class="icon_arrow_down" src="{{file_url_9m}}/{{total_toggle ? 'icon_arrow_up':'icon_arrow_down'}}.png" mode="aspectFit" />
+
+              </view>
+            </view>
+            <!-- 卡券信息 -->
+            <view class="counpon-info-box {{total_toggle ? 'is_toggle':''}}">
+              <!-- 换购券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">换购券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num {{not_today_filter ? 'color-red' :''}}">{{totalReward.exc.total || 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">换购券</text>
+                  </view>
+                  <view class="sub-count-num {{not_today_filter ? 'color-red' :''}}">{{totalReward.exc.exc_num || 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">换购奖励券</text>
+                  </view>
+                  <view class="sub-count-num {{not_today_filter ? 'color-red' :''}}">{{totalReward.exc.exc_jl || 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">产品兑换券</text>
+                  </view>
+                  <view class="sub-count-num {{not_today_filter ? 'color-red' :''}}">{{totalReward.exc.exc_dhq || 0}}</view>
+                </view>
+              </view>
+              <!-- 折扣券 -->
+              <view class="sku-count-item" catch:tap="openPage" data-url="pages/phaseIII/couponStats/detail/index" data-type="1">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">折扣券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num {{not_today_filter ? 'color-red' :''}}">
+                    <text>{{totalReward.dis.dis_num || 0}}</text>
+                    <image class="icon_arrow_down" src="{{file_url_9m}}/icon_arrow_right.png" mode="aspectFit" />
+                  </view>
+                </view>
+              </view>
+              <!-- 活动券 -->
+              <view class="sku-count-item" catch:tap="openPage" data-url="pages/phaseIII/couponStats/detail/index" data-type="2">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">活动券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num {{not_today_filter ? 'color-red' :''}}">
+                    <text>{{totalReward.act.act_num || 0}}</text>
+                    <image class="icon_arrow_down" src="{{file_url_9m}}/icon_arrow_right.png" mode="aspectFit" />
+                  </view>
+                </view>
+              </view>
+              <!-- end -->
+            </view>
+          </view>
+        </view>
+        <!-- 可用卡券 -->
+        <view class="border-box">
+          <view class="count-item" bind:tap="toggleChange" data-name='ky_toggle'>
+            <view class="normal-item">
+              <view class="normal-title">
+                <text>可用卡券</text>
+                <text class="normal-title-unit">(张)</text>
+              </view>
+              <view class="normal-num">
+                <text>{{usable.total || 0}}</text>
+                <image class="icon_arrow_down" src="{{file_url_9m}}/{{ky_toggle ? 'icon_arrow_up':'icon_arrow_down'}}.png" mode="aspectFit" />
+
+              </view>
+            </view>
+            <!-- 卡券信息 -->
+            <view class="counpon-info-box pr-50 {{ky_toggle ? 'is_toggle':''}} ">
+              <!-- 换购券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">换购券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">{{usable.exc.total || 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">换购券</text>
+                  </view>
+                  <view class="sub-count-num">{{usable.exc.exc_num || 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">换购奖励券</text>
+                  </view>
+                  <view class="sub-count-num">{{usable.exc.exc_jl || 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">产品兑换券</text>
+                  </view>
+                  <view class="sub-count-num">{{usable.exc.exc_dhq || 0}}</view>
+                </view>
+              </view>
+              <!-- 折扣券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">折扣券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">
+                    <text>{{usable.dis.dis_num || 0}}</text>
+                  </view>
+                </view>
+              </view>
+              <!-- 活动券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">活动券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">
+                    <text>{{usable.act.act_num || 0}}</text>
+                  </view>
+                </view>
+              </view>
+              <!-- end -->
+            </view>
+          </view>
+        </view>
+        <!-- 累计使用 -->
+        <view class="border-box">
+          <view class="count-item" bind:tap="toggleChange" data-name='lj_use_toggle'>
+            <view class="normal-item">
+              <view class="normal-title">
+                <text>累计使用</text>
+                <text class="normal-title-unit">(张)</text>
+              </view>
+              <view class="normal-num">
+                <text>{{used.total || 0}}</text>
+                <image class="icon_arrow_down" src="{{file_url_9m}}/{{lj_use_toggle ? 'icon_arrow_up':'icon_arrow_down'}}.png" mode="aspectFit" />
+
+              </view>
+            </view>
+            <!-- 卡券信息 -->
+            <view class="counpon-info-box pr-50 {{lj_use_toggle ? 'is_toggle':''}}">
+              <!-- 换购券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">换购券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">{{used.exc.total || 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">换购券</text>
+                  </view>
+                  <view class="sub-count-num">{{used.exc.exc_num || 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">换购奖励券</text>
+                  </view>
+                  <view class="sub-count-num">{{used.exc.exc_jl || 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">产品兑换券</text>
+                  </view>
+                  <view class="sub-count-num">{{used.exc.exc_dhq || 0}}</view>
+                </view>
+              </view>
+              <!-- 折扣券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">折扣券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">
+                    <text>{{used.dis.dis_num || 0}}</text>
+
+                  </view>
+                </view>
+              </view>
+              <!-- 活动券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">活动券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">
+                    <text>{{used.act.act_num || 0}}</text>
+                  </view>
+                </view>
+              </view>
+              <!-- end -->
+            </view>
+          </view>
+        </view>
+        <!-- 核销中 -->
+        <view class="border-box">
+          <view class="count-item" bind:tap="toggleChange" data-name='hxing_toggle'>
+            <view class="normal-item">
+              <view class="normal-title">
+                <text>核销中</text>
+                <text class="normal-title-unit">(张)</text>
+              </view>
+              <view class="normal-num">
+                <text>{{inuse.total || 0}}</text>
+                <image class="icon_arrow_down" src="{{file_url_9m}}/{{hxing_toggle ? 'icon_arrow_up':'icon_arrow_down'}}.png" mode="aspectFit" />
+
+              </view>
+            </view>
+            <!-- 卡券信息 -->
+            <view class="counpon-info-box pr-50 {{hxing_toggle ? 'is_toggle':''}}">
+              <!-- 换购券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">换购券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">{{inuse.exc.total|| 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">换购券</text>
+                  </view>
+                  <view class="sub-count-num">{{inuse.exc.exc_num || 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">换购奖励券</text>
+                  </view>
+                  <view class="sub-count-num">{{inuse.exc.exc_jl || 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">产品兑换券</text>
+                  </view>
+                  <view class="sub-count-num">{{inuse.exc.exc_dhq || 0}}</view>
+                </view>
+              </view>
+              <!-- 折扣券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">折扣券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">
+                    <text>{{inuse.dis.dis_num || 0}}</text>
+
+                  </view>
+                </view>
+              </view>
+              <!-- 活动券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">活动券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">
+                    <text>{{inuse.act.act_num || 0}}</text>
+                  </view>
+                </view>
+              </view>
+              <!-- end -->
+            </view>
+          </view>
+        </view>
+
+        <!-- 已过期 -->
+        <view class="border-box">
+          <view class="count-item" bind:tap="toggleChange" data-name='expire_toggle'>
+            <view class="normal-item">
+              <view class="normal-title">
+                <text>已过期</text>
+                <text class="normal-title-unit">(张)</text>
+              </view>
+              <view class="normal-num">
+                <text>{{expired.total}}</text>
+                <image class="icon_arrow_down" src="{{file_url_9m}}/{{expire_toggle ? 'icon_arrow_up':'icon_arrow_down'}}.png" mode="aspectFit" />
+
+              </view>
+            </view>
+            <!-- 卡券信息 -->
+            <view class="counpon-info-box pr-50 {{expire_toggle ? 'is_toggle':''}}">
+              <!-- 换购券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">换购券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">{{expired.exc.total|| 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">换购券</text>
+                  </view>
+                  <view class="sub-count-num">{{expired.exc.exc_num || 0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">换购奖励券</text>
+                  </view>
+                  <view class="sub-count-num">{{expired.exc.exc_jl ||0}}</view>
+                </view>
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="subtitle">产品兑换券</text>
+                  </view>
+                  <view class="sub-count-num">{{expired.exc.exc_dhq || 0}}</view>
+                </view>
+              </view>
+              <!-- 折扣券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">折扣券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">
+                    <text>{{expired.dis.dis_num || 0}}</text>
+
+                  </view>
+                </view>
+              </view>
+              <!-- 活动券 -->
+              <view class="sku-count-item">
+                <view class="counpon-info-item">
+                  <view>
+                    <text class="title">活动券</text>
+                    <text>(张)</text>
+                  </view>
+                  <view class="count-num">
+                    <text>{{expired.act.act_num || 0}}</text>
+                  </view>
+                </view>
+              </view>
+              <!-- end -->
+            </view>
+          </view>
+        </view>
+
+        <!-- end -->
+
+      </scroller>
+      <scroller wx:else background="{{background}}" isBackBtn="{{isBackBtn}}" isEmpty="{{isEmpty}}" bind:refresh="resetRefresh" class="scroller-box">
+        <!-- 下拉刷新组件，如果调用则开启下拉，不调用则不开启下拉，下拉配置详见下拉组件 -->
+        <refresh slot="refresh" type="default" config="{{defaultSetting}}" />
+        <!-- 空列表区域，数据为空，将isEmpty设置为true时显示，可使用空组件或自定义 -->
+        <empty slot="empty" img-class="empty-img" text-class="empty-text" emptyText="{{emptySetting.text}}" emptyImg="{{emptySetting.img}}" />
+      </scroller>
+    </view>
+  </view>
+</view>
+<!-- 条件筛选弹窗 -->
+<filterPop id="filterPop" bind:initFilterData="initFilterData" bind:resetBrandType="resetBrandType" skuParams="{{skuParams}}"></filterPop>
