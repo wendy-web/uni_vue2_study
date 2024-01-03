@@ -125,8 +125,8 @@ devDependencies:
     specifier: ^1.11.0
     version: 1.11.0
   cross-env:
-    specifier: ^7.0.2
-    version: 7.0.2
+    specifier: ^7.0.3
+    version: 7.0.3
   jest:
     specifier: ^25.4.0
     version: 25.4.0
@@ -5014,8 +5014,8 @@ packages:
       cross-spawn: 6.0.5
     dev: true
 
-  /cross-env@7.0.2:
-    resolution: {integrity: sha512-KZP/bMEOJEDCkDQAyRhu3RL2ZO/SUVrxQVI0G3YEQ+OLbRA3c6zgixe8Mq8a/z7+HKlNEjo8oiLUs8iRijY2Rw==}
+  /cross-env@7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
     engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
     hasBin: true
     dependencies:
@@ -9637,7 +9637,7 @@ packages:
   /puppeteer@3.3.0:
     resolution: {integrity: sha512-23zNqRltZ1PPoK28uRefWJ/zKb5Jhnzbbwbpcna2o5+QMn17F0khq5s1bdH3vPlyj+J36pubccR8wiNA/VE0Vw==}
     engines: {node: '>=10.18.1'}
-    deprecated: < 19.4.0 is no longer supported
+    deprecated: < 21.3.7 is no longer supported
     requiresBuild: true
     dependencies:
       debug: 4.3.4
