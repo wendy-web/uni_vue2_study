@@ -40,12 +40,15 @@
 		</view>
 		<view class="btn">去支付</view>
 	</view>
+	<view class="take" @click="jumpLinkHandle(item, 'home')">
+		<view class="take_btn">再来一单</view>
+	</view>
 </view>
 </template>
 
 <script>
-import { parseTime } from '@/utils/index.js';
 import { jumpLink } from '@/api/modules/discounts.js';
+import { parseTime } from '@/utils/index.js';
 export default {
 	props: {
 		item: {
@@ -82,11 +85,11 @@ export default {
 			}
 			return dom;
 		},
-		jumpLinkHandle(item) {
+		jumpLinkHandle(item, page = 'order') {
 			// 1-电影票 2-肯德基 3-星巴克
 			const params = {
 				type: 1,
-				page: 'order',
+				page,
 				orderNo: item.third_order_id,
 				status: 1
 			}
@@ -295,5 +298,20 @@ export default {
 	color: #666666;
 	line-height: 36rpx;
 	white-space: nowrap;
+}
+.take{
+	display: flex;
+	justify-content: flex-end;
+	margin: 32rpx 24rpx 0 0;
+	.take_btn {
+		padding: 0 30rpx;
+		display: inline-block;
+		line-height: 56rpx;
+		border: 1rpx solid #cccccc;
+		border-radius: 32rpx;
+		text-align: center;
+		font-size: 28rpx;
+		color: #333333;
+	}
 }
 </style>

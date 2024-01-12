@@ -154,12 +154,12 @@
 </template>
 <script>
 import { toggleCollect } from "@/api/modules/jsShop.js";
+import channelVideo from '@/components/goodList/channelVideo.vue';
+import showImg from '@/components/goodList/showImg.vue';
 import { getImgUrl } from "@/utils/auth.js";
 import goDetailsFun from "@/utils/goDetailsFun";
 import { mapGetters } from "vuex";
 import notCreditsList from "./notCreditsList.vue";
-import channelVideo from '@/components/goodList/channelVideo.vue';
-import showImg from '@/components/goodList/showImg.vue';
 export default {
   mixins: [goDetailsFun],
   components: {

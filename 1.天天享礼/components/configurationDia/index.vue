@@ -11,12 +11,6 @@
             src="https://file.y1b.cn/store/1-0/23118/654b29f0188a0.png"
             @click="popupClose"
         ></image>
-        <!-- <image class="dia_img"
-            :src="config.image"
-            mode="widthFix"
-            @click="popoverRember"
-            v-if="config.image"
-        ></image> -->
         <van-image
             width="750rpx"
             :src="config.image"
@@ -68,10 +62,9 @@
 </van-popup>
 </view>
 </template>
-
 <script>
-import { mapGetters, mapActions } from "vuex";
-import {getImgUrl} from '@/utils/auth.js';
+import { getImgUrl } from '@/utils/auth.js';
+import { mapActions, mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters(["gift", "userInfo"]),
@@ -94,33 +87,22 @@ export default {
       default: 0
     }
   },
-  watch: {
-    // gift(newValue, oldValue) {
-    // 	if(!newValue && this.isShow) {
-    //
-    // 		return;
-    // 	}
-    // 	this.upgrade();
-    // },
-  },
   data() {
     return {
-		imgUrl: getImgUrl(),
-        timeData: {},
-        isFinShed: false
+		  imgUrl: getImgUrl(),
+      timeData: {},
+      isFinShed: false
     };
-  },
-  mounted() {
   },
   methods: {
     ...mapActions({
       getUserInfo: 'user/getUserInfo',
     }),
     resetTime() {
-        // 时间重置
-        const countDown = this.selectComponent('.cd_time-con');
-        countDown && countDown.reset();
-        this.isFinShed = true;
+      // 时间重置
+      const countDown = this.selectComponent('.cd_time-con');
+      countDown && countDown.reset();
+      this.isFinShed = true;
     },
     onChangeHandle(event) {
       let {
@@ -145,7 +127,6 @@ export default {
     },
     countFinished() {
       if(!this.config.image && (this.config.type == 6 || this.config.type == 12) && this.isFinShed){
-        // this.popupClose();
         this.$emit('close', this.config.id);
       }
     },

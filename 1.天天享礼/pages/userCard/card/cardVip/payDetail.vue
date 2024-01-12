@@ -46,7 +46,7 @@
                             <van-image
                                 height="80rpx"
                                 width="80rpx"
-                                :src="itemList.goods_imgs"
+                                :src="itemList.goods_imgs || (itemList.goods_type == 9 && 'https://file.y1b.cn/store/1-0/2416/6598c9ea9fb0a.png')"
                                 use-loading-slot
                                 use-error-slot
                             >
@@ -68,11 +68,11 @@
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import getViewPort from '@/utils/getViewPort.js';
-import { getImgUrl } from '@/utils/auth.js';
-import { mapGetters, mapActions, mapMutations } from "vuex";
 import { savingDetail } from "@/api/modules/packet.js";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { getImgUrl } from '@/utils/auth.js';
+import getViewPort from '@/utils/getViewPort.js';
+import { mapGetters } from "vuex";
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {

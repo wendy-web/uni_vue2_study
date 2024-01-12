@@ -8,23 +8,25 @@
     >
       <!-- 置顶的图标 -->
       <image
-          :class="['scroll_icon', isScrollTop ? 'scroll_icon-active' : '']"
-          :src="item.scrollIcon" v-if="item.scrollIcon" mode="aspectFill">
-        </image>
-      <image
-        class="nav_icon"
-        :src="currentIndex == index ? item.icon_active : item.icon" mode="aspectFill">
+        :class="['scroll_icon', isScrollTop ? 'scroll_icon-active' : '']"
+        :src="item.scrollIcon" v-if="item.scrollIcon" mode="aspectFill">
       </image>
-      <view class="nav_icon-point" v-if="(unRead && index == (navBarList.length - 1))"></view>
-      <view class="nav_text">{{item.title}}</view>
+      <view :class="['tabItem_box', isScrollTop && item.scrollIcon ? 'active' : '']">
+        <image
+          class="nav_icon"
+          :src="currentIndex == index ? item.icon_active : item.icon" mode="aspectFill">
+        </image>
+        <view class="nav_icon-point" v-if="(unRead && index == (navBarList.length - 1))"></view>
+        <view class="nav_text">{{item.title}}</view>
+      </view>
     </view>
   </view>
 </view>
 </template>
 
 <script>
-import {  mapGetters } from 'vuex';
-import { msgTemplete, powerTemplete } from '@/api/modules/task.js'
+import { msgTemplete, powerTemplete } from '@/api/modules/task.js';
+import { mapGetters } from 'vuex';
 export default {
   name: "customTabBar",
   computed: {
@@ -151,17 +153,18 @@ export default {
   height: 110rpx;
   line-height: 34rpx;
   font-size: 24rpx;
-  background-color: #fff;
+  background-color: rgba(#fff, .75);
   z-index: 9;
   padding-bottom: constant(safe-area-inset-bottom); /* 兼容 IOS<11.2 */
   padding-bottom: env(safe-area-inset-bottom); /* 兼容 IOS>11.2 */
+  backdrop-filter: blur(20px);
   .nav_cont {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-top: 2rpx solid #e1e1e1;
+    // border-top: 2rpx solid #e1e1e1;
     .nav_item {
       flex: 1;
       font-weight: 400;
@@ -178,7 +181,7 @@ export default {
         padding: 3rpx;
         box-sizing: border-box;
         z-index: 1;
-        background: #fff;
+        // background: #fff;
         opacity: 0;
         transition: all .3s;
         &.scroll_icon-active {
@@ -192,7 +195,8 @@ export default {
         width: 48rpx;
         height: 48rpx;
         display: block;
-        margin-bottom: 4rpx;
+        margin: 0 auto 4rpx;
+        display: block;
         position: relative;
         &.unRead_icon::after {
           content: '';
@@ -213,6 +217,13 @@ export default {
         line-height: 28rpx;
       }
     }
+  }
+}
+.tabItem_box{
+  opacity: 1;
+  transition: all .3s;
+  &.active {
+    opacity: 0;
   }
 }
 </style>

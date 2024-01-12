@@ -35,7 +35,7 @@
           <text style="margin-left: 12rpx">提现须知</text>
         </view>
         <view class="cont_rem-item">1、单笔提现额度1元起提，提现免手续费；</view>
-        <view class="cont_rem-item">2、1个工作日到账</view>
+        <view class="cont_rem-item">2、1个工作日到账。</view>
       </view>
     </view>
     <view class="confirm_btn" @click="confirmHandle">确认提现</view>
@@ -47,9 +47,9 @@
 </view>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { getImgUrl } from '@/utils/auth.js';
 import { withdraw } from '@/api/modules/user.js';
+import { getImgUrl } from '@/utils/auth.js';
+import { mapActions, mapGetters } from "vuex";
 import withdrawSuccessDia from './withdrawSuccessDia.vue';
 export default {
   components: {

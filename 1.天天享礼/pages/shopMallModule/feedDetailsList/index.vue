@@ -260,20 +260,20 @@ export default {
         this.topHeight = statusBarHeight;
         });
         this.$nextTick(() => {
-        this.getNextMargin(0, 1000);
+          this.getNextMargin(0, 1000);
         });
     },
     async mounted() {
         // 京东的skuId
         if (this.skuId) {
-        const res = await goodsQuery({
-            ...this.params,
-            skuIds: this.skuId,
-            is_popover: this.is_popover,
-            positionId: this.positionId,
-            has_coupon: this.has_coupon
-        });
-        this.feedList = res.data.list;
+          const res = await goodsQuery({
+              ...this.params,
+              skuIds: this.skuId,
+              is_popover: this.is_popover,
+              positionId: this.positionId,
+              has_coupon: this.has_coupon
+          });
+          this.feedList = res.data.list;
         }
         if (this.goods_sign) {
             const detRes = await goodsDetail({ goods_sign: this.goods_sign });
@@ -290,9 +290,9 @@ export default {
     },
     getFeedList() {
         if (this.total_count) {
-            this.params.page += 1;
-            if (this.feedList.length > this.total_count && this.params.page > 2)
-            return;
+          this.params.page += 1;
+          if (this.feedList.length > this.total_count && this.params.page > 2)
+          return;
         }
         // 拼多多列表
         if(this.shop_type == 3) {

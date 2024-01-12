@@ -34,11 +34,10 @@
 
 <script>
 	import {
-		cancelOrder,
-		pay,
-		query
-	} from '@/api/modules/order.js';
-	import Toast from '@/wxcomponents/vant_update/toast/toast.js';
+pay,
+query
+} from '@/api/modules/order.js';
+import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 	export default {
     props: {
       isShow: {
@@ -90,33 +89,15 @@
 		onClose() {
 			this.$emit("close");
 		},
-		toPay() {
-			console.log("pay");
-			let params = {
-				id: this.orderId
-			}
-			if (!this.paymentParams) {
-				pay(params).then(res => {
-					let {
-						code,
-						data,
-						msg
-					} = res;
-					if (code == 1) {
-						this.paymentParams = JSON.parse(data.jspay_info);
-						this.pay_order_id = data.order_id;
-						this.createPayment(this.paymentParams);
-						return;
-					}
-					uni.showToast({
-						icon: 'none',
-						title: msg
-					});
-				});
-			} else {
-				this.createPayment(this.paymentParams);
-			}
-
+		async toPay() {
+			let params = { id: this.orderId };
+			if (this.paymentParams) return this.createPayment(this.paymentParams)
+			const res = await pay(params);
+			if(res.code != 1) return this.$toast(res.msg);
+			let { data } = res;
+			this.paymentParams = JSON.parse(data.jspay_info);
+			this.pay_order_id = data.order_id;
+			this.createPayment(this.paymentParams);
 		},
 		// 发起支付
 		createPayment(obj) {
@@ -128,9 +109,7 @@
 				'timeStamp': obj.timeStamp,
 				success: (res) => {
 					// 支付成功，用order_id 查询结果
-					let params = {
-						id: this.pay_order_id
-					}
+					let params = { id: this.pay_order_id };
 					query(params).then(res => {
 						let {
 							code,

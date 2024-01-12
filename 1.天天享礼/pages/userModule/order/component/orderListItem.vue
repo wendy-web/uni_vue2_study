@@ -15,13 +15,14 @@
 		@showTakeCode="(item) => this.$emit('showTakeCode', item)"
 	>
 	</orderItemHaiwei>
+	<orderItemPhone ref="orderItemPhone" :item="item" v-else-if="[9].includes(item.goods_type)"></orderItemPhone>
 	<view class="item" v-else>
 		<view class="type_top">
 			<view class="type_lft">
 				<image class="type_top-icon" mode="scaleToFill" :src="item.goodsTypeIcon"></image>
 				<text>{{ item.goodsTypeTxt }} </text>
 			</view>
-			<view class="type_rit" :class="'order-status-'+item.status">
+			<view class="type_rit" :class="'order-status-'+ item.status">
 				{{ item.goods_type == 7 ? item.statusDesc : item.order_status_name}}
 			</view>
 		</view>
@@ -75,8 +76,8 @@
 			</view>
 			<view class="btn btn_status3">去使用</view>
 		</view>
-		<!-- 已完成//已过期 -->
-		<view class="order-operate" v-if="item.status== 4 || item.card_status == 2" @click="goCouponDetailsHandle(item)">
+		<!-- 所有状态都打开 -->
+		<view class="order-operate" @click="goCouponDetailsHandle(item)">
             <view class="expire-time"></view>
 			<view class="btn btn_status3">再来一单</view>
 		</view>
@@ -86,21 +87,23 @@
 </template>
 
 <script>
-	import orderItemMovie from './orderItemMovie.vue';
-	import orderItemKfc from './orderItemKfc.vue';
-	import orderItemStarbucks from './orderItemStarbucks.vue';
-	import orderItemHaiwei from './orderItemHaiwei.vue';
-	import { orderStatus, orderClass, goodsTypeObj } from '../static/config';
-	import { parseTime } from '@/utils/index.js';
 	import { pay, query } from '@/api/modules/order.js';
-	import Toast from '@/wxcomponents/vant_update/toast/toast.js';
+import { parseTime } from '@/utils/index.js';
+import Toast from '@/wxcomponents/vant_update/toast/toast.js';
+import { goodsTypeObj, orderClass, orderStatus } from '../static/config';
+import orderItemHaiwei from './orderItemHaiwei.vue';
+import orderItemKfc from './orderItemKfc.vue';
+import orderItemMovie from './orderItemMovie.vue';
+import orderItemPhone from './orderItemPhone.vue';
+import orderItemStarbucks from './orderItemStarbucks.vue';
 	// 当前操作的item数据
 	export default {
 		components: {
 			orderItemMovie,
 			orderItemKfc,
 			orderItemStarbucks,
-			orderItemHaiwei
+			orderItemHaiwei,
+			orderItemPhone
 		},
 		props: {
 			list: {

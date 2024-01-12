@@ -9,11 +9,8 @@
 			navberColor="#F7F7F7"
             :fixedNum="9"
 		></xh-navbar>
-		<view
-            class="my-coupon-box"
-            :style="{
-                top: navHeight +'px'
-            }">
+		<view class="my-coupon-box"
+            :style="{ top: navHeight +'px'}">
 			<mescroll-uni
 				:fixed="false"
 				ref="mescrollRef"
@@ -23,20 +20,14 @@
 				:up="upOption"
 			>
 				<!-- 数据列表 -->
-				<view class="list-item"
-					v-for="item in listData"
-					:key="item.id"
-					@click="toUse(item)"
+				<view class="list-item" @click="toUseHandle(item)"
+					v-for="item in listData" :key="item.id"
 				>
 					<!-- 背景 -->
-					<image
-						v-if="item.status == 2"
-						class="list-item-bg"
+					<image class="list-item-bg" v-if="item.status == 2"
 						src="https://file.y1b.cn/store/1-0/23713/64afe7c401657.png"
 					></image>
-					<image
-						v-else
-						class="list-item-bg"
+					<image class="list-item-bg" v-else
 						src="https://file.y1b.cn/store/1-0/23713/64afe7a5d374e.png"
 					></image>
 					<!-- 优惠券名称 -->
@@ -120,19 +111,19 @@
 	</view>
 </template>
 <script>
-	import MescrollMixin from '@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js';
-	import { parseTime } from '@/utils/index.js'
-	import { myCoupon } from '@/api/modules/user.js'
-	import serviceRecharge from './serviceRecharge.vue';
-	import {getImgUrl} from '@/utils/auth.js';
-	import goodList from '@/components/goodList.vue';
-	// 牛金豆不足混入的组件与方法
-	import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
-	import serviceCredits from '@/components/serviceCredits/index.vue';
-	import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js';
-	import { material, jingfen, goodsQuery } from '@/api/modules/jsShop.js';
-	import { groupRecommend } from '@/api/modules/index.js';
-    import getViewPort from "@/utils/getViewPort.js";
+import { myCoupon } from '@/api/modules/user.js';
+import goodList from '@/components/goodList.vue';
+import MescrollMixin from '@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js';
+import { getImgUrl } from '@/utils/auth.js';
+import { parseTime } from '@/utils/index.js';
+import serviceRecharge from './serviceRecharge.vue';
+// 牛金豆不足混入的组件与方法
+import { groupRecommend } from '@/api/modules/index.js';
+import { goodsQuery, jingfen, material } from '@/api/modules/jsShop.js';
+import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
+import serviceCredits from '@/components/serviceCredits/index.vue';
+import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js';
+import getViewPort from "@/utils/getViewPort.js";
 	export default {
 		mixins: [MescrollMixin, serviceCreditsFun],
 		components: {
@@ -183,7 +174,6 @@
 		onShow() {
 			if (this.listData.length && !this.isGoodListTo) {
 				let mescrollRef = this.$refs.mescrollRef;
-				// mescrollRef.mescroll.triggerDownScroll();
 				this.isRecommendRequest = false;
 				this.pageNum = 1;
 				this.groupId_index = 0;
@@ -204,10 +194,6 @@
 		},
 
 		methods: {
-			// downCallback(){
-			// 	// 下拉刷新
-			// 	this.$refs.mescrollRef.mescroll.resetUpScroll();
-			// },
 			goodListClickHandle() {
 				this.isGoodListTo = true;
 			},
@@ -219,64 +205,57 @@
 					page: page.num,
 				}
 				// 是否请求推荐列表，我的收藏列表请求完毕后进行其他接的请求事件
-				if(!this.isRecommendRequest) {
-					myCoupon(params).then(res => {
-						let list = res.data ? res.data.data : []
-						list = list.map(function(item) {
-							//过期时间
-							let expirationTime = new Date(item.expire_time.replace(/\-/g, '/')).getTime()
-							let expirationDay = item.expire_time.slice(0, 10)
-							//剩余时间 毫秒
-							let difference = expirationTime - currTime;
-							//是否在今天
-							let isToday = parseTime(currTime, '{y}-{m}-{d}') === expirationDay
-							//类型
-							let timeType = 0
-							//小于一天倒计时
-							if (difference > 0 && difference < 24 * 60 * 60 * 1000 && isToday) {
-								timeType = 1
-							} else if (difference > 0 && difference <= 24 * 60 * 60 * 1000) {
-								timeType = 2
-							}else {
-								timeType = 3
-							}
-							// 倒计时结束，但是优惠券正在使用
-							if(difference <= 0 && item.is_order) {
-								timeType = 4;
-							}
-							return {
-								...item,
-								timeType,
-								difference,
-								expirationDay
-							}
-						});
-
-						//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-						this.mescroll.endSuccess(params.size, true);
-						//设置列表数据
-						if (page.num == 1) this.listData = []; //如果是第一页需手动制空列表
-						this.listData = this.listData.concat(list); //追加新数据
-						if(!this.listData.length) this.isEmpty = true;
-						// 加载另一个
-						if(list.length < params.size) {
-							this.isRecommendRequest = true;
-							this.requestRem(page);
-							return;
+				if(this.isRecommendRequest) return this.requestRem(page);
+				myCoupon(params).then(res => {
+					let list = res.data ? res.data.data : []
+					list = list.map(function(item) {
+						//过期时间
+						let expirationTime = new Date(item.expire_time.replace(/\-/g, '/')).getTime()
+						let expirationDay = item.expire_time.slice(0, 10)
+						//剩余时间 毫秒
+						let difference = expirationTime - currTime;
+						//是否在今天
+						let isToday = parseTime(currTime, '{y}-{m}-{d}') === expirationDay
+						//类型
+						let timeType = 0
+						//小于一天倒计时
+						if (difference > 0 && difference < 24 * 60 * 60 * 1000 && isToday) {
+							timeType = 1
+						} else if (difference > 0 && difference <= 24 * 60 * 60 * 1000) {
+							timeType = 2
+						}else {
+							timeType = 3
 						}
-						// 抽奖直接跳转过——展示优惠券弹窗
-						if(this.applyCouponId) {
-							const newArr = this.listData.filter(item => item.id == this.applyCouponId);
-							this.applyCouponId = null;
-							newArr[0] && this.toUse(newArr[0]);
+						// 倒计时结束，但是优惠券正在使用
+						if(difference <= 0 && item.is_order) {
+							timeType = 4;
 						}
-					}).catch(err => {
-						//联网失败, 结束加载
-						this.mescroll.endErr();
+						return {
+							...item,
+							timeType,
+							difference,
+							expirationDay
+						}
 					});
-				} else {
-					this.requestRem(page);
-				}
+					//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+					this.mescroll.endSuccess(params.size, true);
+					//设置列表数据
+					if (page.num == 1) this.listData = []; //如果是第一页需手动制空列表
+					this.listData = this.listData.concat(list); //追加新数据
+					if(!this.listData.length) this.isEmpty = true;
+					// 加载另一个
+					if(list.length < params.size) {
+						this.isRecommendRequest = true;
+						this.requestRem(page);
+						return;
+					}
+					// 抽奖直接跳转过——展示优惠券弹窗
+					if(this.applyCouponId) {
+						const newArr = this.listData.filter(item => item.id == this.applyCouponId);
+						this.applyCouponId = null;
+						newArr[0] && this.toUseHandle(newArr[0]);
+					}
+				}).catch(err =>  this.mescroll.endErr());
 			},
 			async requestRem(page) {
 				if(!this.groupRecommendData) {
@@ -294,7 +273,6 @@
 					type
 				} = this.groupRecommendData;
 				let pageNum = this.pageNum;
-				// const pageNum = page.num;
 				let params = {
 					id,
 					page: pageNum,
@@ -363,10 +341,7 @@
 					if(goodLength % 2 && goodLength > 6) {
 						this.lastOddItem = this.goods.pop();
 					}
-				}).catch(()=>{
-					//联网失败, 结束加载
-					// this.mescroll.endErr();
-				});
+				}).catch(()=>this.mescroll.endErr());
 			},
 			// 牛金豆不足的情况
 			notEnoughCreditsHandle() {
@@ -375,7 +350,7 @@
 			lookHistory() {
                 this.$go('/pages/userInfo/myCouponHistory/index');
 			},
-			toUse(data) {
+			toUseHandle(data) {
 				this.$wxReportEvent('immediateuse');
 				let {
 					id,
@@ -390,37 +365,26 @@
 					order_id,
 					is_order,
 					coupon_id,
-					open_mini_type
+					open_mini_type,
+					qz_url
 				} = data;
 				switch (type) {
-					//商品券
 					case 1:
-						let url = '';
-						if(is_order && order_id) {
-							url = `/pages/userModule/order/payDetail?id=${order_id}&alertUsed=${this.alertUsed}`;
-							uni.navigateTo({ url });
-						} else {
-							// isDirectBack是否直接返回 -
-							// url = `/pages/shopMallModule/couponDetails/index?id=${coupon_id}&applyCouponId=${id}&isGetWxMsgId=true`;
-							console.log('id', id);
-							this.$refs.serviceRecharge.popupShow(id, this.alertUsed);
-							// url = `/pages/userModule/serviceRecharge/index?id=${id}&source=1&isDirectBack=true`;
-						}
-						break
-						//公众号
+						// 商品券
+						if(is_order && order_id) return this.$go(`/pages/userModule/order/payDetail?id=${order_id}&alertUsed=${this.alertUsed}`);
+						this.$refs.serviceRecharge.popupShow(id, this.alertUsed);
+						break;
 					case 2:
+						// 公众号
 						let link = is_main === 1 ? article_url : main_url;
-						uni.navigateTo({
-							url: `/pages/webview/webview?link=${encodeURIComponent(link)}`
-						})
-						break
-						//视频号
+						this.$go(`/pages/webview/webview?link=${encodeURIComponent(link)}`)
+						break;
 					case 3:
+						// 视频号
 						if (wx.openChannelsActivity) {
 							wx.openChannelsActivity({
 								finderUserName: video_id,
 								feedId: video_account_id,
-
 								complete(res) {
 									console.log(res)
 								}
@@ -432,9 +396,9 @@
 								content: '升级后再使用,微信版本要求>=8.0.10'
 							})
 						}
-						break
-						//小程序
+						break;
 					case 4:
+						// 小程序
 						let openMiniProgram = wx.navigateToMiniProgram;
 						if(open_mini_type == 2 && wx.canIUse('openEmbeddedMiniProgram')) {
 							openMiniProgram =  wx.openEmbeddedMiniProgram;
@@ -447,7 +411,11 @@
 								// 打开成功
 							}
 						});
-						break
+						break;
+					case 11:
+						// 移动积分商品的跳转
+						this.$go(`/pages/webview/webview?link=${encodeURIComponent(qz_url)}`)
+						break;
 				}
 			}
 		}

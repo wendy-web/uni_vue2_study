@@ -33,8 +33,7 @@
                         radius="16rpx"
                         :src="item.image"
                         use-loading-slot
-                        use-error-slot
-                    >
+                        use-error-slot>
                       <van-loading slot="loading" type="spinner" size="24" vertical />
                       <van-icon slot="error" color="#edeef1" size="120" name="photo-fail" />
                     </van-image>
@@ -43,18 +42,14 @@
                 <view class="list-item-title txt_ov_ell2">
                   <view class="jd_icon_box" v-if="item.lx_type != 1 && Number(item.face_value)">
                     <image class="bg_img" mode="scaleToFill"
-                      :src="imgUrl + 'static/shopMall/jd_icon_bg.png'"
-                    ></image>
+                      :src="imgUrl + 'static/shopMall/jd_icon_bg.png'"></image>
                     抵¥{{parseInt(item.face_value)}}券
                   </view>
                   {{ item.title }}
                 </view>
                 <view class="list_cont">
                   <view class="list_cont-left">
-                    <view
-                      class="exchange-num"
-                      :style="{ opacity: item.lx_type == 1 ? 1 : 0 }"
-                    >
+                    <view class="exchange-num" :style="{ opacity: item.lx_type == 1 ? 1 : 0 }" >
                       {{ item.exch_user_num }}人兑换
                     </view>
                     <view class="vip_box box_fl" v-if="userInfo.is_vip">
@@ -65,15 +60,10 @@
                       <text class="value">{{ item.credits }}</text>牛金豆
                     </view>
                   </view>
-                  <view
-                    :class="['bottom-tools', item.isOpenCell ? 'active' : '']"
-                    v-if="!item.isOpenCell"
-                  >
-                    <!-- 收藏 -->
-                    <view
-                        :class="['collection-btn', item.is_collect ? 'active' : '']"
-                        @click.stop="collectHandle(item, idx, index)"
-                    >
+                  <view v-if="!item.isOpenCell"
+                    :class="['bottom-tools', item.isOpenCell ? 'active' : '']" >
+                    <view :class="['collection-btn', item.is_collect ? 'active' : '']"
+                      @click.stop="collectHandle(item, idx, index)">
                       {{ item.is_collect ? "已收藏" : "收藏" }}
                     </view>
                     <view class="collection-btn">
@@ -130,7 +120,6 @@ import { parseTime } from "@/utils/index.js";
 import { getImgUrl } from "@/utils/auth.js";
 import { mapActions, mapGetters } from 'vuex';
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
-
 export default {
   mixins: [MescrollMixin, goDetailsFun, serviceCreditsFun, shareMixin],
   components: {
@@ -141,7 +130,7 @@ export default {
     return {
       list: [],
       upOption: {
-        auto: false,
+        auto: true,
       },
       downOption: {
         auto: false, // 不自动加载 (mixin已处理第一个tab触发downCallback)
@@ -152,13 +141,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([
-        "userInfo",
-    ])
+    ...mapGetters(["userInfo"])
   },
   onShow() {
-    let mescrollRef = this.$refs.mescrollRef;
-    mescrollRef.mescroll.resetUpScroll();
+    // let mescrollRef = this.$refs.mescrollRef;
+    // mescrollRef.mescroll.resetUpScroll();
   },
   onLoad(options) {
     let date = new Date();
@@ -256,7 +243,6 @@ export default {
   },
 };
 </script>
-
 <style lang="scss">
 page {
   font-family: PingFang SC, PingFang SC-5;

@@ -1,33 +1,33 @@
 import {
-    setToken,
-    getToken,
-    setGift,
-    getGift,
-    setAutoLogin,
-    setAutoPrivacy,
-    getAutoPrivacy,
     getAutoLogin,
+    getAutoPrivacy,
+    getGift,
+    getIsAlreadyShowLight,
+    getLocation,
+    getToken,
     getUserInfo,
     removeGetUserInfo,
     removeToken,
-    getLocation,
+    setAutoLogin,
+    setAutoPrivacy,
     setCardNewShow,
+    setGift,
     setIsAlreadyShowLight,
-    getIsAlreadyShowLight
+    setToken
 } from '@/utils/auth.js';
 
 import log from '@/utils/log.js';
 
 import {
-    wxLogin,
     getUser,
+    updateUser,
     userprofile,
-    updateUser
+    wxLogin
 } from '@/api/modules/login.js';
 import {
     profile,
     profit,
-} from '@/api/modules/user.js'
+} from '@/api/modules/user.js';
 const state = {
     userInfo: getUserInfo(), //用户信息
     token: getToken() || '', //token
@@ -45,6 +45,8 @@ const state = {
     profitInfo: {
         packet_amount: 0
     }, // 账户余额查询
+    lightArr: null, // 图片的icon的高亮
+    iconFindLightIndex: -1, // icon高亮的index
 };
 
 const mutations = {
@@ -58,6 +60,12 @@ const mutations = {
     },
     setSelRedPacket(state, sel) {
         state.isSelRedPacket = sel;
+    },
+    setLightArr(state, data) {
+        state.lightArr = data;
+    },
+    setIconFindLightIndex(state, index) {
+        state.iconFindLightIndex = index;
     },
     setSelNewPacket(state, sel) {
         state.isSelNewPacket = sel;

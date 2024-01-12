@@ -10,21 +10,27 @@ const shareMixin = {
                     pageNum: 1,
                     text: '首页',
                     defaultTitle: '领券啦！领了优惠券再下单，又省了一笔钱',
-                    defaultImg: 'https://file.y1b.cn/public/img/ttxl/202303/share_shopmall.png'
+                    defaultImg: 'https://file.y1b.cn/public/img/ttxl/202303/share_shopmall.png',
+                    isBtnShare: 'specialMini',
+                    btnShareObj: null
                 },
                 {
                     route: 'pages/tabBar/discounts/index',
                     pageNum: 2,
                     text: '惠生活',
                     defaultTitle: '肯德基点餐5折起，天天疯狂星期四',
-                    defaultImg: 'https://file.y1b.cn/store/1-0/23527/64719ea4deed0.png'
+                    defaultImg: 'https://file.y1b.cn/store/1-0/23527/64719ea4deed0.png',
+                    isBtnShare: 'specialMini',
+                    btnShareObj: null
                 },
                 {
                     route: 'pages/tabBar/task/index',
                     pageNum: 3,
                     text: '福利中心',
                     defaultTitle: '送你一份优惠券大礼包，第陆位领取手气最佳',
-                    defaultImg: 'https://file.y1b.cn/public/img/ttxl/img/202303/share_task.png'
+                    defaultImg: 'https://file.y1b.cn/public/img/ttxl/img/202303/share_task.png',
+                    isBtnShare: 'specialMini',
+                    btnShareObj: null
                 },
                 {
                     route: 'pages/tabBar/user/index',
@@ -33,6 +39,8 @@ const shareMixin = {
                     defaultTitle: '在吗，优惠天天领，最高99元，立即点击领取→',
                     defaultImg: 'https://file.y1b.cn/public/img/ttxl/img/202303/share_user.png',
                     shareRoute: 'pages/tabBar/shopMall/index?', // 分享进入的路径
+                    isBtnShare: 'specialMini',
+                    btnShareObj: null
                 },
                 {
                     route: 'pages/userModule/takeawayMenu/luckin/index',
@@ -82,6 +90,8 @@ const shareMixin = {
                     pageNum: 0, // 无后台配置
                     text: '领券中心',
                     defaultTitle: '领券下单更便宜',
+                    isBtnShare: 'specialMini',
+                    btnShareObj: null
                 },
                 {
                     route: 'pages/userModule/allowance/specialList/index',
@@ -147,7 +157,9 @@ const shareMixin = {
             if (data.from == "button") {
                 if (data.target.dataset) {
                     let shareItem = data.target.dataset.item;
-                    const sourceUrl = "/pages/userModule/productList/index";
+                    // 进入分享页后返回上一页的页面路径 - 目前取消，默认跳转首页
+                    // const sourceUrl = "/pages/userModule/productList/index";
+                    const sourceUrl = "";
                     const { title, image, skuId, cid1, cid3, lx_type, coupon_id, goods_sign, positionId } = shareItem;
                     share.title = title;
                     share.imageUrl = image;
@@ -160,8 +172,6 @@ const shareMixin = {
                     } else {
                         share.path = `/pages/shopMallModule/couponDetails/index?id=${coupon_id}${pathData}`;
                     }
-
-
                 }
             }
             return share;
@@ -192,9 +202,28 @@ const shareMixin = {
             share.imageUrl = image;
             share.path = `/pages/shopMallModule/feedDetailsList/index?${shareUrl}${pathData}`;
             return share;
+        },
+        // 首页专题分享
+        async homeSpecialBtnFun(data, pathData) {
+            let share = null;
+            let shareId = null;
+            if (data.from == "button") {
+                if (data.target.dataset) {
+                    shareId = data.target.dataset.id;
+                    const btnShareObj = this.currentSharePageObj.btnShareObj;
+                    const specialUrl = `/pages/userModule/allowance/specialList/index?id=${shareId}`
+                    const { share_title, share_img } = btnShareObj || {};
+                    share = {
+                        path: `/pages/tabBar/shopMall/index?specialUrl=${encodeURIComponent(specialUrl)}${pathData}`
+                    }
+                    share_title && (share.title = share_title);
+                    share_img && (share.imageUrl = share_img);
+                }
+            }
+            return share;
         }
     },
-    onShareAppMessage(data) {
+    async onShareAppMessage(data) {
         const { share_title, share_img, mlocid, plocid, team_uid, id } = this.getShareCont;
         let pathData = `&team_uid=${team_uid || 0}&mlocid=${mlocid || 0}&plocid=${plocid || 0}`;
         id && (pathData += `&id=${id}`); // 分享代入的id
@@ -205,8 +234,16 @@ const shareMixin = {
             imageUrl: share_img || defaultImg,
             path: `${pathUrl}${pathData}`
         };
-        if (isBtnShare == 'feedList') share = this.shareFeedBtnFun(data, pathData);
-        if (isBtnShare == 'cordList') share = this.shareMyCollectBtnFun(data, pathData);
+        console.log('share', share)
+        if (isBtnShare == 'feedList') share = this.shareFeedBtnFun(data, pathData); // feed的分享
+        if (isBtnShare == 'cordList') share = this.shareMyCollectBtnFun(data, pathData); // 记录分享
+        // 专题半屏弹窗的分享
+        if (isBtnShare == 'specialMini') {
+            share = {
+                ...share,
+                ...await this.homeSpecialBtnFun(data, pathData)
+            };
+        }
         return share;
     },
 }

@@ -1,40 +1,29 @@
 <template>
-	<view class="exchange-success">
-		<van-popup :show="show" @close="popupClose" custom-style="background-color: transparent;"
-			:close-on-click-overlay="false" :z-index="10000" overlay-style="background-color: rgba(0,0,0,0.20);">
-
-			<view class="exchange-success-box">
-				<!-- 背景 -->
-				<image class="exchange_bg" :src="imgUrl + '/change_bg.png'" mode="aspectFill"></image>
-				<!-- title -->
-				<view class="exchange-success-title">
-					兑换成功
-				</view>
-				<!-- 价值 -->
-				<view class="face-value">
-					<image class="face-value-icon" :src="imgUrl + '/card_icon.png'" mode="aspectFill">
-					</image>
-					<!-- 价值 -->
-					<view class="face-value-price">
-						{{Number(config.face_value).toLocaleString()}}元
-					</view>
-				</view>
-				<view class="tips">
-					<text>
-						正前往优惠券使用页
-					</text>
-					<view class="dotting"></view>
-				</view>
+<view class="exchange-success">
+	<van-popup :show="show" @close="popupClose" custom-style="background-color: transparent;"
+		:close-on-click-overlay="false" :z-index="10000" overlay-style="background-color: rgba(0,0,0,0.20);">
+		<view class="exchange-success-box">
+			<!-- 背景 -->
+			<image class="exchange_bg" :src="imgUrl + '/change_bg.png'" mode="aspectFill"></image>
+			<!-- title -->
+			<view class="exchange-success-title">兑换成功</view>
+			<!-- 价值 -->
+			<view class="face-value">
+				<image class="face-value-icon" :src="imgUrl + '/card_icon.png'" mode="aspectFill">
+				</image>
+				<view class="face-value-price">{{Number(config.face_value).toLocaleString()}}元</view>
 			</view>
-
-		</van-popup>
-
-	</view>
+			<view class="tips">
+				<text>正前往优惠券使用页</text>
+				<view class="dotting"></view>
+			</view>
+		</view>
+	</van-popup>
+</view>
 </template>
-
 <script>
 	import { getImgUrl } from '@/utils/auth.js';
-	let _time = null
+	let _time = null;
 	export default {
 		data() {
 			return {

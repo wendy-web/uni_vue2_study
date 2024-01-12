@@ -49,10 +49,7 @@
 		>
 			<view class="take_btn">取餐码</view>
 		</view>
-		<view class="take"
-			v-if="[4, 5].includes(Number(item.status))"
-			@click="againHandle(item.id)"
-		>
+		<view class="take" @click="againHandle(item.id)">
 			<view class="take_btn">再来一单</view>
 		</view>
 	</block>
@@ -60,9 +57,9 @@
 </template>
 
 <script>
+import { hwHome } from '@/api/modules/discounts.js';
+import { orderAgain, orderPay } from '@/api/modules/takeawayMenu/luckin.js';
 import { parseTime } from '@/utils/index.js';
-import { orderPay, orderAgain } from '@/api/modules/takeawayMenu/luckin.js';
-import { hwHome} from '@/api/modules/discounts.js';
 import { haiWeiObj, haiWeiStatus } from '../static/config';
 export default {
 	props: {

@@ -27,7 +27,9 @@
     :up="upOption"
     @up="upCallback"
   >
-      <!-- 牛金豆 -->
+  <!-- 图文的配置 -->
+    <view :class="['golden_bean-box', (iconFindLightIndex >= 0) ? 'light_bg' : '']"
+      @click="setIconFindHandle">
       <golden-bean
         id="goldenBean"
         :num="userInfo.credits"
@@ -38,9 +40,9 @@
         @openSpecialListMini="openSpecialListMiniHandle"
         @openRepairGetMini="openRepairGetMiniHandle"
       />
+    </view>
       <!-- sticky吸顶悬浮的菜单, 父元素必须是 mescroll -->
-      <view
-        id="tabInList"
+      <view id="tabInList"
         :class="['sticky-tabs', isFirstHidden ? 'tabs_active' : '']"
         :style="{ top: stickyTop + 'px', height: tabHeight + 'rpx' }"
         v-if="isShowStatus"
@@ -56,10 +58,7 @@
       </view>
       <!-- 悬浮图片的添加 -->
       <view class="notion_Img" :style="{ '--padding': tabHeightValue + 'px' }">
-        <anNoticeImgShow
-          ref="anNoticeImgShow"
-          @draw="drawHandle"
-        />
+        <anNoticeImgShow ref="anNoticeImgShow" @draw="drawHandle"/>
       </view>
       <!-- 兑换滚动 -->
       <view class="notion_bar" :style="{ top: notionBar_top + 'px' }">
@@ -111,6 +110,8 @@
     <specialLisMiniPage
       ref="specialLisMiniPage"
       @notEnoughCredits="notEnoughCreditsHandle"
+      @specialLisShare="specialLisShareHandle"
+      @isBannerClick="goodListBannerHandle"
     ></specialLisMiniPage>
     <!-- 优惠推荐商品的弹窗 -->
     <recommendDia ref="recommendDia" @close="closeOptionsHandle"></recommendDia>
@@ -161,48 +162,45 @@
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import anNoticeBarShow from "./content/anNoticeBarShow.vue";
-import anNoticeImgShow from "./content/anNoticeImgShow.vue";
-import meTabs from "./content/me-tabs.vue";
-import getViewPort from "@/utils/getViewPort.js";
-import goodList from "@/components/goodList.vue";
-import bootModule from "./content/bootModule.vue";
-import goldenBean from "./content/goldenBean.vue";
+import {
+goodsQuery,
+jingfen,
+keywordList,
+material,
+} from "@/api/modules/jsShop.js";
+import { bfxlPopup, couponGroup, couponList } from "@/api/modules/shopMall.js";
+import awardDia from "@/components/configurationDia/awardDia.vue";
+import configurationFun from "@/components/configurationDia/configurationFun.js";
+import configurationDia from "@/components/configurationDia/index.vue";
 import customTabBar from "@/components/customTabBar/index.vue";
-import cowpeaAnim from "./popup/cowpeaAnim.vue";
+import goodList from "@/components/goodList.vue";
 import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
 import serviceCredits from "@/components/serviceCredits/index.vue";
-import configurationDia from "@/components/configurationDia/index.vue";
-import configurationFun from "@/components/configurationDia/configurationFun.js";
-import awardDia from "@/components/configurationDia/awardDia.vue";
-import vipLimit from '@/components/vipLimit.vue';
-import specialLisMiniPage from "./content/specialLisMiniPage.vue";
-import repairGetMiniPage from "./content/repairGetMiniPage.vue";
+import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
 import swiperSearch from "@/components/swiperSearch.vue";
+import vipLimit from '@/components/vipLimit.vue';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import getViewPort from "@/utils/getViewPort.js";
+import anNoticeBarShow from "./content/anNoticeBarShow.vue";
+import anNoticeImgShow from "./content/anNoticeImgShow.vue";
+import bootModule from "./content/bootModule.vue";
+import goldenBean from "./content/goldenBean.vue";
+import meTabs from "./content/me-tabs.vue";
 import myBeans from "./content/myBeans.vue";
-import { couponGroup, couponList, bfxlPopup } from "@/api/modules/shopMall.js";
-import {
-  keywordList,
-  material,
-  jingfen,
-  goodsQuery,
-} from "@/api/modules/jsShop.js";
+import repairGetMiniPage from "./content/repairGetMiniPage.vue";
+import cowpeaAnim from "./popup/cowpeaAnim.vue";
 // 拼多多的列表
-import {
-    goodsRecommend,
-    goodsSearch,
-} from '@/api/modules/pddShop.js';
-import { mapActions, mapGetters, mapMutations } from "vuex";
-import { setStorage } from "@/utils/auth.js";
-import { setDiaType, getDiaType } from "@/utils/auth.js";
-import { getPlatform } from "@/utils/auth.js";
-import { taskNum } from "@/api/modules/task.js";
-import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
-import { getImgUrl, getUrlKey } from "@/utils/auth.js";
 import { groupRecommend } from "@/api/modules/index.js";
-import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import {
+goodsRecommend,
+goodsSearch,
+} from '@/api/modules/pddShop.js';
+import { taskNum } from "@/api/modules/task.js";
 import returnCashDia from '@/components/returnCashDia.vue';
+import { getDiaType, getImgUrl, getPlatform, getUrlKey, setDiaType, setStorage } from "@/utils/auth.js";
+import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
+import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
   mixins: [MescrollMixin, configurationFun, shareMixin], // 使用mixin
   components: {
@@ -267,14 +265,14 @@ export default {
       isShowVipList: false,
       skuId: '',
       isShowReturnCashDia: false,
-      is_lx_type: 1
+      is_lx_type: 1,
+      psite: 0,
+      lsite: 0,
     };
   },
   watch: {
     userTotal(n, o) {
-      if (o && o.coupon < n.coupon) {
-        this.showDotal();
-      }
+      if (o && o.coupon < n.coupon) this.showDotal();
     },
     tabIndex(index) {
       this._index = index || 0;
@@ -304,7 +302,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userInfo", "gift", "diaList", 'isAutoLogin', 'isAlreadyShowLight']),
+    ...mapGetters(["userInfo", "gift", "diaList", 'isAutoLogin', 'isAlreadyShowLight', 'iconFindLightIndex']),
     // 列表数据
     goods() {
       if (this.tabs.length > 0 ) {
@@ -415,7 +413,10 @@ export default {
     ...mapMutations({
       setDiaList: "user/setDiaList",
       delCurrentDiaList: "user/delCurrentDiaList",
-      setAlreadyShowLight: "user/setAlreadyShowLight"
+      setAlreadyShowLight: "user/setAlreadyShowLight",
+			setIconFindLightIndex: "user/setIconFindLightIndex",
+      setLightArr: "user/setLightArr"
+
     }),
     drawHandle() {
       this.profitInfoRequest().then((result) => {
@@ -439,6 +440,15 @@ export default {
         this.setAlreadyShowLight();
       }
     },
+    // 关闭icon的高亮区域
+    setIconFindHandle() {
+      // 关闭天天过来时高亮展示的样式
+      if(this.iconFindLightIndex >= 0) {
+				this.setIconFindLightIndex(-1);
+				this.delCurrentDiaList();
+        this.setLightArr(null);
+			};
+    },
     deleteBysubunionidHandle({ listIndex, index }) {
       this.goods.splice(listIndex, 1);
     },
@@ -457,35 +467,37 @@ export default {
     notEnoughCreditsHandle() {
       this.exchangeFailedShow = true;
     },
+    // 打开专题页面的半屏
     openSpecialListMiniHandle(pageUrl) {
       const id = getUrlKey(pageUrl, "id");
+      const coupon_id = getUrlKey(pageUrl, "coupon_id");
       if(!id) return this.$toast('不存在id');
-      this.$refs.specialLisMiniPage.init(id);
+      this.$refs.specialLisMiniPage.initShow(id, coupon_id);
+    },
+    specialLisShareHandle({ share_word, share_img }) {
+      this.currentSharePageObj.btnShareObj = {
+        share_title: share_word,
+        share_img
+      }
     },
     // 打开限时捡漏的
     openRepairGetMiniHandle() {
       this.$refs.repairGetMiniPage.init();
     },
     // 去赚取牛金豆
-    goTaskHandle() {
-      taskNum().then((res) => {
-        this.exchangeFailedShow = false;
-        if (res.code == 1) {
-          const { total_times, reward_times, video_times } = res.data;
-          if (total_times > 0) {
-            this.serviceCreditsShow = true;
-            // 次数大于0； 打开赚取牛金豆的弹窗
-            if (video_times == 0) {
-              this.$refs.serviceCredits.setSwiperNum(1);
-            }
-            return;
-          }
+    async goTaskHandle() {
+      const res = await taskNum();
+      this.exchangeFailedShow = false;
+      if (res.code == 1 && res.data) {
+        const { total_times, video_times } = res.data;
+        if (total_times > 0) {
+          this.serviceCreditsShow = true;
+          // 次数大于0； 打开赚取牛金豆的弹窗
+          if (video_times == 0) this.$refs.serviceCredits.setSwiperNum(1);
+          return;
         }
-        // 跳转到福利中心
-        uni.reLaunch({
-          url: "/pages/tabBar/task/index",
-        });
-      });
+      }
+      this.$switchTab('/pages/tabBar/task/index'); // 跳转到福利中心
     },
     // 关闭赚取牛金豆 并更新用户信息
     closeHandle() {
@@ -672,7 +684,6 @@ export default {
           this.mescroll.endSuccess(total_count, true);
           this.pageNum = 0;
         } else {
-          // console.log('this.是否有下一页面：', isNextPage, 'list.length:',pageNum, list.length, total_count)
           this.mescroll.endSuccess(list.length || total_count, isNextPage);
         }
         this.pageNum += 1;
@@ -724,9 +735,10 @@ export default {
       this.isScrollTo = true;
     },
     // 页面的滚动事件
-    onPageScroll(e) {
+    onPageScroll(event) {
       !this.isAlreadyShowLight && this.setShowLightHandle(); // 关闭天天过来时高亮展示的样式
-      const scrollTopNum = Math.ceil(e.scrollTop);
+      this.setIconFindHandle(); // 关闭天天过来时高亮展示的样式
+      const scrollTopNum = Math.ceil(event.scrollTop);
       this.showTitleBg = (scrollTopNum > 0);
       this.isShowCowpeaNav = (scrollTopNum >= this.stickyTop);
       this.isShowSticky = (scrollTopNum >= this.navTopHeight);
@@ -773,13 +785,18 @@ export default {
       recommendId,
       codeErrorId,
       losingNew,
-      skuId
+      skuId,
+      specialUrl,
+      psite,
+      lsite
     }) {
       this.awardId = awardId; // 彬纷进入 - 抽奖
       this.recommendId = recommendId; // 彬纷进入 - 半屏推券
       this.codeErrorId = codeErrorId; // 彬纷进入 - 扫码异常
       this.losingNew = losingNew; // 彬纷进入 - 新人扫码未中奖
       this.skuId = skuId;
+      this.psite = psite; // 全局配置弹窗
+      this.lsite = lsite;
       if (this.awardId) {
         this.initAward();
         setDiaType("award");
@@ -797,6 +814,11 @@ export default {
       if (this.recommendId) {
         this.$refs.recommendDia.initShow();
         setDiaType("recommendId");
+      }
+      // 分享进入 - 弹出专题页面的半屏展示列表
+      if(specialUrl) {
+        const pageUrl = decodeURIComponent(specialUrl);
+        this.openSpecialListMiniHandle(pageUrl)
       }
     },
     // 列表广告位 - 跳转至半屏推券
@@ -846,7 +868,7 @@ page {
     top: 0;
     width: 100%;
     height: 428rpx;
-    z-index: 0;
+    z-index: -1;
   }
 }
 .swiper_search{
@@ -1040,6 +1062,23 @@ page {
     border-radius: 36rpx;
     font-size: 28rpx;
     text-align: center;
+  }
+}
+.golden_bean-box{
+  position: relative;
+  &.light_bg {
+    z-index: 10;
+    &::before {
+      content: '\3000';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      background: rgba($color: #000, $alpha: 0.75);
+      border-radius: 0;
+    }
   }
 }
 </style>

@@ -33,8 +33,11 @@
     <good-list
       :list="goods"
       :isBolCredits="true"
+      :isShowBanner="true"
       @notEnoughCredits="notEnoughCreditsHandle"
+      @isBannerClick="isBannerClickHandle"
     ></good-list>
+  <recommendDia ref="recommendDia"></recommendDia>
 </mescroll-body>
 <!-- 牛金豆不足的情况 -->
 <exchangeFailed
@@ -53,19 +56,19 @@
 </template>
 
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import getViewPort from '@/utils/getViewPort.js';
-import { getImgUrl } from '@/utils/auth.js';
+import { goodsTheme } from '@/api/modules/allowance.js';
+import { goodsQuery, jingfen, keywordList, material } from '@/api/modules/jsShop.js';
+import { goodsRecommend, goodsSearch } from '@/api/modules/pddShop.js';
 import goodList from '@/components/goodList.vue';
 import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
 import serviceCredits from '@/components/serviceCredits/index.vue';
 import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
 import swiperSearch from '@/components/swiperSearch.vue';
-import { goodsTheme } from '@/api/modules/allowance.js';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { getImgUrl } from '@/utils/auth.js';
+import getViewPort from '@/utils/getViewPort.js';
 import goDetailsFun from '@/utils/goDetailsFun';
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
-import { goodsRecommend, goodsSearch } from '@/api/modules/pddShop.js';
-import { material, jingfen, goodsQuery, keywordList } from '@/api/modules/jsShop.js';
 import { mapActions, mapGetters } from 'vuex';
 export default {
   mixins: [MescrollMixin, goDetailsFun, serviceCreditsFun, shareMixin], // 使用mixin
@@ -130,6 +133,12 @@ export default {
     ...mapActions({
       getUserInfo: 'user/getUserInfo',
     }),
+    isBannerClickHandle(item) {
+      this.$refs.recommendDia.initGtData({
+        ...item,
+        interval_time: item.type_sid
+      });
+    },
     async initTextList () {
       const res = await keywordList();
       if (res.code == 1 && res.data) {
@@ -147,7 +156,7 @@ export default {
             if(res.code != 1) return this.mescroll.endSuccess(0);
             if(page.num == 1) this.goods = [];
             this.configData = res.data;
-            const { bg_color, bg_img, share_word,share_img } = res.data;
+            const { bg_color, bg_img, share_word, share_img } = res.data;
             this.subjectColor = bg_color;
             this.bg_img = bg_img;
             // 混合方法中得对象键值的赋值

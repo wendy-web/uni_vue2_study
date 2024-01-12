@@ -167,6 +167,13 @@
     @domObjHeight="domObjHeightHandle"
     @recommend="recommendUpdate"
   />
+  <!-- 商品专题的半屏组件 -->
+  <specialLisMiniPage
+    ref="specialLisMiniPage"
+    @notEnoughCredits="notEnoughCreditsHandle"
+    @specialLisShare="specialLisShareHandle"
+    @isBannerClick="goodListBannerHandle"
+  ></specialLisMiniPage>
   <!-- 配置的弹窗管理 -->
   <configurationDia
     ref="configurationDia"
@@ -204,26 +211,28 @@
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import customTabBar from "@/components/customTabBar/index.vue";
-import configurationDia from "@/components/configurationDia/index.vue";
+import { groupRecommend } from "@/api/modules/index.js";
+import { goodsQuery, jingfen, keywordList, material } from "@/api/modules/jsShop.js";
+import { savingInfo } from "@/api/modules/packet.js";
+import { msgTemplate, profitMes } from '@/api/modules/user.js';
 import configurationFun from "@/components/configurationDia/configurationFun.js";
+import configurationDia from "@/components/configurationDia/index.vue";
+import customTabBar from "@/components/customTabBar/index.vue";
+import goodList from "@/components/goodList.vue";
+import returnCashDia from '@/components/returnCashDia.vue';
 import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
 import serviceCredits from "@/components/serviceCredits/index.vue";
 import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
-import goodList from "@/components/goodList.vue";
-import { mapGetters, mapActions, mapMutations } from "vuex";
-import config from "./config.js";
+import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
+import swiperSearch from '@/components/swiperSearch.vue';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getImgUrl } from "@/utils/auth.js";
 import getViewPort from "@/utils/getViewPort.js";
-import { groupRecommend } from "@/api/modules/index.js";
-import { material, jingfen, goodsQuery, keywordList } from "@/api/modules/jsShop.js";
-import { savingInfo } from "@/api/modules/packet.js";
-import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
 import { parseTime } from '@/utils/index.js';
-import returnCashDia from '@/components/returnCashDia.vue';
-import swiperSearch from '@/components/swiperSearch.vue';
-import { msgTemplate, profitMes } from '@/api/modules/user.js';
+import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import config from "./config.js";
+
 export default {
   mixins: [MescrollMixin, configurationFun, serviceCreditsFun, shareMixin], // 使用mixin
   components: {
@@ -233,7 +242,8 @@ export default {
     exchangeFailed,
     goodList,
     returnCashDia,
-    swiperSearch
+    swiperSearch,
+    specialLisMiniPage
   },
   data() {
     return {
@@ -370,6 +380,13 @@ export default {
       if (res.code == 1 && res.data) {
         this.textList = res.data;
       }
+    },
+    // 列表广告位 - 跳转至半屏推券
+    goodListBannerHandle(item) {
+      this.$refs.recommendDia.initGtData({
+        ...item,
+        interval_time: item.type_sid
+      });
     },
     shotOitNum(item) {
       const { id, key } = item;
@@ -582,6 +599,13 @@ export default {
     // 牛金豆不足的情况
     notEnoughCreditsHandle() {
       this.exchangeFailedShow = true;
+    },
+    // 分享的文案获取
+    specialLisShareHandle({ share_word, share_img }) {
+      this.currentSharePageObj.btnShareObj = {
+        share_title: share_word,
+        share_img
+      }
     },
     scrollUpHandle() {
       this.mescroll.scrollTo(0);
