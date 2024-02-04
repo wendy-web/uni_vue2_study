@@ -115,3 +115,19 @@ export function teamBind(data) {
         data
     });
 }
+// 加量包购买记录
+export function dosingPacket(data) {
+    return API.request({
+        url: '/api/Savings/dosingPacket',
+        method: 'post',
+        data
+    });
+}
+// 加量包详情
+export function detailDosing(data) {
+    return API.request({
+        url: '/api/Savings/detailDosing',
+        method: 'post',
+        data
+    });
+}

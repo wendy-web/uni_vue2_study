@@ -46,20 +46,25 @@
                             <van-image
                                 height="80rpx"
                                 width="80rpx"
-                                :src="itemList.goods_imgs || (itemList.goods_type == 9 && 'https://file.y1b.cn/store/1-0/2416/6598c9ea9fb0a.png')"
+                                :src="itemList.goods_imgs || haiWeiObj[itemList.pay_way]"
                                 use-loading-slot
                                 use-error-slot
                             >
-                                <van-loading slot="loading" type="spinner" size="20" vertical />
-                                <van-icon slot="error" color="#edeef1" size="120" name="photo-fail" />
+                                <van-loading slot="loading" type="spinner" size="30" vertical />
+                                <van-icon slot="error" color="#edeef1" size="30" name="photo-fail" />
                             </van-image>
                         </view>
                         <view class="fl_col_sp_bt txt_lab">
                             <view class="txt_ov_ell1">{{itemList.goods_sku_name}}</view>
-                            <view class="item_lab">成交日期 {{ itemList.create_time }}</view>
+                            <view class="item_lab">{{ itemList.create_time }}</view>
                         </view>
                     </view>
-                    <view class="item_list-right">省{{itemList.saving_money}}元</view>
+                    <view class="item_list-right fl_col_sp_bt">
+                        <view style="font-weight: bold;">省{{itemList.saving_money}}元</view>
+                        <view v-if="Number(itemList.packet_money)" style="color: #999;">
+                            红包抵{{itemList.packet_money}}元
+                        </view>
+                    </view>
                 </view>
             </view>
         </block>
@@ -89,6 +94,14 @@ export default {
             },
             detailList: [],
             totalSavingMoney: 0,
+            haiWeiObj: {
+                'HW_wallace': 'https://file.y1b.cn/store/1-0/23124/656d7cf501530.png',
+                'HW_burger': 'https://file.y1b.cn/store/1-0/23124/656d7d3a90115.png',
+                'HW_pizza': 'https://file.y1b.cn/store/1-0/23124/656d7d1c22d7c.png',
+                'HW_heytea': 'https://file.y1b.cn/store/1-0/23124/656d7d4cccc81.png',
+                'HW_nayuki': 'https://file.y1b.cn/store/1-0/23124/656d7d5ece54d.png',
+                'xl_hf': 'https://file.y1b.cn/store/1-0/2416/6598c9ea9fb0a.png'
+            }
         }
     },
     computed: {
@@ -249,7 +262,10 @@ export default {
         overflow: hidden;
     }
 }
-.item_list-right{
+.item_list-right {
+    font-size: 26rpx;
     white-space: nowrap;
+    text-align: right;
+    margin-left: 10rpx;
 }
 </style>

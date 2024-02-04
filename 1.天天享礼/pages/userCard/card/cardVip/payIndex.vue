@@ -36,7 +36,7 @@
             @selClick="selectVipHandle"
         ></selCardList>
         <!-- 每月享 红包的专享 -->
-        <openRedPackList :selVipObj="selVipObj"></openRedPackList>
+        <openRedPackList :selVipObj="selVipObj" :selVipIndex="isSelectVipIndex"></openRedPackList>
         <!-- 支付 -->
         <view class="pay_btn" @click="buyVipHandle">
             <image src="https://file.y1b.cn/store/1-0/23111/6541f028b09a0.png" mode="scaleToFill" class="pay_lab-img" v-if="selVipObj.reduce"></image>
@@ -67,16 +67,16 @@
 </template>
 
 <script>
+import { buy, getLists, orderPay } from "@/api/modules/packet.js";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { formatPrice, getImgUrl, toAgreeLook } from '@/utils/auth.js';
 import getViewPort from '@/utils/getViewPort.js';
-import { getImgUrl, formatPrice, toAgreeLook } from '@/utils/auth.js';
-import paySuccessDia from '../component/paySuccessDia.vue';
-import swiperListCom from '../component/swiperListCom.vue';
-import selCardList from '../component/selCardList.vue';
+import { mapActions, mapGetters } from "vuex";
 import openRedPackList from '../component/openRedPackList.vue';
-import { mapGetters, mapActions } from "vuex";
-import { getLists, buy, orderPay } from "@/api/modules/packet.js";
+import paySuccessDia from '../component/paySuccessDia.vue';
 import prerogativeList from '../component/prerogativeList.vue';
+import selCardList from '../component/selCardList.vue';
+import swiperListCom from '../component/swiperListCom.vue';
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {

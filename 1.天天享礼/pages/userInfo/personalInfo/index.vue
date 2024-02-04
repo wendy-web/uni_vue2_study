@@ -59,6 +59,13 @@
           <van-icon name="arrow" color="#999999" size="14" />
         </view>
       </view>
+      <view class="list-item" @click="animationHandle">
+        <view class="li-left">测试</view>
+        <view class="li-right">
+          <view class="lir-item">旋转木马动画效果</view>
+          <van-icon name="arrow" color="#999999" size="14" />
+        </view>
+      </view>
     </view>
     <view class="back_login" @click="exitLoginHandle">退出登录</view>
     <!-- 性别选择 -->
@@ -128,11 +135,11 @@
   </view>
 </template>
 <script>
+import { getImgUrl } from '@/utils/auth.js';
+import { getAstro } from "@/utils/getAstro.js";
 import { compareVersion, parseTime } from "@/utils/index.js";
 import uploadImgAI from "@/utils/uploadImgAI.js";
-import { getAstro } from "@/utils/getAstro.js";
-import { getImgUrl } from '@/utils/auth.js';
-import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import confirmDia from './confirmDia.vue';
 export default{
     components:{
@@ -183,17 +190,20 @@ export default{
     this.$refs.privacyOpen.LifetimesShow();
   },
 	methods:{
-        ...mapActions({
-            editUpdateUser: 'user/editUpdateUser',
-            updateUserNew: 'user/updateUserNew'
-        }),
-        ...mapMutations({
-            setUserInfo: 'user/setUserInfo',
-            setAutoLogin: 'user/setAutoLogin'
-        }),
-        chooseAvatar(event) {
-            this.uploadImg(event.detail.avatarUrl);
-        },
+    ...mapActions({
+      editUpdateUser: 'user/editUpdateUser',
+      updateUserNew: 'user/updateUserNew'
+    }),
+    ...mapMutations({
+      setUserInfo: 'user/setUserInfo',
+      setAutoLogin: 'user/setAutoLogin'
+    }),
+    chooseAvatar(event) {
+      this.uploadImg(event.detail.avatarUrl);
+    },
+    animationHandle() {
+      this.$go('/pages/userComModule/ani3Dflower/index')
+    },
     async uploadImg(imgPath) {
       try {
         //上传图片

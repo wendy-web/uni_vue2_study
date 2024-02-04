@@ -2,7 +2,7 @@
 <view @touchmove.stop>
 <van-popup
     :show="isShow"
-    @close="popupClose"
+    @close="popupClose(true)"
     position="bottom"
     custom-style="overflow: inherit; background: transparent; max-height:85vh;"
     round
@@ -15,7 +15,7 @@
 <!-- @touchmove.native.stop.prevent -->
 <!-- :catchtouchmove="true" -->
 <view class="detail_box ani_bottom_active">
-    <image class="close_icon" :src="imgUrl +'static/images/close_back.png'" mode="aspectFill" @click="popupClose"></image>
+    <image class="close_icon" :src="imgUrl +'static/images/close_back.png'" mode="aspectFill" @click="popupClose(true)"></image>
     <scroll-view
         :scroll-y="true"
         class="detail_cont"
@@ -24,8 +24,10 @@
         :lower-threshold="100"
     >
         <view class="rec_detail-box" v-if="!isOver">
-            <view class="rec_detail fl_bet">
-                <view class="rec_detail-left">{{ couponPrice }}</view>
+            <view class="rec_detail fl_ard">
+                <view class="rec_detail-left fl_center">
+                    <view class="detail_num">{{ max_coupon_money }}</view>
+                </view>
                 <view class="rec_detail-right">
                     <view>优惠券<text style="font-size: 26rpx;font-weight: 400;">(全场通用)</text></view>
                     <view class="cd_txt" v-if="isShowRemainTime">
@@ -166,7 +168,7 @@ export default {
             imgUrl: getImgUrl(),
             isShow: false,
             isOver: false,
-            couponPrice: 30,
+            couponPrice: 0,
             expandFaceValue: 31,
             remainTime: 0,
             timeData: null,
@@ -182,6 +184,8 @@ export default {
             expandIndex: 0,
             isCodeErrorShow: false, // 扫码异常展示推券的事件区分
             isClickList: false, // 未点击过商品列表
+            is_advertise: 0,
+            max_coupon_money: 0
         }
     },
     mounted() {
@@ -192,7 +196,10 @@ export default {
         interstitialAd.onError((err) => {
             console.log('插屏广告加载失败', err);
         })
-        interstitialAd.onClose(() => {})
+        interstitialAd.onClose(() => {
+            console.log('关闭插屏广告- 再执行事件', );
+            this.$emit('close');
+        })
     },
     methods: {
         ...mapMutations({
@@ -244,17 +251,19 @@ export default {
                 path: jdShareLink || mobile_url
             });
         },
-        popupClose() {
+        popupClose(isClick = false) {
             this.isShow = false;
-            this.delCurrentDiaList();
-            this.$emit('close');
             // 扫码异常关闭弹窗时 - 展示插屏广告
-            if(this.isCodeErrorShow) {
+            if(this.is_advertise && isClick) {
                 this.$wxReportEvent("closetq");
                 if (!this.isClickList && interstitialAd && interstitialAd.initFinish) {
                     setTimeout(() => interstitialAd.show(), 100);
+                    return;
                 }
+                this.$emit('close');
+                return;
             }
+            this.$emit('close');
         },
         popupShow() {
             if(this.diaList.length) {
@@ -298,6 +307,7 @@ export default {
             countDown && countDown.start();
         },
         async initShow(jdDate = null){
+            // console.log('jdDate', jdDate)
             this.isClickList = false;
             if(jdDate) {
                 this.jdDate = jdDate;
@@ -321,8 +331,10 @@ export default {
             this.goods = [];
             this.pageNum = 1;
             this.isCodeErrorShow = false;
-            const { coupon } = this.jdDate;
+            const { coupon, max_coupon_money, is_advertise } = this.jdDate;
             this.couponPrice = coupon && coupon[0];
+            this.max_coupon_money = max_coupon_money;
+            this.is_advertise = is_advertise;
             this.popupShow();
             this.requestRem();
         },
@@ -331,15 +343,14 @@ export default {
             this.$go(`/pages/userModule/productList/index`);
         },
         scrollToLowerHandle(event) {
-            // console.log('event', event.target);
             if(!this.isScroll || this.goods.length < 5) return;
             this.requestRem();
         },
         scrollHandle(event) {
-            // console.log('event-scrollHandle:', event)
         },
         // 弹窗进入 初始化
         initGtData(data) {
+            // console.log('data', data)
             this.isClickList = false;
             this.pageNum = 1;
             this.goods = [];
@@ -353,14 +364,17 @@ export default {
                 eliteId,
                 groupId,
                 group_type,
-                coupon,
                 end_time,
+                coupon,
                 over,
                 interval_time,
                 isCodeErrorShow,
                 goods_lx_type,
-                positionId
+                positionId,
+                is_advertise,
+                max_coupon_money
             } = data;
+            this.is_advertise = is_advertise;
             this.isCodeErrorShow = isCodeErrorShow;
             if(end_time || interval_time) {
                 const cur_date = new Date().getTime();
@@ -374,8 +388,10 @@ export default {
             } else {
                 this.isShowRemainTime = false
             }
-            if(over) this.popupClose(); // 倒计时结束
-            this.couponPrice = coupon && coupon[0]
+            // if(!over) this.popupClose(); // 倒计时结束
+            this.couponPrice = coupon && coupon[0];
+            this.max_coupon_money = max_coupon_money;
+            // console.log('goods_lx_type', goods_lx_type)
             this.jdDate = {
                 id: group_id,
                 cid: group_cid,
@@ -404,6 +420,7 @@ export default {
                 lx_type,
                 positionId
             } = this.jdDate;
+            // console.log('lx_type:request', lx_type)
             let params = {
                 id,
                 page: this.pageNum,
@@ -545,9 +562,22 @@ export default {
         font-size: 68rpx;
         font-weight: 600;
         line-height: 96rpx;
+        position: relative;
         &::after {
             content: '元';
             font-size: 28rpx;
+        }
+        .detail_num {
+            position: relative;
+            &::before {
+                content: '\3000';
+                background: url("https://file.y1b.cn/store/1-0/24119/65a9cd74bec29.png") 0 0 / cover;
+                width: 64rpx;
+                height: 32rpx;
+                position: absolute;
+                top: 5rpx;
+                right: -74rpx;
+            }
         }
     }
     .rec_detail-right{
@@ -638,6 +668,7 @@ export default {
     .good_name_box {
         margin: 20rpx 16rpx 0;
         font-size: 28rpx;
+        min-height: 84rpx;
         color: #333333;
     }
     .list_price{

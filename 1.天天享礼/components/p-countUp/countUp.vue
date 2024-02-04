@@ -13,7 +13,22 @@
 		:style="{fontWeight:fontWeight}"
 	>
 		<block v-for="(myIndex, index) in indexArr" :key="index">
-			<swiper class="swiper" vertical="true" :current="myIndex" circular="true" v-bind:style="{color:color,width:myIndex == 10 ? '7px' : width+'px',height:height+'px',lineHeight:fontSize+'px',fontSize:fontSize+'px', fontWeight: fontWeight}">
+			<swiper
+				class="swiper" vertical="true"
+				:autoplay="isAutoplay && myIndex !== 10"
+				:interval="10"
+				:circular="true"
+				:current="myIndex"
+				circular="true"
+				v-bind:style="{
+					color:color,
+					width: myIndex == 10 ? dotWidth+'px' : width+'px',
+					height:height+'px',
+					lineHeight:fontSize+'px',
+					fontSize:fontSize+'px',
+					fontWeight: fontWeight
+				}"
+				>
 				<swiper-item>
 					<view class="swiper-item">0</view>
 				</swiper-item>
@@ -44,7 +59,7 @@
 				<swiper-item>
 					<view class="swiper-item">9</view>
 				</swiper-item>
-				<swiper-item>
+				<swiper-item v-if="myIndex == 10">
 					<view class="swiper-item">.</view>
 				</swiper-item>
 			</swiper>
@@ -75,18 +90,28 @@
 			fontWeight: {
 				type: Number,
 				default: 400
+			},
+			dotWidth: {
+				type: String,
+				default: '7'
+			},
+			isSetTimeAutoNum: {
+				type: Number,
+				default: 0
 			}
 		},
 		data() {
 			return {
-				indexArr: []
+				indexArr: [],
+				fillNum: 0,
+				isAutoplay: false
 			};
 		},
 		created() {
 			let { num } = this;
             if(!num) return this.indexArr = [0];
 			let arr = new Array(num.toString().length);
-			arr.fill(0);
+			arr.fill(this.fillNum);
 			this.indexArr = arr;
 		},
 		watch: {
@@ -96,12 +121,25 @@
 				let arr = Array.prototype.slice.apply(this.indexArr);
 				let newLen = val.toString().length;
 				let oldLen = oldVal.toString().length;
+				if(newLen == oldLen && this.isSetTimeAutoNum) {
+					this.isAutoplay = true;
+					arr = arr.map(res => {
+						if(res == 10) return res;
+						const randomNum = Math.floor(Math.random() * 10);
+						if(res == randomNum) return res ? 0 : 9;
+						return randomNum;
+					});
+					// console.log('arr', arr)
+					this.indexArr = arr;
+				}
+				// 增加一位小数
 				if (newLen > oldLen) {
 					for (let i = 0; i < newLen - oldLen; i++) {
-						arr.push(0);
+						arr.push(this.fillNum);
 					}
 					this.indexArr = arr;
 				}
+				// 去除一位小数
 				if (newLen < oldLen) {
 					for (let i = 0; i < oldLen - newLen; i++) {
 						arr.pop();
@@ -135,7 +173,10 @@
 						copyIndexArr[i] = Number(_num[i]);
 					}
 				}
-				this.indexArr = copyIndexArr;
+				setTimeout(() => {
+					this.isAutoplay = false;
+					this.indexArr = copyIndexArr;
+				}, this.isAutoplay ?  this.isSetTimeAutoNum : 0);
 			}
 		}
 	};

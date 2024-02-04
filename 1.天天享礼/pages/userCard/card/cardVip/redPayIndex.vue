@@ -1,49 +1,43 @@
 <template>
 <view class="card">
-    <xh-navbar
-        :leftImage="imgUrl + '/static/images/left_back.png'"
-        @leftCallBack="$topCallBack"
-        :fixed="true"
-        title="省钱卡红包"
-        titleColor="#333"
-        :navberColor="isShowNavBerColor ? '#FDE8B9': ''"
-    ></xh-navbar>
-    <image :src="cardVip_bgImg" :style="{ '--margin': navHeight + 'px' }" mode="widthFix"  class="nav_bg"></image>
-    <!-- 未开通 -->
+  <xh-navbar
+    :leftImage="imgUrl + '/static/images/left_back.png'"
+    @leftCallBack="$topCallBack"
+    :fixed="true"
+    title="省钱卡红包"
+    titleColor="#333"
+    :navberColor="isShowNavBerColor ? '#FDE8B9': ''"
+  ></xh-navbar>
+  <image :src="cardVip_bgImg" :style="{ '--margin': navHeight + 'px' }" mode="widthFix"  class="nav_bg"></image>
+    <!-- 未开通/加量包  -->
     <onOpenPacket
-        :saving_money="saving_money"
-        :isDisCheckbox="isDisCheckbox"
-        :isSelectRedPacket="isOpenSelectRedPacket"
-        @change="openChangeSelHandle"
-        v-if="!is_vip"
-    ></onOpenPacket>
-    <!-- 加量包 -->
-    <onOpenPacket
-        :saving_money="saving_money"
-        :isDisCheckbox="isDisCheckbox"
-        :isSelectRedPacket="isSelectRedPacket"
-        :isShowFeature="false"
-        :packNum="dosingArr.dosing_packet_num"
-        v-else-if="dosingArr.dosing_packet_num"
-        @change="changeSelHandle"
+      :saving_money="saving_money"
+      :isDisCheckbox="isDisCheckbox"
+      :isSelectRedPacket="is_vip ? isSelectRedPacket : isOpenSelectRedPacket"
+      :isShowFeature="!is_vip"
+      :packNum="is_vip ? dosingArr.dosing_packet_num : 6"
+      :packCreditsNum="dosingArr.dosing_packet_money"
+      :cardType="card_type"
+      @change="(value) => is_vip ? changeSelHandle(value) : openChangeSelHandle(value)"
+      v-if="!is_vip || dosingArr.dosing_packet_num"
     ></onOpenPacket>
     <featureCom v-if="!is_vip"></featureCom>
     <view
-        :class="['use_box', isShowCardTop ? 'active' : '', !is_vip ? 'white_bg' : '', isScrollBox ? 'set_height' : '']"
-        :style="{ '--useheight': useHeight }"
-        v-if="isContPack"
+      :class="['use_box', isShowCardTop ? 'active' : '', !is_vip ? 'white_bg' : '', isScrollBox ? 'set_height' : '']"
+      :style="{ '--useheight': useHeight }" v-if="isContPack"
     >
         <image :src="cardImgUrl + 'use_box.png'" mode="widthFix" class="bg_img" v-if="isShowCardTop"></image>
         <scroll-view :scroll-y="isScrollBox" class="detail_cont">
             <!-- 加量包的呈现 -->
             <itemPacket
               :packNum="dosingArr.dosing_packet_num"
+              :packCreditsNum="dosingArr.dosing_packet_money"
               :packTime="dosingArr.time"
               :isDisCheckbox="isDisCheckbox"
               v-if="!is_vip && dosingArr.dosing_packet_num"
             ></itemPacket>
             <block v-if="isListPack">
-                <view class="use_title" style="background-color: ; margin-top: 32rpx;">已为你选定最大优惠</view>
+                <view class="use_title">已为你选定最大优惠</view>
                 <view class="use_red-box">
                     <block v-for="(itemHas, indexHas) in useArr" :key="indexHas">
                         <itemUsePacket
@@ -79,18 +73,18 @@
 </view>
 </template>
 <script>
+import {
+simulatePacket,
+} from '@/api/modules/packet.js';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { formatPrice, getImgUrl, toAgreeLook } from "@/utils/auth.js";
 import getViewPort from "@/utils/getViewPort.js";
-import { getImgUrl, formatPrice, toAgreeLook } from "@/utils/auth.js";
-import onOpenPacket from '../component/onOpenPacket.vue';
+import { mapGetters, mapMutations } from "vuex";
 import featureCom from '../component/featureCom.vue';
+import itemHasPacket from '../component/itemHasPacket.vue';
 import itemPacket from '../component/itemPacket.vue';
 import itemUsePacket from '../component/itemUsePacket.vue';
-import itemHasPacket from '../component/itemHasPacket.vue';
-import { mapGetters, mapMutations } from "vuex";
-import {
-    simulatePacket,
-} from '@/api/modules/packet.js';
+import onOpenPacket from '../component/onOpenPacket.vue';
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {
@@ -112,6 +106,7 @@ export default {
             ly_type: 0,
             saving_money: 0,
             is_vip: 0,
+            card_type: 1,
             havArr: [],
             useArr: [],
             dosingArr: null, // 加量包的呈现
@@ -121,15 +116,15 @@ export default {
     computed: {
         ...mapGetters(["userInfo", 'isSelRedPacket', 'isSelNewPacket']),
         navHeight() {
-            let viewPort = getViewPort();
-            return viewPort.navHeight;
+          let viewPort = getViewPort();
+          return viewPort.navHeight;
         },
         cardVip_bgImg() {
             let url = "redPayIndex_bg.png";
             return `${this.cardImgUrl}${url}`;
         },
         isDisCheckbox() {
-            return this.ly_type != 0;
+          return this.ly_type != 0;
         },
         isShowCardTop(){
             return this.is_vip && this.dosingArr.dosing_packet_num;
@@ -138,78 +133,76 @@ export default {
             return this.is_vip && !this.dosingArr.dosing_packet_num;
         },
         useHeight() {
-            let viewPort = getViewPort();
-            let useHeight = viewPort.windowHeight - viewPort.navHeight;
-            return useHeight + 'px';
+          let viewPort = getViewPort();
+          let useHeight = viewPort.windowHeight - viewPort.navHeight;
+          return useHeight + 'px';
         },
         isListPack() {
-            const isListPack = this.useArr.length || this.useArr.length
-            return isListPack
+          const isListPack = this.useArr.length || this.useArr.length;
+          return isListPack;
         },
         isContPack() {
-            let isContPack = this.isListPack;
-            if(this.dosingArr && !isContPack) {
-                isContPack = !this.is_vip && dosingArr.dosing_packet_num;
-            }
-            return isContPack;
+          let isContPack = this.isListPack;
+          if(this.dosingArr && !isContPack) {
+            isContPack = !this.is_vip && dosingArr.dosing_packet_num;
+          }
+          return isContPack;
         }
 
     },
   // 页面周期函数--监听页面加载
   async onLoad(option) {
     if(option.saving_money) {
-        this.saving_money = option.saving_money;
-        this.ly_type = option.ly_type;
+      this.saving_money = option.saving_money;
+      this.ly_type = option.ly_type;
     }
-    this.init()
+    this.init();
   },
   methods: {
     ...mapMutations({
-        setSelRedPacket: 'user/setSelRedPacket',
-        setSelNewPacket: 'user/setSelNewPacket'
+      setSelRedPacket: 'user/setSelRedPacket',
+      setSelNewPacket: 'user/setSelNewPacket'
     }),
     formatPrice,
     toAgreeLook,
     async init(page) {
-        const res = await simulatePacket({
-            saving_money: this.saving_money,
-            ly_type: this.ly_type
-        });
-        if(res.code != 1) return;
-        const { is_vip, dosingArr, havArr, useArr } = res.data;
-        this.is_vip = is_vip;
-        // this.is_vip = 0;
-        this.isHidden = !this.is_vip;
-        this.dosingArr = dosingArr;
-        // this.dosingArr = {};
-        this.havArr = havArr;
-        this.useArr = useArr;
+      const res = await simulatePacket({
+        saving_money: this.saving_money,
+        ly_type: this.ly_type
+      });
+      if(res.code != 1) return;
+      const { is_vip, card_type, dosingArr, havArr, useArr } = res.data;
+      this.is_vip = is_vip;
+      this.card_type = card_type;
+      this.isHidden = !this.is_vip;
+      this.dosingArr = dosingArr;
+      this.havArr = havArr;
+      this.useArr = useArr;
     },
     confirmHandle() {
-        // 千猪与海威 - 直接返回上一页
-        if(this.ly_type != 0) return this.$topCallBack();
-        this.setSelRedPacket(this.isSelectRedPacket);
-        if(!this.userInfo.is_vip) this.setSelNewPacket(this.isOpenSelectRedPacket);
-        this.$topCallBack();
+      // 千猪与海威 - 直接返回上一页
+      if(this.ly_type != 0) return this.$topCallBack();
+      this.setSelRedPacket(this.isSelectRedPacket);
+      if(!this.userInfo.is_vip) this.setSelNewPacket(this.isOpenSelectRedPacket);
+      this.$topCallBack();
     },
     onPageScroll(event) {
-        const scrollTop = Math.ceil(event.scrollTop);
-        // console.log('scrollTop :>> ', scrollTop, this.navHeight);
-        if(scrollTop >= this.navHeight) {
-            this.isShowNavBerColor = true;
-            return;
-        }
-        this.isShowNavBerColor = false;
+      const scrollTop = Math.ceil(event.scrollTop);
+      if(scrollTop >= this.navHeight) {
+        this.isShowNavBerColor = true;
+        return;
+      }
+      this.isShowNavBerColor = false;
     },
     changeSelHandle(isCheck) {
-        this.isSelectRedPacket = isCheck;
-        if(isCheck){
-            this.isOpenSelectRedPacket = isCheck;
-        }
+      this.isSelectRedPacket = isCheck;
+      if(isCheck){
+        this.isOpenSelectRedPacket = isCheck;
+      }
     },
     openChangeSelHandle(isCheck) {
-        this.isOpenSelectRedPacket = isCheck;
-        this.isSelectRedPacket = isCheck;
+      this.isOpenSelectRedPacket = isCheck;
+      this.isSelectRedPacket = isCheck;
     },
   },
 };
@@ -459,6 +452,7 @@ page {
     color: #333;
     line-height: 44rpx;
     margin-bottom: 24rpx;
+    padding-top: 32rpx;
   }
 }
 .use_red-box{

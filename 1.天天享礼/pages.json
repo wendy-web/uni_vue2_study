@@ -563,6 +563,41 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/userCash/",
+            "name": "userCash",
+            "pages": [{
+                    "path": "cash/index",
+                    "style": {
+                        "navigationBarTitleText": "领红包",
+                        "navigationStyle": "custom",
+                        "backgroundColor": "#fff",
+                        "onReachBottomDistance": 500
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/userComModule/",
+            "name": "ani3D",
+            "pages": [{
+                    "path": "ani3D/index",
+                    "style": {
+                        "navigationBarTitleText": "旋转目马动画",
+                        "navigationStyle": "custom",
+                        "backgroundColor": "#fff"
+                    }
+                },
+                {
+                    "path": "ani3Dflower/index",
+                    "style": {
+                        "navigationBarTitleText": "烟花动画演示",
+                        "backgroundColor": "#fff",
+                        "navigationStyle": "custom"
+                    }
+                }
+            ]
         }
     ],
     "preloadRule": {},

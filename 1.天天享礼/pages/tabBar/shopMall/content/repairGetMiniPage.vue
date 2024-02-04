@@ -30,7 +30,7 @@
                     use-slot
                     format="mm:ss"
                     @change="onChangeHandle"
-                    style="--count-down-text-color:#fff;--count-down-font-size:26rpx;"
+                    style="--count-down-text-color:#333;--count-down-font-size:26rpx;"
                     class="cd_time-con"
                     v-if="isGoDetail"
                 >
@@ -99,15 +99,14 @@
 </van-popup>
 </template>
 <script>
-import repairConfirmDia from './repairConfirmDia.vue';
-import goDetailsFun from '@/utils/goDetailsFun';
-import { getImgUrl } from '@/utils/auth.js';
-import getViewPort from '@/utils/getViewPort.js';
 import { leakList } from '@/api/modules/allowance.js';
-import { parseTime } from '@/utils/index.js';
-import { mapGetters, mapMutations } from 'vuex';
 import { bysubunionid } from '@/api/modules/jsShop.js';
 import { goodsPromotion } from '@/api/modules/pddShop.js';
+import { getImgUrl } from '@/utils/auth.js';
+import goDetailsFun from '@/utils/goDetailsFun';
+import { parseTime } from '@/utils/index.js';
+import { mapGetters, mapMutations } from 'vuex';
+import repairConfirmDia from './repairConfirmDia.vue';
 export default {
     mixins: [goDetailsFun], // 使用mixin
     computed: {

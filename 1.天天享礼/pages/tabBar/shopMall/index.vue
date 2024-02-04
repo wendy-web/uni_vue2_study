@@ -36,7 +36,6 @@
         ref="goldenBean"
         @heightUpdate="goldenBeanHeightFun"
         @goTask="goTaskHandle"
-        @notVip="notVipHandle"
         @openSpecialListMini="openSpecialListMiniHandle"
         @openRepairGetMini="openRepairGetMiniHandle"
       />
@@ -148,17 +147,14 @@
     ></awardDia>
     <!-- 捡漏的半屏组件 -->
     <repairGetMiniPage ref="repairGetMiniPage"></repairGetMiniPage>
-    <!-- vip开通的拦截 -->
-    <vipLimit ref="vipLimit"
-      :isShow="isShowVipList"
-      @close="isShowVipList = false"
-    ></vipLimit>
     <!-- 领取返回的弹窗 -->
     <returnCashDia
       :isShow="isShowReturnCashDia"
       @close="isShowReturnCashDia = false"
       @getDraw="getDrawHandle"
     ></returnCashDia>
+    <!-- 红包返现 -->
+    <cashBackDia ref="cashBackDiaRef" @close="closeCashBackDiaHandle"></cashBackDia>
 </view>
 </template>
 <script>
@@ -178,12 +174,12 @@ import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
 import serviceCredits from "@/components/serviceCredits/index.vue";
 import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
 import swiperSearch from "@/components/swiperSearch.vue";
-import vipLimit from '@/components/vipLimit.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import getViewPort from "@/utils/getViewPort.js";
 import anNoticeBarShow from "./content/anNoticeBarShow.vue";
 import anNoticeImgShow from "./content/anNoticeImgShow.vue";
 import bootModule from "./content/bootModule.vue";
+import cashBackDia from './content/cashBackDia.vue';
 import goldenBean from "./content/goldenBean.vue";
 import meTabs from "./content/me-tabs.vue";
 import myBeans from "./content/myBeans.vue";
@@ -216,12 +212,12 @@ export default {
     serviceCredits,
     configurationDia,
     awardDia,
-    vipLimit,
     specialLisMiniPage,
     repairGetMiniPage,
     swiperSearch,
     myBeans,
-    returnCashDia
+    returnCashDia,
+    cashBackDia
   },
   data() {
     return {
@@ -262,7 +258,6 @@ export default {
       pageNum: 1,
       groupId_index: 0,
       isScrollTo : true,
-      isShowVipList: false,
       skuId: '',
       isShowReturnCashDia: false,
       is_lx_type: 1,
@@ -427,9 +422,6 @@ export default {
     },
     getDrawHandle() {
       this.isShowReturnCashDia = false;
-    },
-    notVipHandle() {
-      this.isShowVipList = true;
     },
     toLoginHandle() {
       this.$go('/pages/tabAbout/login/index');
@@ -761,11 +753,14 @@ export default {
       }
     },
     // 关闭入口的弹窗的弹窗
-    closeOptionsHandle() {
+    closeOptionsHandle(isDelDiaList = true) {
       setDiaType("");
       this.isShowAwardDia = false;
       this.awardId = null;
       this.recommendId = null;
+      isDelDiaList && this.updateDiaInitial();
+    },
+    updateDiaInitial() {
       this.$refs.pointUpgradeDia.upgrade();
       this.configurationInit();
       this.delCurrentDiaList();
@@ -818,7 +813,7 @@ export default {
       // 分享进入 - 弹出专题页面的半屏展示列表
       if(specialUrl) {
         const pageUrl = decodeURIComponent(specialUrl);
-        this.openSpecialListMiniHandle(pageUrl)
+        this.openSpecialListMiniHandle(pageUrl);
       }
     },
     // 列表广告位 - 跳转至半屏推券
@@ -830,7 +825,11 @@ export default {
     },
     async initAward() {
       const res = await bfxlPopup({ platform: this.platform });
-      if (res.code != 1) return;
+      if (res.code != 1) {
+        this.awardId = null;
+        this.configurationInit();
+        return this.delCurrentDiaList("award");
+      };
       const { other } = res.data;
       if (other) {
         this.delCurrentDiaList("award");
@@ -846,7 +845,11 @@ export default {
       }
       this.isShowAwardDia = true;
       this.setDiaList("award");
-    }
+    },
+    closeCashBackDiaHandle() {
+      // 关闭当前的弹窗
+      this.configurationInit(false);
+    },
   },
   onUnload() {
     this._RewardedVideoAd.videoAdDestroy();

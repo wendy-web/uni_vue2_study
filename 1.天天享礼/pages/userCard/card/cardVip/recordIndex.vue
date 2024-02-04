@@ -20,14 +20,13 @@
 	</swiper>
 </view>
 </template>
-
 <script>
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import getViewPort from '@/utils/getViewPort.js';
-import selTab from '../component/selTab.vue';
-import recordSwiperItem from '../component/recordSwiperItem.vue';
 import { getImgUrl } from '@/utils/auth.js';
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import getViewPort from '@/utils/getViewPort.js';
+import { mapGetters } from "vuex";
+import recordSwiperItem from '../component/recordSwiperItem.vue';
+import selTab from '../component/selTab.vue';
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {
@@ -78,7 +77,6 @@ export default {
     }
 }
 </script>
-
 <style lang="scss">
 .tab_box {
     box-shadow: 0rpx 4rpx 10rpx 0rpx rgba(0,0,0,0.06);

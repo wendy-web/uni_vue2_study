@@ -9,16 +9,16 @@
         <!-- 最多人的选择 -->
         <image src="https://file.y1b.cn/store/1-0/23113/6544b3ca2c471.png" mode="scaleToFill" class="bg_img" v-if="isSelectVipIndex == index"></image>
         <image src="https://file.y1b.cn/store/1-0/23113/6544b3f626857.png" mode="scaleToFill" class="bg_img" v-else></image>
-        <image :src="cardImgUrl + 'sel_item-active.png'" mode="scaleToFill" class="sel_item-active" v-if="index== 1"></image>
+        <image src="https://file.y1b.cn/store/1-0/24116/65a5f0bdeaf73.png" mode="scaleToFill" class="sel_item-active" v-if="index== 1"></image>
+        <view class="price_title">{{ item.title }}</view>
+        <view class="price_line">￥{{ item.line_price }}</view>
         <view v-html="formatPrice(item.buy_price, 5)" class="item_price"></view>
-        <view class="price_line">￥{{ item.line_price }}/月</view>
         <view class="price_value">{{item.market_price}}元红包</view>
     </view>
 </view>
 </template>
-
 <script>
-import { getImgUrl, formatPrice } from '@/utils/auth.js';
+import { formatPrice, getImgUrl } from '@/utils/auth.js';
 export default {
     props: {
         vipLists: {
@@ -44,7 +44,6 @@ export default {
     },
 };
 </script>
-
 <style scoped lang="scss">
 .sel_item{
     position: relative;
@@ -52,17 +51,18 @@ export default {
     width: 222rpx;
     height: 266rpx;
     font-size: 28rpx;
-    text-align: center;
-    color: #333;
+    padding: 28rpx 0 0 28rpx;
+    box-sizing: border-box;
     .item_price {
-        margin-top: 58rpx;
+        margin-top: 16rpx;
+        color: #B75A30;
     }
-    .sel_item-active{
-        width: 136rpx;
-        height: 66rpx;
+    .sel_item-active {
+        width: 150rpx;
+        height: 82rpx;
         position: absolute;
-        left: 0;
-        top: -10rpx;
+        left: -6rpx;
+        top: -40rpx;
     }
     &.active {
         .item_price {
@@ -84,6 +84,11 @@ export default {
         color: #A17B6A;
         line-height: 36rpx;
     }
+    .price_title {
+        font-size: 36rpx;
+        color: #a17b6a;
+        font-weight: bold;
+    }
     .price_value{
         position: absolute;
         bottom: 8rpx;
@@ -91,6 +96,7 @@ export default {
         text-align: center;
         left: 0;
         font-weight: 400;
+        color:#A17B6A;
     }
 }
 </style>

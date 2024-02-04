@@ -86,6 +86,11 @@ const shareMixin = {
                     shareRoute: 'pages/userModule/takeawayMenu/starbucks/index?brand_id=99&rote=1&pathSource=discounts'
                 },
                 {
+                    route: 'pages/userCash/cash/index',
+                    pageNum: 12,
+                    text: '领现金'
+                },
+                {
                     route: 'pages/userModule/productList/index',
                     pageNum: 0, // 无后台配置
                     text: '领券中心',

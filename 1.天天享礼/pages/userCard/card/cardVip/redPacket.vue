@@ -8,20 +8,15 @@
         <view class="red_cont">
             <view class="red_item-box">
                 <view class="red_item"
-                    v-for="(item, index) in packetList"
-                    :key="index"
+                    v-for="(item, index) in packetList" :key="index"
                 >
                     <image class="bg_img" :src="cardImgUrl + 'red_num-bg.png'" mode="aspectFill" v-if="item.status == 0"></image>
                     <image class="bg_img" :src="cardImgUrl + 'red_toUse1.png'" mode="aspectFill" v-if="item.status == 1"></image>
-                    <view class="red_item-price">
-                        <text style="font-size: 24rpx;">￥</text>
-                        {{ item.money }}
-                    </view>
-                    <view class="red_item-day" v-if="item.status == 0">
-                        {{ item.word }}
-                    </view>
+                    <view class="red_item-price"> {{ item.money }}</view>
+                    <view class="red_item-day" v-if="item.status == 0"> {{ item.word }} </view>
                 </view>
             </view>
+            <!-- 暂时去掉无效红包的展示 -->
             <!-- <block v-if="oldPacketList.length">
                 <view class="noValid_title fl_bet">
                     <view>无效红包</view>
@@ -37,10 +32,7 @@
                         <image class="bg_img" :src="cardImgUrl + 'red_toUse.png'" mode="aspectFill" v-if="item.status == 0"></image>
                         <image class="bg_img" :src="cardImgUrl + 'red_toUse1.png'" mode="aspectFill" v-if="item.status == 1"></image>
                         <image class="bg_img" :src="cardImgUrl + 'red_toUse3.png'" mode="aspectFill" v-if="item.status == 3"></image>
-                        <view class="red_item-price">
-                            <text style="font-size: 24rpx;">￥</text>
-                            {{ item.money }}
-                        </view>
+                        <view class="red_item-price">{{ item.money }}</view>
                     </view>
                 </view>
             </block> -->
@@ -131,6 +123,7 @@ page {
     background: #ffffff;
     border-radius: 32rpx;
     padding: 24rpx 28rpx;
+    box-sizing: border-box;
 }
 .red_packet-box {
     background: #fceab3;
@@ -176,6 +169,10 @@ page {
         color: #fe423d;
         line-height: 60rpx;
         margin: 38rpx auto 0;
+        &::before {
+            content: '￥';
+            font-size: 24rpx;
+        }
     }
     .red_item-day {
         position: absolute;

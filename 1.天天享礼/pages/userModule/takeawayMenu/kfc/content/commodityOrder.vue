@@ -146,15 +146,14 @@
 </view>
 </template>
 <script>
-import { msgTemplate } from '@/api/modules/takeawayMenu/luckin.js';
 import {
-  orderSure,
-  orderCreate,
+orderCreate,
+orderSure,
 } from '@/api/modules/takeawayMenu/kfc.js';
+import { msgTemplate } from '@/api/modules/takeawayMenu/luckin.js';
+import { getENV, getImgUrl } from '@/utils/auth.js';
 import { isPhoneReg } from '@/utils/index.js';
-import { mapGetters, mapActions } from 'vuex';
-import { getImgUrl } from '@/utils/auth.js';
-import { getENV } from '@/utils/auth.js';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   props: {
     comNum: {
@@ -260,9 +259,7 @@ export default {
     },
     async payHandle() {
       // 验证手机号
-      if(this.phoneValue && !isPhoneReg(this.phoneValue)) {
-        return this.$toast('请输入正确的手机号码');
-      }
+      if(this.phoneValue && !isPhoneReg(this.phoneValue)) return this.$toast('请输入正确的手机号码');
       const res = await msgTemplate();
       if(res.code != 1) return;
       const { refund, take } = res.data;
@@ -328,8 +325,8 @@ export default {
       });
     },
     goredPayIndexHandle(){
-        const { time_amount, saving_money } = this.savings;
-        this.$go(`/pages/userCard/card/cardVip/redPayIndex?time_amount=${time_amount}&saving_money=${saving_money}&ly_type=1`);
+      const { saving_money } = this.savings;
+      this.$go(`/pages/userCard/card/cardVip/redPayIndex?saving_money=${saving_money}&ly_type=1`);
     }
   },
 }

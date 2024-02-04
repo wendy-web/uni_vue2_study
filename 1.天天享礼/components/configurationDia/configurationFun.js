@@ -83,6 +83,7 @@ const serviceCredits = {
     watch: {
         diaList: {
             handler(newValue, oldValue) {
+                console.log('监听弹窗diaList', newValue);
                 if (newValue.length && newValue[0] == "config") {
                     this.isShowConfig = true;
                     this.delCurrentDiaList('config');
@@ -97,6 +98,12 @@ const serviceCredits = {
                 this.psite = null;
                 this.configurationInit();
             }
+        },
+        isShowConfig(newValue, oldValue) {
+            // console.log('isShowConfig : 弹窗的监听newValue::', newValue, oldValue);
+            // if (!newValue && oldValue) {
+            //     this.delCurrentDiaList('config');
+            // }
         }
     },
     onLoad(options) {
@@ -147,13 +154,17 @@ const serviceCredits = {
         getHandle() {
             (![1, 4].includes(this.currentPageNum)) && this.showDia(); // 混合模式展示弹窗
         },
-        async configurationInit() {
+        async configurationInit(isBesidesPage = true) {
             // this.psite / this.lsite - 不需要登陆的状态也可访问
             if (!this.isAutoLogin && !this.psite && !this.lsite) return;
             // 显示页面1 - 首页 2 - 惠生活 3 - 福利中心 4 - 我的 5 - 支付成功
             // people_type 1 是新用户 2 是老用户
             // this.gift
             let pageNum = this.currentPageNum;
+            if (pageNum == 1 && isBesidesPage) {
+                if (this.$refs.cashBackDiaRef) this.$refs.cashBackDiaRef.init(); // 领红包的监听 - 结束后访问当前
+                return;
+            }
             // codeErrorId - 从彬纷有礼的扫码异常进入； losingNew： 新人未中奖
             this.codeErrorId && (pageNum = 9);
             this.losingNew && (pageNum = 11);
@@ -163,12 +174,9 @@ const serviceCredits = {
             }
             this.psite && (params.psite = this.psite); // 悬浮
             this.lsite && (params.lsite = this.lsite); // 高亮
-            console.log('params:', params)
             const res = await popover(params);
             if (res.code != 1) return;
             const { list, people_type, lightArr } = res.data;
-            console.log('lightArr: 接口获取', lightArr);
-            console.log('list: 接口获取', list);
             lightArr && this.setLightArr(lightArr);
             // 扫码异常/新人未中奖 - 进行的
             if ((this.codeErrorId || this.losingNew) && !list.length) {
@@ -193,6 +201,7 @@ const serviceCredits = {
             this.showDia();
         },
         showDia() {
+            console.log('this.diaList', this.diaList)
             if (!this.showList.length) return;
             this.config = this.showList[0];
             let {
@@ -211,7 +220,6 @@ const serviceCredits = {
                     this.$refs.configurationDia.resetTime();
                     if (is_advertisement) {
                         this.interstitialAd.show().catch((err) => {
-                            // console.log(err);
                             this.requestPopoverRember()
                         });
                     } else {

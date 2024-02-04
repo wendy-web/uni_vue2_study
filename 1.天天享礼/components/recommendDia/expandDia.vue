@@ -97,8 +97,9 @@ export default {
       let intervalDuration =  10;
       // if(step < 1) intervalDuration = 10;
       const interval = setInterval(() => {
-        currentValue = Math.ceil(currentValue + step);
-        this.showExpandNum = currentValue;
+        // currentValue = Math.ceil(currentValue + step);
+        currentValue = Number(currentValue) + Number(step);
+        this.showExpandNum = parseFloat(currentValue).toFixed(targetValue > 99 ? 0 : 2);
         if (currentValue >= targetValue) {
           this.showExpandNum = targetValue;
           clearInterval(interval);

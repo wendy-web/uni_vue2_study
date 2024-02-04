@@ -41,7 +41,8 @@
             </view>
             <view class="nick_cont" @click.stop="goRecordHandle">
                 <view class="nick_name">{{ userInfo.nick_name || "未登录" }}</view>
-                <view class="nick_lab" v-if="vipObject.over_time">{{vipObject.over_time}}到期</view>
+                <view class="nick_lab" v-if="vipObject.over_time">
+                    省钱{{['月', '季', '年'][vipObject.card_type || 0]}}卡：{{vipObject.over_time}}到期</view>
             </view>
         </view>
         <view class="car_top-cont fl_bet">
@@ -111,17 +112,17 @@
 </template>
 
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import getViewPort from '@/utils/getViewPort.js';
-import { getImgUrl, getUrlKey } from '@/utils/auth.js';
-import { mapGetters, mapMutations, mapActions } from "vuex";
-import { savingInfo, nowPacket, goodsList, teamBind } from "@/api/modules/packet.js";
 import { groupRecommend } from "@/api/modules/index.js";
-import { material, jingfen, goodsQuery } from "@/api/modules/jsShop.js";
-import paySuccessDia from '../component/paySuccessDia.vue';
-import confirmDia from '../component/confirmDia.vue';
-import applySuccessDia from '../component/applySuccessDia.vue';
+import { goodsQuery, jingfen, material } from "@/api/modules/jsShop.js";
+import { goodsList, nowPacket, savingInfo, teamBind } from "@/api/modules/packet.js";
 import goodList from "@/components/goodList.vue";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { getImgUrl, getUrlKey } from '@/utils/auth.js';
+import getViewPort from '@/utils/getViewPort.js';
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import applySuccessDia from '../component/applySuccessDia.vue';
+import confirmDia from '../component/confirmDia.vue';
+import paySuccessDia from '../component/paySuccessDia.vue';
 import prerogativeList from '../component/prerogativeList.vue';
 export default {
     mixins: [MescrollMixin], // 使用mixin
@@ -430,7 +431,7 @@ export default {
     padding: 48rpx 35rpx 36rpx 40rpx;
     &::before {
         content: '\3000';
-        background: url("https://file.y1b.cn/store/1-0/231116/6555f0f3c73ae.png") 0 0 / 100% 100%;
+        background: url("https://file.y1b.cn/store/1-0/24116/65a5ebf32ac93.png") 0 0 / 100% 100%;
         position: absolute;
         left: 0;
         top: 0;
@@ -444,8 +445,9 @@ export default {
         position: absolute;
         width: 288rpx;
         height: 230rpx;
-        right: 15rpx;
+        right: -24rpx;
         top: -51rpx;
+        z-index: -1;
     }
     .vip_cont-icon {
         position: absolute;
@@ -559,6 +561,7 @@ export default {
         font-weight: 400;
         color: #666;
         line-height: 34rpx;
+        margin-top: 6rpx;
     }
 }
 .card_cont{

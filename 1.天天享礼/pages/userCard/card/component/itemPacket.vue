@@ -1,8 +1,8 @@
 <template>
 <view>
     <view class="use_title">
-        <image class="card_icon" :src="cardImgUrl + 'card_icon1.png'"  mode="aspectFill" ></image>
-        会员专享加量包
+      <image class="card_icon" :src="cardImgUrl + 'card_icon1.png'"  mode="aspectFill" ></image>
+      会员专享加量包
     </view>
     <view class="use_red-item fl_bet">
         <image src="https://file.y1b.cn/store/1-0/23113/6544a80455e4f.png" mode="scaleToFill" class="bg_img"></image>
@@ -19,12 +19,15 @@
             </view>
         </view>
         <view class="use_item-right box_fl">
-            <view class="card_remind-dia">
+            <!-- <view class="card_remind-dia">
                 <image :src="cardImgUrl + 'redPayIndex_dia.png'" mode="scaleToFill" class="bg_img"></image>
                 立减￥2.5
+            </view> -->
+            <!-- <view class="price_line">¥2.50</view> -->
+            <view class="detail_price">
+              <view> {{packCreditsNum}} 牛金豆</view>
+              <view class="price_line-num">¥{{ 5 * packNum}}</view>
             </view>
-            <view class="price_line">¥2.50</view>
-            <view class="detail_price">¥<text style="font-size: 36rpx">0</text></view>
             <van-checkbox
                 checked-color="#FE9433"
                 icon-size="18px"
@@ -41,35 +44,39 @@
 <script>
 import { getImgUrl } from "@/utils/auth.js";
 export default {
-    props: {
-        packTime: {
-            type: String,
-            default: 0,
-        },
-        packNum: {
-            type: Number,
-            default: 6
-        },
-        isDisCheckbox: {
-            type:Boolean,
-            default: false
-        },
-        isSelectRedPacket: {
-            type: Boolean,
-            default: true
-        },
+  props: {
+    packTime: {
+      type: String,
+      default: 0,
     },
-    data() {
-        return {
-            mgUrl: getImgUrl(),
-            cardImgUrl:`${getImgUrl()}static/card/`,
-        };
+    packNum: {
+      type: Number,
+      default: 6
     },
-    methods: {
-        changeSelHandle(event) {
-            this.$emit("change", event.detail);
-        },
+    isDisCheckbox: {
+      type:Boolean,
+      default: false
     },
+    isSelectRedPacket: {
+      type: Boolean,
+      default: true
+    },
+    packCreditsNum: {
+      type: Number,
+      default: 0
+    }
+  },
+  data() {
+    return {
+      mgUrl: getImgUrl(),
+      cardImgUrl:`${getImgUrl()}static/card/`,
+    };
+  },
+  methods: {
+    changeSelHandle(event) {
+      this.$emit("change", event.detail);
+    },
+  },
 };
 </script>
 
@@ -100,11 +107,11 @@ export default {
   color: #fff;
 }
 .use_title {
-    font-size: 32rpx;
-    font-weight: 500;
-    color: #333;
-    line-height: 44rpx;
-    margin-bottom: 24rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+  line-height: 44rpx;
+  margin-bottom: 24rpx;
 }
 .use_red-item {
   position: relative;
@@ -163,7 +170,18 @@ export default {
   line-height: 42rpx;
 }
 .detail_price {
-  color: #f84842;
   margin: 0 15rpx 0 4rpx;
+  font-size: 24rpx;
+  color: #fe423d;
+  position: relative;
+}
+.price_line-num {
+  position: absolute;
+  width: 100%;
+  text-align: right;
+  font-size: 26rpx;
+  text-decoration:  line-through;;
+  color: #999;
+  line-height: 36rpx;
 }
 </style>

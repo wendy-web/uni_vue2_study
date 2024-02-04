@@ -12,18 +12,18 @@
 </template>
 
 <script>
-	import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-	import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mixins/mescroll-more-item.js";
-	import goodList from '@/components/goodList.vue';
 	import {
-		material,
-		jingfen,
-		goodsQuery
-	} from '@/api/modules/jsShop.js';
-    import {
-		goodsRecommend,
-		goodsSearch,
-	} from '@/api/modules/pddShop.js';
+goodsQuery,
+jingfen,
+material
+} from '@/api/modules/jsShop.js';
+import {
+goodsRecommend,
+goodsSearch,
+} from '@/api/modules/pddShop.js';
+import goodList from '@/components/goodList.vue';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mixins/mescroll-more-item.js";
 	export default {
 		mixins: [MescrollMixin,MescrollMoreItemMixin], // 注意此处还需使用MescrollMoreItemMixin (必须写在MescrollMixin后面)
 		components: {
@@ -31,21 +31,17 @@
 		},
 		data() {
 			return {
-				downOption:{
+				downOption: {
 					auto: false, // 不自动加载 (mixin已处理第一个tab触发downCallback)
 					use: false
 				},
-				upOption:{
-					auto:false, // 不自动加载
+				upOption: {
+					auto: false,
 					page: {
-						num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
-						size: 1 // 每页数据的数量
+						num: 0,
+						size: 1
 					},
-					noMoreSize: 4, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
-					// empty:{
-					// 	tip: '~ 空空如也 ~', // 提示
-					// 	btnText: '去看看'
-					// }
+					noMoreSize: 4,
 				},
 				goods: [], //列表数据
 				lastOddItem: null,

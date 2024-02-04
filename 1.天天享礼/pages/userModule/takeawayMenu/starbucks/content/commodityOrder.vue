@@ -147,10 +147,9 @@
 <script>
 import { msgTemplate } from '@/api/modules/takeawayMenu/luckin.js';
 import { orderSure2, starbucksOrder } from '@/api/modules/takeawayMenu/starbucks.js';
+import { getENV, getImgUrl } from '@/utils/auth.js';
 import { isPhoneReg } from '@/utils/index.js';
-import { mapGetters, mapActions } from 'vuex';
-import { getImgUrl } from '@/utils/auth.js';
-import { getENV } from '@/utils/auth.js';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   props: {
     comNum: {
@@ -174,46 +173,46 @@ export default {
       default: 0
     }
   },
-    data() {
-        return {
-            takeImgUrl: getImgUrl() + '/static/subPackages/userModule/takeawayMenu',
-            cardImgUrl:`${getImgUrl()}static/card/`,
-            checkAllFlag: true,
-            radio: 2,
-            isShow: false,
-            config: null,
-            eat_type: [
-                {
-                    label: '自提带走',
-                    value: 2
-                },
-                {
-                    label: '店内用餐',
-                    value: 1
-                },
-            ],
-            phoneValue: '',
-            orderCreateParams: null,
-            resProduct: null,
-            isAloneProducts: false,
-            updateData: null,
-            coupon_amount: 0,
-            pay_amount: 0,
-            continuePayObj: null,
-            paymentParams: null,
-            orderItems: null,
-            savings: null,
-            isTest: getENV() == 'test', // 是否是测试环境
-        }
-    },
-    computed: {
-        ...mapGetters(['submitList', 'cartComList', 'brand_id', 'storeCode']),
-        disPrice() {
-            if(!this.savings) return 0;
-            const { card_money, card_discount } = this.savings;
-            return (Number(card_money) - Number(card_discount)).toFixed(2)
+  data() {
+    return {
+      takeImgUrl: getImgUrl() + '/static/subPackages/userModule/takeawayMenu',
+      cardImgUrl:`${getImgUrl()}static/card/`,
+      checkAllFlag: true,
+      radio: 2,
+      isShow: false,
+      config: null,
+      eat_type: [
+        {
+            label: '自提带走',
+            value: 2
         },
-    },
+        {
+            label: '店内用餐',
+            value: 1
+        },
+      ],
+      phoneValue: '',
+      orderCreateParams: null,
+      resProduct: null,
+      isAloneProducts: false,
+      updateData: null,
+      coupon_amount: 0,
+      pay_amount: 0,
+      continuePayObj: null,
+      paymentParams: null,
+      orderItems: null,
+      savings: null,
+      isTest: getENV() == 'test', // 是否是测试环境
+    }
+  },
+  computed: {
+      ...mapGetters(['submitList', 'cartComList', 'brand_id', 'storeCode']),
+      disPrice() {
+          if(!this.savings) return 0;
+          const { card_money, card_discount } = this.savings;
+          return (Number(card_money) - Number(card_discount)).toFixed(2)
+      },
+  },
   methods: {
     ...mapActions({
       requestCarList: 'cart/requestCarList',
@@ -255,9 +254,7 @@ export default {
     },
     async payHandle() {
       // 验证手机号
-      if(this.phoneValue && !isPhoneReg(this.phoneValue)) {
-        return this.$toast('请输入正确的手机号码');
-      }
+      if(this.phoneValue && !isPhoneReg(this.phoneValue)) return this.$toast('请输入正确的手机号码');
       const res = await msgTemplate();
       if(res.code != 1) return;
       const { refund, take } = res.data;
@@ -322,8 +319,8 @@ export default {
       });
     },
     goredPayIndexHandle(){
-        const { time_amount, saving_money } = this.savings;
-        this.$go(`/pages/userCard/card/cardVip/redPayIndex?time_amount=${time_amount}&saving_money=${saving_money}&ly_type=1`);
+      const { saving_money } = this.savings;
+      this.$go(`/pages/userCard/card/cardVip/redPayIndex?saving_money=${saving_money}&ly_type=1`);
     }
   },
 }

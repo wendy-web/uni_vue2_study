@@ -15,6 +15,9 @@ const getters = {
     isConnected: state => state.app.isConnected,
     isCardNewShow: state => state.user.isCardNewShow,
     isMiniProgram: state => state.user.isMiniProgram, // 打开其他的小程序
+    enterPageStatus: state => state.cash.enterPageStatus,
+    enterArr: state => state.cash.enterArr,
+    cashRecodeList: state => state.cash.cashRecodeList,
     cartComList: state => state.cart.cartComList, // 购物车列表
     resultList: state => state.cart.resultList,
     brand_id: state => state.cart.brand_id,
@@ -194,6 +197,7 @@ const getters = {
             if (currentItem) list.push(currentItem);
         });
         return list;
-    }
+    },
+
 };
 export default getters;

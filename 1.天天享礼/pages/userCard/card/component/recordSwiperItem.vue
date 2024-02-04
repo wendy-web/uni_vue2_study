@@ -1,47 +1,72 @@
 <template>
-<mescroll-uni ref="mescrollRef" @init="mescrollInit" :height="height" :down="downOption" @down="downCallback"
-    :up="upOption" @up="upCallback" @emptyclick="emptyClick">
-    <view class="record_item" v-if="validList.length">
-        <view class="record_title box_fl">
-            <image :src="cardImgUrl + 'valid0.png'" mode="scaleToFill" class="record_title-icon"></image>
-            <text>有效订单</text>
+<mescroll-uni
+    ref="mescrollRef"
+    @init="mescrollInit"
+    :height="height"
+    :down="downOption"
+    @down="downCallback"
+    :up="upOption"
+    @up="upCallback"
+    @emptyclick="emptyClick"
+>
+    <block v-if="!curTab">
+        <view class="record_item" v-if="validList.length">
+            <view class="record_title box_fl">
+                <image :src="cardImgUrl + 'valid0.png'" mode="scaleToFill" class="record_title-icon"></image>
+                <text>有效订单</text>
+            </view>
+            <view
+                v-for="(item, index) in validList" :key="index"
+                :class="['record_list fl_bet', !index ? 'active' : '']"
+                @click="orderHandle(item.id)"
+            >
+                <image :src="cardImgUrl + 'valid_bg.png'" mode="scaleToFill" class="valid_bg"></image>
+                <view class="record_list-left">
+                    <view class="record_list-txt box_fl">
+                        {{item.title}}
+                        <view class="record_list-icon" v-if="item.tag == 2">续费</view>
+                    </view>
+                    <view class="record_list-lab">{{item.pay_time}}</view>
+                </view>
+                <view class="record_list-right">
+                    {{item.status_desc}}
+                    <van-icon custom-style="margin-left: 5rpx" color="#aaa" size="28rpx" name="arrow"/>
+                </view>
+            </view>
         </view>
-        <view
-            v-for="(item, index) in validList"
-            :key="index"
-            :class="['record_list fl_bet', !index ? 'active' : '']"
+        <view class="record_item" v-if="noValidList.length">
+            <view class="record_title box_fl">
+                <image :src="cardImgUrl + 'valid1.png'" mode="scaleToFill" class="record_title-icon"></image>
+                <text>已失效订单</text>
+            </view>
+            <view class="record_list fl_bet"
+                v-for="(item, index) in noValidList"
+                :key="index"
+                @click="orderHandle(item.id)"
+            >
+                <view class="record_list-left">
+                    <view class="record_list-txt box_fl" style="color: #aaa;">
+                        {{item.title}}
+                        <view class="record_list-icon" v-if="item.tag ==2">续费</view>
+                    </view>
+                    <view class="record_list-lab">{{item.pay_time}}</view>
+                </view>
+                <view class="record_list-right">
+                    {{item.status_desc}}
+                    <van-icon custom-style="margin-left: 5rpx" color="#aaa" size="28rpx" name="arrow"/>
+                </view>
+            </view>
+        </view>
+    </block>
+    <!-- 加量包 -->
+    <view class="record_item" v-else>
+        <view :class="['record_list fl_bet',  item.status != 3 ? 'active' : '']"
+            v-for="(item, index) in dosingList" :key="index"
             @click="orderHandle(item.id)"
         >
-            <image :src="cardImgUrl + 'valid_bg.png'" mode="scaleToFill" class="valid_bg"></image>
             <view class="record_list-left">
-                <view class="record_list-txt box_fl">
-                    {{item.title}}
-                    <view class="record_list-icon" v-if="item.tag ==2">续费</view>
-                </view>
-                <view class="record_list-lab">{{item.pay_time}}</view>
-            </view>
-            <view class="record_list-right">
-                {{item.status_desc}}
-                <van-icon custom-style="margin-left: 5rpx" color="#aaa" size="28rpx" name="arrow"/>
-            </view>
-        </view>
-    </view>
-    <view class="record_item" v-if="noValidList.length">
-        <view class="record_title box_fl">
-            <image :src="cardImgUrl + 'valid1.png'" mode="scaleToFill" class="record_title-icon"></image>
-            <text>已失效订单</text>
-        </view>
-        <view class="record_list fl_bet"
-            v-for="(item, index) in noValidList"
-            :key="index"
-            @click="orderHandle(item.id)"
-        >
-            <view class="record_list-left">
-                <view class="record_list-txt box_fl" style="color: #aaa;">
-                    {{item.title}}
-                    <view class="record_list-icon" v-if="item.tag ==2">续费</view>
-                </view>
-                <view class="record_list-lab">{{item.pay_time}}</view>
+                <view class="record_list-txt">{{item.title}}</view>
+                <view class="record_list-lab">{{item.create_time}}</view>
             </view>
             <view class="record_list-right">
                 {{item.status_desc}}
@@ -53,10 +78,10 @@
 </template>
 
 <script>
-	import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-	import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mixins/mescroll-more-item.js";
-	import { getImgUrl } from '@/utils/auth.js';
-    import { mySavings } from "@/api/modules/packet.js";
+import { dosingPacket, mySavings } from "@/api/modules/packet.js";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mixins/mescroll-more-item.js";
+import { getImgUrl } from '@/utils/auth.js';
 	export default {
 		mixins: [MescrollMixin, MescrollMoreItemMixin],
 		data() {
@@ -64,7 +89,7 @@
 				imgUrl: getImgUrl(),
                 cardImgUrl:`${getImgUrl()}static/card/`,
 				downOption: {
-					auto: false // 不自动加载 (mixin已处理第一个tab触发downCallback)
+					auto: false, // 不自动加载 (mixin已处理第一个tab触发downCallback)
 				},
 				upOption: {
 					auto: false,
@@ -72,7 +97,9 @@
 					textNoMore: '----- 没有更多了 -----'
 				},
                 validList: [],
-                noValidList: []
+                noValidList: [],
+                dosingList: [],
+                mescroll: null
 			}
 		},
 		props: {
@@ -86,23 +113,36 @@
 			height: [Number, String] // mescroll的高度
 		},
 		mounted() {
-			this.$refs.mescrollRef.timer = this.curTab;
-			this.timer = null;
 		},
 		methods: {
 			downCallback() {
 				this.mescroll.resetUpScroll();
 			},
 			upCallback(page) {
-                if(this.curTab == 1) return this.mescroll.endSuccess(0);
-                let params = {
-                    size: 10,
-                    page: page.num,
-                }
+                (this.curTab == 1) ? this.dosingPacketRequest(page) : this.mySavingsRequest(page);
+                return;
+			},
+            mescrollInit(mescroll) {
+                this.mescroll = mescroll;
+                if(!this.curTab) this.downCallback();
+            },
+            dosingPacketRequest(page) {
+                let params = { size: 10, page: page.num };
+                dosingPacket(params).then((res) => {
+                    if(res.code != 1) return this.mescroll.endSuccess(0);
+                    let { list, total_count } = res.data;
+                    // 如果是第一页需手动制空列表
+                    if(page.num == 1) this.dosingList = [];
+                    this.dosingList = this.dosingList.concat(list); //追加新数据
+                    this.mescroll.endBySize(list.length, total_count);
+                }).catch((err) => this.mescroll.endErr());
+            },
+            mySavingsRequest(page) {
+                let params = { size: 10, page: page.num };
                 mySavings(params).then((res) => {
                     if(res.code != 1) return this.mescroll.endSuccess(0);
                     const { list, list2 , list2_total } = res.data;
-                    // //如果是第一页需手动制空列表
+                    // 如果是第一页需手动制空列表
                     if(page.num == 1) {
                         this.validList = [];
                         this.noValidList = [];
@@ -110,12 +150,10 @@
                     this.validList = this.validList.concat(list); //追加新数据
                     this.noValidList = this.noValidList.concat(list2); //追加新数据
                     this.mescroll.endBySize(list2.length || list.length, list2_total);
-                }).catch((err) => {
-                    this.mescroll.endErr();
-                });
-			},
+                }).catch((err) => this.mescroll.endErr());
+            },
             orderHandle(id) {
-                this.$go(`/pages/userCard/card/cardVip/detail?id=${id}`)
+                this.$go(`/pages/userCard/card/cardVip/detail?id=${id}&type=${this.curTab}`)
             }
 		}
 	}
@@ -184,7 +222,7 @@
         line-height: 36rpx;
         margin-top: 8rpx;
     }
-    .record_list-right{
+    .record_list-right {
         color: #999;
     }
 }

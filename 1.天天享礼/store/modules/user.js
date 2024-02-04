@@ -16,8 +16,6 @@ import {
     setToken
 } from '@/utils/auth.js';
 
-import log from '@/utils/log.js';
-
 import {
     getUser,
     updateUser,
@@ -28,6 +26,7 @@ import {
     profile,
     profit,
 } from '@/api/modules/user.js';
+import log from '@/utils/log.js';
 const state = {
     userInfo: getUserInfo(), //用户信息
     token: getToken() || '', //token
@@ -35,7 +34,7 @@ const state = {
     gift: getGift() || 0, // 0 非新用户 1 新用户
     location: getLocation() || null,
     userTotal: {},
-    diaList: ['privacy'], // 弹起列表 - 用户更新弹窗的配置
+    diaList: ['privacy', 'cashBack'], // 弹起列表 - 用户更新弹窗的配置
     isAutoPrivacy: Boolean(getAutoPrivacy()),
     isMiniProgram: 0, // 未进入；1 已进入
     isAutoLogin: Boolean(getAutoLogin()), // 1 自动登录；
@@ -55,7 +54,7 @@ const mutations = {
         // console.log('data', data)
         // state.profitInfo = {
         //     ...data,
-        //     total_num: 10
+        //     packet_amount: 10.00
         // };
     },
     setSelRedPacket(state, sel) {
@@ -83,7 +82,8 @@ const mutations = {
         state.isAutoLogin = isAuto;
     },
     setDiaList(state, daiName) {
-        state.diaList.push(daiName)
+        const filterIndex = state.diaList.findIndex(res => res == daiName);
+        if (filterIndex < 0) state.diaList.push(daiName);
     },
     setMiniProgram(state, status) {
         state.isMiniProgram = status;

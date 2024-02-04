@@ -73,7 +73,7 @@
         <view class="upgrade_txt">{{ empty.text }}</view>
       </view>
       <!-- 门店的商品列表 -->
-      <view class="item_list-box fl_bet" v-else>
+      <view class="item_list-box" v-else>
         <view class="item_list"
           v-for="(itemDel, idx) in item.detail" :key="idx"
           @click.stop="itemDelHandle(item, itemDel)"
@@ -110,12 +110,6 @@
 <privacyOpen ref="privacyOpen"></privacyOpen>
 <!-- 优惠推荐商品的弹窗 -->
 <recommendDia ref="recommendDia"></recommendDia>
-<!-- vip开通的拦截 -->
-<vipLimit ref="vipLimit"
-  :isShow="isShowVipList"
-  :isHW="isShowHWLimit"
-  @close="isShowVipList = false"
-></vipLimit>
 <!-- 商品专题的半屏组件 -->
 <specialLisMiniPage
   ref="specialLisMiniPage"
@@ -152,7 +146,6 @@ import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
 import serviceCredits from "@/components/serviceCredits/index.vue";
 import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
 import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
-import vipLimit from '@/components/vipLimit.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getImgUrl } from '@/utils/auth.js';
 import { getUserLocation } from '@/utils/getUserLocation.js';
@@ -168,7 +161,6 @@ export default {
   components: {
     customTabBar,
     configurationDia,
-    vipLimit,
     loadingCom,
     specialLisMiniPage,
     exchangeFailed,
@@ -211,8 +203,6 @@ export default {
       isLoading: true,
       isFirstUpdate: true, // 是否第一次的加载
       firstShow: true,
-      isShowVipList: false,
-      isShowHWLimit: false,
     }
   },
   watch: {
@@ -352,15 +342,10 @@ export default {
           break;
         case 5:
           // 电影
-          if(this.userInfo.is_vip) return this.jumpLinkHandle({type: 1});
-          // vip的弹窗
-          this.isShowVipList = true;
-          this.isShowHWLimit = false;
+          this.jumpLinkHandle({type: 1});
           break;
         default:
-          if(this.userInfo.is_vip) return this.hwHomeRequest(item);
-          this.isShowVipList = true;
-          this.isShowHWLimit = true;
+          this.hwHomeRequest(item);
           break;
       }
     },
@@ -755,29 +740,33 @@ export default {
       line-height: 36rpx;
       margin-left: 10rpx;
     }
-    .add_cont-rem{
+    .add_cont-rem {
       height: 36rpx;
       font-size: 26rpx;
       color: #999;
       line-height: 36rpx;
     }
   }
-  .item_add-icon{
+  .item_add-icon {
     width: 36rpx;
     height: 36rpx;
     margin-right: 8rpx;
     flex-shrink: 0;
   }
-  .item_add-text{
+  .item_add-text {
     font-size: 30rpx;
     font-weight: 500;
     color: #333333;
     line-height: 42rpx;
   }
-  .item_list-box{
+  .item_list-box {
     margin-top: 32rpx;
+    display: flex;
     .item_list{
       width: 202rpx;
+      &:not(:last-child) {
+        margin-right: 24rpx;
+      }
       .item_list-txt{
         width: 100%;
         margin-top: 16rpx;

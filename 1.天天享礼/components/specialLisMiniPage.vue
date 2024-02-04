@@ -58,6 +58,7 @@ import goodList from "@/components/goodList.vue";
 import { getImgUrl } from '@/utils/auth.js';
 import getViewPort from '@/utils/getViewPort.js';
 import goDetailsFun from '@/utils/goDetailsFun';
+import { mapMutations } from 'vuex';
 export default {
     mixins: [goDetailsFun], // 使用mixin
     computed: {
@@ -89,6 +90,9 @@ export default {
         };
     },
     methods: {
+        ...mapMutations({
+            delCurrentDiaList: "user/delCurrentDiaList"
+        }),
         // 牛金豆不足的情况
         notEnoughCreditsHandle () {
             this.$emit('notEnoughCredits'); // 组件抛出去的方法
@@ -101,6 +105,7 @@ export default {
             this.scrollTopValue = 0;
             this.isScrollTop = false;
             this.isShow = false;
+            this.delCurrentDiaList('specialLis');
             this.$emit('close');
         },
         popupShow () {

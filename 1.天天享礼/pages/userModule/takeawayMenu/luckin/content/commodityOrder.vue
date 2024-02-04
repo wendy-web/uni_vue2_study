@@ -144,15 +144,15 @@
 </template>
 <script>
 import {
-  orderSure,
-  orderCreate,
-  orderPay,
-  msgTemplate,
-  restaurantChange
+msgTemplate,
+orderCreate,
+orderPay,
+orderSure,
+restaurantChange
 } from '@/api/modules/takeawayMenu/luckin.js';
-import { isPhoneReg } from '@/utils/index.js';
-import { mapGetters, mapActions } from 'vuex';
 import { getImgUrl } from '@/utils/auth.js';
+import { isPhoneReg } from '@/utils/index.js';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   props: {
     comNum: {
@@ -202,7 +202,6 @@ export default {
         updateData: null,
         coupon_amount: 0,
         pay_amount: 0,
-        savings: null,
         car_id: '', // 购物车id
         continuePayObj: null,
         paymentParams: null,
@@ -212,9 +211,9 @@ export default {
   computed: {
     ...mapGetters(['submitList', 'selSubList', 'brand_id', 'restaurant_id']),
     disPrice() {
-        if(!this.savings) return 0;
-        const { card_money, card_discount } = this.savings;
-        return (Number(card_money) - Number(card_discount)).toFixed(2)
+      if(!this.savings) return 0;
+      const { card_money, card_discount } = this.savings;
+      return (Number(card_money) - Number(card_discount)).toFixed(2)
     },
   },
   methods: {
@@ -370,8 +369,8 @@ export default {
       });
     },
     goredPayIndexHandle(){
-        const { time_amount, saving_money } = this.savings;
-        this.$go(`/pages/userCard/card/cardVip/redPayIndex?time_amount=${time_amount}&saving_money=${saving_money}&ly_type=1`);
+      const { saving_money } = this.savings;
+      this.$go(`/pages/userCard/card/cardVip/redPayIndex?saving_money=${saving_money}&ly_type=1`);
     }
   },
 }

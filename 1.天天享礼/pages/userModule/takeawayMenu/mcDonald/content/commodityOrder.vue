@@ -1,12 +1,11 @@
 <template>
-<view>
-  <van-popup
-    :show="isShow"
-    position="bottom"
-    custom-style="overflow: inherit;background: transparent;max-height:75%;"
-    round
-    safe-area-inset-bottom
-  >
+<van-popup
+  :show="isShow"
+  position="bottom"
+  custom-style="overflow: inherit;background: transparent;max-height:75%;"
+  round
+  safe-area-inset-bottom
+>
   <view class="order">
     <image class="close_icon" :src="takeImgUrl + '/close_icon.png'" mode="widthFix" @click="popupClose"></image>
     <view class="order_cont">
@@ -27,8 +26,7 @@
       </view>
       <view class="order_box order_detail">
         <view class="list_cont fl_al_start"
-          v-for="(item, index) in resProduct"
-          :key="index"
+          v-for="(item, index) in resProduct" :key="index"
         >
           <view class="com_img fl_center">
             <image class="widHei" :src="item.product_img" mode="widthFix"></image>
@@ -101,11 +99,8 @@
         </view>
         <view class="order_info-cont">
           <van-radio-group :value="radio" @change="onChangeHandle">
-            <van-radio use-icon-slot
-              v-for="(item, index) in eat_type"
-              :key="index"
-              :name="item.value"
-            >
+            <van-radio use-icon-slot :name="item.value"
+              v-for="(item, index) in eat_type" :key="index">
               <view :class="['box_fl', radio === item.value  ? 'active' : '']">
                 <view slot="icon" class="clot_icon">
                   <image class="bg_img radio_active" :src="takeImgUrl + '/md_active.png'" mode="aspectFill"></image>
@@ -140,20 +135,19 @@
       <view class="pay_btn" @click="payHandle">去支付</view>
     </view>
   </view>
-  </van-popup>
-</view>
+</van-popup>
 </template>
 <script>
 import {
-  orderSure,
-  orderCreate,
-  orderPay,
-  msgTemplate,
-  restaurantChange
+msgTemplate,
+orderCreate,
+orderPay,
+orderSure,
+restaurantChange
 } from '@/api/modules/takeawayMenu/luckin.js';
-import { isPhoneReg } from '@/utils/index.js';
-import { mapGetters, mapActions } from 'vuex';
 import { getImgUrl } from '@/utils/auth.js';
+import { isPhoneReg } from '@/utils/index.js';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   props: {
     comNum: {
@@ -212,9 +206,9 @@ export default {
   computed: {
     ...mapGetters(['submitList', 'cartComList', 'brand_id', 'restaurant_id']),
     disPrice() {
-        if(!this.savings) return 0;
-        const { card_money, card_discount } = this.savings;
-        return (Number(card_money) - Number(card_discount)).toFixed(2)
+      if(!this.savings) return 0;
+      const { card_money, card_discount } = this.savings;
+      return (Number(card_money) - Number(card_discount)).toFixed(2)
     },
   },
   methods: {
@@ -244,7 +238,7 @@ export default {
           this.phoneValue = phone_number;
           this.resProduct = product;
           // 挽留支付弹窗使用的对象
-          this.continuePayObj = { imgArr, text, coupon_amount};
+          this.continuePayObj = { imgArr, text, coupon_amount };
           return;
         }
         this.$toast(res.msg);
@@ -257,15 +251,9 @@ export default {
         products: this.resProduct
       }
       const res= await restaurantChange(params);
-      if(res.code == 2) {
-        this.$emit('updateOrder'); // 门店变更
-        return;
-      }
+      if(res.code == 2) return this.$emit('updateOrder'); // 门店变更
       this.updateData = res.data;
-      if(res.code == 3) {
-        this.$emit('updateOrderPrice'); // 价格变更
-        return;
-      }
+      if(res.code == 3) return this.$emit('updateOrderPrice'); // 价格变更
       this.updateOrderShow();
     },
     updateOrderShow(){
@@ -292,9 +280,7 @@ export default {
     },
     async payHandle() {
       // 验证手机号
-      if(this.phoneValue && !isPhoneReg(this.phoneValue)) {
-        return this.$toast('请输入正确的手机号码');
-      }
+      if(this.phoneValue && !isPhoneReg(this.phoneValue)) return this.$toast('请输入正确的手机号码');
       const res = await msgTemplate();
       if(res.code != 1) return;
       const { refund, take } = res.data;
@@ -371,8 +357,8 @@ export default {
       });
     },
     goredPayIndexHandle(){
-        const { time_amount, saving_money } = this.savings;
-        this.$go(`/pages/userCard/card/cardVip/redPayIndex?time_amount=${time_amount}&saving_money=${saving_money}&ly_type=1`);
+      const { saving_money } = this.savings;
+      this.$go(`/pages/userCard/card/cardVip/redPayIndex?saving_money=${saving_money}&ly_type=1`);
     }
   },
 }

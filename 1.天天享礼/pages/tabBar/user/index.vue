@@ -68,9 +68,13 @@
         已为您省下<text style="color: #f84842; margin: 0 5rpx">{{vipObject.saving_money || 0}}</text>元
       </view>
       <view class="card_open-lab" v-else>
-        预计月省<text style="font-weight: 600; font-size: 48rpx; margin: 0 5rpx">{{vipObject.money || 0 }}</text>元+
+        预计月省<text style="font-weight: 600; font-size: 48rpx; margin: 0 5rpx">{{vipObject.money || 0}}</text>元+
       </view>
-      <view class="card_rem">{{vipObject.over_time || todayTime }} 到期</view>
+      <view class="card_bottom fl_bet">
+        <view class="card_rem">{{ vipObject.over_time || todayTime }} 到期</view>
+        <!-- 省钱卡标识 -->
+        <image class="card_type" mode="aspectFill" :src="cardType[vipObject.card_type || 0]"></image>
+      </view>
     </view>
     <!-- 省钱卡 - 未开通 -->
     <view class="card_box fl_bet" v-else
@@ -87,7 +91,7 @@
           v-for="item in orders" :key="item.id">
           <view class="order-item-top">
             <image class="oii-icon" mode="aspectFill" :src="item.icon"></image>
-            <view class="oit-num" v-show='shotOitNum(item)'>{{ userTotal[item.key]}}</view>
+            <view class="oit-num" v-show='shotOitNum(item)'>{{ userTotal[item.key] }}</view>
           </view>
           <view class="order-item-name">{{ item.name }}</view>
         </view>
@@ -107,13 +111,13 @@
           <view class="uab_item-lab">牛金豆</view>
         </view>
         <view class="uab_item" @click="goPages('/pages/userModule/myCoupon/index', true)">
-          <view class="uab_item-cont" :class="{'card-new-show': userTotal.coupon_read > 0 }">
+          <view class="uab_item-cont" :class="{'card-new-show': userTotal.coupon_read > 0}">
             {{ userTotal.coupon || 0 }}<text class="uab_item-lab">张</text>
           </view>
           <view class="uab_item-lab">优惠券</view>
         </view>
         <view class="uab_item" @click="goWithdrawHandle">
-          <view class="uab_item-cont" :class="{'card-new-show': profitInfo.total_num > 0 }">
+          <view class="uab_item-cont" :class="{'card-new-show': profitInfo.total_num > 0}">
             <view v-html="formatPrice(showExpandNum)" class="uab_item-price"></view>
           </view>
           <view class="uab_item-lab">零钱</view>
@@ -289,7 +293,12 @@ export default {
       isShowReturnCashDia: false, // 领取提现
       menusLeft: 0,
       showExpandNum: 0,
-      textList: []
+      textList: [],
+      cardType: [
+        'https://file.y1b.cn/store/1-0/24116/65a5e5c3a9370.png',
+        'https://file.y1b.cn/store/1-0/24116/65a5e6a9acfe5.png',
+        'https://file.y1b.cn/store/1-0/24116/65a5e6bf21e01.png'
+      ]
     };
   },
   watch: {
@@ -1056,7 +1065,7 @@ button::after {
   padding: 25rpx 32rpx 8rpx;
   &::before {
     content: '\3000';
-    background: url("https://file.y1b.cn/store/1-0/231116/6555f08c7c4fd.png") 0 0 / 100% 100%;
+    background: url("https://file.y1b.cn/store/1-0/24116/65a5e868ae121.png") 0 0 / 100% 100%;
     position: absolute;
     left: 0;
     top: 0;
@@ -1092,11 +1101,18 @@ button::after {
       transform: translateX(-50%);
     }
   }
+  .card_bottom {
+    margin-top: 21rpx;
+    font-size: 0;
+  }
   .card_rem {
     font-size: 26rpx;
-    color: #b75a30;
     line-height: 36rpx;
-    margin-top: 21rpx;
+    color: #b75a30;
+  }
+  .card_type{
+    width: 110rpx;
+    height: 26rpx
   }
   .card_title {
     &::before {

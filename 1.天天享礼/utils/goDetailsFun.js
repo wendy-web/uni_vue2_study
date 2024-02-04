@@ -14,11 +14,12 @@ const goDetailsFun = {
         return {}
     },
     computed: {
-        ...mapGetters(['userInfo', 'isAutoLogin'])
+        ...mapGetters(['userInfo', 'isAutoLogin', 'diaList'])
     },
     methods: {
         ...mapMutations({
             setMiniProgram: "user/setMiniProgram",
+            setDiaList: "user/setDiaList",
         }),
         // 图文的详情跳转事件
         async textDetailsFun_mixins(item) {
@@ -42,7 +43,8 @@ const goDetailsFun = {
                 is_cinema,
                 isNavFromUrl,
                 is_jl,
-                is_zt
+                is_zt,
+                isCodeErrorShow
             } = item;
             // configDia 配置弹窗的事件
             // 京东的商品
@@ -94,10 +96,6 @@ const goDetailsFun = {
                     });
                     break;
                 case 5:
-                    if (is_cinema && !this.userInfo.is_vip) {
-                        this.$emit('notVip');
-                        return;
-                    }
                     // 千猪外链
                     if (qz_url) {
                         const bgColor = this.getWebviewBgColor(qz_url);
@@ -169,11 +167,22 @@ const goDetailsFun = {
                         return;
                     }
                     // 推券弹窗
-                    if (this.$refs.recommendDia) this.$refs.recommendDia.initGtData(item);
+                    if (this.$refs.recommendDia) {
+                        this.$refs.recommendDia.initGtData(item);
+                        // 扫码异常打开推券的弹窗
+                        // if (isCodeErrorShow) {
+                        setTimeout(() => {
+                            this.setDiaList('codeError');
+                        }, 0);
+                        // }
+                    };
                     break;
                 case 11:
                     // 专题页面 - open_mini_type打开半屏的弹窗 - (配置弹窗)
                     if (open_mini_type == 2 && this.$refs.specialLisMiniPage) {
+                        setTimeout(() => {
+                            this.setDiaList('specialLis');
+                        }, 0);
                         return this.$refs.specialLisMiniPage.initShow(type_id);
                     };
                     this.$go(`/pages/userModule/allowance/specialList/index?id=${type_id || 0}`);
