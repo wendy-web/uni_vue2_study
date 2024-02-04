@@ -1,8 +1,8 @@
-import { mapGetters, mapMutations, mapActions } from 'vuex';
-import { parseTime } from '@/utils/index.js';
-import goDetailsFun from '@/utils/goDetailsFun.js';
 import { popover, popoverRember } from '@/api/modules/configuration.js';
 import { getDiaType } from '@/utils/auth.js';
+import goDetailsFun from '@/utils/goDetailsFun.js';
+import { parseTime } from '@/utils/index.js';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 const serviceCredits = {
     mixins: [goDetailsFun],
     data() {
@@ -78,7 +78,7 @@ const serviceCredits = {
         }
     },
     computed: {
-        ...mapGetters(['userInfo', 'gift', 'diaList', 'isAutoLogin'])
+        ...mapGetters(['userInfo', 'gift', 'diaList', 'isAutoLogin', 'lightArr'])
     },
     watch: {
         diaList: {
@@ -86,10 +86,17 @@ const serviceCredits = {
                 if (newValue.length && newValue[0] == "config") {
                     this.isShowConfig = true;
                     this.delCurrentDiaList('config');
-                    (this.codeErrorId || this.losingNew) && this.codeErrorIdFun(); // 扫码异常
+                    this.openMiniTypeHandle(); // 半屏时直接跳出
                 }
             },
             immediate: true
+        },
+        // 高亮icon的展示完 当前页面的再次加载
+        lightArr(newValue, oldValue) {
+            if ((newValue != oldValue) && !newValue && !this.showList.length) {
+                this.psite = null;
+                this.configurationInit();
+            }
         }
     },
     onLoad(options) {
@@ -118,9 +125,10 @@ const serviceCredits = {
             setGiftInfo: 'user/setGiftInfo',
             setDiaList: "user/setDiaList",
             delCurrentDiaList: "user/delCurrentDiaList",
+            setLightArr: "user/setLightArr"
         }),
         // 扫码异常执行的事件
-        codeErrorIdFun() {
+        openMiniTypeHandle() {
             // 直接打开半屏推券的呈现
             if (this.config.open_mini_type == 2 && this.config.type == 10) {
                 this.requestPopoverRember(this.config, true);
@@ -129,7 +137,7 @@ const serviceCredits = {
         showConfigHandle() {
             if (this.diaList.length) return this.setDiaList('config');
             this.isShowConfig = true;
-            (this.codeErrorId || this.losingNew) && this.codeErrorIdFun(); // 扫码异常/新人未中奖
+            this.openMiniTypeHandle(); // 半屏时直接跳出
         },
         closeConfigHandle() {
             this.isShowConfig = false;
@@ -140,7 +148,8 @@ const serviceCredits = {
             (![1, 4].includes(this.currentPageNum)) && this.showDia(); // 混合模式展示弹窗
         },
         async configurationInit() {
-            if (!this.isAutoLogin) return;
+            // this.psite / this.lsite - 不需要登陆的状态也可访问
+            if (!this.isAutoLogin && !this.psite && !this.lsite) return;
             // 显示页面1 - 首页 2 - 惠生活 3 - 福利中心 4 - 我的 5 - 支付成功
             // people_type 1 是新用户 2 是老用户
             // this.gift
@@ -148,20 +157,35 @@ const serviceCredits = {
             // codeErrorId - 从彬纷有礼的扫码异常进入； losingNew： 新人未中奖
             this.codeErrorId && (pageNum = 9);
             this.losingNew && (pageNum = 11);
-            const res = await popover({
+            const params = {
                 page: pageNum,
-                people_type: this.gift || 2
-            });
+                people_type: this.gift || 2,
+            }
+            this.psite && (params.psite = this.psite); // 悬浮
+            this.lsite && (params.lsite = this.lsite); // 高亮
+            console.log('params:', params)
+            const res = await popover(params);
             if (res.code != 1) return;
-            const { list, people_type } = res.data;
+            const { list, people_type, lightArr } = res.data;
+            console.log('lightArr: 接口获取', lightArr);
+            console.log('list: 接口获取', list);
+            lightArr && this.setLightArr(lightArr);
             // 扫码异常/新人未中奖 - 进行的
             if ((this.codeErrorId || this.losingNew) && !list.length) {
                 this.codeErrorId = null;
                 this.losingNew = null;
                 this.configurationInit();
             }
+            if (this.lsite) this.lsite = null;
+            // 访问一次次后进行清除
+            if (this.psite && !list.length) {
+                this.psite = null;
+                if (!lightArr) this.configurationInit();
+            }
             this.showList = list;
             const diaType = getDiaType();
+            // 高亮的显示 - icon图标
+            if (lightArr) this.setDiaList('iconFind');
             if (people_type == 1) {
                 diaType && this.showDia();
                 return;
@@ -257,14 +281,16 @@ const serviceCredits = {
             const currentId = id || this.currentId;
             this.getUserInfo();
             this.closeConfigHandle();
+            // return;
             // 记录已点击的事件
             await popoverRember({ id: currentId });
-            if ((this.showList.length > 1 && nextDia) || this.codeErrorId || this.losingNew) {
+            if ((this.showList.length > 1 && nextDia) || this.codeErrorId || this.losingNew || this.psite) {
                 if (this.codeErrorId && isCloseClick && this.config.image) {
                     this.$wxReportEvent("closetc");
                 }
                 this.codeErrorId = null;
                 this.losingNew = null;
+                this.psite = null;
                 setTimeout(() => this.configurationInit(), 3000);
             }
         },

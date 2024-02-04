@@ -126,17 +126,22 @@
 </view>
 </template>
 <script>
-import { getImgUrl } from '@/utils/auth.js';
-import { mapGetters, mapMutations } from "vuex";
-import { parseTime } from '@/utils/index.js';
-import expandDia from "./expandDia.vue";
 import {
-    goodsRecommended,
-    material,
-	jingfen,
-	goodsQuery,
-	bysubunionid,
+bysubunionid,
+goodsQuery,
+goodsRecommended,
+jingfen,
+material,
 } from '@/api/modules/jsShop.js';
+import {
+goodsPromotion,
+goodsRecommend,
+goodsSearch
+} from '@/api/modules/pddShop.js';
+import { getImgUrl } from '@/utils/auth.js';
+import { parseTime } from '@/utils/index.js';
+import { mapGetters, mapMutations } from "vuex";
+import expandDia from "./expandDia.vue";
 let interstitialAd = null;
 export default {
     components:{
@@ -216,18 +221,27 @@ export default {
             this.openEmbeddedRequest(item);
         },
         async openEmbeddedRequest(item){
-            const { skuId, positionId } = item;
-            const params = { skuId, positionId };
-            if(!this.isShowRemainTime) params.is_popover = 1;
-            const skuRes = await bysubunionid(params);
+            const { skuId, positionId, lx_type, goods_sign } = item;
+            let apiRequest = '';
+            const params = { positionId };
+            if (lx_type == 3) {
+                apiRequest = goodsPromotion;
+                params.goods_sign = goods_sign;
+            } else {
+                apiRequest = bysubunionid;
+                params.skuId = skuId;
+                if(!this.isShowRemainTime) params.is_popover = 1;
+            }
+            const skuRes = await apiRequest(params);
             if (skuRes.code == 0) return this.$toast(skuRes.msg);
             const {
                 type_id,
-                jdShareLink
+                jdShareLink,
+                mobile_url
             } = skuRes.data;
             this.$openEmbeddedMiniProgram({
                 appId: type_id,
-                path: jdShareLink
+                path: jdShareLink || mobile_url
             });
         },
         popupClose() {
@@ -343,7 +357,9 @@ export default {
                 end_time,
                 over,
                 interval_time,
-                isCodeErrorShow
+                isCodeErrorShow,
+                goods_lx_type,
+                positionId
             } = data;
             this.isCodeErrorShow = isCodeErrorShow;
             if(end_time || interval_time) {
@@ -367,7 +383,9 @@ export default {
                 cid3: group_cid3,
                 eliteId,
                 groupId,
-                type: group_type
+                type: group_type,
+                lx_type: goods_lx_type,
+                positionId
             };
             this.popupShow();
             this.requestRem();
@@ -382,7 +400,9 @@ export default {
                 cid3,
                 eliteId,
                 groupId,
-                type
+                type,
+                lx_type,
+                positionId
             } = this.jdDate;
             let params = {
                 id,
@@ -393,16 +413,26 @@ export default {
             // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
             switch(type) {
                 case 1:
-                    queryApi = material;
-                    params.eliteId = eliteId;
-                    params.groupId = groupId;
-                    params.size = 10;
+                    if (lx_type == 2) {
+                        queryApi = goodsRecommend;
+                        params.positionId = positionId;
+                    } else {
+                        queryApi = material;
+                        params.eliteId = eliteId;
+                        params.groupId = groupId;
+                        params.size = 10;
+                    }
                     break;
                 case 2:
-                    queryApi = jingfen;
-                    params.eliteId = eliteId;
-                    params.groupId = groupId;
-                    params.size = 20;
+                    if (lx_type == 2) {
+                        queryApi = goodsSearch;
+                        params.positionId = positionId;
+                    } else {
+                        queryApi = jingfen;
+                        params.eliteId = eliteId;
+                        params.groupId = groupId;
+                        params.size = 20;
+                    }
                     break;
                 case 3:
                     queryApi = goodsQuery;

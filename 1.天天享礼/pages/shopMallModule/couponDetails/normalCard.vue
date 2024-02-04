@@ -4,7 +4,7 @@
 		<image class="cowpea_bg" src="https://file.y1b.cn/store/1-0/23713/64afeac5caead.png" mode="aspectFill"></image>
 		<text class="cowpea-num">{{ config.is_popover ? 0 : config.credits}}</text>
 		<text class="cowpea-label">牛金豆</text>
-		<view class="cowpea_value">
+		<view class="cowpea_value" v-if="Number(config.face_value)">
 			<image class="bg_img" src="../static/tag_bg01.png" mode="widthFix"></image>
 			￥{{Number(config.face_value)}}
 		</view>

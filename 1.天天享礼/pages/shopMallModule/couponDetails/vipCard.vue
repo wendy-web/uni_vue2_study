@@ -4,9 +4,9 @@
 		<image class="cowpea_bg" src="https://file.y1b.cn/store/1-0/231030/653f7bc9d0ad7.png" mode="aspectFill"></image>
 		<text class="cowpea-num">0</text>
 		<text class="cowpea-label">牛金豆</text>
-		<view class="cowpea_value">{{ config.credits }}牛金豆</view>
+		<view class="cowpea_value" v-if="config.credits">{{ config.credits }}牛金豆</view>
 	</view>
-    <view class="face_dis">抵扣¥{{Number(config.face_value)}}</view>
+    <view class="face_dis" v-if="Number(config.face_value)">抵扣¥{{ Number(config.face_value) }}</view>
 	<view class="cowpea_cont">
 		<view class="cont_left">
 			<view class="coupon-title">{{config.title}}</view>
@@ -91,7 +91,7 @@
 		}
 	}
 	.cowpea_cont {
-		margin: 0 24rpx;
+		margin: 24rpx 24rpx 0;
 		background: #ffffff;
 		border-radius: 24rpx 56rpx 24rpx 24rpx;
 		position: relative;
@@ -143,7 +143,8 @@
     background: rgba(255,255,255,0.40);
     border: 1rpx solid rgba(255,255,255,0.40);
     border-radius: 24rpx;
-    margin: 10rpx 0 14rpx;
+    margin-top: 10rpx;
+	margin-bottom: -10rpx;
     padding: 0 14rpx;
     height: 44rpx;
     line-height: 44rpx;

@@ -29,7 +29,7 @@
 			@down="downCallback"
 			:down="downOption"
 			:up="{use: false}"
-			:top="stickyTop+'px'"
+			:top=" stickyTop + 'px'"
 		>
 			<!-- 牛金豆 -->
 			<view class="golden-beans" @click="goMyCowpeaHandle">
@@ -152,59 +152,83 @@
 		></configurationDia>
         <!-- 优惠推荐商品的弹窗 -->
         <recommendDia ref="recommendDia"></recommendDia>
+		<!-- 商品专题的半屏组件 -->
+		<specialLisMiniPage
+			ref="specialLisMiniPage"
+			@notEnoughCredits="notEnoughCreditsHandle"
+			@specialLisShare="specialLisShareHandle"
+  			@isBannerClick="goodListBannerHandle"
+		></specialLisMiniPage>
+		<!-- 牛金豆不足的情况 -->
+		<exchangeFailed
+		:isShow="exchangeFailedShow"
+		@goTask="goTaskHandle"
+		@close="exchangeFailedShow = false"
+		></exchangeFailed>
+		<!-- 赚取牛金豆 -->
+		<serviceCredits
+		ref="serviceCredits"
+		:isShow="serviceCreditsShow"
+		@showAdPlay="showAdPlayHandle"
+		@close="closeHandle"
+		></serviceCredits>
 	</view>
 </template>
 <script>
-	import MescrollMixin from '@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js';
-	// import pointsUpgrade from './components/pointsUpgrade.vue';
-	import pullRingQr from './components/pullRingQr.vue';
-	import redPacket from './components/redPacket.vue';
-	import videoReward from './components/videoReward.vue';
-	import exchangeCoupon from './components/exchangeCoupon.vue';
-	import focusWechatAccount from './components/focusWechatAccount.vue';
-	import discountCoupon from './components/discountCoupon.vue';
-	import bannerAd from './components/bannerAd.vue';
-	import orderTimeout from './components/orderTimeout.vue';
-	import answerQuestion from './components/answerQuestion.vue';
-	import viewArticle from './components/viewArticle.vue';
-	import starSign from './components/starSign.vue';
-	import turnTable from './components/turnTable.vue';
-	import machine from './components/machine.vue';
-	import lightUp from './components/lightUp.vue';
-	import listImg from './components/listImg.vue';
-	import pCountup from '@/components/p-countUp/countUp.vue'
-	/*任务完成弹窗*/
-	import taskComplete from './popup/taskComplete.vue'
-	import cowpeaAnim from './popup/cowpeaAnim.vue'
-	import cowpeaDouble from '@/components/serviceCredits/popup/cowpeaDouble.vue'
-	import turntableModel from './popup/turntableModel.vue'
-	import happyHarvest from '@/components/serviceCredits/popup/happyHarvest.vue'
-	/* 积分升级成功 */
-	import pointUpgrade from './popup/pointUpgrade.vue'
-	import userGuidance from './popup/userGuidance.vue'
-	import customTabBar from '@/components/customTabBar/index.vue';
-	import {
-		mapActions,
-		mapGetters
-	} from 'vuex';
-	import Toast from '@/wxcomponents/vant_update/toast/toast.js';
-	import {
-		totalToady,
-		taskReward,
-		videoAward
-	} from '@/api/modules/task.js';
-	import getViewPort from '@/utils/getViewPort.js'
-	import { getImgUrl } from '@/utils/auth.js'
-	import RewardedVideoAd from '@/utils/rewardVideoAd.js'
-	import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
-	import configurationDia from '@/components/configurationDia/index.vue';
-	import configurationFun from '@/components/configurationDia/configurationFun.js';
-	import goDetailsFun from '@/utils/goDetailsFun.js';
-	import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import MescrollMixin from '@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js';
+// import pointsUpgrade from './components/pointsUpgrade.vue';
+import pCountup from '@/components/p-countUp/countUp.vue';
+import answerQuestion from './components/answerQuestion.vue';
+import bannerAd from './components/bannerAd.vue';
+import discountCoupon from './components/discountCoupon.vue';
+import exchangeCoupon from './components/exchangeCoupon.vue';
+import focusWechatAccount from './components/focusWechatAccount.vue';
+import lightUp from './components/lightUp.vue';
+import listImg from './components/listImg.vue';
+import machine from './components/machine.vue';
+import orderTimeout from './components/orderTimeout.vue';
+import pullRingQr from './components/pullRingQr.vue';
+import redPacket from './components/redPacket.vue';
+import starSign from './components/starSign.vue';
+import turnTable from './components/turnTable.vue';
+import videoReward from './components/videoReward.vue';
+import viewArticle from './components/viewArticle.vue';
+/*任务完成弹窗*/
+import cowpeaDouble from '@/components/serviceCredits/popup/cowpeaDouble.vue';
+import happyHarvest from '@/components/serviceCredits/popup/happyHarvest.vue';
+import cowpeaAnim from './popup/cowpeaAnim.vue';
+import taskComplete from './popup/taskComplete.vue';
+import turntableModel from './popup/turntableModel.vue';
+/* 积分升级成功 */
+import {
+taskReward,
+totalToady,
+videoAward
+} from '@/api/modules/task.js';
+import configurationFun from '@/components/configurationDia/configurationFun.js';
+import configurationDia from '@/components/configurationDia/index.vue';
+import customTabBar from '@/components/customTabBar/index.vue';
+import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
+import { getImgUrl } from '@/utils/auth.js';
+import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
+import getViewPort from '@/utils/getViewPort.js';
+import goDetailsFun from '@/utils/goDetailsFun.js';
+import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import Toast from '@/wxcomponents/vant_update/toast/toast.js';
+
+import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
+import serviceCredits from "@/components/serviceCredits/index.vue";
+import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
+import {
+mapActions,
+mapGetters
+} from 'vuex';
+import pointUpgrade from './popup/pointUpgrade.vue';
+import userGuidance from './popup/userGuidance.vue';
 	// 观看视频签名
 	let _verify = null
 	export default {
-		mixins: [MescrollMixin, configurationFun, shareMixin, goDetailsFun],
+		mixins: [MescrollMixin, configurationFun, shareMixin, goDetailsFun, serviceCreditsFun],
 		components: {
 			// pointsUpgrade,
 			pullRingQr,
@@ -231,7 +255,10 @@
 			userGuidance,
 			customTabBar,
 			configurationDia,
-			listImg
+			listImg,
+			specialLisMiniPage,
+			exchangeFailed,
+			serviceCredits
 		},
 		computed: {
 			...mapGetters(['userInfo', 'isAutoLogin'])
@@ -342,11 +369,29 @@
 			...mapActions({
 				getUserTotal: 'user/getUserTotal',
 			}),
+			// 分享的文案获取
+			specialLisShareHandle({ share_word, share_img }) {
+				this.currentSharePageObj.btnShareObj = {
+					share_title: share_word,
+					share_img
+				}
+			},
 			imgItemHandle(item) {
 				this.textDetailsFun_mixins({
 					...item,
 					configDia: true
 				})
+			},
+			// 列表广告位 - 跳转至半屏推券
+			goodListBannerHandle(item) {
+				this.$refs.recommendDia.initGtData({
+					...item,
+					interval_time: item.type_sid
+				});
+			},
+			// 牛金豆不足，打开弹窗
+			notEnoughCreditsHandle() {
+				this.exchangeFailedShow = true;
 			},
 			initOptions(isUpdate = true) {
 				isUpdate && this.updateData();

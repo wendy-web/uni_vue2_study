@@ -52,19 +52,16 @@
 	>
 		<view class="take_btn">取单口令</view>
 	</view>
-    <view class="take"
-		v-if="[4, 5].includes(Number(item.status))"
-		@click="againHandle(item.id)"
-	>
+    <view class="take" @click="againHandle(item.id)">
 		<view class="take_btn">再来一单</view>
 	</view>
 </view>
 </template>
 
 <script>
-import { parseTime } from '@/utils/index.js';
 import { jumpLink } from '@/api/modules/discounts.js';
 import { orderAgain } from '@/api/modules/takeawayMenu/kfc.js';
+import { parseTime } from '@/utils/index.js';
 export default {
 	props: {
 		item: {

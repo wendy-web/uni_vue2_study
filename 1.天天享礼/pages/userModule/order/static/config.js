@@ -60,6 +60,11 @@ export const goodsTypeObj = {
     8: {
         label: '直充',
         icon: '../../static/order/icon_00.png'
+    },
+    // 心链
+    9: {
+        label: '手机充值',
+        icon: '../../static/order/icon_phone.png'
     }
 }
 export const haiWeiObj = {

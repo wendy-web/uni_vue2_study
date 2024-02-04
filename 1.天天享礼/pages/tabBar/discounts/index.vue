@@ -116,36 +116,63 @@
   :isHW="isShowHWLimit"
   @close="isShowVipList = false"
 ></vipLimit>
+<!-- 商品专题的半屏组件 -->
+<specialLisMiniPage
+  ref="specialLisMiniPage"
+  @notEnoughCredits="notEnoughCreditsHandle"
+  @specialLisShare="specialLisShareHandle"
+  @isBannerClick="goodListBannerHandle"
+></specialLisMiniPage>
+<!-- 牛金豆不足的情况 -->
+<exchangeFailed
+  :isShow="exchangeFailedShow"
+  @goTask="goTaskHandle"
+  @close="exchangeFailedShow = false"
+></exchangeFailed>
+<!-- 赚取牛金豆 -->
+<serviceCredits
+  ref="serviceCredits"
+  :isShow="serviceCreditsShow"
+  @showAdPlay="showAdPlayHandle"
+  @close="closeHandle"
+></serviceCredits>
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { formatDistance } from '@/utils/index.js';
 import {
-  jumpLink,
-  location,
-  nearStore,
-  hwHome,
-  hwStatus
+hwHome,
+jumpLink,
+location,
+nearStore,
 } from '@/api/modules/discounts.js';
-import loadingCom from './components/loadingCom.vue';
-import customTabBar from '@/components/customTabBar/index.vue';
-import configurationDia from '@/components/configurationDia/index.vue';
 import configurationFun from '@/components/configurationDia/configurationFun.js';
+import configurationDia from '@/components/configurationDia/index.vue';
+import customTabBar from '@/components/customTabBar/index.vue';
+import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
+import serviceCredits from "@/components/serviceCredits/index.vue";
+import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
+import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
 import vipLimit from '@/components/vipLimit.vue';
-import getViewPort from '@/utils/getViewPort.js'
-import {getImgUrl} from '@/utils/auth.js';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { getImgUrl } from '@/utils/auth.js';
 import { getUserLocation } from '@/utils/getUserLocation.js';
-import { mapGetters, mapMutations } from 'vuex';
+import getViewPort from '@/utils/getViewPort.js';
+import { formatDistance } from '@/utils/index.js';
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import { mapGetters, mapMutations } from 'vuex';
+import loadingCom from './components/loadingCom.vue';
 import { haiWeiObj, navItemList } from './static/config'; // 混入分享的混合方法
+
 export default {
-  mixins: [MescrollMixin, configurationFun, shareMixin], // 使用mixin
+  mixins: [MescrollMixin, configurationFun, shareMixin, serviceCreditsFun], // 使用mixin
   components: {
     customTabBar,
     configurationDia,
     vipLimit,
-    loadingCom
+    loadingCom,
+    specialLisMiniPage,
+    exchangeFailed,
+    serviceCredits
   },
   data() {
     return {
@@ -207,8 +234,6 @@ export default {
       return viewPort.navHeight;
     },
   },
-  onLoad(option) {
-  },
   async onShow() {
     this.$refs.privacyOpen.LifetimesShow();
     // 监听返回授权后的定位使用
@@ -229,6 +254,24 @@ export default {
     formatDistance,
     haiWeiCon(brand_id, name) {
       return this.haiWeiObj[brand_id][name];
+    },
+    // 列表广告位 - 跳转至半屏推券
+    goodListBannerHandle(item) {
+      this.$refs.recommendDia.initGtData({
+        ...item,
+        interval_time: item.type_sid
+      });
+    },
+    // 分享的文案获取
+    specialLisShareHandle({ share_word, share_img }) {
+      this.currentSharePageObj.btnShareObj = {
+        share_title: share_word,
+        share_img
+      }
+    },
+    // 牛金豆不足，打开弹窗
+    notEnoughCreditsHandle() {
+      this.exchangeFailedShow = true;
     },
     handleTouchInput() {
       if (wx.requirePrivacyAuthorize) {

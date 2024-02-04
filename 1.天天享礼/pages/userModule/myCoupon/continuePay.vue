@@ -15,10 +15,8 @@
 			确定要离开吗?
 		</view>
 		<view class="image_list">
-			<image
-				class="image_item"
-				v-for="(item, index) in imgArr"
-				:key="index"
+			<image class="image_item"
+				v-for="(item, index) in imgArr" :key="index"
 				:src="item"
 			></image>
 		</view>
@@ -33,13 +31,9 @@
 </template>
 
 <script>
-	import {
-		cancelOrder,
-		pay,
-		query
-	} from '@/api/modules/order.js';
-	import Toast from '@/wxcomponents/vant_update/toast/toast.js';
-	export default {
+import { pay, query } from '@/api/modules/order.js';
+import Toast from '@/wxcomponents/vant_update/toast/toast.js';
+export default {
     props: {
       isShow: {
         type: Boolean,
@@ -79,40 +73,20 @@
 	methods: {
 		onConfirm() {
 			this.$emit("confirm");
-			setTimeout(()=>{
-				this.toPay();
-			}, 300);
+			setTimeout(()=> this.toPay(), 300);
 		},
 		onClose() {
 			this.$emit("close");
 		},
-		toPay() {
-			console.log("pay");
-			let params = {
-				id: this.orderId
-			}
-			if (!this.paymentParams) {
-				pay(params).then(res => {
-					let {
-						code,
-						data,
-						msg
-					} = res;
-					if (code == 1) {
-						this.paymentParams = JSON.parse(data.jspay_info);
-						this.pay_order_id = data.order_id;
-						this.createPayment(this.paymentParams);
-						return;
-					}
-					uni.showToast({
-						icon: 'none',
-						title: msg
-					});
-				});
-			} else {
-				this.createPayment(this.paymentParams);
-			}
-
+		async toPay() {
+			let params = { id: this.orderId };
+			if (this.paymentParams) return this.createPayment(this.paymentParams);
+			const res = await pay(params);
+			let { code, data, msg } = res;
+			if (code != 1) return this.$toast(msg);
+			this.paymentParams = JSON.parse(data.jspay_info);
+			this.pay_order_id = data.order_id;
+			this.createPayment(this.paymentParams);
 		},
 		// 发起支付
 		createPayment(obj) {
@@ -152,8 +126,6 @@
 							showCancel: false
 						})
 					})
-
-
 				},
 				fail: (err) => {
 					this.isDisabled = false

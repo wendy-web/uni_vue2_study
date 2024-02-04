@@ -154,21 +154,6 @@
             ></good-list>
         </mescroll-uni>
     </view>
-    <!-- 牛金豆不足的情况 -->
-    <exchangeFailed
-        :isShow="exchangeFailedShow"
-        @goTask="goTaskHandle"
-		@close="exchangeFailedShow=false"
-    >
-    </exchangeFailed>
-    <!-- 赚取牛金豆 -->
-    <serviceCredits
-        ref="serviceCredits"
-        :isShow="serviceCreditsShow"
-        @showAdPlay="showAdPlayHandle"
-        @close="closeHandle"
-    >
-    </serviceCredits>
     <pointUpgradeDia ref='pointUpgradeDia' @happyGet='getHandle'/>
     <!-- 配置的弹窗管理 -->
     <configurationDia
@@ -181,37 +166,55 @@
     ></configurationDia>
     <!-- 优惠推荐商品的弹窗 -->
     <recommendDia ref="recommendDia"></recommendDia>
+    <!-- 商品专题的半屏组件 -->
+    <specialLisMiniPage
+        ref="specialLisMiniPage"
+        @notEnoughCredits="notEnoughCreditsHandle"
+        @specialLisShare="specialLisShareHandle"
+        @isBannerClick="goodListBannerHandle"
+    ></specialLisMiniPage>
+    <!-- 牛金豆不足的情况 -->
+    <exchangeFailed
+        :isShow="exchangeFailedShow"
+        @goTask="goTaskHandle"
+		@close="exchangeFailedShow=false"
+    ></exchangeFailed>
+    <!-- 赚取牛金豆 -->
+    <serviceCredits
+        ref="serviceCredits"
+        :isShow="serviceCreditsShow"
+        @showAdPlay="showAdPlayHandle"
+        @close="closeHandle"
+    ></serviceCredits>
 </mescroll-body>
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import meTabs from './content/me-tabs.vue';
+import { groupRecommend } from '@/api/modules/index.js';
+import {
+goodsQuery,
+jdGroup,
+jingfen,
+keywordList,
+material
+} from '@/api/modules/jsShop.js';
+import { groupSearch } from '@/api/modules/pddShop.js';
+import { taskNum } from '@/api/modules/task.js';
+import configurationFun from '@/components/configurationDia/configurationFun.js';
+import configurationDia from '@/components/configurationDia/index.vue';
 import goodList from '@/components/goodList.vue';
 import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
 import serviceCredits from '@/components/serviceCredits/index.vue';
-import getViewPort from '@/utils/getViewPort.js';
-import MescrollItem from "./content/mescroll-swiper-item.vue";
-import goDetailsFun from '@/utils/goDetailsFun';
-import configurationDia from '@/components/configurationDia/index.vue';
-import configurationFun from '@/components/configurationDia/configurationFun.js';
-import {
-    jdGroup,
-    jingfen,
-    goodsQuery,
-    keywordList,
-    material
-} from '@/api/modules/jsShop.js';
-import {
-    groupSearch
-} from '@/api/modules/pddShop.js';
-import { taskNum } from '@/api/modules/task.js';
-import { mapGetters, mapActions } from 'vuex';
-import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
+import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getImgUrl } from '@/utils/auth.js';
-import { groupRecommend } from '@/api/modules/index.js';
+import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
+import getViewPort from '@/utils/getViewPort.js';
+import goDetailsFun from '@/utils/goDetailsFun';
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
-
+import { mapActions, mapGetters } from 'vuex';
+import meTabs from './content/me-tabs.vue';
+import MescrollItem from "./content/mescroll-swiper-item.vue";
 export default {
     mixins: [MescrollMixin, goDetailsFun, configurationFun, shareMixin], // 使用mixin
     components: {
@@ -220,7 +223,8 @@ export default {
         MescrollItem,
         exchangeFailed,
         serviceCredits,
-        configurationDia
+        configurationDia,
+        specialLisMiniPage
     },
     data() {
         return {
@@ -285,7 +289,7 @@ export default {
             if(!this.searchValue) {
                 mescrollHeight = mescrollHeight - uni.upx2px(this.tabHeight);
             }
-            return mescrollHeight+ 'px';
+            return mescrollHeight + 'px';
         },
         stickyTop(){
             let viewPort = getViewPort();
@@ -344,7 +348,7 @@ export default {
             }
         },
         recommendGoods(newValue, oldValue) {
-            if(newValue.length <=6) {
+            if(newValue.length <= 6) {
                 this.mescroll.triggerUpScroll();
             }
         },
@@ -354,7 +358,7 @@ export default {
                 this.$nextTick(()=>{
                     let mescroll = this.getMescroll(i)
                     mescroll && mescroll.scrollTo(0,0);
-                    setTimeout(()=>{ // 经测试android真机需延时300ms才能恢复禁止滚动,否则scrollTo有可能无效
+                    setTimeout(() => { // 经测试android真机需延时300ms才能恢复禁止滚动,否则scrollTo有可能无效
                         this.disableScroll = true
                     },300)
                 })
@@ -386,6 +390,20 @@ export default {
         ...mapActions({
             getUserInfo: 'user/getUserInfo',
         }),
+        // 分享的文案获取
+        specialLisShareHandle({ share_word, share_img }) {
+            this.currentSharePageObj.btnShareObj = {
+                share_title: share_word,
+                share_img
+            }
+        },
+        // 列表广告位 - 跳转至半屏推券
+        goodListBannerHandle(item) {
+            this.$refs.recommendDia.initGtData({
+                ...item,
+                interval_time: item.type_sid
+            });
+        },
         animationfinishHandle(event){
             this.currentIndex = event.detail.current;
         },
@@ -407,43 +425,29 @@ export default {
             })
         },
         // 页面的滚动事件
-        onPageScroll(e) {
-            // 有search时， 不监听scroll的结果
+        onPageScroll(event) {
             if(this.searchValue) return;
-            const scroll_top = Math.ceil(e.scrollTop);
+            const scroll_top = Math.ceil(event.scrollTop);
             this.scroll_top = scroll_top;
             this.disableScroll = scroll_top <= this.fixationValue;
             let padding_height = this.fixationValue - scroll_top;
-            this.paddingBottomHeight = padding_height < 0 ? 0 : padding_height;
+            this.paddingBottomHeight = (padding_height < 0) ? 0 : padding_height;
         },
         // 牛金豆不足，打开弹窗
         notEnoughCreditsHandle(){
             this.exchangeFailedShow = true;
         },
         // 去赚取牛金豆
-        goTaskHandle(){
-            taskNum().then(res => {
-                this.exchangeFailedShow = false;
-                if(res.code == 1){
-                    const {
-                        total_times,
-                        reward_times,
-                        video_times
-                    } = res.data;
-                    if(total_times > 0) {
-                        this.serviceCreditsShow = true;
-                        // 次数大于0； 打开赚取牛金豆的弹窗
-                        if(video_times == 0) {
-                            this.$refs.serviceCredits.setSwiperNum(1);
-                        };
-                        return;
-                    }
-                }
-                // 跳转到福利中心
-                uni.reLaunch({
-					url:'/pages/tabBar/task/index'
-				})
-            });
+        async goTaskHandle(){
+            const res = await taskNum();
+            this.exchangeFailedShow = false;
+            if(!res.code) return this.$switchTab('/pages/tabBar/task/index');
+            const { total_times, video_times } = res.data;
+            if(total_times > 0) {
+                this.serviceCreditsShow = true;
+                // 次数大于0； 打开赚取牛金豆的弹窗
+                if(video_times == 0) this.$refs.serviceCredits.setSwiperNum(1);
+            }
         },
 		// 关闭赚取牛金豆 并更新用户信息
         closeHandle() {
@@ -564,7 +568,6 @@ export default {
                 type
             } = this.groupRecommendData;
             let pageNum = this.pageNum;
-            // const pageNum = page.num;
             let params = {
                 id,
                 page: pageNum,
@@ -633,10 +636,7 @@ export default {
                 if(goodLength % 2 && goodLength > 6) {
                     this.lastOddItem = this.recommendGoods.pop();
                 }
-            }).catch(()=>{
-                //联网失败, 结束加载
-                // this.mescroll.endErr();
-            });
+            }).catch(() => this.mescroll.endErr());
         },
         // 轮播菜单
         swiperChange(e){

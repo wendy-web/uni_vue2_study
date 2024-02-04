@@ -1,7 +1,8 @@
 <template>
-<view id="beanDomBox"
-	:class="['bean', userInfo.is_vip ? 'vip_active' : '']"
->
+<view id="beanDomBox" :class="['bean',
+	userInfo.is_vip ? 'vip_active' : '',
+	(iconFindLightIndex >= 0) ? 'list_light-box' : ''
+]">
 	<!-- vip的呈现样式 -->
 	<view :class="['vip_cont fl_bet', vipObject.packet_num ? 'packet_red' : '']" v-if="userInfo.is_vip">
 		<block v-if="vipObject.packet_num">{{ vipObject.packet_num }}张红包可用</block>
@@ -18,11 +19,24 @@
 		<view class="cont_right" @click="goToTask"></view>
 	</view>
 	<view class="bean_list-box">
-		<view class="bean_list">
-			<view class="bean_list-item"
-				v-for="(item,index) in list" :key="index"
-				@click="navHandle(item)"
-			>
+		<view :class="['bean_list', (iconFindLightIndex >= 0) ? 'list_light-box' : '']">
+			<view v-for="(item,index) in list" :key="index"
+				:class="['bean_list-item', (iconFindLightIndex == index) ? 'lightShowIcon' : '']"
+				@click="navHandle(item)">
+				<view v-if="iconFindLightIndex == index" class="lightShowIcon_box">
+					<view
+						:class="['light_txt', (iconFindLightIndex%5 < 3) ? 'light_txt-left' : 'light_txt-right']"
+						v-if="lightArr.jd_word"
+					>
+						<image src="https://file.y1b.cn/store/1-0/2419/659cb25974d53.png"
+							class="light_img-left" mode="widthFix"
+						></image>
+						<image src="https://file.y1b.cn/store/1-0/2419/659cb26d94fe1.png"
+							class="light_img-right"  mode="widthFix"
+						></image>
+						{{ lightArr.jd_word }}
+					</view>
+				</view>
                 <view class="list_img">
 				    <image class="bean_small_icon" :src="item.tag" mode="aspectFill"></image>
                     <van-image
@@ -34,7 +48,7 @@
                     ><van-loading slot="loading" type="spinner" size="12" vertical />
                     </van-image>
                 </view>
-				<view>{{item.title}}</view>
+				<view :style="{color: item.color || '#666', fontWeight: item.bold ? 600 : 400,position: 'relative'}">{{item.title}}</view>
 			</view>
 		</view>
 	</view>
@@ -42,12 +56,12 @@
 </template>
 
 <script>
-import pCountup from '@/components/p-countUp/countUp.vue';
-import { mapGetters } from 'vuex';
-import { textNav } from '@/api/modules/shopMall.js';
-import goDetailsFun from '@/utils/goDetailsFun';
-import { getImgUrl } from '@/utils/auth.js';
 import { savingInfo } from "@/api/modules/packet.js";
+import { textNav } from '@/api/modules/shopMall.js';
+import pCountup from '@/components/p-countUp/countUp.vue';
+import { getImgUrl } from '@/utils/auth.js';
+import goDetailsFun from '@/utils/goDetailsFun';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
 	mixins: [goDetailsFun],
 	components: {
@@ -96,7 +110,7 @@ export default {
 			],
 			luckyBrandId: 0,
 			imgUrl: getImgUrl(),
-			vipObject: null
+			vipObject: null,
 		}
 	},
 	watch: {
@@ -108,17 +122,26 @@ export default {
 				this.vipObject = res.data;
 			},
 			deep: true
-		}
+		},
+		diaList: {
+            handler(newValue, oldValue) {
+                if (newValue.length && newValue[0] == "iconFind") {
+					this.comFindIconIndex();
+				}
+            },
+            immediate: true
+        }
 	},
 	computed: {
-		...mapGetters(['userInfo', 'isAutoLogin'])
+		...mapGetters(['userInfo', 'isAutoLogin', 'lightArr', 'iconFindLightIndex', 'diaList'])
 	},
 	methods:{
+		...mapMutations({
+			setIconFindLightIndex: "user/setIconFindLightIndex",
+            delCurrentDiaList: "user/delCurrentDiaList",
+            setLightArr: "user/setLightArr"
+		}),
 		async init() {
-			const textNavRes = await textNav();
-			if(textNavRes.code == 1){
-				this.list = textNavRes.data;
-			}
 			let query = uni.createSelectorQuery().in(this)
 			query.select('#credits').boundingClientRect()
 			query.exec((res) => {
@@ -129,6 +152,16 @@ export default {
 				const domBoxRes = await this.warpRectDom('beanDomBox');
 				this.$emit('heightUpdate', domBoxRes.height + uni.upx2px(30))
 			}, 2000);
+			const textNavRes = await textNav();
+			if(textNavRes.code != 1) return;
+			this.list = textNavRes.data;
+			this.comFindIconIndex();
+		},
+		comFindIconIndex() {
+			if(!this.lightArr || (this.diaList.length && (this.diaList[0] != "iconFind"))) return;
+			const { id } = this.lightArr;
+			const findLightIndex = this.list.findIndex(res => res.id == id);
+			this.setIconFindLightIndex(findLightIndex);
 		},
 		warpRectDom(idName) {
 			return new Promise(resolve => {
@@ -155,6 +188,11 @@ export default {
 			this.$go('/pages/userCard/card/cardVip/index');
 		},
 		navHandle(item){
+			if(this.iconFindLightIndex >= 0) {
+				this.setIconFindLightIndex(-1);
+				this.delCurrentDiaList();
+				this.setLightArr(null);
+			}; // 关闭天天过来时高亮展示的样式
 			this.textDetailsFun_mixins({
 				...item,
 				isNavFromUrl: true
@@ -167,9 +205,7 @@ export default {
 .bean {
 	width: 100%;
 	position: relative;
-	z-index: 0;
 	margin-top: 30rpx;
-	overflow: hidden;
 	&::before {
 		content: '\3000';
 		background: url("https://file.y1b.cn/store/1-0/23826/64e9689de3190.png") 0 0 / 100% 100% no-repeat;
@@ -216,9 +252,9 @@ export default {
 		height: 92rpx;
 	}
 	.vip_cont {
-		margin: 20rpx 54rpx 0 84rpx;
+		margin: 0 54rpx 0 84rpx;
+		padding-top: 20rpx;
 		position: relative;
-		z-index: 0;
 		font-size: 30rpx;
 		font-weight: 600;
 		color: #b75a30;
@@ -231,25 +267,24 @@ export default {
 			background: url("https://file.y1b.cn/public/img/ttxl/static/card/card_icon.png") center / contain no-repeat;
 			position: absolute;
 			left: -34rpx;
-			top: 50%;
-			transform: translateY(-50%);
 			width: 26rpx;
 			height: 26rpx;
-			z-index: -1;
+			// z-index: -1;
 		}
 		&.packet_red::before {
 			background-image: url("https://file.y1b.cn/store/1-0/23118/654b06516b55b.png");
 		}
 	}
 	.bean_cont {
-		margin: 20rpx 50rpx 0 90rpx;
+		margin: 0 50rpx 0 90rpx;
 		position: relative;
+		padding-top: 20rpx;
+		// z-index: -1;
 		&::before {
 			content: '\3000';
 			background: url("https://file.y1b.cn/store/1-0/231229/658e35ae1c017.png") center / contain no-repeat;
 			position: absolute;
 			left: -52rpx;
-			top: 0;
 			width: 52rpx;
 			height: 48rpx;
 		}
@@ -297,27 +332,130 @@ export default {
 	flex-wrap: wrap;
 	position: relative;
 	padding-top: 20rpx;
+}
+.bean_list-item {
+	margin-top: 30rpx;
+	// margin-bottom: 24rpx;
+	width: 20%;
+	flex: 0 0 20%;
+	position: relative;
+}
+.bean_small_icon {
+	position: absolute;
+	right: -20rpx;
+	top: -18rpx;
+	width: 64rpx;
+	height: 40rpx;
+	z-index: 1;
+}
+.list_img {
+	width: 88rpx;
+	height: 88rpx;
+	font-size: 0;
+	position: relative;
+	margin: 0 auto 2rpx;
+}
+.list_light-box{
+	.vip_cont,
+	.bean_cont,
 	.bean_list-item {
-		margin-top: 30rpx;
-		// margin-bottom: 24rpx;
-		width: 25%;
-		flex: 0 0 20%;
-		position: relative;
+		z-index: -1;
 	}
-	.bean_small_icon {
+	.lightShowIcon {
+	position: relative;
+	z-index: 9;
+	.light_head {
 		position: absolute;
-		right: -20rpx;
-		top: -18rpx;
-		width: 64rpx;
-		height: 40rpx;
-        z-index: 1;
+		width: 102rpx;
+		height: 100rpx;
+		bottom: -50rpx;
+		right: -50rpx;
 	}
-	.list_img {
-		width: 88rpx;
-		height: 88rpx;
-        font-size: 0;
-        position: relative;
-		margin: 0 auto 2rpx;
+	.lightShowIcon_box {
+		position: absolute;
+		z-index: 0;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 156rpx;
+		height: 156rpx;
+		background: #F7F7F7;
+		border-radius: 50%;
+		box-shadow: 0 0 8px rgba(255, 255, 255, 0.2) inset;
+		&::before {
+			content: "\3000";
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			border-radius: 50%;
+			animation: rippleAnimation 2s ease infinite;
+			box-shadow: 0 0 8px rgba(255, 255, 255, 1) inset;
+		}
+		.light_txt {
+			position: absolute;
+			height: 78rpx;
+			line-height: 84rpx;
+			font-size: 28rpx;
+			text-align: center;
+			min-width: 128rpx;
+			text-align: center;
+			color: rgba(255,255,255,0.90);
+			padding: 0 32rpx 0 40rpx;
+			border-radius: 39rpx;
+			white-space: nowrap;
+			z-index: 0;
+			top: 252rpx;
+			&::before{
+				content: '\3000';
+				background: url("https://file.y1b.cn/store/1-0/2419/659cb751dfad6.png") 0 0 / 100% 100% no-repeat;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				height: 184rpx;
+				z-index: -1;
+			}
+			&.light_txt-left{
+				left: 28rpx;
+				&::before {
+					transform: scaleX(-1);
+				}
+			}
+			&.light_txt-right {
+				right: 26rpx;
+			}
+			.light_img-left {
+				width: 52rpx;
+				height: 56rpx;
+				position: absolute;
+				left: -19rpx;
+				bottom: 0;
+			}
+			.light_img-right{
+				width: 38rpx;
+				height: 42rpx;
+				position: absolute;
+				right: 0;
+				top: 0;
+			}
+		}
+	}
+	}
+}
+@keyframes rippleAnimation {
+	0% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(1.2);
+		opacity: 0.7;
+	}
+	100% {
+		transform: scale(1.3);
+		opacity: 0;
 	}
 }
 </style>

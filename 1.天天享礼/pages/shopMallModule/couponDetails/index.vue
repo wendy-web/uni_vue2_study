@@ -31,8 +31,7 @@
             :height="screenWidth + 'px'"
             :src="config.image"
             use-loading-slot
-          >
-            <van-loading slot="loading" type="spinner" size="20" vertical />
+          ><van-loading slot="loading" type="spinner" size="20" vertical />
           </van-image>
         </channel-video>
         <!-- 商品图片 -->
@@ -42,8 +41,7 @@
           :height="screenWidth + 'px'"
           :src="config.image"
           use-loading-slot
-        >
-          <van-loading slot="loading" type="spinner" size="20" vertical />
+        ><van-loading slot="loading" type="spinner" size="20" vertical />
         </van-image>
       </view>
       <!-- 分享图标 -->
@@ -87,16 +85,12 @@
       <!-- 富文本详情 -->
       <view class="u-parse-box">
         <view class="u-parse_title">
-          <image
-            class="remind_icon"
+          <image class="remind_icon" mode="aspectFill"
             :src="subImgUrl + '/remind_icon.png'"
-            mode="aspectFill"
           ></image>
           需要注意
-          <image
-            class="remind_qa"
+          <image class="remind_qa" mode="aspectFill"
             :src="subImgUrl + '/qa.png'"
-            mode="aspectFill"
           ></image>
         </view>
         <view class="u-parse_cont">
@@ -108,12 +102,10 @@
         </view>
       </view>
       <!-- 价格说明 -->
-      <view
-        class="price-desc"
+      <view class="price-desc"
         :style="{
           '--padding': stockType === 1 && exchangeCk_id ? '68rpx' : '0rpx',
-        }"
-      >
+        }">
         <view class="price-desc-title"> 价格说明 </view>
         <view class="price-desc-info">
           基础价或划线价，指商品的专柜价、吊牌价、正品零售价、厂商指导价或该商品的曾经展示过的销售价等，并非原价，仅供参考
@@ -131,10 +123,8 @@
             mode="aspectFit"
           ></image>
           <view class="remind_left">
-            <image
-              class="left_icon"
+            <image  class="left_icon" mode="aspectFill"
               :src="subImgUrl + '/remind_left-icon.png'"
-              mode="aspectFill"
             ></image>
             你有该优惠券未使用
           </view>
@@ -145,19 +135,12 @@
         </view>
         <view class="bottom-tools" v-if="samePlatform">
           <!-- 收藏按钮 -->
-          <view
-            class="collection-btn"
+          <view class="collection-btn"
             :class="{ collect: isCollect }"
-            @click="collect"
+            @click="collectHandle"
           >
-            <image
-              class="collection-btn-icon"
-              :src="
-                isCollect
-                  ? `${subImgUrl}/stat_select.png`
-                  : `${subImgUrl}/star01.jpg`
-              "
-              mode="aspectFill"
+            <image class="collection-btn-icon" mode="aspectFill"
+              :src=" isCollect ? `${subImgUrl}/stat_select.png` : `${subImgUrl}/star01.jpg`"
             ></image>
             <text>{{ isCollect ? "已收藏" : "收藏" }}</text>
           </view>
@@ -166,17 +149,14 @@
             open-type="getPhoneNumber"
             class="get-phone"
             @getphonenumber="getPhoneNumber"
-            v-if="!userInfo.mobile && config.open_mini_type != 2 && isAutoLogin"
+            v-if="!userInfo.mobile && config.open_mini_type != 2 && isAutoLogin && config.voucherType !== 11"
           ></button>
           <!-- 立即兑换 -->
-          <view
-            :class="[
-              'redeem-now',
+          <view :class="['redeem-now',
               redeemClickLoading ? 'redeem-no_active' : '',
               userInfo.is_vip ? 'vip_active' : ''
             ]"
-            @click="getWxMsgId"
-          >
+            @click="getWxMsgId">
             <block v-if="userInfo.is_vip">
                 <image class="coupon_vip" :src="cardImgUrl + '/coupon_vip.png'" mode="aspectFit"></image>
                 <view class="redeem-now-left">
@@ -185,7 +165,7 @@
                 </view>
                 <view class="icon_middle"></view>
                 <view class="redeem-now-right">
-                    {{ redeemClickLoading ? "兑换中" : exchangeBtn }}
+                  {{ redeemClickLoading ? "兑换中" : exchangeBtn }}
                 </view>
             </block>
             <block v-else-if="config.credits > 0">
@@ -194,11 +174,7 @@
                         {{ config.is_popover ? 0 : config.credits }}
                     </view>
                     <view class="rnl-value" v-else>
-                        {{
-                            config.is_popover
-                            ? 0
-                            : config.seckill_credits || config.credits
-                        }}
+                        {{ config.is_popover ? 0 :(config.seckill_credits || config.credits) }}
                     </view>
                     <view class="rnl-label"> 牛金豆 </view>
                 </view>
@@ -207,24 +183,18 @@
                     {{ redeemClickLoading ? "兑换中" : exchangeBtn }}
                 </view>
             </block>
-            <view class="redeem-now-txt" v-else>{{
-              config.btn_word || "去领取"
-            }}</view>
+            <view class="redeem-now-txt" v-else>{{ config.btn_word || "去领取"}}</view>
             <!-- 仅限时秒杀可见 -->
-            <image
-              v-if="cardType === 2"
-              class="rbr-xs-icon"
-              :src="subImgUrl + '/xs.png'"
-              mode="aspectFill"
-            ></image>
+            <image v-if="cardType === 2"
+              class="rbr-xs-icon" mode="aspectFill"
+              :src="subImgUrl + '/xs.png'"></image>
           </view>
         </view>
         <view class="van-submit-bar__safe"></view>
       </view>
       <view class="no-inventory" v-else-if="!isGetWxMsgId">
         抱歉，该优惠券已被抢光
-        <image
-          class="no-inventory_icon"
+        <image class="no-inventory_icon"
           :src="subImgUrl + '/no-inventory_icon.png'"
           mode="aspectFill"
         ></image>
@@ -265,31 +235,30 @@
 
 <script>
 import uParse from "@/components/u-parse/u-parse.vue";
+import exchangeSuccess from "./exchangeSuccess.vue";
 import normalCard from "./normalCard.vue";
-import vipCard from "./vipCard.vue";
 import previewSeckillCard from "./previewSeckillCard.vue";
 import seckillCard from "./seckillCard.vue";
-import exchangeSuccess from "./exchangeSuccess.vue";
+import vipCard from "./vipCard.vue";
 // import exchangeFailed from './exchangeFailed.vue';
-import serviceRecharge from "./serviceRecharge.vue";
 import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
 import serviceCredits from "@/components/serviceCredits/index.vue";
 import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
+import serviceRecharge from "./serviceRecharge.vue";
 // import otherExchangeSuccess from './otherExchangeSuccess.vue'
+import { wxmsgid } from "@/api/modules/index.js";
 import {
-  couponDetails,
-  seckill,
-  exchange,
-  exchangeCk,
+couponDetails,
+exchange,
+exchangeCk,
+seckill,
 } from "@/api/modules/shopMall.js";
 import { toggleCollect } from "@/api/modules/user.js";
-import { mapGetters, mapActions } from "vuex";
-import { escape2Html, parseTime, getViewPort } from "@/utils/index.js";
-import { wxmsgid } from "@/api/modules/index.js";
-import { getImgUrl } from "@/utils/auth.js";
-import { setStorage } from "@/utils/auth.js";
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
+import { getImgUrl, setStorage } from "@/utils/auth.js";
+import { escape2Html, getViewPort, parseTime } from "@/utils/index.js";
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import { mapActions, mapGetters } from "vuex";
 let _coupon_id = null;
 //从消息模板进入页面
 let _msgTemplateUpdate = false;
@@ -369,7 +338,6 @@ export default {
     this.searchExchangeCk();
   },
   onLoad(o) {
-    /*券id*/
     _coupon_id = o.id;
     if (o.is_popover) {
       this.is_popover = Number(o.is_popover);
@@ -385,8 +353,6 @@ export default {
     if (o.isGetWxMsgId && o.applyCouponId) {
       this.isGetWxMsgId = Boolean(o.isGetWxMsgId);
       this.applyCouponId = Number(o.applyCouponId);
-      // this.exchange();
-      // this.openServiceRecharge(_coupon_id);
     }
     getNavbarData().then((res) => {
       let { navBarHeight, statusBarHeight } = res;
@@ -399,26 +365,21 @@ export default {
       getUserTotal: "user/getUserTotal",
       updateUserNew: "user/updateUserNew",
     }),
-    searchExchangeCk() {
-      exchangeCk({
-        id: _coupon_id,
-      }).then((res) => {
-        if (!res.code) return;
-        if (res.data.have) {
-          this.exchangeCk_id = res.data.have;
-          this.exchangeBtn = "继续兑换";
-        }
-      });
+    async searchExchangeCk() {
+      const res = await exchangeCk({ id: _coupon_id});
+      if (!res.code) return;
+      if (res.data.have) {
+        this.exchangeCk_id = res.data.have;
+        this.exchangeBtn = "继续兑换";
+      }
     },
     // 去使用
     goMyCouponHandle() {
-        if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
-        this.$go(`/pages/userModule/myCoupon/index?applyCouponId=${this.exchangeCk_id}&alertUsed=1`);
+      if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
+      this.$go(`/pages/userModule/myCoupon/index?applyCouponId=${this.exchangeCk_id}&alertUsed=1`);
     },
     init() {
-      couponDetails({
-        id: _coupon_id,
-      }).then((res) => {
+      couponDetails({ id: _coupon_id }).then((res) => {
         let {
           credits,
           explain,
@@ -533,25 +494,17 @@ export default {
     },
     preview(src, e) {},
     navigate(href, e) {},
-    exchange() {
+    async exchange() {
       /*牛金豆不足*/
-      let credits = this.config.seckill_credits || this.config.credits;
+      let ConfigCredits = this.config.seckill_credits || this.config.credits;
       if (this.cardType === 3) {
-        credits = this.config.credits;
+        ConfigCredits = this.config.credits;
       }
-      if (this.userInfo.credits < credits && !this.is_popover && !this.userInfo.is_vip) {
+      if (this.userInfo.credits < ConfigCredits && !this.is_popover && !this.userInfo.is_vip) {
         this.exchangeFailedShow = true;
         this.redeemClickLoading = false;
         return;
       }
-      // /*活动还未开始*/
-      // if (this.cardType === 3) {
-      // 	uni.showToast({
-      // 		title: '活动还未开始',
-      // 		icon: 'none'
-      // 	})
-      // 	return
-      // }
       let API = exchange;
       let params = {
         id: this.config.id,
@@ -567,59 +520,53 @@ export default {
           is_popover: this.is_popover,
         };
       }
-      API(params).then((res) => {
-        /*兑换成功*/
-        if (res.code == 1) {
-          // 兑换成功弹窗要求金额保留1位小数点
-          let {
-            face_value,
-            voucherType,
-            is_main,
-            article_url,
-            main_url,
-            video_account_id,
-            video_id,
-            type_id,
-            type_sid,
-            open_mini_type,
-            qz_url,
-            credits,
-          } = this.config;
-          face_value = Number(face_value).toFixed(1);
-          this.exchangeId = res.data;
-          // if (!this.config.voucherType || this.config.voucherType === 1) {
-          this.$refs.exchangeSuccess.popupShow({
-            id: res.data,
-            title: this.config.title,
-            face_value,
-            voucherType,
-            is_main,
-            article_url,
-            main_url,
-            video_account_id,
-            video_id,
-            type_id,
-            type_sid,
-            open_mini_type,
-            qz_url,
-            credits,
-          });
-          // } else {
-          // 	this.$refs.otherExchangeSuccess.popupShow(this.config)
-          // }
-
-          /*更新用户以及券信息*/
-          this.getUserTotal();
-          this.init();
-          setStorage("timeSeckillUpdate", true);
-          return;
-        }
-        uni.showToast({
-          icon: "none",
-          title: res.msg,
-        });
+      const res = await API(params);
+      if (res.code != 1) {
+        this.$toast(res.msg);
         this.redeemClickLoading = false;
-      });
+      }
+      let {
+        face_value,
+        voucherType,
+        is_main,
+        article_url,
+        main_url,
+        video_account_id,
+        video_id,
+        type_id,
+        type_sid,
+        open_mini_type,
+        qz_url,
+        credits,
+      } = this.config;
+      face_value = Number(face_value).toFixed(1);
+      this.exchangeId = res.data;
+      // 移动积分的跳转
+      if(voucherType == 11) {
+        this.redeemClickLoading = false;
+        this.$go(`/pages/webview/webview?link=${encodeURIComponent(qz_url)}`);
+      } else {
+        this.$refs.exchangeSuccess.popupShow({
+          id: res.data,
+          title: this.config.title,
+          face_value,
+          voucherType,
+          is_main,
+          article_url,
+          main_url,
+          video_account_id,
+          video_id,
+          type_id,
+          type_sid,
+          open_mini_type,
+          qz_url,
+          credits,
+        });
+      }
+      /* 更新用户以及券信息 */
+      this.getUserTotal();
+      this.init();
+      setStorage("timeSeckillUpdate", true);
     },
     // 兑换完成 - 更改回兑换的内容
     exchangeEndHandle() {
@@ -632,52 +579,45 @@ export default {
     openMiniSuccHandle(open_type) {
       this.isShowOpenEmbedded = open_type == 2;
     },
-    collect() {
-        if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
-        toggleCollect({
-            coupon_id: this.config.id,
-        }).then((res) => {
-            if (res.code == 1) this.isCollect = !this.isCollect;
-            this.$toast(res.msg);
-        });
+    async collectHandle() {
+      if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
+      const res = await toggleCollect({ coupon_id: this.config.id })
+      if (res.code == 1) this.isCollect = !this.isCollect;
+      this.$toast(res.msg);
     },
     // 获取模板id
-    getWxMsgId() {
-        if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
+    async getWxMsgId() {
+      const { voucherType, qz_url, open_mini_type } = this.config;
+      // 移动积分 - 类型type == 11;
+      // if(voucherType == 11) return this.$go(`/pages/webview/webview?link=${encodeURIComponent(qz_url)}`);
+      if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
       this.$wxReportEvent("immediateexchange");
       // 半屏的模式不做授权及验证
-      if (this.config.open_mini_type == 2) {
-        return this.exchange();
-      }
+      if (open_mini_type == 2) return this.exchange();
       let local_date = uni.getStorageSync("exchangeWxMsgId");
       let cur_date = parseTime(Date.now(), "{y}-{m}-{d}");
       this.redeemClickLoading = true;
       // 今日授权过一次就不在授权
-      if (local_date && cur_date == local_date) {
-        this.exchange();
+      if (local_date && cur_date == local_date) return this.exchange();
+      const res = await wxmsgid();
+      const accuentIds = res.data[2];
+      if (accuentIds) {
+        uni.requestSubscribeMessage({
+          tmplIds: [accuentIds],
+          complete: (event) => {
+            const resultState = event[accuentIds];
+            if (resultState == "accept") {
+              this.isPowerStatus = 1;
+            } else {
+              this.isPowerStatus = 0;
+            }
+            uni.setStorageSync("exchangeWxMsgId", cur_date);
+            this.exchange();
+          },
+        });
         return;
       }
-      wxmsgid().then((res) => {
-        console.log(res);
-        const accuentIds = res.data[2];
-        if (accuentIds) {
-          uni.requestSubscribeMessage({
-            tmplIds: [accuentIds],
-            complete: (event) => {
-              const resultState = event[accuentIds];
-              if (resultState == "accept") {
-                this.isPowerStatus = 1;
-              } else {
-                this.isPowerStatus = 0;
-              }
-              uni.setStorageSync("exchangeWxMsgId", cur_date);
-              this.exchange();
-            },
-          });
-          return;
-        }
-        this.exchange();
-      });
+      this.exchange();
     },
     sphError(err) {
       console.log("视频号err：", err);
@@ -694,17 +634,11 @@ export default {
       }
     },
     getPhoneNumber(event) {
-      if (event.detail.errMsg !== "getPhoneNumber:ok") {
-        this.getWxMsgId();
-        return;
-      }
+      if (event.detail.errMsg !== "getPhoneNumber:ok") return this.getWxMsgId();
       // 获得手机号
       const phoneCode = event.detail.code;
-      if (phoneCode) {
-        this.updateUserNew({ code: phoneCode }).then((res) =>  this.getWxMsgId());
-        return;
-      }
-      this.$toast('微信版本过低，无法获取手机号');
+      if (!phoneCode) return this.$toast('微信版本过低，无法获取手机号');
+      this.updateUserNew({ code: phoneCode }).then((res) =>  this.getWxMsgId());
     },
   },
 };

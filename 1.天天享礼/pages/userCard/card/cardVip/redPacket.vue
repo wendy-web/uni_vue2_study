@@ -22,7 +22,7 @@
                     </view>
                 </view>
             </view>
-            <block v-if="oldPacketList.length">
+            <!-- <block v-if="oldPacketList.length">
                 <view class="noValid_title fl_bet">
                     <view>无效红包</view>
                     <view class="noValid_lab" @click="goNoValidRedPacketHandle">
@@ -43,7 +43,7 @@
                         </view>
                     </view>
                 </view>
-            </block>
+            </block> -->
         </view>
     </view>
     <view class="red_remind" v-if="nextArr.count">
@@ -62,11 +62,11 @@
 </template>
 
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import getViewPort from '@/utils/getViewPort.js';
-import { getImgUrl } from '@/utils/auth.js';
-import { mapGetters, mapActions, mapMutations } from "vuex";
 import { nowSavings } from "@/api/modules/packet.js";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { getImgUrl } from '@/utils/auth.js';
+import getViewPort from '@/utils/getViewPort.js';
+import { mapGetters } from "vuex";
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {

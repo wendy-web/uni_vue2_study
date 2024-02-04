@@ -84,7 +84,7 @@
 		},
 		created() {
 			let { num } = this;
-            if(!num) return;
+            if(!num) return this.indexArr = [0];
 			let arr = new Array(num.toString().length);
 			arr.fill(0);
 			this.indexArr = arr;
@@ -92,7 +92,7 @@
 		watch: {
 			num: function(val, oldVal) {
 				// 处理新老数据长度不一样的情况
-				if(!val) return;
+				if(!val) return this.indexArr = [0];
 				let arr = Array.prototype.slice.apply(this.indexArr);
 				let newLen = val.toString().length;
 				let oldLen = oldVal.toString().length;
@@ -124,7 +124,7 @@
 			 * @value 数字
 			 */
 			numChange(num) {
-                if(!num) return;
+                if(!num) return this.indexArr = [0];
 				let { indexArr } = this;
 				let copyIndexArr = Array.prototype.slice.apply(indexArr);
 				let _num = num.toString();

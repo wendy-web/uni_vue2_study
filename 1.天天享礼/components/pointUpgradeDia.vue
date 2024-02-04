@@ -17,7 +17,7 @@
         <van-image
           width="750rpx"
           height="1088rpx"
-          src="https://file.y1b.cn/store/1-0/23415/643a620866238.png"
+          src="https://file.y1b.cn/store/1-0/2418/659ba113a1bff.png"
           fit="cover"
           use-loading-slot
         >
@@ -109,13 +109,9 @@
 </template>
 
 <script>
-import { getCredits, decCredits } from "@/api/modules/task.js";
-import { mapGetters, mapActions, mapMutations } from "vuex";
-import { getImgUrl } from '@/utils/auth.js';
-import {
-  setDiaType,
-  getDiaType
-} from '@/utils/auth.js';
+import { decCredits, getCredits } from "@/api/modules/task.js";
+import { getDiaType, getImgUrl, setDiaType } from '@/utils/auth.js';
+import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
   computed: {
     ...mapGetters(["gift", "userInfo", "diaList"]),
@@ -134,8 +130,8 @@ export default {
   watch: {
     diaList(newValue, oldValue) {
         if(newValue.length && (newValue[0] == this.shoType)) {
-            this.showGift();
-            this.delCurrentDiaList();
+          this.showGift();
+          // this.delCurrentDiaList();
         }
     }
   },
@@ -161,6 +157,7 @@ export default {
       this.isShow = false;
       setDiaType('gift');
       this.setGiftInfo(0); // 弹窗过 即不是新人的信息存储
+      this.delCurrentDiaList();
       this.$emit("happyGet");
       if(this.currentPage !='pages/tabBar/shopMall/index') {
         this.getUserInfo(); // 获取用户信息
@@ -206,7 +203,7 @@ export default {
         }
         if(diaType != 'gift') {
             if(this.diaList.length) {
-                this.setDiaList(this.shoType);
+              this.setDiaList(this.shoType);
             } else {
                 this.showGift();
             }
@@ -215,8 +212,8 @@ export default {
       }
     },
     showGift() {
-        setDiaType();
-        this.show();
+      setDiaType();
+      this.show();
     }
   },
 };

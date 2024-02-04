@@ -1,13 +1,12 @@
+import { bysubunionid } from '@/api/modules/jsShop.js';
+import { goodsPromotion } from '@/api/modules/pddShop.js';
 import {
     couponDetails,
     exchange,
     fromUrl
 } from '@/api/modules/shopMall.js';
-import { bysubunionid } from '@/api/modules/jsShop.js';
-import { goodsPromotion } from '@/api/modules/pddShop.js';
 import {
     mapGetters,
-    mapActions,
     mapMutations
 } from 'vuex';
 const goDetailsFun = {
@@ -173,7 +172,10 @@ const goDetailsFun = {
                     if (this.$refs.recommendDia) this.$refs.recommendDia.initGtData(item);
                     break;
                 case 11:
-                    // 专题页面
+                    // 专题页面 - open_mini_type打开半屏的弹窗 - (配置弹窗)
+                    if (open_mini_type == 2 && this.$refs.specialLisMiniPage) {
+                        return this.$refs.specialLisMiniPage.initShow(type_id);
+                    };
                     this.$go(`/pages/userModule/allowance/specialList/index?id=${type_id || 0}`);
                     break;
                 case 13:
@@ -199,10 +201,11 @@ const goDetailsFun = {
                 dl_lx_type,
                 is_popover,
                 is_jl,
-                is_zt
+                is_zt,
+                is_banner
             } = item;
             // 接入移动积分
-            if (type == 11) {
+            if (type == 11 && is_banner) {
                 this.$go(`/pages/webview/webview?link=${encodeURIComponent(item.qz_url)}`);
                 return;
             }
@@ -214,7 +217,8 @@ const goDetailsFun = {
             if (lx_type == 2 || lx_type == 3) return this.lxTypeJdFun(item, { listIndex, index }, goodList, isBolCredits);
             // 拼多多
             const item_id = coupon_id || id;
-            if (is_jump == 2 || type == 1) {
+            if (is_jump == 2 || [1, 11].includes(type)) {
+                // type == 11 移动积分 - 进入详情
                 return this.goCouponDetails(item_id, is_popover);
             }
             const detailData = await couponDetails({ id: item_id });
@@ -254,6 +258,8 @@ const goDetailsFun = {
                 is_popover,
             });
             if (!exchangeData.code) return;
+            // console.log('item', item)
+            // console.log('item:type', type)
             let link = is_main === 1 ? article_url : main_url;
             switch (type) {
                 // 公众号
@@ -322,6 +328,9 @@ const goDetailsFun = {
                     // 广告位 - 打开半屏推券的使用
                     this.$emit('isBannerClick', item);
                     break;
+                case 11:
+                    // 移动积分 - 进入详情
+                    // this.goCouponDetails(item_id, is_popover);
             }
             // 兑换成功，当前的兑换人数加一
             // this.addExchNum(item, { listIndex, index }, goodList);

@@ -156,3 +156,10 @@ export function profitMes(data) {
         data
     });
 }
+
+export function holiday() {
+    return API.request({
+        url: '/api/get/holiday',
+        method: 'post'
+    });
+}
