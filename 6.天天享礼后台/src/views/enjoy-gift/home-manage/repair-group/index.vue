@@ -152,7 +152,7 @@ function changeTimer() {
     message.success(res.msg)
   })
 }
-const ckIds = ref({})
+const ckIds = ref([])
 function getDataCallbackHandle(data) {
   const leak = data.leak
   start_time.value = leak.start_time

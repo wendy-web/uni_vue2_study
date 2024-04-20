@@ -3,35 +3,114 @@
     v-model:show="showModal"
     :mask-closable="false"
     preset="dialog"
-    title="京东商品列表"
-    :style="{
-      width: '3000px',
-    }"
-    @negative-click="onNegativeClick"
+    title="电商商品列表"
+    :style="{ width: '1800px' }"
+    @after-leave="onNegativeClickLeave"
   >
-    <CrudTable
-      ref="$table"
-      v-model:query-items="queryItems"
-      :scroll-x="1200"
-      :columns="columns"
-      :get-data="http.goodsQueryList"
-      @onItemClick="onItemClickHandle"
+    <n-form
+      :model="model"
+      label-placement="left"
+      label-width="140px"
+      require-mark-placement="right-hanging"
+      :style="{
+        maxWidth: '1800px',
+      }"
     >
-      <template #queryBar>
-        <QueryBarItem label="搜索商品" :label-width="80">
-          <n-input v-model:value="queryItems.keyword" placeholder="请输入商品名称" clearable />
-        </QueryBarItem>
-      </template>
-    </CrudTable>
+      <n-form-item label="来源" path="lx_type">
+        <n-select v-model:value="lx_type" :options="pageOptions" style="width: 200px" />
+      </n-form-item>
+      <n-form-item label="商品名称" path="coupon_id" w-600>
+        <n-input
+          v-model:value="defaultCouponFilter"
+          placeholder="请输入商品名称"
+          clearable
+          @input="handleUpdateFilter"
+        />
+      </n-form-item>
+      <n-form-item label="商品列表" path="group">
+        <CrudTable
+          ref="$table"
+          v-model:query-items="queryItems"
+          :scroll-x="1200"
+          :max-height="700"
+          :columns="columns"
+          :get-data="requestGetData"
+          @onItemClick="onItemClickHandle"
+        >
+          <!-- <template #queryBar>
+            <QueryBarItem label="搜索商品" :label-width="80">
+              <n-input v-model:value="queryItems.keyword" placeholder="请输入商品名称" clearable />
+            </QueryBarItem>
+          </template> -->
+        </CrudTable>
+      </n-form-item>
+    </n-form>
   </n-modal>
 </template>
 <script setup>
-import { ref } from 'vue'
-import http from './api'
+import { ref } from 'vue';
+import http from './api';
 /**弹窗显示控制 */
 const showModal = ref(false)
-/**弹窗取消 */
-function onNegativeClick() {}
+function onNegativeClickLeave() {
+  lx_type.value = 0
+  queryItems.value = {}
+}
+const lx_type = ref(0)
+
+const requestGetData = ref()
+const defaultCouponFilter = ref('')
+
+// 来源
+const pageOptions = ref([
+  {
+    label: '京东',
+    value: 2,
+    getData: http.goodsQueryList,
+  },
+  {
+    label: '拼多多',
+    value: 4,
+    getData: http.goodsSearch,
+  },
+])
+/** 表单过滤 */
+let timer = null
+const handleUpdateFilter = () => {
+  const inputValue = defaultCouponFilter.value.trim()
+  if (timer) {
+    timer = null
+    clearTimeout(timer)
+  }
+  timer = setTimeout(async () => {
+    clearTimeout(timer)
+    timer = null
+    queryItems.value.keyword = inputValue
+    await nextTick()
+    $table.value?.handleSearch()
+  }, 100)
+}
+watch(
+  () => lx_type.value,
+  async (newValue, oldValue) => {
+    console.log('newValue', newValue)
+    defaultCouponFilter.value = ''
+    queryItems.value.keyword = ''
+    switch (newValue) {
+      case 2:
+        requestGetData.value = pageOptions.value[0].getData
+        await nextTick()
+        $table.value?.handleSearch()
+        break
+      case 4:
+        requestGetData.value = pageOptions.value[1].getData
+        await nextTick()
+        $table.value?.handleSearch()
+        break
+    }
+  },
+  { deep: true }
+)
 //优惠券列表选择相关
 const columns = [
   { title: 'ID', key: 'coupon_id', align: 'center' },
@@ -70,13 +149,13 @@ const emit = defineEmits(['selectList'])
 const queryItems = ref({})
 function show() {
   showModal.value = true
-  setTimeout(() => {
-    $table.value?.handleSearch()
-  }, 100)
+  lx_type.value = 2
 }
 
 function onItemClickHandle(selectList) {
   emit('selectList', selectList)
+  lx_type.value = 0
+  queryItems.value = {}
   showModal.value = false
 }
 /**暴露给父组件使用 */

@@ -59,9 +59,8 @@
   </n-modal>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { defineProps, ref } from 'vue'
 import http from './api'
-import { defineProps } from 'vue'
 const props = defineProps({
   ckIds: Array,
 })
@@ -183,7 +182,7 @@ watch(
         $table.value?.handleSearch()
         break
       case 4:
-        requestGetData.value = pageOptions.value[1].getData
+        requestGetData.value = pageOptions.value[2].getData
         delete queryItems.value.groupId
         await nextTick()
         $table.value?.handleSearch()

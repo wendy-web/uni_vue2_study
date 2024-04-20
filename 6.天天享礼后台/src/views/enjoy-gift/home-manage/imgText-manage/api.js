@@ -7,4 +7,5 @@ export default {
     deleteSingleImage: (data) => request.post('/apios/popover/delete', data),
     updateSingleImageStatus: (data) => request.post('/apios/popover/updateStatus', data),
     getLists: (data) => request.post('/apios/Jd/getLists', data),
+    getPosition: (data) => request.post('/apios/Extend/bfxlPosition', data),
 }

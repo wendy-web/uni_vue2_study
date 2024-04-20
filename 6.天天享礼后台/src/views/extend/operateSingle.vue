@@ -58,7 +58,18 @@
         <n-form-item label="小程序路径" path="path" w-600>
           <n-input v-model:value="model.path" />
         </n-form-item>
+        <block v-if="model.pid == 1 && is_switch == 1">
+          <n-form-item label="弹窗显隐" path="popover">
+            <n-switch v-model:value="model.popover" @update:value="popoverChange" />
+          </n-form-item>
+          <n-form-item label="icon高亮" path="light">
+            <n-switch v-model:value="model.light" @update:value="lightChange" />
+          </n-form-item>
+        </block>
       </block>
+      <n-form-item label="排序" path="sort" w-400>
+        <n-input-number v-model:value="model.sort" min="0" />
+      </n-form-item>
     </n-form>
   </n-modal>
 </template>
@@ -125,6 +136,7 @@ onMounted(() => {
 })
 /**展示弹窗 */
 const pidTitle = ref('')
+const is_switch = ref(1);
 async function show(operateType, data) {
   modalTitle.value = ['添加', '编辑', '新增'][operateType - 1]
   modalType.value = operateType
@@ -135,14 +147,20 @@ async function show(operateType, data) {
     pid: 0,
     path: '',
     tags: '',
+    popover: false,
+    light: false,
+    sort: 0
   }
   if (operateType !== 3) {
     const res = await http.details({ id: data.id })
-    let { id, name, ename, level, pid, path, tag, tags } = res.data
+    let { id, name, ename, level, pid, path, tag, tags, popover, light, sort } = res.data
     model.value.level = 2
     model.value.pid = id
     pidTitle.value = name
-    operateType === 2 && (model.value = { id, name, ename, level, pid: pid || 1, path, tag, tags })
+    operateType === 2 && (model.value = { id, name, ename, level, pid: pid || 1, path, tag, tags, popover, light, sort })
+    model.value.popover = Boolean(model.value.popover);
+    model.value.light = Boolean(model.value.light);
+    is_switch.value = res.data.is_switch;
   }
   http.getLists().then((res) => {
     if (res.code == 1) {

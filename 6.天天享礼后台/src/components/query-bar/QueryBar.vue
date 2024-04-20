@@ -15,6 +15,16 @@
       >
         <n-button v-has="'import'" quaternary>导入心链订单</n-button>
       </n-upload>
+      <n-upload
+        v-if="isImport2"
+        :action="isApi"
+        name="img"
+        class="import_btn"
+        @finish="handleFinish"
+        @before-upload="beforeUpload"
+      >
+        <n-button v-has="'import'" quaternary>导入免单订单</n-button>
+      </n-upload>
       <!-- <n-button mr-20 type="primary">导入心链商品</n-button> -->
       <!-- </view> -->
       <n-button v-if="isExport" v-has="'export'" mr-20 type="primary" @click="emit('export')">导出</n-button>
@@ -33,6 +43,10 @@ defineProps({
     default: false,
   },
   isImport: {
+    type: Boolean,
+    default: false,
+  },
+  isImport2: {
     type: Boolean,
     default: false,
   },

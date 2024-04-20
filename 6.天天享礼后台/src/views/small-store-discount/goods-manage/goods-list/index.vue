@@ -55,12 +55,11 @@
 </template>
 
 <script setup>
-import { goodsTypeOptions, goodsStatusOptions, systemOptions } from './options'
-import { NButton, NSwitch } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage } from 'naive-ui'
-import operatGoods from './operatGoods/index.vue'
-import http from './api'
+import { renderIcon } from '@/utils';
+import { NButton, NSwitch, useMessage } from 'naive-ui';
+import http from './api';
+import operatGoods from './operatGoods/index.vue';
+import { goodsStatusOptions, goodsTypeOptions, systemOptions } from './options';
 defineOptions({ name: 'storeGoodsList' })
 //表格操作
 const $table = ref(null)

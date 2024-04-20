@@ -4,6 +4,7 @@
     mb-30
     :is-export="extraParams.isExport"
     :is-import="extraParams.isImport"
+    :is-import2="extraParams.isImport2"
     :is-api="isApi"
     @search="handleSearch"
     @reset="handleReset"

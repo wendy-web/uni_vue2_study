@@ -9,6 +9,7 @@
       <div style="margin-right: 15px">积分商城：<n-switch v-model:value="active" @update:value="handleChange" /></div>
       <div>扫箱内码：<n-switch v-model:value="active2" @update:value="handleChange2" /></div>
     </div>
+    <p style="padding-left: 10px; color: #999">↑彬纷有礼跳转小店有惠打开方式(关闭：全屏；开启：半屏)</p>
     <CrudTable
       ref="$table"
       v-model:query-items="queryItems"
@@ -35,11 +36,10 @@
 </template>
 
 <script setup>
-import { NButton, NImage } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage, useDialog, NSwitch } from 'naive-ui'
-import operatSingle from './operatSingle.vue'
-import http from './api'
+import { renderIcon } from '@/utils';
+import { NButton, NImage, NSwitch, useDialog, useMessage } from 'naive-ui';
+import http from './api';
+import operatSingle from './operatSingle.vue';
 defineOptions({ name: 'SingleColumnDiagram' })
 //表格操作
 const $table = ref(null)

@@ -11,10 +11,6 @@ export const typeOptions = [{
 export const tagOptions = [{
         label: '天天享礼',
         value: 'ttxl',
-    },
-    {
-        label: '小店有惠',
-        value: 'xdyh',
     }
 ]
 export const tagsOptions = [{

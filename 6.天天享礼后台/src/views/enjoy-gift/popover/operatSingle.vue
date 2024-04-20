@@ -6,49 +6,60 @@
         :model="model"
         :rules="rules"
         label-placement="left"
-        label-width="120px"
+        label-width="150px"
         require-mark-placement="right-hanging"
       >
         <n-form-item label="标题" path="title" w-400>
           <n-input v-model:value="model.title" :disabled="modalType === 1" />
         </n-form-item>
-        <n-form-item label="发布页面" path="page">
-          <n-select
-            v-model:value="model.page"
-            :options="pageOptions"
-            :disabled="modalType === 1"
-            style="width: 200px"
-            @update:value="pageChange"
-          />
+        <n-form-item label="背景透明度(%)" path="opacity" w-400>
+          <n-input-number v-model:value="model.opacity" :min="0" :max="100" :disabled="modalType === 1" />
         </n-form-item>
+        <div class="flex">
+          <n-form-item label="发布页面" path="page">
+            <n-select
+              v-model:value="model.page"
+              :options="pageOptions"
+              :disabled="modalType === 1"
+              style="width: 200px"
+              @update:value="pageChange"
+            />
+          </n-form-item>
+          <block v-if="model.page == 12">
+            <n-form-item label="彬纷菜单" path="position_id">
+              <n-select
+                v-model:value="model.position_id"
+                :options="menuOptions"
+                :disabled="modalType === 1"
+                style="width: 400px"
+              />
+            </n-form-item>
+          </block>
+        </div>
         <n-form-item v-if="model.page == 4" label="是否广告" path="is_advertisement">
           <n-switch v-model:value="model.is_advertisement" />
         </n-form-item>
-      <div v-if="model.page == 1">
-        <n-form-item label="是否悬浮" path="is_xf">
-          <n-switch v-model:value="model.is_xf" @update:value="xfChange" />
-        </n-form-item>
-        <n-form-item label="悬浮类型" path="xf_type" w-500 v-if="model.is_xf == 1">
-          <n-radio-group
-                  v-model:value="model.xf_type"
-                  :disabled="modalType === 1"
-                  name="radiogroup"
-                  @update:value="checkedRadioHandle"
-          >
-            <n-space>
-              <n-radio :key="0" :value="0"> 默认 </n-radio>
-              <n-radio :key="1" :value="1"> 订单待付款 </n-radio>
-              <n-radio :key="2" :value="2"> 返利待领取 </n-radio>
-            </n-space>
-          </n-radio-group>
-        </n-form-item>
-      </div>
-        <n-form-item label="排序" path="sort" w-800 v-if="model.page == 9 || model.page == 10">
-          <n-input-number
-              v-model:value="model.sort"
-              style="width: 120px; margin: 0 4px"
+        <div v-if="model.page == 1">
+          <n-form-item label="是否悬浮" path="is_xf">
+            <n-switch v-model:value="model.is_xf" @update:value="xfChange" />
+          </n-form-item>
+          <n-form-item v-if="model.is_xf == 1" label="悬浮类型" path="xf_type" w-500>
+            <n-radio-group
+              v-model:value="model.xf_type"
               :disabled="modalType === 1"
-          />
+              name="radiogroup"
+              @update:value="checkedRadioHandle"
+            >
+              <n-space>
+                <n-radio :key="0" :value="0"> 默认 </n-radio>
+                <n-radio :key="1" :value="1"> 订单待付款 </n-radio>
+                <n-radio :key="2" :value="2"> 返利待领取 </n-radio>
+              </n-space>
+            </n-radio-group>
+          </n-form-item>
+        </div>
+        <n-form-item v-if="model.page == 9 || model.page == 10" label="排序" path="sort" w-800>
+          <n-input-number v-model:value="model.sort" style="width: 120px; margin: 0 4px" :disabled="modalType === 1" />
         </n-form-item>
         <block v-if="!model.is_advertisement">
           <n-form-item label="图片" path="image">
@@ -83,120 +94,144 @@
               <n-button quaternary>上传文件</n-button>
             </n-upload>
           </n-form-item>
+          <n-form-item v-if="[9, 13].includes(model.page)" label="彬纷扫码配置图" path="abnormal_img">
+            <n-upload
+              v-if="showModal"
+              action="/apios/Tools/uploadImg"
+              :disabled="modalType === 1"
+              list-type="image-card"
+              :default-file-list="abnormalfileList"
+              :max="1"
+              name="img"
+              @finish="abnormalHandleFinish"
+              @before-upload="beforeUpload"
+              @remove="abnormalRemove"
+            >
+              <n-button quaternary>上传文件</n-button>
+            </n-upload>
+          </n-form-item>
         </block>
-      <dive v-if="model.page != 9 && model.page != 10 && model.page != 11 && model.xf_type == 0">
-        <n-form-item label="触发条件" path="second" w-800>
-          <span style="font-size: 14px">进入页面后:</span>
-          <n-input-number
-            v-model:value="model.second"
-            style="width: 120px; margin: 0 4px"
-            :disabled="modalType === 1"
-          />
-          <span style="font-size: 14px">秒出现弹窗</span>
-        </n-form-item>
-        <n-form-item label="生效日期" path="datetimerange" :disabled="modalType === 1">
-          <n-date-picker
-            v-model:formatted-value="model.datetimerange"
-            :disabled="modalType === 1"
-            value-format="yyyy-MM-dd"
-            type="daterange"
-            clearable
-        /></n-form-item>
-        <n-form-item label="弹窗时间" :disabled="modalType === 1">
-          <n-time-picker
-            v-model:formatted-value="model.popover_start"
-            :disabled="modalType === 1"
-            value-format="HH:mm:ss"
-            clearable
-          />
-          <span style="padding: 0 10px">-</span>
-          <n-time-picker
-            v-model:formatted-value="model.popover_over"
-            :disabled="modalType === 1"
-            value-format="HH:mm:ss"
-            clearable
-          />
-        </n-form-item>
-        <n-form-item label="显示类型" path="is_loop" w-500>
-          <n-radio-group
-            v-model:value="model.is_loop"
-            :disabled="modalType === 1"
-            name="radiogroup"
-            @update:value="checkedRadioHandle"
-            @change="doChange2"
-          >
-            <n-space>
-              <n-radio :key="0" :value="0"> 仅一次 </n-radio>
-              <n-radio :key="1" :value="1"> 每天 </n-radio>
-              <n-radio :key="2" :value="2"> 按周 </n-radio>
-              <n-radio :key="3" :value="3"> 按天 </n-radio>
-            </n-space>
-          </n-radio-group>
-        </n-form-item>
-        <n-form-item v-if="model.is_loop == 2" label="星期" path="week" w-800>
-          <n-checkbox-group v-model:value="model.week">
-            <n-space item-style="display: flex;">
-              <n-checkbox value="1" label="周一" />
-              <n-checkbox value="2" label="周二" />
-              <n-checkbox value="3" label="周三" />
-              <n-checkbox value="4" label="周四" />
-              <n-checkbox value="5" label="周五" />
-              <n-checkbox value="6" label="周六" />
-              <n-checkbox value="7" label="周日" />
-            </n-space>
-          </n-checkbox-group>
-        </n-form-item>
-        <n-form-item v-if="model.is_loop == 3" label="天" path="day" w-800>
-          <n-checkbox-group v-model:value="model.day">
-            <n-space item-style="display: flex;">
-              <n-checkbox value="1" label="1号" />
-              <n-checkbox value="2" label="2号" />
-              <n-checkbox value="3" label="3号" />
-              <n-checkbox value="4" label="4号" />
-              <n-checkbox value="5" label="5号" />
-              <n-checkbox value="6" label="6号" />
-              <n-checkbox value="7" label="7号" />
-              <n-checkbox value="8" label="8号" />
-              <n-checkbox value="9" label="9号" />
-              <n-checkbox value="10" label="10号" />
-              <n-checkbox value="11" label="11号" />
-              <n-checkbox value="12" label="12号" />
-              <n-checkbox value="13" label="13号" />
-              <n-checkbox value="14" label="14号" />
-              <n-checkbox value="15" label="15号" />
-              <n-checkbox value="16" label="16号" />
-              <n-checkbox value="17" label="17号" />
-              <n-checkbox value="18" label="18号" />
-              <n-checkbox value="19" label="19号" />
-              <n-checkbox value="20" label="20号" />
-              <n-checkbox value="21" label="21号" />
-              <n-checkbox value="22" label="22号" />
-              <n-checkbox value="23" label="23号" />
-              <n-checkbox value="24" label="24号" />
-              <n-checkbox value="25" label="25号" />
-              <n-checkbox value="26" label="26号" />
-              <n-checkbox value="27" label="27号" />
-              <n-checkbox value="28" label="28号" />
-              <n-checkbox value="29" label="29号" />
-              <n-checkbox value="30" label="30号" />
-              <n-checkbox value="31" label="31号" />
-            </n-space>
-          </n-checkbox-group>
-        </n-form-item>
-        <n-form-item v-if="!model.is_xf" label="目标用户" path="people_type">
-          <n-select
-            v-model:value="model.people_type"
-            :options="peopleOptions"
-            :disabled="modalType === 1"
-            style="width: 200px"
-          />
-        </n-form-item>
-      </dive>
+        <dive v-if="![9, 10, 11, 12, 13].includes(model.page) && model.xf_type == 0">
+          <n-form-item label="触发条件" path="second" w-800>
+            <span style="font-size: 14px">进入页面后:</span>
+            <n-input-number
+              v-model:value="model.second"
+              style="width: 120px; margin: 0 4px"
+              :disabled="modalType === 1"
+            />
+            <span style="font-size: 14px">秒出现弹窗</span>
+          </n-form-item>
+          <n-form-item label="生效日期" path="datetimerange" :disabled="modalType === 1">
+            <n-date-picker
+              v-model:formatted-value="model.datetimerange"
+              :disabled="modalType === 1"
+              value-format="yyyy-MM-dd"
+              type="daterange"
+              clearable
+          /></n-form-item>
+          <n-form-item label="弹窗时间" :disabled="modalType === 1">
+            <n-time-picker
+              v-model:formatted-value="model.popover_start"
+              :disabled="modalType === 1"
+              value-format="HH:mm:ss"
+              clearable
+            />
+            <span style="padding: 0 10px">-</span>
+            <n-time-picker
+              v-model:formatted-value="model.popover_over"
+              :disabled="modalType === 1"
+              value-format="HH:mm:ss"
+              clearable
+            />
+          </n-form-item>
+          <n-form-item label="显示类型" path="is_loop" w-500>
+            <n-radio-group
+              v-model:value="model.is_loop"
+              :disabled="modalType === 1"
+              name="radiogroup"
+              @update:value="checkedRadioHandle"
+              @change="doChange2"
+            >
+              <n-space>
+                <n-radio :key="0" :value="0"> 仅一次 </n-radio>
+                <n-radio :key="1" :value="1"> 每天 </n-radio>
+                <n-radio :key="2" :value="2"> 按周 </n-radio>
+                <n-radio :key="3" :value="3"> 按天 </n-radio>
+              </n-space>
+            </n-radio-group>
+          </n-form-item>
+          <n-form-item v-if="model.is_loop == 2" label="星期" path="week" w-800>
+            <n-checkbox-group v-model:value="model.week">
+              <n-space item-style="display: flex;">
+                <n-checkbox value="1" label="周一" />
+                <n-checkbox value="2" label="周二" />
+                <n-checkbox value="3" label="周三" />
+                <n-checkbox value="4" label="周四" />
+                <n-checkbox value="5" label="周五" />
+                <n-checkbox value="6" label="周六" />
+                <n-checkbox value="7" label="周日" />
+              </n-space>
+            </n-checkbox-group>
+          </n-form-item>
+          <n-form-item v-if="model.is_loop == 3" label="天" path="day" w-800>
+            <n-checkbox-group v-model:value="model.day">
+              <n-space item-style="display: flex;">
+                <n-checkbox value="1" label="1号" />
+                <n-checkbox value="2" label="2号" />
+                <n-checkbox value="3" label="3号" />
+                <n-checkbox value="4" label="4号" />
+                <n-checkbox value="5" label="5号" />
+                <n-checkbox value="6" label="6号" />
+                <n-checkbox value="7" label="7号" />
+                <n-checkbox value="8" label="8号" />
+                <n-checkbox value="9" label="9号" />
+                <n-checkbox value="10" label="10号" />
+                <n-checkbox value="11" label="11号" />
+                <n-checkbox value="12" label="12号" />
+                <n-checkbox value="13" label="13号" />
+                <n-checkbox value="14" label="14号" />
+                <n-checkbox value="15" label="15号" />
+                <n-checkbox value="16" label="16号" />
+                <n-checkbox value="17" label="17号" />
+                <n-checkbox value="18" label="18号" />
+                <n-checkbox value="19" label="19号" />
+                <n-checkbox value="20" label="20号" />
+                <n-checkbox value="21" label="21号" />
+                <n-checkbox value="22" label="22号" />
+                <n-checkbox value="23" label="23号" />
+                <n-checkbox value="24" label="24号" />
+                <n-checkbox value="25" label="25号" />
+                <n-checkbox value="26" label="26号" />
+                <n-checkbox value="27" label="27号" />
+                <n-checkbox value="28" label="28号" />
+                <n-checkbox value="29" label="29号" />
+                <n-checkbox value="30" label="30号" />
+                <n-checkbox value="31" label="31号" />
+              </n-space>
+            </n-checkbox-group>
+          </n-form-item>
+          <n-form-item v-if="!model.is_xf" label="目标用户" path="people_type">
+            <n-select
+              v-model:value="model.people_type"
+              :options="peopleOptions"
+              :disabled="modalType === 1"
+              style="width: 200px"
+            />
+          </n-form-item>
+          <n-form-item v-if="!model.is_xf" label="运营商" path="operation_type">
+            <n-select
+              v-model:value="model.operation_type"
+              :options="operationOptions"
+              :disabled="modalType === 1"
+              style="width: 200px"
+            />
+          </n-form-item>
+        </dive>
         <block v-if="!model.is_advertisement && model.xf_type == 0">
           <n-form-item label="跳转页面" path="jump_title" w-400>
             <n-input v-model:value="model.jump_title" :disabled="modalType === 1" />
           </n-form-item>
-          <n-form-item label="页面类型" path="type" w-1400>
+          <n-form-item label="页面类型" path="type" w-1800>
             <n-radio-group
               v-model:value="model.type"
               :disabled="modalType === 1"
@@ -210,7 +245,7 @@
                 <n-radio :key="3" :value="3"> 视频号 </n-radio>
                 <n-radio :key="4" :value="4"> 小程序 </n-radio>
                 <n-radio :key="5" :value="5"> 千猪页面 </n-radio>
-                <n-radio :key="6" :value="6"> 京东商品 </n-radio>
+                <n-radio :key="6" :value="6"> 电商商品 </n-radio>
                 <n-radio v-if="model.page != 6" :key="7" :value="7"> 领券中心 </n-radio>
                 <n-radio :key="8" :value="8">海威瑞幸 </n-radio>
                 <n-radio :key="9" :value="9">小程序内页 </n-radio>
@@ -296,6 +331,20 @@
             <n-form-item v-if="model.is_main == 1" label="页面路径" path="type_sid" w-400>
               <n-input v-model:value="model.type_sid" :disabled="modalType === 1" />
             </n-form-item>
+            <template v-if="model.is_main == 1 && model.type_id == 'wx91d27dbf599dff74'">
+              <n-form-item label="京东itemId(B段)" path="video_id" w-400>
+                <n-input v-model:value="model.video_id" :disabled="modalType === 1" />
+              </n-form-item>
+              <n-form-item label="个性化推荐" path="bold">
+                <n-radio-group v-model:value="model.bold" name="radiogroup" :disabled="modalType === 1">
+                  <n-space>
+                    <n-radio v-for="song in tjOptions" :key="song.value" :value="song.value">
+                      {{ song.label }}
+                    </n-radio>
+                  </n-space>
+                </n-radio-group>
+              </n-form-item>
+            </template>
             <n-form-item v-if="model.is_main == 2" label="拼多多推广位" path="type_id" w-400>
               <n-input v-model:value="model.type_id" :disabled="modalType === 1" />
             </n-form-item>
@@ -494,11 +543,12 @@
               />
             </n-form-item>
           </div>
-          <!-- 京东商品 -->
+          <!-- 电商商品 -->
           <div v-if="model.type == 6">
-            <n-form-item label="京东商品" path="type_id" w-800>
+            <n-form-item label="电商商品" path="type_id" w-800 mb-10>
               <n-input v-model:value="model.skuName" :maxlength="20" disabled />
-              <n-button ml-10 :disabled="modalType === 1" @click="selectJdListHandle"> 选择京东商品 </n-button>
+              <n-button ml-10 :disabled="modalType === 1" @click="selectJdListHandle"> 选择电商商品 </n-button>
+              <div class="type_id">ID: {{ model.type_id }}</div>
             </n-form-item>
             <n-form-item v-if="!model.is_xf" label="弹窗文案" path="jd_word" w-400>
               <n-input v-model:value="model.jd_word" :disabled="modalType === 1" />
@@ -549,27 +599,36 @@
               <span style="padding-left: 8px">小时</span>
             </n-form-item>
             <n-form-item label="弹出方式" path="open_mini_type">
-              <n-radio-group
-                      v-model:value="model.open_mini_type"
-                      :disabled="modalType === 1"
-                      name="radiogroup"
-              >
+              <n-radio-group v-model:value="model.open_mini_type" :disabled="modalType === 1" name="radiogroup">
                 <n-space>
                   <n-radio :key="1" :value="1"> 点击弹出 </n-radio>
                   <n-radio :key="2" :value="2"> 直接弹出 </n-radio>
                 </n-space>
               </n-radio-group>
             </n-form-item>
+            <n-form-item label="小程序插屏广告" path="is_advertise">
+              <n-switch v-model:value="model.is_advertise" />
+            </n-form-item>
           </div>
           <!-- 专题页面 -->
-          <n-form-item v-if="model.type == 11" label="分组列表" path="type_id">
-            <n-select
-              v-model:value="model.type_id"
-              :options="themeOptions"
-              :disabled="modalType === 1"
-              style="width: 200px"
-            />
-          </n-form-item>
+          <block v-if="model.type == 11">
+            <n-form-item label="分组列表" path="type_id">
+              <n-select
+                v-model:value="model.type_id"
+                :options="themeOptions"
+                :disabled="modalType === 1"
+                style="width: 200px"
+              />
+            </n-form-item>
+            <n-form-item label="打开方式" path="open_mini_type">
+              <n-radio-group v-model:value="model.open_mini_type" :disabled="modalType === 1" name="radiogroup">
+                <n-space>
+                  <n-radio :key="1" :value="1"> 全屏跳转 </n-radio>
+                  <n-radio :key="2" :value="2"> 半屏弹出 </n-radio>
+                </n-space>
+              </n-radio-group>
+            </n-form-item>
+          </block>
           <block v-if="model.type == 12">
             <n-form-item label="添加商品" path="coupon_id" w-600>
               <n-button mr-10 :disabled="modalType === 1" @click="selectHandle"> 选择商品列表 </n-button>
@@ -590,12 +649,12 @@
         <block v-if="model.xf_type != 0">
           <n-form-item label="跳转地址" path="qz_url">
             <n-input
-                    v-model:value="model.qz_url"
-                    type="textarea"
-                    :style="{
-                  maxWidth: '400px',
-                }"
-                    :disabled="modalType === 1"
+              v-model:value="model.qz_url"
+              type="textarea"
+              :style="{
+                maxWidth: '400px',
+              }"
+              :disabled="modalType === 1"
             />
           </n-form-item>
         </block>
@@ -611,12 +670,12 @@
   <operate-group-detail ref="operateGroupDetailRef" :ck-ids="ckIds" @addList="addListHandle" />
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useMessage, NInput, NInputNumber, NButton, NSwitch, NDatePicker } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import http from './api'
-import selOperatJdList from './selOperatJdList.vue'
-import operateGroupDetail from './operateGroupDetail.vue'
+import { renderIcon } from '@/utils';
+import { NButton, NDatePicker, NInput, NInputNumber, NSwitch, useMessage } from 'naive-ui';
+import { onMounted, ref } from 'vue';
+import http from './api';
+import operateGroupDetail from './operateGroupDetail.vue';
+import selOperatJdList from './selOperatJdList.vue';
 /**抽屉宽度 */
 const drawerWidth = window.innerWidth - 220 + 'px'
 /**弹窗显示控制 */
@@ -630,6 +689,16 @@ const formRef = ref(null)
 const message = useMessage()
 //表单数据
 const model = ref({})
+const tjOptions = [
+  {
+    value: 0,
+    label: '是',
+  },
+  {
+    value: 1,
+    label: '否',
+  },
+]
 //校验数据
 const rules = ref({
   title: {
@@ -646,7 +715,7 @@ const rules = ref({
     message: '请输入生效时间',
   },
 })
-//发布页面
+// 发布页面
 const pageOptions = [
   {
     label: '首页',
@@ -692,10 +761,19 @@ const pageOptions = [
     label: '扫拉环码未中奖(新人)',
     value: 11,
   },
+  {
+    label: '彬纷享礼入口菜单弹窗',
+    value: 12,
+  },
+  {
+    label: '彬纷享礼换购成功弹窗',
+    value: 13,
+  },
 ]
 const centerOptions = ref([])
 const couponOptions = ref([])
 const themeOptions = ref([])
+const menuOptions = ref([])
 onMounted(() => {
   http.getLists().then((res) => {
     if (res.code == 1) {
@@ -716,6 +794,21 @@ const peopleOptions = [
   {
     label: '全部用户',
     value: 3,
+  },
+]
+//手机运营商
+const operationOptions = [
+  {
+    label: '全部',
+    value: 0,
+  },
+  {
+    label: '移动用户',
+    value: 1,
+  },
+  {
+    label: '非移动用户',
+    value: 2,
   },
 ]
 //红包金额
@@ -864,6 +957,7 @@ function checkedRadioHandle2() {
 //已上传的图片
 const fileList = ref([])
 const mainfileList = ref([])
+const abnormalfileList = ref([])
 //图片上传
 function handleFinish({ event }) {
   let { response, responseText } = event.currentTarget
@@ -883,11 +977,23 @@ function mainHandleFinish({ event }) {
     useMessage.error(res.msg)
   }
 }
+function abnormalHandleFinish({ event }) {
+  let { response, responseText } = event.currentTarget
+  let res = JSON.parse(response || responseText)
+  if (res.code == 1) {
+    model.value.abnormal_img = res.data.url
+  } else {
+    useMessage.error(res.msg)
+  }
+}
 function handleRemove() {
   model.value.image = ''
 }
 function handleRemove2() {
   model.value.main_url = ''
+}
+function abnormalRemove() {
+  model.value.abnormal_img = ''
 }
 async function beforeUpload(data) {
   if (!/image\/(png|jpg|jpeg|gif)/i.test(data.file.file?.type)) {
@@ -906,6 +1012,7 @@ function handleValidateButtonClick() {
         .map((item) => ({
           coupon_id: item.coupon_id,
           goods_sign: item.goods_sign || '',
+          itemId: item.itemId || '',
           btn_name: item.btn_name || '',
         }))
       model.value.is_loop = Number(model.value.is_loop)
@@ -1126,6 +1233,7 @@ function resetIndex() {
 function show(operatType, data) {
   fileList.value = []
   mainfileList.value = []
+  abnormalfileList.value = []
   tableData.value = []
   modalTitle.value = ['查看', '编辑', '新增'][operatType - 1]
   modalType.value = operatType
@@ -1141,6 +1249,7 @@ function show(operatType, data) {
         second,
         datetimerange,
         people_type,
+        operation_type,
         jump_title,
         type,
         is_jump,
@@ -1169,6 +1278,10 @@ function show(operatType, data) {
         list,
         ckIds,
         diy_red_packet_param,
+        position_id,
+        is_advertise,
+        abnormal_img,
+        bold,
       } = res.data
       ckIds.value = ckIds
       tableData.value = list
@@ -1183,6 +1296,7 @@ function show(operatType, data) {
         second,
         datetimerange,
         people_type,
+        operation_type,
         jump_title,
         type,
         is_jump,
@@ -1228,6 +1342,10 @@ function show(operatType, data) {
           scratch_card_amount_type: 0,
           scratch_card_amount: 2,
         },
+        position_id,
+        is_advertise: Boolean(is_advertise),
+        abnormal_img,
+        bold: Number(bold),
       }
       /**图片预览 */
       if (image) {
@@ -1250,7 +1368,17 @@ function show(operatType, data) {
           },
         ]
       }
-      http.getGroup({page: res.data.page}).then((res) => {
+      if (abnormal_img) {
+        abnormalfileList.value = [
+          {
+            id: 'c',
+            name: '已上传的图片',
+            status: 'finished',
+            url: abnormal_img,
+          },
+        ]
+      }
+      http.getGroup({ page: res.data.page }).then((res) => {
         couponOptions.value = res.data.list
         themeOptions.value = res.data.list2
       })
@@ -1265,6 +1393,7 @@ function show(operatType, data) {
       second: 0,
       datetimerange: '',
       people_type: 3,
+      operation_type: 0,
       jump_title: '',
       type: 1,
       is_jump: 2,
@@ -1310,8 +1439,12 @@ function show(operatType, data) {
         scratch_card_amount_type: 0,
         scratch_card_amount: 2,
       },
+      position_id: '',
+      is_advertise: false,
+      abnormal_img: '',
+      bold: 0,
     }
-    http.getGroup({page: 1}).then((res) => {
+    http.getGroup({ page: 1 }).then((res) => {
       couponOptions.value = res.data.list
       themeOptions.value = res.data.list2
     })
@@ -1320,9 +1453,12 @@ function show(operatType, data) {
     }, 0)
   }
   model.value.lx_type = 1
+  http.getPosition({}).then((res) => {
+    menuOptions.value = res.data
+  })
 }
-function pageChange(value){
-  http.getGroup({page: value}).then((res) => {
+function pageChange(value) {
+  http.getGroup({ page: value }).then((res) => {
     couponOptions.value = res.data.list
   })
 }
@@ -1335,14 +1471,16 @@ function selectJdListHandle() {
 function selectListHandle(selectList) {
   model.value.skuName = selectList.title
   model.value.type_id = selectList.coupon_id
+  model.value.itemId = selectList.itemId
+  model.value.goods_sign = selectList.goods_sign
 }
 function doChange() {
   model.value.type_id = null
   model.value.skuName = ''
 }
-function xfChange(value){
-  if(!value){
-    model.value.xf_type = 0;
+function xfChange(value) {
+  if (!value) {
+    model.value.xf_type = 0
   }
 }
 /**暴露给父组件使用 */
@@ -1352,3 +1490,11 @@ defineExpose({
 /**回调父组件函数注册 */
 const emit = defineEmits(['refresh'])
 </script>
+<style scoped>
+.type_id {
+  position: absolute;
+  font-size: 14px;
+  color: gray;
+  bottom: -70%;
+}
+</style>

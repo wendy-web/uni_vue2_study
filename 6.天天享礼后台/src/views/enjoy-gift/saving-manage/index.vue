@@ -38,8 +38,7 @@
 </template>
 
 <script setup>
-import axios from 'axios'
-import http from './api'
+import http from './api';
 defineOptions({ name: 'OrderList' })
 //表格操作
 const $table = ref(null)
@@ -72,31 +71,48 @@ function refresh() {
   $table.value?.handleSearch()
 }
 const columns = ref([
-  { title: '订单号', key: 'trade_no', align: 'center' },
+  {
+    title: '订单号',
+    key: 'trade_no',
+    align: 'center',
+    width: 220,
+    fixed: 'left',
+  },
+  {
+    title: '省钱卡类型',
+    key: 'card_type',
+    align: 'center',
+    width: 100,
+    render(row, index) {
+      return ['月卡', '季卡', '年卡'][row.card_type]
+    },
+  },
   {
     title: '支付金额',
     key: 'pay_amount',
     align: 'center',
+    width: 100,
     render(row, index) {
       return '￥' + Number(row.pay_amount / 100).toFixed(2)
     },
   },
-  { title: '红包总金额', key: 'packet_amount', align: 'center' },
-  { title: '已用红包', key: 'use_packet', align: 'center' },
-  { title: '红包抵扣订单数', key: 'packet_order', align: 'center' },
-  { title: '用户ID', key: 'uid', align: 'center' },
-  { title: '关联商品订单号', key: 'third_order_id', align: 'center' },
+  { title: '红包总金额', key: 'packet_amount', align: 'center', width: 100 },
+  { title: '已用红包', key: 'use_packet', align: 'center', width: 100 },
+  { title: '红包抵扣订单数', key: 'packet_order', align: 'center', width: 100 },
+  { title: '用户ID', key: 'uid', align: 'center', width: 100 },
+  { title: '关联商品订单号', key: 'third_order_id', align: 'center', width: 220 },
   {
     title: '订单状态',
     key: 'status',
     align: 'center',
+    width: 100,
     render(row) {
       let index = statusOptions.findIndex((item) => item.value === row['status'])
       return statusOptions[index].label
     },
   },
-  { title: '下单时间', key: 'create_time', align: 'center' },
-  { title: '支付时间', key: 'pay_time', align: 'center' },
-  { title: '过期时间', key: 'over_time', align: 'center' },
+  { title: '下单时间', key: 'create_time', align: 'center', width: 100 },
+  { title: '支付时间', key: 'pay_time', align: 'center', width: 100 },
+  { title: '过期时间', key: 'over_time', align: 'center', width: 100 },
 ])
 </script>

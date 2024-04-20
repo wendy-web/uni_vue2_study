@@ -60,9 +60,7 @@
   </n-modal>
 </template>
 <script setup>
-import { ref } from 'vue'
-import http from './api'
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue';
 const props = defineProps({
   ckIds: Array,
 })
@@ -110,6 +108,7 @@ const columns = ref([
   { title: '发放数量', key: 'used_num', align: 'center' },
   { title: '剩余数量', key: 'stock_num', align: 'center' },
   { title: '有效期(天)', key: 'expiry_date', align: 'center' },
+  { title: 'feed流类目ID', key: 'feedId', align: 'center' },
   {
     title: '创建时间',
     key: 'create_time',
@@ -127,32 +126,7 @@ const columns = ref([
 const lx_type = ref(1)
 const requestGetData = ref()
 // 来源
-const pageOptions = ref([
-  {
-    label: '自建',
-    value: 1,
-    _tableData: null,
-    getData: '',
-  },
-  {
-    label: '京东',
-    value: 2,
-    _tableData: null,
-    getData: http.goodsQueryList,
-  },
-  {
-    label: '选品库',
-    value: 3,
-    _tableData: null,
-    getData: http.goodsQueryList,
-  },
-  {
-    label: '拼多多',
-    value: 4,
-    _tableData: null,
-    getData: http.goodsSearch,
-  },
-])
+const pageOptions = ref([])
 const $table = ref(null)
 const defaultCouponFilter = ref('')
 const defaultCouponFilter2 = ref('')
@@ -237,17 +211,17 @@ function handleValidateButtonClick() {
   return true
 }
 /**展示弹窗 */
-async function show(shopOptions) {
+async function show(shopOptions, pageList) {
   defaultCouponFilter.value = ''
   showModal.value = true
   tableData.value = shopOptions
   model.value.group = []
   checkedRowKeys.value = []
   lx_type.value = 1
+  pageOptions.value = pageList
   pageOptions.value[0]._tableData = shopOptions
   await nextTick()
   $table.value.showGetList(shopOptions)
-  //   console.log(props.ckIds)
 }
 /**暴露给父组件使用 */
 defineExpose({

@@ -330,9 +330,9 @@ function selectJdListHandle() {
 // 京东商品的选择
 function selectListHandle(selectList){
   // console.log('selectList :>> ', selectList);
-  pageOptions.value[1].coupon_id = selectList.coupon_id;
+  pageOptions.value[1].coupon_id = selectList.itemId;
   pageOptions.value[1].coupon = selectList;
-  model.value.coupon_id = selectList.coupon_id;
+  model.value.coupon_id = selectList.itemId;
 }
 
 /**暴露给父组件使用 */

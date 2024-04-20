@@ -16,7 +16,19 @@ export default {
             path: 'extend',
             component: () => import('./index.vue'),
             meta: {
-                title: '列表',
+                title: '天天享礼',
+                icon: 'material-symbols:person-pin',
+                order: 1,
+                requireAuth: true,
+                role: ['extend_getlist_1']
+            },
+        },
+        {
+            name: 'xdyhextend',
+            path: 'xdyhextend',
+            component: () => import('./xdyhextend/index.vue'),
+            meta: {
+                title: '小店有惠',
                 icon: 'material-symbols:person-pin',
                 order: 1,
                 requireAuth: true,

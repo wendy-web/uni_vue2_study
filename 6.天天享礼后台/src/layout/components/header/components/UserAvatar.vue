@@ -8,11 +8,9 @@
 </template>
 
 <script setup>
-import { useUserStore } from '@/store'
-import { renderIcon } from '@/utils'
-
+import { useUserStore } from '@/store';
+import { renderIcon } from '@/utils';
 const userStore = useUserStore()
-
 const options = [
   {
     label: '退出登录',

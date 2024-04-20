@@ -35,14 +35,13 @@
 </template>
 
 <script setup>
-import { NButton, NImage } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage, useDialog, NSwitch } from 'naive-ui'
-import operatSingle from './operatSingle.vue'
-import http from './api'
-import { resolveDirective, withDirectives } from 'vue'
+import { usePermissionStore } from '@/store';
+import { renderIcon } from '@/utils';
+import { NButton, NImage, NSwitch, useDialog, useMessage } from 'naive-ui';
+import { resolveDirective, withDirectives } from 'vue';
+import http from './api';
+import operatSingle from './operatSingle.vue';
 const has = resolveDirective('has')
-import { usePermissionStore } from '@/store'
 const permissionStore = usePermissionStore()
 defineOptions({ name: 'SingleColumnDiagram' })
 //表格操作

@@ -26,6 +26,17 @@
       <n-form-item label="导航标题" path="title" w-400>
         <n-input v-model:value="model.title" :disabled="modalType === 1" />
       </n-form-item>
+      <div flex>
+        <n-form-item label="字体颜色" path="color" w-300>
+          <n-color-picker v-model:value="model.color" :show-preview="true" :show-alpha="false" :actions="['clear']" />
+        </n-form-item>
+        <n-form-item label="字体加粗" path="bold" w-300>
+          <n-switch v-model:value="model.bold" />
+        </n-form-item>
+      </div>
+      <n-form-item label="高亮提示文案" path="jd_word" w-400>
+        <n-input v-model:value="model.jd_word" :disabled="modalType === 1" />
+      </n-form-item>
       <n-form-item label="系统" path="device_type">
         <n-select
           v-model:value="model.device_type"
@@ -413,13 +424,23 @@
           />
         </n-form-item>
       </div>
+      <n-form-item label="彬纷菜单" path="position_id">
+        <n-checkbox-group v-model:value="model.position_id" flex flex-wrap>
+          <n-space v-for="item in menuOptions" :key="item.value" item-style="display: flex;" mr-10 mb-10>
+            <n-checkbox :value="item.value" :label="item.label" />
+          </n-space>
+        </n-checkbox-group>
+      </n-form-item>
+      <n-form-item label="高亮次数" path="xf_type" w-400>
+        <n-input v-model:value="model.xf_type" :disabled="modalType === 1" />
+      </n-form-item>
     </n-form>
   </n-modal>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useMessage } from 'naive-ui'
-import http from './api'
+import { useMessage } from 'naive-ui';
+import { onMounted, ref } from 'vue';
+import http from './api';
 
 /**弹窗显示控制 */
 const showModal = ref(false)
@@ -445,6 +466,11 @@ const rules = ref({
     required: true,
     trigger: ['blur', 'input'],
     message: '弹窗图片不能为空',
+  },
+  coupon_id_android: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '优惠券ID不能为空',
   },
 })
 // 系统
@@ -609,6 +635,7 @@ function checkedRadioHandle2() {
 const fileList = ref([])
 const fileList2 = ref([])
 const mainfileList = ref([])
+const menuOptions = ref([])
 //图片上传
 function handleFinish({ event }) {
   let { response, responseText } = event.currentTarget
@@ -651,6 +678,7 @@ async function beforeUpload(data) {
 function handleValidateButtonClick() {
   formRef.value?.validate((errors) => {
     if (!errors) {
+      model.value.position_id && (model.value.position_id = model.value.position_id.join(','))
       http.operatSingleImage(model.value).then((res) => {
         if (res.code == 1) {
           message.success(res.msg)
@@ -673,6 +701,7 @@ onMounted(() => {
     }
   })
 })
+const icon_id = ref()
 /**展示弹窗 */
 function show(operatType, data) {
   fileList.value = []
@@ -707,6 +736,11 @@ function show(operatType, data) {
         lx_type,
         people_type,
         diy_red_packet_param,
+        color,
+        bold,
+        jd_word,
+        position_id,
+        xf_type,
       } = res.data
       if (type == 6) type_id = Number(type_id)
       model.value = {
@@ -751,6 +785,11 @@ function show(operatType, data) {
           scratch_card_amount_type: 0,
           scratch_card_amount: 2,
         },
+        color: color || '#666',
+        bold: Boolean(bold),
+        jd_word,
+        position_id,
+        xf_type,
       }
       /**图片预览 */
       if (image) {
@@ -785,6 +824,7 @@ function show(operatType, data) {
       }
       showModal.value = true
     })
+    icon_id.value = data.id
   } else {
     model.value = {
       title: '',
@@ -828,12 +868,21 @@ function show(operatType, data) {
         scratch_card_amount_type: 0,
         scratch_card_amount: 2,
       },
+      color: '#666',
+      bold: false,
+      jd_word: '',
+      position_id: '',
+      xf_type: '',
     }
     setTimeout(() => {
       showModal.value = true
     }, 0)
+    icon_id.value = 0
   }
   model.value.lx_type = 2
+  http.getPosition({ people_type: 2, id: icon_id.value }).then((res) => {
+    menuOptions.value = res.data
+  })
 }
 /**暴露给父组件使用 */
 defineExpose({

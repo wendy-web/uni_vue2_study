@@ -26,8 +26,8 @@
 </template>
 
 <script setup>
-import { NImage, useMessage } from 'naive-ui'
-import http from './api'
+import { NImage } from 'naive-ui';
+import http from './api';
 defineOptions({ name: 'GoodsList' })
 //表格操作
 const $table = ref(null)

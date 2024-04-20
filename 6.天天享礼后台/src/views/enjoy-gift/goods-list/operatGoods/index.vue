@@ -182,12 +182,12 @@
   </n-drawer>
 </template>
 <script setup>
-import { ref, onBeforeUnmount, shallowRef } from 'vue'
-import { useMessage } from 'naive-ui'
-import http from '../api'
-import '@wangeditor/editor/dist/css/style.css' // 引入 css
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import { escape2Html } from '@/utils'
+import { escape2Html } from '@/utils';
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+import '@wangeditor/editor/dist/css/style.css'; // 引入 css
+import { useMessage } from 'naive-ui';
+import { onBeforeUnmount, ref, shallowRef } from 'vue';
+import http from '../api';
 /**弹窗显示控制 */
 const showModal = ref(false)
 /**抽屉宽度 */

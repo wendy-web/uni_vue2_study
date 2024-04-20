@@ -1,5 +1,5 @@
 <template>
-  <n-drawer v-model:show="showModal" :width="drawerWidth" :placement="placement">
+  <n-drawer v-model:show="showModal" :width="drawerWidth">
     <n-drawer-content :title="modalTitle" closable>
       <n-form
         ref="formRef"
@@ -15,14 +15,24 @@
         <n-form-item label="名称" path="title" w-300>
           <n-input v-model:value="model.title" :disabled="modalType === 1" />
         </n-form-item>
-        <n-form-item label="推广位ID" path="positionId" w-300>
+        <n-form-item label="京东推广位ID" path="positionId" w-300>
           <n-input-number
             v-model:value="model.positionId"
             :show-button="false"
-            placeholder="推广位ID"
+            placeholder="京东推广位ID"
             clearable
             @input="handleUpdateFilter"
             :disabled="modalType === 1"
+          />
+        </n-form-item>
+        <n-form-item label="拼多多推广位ID" path="pdd_positionId" w-300>
+          <n-input-number
+                  v-model:value="model.pdd_positionId"
+                  :show-button="false"
+                  placeholder="拼多多推广位ID"
+                  clearable
+                  @input="handleUpdateFilter"
+                  :disabled="modalType === 1"
           />
         </n-form-item>
         <n-form-item label="更多按钮" path="has_btn" w-400>
@@ -327,6 +337,7 @@ function handleValidateButtonClick() {
           coupon_id: item.coupon_id,
           is_flow: item.is_flow,
           goods_sign: item.goods_sign || '',
+          itemId: item.itemId || '',
         }))
       http
         .operatGroup({
@@ -349,7 +360,7 @@ function handleValidateButtonClick() {
 }
 const showType = ref()
 const showData = ref()
-const ckIds = ref({})
+const ckIds = ref([])
 function activity_handleUpdateValue(value) {}
 /**展示弹窗 */
 async function show(operatType, data) {
@@ -360,7 +371,8 @@ async function show(operatType, data) {
     id: 0,
     title: '',
     group: [],
-    positionId: null, //推广位ID
+    positionId: null, //京东推广位ID
+    pdd_positionId: null, //拼多多推广位ID
     has_btn: 1,
     is_half: 0,
     path: ''
@@ -389,6 +401,7 @@ function getGroupDetails(type) {
         id,
         title,
         positionId,
+        pdd_positionId,
         has_btn,
         is_half,
         path,
@@ -408,6 +421,7 @@ function getGroupDetails(type) {
         title,
         group,
         positionId,
+        pdd_positionId,
         has_btn,
         is_half,
         path

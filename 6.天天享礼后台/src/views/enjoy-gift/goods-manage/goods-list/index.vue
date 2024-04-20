@@ -172,6 +172,7 @@ const columns = [
       })
     },
   },
+  { title: '修改时间', key: 'update_time', align: 'center' },
   {
     title: '操作',
     key: 'actions',

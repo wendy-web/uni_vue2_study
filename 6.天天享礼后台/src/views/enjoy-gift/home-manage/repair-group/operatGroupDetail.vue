@@ -392,6 +392,7 @@ function handleValidateButtonClick() {
       device_type: checkAddKeyList.value[index].device_type || 2,
     }
     if (lx_type.value == 2) currentSel.goods_sign = checkAddKeyList.value[index].goods_sign
+    if (lx_type.value == 1) currentSel.itemId = checkAddKeyList.value[index].itemId
     return currentSel
   })
   emit('addList', group)

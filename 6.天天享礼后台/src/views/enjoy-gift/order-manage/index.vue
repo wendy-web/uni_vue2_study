@@ -16,6 +16,9 @@
         <div v-if="statistics.profit_show" class="statistics-item" ml-24>
           <span text-16>预估收益</span>：￥{{ statistics.total_profit }}
         </div>
+        <div v-if="statistics.profit_show" class="statistics-item" ml-24>
+          <span text-16>预估结算收益</span>：￥{{ statistics.complete_profit }}
+        </div>
       </div>
       <div v-if="statistics.profit_show" class="statistics-item" ml-24>
         <span text-18>海威账户余额：</span>
@@ -87,6 +90,15 @@
             clearable
           />
         </QueryBarItem>
+        <QueryBarItem label="完成时间" :label-width="80" :content-width="340">
+          <n-date-picker
+            v-model:formatted-value="queryItems.complete_time"
+            value-format="yyyy-MM-dd"
+            format="yyyy-MM-dd"
+            type="datetimerange"
+            clearable
+          />
+        </QueryBarItem>
         <QueryBarItem label="商品类型" :label-width="100">
           <n-select v-model:value="queryItems.goods_type" :options="typeOptions" clearable />
         </QueryBarItem>
@@ -110,8 +122,8 @@
 </template>
 
 <script setup>
-import axios from 'axios'
-import http from './api'
+import axios from 'axios';
+import http from './api';
 defineOptions({ name: 'OrderList' })
 //表格操作
 const $table = ref(null)
@@ -231,6 +243,10 @@ const typeOptions = [
     label: '海威奈雪的茶',
     value: 19,
   },
+  {
+    label: '惠吃喝券',
+    value: 20,
+  },
 ]
 const ptOptions = [
   {
@@ -269,6 +285,10 @@ const ptOptions = [
     label: '饿了么',
     value: 8,
   },
+  {
+    label: '惠吃喝券',
+    value: 9,
+  },
 ]
 //推广位
 const extensionOptions = ref({})
@@ -296,6 +316,11 @@ async function getOrderGmv() {
   const res = await http.orderGmv(queryItems.value)
   if (res.code != 1) return
   gmv_amount.value = res.data.gmv_amount
+  const total = res.data.total
+  statistics.value.suc_amount = total?.suc_amount || 0
+  statistics.value.suc_num = total?.suc_num || 0
+  statistics.value.total_profit = total?.total_profit || 0
+  statistics.value.complete_profit = total?.complete_profit || 0
 }
 //获取余额
 function getBalance() {
@@ -320,6 +345,7 @@ const statistics = ref({
   suc_num: 0,
   total_profit: 0,
   profit_show: 0,
+  complete_profit: 0,
 })
 // function getStat() {
 //   http.getStat().then((res) => {
@@ -432,12 +458,7 @@ const columns = ref([
 let isProfitShow = true
 function getDataHandle(data) {
   const { total } = data
-  statistics.value = {
-    suc_amount: total?.suc_amount || 0,
-    suc_num: total?.suc_num || 0,
-    total_profit: total?.total_profit || 0,
-    profit_show: total?.profit_show || 0,
-  }
+  statistics.value.profit_show = total?.profit_show || 0
   // 展示收益的权限
   if (isProfitShow && statistics.value.profit_show) {
     isProfitShow = false
@@ -466,6 +487,14 @@ function getDataHandle(data) {
         align: 'center',
         render(row, index) {
           return '￥' + Number((row.profit || 0) / 100).toFixed(2)
+        },
+      },
+      {
+        title: '补贴收益',
+        key: 'subsidy_amount',
+        align: 'center',
+        render(row, index) {
+          return '￥' + Number((row.subsidy_amount || 0) / 100).toFixed(2)
         },
       }
     )

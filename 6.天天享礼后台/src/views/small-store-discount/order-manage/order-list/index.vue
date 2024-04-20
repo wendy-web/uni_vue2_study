@@ -285,6 +285,14 @@ function getDataHandle(data) {
         render(row, index) {
           return '￥' + Number((row.profit || 0) / 100).toFixed(2)
         },
+      },
+      {
+        title: '补贴收益',
+        key: 'subsidy_amount',
+        align: 'center',
+        render(row, index) {
+          return '￥' + Number((row.subsidy_amount || 0) / 100).toFixed(2)
+        },
       }
     )
   }

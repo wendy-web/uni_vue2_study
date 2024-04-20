@@ -6,7 +6,7 @@
         :model="model"
         :rules="rules"
         label-placement="left"
-        label-width="120px"
+        label-width="130px"
         require-mark-placement="right-hanging"
       >
         <div class="form-title" pb-15 fw-600>优惠券类型信息</div>
@@ -18,7 +18,7 @@
             @update:value="typeChange"
           >
             <n-space>
-              <n-radio v-for="song in songs" :key="song.value" :value="song.value">
+              <n-radio v-for="song in dtOptions" :key="song.value" :value="song.value">
                 {{ song.label }}
               </n-radio>
             </n-space>
@@ -39,7 +39,7 @@
           </n-form-item>
         </template>
         <!-- 公众号 -->
-        <template v-if="model.detail.type === 2 || model.detail.type === 8">
+        <template v-if="[2, 8].includes(model.detail.type)">
           <n-form-item label="主体关系" path="detail.is_main">
             <n-select
               v-model:value="model.detail.is_main"
@@ -75,7 +75,7 @@
           </n-form-item>
         </template>
         <!-- 视频号 -->
-        <template v-if="model.detail.type === 3 || model.detail.type === 7">
+        <template v-if="[3, 7].includes(model.detail.type)">
           <n-form-item label="视频号ID" path="detail.video_id">
             <n-input
               v-model:value="model.detail.video_id"
@@ -153,22 +153,31 @@
               :disabled="modalType === 1"
             />
           </n-form-item>
-          <n-form-item v-if="xcx == 1" label="京喜红包" path="detail.is_gift">
-            <n-radio-group
-              v-model:value="model.detail.is_gift"
-              name="radiogroup"
-              :disabled="modalType === 1"
-              @change="typeChange2"
-            >
+          <n-form-item v-if="xcx == 1" label="京东跟单" path="detail.is_gift">
+            <n-radio-group v-model:value="model.detail.is_gift" name="radiogroup" :disabled="modalType === 1">
               <n-space>
-                <n-radio v-for="song in gift" :key="song.value" :value="song.value">
+                <n-radio v-for="song in giftOptions" :key="song.value" :value="song.value">
                   {{ song.label }}
                 </n-radio>
               </n-space>
             </n-radio-group>
           </n-form-item>
-          <n-form-item v-if="model.detail.is_main == 2" label="拼多多推广位" path="detail.type_id" w-400>
-            <n-input v-model:value="model.detail.type_id" :disabled="modalType === 1" />
+          <templete v-if="model.detail.is_gift == 1">
+            <n-form-item label="京东itemId(B段)" path="detail.video_id" w-400>
+              <n-input v-model:value="model.detail.video_id" :disabled="modalType === 1" />
+            </n-form-item>
+            <n-form-item label="个性化推荐" path="detail.eliteId_index">
+              <n-radio-group v-model:value="model.detail.eliteId_index" name="radiogroup" :disabled="modalType === 1">
+                <n-space>
+                  <n-radio v-for="song in tjOptions" :key="song.value" :value="song.value">
+                    {{ song.label }}
+                  </n-radio>
+                </n-space>
+              </n-radio-group>
+            </n-form-item>
+          </templete>
+          <n-form-item v-if="model.detail.is_main == 2" label="拼多多推广位" path="detail.main_url" w-400>
+            <n-input v-model:value="model.detail.main_url" :disabled="modalType === 1" />
           </n-form-item>
           <n-form-item v-if="model.detail.is_main == 2" label="营销工具" path="detail.type_sid">
             <n-select
@@ -387,6 +396,25 @@
             />
           </n-form-item>
         </template>
+
+        <template v-if="model.detail.type === 12">
+          <n-form-item label="商品类别" w-500 path="detail.is_main">
+            <n-select
+              v-model:value="model.detail.is_main"
+              :disabled="true"
+              :options="typeOptions"
+              filterable
+              clearable
+              remote
+              placeholder="商品类别"
+            />
+            <n-button ml-10 @click="selectHandle"> 选择商品列表 </n-button>
+          </n-form-item>
+          <n-form-item label="商品详情">
+            <n-data-table w-1000 :columns="selColumns" :data="selShopData" :pagination="false" />
+          </n-form-item>
+        </template>
+
         <div class="form-title" pb-15 fw-600>优惠券信息</div>
         <n-form-item label="优惠券名称" path="title">
           <n-input
@@ -400,7 +428,11 @@
         </n-form-item>
         <template v-if="model.detail.type !== 7 && model.detail.type !== 9">
           <n-form-item label="广告位" path="detail.is_banner" w-400>
-            <n-switch v-model:value="model.detail.is_banner" :disabled="model.detail.type == 10 || model.detail.type == 11" />
+            <n-switch
+              v-model:value="model.detail.is_banner"
+              :disabled="model.detail.type == 10"
+              @update:value="typeChange2"
+            />
           </n-form-item>
           <template v-if="model.detail.type === 1">
             <n-form-item label="选择商品" path="goods_id" w-400>
@@ -452,7 +484,7 @@
             <n-select
               v-model:value="model.device_type"
               :disabled="modalType === 1"
-              :options="deviceTypeOptions"
+              :options="deviceOptions"
               filterable
               clearable
               remote
@@ -460,7 +492,7 @@
               @update:value="deviceTypeOptionsUpdate"
             />
           </n-form-item>
-          <n-form-item label="面值" path="face_value" v-if="model.detail.type !== 10 && model.detail.type !== 11">
+          <n-form-item v-if="show1" label="面值" path="face_value">
             <n-input-group>
               <n-input-number
                 v-model:value="model.face_value"
@@ -484,7 +516,7 @@
               <n-input-group-label>元</n-input-group-label>
             </n-input-group>
           </n-form-item>
-          <n-form-item label="兑换价格" path="credits" v-if="model.detail.type !== 10 && model.detail.type !== 11">
+          <n-form-item v-if="show1" label="兑换价格" path="credits">
             <n-input-group>
               <n-input-number
                 v-model:value="model.credits"
@@ -497,7 +529,7 @@
             </n-input-group>
             <div class="rem_lab">注：牛金豆不为0，将生成优惠券</div>
           </n-form-item>
-          <template v-if="model.detail.type !== 1 && model.detail.type != 10 && model.detail.type !== 11">
+          <template v-if="show2">
             <n-form-item label="兑换按钮" path="btn_word">
               <n-input
                 v-model:value="model.detail.btn_word"
@@ -510,7 +542,7 @@
               />
             </n-form-item>
           </template>
-          <n-form-item label="发放数量" path="stock_num" v-if="model.detail.type !== 10 && model.detail.type !== 11">
+          <n-form-item v-if="show1" label="发放数量" path="stock_num">
             <n-input-number
               v-model:value="model.stock_num"
               :min="1"
@@ -519,7 +551,7 @@
               :style="{ width: '150px' }"
             />
           </n-form-item>
-          <n-form-item label="有效期" path="expiry_date" v-if="model.detail.type !== 10 && model.detail.type !== 11">
+          <n-form-item v-if="show1" label="有效期" path="expiry_date">
             <n-input-group>
               <n-input-group-label>领券后</n-input-group-label>
               <n-input-number
@@ -547,7 +579,7 @@
               <n-button quaternary>上传文件</n-button>
             </n-upload>
           </n-form-item>
-          <n-form-item label="兑换人数" path="user_num" v-if="model.detail.type !== 10 && model.detail.type !== 11">
+          <n-form-item v-if="show1" label="兑换人数" path="user_num">
             <n-input-group>
               <n-input-number
                 v-model:value="model.user_num"
@@ -559,7 +591,7 @@
               <n-input-group-label>人</n-input-group-label>
             </n-input-group>
           </n-form-item>
-          <n-form-item label="兑换须知" path="explain" v-if="model.detail.type !== 10 && model.detail.type !== 11">
+          <n-form-item v-if="show1" label="兑换须知" path="explain">
             <div style="border: 1px solid #ccc">
               <Toolbar
                 style="border-bottom: 1px solid #ccc"
@@ -573,6 +605,23 @@
                 :default-config="editorConfig"
                 mode="default"
                 @onCreated="handleCreated"
+              />
+            </div>
+          </n-form-item>
+          <n-form-item v-if="model.detail.type === 12" label="使用说明">
+            <div style="border: 1px solid #ccc">
+              <Toolbar
+                style="border-bottom: 1px solid #ccc"
+                :editor="editorArticleUrlRef"
+                :default-config="toolbarConfig"
+                mode="default"
+              />
+              <Editor
+                v-model="model.detail.article_url"
+                style="height: 500px; overflow-y: hidden"
+                :default-config="editorConfig"
+                mode="default"
+                @onCreated="handleCreatedArt"
               />
             </div>
           </n-form-item>
@@ -591,27 +640,35 @@
           </n-form-item>
         </template>
         <template v-if="model.detail.type == 10">
-            <n-form-item label="分组列表" path="type_id">
-                <n-select
-                        v-model:value="model.detail.type_id"
-                        :options="couponOptions"
-                        :disabled="modalType === 1"
-                        style="width: 200px"
-                />
-            </n-form-item>
-            <n-form-item label="持续时长" path="type_sid">
-                <n-input-number v-model:value="model.detail.type_sid" :disabled="modalType === 1" min="0" style="width: 200px" />
-                <span style="padding-left: 8px">小时</span>
-            </n-form-item>
+          <n-form-item label="分组列表" path="type_id">
+            <n-select
+              v-model:value="model.detail.type_id"
+              :options="couponOptions"
+              :disabled="modalType === 1"
+              style="width: 200px"
+            />
+          </n-form-item>
+          <n-form-item label="持续时长" path="type_sid">
+            <n-input-number
+              v-model:value="model.detail.type_sid"
+              :disabled="modalType === 1"
+              min="0"
+              style="width: 200px"
+            />
+            <span style="padding-left: 8px">小时</span>
+          </n-form-item>
+          <n-form-item label="小程序插屏广告" path="is_advertise">
+            <n-switch v-model:value="model.detail.is_advertise" />
+          </n-form-item>
         </template>
         <template v-if="model.detail.type === 11">
           <n-form-item label="h5地址" path="detail.qz_url">
             <n-input
-                    v-model:value="model.detail.qz_url"
-                    :style="{
+              v-model:value="model.detail.qz_url"
+              :style="{
                 maxWidth: '400px',
               }"
-                    :disabled="modalType === 1"
+              :disabled="modalType === 1"
             />
           </n-form-item>
         </template>
@@ -622,14 +679,35 @@
       </n-form>
     </n-drawer-content>
   </n-drawer>
+  <operate-group-detail ref="operateGroupDetailRef" @selectItem="selectItemHandle" />
 </template>
 <script setup>
-import { ref, onBeforeUnmount, shallowRef } from 'vue'
-import { useMessage } from 'naive-ui'
-import http from '../api'
-import '@wangeditor/editor/dist/css/style.css' // 引入 css
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import { escape2Html } from '@/utils'
+import { escape2Html } from '@/utils';
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+import '@wangeditor/editor/dist/css/style.css'; // 引入 css
+import { NImage, useMessage } from 'naive-ui';
+import { onBeforeUnmount, ref, shallowRef } from 'vue';
+import operateGroupDetail from './operateGroupDetail.vue';
+
+import {
+amount2Options,
+amountOptions,
+amounttypeOptions,
+deviceOptions,
+dtOptions,
+giftOptions,
+tjOptions,
+isMainOptions,
+jumpType,
+openMiniType,
+pathOptions,
+pddOptions,
+rechargeOptions,
+typeOptions,
+xcxType,
+} from '../options.js';
+
+import http from '../api';
 /**弹窗显示控制 */
 const showModal = ref(false)
 /**抽屉宽度 */
@@ -648,227 +726,84 @@ const model = ref({
   award: [],
   reward_rules: [],
 })
-//券类型
-const songs = [
-  {
-    value: 1,
-    label: '商品类',
-  },
-  {
-    value: 2,
-    label: '公众号',
-  },
-  {
-    value: 3,
-    label: '视频号',
-  },
-  {
-    value: 4,
-    label: '小程序',
-  },
-  {
-    value: 5,
-    label: '千猪外链',
-  },
-  {
-    value: 6,
-    label: '小程序内页',
-  },
-  {
-    value: 7,
-    label: '视频组件',
-  },
-  {
-    value: 8,
-    label: '乐唯娃娃机',
-  },
-  {
-    value: 9,
-    label: '多商品滑动',
-  },
-  {
-    value: 10,
-    label: '广告推券'
-  },
-  {
-    value: 11,
-    label: '小程序h5'
-  }
-]
-const gift = [
-  {
-    value: 0,
-    label: '否',
-  },
-  {
-    value: 1,
-    label: '是',
-  },
-]
-//红包金额
-const amountOptions = [
-  {
-    label: '2元',
-    value: 200,
-  },
-  {
-    label: '3元',
-    value: 300,
-  },
-  {
-    label: '5元',
-    value: 500,
-  },
-  {
-    label: '10元',
-    value: 1000,
-  },
-  {
-    label: '20元',
-    value: 2000,
-  },
-  {
-    label: '30元',
-    value: 3000,
-  },
-  {
-    label: '40元',
-    value: 4000,
-  },
-]
-//砸金蛋金额
-const amount2Options = [
-  {
-    label: '10元',
-    value: 1000,
-  },
-  {
-    label: '15元',
-    value: 1500,
-  },
-  {
-    label: '20元',
-    value: 2000,
-  },
-  {
-    label: '25元',
-    value: 2500,
-  },
-  {
-    label: '30元',
-    value: 3000,
-  },
-  {
-    label: '35元',
-    value: 3500,
-  },
-  {
-    label: '40元',
-    value: 4000,
-  },
-]
-//红包金额类型
-const amounttypeOptions = [
-  {
-    label: '红包金额个性化',
-    value: 1,
-  },
-  {
-    label: '指定红包金额',
-    value: 2,
-  },
-  {
-    label: '红包抵后价',
-    value: 3,
-  },
-]
-function pddChange() {
-  model.value.detail.diy_red_packet_param.amount_probability = []
+//已上传的图片
+const fileList = ref([])
+const operateGroupDetailRef = ref(null)
+// 惠吃喝商品的选择
+function selectHandle() {
+  operateGroupDetailRef.value.show(model.value.detail.is_main)
 }
-//营销工具
-const pddOptions = [
+const selShopData = ref([])
+// 惠吃喝商品
+const selColumns = [
+  { title: '商品ID', key: 'product_id', align: 'center', width: 200 },
   {
-    label: '红包',
-    value: 0,
+    title: '商品图片',
+    key: 'product_img',
+    align: 'center',
+    width: '100',
+    render(row, index) {
+      return h(NImage, {
+        width: '100',
+        src: row.product_img,
+      })
+    },
+  },
+  { title: '商品名称', key: 'product_name', align: 'center' },
+  {
+    title: '售价(元)',
+    key: 'sale_price',
+    align: 'center',
+    render(row, index) {
+      return row.sale_price
+    },
   },
   {
-    label: '新人红包',
-    value: 2,
-  },
-  {
-    label: '刮刮卡',
-    value: 3,
-  },
-  {
-    label: '员工内购',
-    value: 5,
-  },
-  {
-    label: '砸金蛋',
-    value: 12,
-  },
-  {
-    label: '千万补贴B端页面',
-    value: 14,
-  },
-  {
-    label: '充值中心B端页面',
-    value: 15,
-  },
-  {
-    label: '千万补贴C端页面',
-    value: 16,
-  },
-  {
-    label: '超级红包',
-    value: 23,
-  },
-  {
-    label: '礼金全场N折活动B端页面',
-    value: 24,
-  },
-  {
-    label: '带货赢千万',
-    value: 27,
-  },
-  {
-    label: '千万神券C端页面',
-    value: 34,
-  },
-  {
-    label: '千万神券B端页面',
-    value: 35,
-  },
-  {
-    label: '超级红包B端推品页',
-    value: 37,
+    title: '原价(元)',
+    key: 'product_price',
+    align: 'center',
+    render(row, index) {
+      return row.product_price
+    },
   },
 ]
+function selectItemHandle(selectItem = null) {
+  if (!selectItem) return
+  const { product_name, product_img, product_id } = selectItem
+  model.value.title = product_name
+  model.value.detail.video_id = product_id
+  selShopData.value = [{ ...selectItem }]
+}
+
 function checkedRadioHandle2() {
   model.value.type_id = ''
   model.value.type_sid = ''
 }
 //是否为直冲
 const isRecharge = ref(false)
-
+const show1 = ref()
+const show2 = ref()
 function typeChange(value) {
-  if(value == 10 || value == 11){
-      model.value.detail.is_banner = 1;
-      model.value.detail.is_banner = Boolean(model.value.detail.is_banner)
+  if (value == 10) {
+    model.value.detail.is_banner = 1
+    model.value.detail.is_banner = Boolean(model.value.detail.is_banner)
+    show1.value = 0
+    show2.value = 0
+  } else if (value == 1) {
+    show1.value = 1
+    show2.value = 0
+  } else {
+    show1.value = 1
+    show2.value = 1
   }
-  /*model.value.detail = {
-    type: model.value.detail.type,
-    is_main: model.value.detail.is_main || 1,
-    article_url: model.value.detail.article_url || '',
-    main_url: model.value.detail.main_url || '',
-    type_id: model.value.detail.type_id || '',
-    open_mini_type: model.value.detail.open_mini_type || 1,
-    type_sid: model.value.detail.type_sid || '',
-    video_id: model.value.detail.video_id || '',
-    video_account_id: model.value.detail.video_account_id || '',
+}
+function typeChange2(value) {
+  const type = model.value.detail.type
+  if (!value && type == 11) {
+    show1.value = 1
+  } else if (value && type == 11) {
+    show1.value = 0
   }
-  model.value.goods_id = ''
-  shopData.value = []*/
 }
 let type_id = ''
 let type_sid = ''
@@ -906,6 +841,7 @@ function xcxCk(e) {
     model.value.detail.type_id = ''
     model.value.detail.type_sid = ''
   }
+  model.value.detail.is_main = 1
 }
 function querykey() {
   model.value.detail.type_id = type_id
@@ -985,7 +921,7 @@ const rules = ref({
   face_value: {
     required: true,
     validator: function (rule, value) {
-      return Boolean(value)
+      return Boolean(value >= 0)
     },
     trigger: ['blur', 'input'],
     message: '请输入面值',
@@ -1042,11 +978,6 @@ const rules = ref({
       trigger: ['blur', 'input'],
       message: '不能为空',
     },
-    video_id: {
-      required: true,
-      trigger: ['blur', 'input'],
-      message: '不能为空',
-    },
     video_account_id: {
       required: true,
       trigger: ['blur', 'input'],
@@ -1054,39 +985,6 @@ const rules = ref({
     },
   },
 })
-//主体关系
-const isMainOptions = [
-  {
-    label: '同主体',
-    value: 1,
-  },
-  {
-    label: '非同主体',
-    value: 2,
-  },
-]
-const xcxType = [
-  {
-    label: '请选择',
-    value: 0,
-  },
-  {
-    label: '京东联盟',
-    value: 1,
-  },
-  {
-    label: '美团联盟',
-    value: 2,
-  },
-  {
-    label: '拼多多',
-    value: 3,
-  },
-  {
-    label: '其他',
-    value: 4,
-  },
-]
 //商品选择
 const shopOptions = ref([])
 const loading = ref([false])
@@ -1104,105 +1002,24 @@ function handleSearch(query) {
     })
   })
 }
-// 系统类型
-const deviceTypeOptions = ref([
-  {
-    label: 'IOS',
-    value: 1,
-  },
-  {
-    label: '公共',
-    value: 2,
-  },
-  {
-    label: 'Android',
-    value: 3,
-  },
-])
 function deviceTypeOptionsUpdate(value, option) {
   model.value.device_type = value
 }
 
-const pathOptions = ref([
-  {
-    label: '小程序内页',
-    value: 5,
-  },
-  {
-    label: '惠生活',
-    value: 1,
-  },
-  {
-    label: '福利中心',
-    value: 2,
-  },
-  {
-    label: '领券中心',
-    value: 3,
-  },
-  {
-    label: '海威瑞幸',
-    value: 4,
-  },
-  {
-    label: '海威麦当劳',
-    value: 6,
-  },
-  {
-    label: '海威肯德基',
-    value: 7,
-  },
-])
-// 充值的类型
-const rechargeOptions = ref([
-  {
-    label: '手机号码充值',
-    value: 1,
-    placeholder: '请输入手机号码',
-  },
-  {
-    label: '其他账号充值',
-    value: 2,
-    placeholder: '请输入手机号码或QQ账号',
-  },
-])
 function rechargeOptionsUpdate(value, option) {
   model.value.cz_type = value
   model.value.cz_type_intro = option.placeholder
 }
 
-// 小程序的打开方式
-const openMiniType = ref([
-  {
-    label: '跳转打开',
-    value: 1,
-  },
-  {
-    label: '半屏打开',
-    value: 2,
-  },
-])
-//商品状态
+// 商品状态
 const isShowJumpType = computed(() => {
-  const isShow = [1, 7, 8, 9, 10, 11].includes(Number(model.value.detail.type))
+  const isShow = [1, 7, 8, 9, 10, 11, 12].includes(Number(model.value.detail.type))
   return !isShow
 })
 
-// 跳转方式
-const jumpType = ref([
-  {
-    label: '直接跳转',
-    value: 1,
-  },
-  {
-    label: '进入跳转',
-    value: 2,
-  },
-])
-
-//奖品数据
+// 奖品数据
 const shopData = ref([])
-//奖品设置
+// 奖品设置
 const shopColumns = [
   { title: '商品编号', key: 'skuCode', align: 'center' },
   { title: '商品名称', key: 'title', align: 'center' },
@@ -1270,6 +1087,7 @@ function shopOptionsUpdate(value, option) {
 }
 // 编辑器实例，必须用 shallowRef
 const editorRef = shallowRef()
+const editorArticleUrlRef = shallowRef()
 const toolbarConfig = {}
 const editorConfig = {
   placeholder: '请输入内容...',
@@ -1291,9 +1109,11 @@ const handleCreated = (editor) => {
   editorRef.value = editor // 记录 editor 实例，重要！
   if (modalType.value === 1) editorRef.value?.disable()
 }
-//已上传的图片
-const fileList = ref([])
-//图片上传
+const handleCreatedArt = (editor) => {
+  editorArticleUrlRef.value = editor // 记录 editor 实例，重要！
+  if (modalType.value === 1) editorArticleUrlRef.value?.disable()
+}
+// 图片上传
 function handleFinish({ event }) {
   let { response, responseText } = event.currentTarget
   let res = JSON.parse(response || responseText)
@@ -1321,7 +1141,10 @@ function show(operatType, data) {
   coupon_id = data?.id
   modalType.value = operatType
   modalTitle.value = ['查看', '编辑', '新增'][operatType - 1]
-  if (operatType === 1) editorRef.value?.disable()
+  if (operatType === 1) {
+    editorRef.value?.disable()
+    editorArticleUrlRef.value?.disable()
+  }
   initCenterOptions()
   init()
   //获取零豆专区列表
@@ -1395,11 +1218,16 @@ function init() {
           page_index: 1,
           eliteId_index: 0,
           is_banner: 0,
+          is_advertise: false,
         },
       }
       model.value.detail.is_banner = Boolean(model.value.detail.is_banner)
+      model.value.detail.is_advertise = Boolean(model.value.detail.is_advertise)
       type_id = detail.type_id
       type_sid = detail.type_sid
+      if (model.value.detail.type == 12) {
+        model.value.detail.article_url = escape2Html(model.value.detail.article_url)
+      }
       if (detail.type == 4 && type_id && type_id == 'wx91d27dbf599dff74') {
         xcxs = 1
         xcx.value = 1
@@ -1423,6 +1251,7 @@ function init() {
         xcx.value = 4
       }
       shopData.value = goods ? [goods] : []
+      selShopData.value = goods ? [goods] : []
       isRecharge.value = goods && goods.type === 0
       /**图片预览 */
       if (image) {
@@ -1448,7 +1277,8 @@ function init() {
       }
 
       handleSearch('')
-
+      typeChange(detail.type)
+      typeChange2(detail.is_banner)
       showModal.value = true
     })
   } else {
@@ -1466,6 +1296,7 @@ function init() {
       cz_type: 1,
       cz_type_intro: '',
       device_type: 2,
+      article_url: '',
       detail: {
         type: 1,
         is_main: 1,
@@ -1483,6 +1314,7 @@ function init() {
         page_index: 1,
         eliteId_index: 0,
         is_banner: 0,
+        is_advertise: false,
         diy_red_packet_param: {
           amount_probability: [],
           range_items: [
@@ -1505,9 +1337,13 @@ function init() {
       },
     }
     shopData.value = []
+    selShopData.value = []
     handleSearch('')
     showModal.value = true
     model.value.detail.is_banner = Boolean(model.value.detail.is_banner)
+    show1.value = 1
+    show2.value = 1
+    console.log(show1.value)
   }
   http.getGroup().then((res) => {
     couponOptions.value = res.data.list
@@ -1546,8 +1382,10 @@ function handleValidate() {
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {
   const editor = editorRef.value
+  const editorArticleUrl = editorArticleUrlRef.value
   if (editor == null) return
   editor.destroy()
+  editorArticleUrl.destroy()
 })
 
 /**暴露给父组件使用 */

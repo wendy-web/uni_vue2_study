@@ -156,7 +156,7 @@ const handleUpdateFilter = () => {
   }
   timer = setTimeout(() => {
     queryItems.value.keyword = inputValue
-    if (lx_type.value == 1) {
+    if (lx_type.value == 1 || lx_type.value == 3) {
       return $table.value?.handleSearch()
     }
     if (lx_type.value == 2) {

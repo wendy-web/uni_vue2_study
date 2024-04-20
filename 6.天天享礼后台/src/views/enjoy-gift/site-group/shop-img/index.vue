@@ -1,14 +1,14 @@
 <template>
   <CommonPage show-footer title="彬纷享礼配置">
-    <div flex flex-justify-center>
-      <div>
+    <div flex flex-justify-center flex-wrap>
+      <div mb-40>
         <div>
           <n-form
             ref="formContRef"
             mr-100
             :model="contModel"
             label-placement="left"
-            label-width="100px"
+            label-width="130px"
             require-mark-placement="right-hanging"
           >
             <n-form-item label="新人标语" w-400>
@@ -22,14 +22,14 @@
             </div>
           </n-form>
         </div>
-        <div style="margin-top:20px;">
+        <div style="margin-top: 20px">
           <!--按钮文案-->
           <n-form
             ref="formContRef"
             mr-100
             :model="btnModel"
             label-placement="left"
-            label-width="100px"
+            label-width="130px"
             require-mark-placement="right-hanging"
           >
             <n-form-item label="按钮文字" w-400>
@@ -40,6 +40,44 @@
             </n-form-item>
             <div flex justify-center w-380>
               <n-button type="primary" @click="saveBtnHandle">确认并提交</n-button>
+            </div>
+          </n-form>
+        </div>
+        <n-form
+          ref="formContRef"
+          mt-30
+          mr-100
+          label-placement="left"
+          label-width="130px"
+          require-mark-placement="right-hanging"
+        >
+          <n-form-item label="新人未中奖版块" path="is_advertisement">
+            <n-switch v-model:value="isNewLosing" @update:value="newLosingHandle" />
+          </n-form-item>
+          <div style="font-size: 12px; color: #999; margin-top: -20px">开启表示看视频积分翻倍，关闭则显示新人版块</div>
+        </n-form>
+        <div style="font-size: 16px; padding: 10px 0">未中奖版块场景配置</div>
+        <div>
+          <n-form
+            ref="formContRef"
+            mt-10
+            mr-100
+            label-placement="left"
+            label-width="130px"
+            require-mark-placement="right-hanging"
+            :model="pathModel"
+          >
+            <n-form-item label="场景一：领券" path="contents">
+              <n-switch v-model:value="pathModel.contents" />
+            </n-form-item>
+            <n-form-item label="场景二：抽奖" path="content">
+              <n-switch v-model:value="pathModel.content" />
+            </n-form-item>
+            <div style="font-size: 12px; color: #999; margin-top: -20px">
+              至少要开启一个场景，当两个场景都开启时将随机展示
+            </div>
+            <div mt-10 flex justify-center w-380>
+              <n-button type="primary" @click="newpathHandle">确认并提交</n-button>
             </div>
           </n-form>
         </div>
@@ -54,6 +92,7 @@
         :style="{
           maxWidth: '350px',
         }"
+        mb-40
       >
         <n-form-item w-200 label="图片展示" path="contents">
           <n-upload
@@ -89,26 +128,27 @@
         </div>
       </n-form>
       <n-form
-              ref="formRef"
-              :model="model2"
-              :rules="rules"
-              label-placement="left"
-              label-width="140px"
-              require-mark-placement="right-hanging"
-              :style="{
+        ref="formRef"
+        :model="model2"
+        :rules="rules"
+        label-placement="left"
+        label-width="140px"
+        require-mark-placement="right-hanging"
+        :style="{
           maxWidth: '350px',
         }"
+        mb-40
       >
         <n-form-item w-200 label="图片展示" path="contents">
           <n-upload
-                  action="/apios/Tools/uploadImg"
-                  list-type="image-card"
-                  :default-file-list="imgFileList2"
-                  :max="1"
-                  name="img"
-                  @remove="removeFileList2"
-                  @finish="handleFinish2"
-                  @before-upload="beforeUpload"
+            action="/apios/Tools/uploadImg"
+            list-type="image-card"
+            :default-file-list="imgFileList2"
+            :max="1"
+            name="img"
+            @remove="removeFileList2"
+            @finish="handleFinish2"
+            @before-upload="beforeUpload"
           >
             <n-button quaternary>上传文件</n-button>
           </n-upload>
@@ -116,14 +156,14 @@
         <div flex justify-center style="font-size: 12px; color: #999" mb-50>该图片用于彬纷享礼小程序首页悬浮</div>
         <n-form-item w-200 label="新人扫码未中奖" path="content">
           <n-upload
-                  action="/apios/Tools/uploadImg"
-                  list-type="image-card"
-                  :default-file-list="codeFileList2"
-                  :max="1"
-                  name="img"
-                  @remove="removeCodeList2"
-                  @finish="handleCodeFinish2"
-                  @before-upload="beforeUpload"
+            action="/apios/Tools/uploadImg"
+            list-type="image-card"
+            :default-file-list="codeFileList2"
+            :max="1"
+            name="img"
+            @remove="removeCodeList2"
+            @finish="handleCodeFinish2"
+            @before-upload="beforeUpload"
           >
             <n-button quaternary>上传文件</n-button>
           </n-upload>
@@ -134,26 +174,27 @@
         </div>
       </n-form>
       <n-form
-              ref="formRef"
-              :model="model3"
-              :rules="rules"
-              label-placement="left"
-              label-width="140px"
-              require-mark-placement="right-hanging"
-              :style="{
+        ref="formRef"
+        :model="model3"
+        :rules="rules"
+        label-placement="left"
+        label-width="140px"
+        require-mark-placement="right-hanging"
+        :style="{
           maxWidth: '350px',
         }"
+        mb-40
       >
         <n-form-item w-200 label="图片展示" path="contents">
           <n-upload
-                  action="/apios/Tools/uploadImg"
-                  list-type="image-card"
-                  :default-file-list="imgFileList3"
-                  :max="1"
-                  name="img"
-                  @remove="removeFileList3"
-                  @finish="handleFinish3"
-                  @before-upload="beforeUpload"
+            action="/apios/Tools/uploadImg"
+            list-type="image-card"
+            :default-file-list="imgFileList3"
+            :max="1"
+            name="img"
+            @remove="removeFileList3"
+            @finish="handleFinish3"
+            @before-upload="beforeUpload"
           >
             <n-button quaternary>上传文件</n-button>
           </n-upload>
@@ -163,15 +204,47 @@
           <n-button type="primary" @click="saveImgHandle3"> 保存 </n-button>
         </div>
       </n-form>
+      <n-form
+        ref="formRef"
+        :model="model4"
+        label-placement="left"
+        label-width="140px"
+        require-mark-placement="right-hanging"
+        :style="{
+          maxWidth: '350px',
+        }"
+        mb-40
+      >
+        <n-form-item label="扫码异常送豆" path="contents" w-400>
+          <n-input-number
+            v-model:value="model4.contents"
+            :disabled="modalType === 1"
+            placeholder="最小值"
+            min="1"
+            :show-button="false"
+            w-100
+          />
+          <div style="margin: 0 5px; color: #999">-</div>
+          <n-input-number
+            v-model:value="model4.content"
+            :min="model4.contents"
+            placeholder="最大值"
+            :show-button="false"
+            w-100
+          />
+        </n-form-item>
+        <div flex justify-center w-340>
+          <n-button type="primary" @click="saveImgHandle4"> 保存 </n-button>
+        </div>
+      </n-form>
     </div>
   </CommonPage>
 </template>
 
 <script setup>
-import http from './api'
-import { useMessage } from 'naive-ui'
-import { values } from 'lodash-es'
-defineOptions({ name: 'SingleColumnDiagram' })
+import { useMessage } from 'naive-ui';
+import { ref } from 'vue';
+import http from './api';
 const imgFileList = ref([])
 const imgFileList2 = ref([])
 const imgFileList3 = ref([])
@@ -185,15 +258,33 @@ const model = ref({
 })
 const model2 = ref({
   contents: '',
-  content: ''
+  content: '',
 })
 const model3 = ref({
   contents: '',
 })
 const btnModel = ref({
   contents: '',
-  content: ''
+  content: '',
 })
+const pathModel = ref({
+  contents: '',
+  content: '',
+})
+const model4 = ref({
+  contents: '',
+  content: '',
+})
+function saveImgHandle4() {
+  formRef.value?.validate((errors) => {
+    if (!errors) {
+      http.creditsCreate(model4.value).then((res) => {
+        message.success(res.msg)
+      })
+    }
+  })
+  return false
+}
 //提示展示
 const message = useMessage()
 //校验数据
@@ -211,6 +302,9 @@ onMounted(() => {
   btnXq()
   homeXq()
   zmXq()
+  newXq()
+  creditsXq()
+  pathXq()
 })
 function init() {
   http.scoreXq().then((res) => {
@@ -249,7 +343,17 @@ function getList() {
     }
   })
 }
-function btnXq(){
+function pathXq() {
+  http.pathXq().then((res) => {
+    if (res.code != 1) return
+    const { contents, content } = res.data
+    pathModel.value = {
+      contents: Boolean(contents),
+      content: Boolean(content),
+    }
+  })
+}
+function btnXq() {
   http.btnXq().then((res) => {
     if (res.code != 1) return
     const { contents, content } = res.data
@@ -259,7 +363,17 @@ function btnXq(){
     }
   })
 }
-function homeXq(){
+function creditsXq() {
+  http.creditsXq().then((res) => {
+    if (res.code != 1) return
+    const { contents, content } = res.data
+    model4.value = {
+      contents,
+      content,
+    }
+  })
+}
+function homeXq() {
   http.homeXq().then((res) => {
     if (res.code != 1) return
     model2.value.contents = res.data.contents
@@ -282,7 +396,7 @@ function homeXq(){
     }
   })
 }
-function zmXq(){
+function zmXq() {
   http.zmXq().then((res) => {
     if (res.code != 1) return
     model3.value.contents = res.data.contents
@@ -293,6 +407,23 @@ function zmXq(){
         status: 'finished',
         url: res.data.contents,
       })
+    }
+  })
+}
+const isNewLosing = ref(false)
+function newXq() {
+  http.newXq().then((res) => {
+    if (res.code != 1 && !res.data) return
+    isNewLosing.value = Boolean(res.data.contents)
+  })
+}
+function newLosingHandle(value) {
+  console.log('value', value)
+  http.newLosing({ contents: Number(value) }).then((res) => {
+    if (res.code == 1) {
+      message.success(res.msg)
+    } else {
+      message.error(res.msg)
     }
   })
 }
@@ -411,7 +542,7 @@ function saveContHandle() {
     }
   })
 }
-function saveBtnHandle(){
+function saveBtnHandle() {
   http.btnCreate(btnModel.value).then((res) => {
     if (res.code == 1) {
       message.success(res.msg)
@@ -420,5 +551,16 @@ function saveBtnHandle(){
       message.error(res.msg)
     }
   })
+}
+function newpathHandle() {
+  http
+    .pathCreate({ contents: Number(pathModel.value.contents), content: Number(pathModel.value.content) })
+    .then((res) => {
+      message.success(res.msg)
+    })
+    .catch((e) => {
+      console.log(e)
+      pathXq()
+    })
 }
 </script>

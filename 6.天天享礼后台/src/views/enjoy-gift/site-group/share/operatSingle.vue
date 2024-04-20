@@ -27,12 +27,7 @@
         <n-input v-model:value="model.title" :disabled="modalType === 1" />
       </n-form-item>
       <n-form-item label="分享页面" path="page">
-        <n-select
-          v-model:value="model.page"
-          :options="pageOptions"
-          :disabled="modalType === 1"
-          style="width: 200px"
-        />
+        <n-select v-model:value="model.page" :options="pageOptions" :disabled="modalType === 1" style="width: 200px" />
       </n-form-item>
       <n-form-item label="图片" path="image">
         <n-upload
@@ -54,16 +49,16 @@
   </n-modal>
 </template>
 <script setup>
-import { ref } from 'vue';
 import { useMessage } from 'naive-ui';
-import { pageOptions } from './options';
+import { ref } from 'vue';
 import http from './api';
+import { pageOptions } from './options';
 
 /**弹窗显示控制 */
-const showModal = ref(false);
+const showModal = ref(false)
 /**弹窗类型 1.查看 2.修改,3.新增*/
-const modalType = ref(3);
-const modalTitle = ref('新增');
+const modalType = ref(3)
+const modalTitle = ref('新增')
 /**弹窗取消 */
 function onNegativeClick() {}
 /**表单 */
@@ -78,8 +73,8 @@ const rules = ref({
     required: true,
     trigger: ['blur', 'input'],
     message: '标题不能为空',
-  }
-});
+  },
+})
 
 //已上传的图片
 const fileList = ref([])
@@ -88,14 +83,14 @@ function handleFinish({ event }) {
   let { response, responseText } = event.currentTarget
   let res = JSON.parse(response || responseText)
   if (res.code == 1) {
-    model.value.image = res.data.url;
+    model.value.image = res.data.url
   } else {
     useMessage.error(res.msg)
   }
 }
 // 清除图片
 function handleRemoveFile() {
-  model.value.image = '';
+  model.value.image = ''
 }
 async function beforeUpload(data) {
   if (!/image\/(png|jpg|jpeg|gif)/i.test(data.file.file?.type)) {
@@ -108,7 +103,7 @@ async function beforeUpload(data) {
 function handleValidateButtonClick() {
   formRef.value?.validate((errors) => {
     if (!errors) {
-      model.value.main_url = '';
+      model.value.main_url = ''
       http.operatSingleImage(model.value).then((res) => {
         if (res.code == 1) {
           message.success(res.msg)
@@ -132,7 +127,7 @@ function show(operatType, data) {
   if (operatType !== 3) {
     http.getSingleImage({ id: data.id, lx_type: 3 }).then((res) => {
       let { id, title, image, lx_type, page } = res.data
-      model.value = { id, title, image, lx_type, page}
+      model.value = { id, title, image, lx_type, page }
       /**图片预览 */
       if (image) {
         fileList.value = [
@@ -151,7 +146,7 @@ function show(operatType, data) {
       title: '',
       image: '',
       lx_type: 3,
-      page: 1
+      page: 1,
     }
     setTimeout(() => {
       showModal.value = true

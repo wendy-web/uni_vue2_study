@@ -302,6 +302,109 @@ export default {
       ],
     },
     {
+      name: 'orderCashBack',
+      path: 'order-cash-back',
+      component: () => import('@/views/enjoy-gift/order-cash-back/index.vue'),
+      meta: {
+        title: '领现金',
+        icon: 'healthicons:coins',
+        order: 5,
+        requireAuth: false,
+      },
+      children: [
+        {
+          name: 'cashBackList',
+          path: 'cashBack/list',
+          component: () => import('@/views/enjoy-gift/order-cash-back/cash-list/index.vue'),
+          meta: {
+            title: '商品列表',
+            icon: 'icon-park-outline:coupon',
+            requireAuth: true,
+            role: ['profit_grouplist_1'],
+          },
+        },
+        {
+          name: 'cashBackBasic',
+          path: 'cashBack/basic',
+          component: () => import('@/views/enjoy-gift/order-cash-back/cash-basic/index.vue'),
+          meta: {
+            title: '基本配置',
+            icon: 'nimbus:cog',
+            requireAuth: true,
+            role: ['profit_getxq_1'],
+          },
+        },
+      ],
+    },
+    {
+      name: 'orderCashFree',
+      path: 'order-cash-free',
+      component: () => import('@/views/enjoy-gift/order-cash-free/index.vue'),
+      meta: {
+        title: '免单特权',
+        icon: 'healthicons:coins-outline',
+        order: 5,
+        requireAuth: false,
+      },
+      children: [
+        {
+          name: 'cashFreeList',
+          path: 'cashFree/list',
+          component: () => import('@/views/enjoy-gift/order-cash-free/cash-list/index.vue'),
+          meta: {
+            title: '免单列表',
+            icon: 'icon-park-outline:coupon',
+            requireAuth: true,
+            role: ['free_grouplist_1'],
+          },
+        },
+        {
+          name: 'accelerateFreeList',
+          path: 'accelerateFree/list',
+          component: () => import('@/views/enjoy-gift/order-cash-free/accelerate-list/index.vue'),
+          meta: {
+            title: '加速列表',
+            icon: 'ic:baseline-assignment',
+            requireAuth: true,
+            role: ['free_speedlist_1'],
+          },
+        },
+        {
+          name: 'awardFreeList',
+          path: 'awardListFree/list',
+          component: () => import('@/views/enjoy-gift/order-cash-free/award-list/index.vue'),
+          meta: {
+            title: '奖品列表',
+            icon: 'ic:baseline-assignment-turned-in',
+            requireAuth: true,
+            role: ['free_giftlist_1'],
+          },
+        },
+        {
+          name: 'deliverList',
+          path: 'deliver/list',
+          component: () => import('@/views/enjoy-gift/order-cash-free/deliver-list/index.vue'),
+          meta: {
+            title: '免单订单',
+            icon: 'ic:baseline-assignment',
+            requireAuth: true,
+            role: ['free_gift_1'],
+          },
+        },
+        {
+          name: 'cashFreeBasic',
+          path: 'cashFree/basic',
+          component: () => import('@/views/enjoy-gift/order-cash-free/cash-basic/index.vue'),
+          meta: {
+            title: '基本配置',
+            icon: 'nimbus:cog',
+            requireAuth: true,
+            role: ['free_getxq_1'],
+          },
+        },
+      ],
+    },
+    {
       name: 'Popover',
       path: 'popover/list',
       component: () => import('@/views/enjoy-gift/popover/index.vue'),
@@ -339,6 +442,30 @@ export default {
         requireAuth: true,
         role: ['saving_getlist_1'],
       },
+    },
+    {
+      name: 'whirligigDraw',
+      path: 'whirligig-draw',
+      component: () => import('@/views/enjoy-gift/order-cash-back/index.vue'),
+      meta: {
+        title: '旋转木马抽奖',
+        icon: 'icon-park-outline:coupon',
+        order: 108,
+        requireAuth: false,
+      },
+      children: [
+        {
+          name: 'drawList',
+          path: 'draw/list',
+          component: () => import('@/views/enjoy-gift/whirligig-draw/draw-list/index.vue'),
+          meta: {
+            title: '奖品列表',
+            icon: 'icon-park-outline:coupon',
+            //requireAuth: true,
+            //role: ['whirligig_getlist_1'],
+          },
+        },
+      ],
     },
     {
       name: 'siteManageList',
@@ -404,6 +531,19 @@ export default {
           },
         },
         {
+          name: 'setConfig',
+          path: 'set-config/index',
+          component: () => import('@/views/enjoy-gift/site-group/set-config/index.vue'),
+          meta: {
+            title: '天天享礼配置',
+            icon: 'majesticons:home-line',
+            order: 5,
+            keepAlive: true,
+            requireAuth: true,
+            role: ['popover_xlxq_1'],
+          },
+        },
+        {
           name: 'shopImg',
           path: 'shop-img/index',
           component: () => import('@/views/enjoy-gift/site-group/shop-img/index.vue'),
@@ -443,18 +583,18 @@ export default {
           },
         },
         /*{
-                                          name: 'bfJd',
-                                          path: 'bfJd/index',
-                                          component: () => import('@/views/enjoy-gift/site-group/bfjd/index.vue'),
-                                          meta: {
-                                            title: '彬纷京东版块配置',
-                                            icon: 'ep:goods-filled',
-                                            order: 8,
-                                            keepAlive: true,
-                                            requireAuth: true,
-                                            role: ['bfjd_getxq_1'],
-                                          },
-                                        },*/
+                                                                                                                                                                                                                                                                                                                                          name: 'bfJd',
+                                                                                                                                                                                                                                                                                                                                          path: 'bfJd/index',
+                                                                                                                                                                                                                                                                                                                                          component: () => import('@/views/enjoy-gift/site-group/bfjd/index.vue'),
+                                                                                                                                                                                                                                                                                                                                          meta: {
+                                                                                                                                                                                                                                                                                                                                            title: '彬纷京东版块配置',
+                                                                                                                                                                                                                                                                                                                                            icon: 'ep:goods-filled',
+                                                                                                                                                                                                                                                                                                                                            order: 8,
+                                                                                                                                                                                                                                                                                                                                            keepAlive: true,
+                                                                                                                                                                                                                                                                                                                                            requireAuth: true,
+                                                                                                                                                                                                                                                                                                                                            role: ['bfjd_getxq_1'],
+                                                                                                                                                                                                                                                                                                                                          },
+                                                                                                                                                                                                                                                                                                                                        },*/
         {
           name: 'scaleConfig',
           path: 'scale-rule/list',

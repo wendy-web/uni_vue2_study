@@ -1,5 +1,5 @@
 <template>
-  <n-drawer v-model:show="showModal" :width="drawerWidth" :placement="placement">
+  <n-drawer v-model:show="showModal" :width="drawerWidth">
     <n-drawer-content :title="modalTitle" closable>
       <n-form
         ref="formRef"
@@ -24,7 +24,6 @@
             name="img"
             @remove="removeFileList('bg_img')"
             @finish="handleFinish($event, 'bg_img')"
-            @before-upload="beforeUpload"
           >
             <n-button quaternary>上传文件</n-button>
           </n-upload>
@@ -44,7 +43,6 @@
             name="img"
             @remove="removeFileList('share_img')"
             @finish="handleFinish($event, 'share_img')"
-            @before-upload="beforeUpload"
           >
             <n-button quaternary>上传文件</n-button>
           </n-upload>
@@ -57,13 +55,13 @@
             @update:value="lxTypeOptionsUpdate"
           />
         </n-form-item>
-        <n-form-item label="牛金豆" path="has_credits" w-400>
+        <n-form-item label="消耗牛金豆" path="has_credits" w-400>
           <n-switch v-model:value="model.has_credits" />
         </n-form-item>
         <!-- 自选 -->
         <div v-if="model.goods_lx_type == 1">
           <n-form-item label="京东推广位ID" path="jd_positionId" w-300>
-            <n-input-number
+            <n-input
               v-model:value="model.jd_positionId"
               :show-button="false"
               placeholder="京东推广位ID"
@@ -361,7 +359,7 @@
               </view>
             </n-form-item>
             <n-form-item label="筛选范围列表" path="range_list">
-              <n-checkbox-group v-model:value="pddRang" flex flex-wrap @update:value="rang_handleUpdate">
+              <n-checkbox-group v-model:value="pddRangValue" flex flex-wrap @update:value="rang_handleUpdate">
                 <n-space
                   v-for="item in eliteIdOptions.pddRangOptions"
                   :key="item.value"
@@ -374,7 +372,7 @@
               </n-checkbox-group>
             </n-form-item>
 
-            <div v-for="item in pddRangSelect" :key="item.range_id">
+            <div v-for="item in pddRangSelectValue" :key="item.range_id">
               <n-form-item :label="item.label" path="coupon" w-400>
                 <n-input-number
                   v-model:value="item.range_from"
@@ -404,12 +402,12 @@
   <operat-group-detail ref="operatGroupDetailRef" :ck-ids="ckIds" @addList="addListHandle" />
 </template>
 <script setup>
-import operatGroupDetail from './operatGroupDetail.vue'
-import { ref } from 'vue'
-import { useMessage, NInput, NInputNumber, NButton, NSwitch, NDatePicker } from 'naive-ui'
-import { renderIcon, formatDateTime } from '@/utils'
-import http from './api'
-import eliteIdOptions from './eliteIdOptions.js'
+import { renderIcon } from '@/utils';
+import { NButton, NInputNumber, NSelect, useMessage } from 'naive-ui';
+import { ref } from 'vue';
+import http from './api';
+import eliteIdOptions from './eliteIdOptions.js';
+import operatGroupDetail from './operatGroupDetail.vue';
 /**抽屉宽度 */
 const drawerWidth = window.innerWidth - 220 + 'px'
 /**弹窗显示控制 */
@@ -528,6 +526,20 @@ const rules = ref({
 })
 //查询参数
 const tableData = ref([])
+const status_options = [
+  {
+    label: '半屏跳转',
+    value: 0,
+  },
+  {
+    label: 'feed流',
+    value: 1,
+  },
+  {
+    label: '中转详情',
+    value: 2,
+  },
+]
 //优惠券列表选择相关
 const columns = [
   {
@@ -582,18 +594,21 @@ const columns = [
     },
   },
   {
-    title: 'feed流',
+    title: '打开方式',
     key: 'is_flow',
     align: 'center',
     width: 80,
     render(row, index) {
-      return h(NSwitch, {
+      return h(NSelect, {
+        options: status_options,
         size: 'small',
-        value: Boolean(row.is_flow),
+        value: row.is_flow,
+        'label-field': 'label',
+        'value-field': 'value',
         disabled: row.lx_type == 3,
         onUpdateValue: (updateValue) => {
           const currentIndex = row.current_index
-          tableData.value[currentIndex].is_flow = !!updateValue
+          tableData.value[currentIndex].is_flow = updateValue
         },
       })
     },
@@ -731,8 +746,8 @@ function handleValidateButtonClick() {
         }
         model.value.opt_id = ''
         goodsOptList.value.forEach((res) => res.id != null && (model.value.opt_id += `${res.id},`))
-        pddRangSelect.value.length &&
-          pddRangSelect.value.forEach((res) => {
+        pddRangSelectValue.value.length &&
+          pddRangSelectValue.value.forEach((res) => {
             const { range_from, range_id, range_to } = res
             model.value.range_list.push({
               range_from,
@@ -762,7 +777,7 @@ function handleValidateButtonClick() {
 }
 const showType = ref()
 const showData = ref()
-const ckIds = ref({})
+const ckIds = ref([])
 // 类型选项
 let typeOptions = [
   {
@@ -845,25 +860,25 @@ function goodsCat_handleUpdate(value, index) {
 function goodsOpt_handleUpdate(value, index) {
   value && goodOptUpdate(value, index + 1)
 }
-const pddRang = ref([])
+const pddRangValue = ref([])
 const pddRangOptions = eliteIdOptions.pddRangOptions
-const pddRangSelect = ref([])
+const pddRangSelectValue = ref([])
 function rang_handleUpdate(value, options) {
   const isCheck = options.actionType == 'check'
   const selValue = options.value
   const selItem = pddRangOptions.find((res) => res.value == selValue)
   const { value: range_id, label } = selItem
   if (isCheck) {
-    pddRangSelect.value.push({
+    pddRangSelectValue.value.push({
       range_id,
       label,
       range_from: 0,
       range_to: 0,
     })
   } else {
-    const pddRangIndex = pddRangSelect.value.findIndex((res) => res.range_id == selValue)
+    const pddRangIndex = pddRangSelectValue.value.findIndex((res) => res.range_id == selValue)
     if (pddRangIndex >= 0) {
-      pddRangSelect.value.splice(pddRangIndex, 1)
+      pddRangSelectValue.value.splice(pddRangIndex, 1)
     }
   }
 }
@@ -1096,10 +1111,9 @@ function getGroupDetails(type) {
       model.value.cid = cid || null
       model.value.cid2 = cid2 || null
       model.value.cid3 = cid3 || null
-      pddRang.value = res.data.pddRang
-      pddRangSelect.value = []
-      pddRangSelect.value = res.data.pddRangSelect
-      model.value.range_list = [];
+      pddRangValue.value = pddRang
+      pddRangSelectValue.value = pddRangSelect
+      model.value.range_list = []
     })
 }
 function goodCatOptionsInit(cat_id) {

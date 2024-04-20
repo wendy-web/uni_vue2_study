@@ -263,6 +263,18 @@ export default {
       label: '彬纷享礼',
       value: 15,
     },
+    {
+      label: '领现金',
+      value: 16,
+    },
+    {
+      label: '免单',
+      value: 17,
+    },
+    {
+      label: '免单加速',
+      value: 18,
+    },
   ],
   //彬纷享礼小程序页面
   pathOptions: [
@@ -273,7 +285,7 @@ export default {
     {
       label: '扫码未中奖',
       value: 1,
-    }
+    },
   ],
   //   活动商品标记数组
   activityOptions: [

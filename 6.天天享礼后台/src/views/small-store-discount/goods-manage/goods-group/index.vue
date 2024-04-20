@@ -2,7 +2,8 @@
   <CommonPage show-footer title="商品分组">
     <template #action>
       <n-button v-has="'add'" type="primary" @click="handleAdd">
-        <TheIcon icon="material-symbols:add" :size="18" class="mr-5" /> 新增分组
+        <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />
+        新增分组
       </n-button>
     </template>
     <CrudTable
@@ -35,14 +36,13 @@
 </template>
 
 <script setup>
-import { resolveDirective, withDirectives } from 'vue'
-import { NButton } from 'naive-ui'
-import opreatGroup from './opreatGroup/index.vue'
-import { renderIcon } from '@/utils'
-import { useMessage, useDialog } from 'naive-ui'
-import { systemOptions } from './options'
-import eliteIdOptions from './opreatGroup/eliteIdOptions.js'
-import http from './api'
+import { renderIcon } from '@/utils';
+import { NButton, useDialog, useMessage } from 'naive-ui';
+import { resolveDirective, withDirectives } from 'vue';
+import http from './api';
+import eliteIdOptions from './opreatGroup/eliteIdOptions.js';
+import opreatGroup from './opreatGroup/index.vue';
+import { systemOptions } from './options';
 defineOptions({ name: 'storeGoodsList' })
 //表格操作
 const $table = ref(null)
@@ -89,7 +89,10 @@ const columns = [
               secondary: true,
               onClick: () => edit(row),
             },
-            { default: () => '编辑', icon: renderIcon('majesticons:edit-pen-4', { size: 14 }) }
+            {
+              default: () => '编辑',
+              icon: renderIcon('majesticons:edit-pen-4', { size: 14 }),
+            }
           ),
           [[has, 'edit']]
         ),
@@ -102,7 +105,10 @@ const columns = [
               secondary: true,
               onClick: () => del(row),
             },
-            { default: () => '删除', icon: renderIcon('majesticons:delete-bin-line', { size: 14 }) }
+            {
+              default: () => '删除',
+              icon: renderIcon('majesticons:delete-bin-line', { size: 14 }),
+            }
           ),
           [[has, 'delete']]
         ),

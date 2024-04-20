@@ -203,11 +203,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
-import { NButton, useMessage, NInput, NInputNumber, NSwitch, NDatePicker } from 'naive-ui'
-import { renderIcon, formatDateTime } from '@/utils'
-import http from './api'
-import operatGroupDetail from './operatGroupDetail.vue'
+import { formatDateTime, renderIcon } from '@/utils';
+import { NButton, NDatePicker, NInput, NInputNumber, useMessage } from 'naive-ui';
+import { onMounted, ref } from 'vue';
+import http from './api';
+import operatGroupDetail from './operatGroupDetail.vue';
 
 // 小程序的打开方式
 const openMiniType = ref([

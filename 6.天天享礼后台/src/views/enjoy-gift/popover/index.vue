@@ -34,11 +34,10 @@
 </template>
 
 <script setup>
-import { NButton, NImage } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage, useDialog, NSwitch } from 'naive-ui'
-import operatSingle from './operatSingle.vue'
-import http from './api'
+import { renderIcon } from '@/utils';
+import { NButton, NImage, NSwitch, useDialog, useMessage } from 'naive-ui';
+import http from './api';
+import operatSingle from './operatSingle.vue';
 defineOptions({ name: 'SingleColumnDiagram' })
 //表格操作
 const $table = ref(null)
@@ -90,6 +89,14 @@ const systemOptions = [
   {
     label: '扫拉环码未中奖(新人)',
     value: 11,
+  },
+  {
+    label: '彬纷享礼入口菜单弹窗',
+    value: 12,
+  },
+  {
+    label: '彬纷享礼换购成功弹窗',
+    value: 13,
   },
 ]
 const statusOptions = [

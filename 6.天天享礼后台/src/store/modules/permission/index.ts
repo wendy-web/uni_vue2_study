@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
-import { asyncRoutes, basicRoutes } from '@/router/routes'
-import api from '@/api'
+import api from '@/api';
+import { asyncRoutes, basicRoutes } from '@/router/routes';
+import { defineStore } from 'pinia';
 
 function hasPermission(route, role) {
   // * 不需要权限直接返回true

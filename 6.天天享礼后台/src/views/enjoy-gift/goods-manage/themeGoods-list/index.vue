@@ -37,14 +37,13 @@
 </template>
 
 <script setup>
-import { NButton } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage, useDialog, NSwitch, NImage } from 'naive-ui'
-import operatGroup from './operatGroup.vue'
-import http from './api'
-import { resolveDirective, withDirectives } from 'vue'
+import { usePermissionStore } from '@/store';
+import { renderIcon } from '@/utils';
+import { NButton, NImage, NSwitch, useDialog, useMessage } from 'naive-ui';
+import { resolveDirective, withDirectives } from 'vue';
+import http from './api';
+import operatGroup from './operatGroup.vue';
 const has = resolveDirective('has')
-import { usePermissionStore } from '@/store'
 const permissionStore = usePermissionStore()
 defineOptions({ name: 'CouponGroup' })
 //表格操作

@@ -54,109 +54,21 @@
 </template>
 
 <script setup>
-import { NButton, NSwitch } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage } from 'naive-ui'
-import http from './api'
-import operatCoupon from './operatCoupon/index.vue'
-import { resolveDirective, withDirectives } from 'vue'
+import { usePermissionStore } from '@/store';
+import { renderIcon } from '@/utils';
+import { NButton, NSwitch, useMessage } from 'naive-ui';
+import { resolveDirective, withDirectives } from 'vue';
+import http from './api';
+import operatCoupon from './operatCoupon/index.vue';
+import { deviceOptions, dtOptions, lsOptions, options } from './options.js';
 const has = resolveDirective('has')
-import { usePermissionStore } from '@/store'
 const permissionStore = usePermissionStore()
 defineOptions({ name: 'CouponList' })
 //表格操作
 const $table = ref(null)
 /** QueryBar筛选参数（可选） */
 const queryItems = ref({})
-/**启用状态下拉列表 */
-const lsOptions = [
-  {
-    label: '启用',
-    value: 2,
-  },
-  {
-    label: '未启用',
-    value: 1,
-  },
-  {
-    label: '系统停用',
-    value: 0,
-  },
-]
-/**启用状态下拉列表 */
-const options = [
-  {
-    label: '上架',
-    value: 1,
-  },
-  {
-    label: '下架',
-    value: 0,
-  },
-]
 
-/**启用状态下拉列表 */
-const dtOptions = [
-  {
-    label: '商品',
-    value: 1,
-  },
-  {
-    label: '公众号',
-    value: 2,
-  },
-  {
-    label: '视频号',
-    value: 3,
-  },
-  {
-    label: '小程序',
-    value: 4,
-  },
-  {
-    label: '千猪外链',
-    value: 5,
-  },
-  {
-    value: 6,
-    label: '小程序内页',
-  },
-  {
-    value: 7,
-    label: '视频组件',
-  },
-  {
-    value: 8,
-    label: '乐唯娃娃机',
-  },
-  {
-    value: 9,
-    label: '多商品滑动',
-  },
-  {
-    value: 10,
-    label: '广告推券'
-  },
-  {
-    value: 11,
-    label: '小程序h5'
-  }
-]
-//系统类型
-const deviceOptions = [
-  {
-    label: '苹果',
-    value: 1,
-  },
-  {
-    label: '公共',
-    value: 2,
-  },
-  {
-    label: '安卓',
-    value: 3,
-  },
-]
 function dtChange() {
   if (queryItems.value.d_type !== 1) {
     queryItems.value.goods_ls_status = ''
@@ -181,7 +93,19 @@ const columns = [
     align: 'center',
     width: 150,
     render(row, index) {
-      return ['商品', '公众号', '视频号', '小程序', '千猪外链', '小程序内页', '视频组件', '乐唯抓娃娃', '多商品滑动', '广告推券', '小程序h5'][row.d_type - 1]
+      return [
+        '商品',
+        '公众号',
+        '视频号',
+        '小程序',
+        '千猪外链',
+        '小程序内页',
+        '视频组件',
+        '乐唯抓娃娃',
+        '多商品滑动',
+        '广告推券',
+        '小程序h5',
+      ][row.d_type - 1]
     },
   },
   {

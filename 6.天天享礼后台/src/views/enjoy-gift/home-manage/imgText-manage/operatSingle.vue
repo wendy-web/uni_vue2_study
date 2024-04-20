@@ -26,6 +26,17 @@
       <n-form-item label="导航标题" path="title" w-400>
         <n-input v-model:value="model.title" :disabled="modalType === 1" />
       </n-form-item>
+      <div flex>
+        <n-form-item label="字体颜色" path="color" w-300>
+          <n-color-picker v-model:value="model.color" :show-alpha="false" :actions="['clear']" />
+        </n-form-item>
+        <n-form-item label="字体加粗" path="bold" w-300>
+          <n-switch v-model:value="model.bold" />
+        </n-form-item>
+      </div>
+      <n-form-item label="高亮提示文案" path="jd_word" w-400>
+        <n-input v-model:value="model.jd_word" :disabled="modalType === 1" />
+      </n-form-item>
       <n-form-item label="系统" path="device_type">
         <n-select
           v-model:value="model.device_type"
@@ -49,9 +60,9 @@
           <n-button quaternary>上传文件</n-button>
         </n-upload>
       </n-form-item>
-<!--      <n-form-item label="标签" path="tag" w-400>-->
-<!--        <n-input v-model:value="model.tag" :disabled="modalType === 1" />-->
-<!--      </n-form-item>-->
+      <!--      <n-form-item label="标签" path="tag" w-400>-->
+      <!--        <n-input v-model:value="model.tag" :disabled="modalType === 1" />-->
+      <!--      </n-form-item>-->
       <n-form-item label="标签" path="tag">
         <n-upload
           v-if="showModal"
@@ -87,7 +98,7 @@
           name="radiogroup"
           @update:value="checkedRadioHandle"
         >
-        <!-- 1-优惠券 2-公众号 3-视频号 4-小程序 5-千猪外链 6-领券中心 -->
+          <!-- 1-优惠券 2-公众号 3-视频号 4-小程序 5-千猪外链 6-领券中心 -->
           <n-space>
             <n-radio :key="1" :value="1"> 优惠券 </n-radio>
             <n-radio :key="2" :value="2"> 公众号 </n-radio>
@@ -147,10 +158,10 @@
       <div v-if="model.type == 4">
         <n-form-item label="小程序类型" path="is_main">
           <n-radio-group
-                  v-model:value="model.is_main"
-                  :disabled="modalType === 1"
-                  name="radiogroup"
-                  @update:value="checkedRadioHandle2"
+            v-model:value="model.is_main"
+            :disabled="modalType === 1"
+            name="radiogroup"
+            @update:value="checkedRadioHandle2"
           >
             <n-space>
               <n-radio :key="1" :value="1"> 默认 </n-radio>
@@ -171,92 +182,102 @@
             </n-space>
           </n-radio-group>
         </n-form-item>
-        <n-form-item label="小程序ID" path="type_id" w-400 v-if="model.is_main == 1">
+        <n-form-item v-if="model.is_main == 1" label="小程序ID" path="type_id" w-400>
           <n-input v-model:value="model.type_id" :disabled="modalType === 1" />
         </n-form-item>
-        <n-form-item label="页面路径" path="type_sid" w-400 v-if="model.is_main == 1">
+        <n-form-item v-if="model.is_main == 1" label="页面路径" path="type_sid" w-400>
           <n-input v-model:value="model.type_sid" :disabled="modalType === 1" />
         </n-form-item>
-        <n-form-item label="拼多多推广位" path="type_id" w-400 v-if="model.is_main == 2">
+        <n-form-item v-if="model.is_main == 2" label="拼多多推广位" path="type_id" w-400>
           <n-input v-model:value="model.type_id" :disabled="modalType === 1" />
         </n-form-item>
-        <n-form-item label="营销工具" path="type_sid" v-if="model.is_main == 2">
+        <n-form-item v-if="model.is_main == 2" label="营销工具" path="type_sid">
           <n-select
-                  v-model:value="model.type_sid"
-                  :options="pddOptions"
-                  :disabled="modalType === 1"
-                  style="width: 200px"
-                  @update:value="pddChange"
+            v-model:value="model.type_sid"
+            :options="pddOptions"
+            :disabled="modalType === 1"
+            style="width: 200px"
+            @update:value="pddChange"
           />
         </n-form-item>
         <div v-if="model.is_main == 2">
           <!-- 选择红包金额类型 -->
-          <n-form-item label="商品金额" path="diy_red_packet_param.amounttype" v-if="model.type_sid == 0 || model.type_sid == 2">
+          <n-form-item
+            v-if="model.type_sid == 0 || model.type_sid == 2"
+            label="商品金额"
+            path="diy_red_packet_param.amounttype"
+          >
             <n-select
-                    v-model:value="model.diy_red_packet_param.amounttype"
-                    :options="amounttypeOptions"
-                    :disabled="modalType === 1"
-                    style="width: 200px"
+              v-model:value="model.diy_red_packet_param.amounttype"
+              :options="amounttypeOptions"
+              :disabled="modalType === 1"
+              style="width: 200px"
             />
           </n-form-item>
           <!-- 指定红包金额amount_probability多选 -->
-          <n-form-item label="指定红包金额" path="diy_red_packet_param.amount_probability" v-if="model.diy_red_packet_param.amounttype == 2 && (model.type_sid == 0 || model.type_sid == 2)">
-            <n-checkbox-group
-                    v-model:value="model.diy_red_packet_param.amount_probability"
-                    flex
-                    flex-wrap
-            >
-              <n-space
-                      v-for="item in amountOptions"
-                      :key="item.value"
-                      item-style="display: flex;"
-                      mr-10
-                      mb-10
-              >
+          <n-form-item
+            v-if="model.diy_red_packet_param.amounttype == 2 && (model.type_sid == 0 || model.type_sid == 2)"
+            label="指定红包金额"
+            path="diy_red_packet_param.amount_probability"
+          >
+            <n-checkbox-group v-model:value="model.diy_red_packet_param.amount_probability" flex flex-wrap>
+              <n-space v-for="item in amountOptions" :key="item.value" item-style="display: flex;" mr-10 mb-10>
                 <n-checkbox :value="item.value" :label="item.label" />
               </n-space>
             </n-checkbox-group>
           </n-form-item>
-          <n-form-item label="红包抵后价" path="diy_red_packet_param.range_items[0]" v-if="model.diy_red_packet_param.amounttype == 3 && (model.type_sid == 0 || model.type_sid == 2)">
+          <n-form-item
+            v-if="model.diy_red_packet_param.amounttype == 3 && (model.type_sid == 0 || model.type_sid == 2)"
+            label="红包抵后价"
+            path="diy_red_packet_param.range_items[0]"
+          >
             <n-input-number
-                    v-model:value="model.diy_red_packet_param.range_items[0].range_from"
-                    :min="0"
-                    :precision="0"
-                    :style="{ width: '120px' }"
-                    :disabled="modalType === 1"
+              v-model:value="model.diy_red_packet_param.range_items[0].range_from"
+              :min="0"
+              :precision="0"
+              :style="{ width: '120px' }"
+              :disabled="modalType === 1"
             />元
-            <span style="padding:0 15px;">-</span>
+            <span style="padding: 0 15px">-</span>
             <n-input-number
-                    v-model:value="model.diy_red_packet_param.range_items[0].range_to"
-                    :min="0"
-                    :precision="0"
-                    :style="{ width: '120px' }"
-                    :disabled="modalType === 1"
+              v-model:value="model.diy_red_packet_param.range_items[0].range_to"
+              :min="0"
+              :precision="0"
+              :style="{ width: '120px' }"
+              :disabled="modalType === 1"
             />元
           </n-form-item>
-          <n-form-item label="商品佣金" path="diy_red_packet_param.range_items[1]" v-if="model.type_sid == 0 || model.type_sid == 2 || model.type_sid == 12">
+          <n-form-item
+            v-if="model.type_sid == 0 || model.type_sid == 2 || model.type_sid == 12"
+            label="商品佣金"
+            path="diy_red_packet_param.range_items[1]"
+          >
             <n-input-number
-                    v-model:value="model.diy_red_packet_param.range_items[1].range_from"
-                    :min="0"
-                    :precision="0"
-                    :style="{ width: '120px' }"
-                    :disabled="modalType === 1"
+              v-model:value="model.diy_red_packet_param.range_items[1].range_from"
+              :min="0"
+              :precision="0"
+              :style="{ width: '120px' }"
+              :disabled="modalType === 1"
             />%
-            <span style="padding:0 15px;">-</span>
+            <span style="padding: 0 15px">-</span>
             <n-input-number
-                    v-model:value="model.diy_red_packet_param.range_items[1].range_to"
-                    :min="0"
-                    :precision="0"
-                    :style="{ width: '120px' }"
-                    :disabled="modalType === 1"
+              v-model:value="model.diy_red_packet_param.range_items[1].range_to"
+              :min="0"
+              :precision="0"
+              :style="{ width: '120px' }"
+              :disabled="modalType === 1"
             />%
           </n-form-item>
           <!-- 推广页设置not_show_background -->
-          <n-form-item label="设置推广页" path="diy_red_packet_param.not_show_background" v-if="model.type_sid == 0 || model.type_sid == 2">
+          <n-form-item
+            v-if="model.type_sid == 0 || model.type_sid == 2"
+            label="设置推广页"
+            path="diy_red_packet_param.not_show_background"
+          >
             <n-radio-group
-                    v-model:value="model.diy_red_packet_param.not_show_background"
-                    :disabled="modalType === 1"
-                    name="radiogroup"
+              v-model:value="model.diy_red_packet_param.not_show_background"
+              :disabled="modalType === 1"
+              name="radiogroup"
             >
               <n-space>
                 <n-radio :key="0" :value="0"> 红包开启页 </n-radio>
@@ -265,60 +286,58 @@
             </n-radio-group>
           </n-form-item>
           <div v-if="model.type_sid == 3">
-              <!-- 刮刮卡指定金额scratch_card_amount单选 -->
-              <n-form-item label="刮刮卡金额" path="diy_red_packet_param.scratch_card_amount_type">
-                <n-radio-group
-                        v-model:value="model.diy_red_packet_param.scratch_card_amount_type"
-                        :disabled="modalType === 1"
-                        name="radiogroup"
-                >
-                  <n-space>
-                    <n-radio :key="0" :value="0"> 默认推荐金额 </n-radio>
-                    <n-radio :key="1" :value="1"> 固定金额 </n-radio>
-                  </n-space>
-                </n-radio-group>
-              </n-form-item>
-              <n-form-item label="固定金额" path="diy_red_packet_param.scratch_card_amount" v-if="model.diy_red_packet_param.scratch_card_amount_type == 1">
-                <n-input-number
-                        v-model:value="model.diy_red_packet_param.scratch_card_amount"
-                        :min="2"
-                        :max="10"
-                        :precision="0"
-                        :style="{ width: '120px' }"
-                        :disabled="modalType === 1"
-                />元
-              </n-form-item>
+            <!-- 刮刮卡指定金额scratch_card_amount单选 -->
+            <n-form-item label="刮刮卡金额" path="diy_red_packet_param.scratch_card_amount_type">
+              <n-radio-group
+                v-model:value="model.diy_red_packet_param.scratch_card_amount_type"
+                :disabled="modalType === 1"
+                name="radiogroup"
+              >
+                <n-space>
+                  <n-radio :key="0" :value="0"> 默认推荐金额 </n-radio>
+                  <n-radio :key="1" :value="1"> 固定金额 </n-radio>
+                </n-space>
+              </n-radio-group>
+            </n-form-item>
+            <n-form-item
+              v-if="model.diy_red_packet_param.scratch_card_amount_type == 1"
+              label="固定金额"
+              path="diy_red_packet_param.scratch_card_amount"
+            >
+              <n-input-number
+                v-model:value="model.diy_red_packet_param.scratch_card_amount"
+                :min="2"
+                :max="10"
+                :precision="0"
+                :style="{ width: '120px' }"
+                :disabled="modalType === 1"
+              />元
+            </n-form-item>
           </div>
           <div v-if="model.type_sid == 12">
-              <n-form-item label="砸金蛋金额" path="diy_red_packet_param.scratch_card_amount_type">
-                  <n-radio-group
-                          v-model:value="model.diy_red_packet_param.scratch_card_amount_type"
-                          :disabled="modalType === 1"
-                          name="radiogroup"
-                  >
-                      <n-space>
-                          <n-radio :key="0" :value="0"> 默认推荐金额 </n-radio>
-                          <n-radio :key="1" :value="1"> 指定金额 </n-radio>
-                      </n-space>
-                  </n-radio-group>
-              </n-form-item>
-              <n-form-item label="指定金额" path="diy_red_packet_param.amount_probability" v-if="model.diy_red_packet_param.scratch_card_amount_type == 1">
-                  <n-checkbox-group
-                          v-model:value="model.diy_red_packet_param.amount_probability"
-                          flex
-                          flex-wrap
-                  >
-                      <n-space
-                              v-for="item in amount2Options"
-                              :key="item.value"
-                              item-style="display: flex;"
-                              mr-10
-                              mb-10
-                      >
-                          <n-checkbox :value="item.value" :label="item.label" />
-                      </n-space>
-                  </n-checkbox-group>
-              </n-form-item>
+            <n-form-item label="砸金蛋金额" path="diy_red_packet_param.scratch_card_amount_type">
+              <n-radio-group
+                v-model:value="model.diy_red_packet_param.scratch_card_amount_type"
+                :disabled="modalType === 1"
+                name="radiogroup"
+              >
+                <n-space>
+                  <n-radio :key="0" :value="0"> 默认推荐金额 </n-radio>
+                  <n-radio :key="1" :value="1"> 指定金额 </n-radio>
+                </n-space>
+              </n-radio-group>
+            </n-form-item>
+            <n-form-item
+              v-if="model.diy_red_packet_param.scratch_card_amount_type == 1"
+              label="指定金额"
+              path="diy_red_packet_param.amount_probability"
+            >
+              <n-checkbox-group v-model:value="model.diy_red_packet_param.amount_probability" flex flex-wrap>
+                <n-space v-for="item in amount2Options" :key="item.value" item-style="display: flex;" mr-10 mb-10>
+                  <n-checkbox :value="item.value" :label="item.label" />
+                </n-space>
+              </n-checkbox-group>
+            </n-form-item>
           </div>
         </div>
       </div>
@@ -340,7 +359,7 @@
       </div>
       <!-- 千猪-->
       <div v-if="model.type == 5 || model.type == 9">
-        <n-form-item label="跳转类型" path="is_main" v-if="model.type == 9">
+        <n-form-item v-if="model.type == 9" label="跳转类型" path="is_main">
           <n-radio-group
             v-model:value="model.is_main"
             :disabled="modalType === 1"
@@ -368,15 +387,27 @@
       <!--优惠券-->
       <div v-if="model.type == 1 && model.lx_type == 1">
         <n-form-item label="优惠券ID" path="coupon_id_android" w-400>
-          安卓<n-input v-model:value="model.coupon_id_android" style="width:240px;margin-left:4px;" :disabled="modalType === 1" />
+          安卓<n-input
+            v-model:value="model.coupon_id_android"
+            style="width: 240px; margin-left: 4px"
+            :disabled="modalType === 1"
+          />
         </n-form-item>
         <n-form-item label="优惠券ID" path="coupon_id_ios" w-400>
-          苹果<n-input v-model:value="model.coupon_id_ios" style="width:240px;margin-left:4px;" :disabled="modalType === 1" />
+          苹果<n-input
+            v-model:value="model.coupon_id_ios"
+            style="width: 240px; margin-left: 4px"
+            :disabled="modalType === 1"
+          />
         </n-form-item>
       </div>
       <div v-if="model.type == 1 && model.lx_type == 2">
         <n-form-item label="优惠券ID" path="coupon_id_android" w-400>
-          <n-input v-model:value="model.coupon_id_android" style="width:240px;margin-left:4px;" :disabled="modalType === 1" />
+          <n-input
+            v-model:value="model.coupon_id_android"
+            style="width: 240px; margin-left: 4px"
+            :disabled="modalType === 1"
+          />
         </n-form-item>
       </div>
       <!-- 领券中心 - 频道选择 -->
@@ -393,12 +424,22 @@
           />
         </n-form-item>
       </div>
+      <n-form-item label="彬纷菜单" path="position_id">
+        <n-checkbox-group v-model:value="model.position_id" flex flex-wrap>
+          <n-space v-for="item in menuOptions" :key="item.value" item-style="display: flex;" mr-10 mb-10>
+            <n-checkbox :value="item.value" :label="item.label" />
+          </n-space>
+        </n-checkbox-group>
+      </n-form-item>
+      <n-form-item label="高亮次数" path="xf_type" w-400>
+        <n-input v-model:value="model.xf_type" :disabled="modalType === 1" />
+      </n-form-item>
     </n-form>
   </n-modal>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
 import { useMessage } from 'naive-ui';
+import { onMounted, ref } from 'vue';
 import http from './api';
 
 /**弹窗显示控制 */
@@ -413,8 +454,7 @@ const formRef = ref(null)
 //提示展示
 const message = useMessage()
 //表单数据
-const model = ref({
-});
+const model = ref({})
 //校验数据
 const rules = ref({
   title: {
@@ -427,7 +467,12 @@ const rules = ref({
     trigger: ['blur', 'input'],
     message: '弹窗图片不能为空',
   },
-});
+  coupon_id_android: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '优惠券ID不能为空',
+  },
+})
 // 系统
 const pageOptions = [
   {
@@ -472,56 +517,56 @@ const amountOptions = [
   {
     label: '40元',
     value: 4000,
-  }
+  },
 ]
 //砸金蛋金额
 const amount2Options = [
-    {
-        label: '10元',
-        value: 1000,
-    },
-    {
-        label: '15元',
-        value: 1500,
-    },
-    {
-        label: '20元',
-        value: 2000,
-    },
-    {
-        label: '25元',
-        value: 2500,
-    },
-    {
-        label: '30元',
-        value: 3000,
-    },
-    {
-        label: '35元',
-        value: 3500,
-    },
-    {
-        label: '40元',
-        value: 4000,
-    },
+  {
+    label: '10元',
+    value: 1000,
+  },
+  {
+    label: '15元',
+    value: 1500,
+  },
+  {
+    label: '20元',
+    value: 2000,
+  },
+  {
+    label: '25元',
+    value: 2500,
+  },
+  {
+    label: '30元',
+    value: 3000,
+  },
+  {
+    label: '35元',
+    value: 3500,
+  },
+  {
+    label: '40元',
+    value: 4000,
+  },
 ]
 //红包金额类型
 const amounttypeOptions = [
   {
     label: '红包金额个性化',
-    value: 1
+    value: 1,
   },
   {
     label: '指定红包金额',
-    value: 2
+    value: 2,
   },
   {
     label: '红包抵后价',
-    value: 3
-  }
+    value: 3,
+  },
 ]
-function pddChange(){
-  model.value.diy_red_packet_param.amount_probability = [];
+function pddChange() {
+  model.value.diy_red_packet_param.amount_probability = []
 }
 //营销工具
 const pddOptions = [
@@ -582,14 +627,15 @@ const pddOptions = [
     value: 37,
   },
 ]
-function checkedRadioHandle2(){
-  model.value.type_id = "";
-  model.value.type_sid = "";
+function checkedRadioHandle2() {
+  model.value.type_id = ''
+  model.value.type_sid = ''
 }
 //已上传的图片
 const fileList = ref([])
 const fileList2 = ref([])
 const mainfileList = ref([])
+const menuOptions = ref([])
 //图片上传
 function handleFinish({ event }) {
   let { response, responseText } = event.currentTarget
@@ -632,6 +678,7 @@ async function beforeUpload(data) {
 function handleValidateButtonClick() {
   formRef.value?.validate((errors) => {
     if (!errors) {
+      model.value.position_id && (model.value.position_id = model.value.position_id.join(','))
       http.operatSingleImage(model.value).then((res) => {
         if (res.code == 1) {
           message.success(res.msg)
@@ -646,19 +693,20 @@ function handleValidateButtonClick() {
   return false
 }
 
-const centerOptions = ref([]);
+const centerOptions = ref([])
 onMounted(() => {
-  http.getLists().then(res => {
-    if(res.code == 1) {
-      centerOptions.value = res.data;
+  http.getLists().then((res) => {
+    if (res.code == 1) {
+      centerOptions.value = res.data
     }
-  });
-});
+  })
+})
+const icon_id = ref()
 /**展示弹窗 */
 function show(operatType, data) {
-  fileList.value = [];
-  fileList2.value = [];
-  mainfileList.value = [];
+  fileList.value = []
+  fileList2.value = []
+  mainfileList.value = []
   modalTitle.value = ['查看', '编辑', '新增'][operatType - 1]
   modalType.value = operatType
 
@@ -688,8 +736,13 @@ function show(operatType, data) {
         lx_type,
         people_type,
         diy_red_packet_param,
-      } = res.data;
-      if(type == 6) type_id = Number(type_id)
+        color,
+        bold,
+        jd_word,
+        position_id,
+        xf_type,
+      } = res.data
+      if (type == 6) type_id = Number(type_id)
       model.value = {
         id,
         title,
@@ -714,24 +767,29 @@ function show(operatType, data) {
         lx_type,
         people_type,
         diy_red_packet_param: diy_red_packet_param || {
-            amount_probability: [],
-            range_items: [
-                {
-                    range_from: 0,
-                    range_id: 1,
-                    range_to: 0
-                },
-                {
-                    range_from: 0,
-                    range_id: 2,
-                    range_to: 0
-                }
-            ],
-            amounttype: 1,
-            not_show_background: 0,
-            scratch_card_amount_type: 0,
-            scratch_card_amount: 2
-        }
+          amount_probability: [],
+          range_items: [
+            {
+              range_from: 0,
+              range_id: 1,
+              range_to: 0,
+            },
+            {
+              range_from: 0,
+              range_id: 2,
+              range_to: 0,
+            },
+          ],
+          amounttype: 1,
+          not_show_background: 0,
+          scratch_card_amount_type: 0,
+          scratch_card_amount: 2,
+        },
+        color: color || '#666',
+        bold: Boolean(bold),
+        jd_word,
+        position_id,
+        xf_type,
       }
       /**图片预览 */
       if (image) {
@@ -766,11 +824,12 @@ function show(operatType, data) {
       }
       showModal.value = true
     })
+    icon_id.value = data.id
   } else {
     model.value = {
       title: '',
       image: '',
-      device_type:1,
+      device_type: 1,
       datetimerange: '',
       jump_title: '',
       type: 1,
@@ -791,30 +850,39 @@ function show(operatType, data) {
       lx_type: 2,
       people_type: 1,
       diy_red_packet_param: {
-          amount_probability: [],
-          range_items: [
-              {
-                  range_from: 0,
-                  range_id: 1,
-                  range_to: 0
-              },
-              {
-                  range_from: 0,
-                  range_id: 2,
-                  range_to: 0
-              }
-          ],
-          amounttype: 1,
-          not_show_background: 0,
-          scratch_card_amount_type: 0,
-          scratch_card_amount: 2
-      }
+        amount_probability: [],
+        range_items: [
+          {
+            range_from: 0,
+            range_id: 1,
+            range_to: 0,
+          },
+          {
+            range_from: 0,
+            range_id: 2,
+            range_to: 0,
+          },
+        ],
+        amounttype: 1,
+        not_show_background: 0,
+        scratch_card_amount_type: 0,
+        scratch_card_amount: 2,
+      },
+      color: '#666',
+      bold: false,
+      jd_word: '',
+      position_id: '',
+      xf_type: '',
     }
     setTimeout(() => {
-      showModal.value = true;
+      showModal.value = true
     }, 0)
+    icon_id.value = 0
   }
-  model.value.lx_type = 2;
+  model.value.lx_type = 2
+  http.getPosition({ people_type: 1, id: icon_id.value }).then((res) => {
+    menuOptions.value = res.data
+  })
 }
 /**暴露给父组件使用 */
 defineExpose({

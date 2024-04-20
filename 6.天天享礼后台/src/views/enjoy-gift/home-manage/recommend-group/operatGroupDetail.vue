@@ -29,24 +29,24 @@
           @update:value="lx_type_handleUpdate"
         />
       </n-form-item>
-      <n-form-item label="选品库" path="groupId" v-if="lx_type == 3" w-600>
+      <n-form-item v-if="lx_type == 3" label="选品库" path="groupId" w-600>
         <n-input
           v-model:value="defaultCouponFilter2"
-          @input="handleUpdateFilter"
           placeholder="请输入选品库ID"
           clearable
+          @input="handleUpdateFilter"
         />
       </n-form-item>
-      <div flex v-else>
+      <div v-else flex>
         <n-form-item label="商品名称" path="coupon_id" w-600>
           <n-input
             v-model:value="defaultCouponFilter"
-            @input="handleUpdateFilter"
             placeholder="请输入商品名称"
             clearable
+            @input="handleUpdateFilter"
           />
         </n-form-item>
-        <n-form-item label="选择状态" path="status_type" v-if="lx_type==1">
+        <n-form-item v-if="lx_type == 1" label="选择状态" path="status_type">
           <n-select
             v-model:value="status_type"
             :options="statusOptions"
@@ -59,18 +59,18 @@
       <n-form-item label="商品列表" path="group">
         <CrudTable
           ref="$table"
-          :listData="tableData"
           v-model:query-items="queryItems"
-          :maxHeight="700"
+          :list-data="tableData"
+          :max-height="700"
           :scroll-x="1200"
-          rowKey="coupon_id"
+          row-key="coupon_id"
           :columns="columns"
           :get-data="http.goodsQueryList"
           :checked-row-keys="checkedRowKeys"
           @onChecked="handleCheck"
           @onFilter="handleUpdateFilter"
         >
-      </CrudTable>
+        </CrudTable>
       </n-form-item>
     </n-form>
   </n-modal>
@@ -88,8 +88,8 @@ const queryItems = ref({})
 //表单数据
 const model = ref({})
 //查询参数
-const tableData = ref([]);
-const status_type = ref(null);
+const tableData = ref([])
+const status_type = ref(null)
 const statusOptions = ref([
   {
     label: '上架',
@@ -99,16 +99,16 @@ const statusOptions = ref([
     label: '未上架',
     value: 0,
   },
-]);
+])
 function status_type_handleUpdate(value) {
-  status_type.value = value;
+  status_type.value = value
   handleUpdateFilter()
 }
 //优惠券列表选择相关
 const columns = ref([
   {
     type: 'selection',
-    key:'coupon_id',
+    key: 'coupon_id',
   },
   { title: 'ID', key: 'coupon_id', align: 'center' },
   {
@@ -116,7 +116,7 @@ const columns = ref([
     key: 'title',
     align: 'center',
     filter(value, row) {
-      return ~row.title.indexOf(value);
+      return ~row.title.indexOf(value)
     },
   },
   {
@@ -124,7 +124,7 @@ const columns = ref([
     key: 'commissionShare',
     align: 'center',
     render(row) {
-      return row.commissionShare || 0;
+      return row.commissionShare || 0
     },
   },
   { title: '面值(元)', key: 'face_value', align: 'center' },
@@ -143,11 +143,11 @@ const columns = ref([
     align: 'center',
     render(row) {
       let txt = row.p_type
-      if(row.lx_type) {
+      if (row.lx_type) {
         txt = ['苹果机', '公共', '安卓机'][row.lx_type - 1]
       }
-      return txt;
-    }
+      return txt
+    },
   },
   {
     title: '上架状态',
@@ -156,118 +156,126 @@ const columns = ref([
     render(row) {
       return row.status == 1 ? '上架' : '未上架'
     },
-  }
-]);
-const lx_type = ref(1);
+  },
+])
+const lx_type = ref(1)
 // 来源
 const pageOptions = ref([
   {
     label: '自建',
     value: 1,
-    _tableData: null
+    _tableData: null,
   },
   {
     label: '京东',
     value: 2,
-    _tableData: null
+    _tableData: null,
   },
   {
     label: '选品库',
     value: 3,
-    _tableData: null
+    _tableData: null,
   },
-]);
-const $table = ref(null);
+])
+const $table = ref(null)
 // 来源的选择
 function lx_type_handleUpdate(value, options) {
-  status_type.value = null;
-  defaultCouponFilter.value = '';
-  defaultCouponFilter2.value = '';
-  queryItems.value.keyword = '';
-  checkedRowKeys.value = [];
+  status_type.value = null
+  defaultCouponFilter.value = ''
+  defaultCouponFilter2.value = ''
+  queryItems.value.keyword = ''
+  checkedRowKeys.value = []
+  checkAddKeyList.value = []
   // 京东
-  if(value == 2) {
-    delete(queryItems.value.groupId);
-    return $table.value?.handleSearch();
+  if (value == 2) {
+    delete queryItems.value.groupId
+    return $table.value?.handleSearch()
   }
   //选品库
-  if(value == 3) {
-    queryItems.value.groupId = '';
-    return $table.value?.handleSearch();
+  if (value == 3) {
+    queryItems.value.groupId = ''
+    return $table.value?.handleSearch()
   }
-  $table.value.showGetList(tableData.value);
+  $table.value.showGetList(tableData.value)
 }
 
 /**回调父组件函数注册 */
 const emit = defineEmits(['addList'])
 /** 表单过滤 */
-let timer = null;
+let timer = null
 const handleUpdateFilter = () => {
-  const inputValue = defaultCouponFilter.value.trim();
-  if(timer) {
-    timer = null;
-    clearTimeout(timer);
-  };
+  const inputValue = defaultCouponFilter.value.trim()
+  if (timer) {
+    timer = null
+    clearTimeout(timer)
+  }
   timer = setTimeout(() => {
-    queryItems.value.keyword = inputValue;
-    if(lx_type.value == 2) {
-      return $table.value?.handleSearch();
+    queryItems.value.keyword = inputValue
+    if (lx_type.value == 2) {
+      return $table.value?.handleSearch()
     }
-    if(lx_type.value == 3) {
-      const groupId = defaultCouponFilter2.value.trim();
-      queryItems.value.groupId = groupId;
-      return $table.value?.handleSearch();
+    if (lx_type.value == 3) {
+      const groupId = defaultCouponFilter2.value.trim()
+      queryItems.value.groupId = groupId
+      return $table.value?.handleSearch()
     }
-    const searchList = tableData.value.filter(item => {
-      if(status_type.value !== null) {
-        if(item.title.includes(inputValue) && status_type.value == item.status){
-          return true;
+    const searchList = tableData.value.filter((item) => {
+      if (status_type.value !== null) {
+        if (item.title.includes(inputValue) && status_type.value == item.status) {
+          return true
         }
-        return;
+        return
       }
-      if(item.title.includes(inputValue)){
-        return true;
+      if (item.title.includes(inputValue)) {
+        return true
       }
-    });
-    $table.value.showGetList(searchList);
-    clearTimeout(timer);
-    timer = null;
-  }, 100);
+    })
+    $table.value.showGetList(searchList)
+    clearTimeout(timer)
+    timer = null
+  }, 100)
 }
 // 过滤优惠券
-const defaultCouponFilter = ref('');
-const defaultCouponFilter2 = ref('');
-const checkedRowKeys = ref([]);
-const handleCheck = (rowKeys) => {
-  checkedRowKeys.value = rowKeys;
+const defaultCouponFilter = ref('')
+const defaultCouponFilter2 = ref('')
+const checkedRowKeys = ref([])
+const checkAddKeyList = ref([])
+const handleCheck = (rowKeys, addKeyList, rows) => {
+  console.log('rowKeys::::', rowKeys)
+  console.log('row::::', rows)
+  checkedRowKeys.value = rowKeys
+  checkAddKeyList.value = rows
 }
 
 /** 表单的提交 */
 function handleValidateButtonClick() {
-  let group = checkedRowKeys.value;
-  group = group.map(res => {
+  let group = checkAddKeyList.value
+  group = group.map((res) => {
     return {
-      coupon_id: res,
-      is_flow: 0
+      coupon_id: res.coupon_id,
+      is_flow: 0,
+      itemId: res.itemId,
     }
-  });
-  emit('addList', group);
-  return true;
+  })
+  console.log('group:::', group)
+  emit('addList', group)
+  return true
 }
 /**展示弹窗 */
 async function show(shopOptions) {
-  defaultCouponFilter.value = '';
-  showModal.value = true;
-  tableData.value = shopOptions;
-  model.value.group = [];
-  checkedRowKeys.value = [];
-  lx_type.value = 1;
-  pageOptions.value[0]._tableData = shopOptions;
-  await nextTick();
-  $table.value.showGetList(shopOptions);
+  defaultCouponFilter.value = ''
+  showModal.value = true
+  tableData.value = shopOptions
+  model.value.group = []
+  checkedRowKeys.value = []
+  checkAddKeyList.value = []
+  lx_type.value = 1
+  pageOptions.value[0]._tableData = shopOptions
+  await nextTick()
+  $table.value.showGetList(shopOptions)
 }
 /**暴露给父组件使用 */
 defineExpose({
-  show
-});
+  show,
+})
 </script>

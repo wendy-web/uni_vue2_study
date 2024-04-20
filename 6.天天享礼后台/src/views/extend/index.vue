@@ -1,6 +1,13 @@
 <template>
   <CommonPage show-footer title="列表">
     <template #action>
+      <n-button
+        type="primary"
+        style="margin-right: 20px; background: #18a058ff"
+        @click="lookEchart({ position_id: 0 }, 2)"
+      >
+        <TheIcon icon="majesticons:eye-line" :size="14" class="mr-5" /> echarts
+      </n-button>
       <n-button v-has="'add'" type="primary" @click="handleAdd">
         <TheIcon icon="material-symbols:add" :size="18" class="mr-5" /> 添加
       </n-button>
@@ -13,6 +20,7 @@
       :children-key="child"
       :get-data="http.getList"
       :is-pagination="false"
+      :max-height="windowHeight"
     >
       <template #queryBar>
         <QueryBarItem label="来源" :label-width="40">
@@ -33,14 +41,17 @@
   </CommonPage>
   <operate-single ref="operateSingleRef" :cid="queryItems.cid" @refresh="refresh" />
   <operate-chart ref="operateChartRef" @refresh="refresh" />
+  <operate-note ref="operateNoteRef" @refresh="refresh" />
 </template>
 <script setup>
-import { NButton, useMessage, useDialog } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import http from './api'
-import operateSingle from './operateSingle.vue'
-import operateChart from './operateChart.vue'
+import { renderIcon } from '@/utils';
+import { NButton, NTag, NTooltip, useDialog, useMessage } from 'naive-ui';
+import http from './api';
+import operateChart from './operateChart.vue';
+import operateNote from './operateNote.vue';
+import operateSingle from './operateSingle.vue';
 const operateSingleRef = ref(null)
+const operateNoteRef = ref(null)
 const operateChartRef = ref(null)
 const queryItems = ref({
   cid: 1,
@@ -76,14 +87,22 @@ const rangeShortcuts = ref({
   //     return null
   //   },
 })
+// 屏幕高度
+const windowHeight = ref(0)
 onMounted(async () => {
   http.getLists().then((res) => {
     if (res.code == 1) {
       Options.value = res.data
     }
   })
+  getWindowResize()
+  window.addEventListener('resize', getWindowResize)
   refresh()
 })
+// 获取屏幕尺寸
+const getWindowResize = function () {
+  windowHeight.value = window.innerHeight * 0.674
+}
 function refresh() {
   $table.value?.handleSearch()
 }
@@ -139,6 +158,12 @@ function getWeekDates(today) {
 function formatGetTime(day) {
   return new Date(day).getTime()
 }
+const renderTooltip = (trigger, content) => {
+  return h(NTooltip, null, {
+    trigger: () => trigger,
+    default: () => content,
+  })
+}
 const columns = [
   { title: '名称', key: 'name', align: 'center', width: 420 },
   { title: '注册用户数', key: 'reg_number', align: 'center' },
@@ -148,9 +173,51 @@ const columns = [
   { title: 'GMV(元)', key: 'gmv_amount', align: 'center' },
   { title: '有效交易金额(元)', key: 'order_amount', align: 'center' },
   { title: '有效订单数', key: 'order_number', align: 'center' },
-  { title: '转化率(%)', key: 'rate_number', align: 'center' },
+  {
+    title(column) {
+      return renderTooltip(
+        h(
+          NTag,
+          {
+            size: 'large',
+            type: 'default',
+            bordered: false,
+            style: {
+              backgroundColor: 'transparent',
+            },
+          },
+          { default: () => '转化率(%)', icon: renderIcon('raphael:question', { size: 14 }) }
+        ),
+        '有效订单数/UV'
+      )
+    },
+    width: 110,
+    key: 'rate_number',
+    align: 'center',
+  },
   { title: '收益(元)', key: 'total_profit', align: 'center' },
-  { title: 'ARPU(元)', key: 'arpu', align: 'center' },
+  {
+    title(column) {
+      return renderTooltip(
+        h(
+          NTag,
+          {
+            size: 'large',
+            type: 'default',
+            bordered: false,
+            style: {
+              backgroundColor: 'transparent',
+            },
+          },
+          { default: () => 'ARPU(元)', icon: renderIcon('raphael:question', { size: 14 }) }
+        ),
+        '收益/UV'
+      )
+    },
+    width: 110,
+    key: 'arpu',
+    align: 'center',
+  },
   { title: 'ID', key: 'position_id', align: 'center' },
   { title: '页面路径', key: 'path', align: 'center' },
   { title: '创建时间', key: 'create_time', align: 'center' },
@@ -199,17 +266,30 @@ const columns = [
           )
         )
       }
+      list.unshift(
+        h(
+          NButton,
+          {
+            size: 'small',
+            type: row.level == 2 ? 'success' : 'warning',
+            secondary: true,
+            onClick: () => lookEchart(row, row.level == 2 ? 0 : 1),
+          },
+          { default: () => 'echarts', icon: renderIcon('majesticons:eye-line', { size: 14 }) }
+        )
+      )
       if (row.level == 2) {
         list.unshift(
           h(
             NButton,
             {
               size: 'small',
-              type: 'success',
+              type: 'info',
               secondary: true,
-              onClick: () => lookEchart(row),
+              style: { 'margin-right': '10px' },
+              onClick: () => noteCoupon(row),
             },
-            { default: () => 'echarts', icon: renderIcon('majesticons:eye-line', { size: 14 }) }
+            { default: () => '备注', icon: renderIcon('majesticons:eye-line', { size: 14 }) }
           )
         )
       }
@@ -248,6 +328,9 @@ function handleAdd() {
 function editCoupon(row) {
   operateSingleRef.value.show(2, row)
 }
+function noteCoupon(row) {
+  operateNoteRef.value.show(row)
+}
 // 添加二级
 function addCoupon(row) {
   operateSingleRef.value.show(1, row)
@@ -257,7 +340,7 @@ function doChange(value) {
   refresh()
 }
 //查看echars折线图
-function lookEchart(row) {
-  operateChartRef.value.show(row)
+function lookEchart(row, type = 0) {
+  operateChartRef.value.show(row, type)
 }
 </script>

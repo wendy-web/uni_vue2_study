@@ -175,9 +175,10 @@ function selectJdListHandle() {
 // 京东商品的选择
 function selectListHandle(selectList){
   // console.log('selectList :>> ', selectList);
-  pageOptions.value[1].coupon_id = selectList.coupon_id;
+  //pageOptions.value[1].coupon_id = selectList.coupon_id;
   pageOptions.value[1].coupon_title = selectList.title;
-  model.value.coupon_id = selectList.coupon_id;
+  pageOptions.value[1].coupon_id = selectList.itemId;
+  model.value.coupon_id = selectList.itemId;
 }
 
 // 类型充值的判断

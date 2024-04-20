@@ -37,15 +37,14 @@
 </template>
 
 <script setup>
-import { NButton, NSwitch } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage, useDialog } from 'naive-ui'
-import operatGroup from './operatGroup.vue'
-import http from './api'
-import eliteIdOptions from './eliteIdOptions.js'
-import { resolveDirective, withDirectives } from 'vue'
+import { usePermissionStore } from '@/store';
+import { renderIcon } from '@/utils';
+import { NButton, NSwitch, useDialog, useMessage } from 'naive-ui';
+import { resolveDirective, withDirectives } from 'vue';
+import http from './api';
+import eliteIdOptions from './eliteIdOptions.js';
+import operatGroup from './operatGroup.vue';
 const has = resolveDirective('has')
-import { usePermissionStore } from '@/store'
 const permissionStore = usePermissionStore()
 
 defineOptions({ name: 'CouponGroup' })
@@ -112,7 +111,7 @@ const columns = [
     key: 'page',
     align: 'center',
     render(row, index) {
-      return eliteIdOptions.pageOptions[row.page - 1].label
+      return eliteIdOptions.pageOptions[row.page - 1]?.label
     },
   },
   { title: '创建时间', key: 'create_time', align: 'center' },

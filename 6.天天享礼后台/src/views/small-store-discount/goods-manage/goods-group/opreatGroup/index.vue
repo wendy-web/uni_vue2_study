@@ -769,6 +769,7 @@ function handleValidate() {
             coupon_id: item.id,
             is_flow: item.is_flow,
             goods_sign: item.goods_sign,
+            itemId: item.itemId
           })
         })
       }

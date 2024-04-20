@@ -10,4 +10,5 @@ export default {
     getLists: (data) => request.post('/apios/Jd/getLists', data),
     getGroup: (data) => request.post('/apios/Popover/getLists', data),
     goodsSearch: (data) => request.post('/api/Pinduoduo/goodsSearch', data),
+    getPosition: (data) => request.post('/apios/Extend/bfxlPosition', data),
 }

@@ -1,5 +1,5 @@
 <template>
-  <n-drawer v-model:show="showModal" :width="drawerWidth" :placement="placement">
+  <n-drawer v-model:show="showModal" :width="drawerWidth">
     <n-drawer-content :title="modalTitle" closable>
       <n-form
         ref="formRef"
@@ -25,7 +25,7 @@
             <n-input-number v-model:value="model.sort" :disabled="modalType === 1" />
           </n-form-item>
           <n-form-item label="京东推广位ID" path="positionId" w-300 ml-50>
-            <n-input-number
+            <n-input
               v-model:value="model.positionId"
               :show-button="false"
               placeholder="京东推广位ID"
@@ -95,7 +95,7 @@
             <n-input v-model:value="model.circle" :show-button="false" placeholder="多个周期用'-'分隔" clearable />
           </n-form-item>
           <n-form-item label="商品延后周期(d)" path="delayed_period" w-400 ml-50>
-            <n-input v-model:value="model.delayed_period" :show-button="false" placeholder="" clearable />
+            <n-input-number v-model:value="model.delayed_period" :show-button="false" placeholder="" clearable />
           </n-form-item>
         </div>
         <div flex>
@@ -106,12 +106,7 @@
             <n-input v-model:value="model.commission" :show-button="false" placeholder="" clearable />
           </n-form-item>
           <n-form-item label="所属小程序" path="is_bfxl" w-300>
-            <n-select
-              v-model:value="model.is_bfxl"
-              :options="yyOptions"
-              :disabled="modalType === 1"
-              @update:value="yyOptionsUpdate"
-            />
+            <n-select v-model:value="model.is_bfxl" :options="yyOptions" :disabled="modalType === 1" />
           </n-form-item>
           <n-form-item v-if="model.is_bfxl == 0" label="用户组" path="user_group" w-300>
             <n-select v-model:value="model.user_group" :options="userOptions" :disabled="modalType === 1" />
@@ -174,21 +169,35 @@
           />
         </n-form-item>
         <div flex justify-center w-1000>
-          <n-button mr-10 @click="showModal = false"> 关闭 </n-button>
+          <n-button mr-10 @click="doClose"> 关闭 </n-button>
           <n-button v-if="modalType !== 1" type="info" @click="handleValidateButtonClick"> 保存 </n-button>
         </div>
       </n-form>
       <!-- </n-modal> -->
     </n-drawer-content>
   </n-drawer>
-  <operat-group-detail ref="operatGroupDetailRef" :ck-ids="ckIds" @addList="addListHandle" />
+  <operat-group-detail
+    ref="operatGroupDetailRef"
+    :ck-ids="ckIds"
+    :page-options="model.is_bfxl"
+    @addList="addListHandle"
+  />
 </template>
 <script setup>
-import operatGroupDetail from './operatGroupDetail.vue'
-import { ref, nextTick } from 'vue'
-import { useMessage, NInput, NInputNumber, NButton, NSwitch, NDatePicker } from 'naive-ui'
-import { renderIcon, formatDateTime } from '@/utils'
-import http from './api'
+import { formatDateTime, renderIcon } from '@/utils';
+import { NButton, NDatePicker, NInput, NInputNumber, NSelect, NSwitch, useMessage } from 'naive-ui';
+import { ref } from 'vue';
+import http from './api';
+import {
+initPageOptions,
+pathOptions,
+tyOptionsUpdate,
+typeOptions,
+typeStatus,
+userOptions,
+yyOptions,
+} from './configOptions.js';
+import operatGroupDetail from './operatGroupDetail.vue';
 /**抽屉宽度 */
 const drawerWidth = window.innerWidth - 220 + 'px'
 /**弹窗显示控制 */
@@ -196,79 +205,9 @@ const showModal = ref(false)
 /**弹窗类型 1.查看 2.修改,3.新增*/
 const modalType = ref(3)
 const modalTitle = ref('新增')
-/**弹窗取消 */
-function onNegativeClick() {}
 /**表单 */
 const formRef = ref(null)
-/**系统下拉 */
-const typeOptions = [
-  {
-    label: '苹果机',
-    value: 1,
-  },
-  {
-    label: '公共',
-    value: 2,
-  },
-  {
-    label: '安卓机',
-    value: 3,
-  },
-]
-const typeStatus = [
-  {
-    label: '上架',
-    value: 1,
-  },
-  {
-    label: '下架',
-    value: 0,
-  },
-]
-const yyOptions = [
-  {
-    label: '天天享礼',
-    value: 0,
-  },
-  {
-    label: '彬纷享礼',
-    value: 1,
-  },
-]
-const tyOptionsUpdate = [
-  {
-    label: '京东半屏',
-    value: 0,
-  },
-  {
-    label: '天天享礼全屏',
-    value: 1,
-  },
-  {
-    label: '天天享礼半屏',
-    value: 2,
-  },
-]
-const pathOptions = [
-  {
-    label: '个人中心',
-    value: 0,
-  },
-  {
-    label: '扫码未中奖',
-    value: 1,
-  },
-]
-const userOptions = [
-  {
-    label: '天天享礼',
-    value: 0,
-  },
-  {
-    label: '彬纷享礼',
-    value: 1,
-  },
-]
+
 const end_time = ref()
 const end_index = ref()
 // 商品选择
@@ -277,11 +216,6 @@ function deviceTypeOptionsUpdate(value, option) {
   model.value.type = value
   // getCouponList();
   getTableData(value)
-}
-
-const operatGroupDetailRef = ref(null)
-function selectHandle() {
-  operatGroupDetailRef.value.show(shopOptions.value)
 }
 // 添加数组内容
 function addListHandle(addList) {
@@ -313,6 +247,23 @@ function addListHandle(addList) {
 const message = useMessage()
 //表单数据
 const model = ref({})
+// 来源
+const pageOptions = ref([])
+watch(
+  () => model.value.is_bfxl,
+  (newValue, oldValue) => {
+    pageOptions.value = newValue ? initPageOptions.slice(0, 3) : initPageOptions
+    shopOptions.value = newValue ? shopOptions.value.filter((optionItem) => optionItem.type == 11) : shopOptions.value
+  },
+  {
+    deep: true,
+    // immediate: true,
+  }
+)
+const operatGroupDetailRef = ref(null)
+function selectHandle() {
+  operatGroupDetailRef.value.show(shopOptions.value, pageOptions.value)
+}
 //校验数据
 const rules = ref({
   name: {
@@ -345,6 +296,20 @@ const rules = ref({
     message: '请选择所属小程序',
   },
 })
+const status_options = [
+  {
+    label: '半屏跳转',
+    value: 0,
+  },
+  {
+    label: 'feed流',
+    value: 1,
+  },
+  {
+    label: '中转详情',
+    value: 2,
+  },
+]
 //查询参数
 const tableData = ref([])
 //优惠券列表选择相关
@@ -418,7 +383,7 @@ const columns = [
       return ~[row.status].indexOf(value)
     },
     render(row) {
-      if (row.lx_type != 2) {
+      if (row.lx_type == 1) {
         return row.status == 1 ? '上架' : '未上架'
       }
       return h(NSwitch, {
@@ -427,6 +392,30 @@ const columns = [
         onUpdateValue: (updateValue) => {
           const currentIndex = row.current_index
           tableData.value[currentIndex].status = updateValue
+        },
+      })
+    },
+  },
+  {
+    title: '个性推荐',
+    key: 'show_tj',
+    width: 80,
+    align: 'center',
+    filterMode: 'and',
+    filter(value, row) {
+      if (value === null) return true
+      return ~[row.show_tj].indexOf(value)
+    },
+    render(row) {
+      if (row.lx_type == 1) {
+        return ''
+      }
+      return h(NSwitch, {
+        size: 'small',
+        value: Boolean(row.show_tj),
+        onUpdateValue: (updateValue) => {
+          const currentIndex = row.current_index
+          tableData.value[currentIndex].show_tj = updateValue
         },
       })
     },
@@ -450,18 +439,21 @@ const columns = [
     },
   },
   {
-    title: 'feed流',
+    title: '打开方式',
     key: 'is_flow',
-    width: 80,
+    width: 130,
     align: 'center',
     render(row, index) {
-      return h(NSwitch, {
+      return h(NSelect, {
+        options: status_options,
         size: 'small',
-        value: Boolean(row.is_flow),
+        value: row.is_flow,
+        'label-field': 'label',
+        'value-field': 'value',
         disabled: row.lx_type == 1,
         onUpdateValue: (updateValue) => {
           const currentIndex = row.current_index
-          tableData.value[currentIndex].is_flow = !!updateValue
+          tableData.value[currentIndex].is_flow = updateValue
         },
       })
     },
@@ -594,7 +586,7 @@ const columns = [
     width: 110,
     render(row, index) {
       return h(NInput, {
-        value: row.commission_num || 0,
+        value: row.commission_num || '0',
         min: 0,
         size: 'tiny',
         style: {
@@ -618,7 +610,7 @@ const columns = [
     width: 110,
     render(row, index) {
       return h(NInput, {
-        value: row.commission_end || 0,
+        value: row.commission_end || '0',
         min: 0,
         size: 'tiny',
         style: {
@@ -641,7 +633,7 @@ const columns = [
     size: 'large',
     width: 110,
     render(row, index) {
-      return h(NInput, {
+      return h(NInputNumber, {
         value: row.delayed_period || 0,
         min: 0,
         size: 'tiny',
@@ -793,7 +785,9 @@ function handleValidateButtonClick() {
           groupId: item.groupId,
           status: Number(item.status),
           goods_sign: item.goods_sign || '',
+          itemId: item.itemId || '',
           delayed_period: item.delayed_period || 0,
+          show_tj: Number(item.show_tj),
         }))
       http
         .operatGroup({
@@ -816,7 +810,7 @@ function handleValidateButtonClick() {
 }
 const showType = ref()
 const showData = ref()
-const ckIds = ref({})
+const ckIds = ref([])
 /**展示弹窗 */
 function show(operatType, data) {
   defaultCouponFilter.value = ''
@@ -854,6 +848,8 @@ function getTableData(type) {
   }
   getCouponList()
 }
+const lists = ref()
+const load = ref()
 function getGroupDetails(type) {
   const p_type = type
   http
@@ -912,6 +908,7 @@ function getGroupDetails(type) {
         }
         return false
       })
+      lists.value = _list
       // 供选中 - 未搜索的使用
       shopOptions.value = list2
       const group = _list.map((item) => item.coupon_id)
@@ -940,10 +937,29 @@ function getGroupDetails(type) {
       }
       end_time.value = res.data.end_time || ''
       end_index.value = res.data.end_index || ''
-      tableData.value = _list
+      tableData.value = _list.slice(0, 10)
       showModal.value = true
       ckIds.value = res.data.ckIds
+      load.value = setInterval(function () {
+        let length = tableData.value.length
+        let length2 = lists.value.length
+        if (length < length2) {
+          for (var i = length; i < length + 10; i++) {
+            if (!lists.value[i] || i >= length2) {
+                clearInterval(load.value)
+                break
+            }
+            tableData.value.push(lists.value[i])
+          }
+        } else {
+          clearInterval(load.value)
+        }
+      }, 400)
     })
+}
+function doClose() {
+  showModal.value = false
+  clearInterval(load.value)
 }
 // 新增获取的列表
 function getCouponList() {
@@ -958,7 +974,6 @@ function getCouponList() {
     showModal.value = true
   })
 }
-
 /**暴露给父组件使用 */
 defineExpose({
   show,

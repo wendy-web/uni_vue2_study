@@ -4,7 +4,7 @@
       <n-button type="primary" @click="addGoods">
         <TheIcon icon="material-symbols:add" :size="18" class="mr-5" /> 新增商品
       </n-button>
-      <n-button type="primary" style="margin-left:30px;" @click="synchronization"> 同步 </n-button>
+      <n-button type="primary" style="margin-left: 30px" @click="synchronization"> 同步 </n-button>
     </template>
     <CrudTable
       ref="$table"
@@ -55,12 +55,11 @@
 </template>
 
 <script setup>
-import { NButton, NSwitch } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage } from 'naive-ui'
-import operatGoods from './operatGoods/index.vue'
-import { goodsStatusOptions, goodsTypeOptions, systemOptions } from './options'
-import http from './api'
+import { renderIcon } from '@/utils';
+import { NButton, NSwitch, useMessage } from 'naive-ui';
+import http from './api';
+import operatGoods from './operatGoods/index.vue';
+import { goodsStatusOptions, goodsTypeOptions, systemOptions } from './options';
 defineOptions({ name: 'storeGoodsList' })
 //表格操作
 const $table = ref(null)
@@ -86,22 +85,22 @@ const columns = [
     align: 'center',
     render(row, index) {
       //return row.goods_type == 0 ? '直充' : '卡券'
-      switch(row.goods_type){
+      switch (row.goods_type) {
         case 0:
-          return '直充';
-          break;
+          return '直充'
+          break
         case 1:
-          return '卡券';
-          break;
+          return '卡券'
+          break
         case 2:
-          return '公众号';
-          break;
+          return '公众号'
+          break
         case 3:
-          return '视频号';
-          break;
+          return '视频号'
+          break
         case 4:
-          return '小程序';
-          break;
+          return '小程序'
+          break
       }
     },
   },

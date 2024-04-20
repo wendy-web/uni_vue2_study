@@ -24,12 +24,12 @@
   <operate-single ref="operateSingleRef" :cid="queryItems.cid" @refresh="refresh" />
 </template>
 <script setup>
-import { NButton, useMessage, useDialog } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import http from './api'
-import operateSingle from './operateSingle.vue'
+import { renderIcon } from '@/utils';
+import { NButton, useDialog, useMessage } from 'naive-ui';
+import http from './api';
+import operateSingle from './operateSingle.vue';
+import { cidOptions } from './options';
 const operateSingleRef = ref(null)
-import { cidOptions } from './options'
 const queryItems = ref({
   cid: 1,
 })

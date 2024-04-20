@@ -36,23 +36,26 @@
           />
         </n-form-item>
         <n-form-item label="所属页面" path="page" w-300>
-          <n-select v-model:value="model.page" :options="eliteIdOptions.pageOptions" :disabled="modalType === 1" @update:value="page_typeChange" />
-        </n-form-item>
-        <n-form-item label="用户类型" path="user_group" w-300 v-if="model.page == 10">
           <n-select
-                  v-model:value="model.user_group"
-                  :options="userOptions2"
-                  :disabled="modalType === 1"
-          />
-        </n-form-item>
-        <n-form-item label="用户组" path="user_group" w-300 v-if="model.page == 13">
-          <n-select
-            v-model:value="model.user_group"
-            :options="userOptions"
+            v-model:value="model.page"
+            :options="eliteIdOptions.pageOptions"
             :disabled="modalType === 1"
+            @update:value="page_typeChange"
           />
         </n-form-item>
-        <n-form-item label="彬纷享礼页面" path="path_type" w-300 v-if="model.page == 15">
+        <n-form-item v-if="[10, 11].includes(model.page)" label="小程序插屏广告" path="is_advertise">
+          <n-switch v-model:value="model.is_advertise" />
+        </n-form-item>
+        <n-form-item v-if="[1].includes(model.page)" label="浏览记录推品" path="is_advertise">
+          <n-switch v-model:value="model.is_advertise" />
+        </n-form-item>
+        <n-form-item v-if="model.page == 10" label="用户类型" path="user_group" w-300>
+          <n-select v-model:value="model.user_group" :options="userOptions2" :disabled="modalType === 1" />
+        </n-form-item>
+        <n-form-item v-if="model.page == 13" label="用户组" path="user_group" w-300>
+          <n-select v-model:value="model.user_group" :options="userOptions" :disabled="modalType === 1" />
+        </n-form-item>
+        <n-form-item v-if="model.page == 15" label="彬纷享礼页面" path="path_type" w-300>
           <n-select v-model:value="model.path_type" :options="eliteIdOptions.pathOptions" :disabled="modalType === 1" />
         </n-form-item>
         <n-form-item label="排序" path="sort" w-300>
@@ -213,12 +216,7 @@
             <n-input v-model:value="model.positionId" :disabled="modalType === 1" clearable />
           </n-form-item>
           <n-form-item label="活动商品类目" path="activity_tags">
-            <n-checkbox-group
-              v-model:value="model.activity_tags"
-              flex
-              flex-wrap
-              @update:value="activity_handleUpdateValue"
-            >
+            <n-checkbox-group v-model:value="model.activity_tags" flex flex-wrap>
               <n-space
                 v-for="item in eliteIdOptions.activityOptions"
                 :key="item.value"
@@ -324,7 +322,7 @@
               </view>
             </n-form-item>
             <n-form-item label="筛选范围列表" path="range_list">
-              <n-checkbox-group v-model:value="pddRang" flex flex-wrap @update:value="rang_handleUpdate">
+              <n-checkbox-group v-model:value="pddRangValue" flex flex-wrap @update:value="rang_handleUpdate">
                 <n-space
                   v-for="item in eliteIdOptions.pddRangOptions"
                   :key="item.value"
@@ -336,8 +334,7 @@
                 </n-space>
               </n-checkbox-group>
             </n-form-item>
-
-            <div v-for="item in pddRangSelect" :key="item.range_id">
+            <div v-for="item in pddRangSelectValue" :key="item.range_id">
               <n-form-item :label="item.label" path="coupon" w-400>
                 <n-input-number
                   v-model:value="item.range_from"
@@ -357,6 +354,9 @@
           </block>
           <div style="color: red; padding-left: 50px">注：拼多多金额单位为分；</div>
         </block>
+        <n-form-item label="推券最高金额" path="max_coupon_money" mt-30 w-400>
+          <n-input-number v-model:value="model.max_coupon_money" placeholder="最高金额" min="0" />
+        </n-form-item>
 
         <div flex justify-center w-500>
           <n-button mr-10 @click="showModal = false"> 关闭 </n-button>
@@ -368,11 +368,10 @@
   </n-drawer>
 </template>
 <script setup>
-import { ref, nextTick } from 'vue'
-import eliteIdOptions from './eliteIdOptions.js'
-import { useMessage, NInput, NInputNumber, NButton } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import http from './api'
+import { NButton, NInput, NInputNumber, useMessage } from 'naive-ui';
+import { ref } from 'vue';
+import http from './api';
+import eliteIdOptions from './eliteIdOptions.js';
 /**抽屉宽度 */
 // const drawerWidth = window.innerWidth - 220 + 'px';
 const drawerWidth = '1200px'
@@ -410,12 +409,12 @@ const rules = ref({
     message: '分组类型不能为空',
     type: 'number',
   },
-  cid: {
-    required: true,
-    trigger: ['change'],
-    message: '选择分类不能为空',
-    type: 'number',
-  },
+  // cid: {
+  //   required: true,
+  //   trigger: ['change'],
+  //   message: '选择分类不能为空',
+  //   type: 'number',
+  // },
   positionId: {
     required: true,
     trigger: ['blur', 'input'],
@@ -436,30 +435,29 @@ let shoreOptions = [
 const userOptions = [
   {
     label: '天天享礼',
-    value: 0
+    value: 0,
   },
   {
     label: '彬纷享礼',
-    value: 1
-  }
+    value: 1,
+  },
 ]
 const userOptions2 = [
   {
     label: '新用户',
-    value: 0
+    value: 0,
   },
   {
     label: '老用户',
-    value: 1
-  }
+    value: 1,
+  },
 ]
 function lx_typeChange(value) {
   model.value.type = 2
   model.value.eliteId = null
   model.value.cat_id = null
   model.value.opt_id = null
-  console.log(model.value.page);
-  if(value == 2 && model.value.page == 15) {
+  if (value == 2 && model.value.page == 15) {
     model.value.lx_type = 1
   }
 }
@@ -485,8 +483,8 @@ function handleValidateButtonClick() {
         }
         model.value.opt_id = ''
         goodsOptList.value.forEach((res) => res.id != null && (model.value.opt_id += `${res.id},`))
-        pddRangSelect.value.length &&
-          pddRangSelect.value.forEach((res) => {
+        pddRangSelectValue.value.length &&
+          pddRangSelectValue.value.forEach((res) => {
             const { range_from, range_id, range_to } = res
             model.value.range_list.push({
               range_from,
@@ -495,24 +493,17 @@ function handleValidateButtonClick() {
             })
           })
       }
-      console.log('model.value___', model.value)
-      //   return
-      http
-        .operatGroup({
-          ...model.value,
-        })
-        .then((res) => {
-          if (res.code == 1) {
-            message.success(res.msg)
-            emit('refresh')
-            showModal.value = false
-          } else {
-            message.error(res.msg)
-          }
-        })
+      http.operatGroup({ ...model.value }).then((res) => {
+        if (res.code == 1) {
+          message.success(res.msg)
+          emit('refresh')
+          showModal.value = false
+        } else {
+          message.error(res.msg)
+        }
+      })
     }
   })
-
   return false
 }
 const showType = ref()
@@ -629,34 +620,31 @@ function goodOptionsInit(opt_id) {
     resolve()
   })
 }
-function activity_handleUpdateValue(value) {
-  //   console.log('activity_handleUpdateValue', value)
-}
 function goodsCat_handleUpdate(value, index) {
   value && goodCatsUpdate(value, index + 1)
 }
 function goodsOpt_handleUpdate(value, index) {
   value && goodOptUpdate(value, index + 1)
 }
-const pddRang = ref([])
+const pddRangValue = ref([])
 const pddRangOptions = eliteIdOptions.pddRangOptions
-const pddRangSelect = ref([])
+const pddRangSelectValue = ref([])
 function rang_handleUpdate(value, options) {
   const isCheck = options.actionType == 'check'
   const selValue = options.value
   const selItem = pddRangOptions.find((res) => res.value == selValue)
   const { value: range_id, label } = selItem
   if (isCheck) {
-    pddRangSelect.value.push({
+    pddRangSelectValue.value.push({
       range_id,
       label,
       range_from: 0,
       range_to: 0,
     })
   } else {
-    const pddRangIndex = pddRangSelect.value.findIndex((res) => res.range_id == selValue)
+    const pddRangIndex = pddRangSelectValue.value.findIndex((res) => res.range_id == selValue)
     if (pddRangIndex >= 0) {
-      pddRangSelect.value.splice(pddRangIndex, 1)
+      pddRangSelectValue.value.splice(pddRangIndex, 1)
     }
   }
 }
@@ -748,6 +736,8 @@ async function show(operatType, data) {
     activity_tags: [],
     cat_id: null,
     range_list: [],
+    is_advertise: false,
+    max_coupon_money: 0,
   }
   showType.value = operatType
   showData.value = data
@@ -801,6 +791,8 @@ async function getGroupDetails(rowId) {
       activity_tags,
       pddRangSelect,
       pddRang,
+      is_advertise,
+      max_coupon_money,
     } = res.data
     if (lx_type == 1) {
       //  京东类目选择的列表
@@ -834,27 +826,28 @@ async function getGroupDetails(rowId) {
       opt_id,
       range_list: [],
       activity_tags,
+      is_advertise: Boolean(is_advertise),
+      max_coupon_money,
     }
     model.value.cid = cid || null
     model.value.cid2 = cid2 || null
     model.value.cid3 = cid3 || null
     if (model.value.lx_type == 1 || (model.value.lx_type == 2 && model.value.type == 1)) return
-    pddRang.value = pddRang
-    pddRangSelect.value = []
-    pddRangSelect.value = pddRangSelect
+    pddRangValue.value = pddRang
+    pddRangSelectValue.value = pddRangSelect
   })
 }
-function page_typeChange(value){
-  console.log(value);
-  if(value == 15) {
-    model.value.lx_type = 1;
+function page_typeChange(value) {
+  console.log(value)
+  if (value == 15) {
+    model.value.lx_type = 1
     shoreOptions = [
       {
         label: '京东',
         value: 1,
       },
     ]
-  }else{
+  } else {
     shoreOptions = [
       {
         label: '京东',
@@ -866,7 +859,7 @@ function page_typeChange(value){
       },
     ]
   }
-  model.value.page = value;
+  model.value.page = value
 }
 /**暴露给父组件使用 */
 defineExpose({
