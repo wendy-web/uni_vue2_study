@@ -1,30 +1,30 @@
-import {
-    setToken,
-    getToken,
-    setGift,
-    setAutoLogin,
-    getAutoLogin,
-    setAutoPrivacy,
-    getAutoPrivacy,
-    setUnionId,
-    getUnionId,
-    getGift,
-    getUserInfo,
-    removeGetUserInfo,
-    removeToken,
-    getLocation,
-    setAuthorization,
-    getAuthorization,
-} from "@/utils/auth.js";
 import { teamInfo } from "@/api/modules/card.js";
+import { getUser, saveMobile, userprofile, wxLogin } from "@/api/modules/login.js";
+import {
+    getAuthorization,
+    getAutoLogin,
+    getAutoPrivacy,
+    getGift,
+    getLocation,
+    getToken,
+    getUnionId,
+    getUserInfo,
+    removeToken,
+    setAuthorization,
+    setAutoLogin,
+    setAutoPrivacy,
+    setGift,
+    setToken,
+    setUnionId
+} from "@/utils/auth.js";
 import log from "@/utils/log.js";
-import { wxLogin, getUser, userprofile, saveMobile } from "@/api/modules/login.js";
 
 const state = {
     userInfo: getUserInfo(), //用户信息
     token: getToken() || "", //token
     uid: "",
     gift: getGift() || 0, // 0 非新用户 1 新用户
+    isMiniProgram: 0, // 未进入；1 已进入
     unionid: getUnionId() || 0, // 用户的id
     location: getLocation() || null,
     isAuthorization: Boolean(getAuthorization()),
@@ -35,6 +35,9 @@ const state = {
 };
 
 const mutations = {
+    setMiniProgram(state, status) {
+        state.isMiniProgram = status;
+    },
     setAutoPrivacy(state, isAuto) {
         state.isAutoPrivacy = isAuto;
         setAutoPrivacy(isAuto);
@@ -83,7 +86,7 @@ const mutations = {
         state.vipObject = vipObject;
         // state.vipObject = {
         //     ...vipObject,
-        //     card_num: 0
+        //     balance: 10.10
         // };
     },
     setLocation(state, location) {
@@ -99,7 +102,7 @@ const mutations = {
 };
 
 const actions = {
-    /*用户登录*/
+    /* 用户登录 */
     wxlogin({ commit, state }) {
         return new Promise((resolve, reject) => {
             //存在token不刷新，让程序自动去刷新

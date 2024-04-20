@@ -25,7 +25,7 @@
 			</view>
 		</view>
 		<!-- 空间占据者 -->
-		<view :style="{height:statusBarHeight+navBarHeight+'px'}"></view>
+		<view v-if="fixed&&!isNoOccupant" :style="{height:statusBarHeight+navBarHeight+'px'}"></view>
 	</view>
 </template>
 
@@ -77,6 +77,10 @@
 			},
 			leftImage: {
 				type: String
+			},
+			isNoOccupant: {
+				type: Boolean,
+				default: false
 			}
 		},
 		created() {

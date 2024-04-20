@@ -6,7 +6,7 @@
       titleAlign="titleRight"
     >
       <view slot="title" class="nav_title box_fl">
-        <image class="title_logo" mode="aspectFit" src="@/static/images/home/title.png"></image>
+        <image class="title_logo" mode="aspectFit" src="https://file.y1b.cn/store/1-0/24131/65ba377f11904.png"></image>
         <view class="nav_search fl_center" @click="toSearchHandle">
             <image class="search_icon" mode="aspectFit" src="@/static/images/home/search_icon.png"></image>
             <swiper
@@ -36,8 +36,8 @@
     </xh-navbar>
     <view class="stick-box fl_bet" @click="goMyCredit">
       <view class="stick_left fl_col_cen">
-        <image class="bg_img" mode="aspectFit"  src="@/static/images/home/img_card_bg.png" ></image>
-        <image class="card_icon" mode="aspectFit"  src="@/static/images/home/img_card.png" ></image>
+        <image class="bg_img" mode="aspectFit" src="https://file.y1b.cn/store/1-0/24131/65ba375769586.png" ></image>
+        <image class="card_icon" mode="aspectFit"  src="https://file.y1b.cn/store/1-0/24131/65ba3717ad35a.png" ></image>
         <view class="credit-title">我的积分</view>
       </view>
       <view class="credit-box fl_bet">
@@ -52,8 +52,7 @@
     <!-- 团长的标识 -->
     <view class="vip_cont" v-if="singletonImg" @click="vipHandle">
         <van-image
-            width="100%"
-            height="100%"
+            width="100%" height="100%"
             :src="singletonImg"
             use-loading-slot
         >
@@ -65,7 +64,7 @@
       <tabs v-model="tabIndex" :height="tabsHeight" :tabs="tabs" @change="tabChange"></tabs>
     </view>
     <!-- 数据列表 -->
-    <view :style="{minHeight: swiperHeight}">
+    <view :style="{ minHeight: (goods && goods.length > 2) && swiperHeight}">
         <good-list
             :list="goods"
             @deleteBysubunionid="deleteBysubunionidHandle"
@@ -97,30 +96,30 @@
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-  import WxCountUp from "@/utils/WxCountUp.js";
-  import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
-  import { mapActions, mapMutations, mapGetters } from "vuex";
-  import tabs from "./component/tabs.vue";
-  import goodList from "@/components/goodList.vue";
-  import popoverDia from "@/components/popoverDia.vue";
-  import { getPlatform } from "@/utils/auth.js";
-  import {
+import {
     goodsGroup,
     goodsList,
     popover,
     singleton
-  } from "@/api/modules/home.js";
-  import {
-	material,
-	jingfen,
-	goodsQuery,
-    keywordList
+} from "@/api/modules/home.js";
+import {
+    goodsQuery,
+    jingfen,
+    keywordList,
+    material
 } from '@/api/modules/jsShop.js';
 import {
     goodsRecommend,
     goodsSearch,
 } from '@/api/modules/pddShop.js';
+import goodList from "@/components/goodList.vue";
+import popoverDia from "@/components/popoverDia.vue";
+import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import WxCountUp from "@/utils/WxCountUp.js";
+import { getPlatform } from "@/utils/auth.js";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import tabs from "./component/tabs.vue";
   let _options = {
     separator: "",
     duration: 1,
@@ -171,6 +170,7 @@ export default {
             deep: true,
         },
         diaList(newValue, oldValue) {
+            
             if(newValue.length && (newValue[0] == 'phoneId')) {
                 this.isShowPopoverDia = true;
             }
@@ -425,7 +425,7 @@ export default {
                 } else {
                     this.mescroll.endSuccess(list.length || total_count, isNextPage);
                 }
-                if(list.length == 0 && (pageNum * params.size) < total_count){
+                if((list.length == 0 || curTab.goods.length < 6 ) && (pageNum * params.size) < total_count ){
                     this.mescroll.triggerUpScroll();
                 }
                 curTab.pageNum += 1;

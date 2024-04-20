@@ -1,44 +1,35 @@
 <template>
-	<view class="double-dialog" v-if="isShow">
-		<view class="double-dialog-black"></view>
-		<view class="double-dialog-body animated  bounceInDown">
-			<!-- 弹窗背景 -->
-			<image class="ddb-bg" src="../static/scanResult/bfxl_scan_reslut_01.png" mode="widthFix"></image>
-			<!-- 恭喜你 -->
-			<view class="title-text">
-				恭喜你
-			</view>
-			<!-- 额外获得 -->
-			<view class="dd-btn-item added added-with">
-				<view class="added-text-location added-text-font">额外获得{{integral}}积分</view>
-				<image class="dd-btn-item-bg added-with" mode="widthFix"
-					src="../static/scanResult/bfxl_scan_reslut_02.png"></image>
-			</view>
-			<!-- 积分获取来源 -->
-			<view class="integral-source">
-				<image class="tips-icon" src="../static/scanResult/bfxl_scan_reslut_03.png" mode="widthFix"></image>
-				<text class="tips-text">看视频获得的积分</text>
-			</view>
-			<!-- 前往兑换 -->
-			<view class="dd-btn-item exchange exchange-width heartBeat" @click="goShopMall">
-				<view class="exchange-text-location exchange-text-font">前往换购</view>
-				<image class="dd-btn-item-bg exchange-width" mode="widthFix"
-					src="../static/scanResult/bfxl_scan_reslut_04.png"></image>
-			</view>
-			<!-- 关闭按钮 -->
-			<image class="double-dialog-close" @click="close" src="/static/images/toast_close.png" mode="aspectFill">
-			</image>
+<van-popup :show="isShow" @close="close" custom-style="background-color: transparent;overflow: visible;"
+			:close-on-click-overlay="false" :z-index="10000">
+	<view class="double-dialog-body animated  bounceInDown">
+		<image class="ddb-bg" src="../static/scanResult/bfxl_scan_reslut_01.png" mode="widthFix"></image>
+		<view class="title-text">恭喜你</view>
+		<!-- 额外获得 -->
+		<view class="dd-btn-item added added-with">
+			<view class="added-text-location added-text-font">额外获得{{integral}}积分</view>
+			<image class="dd-btn-item-bg added-with" mode="widthFix"
+				src="../static/scanResult/bfxl_scan_reslut_02.png"></image>
 		</view>
+		<!-- 积分获取来源 -->
+		<view class="integral-source">
+			<image class="tips-icon" src="../static/scanResult/bfxl_scan_reslut_03.png" mode="widthFix"></image>
+			<text class="tips-text">看视频获得的积分</text>
+		</view>
+		<!-- 前往兑换 -->
+		<view class="dd-btn-item exchange exchange-width heartBeat" @click="goShopMall">
+			<view class="exchange-text-location exchange-text-font">前往换购</view>
+			<image class="dd-btn-item-bg exchange-width" mode="widthFix"
+				src="../static/scanResult/bfxl_scan_reslut_04.png"></image>
+		</view>
+		<!-- 关闭按钮 -->
+		<image class="double-dialog-close" @click="close" src="/static/images/toast_close.png" mode="aspectFill">
+		</image>
 	</view>
+</van-popup>
 </template>
 
 <script>
-	import {
-		baseUrl
-	} from '@/api/http/xhHttp.js';
-	import {
-		mapGetters
-	} from 'vuex';
+import { mapGetters } from 'vuex';
 	export default {
 		data() {
 			return {
@@ -57,28 +48,16 @@
 			close() {
 				this.isShow = false
 			},
-			goShopMall() {
-				this.$ttxlUserPosition('code_popover_button')
+			async goShopMall() {
+				const statues = await this.$ttxlUserPositionAsync('code_popover_button');
+				this.close();
+				!statues && this.$emit('close');
 			}
 		},
 	};
 </script>
 
-<style lang="scss">
-	.double-dialog {
-		// position: relative;
-		// z-index: 2;
-
-		.double-dialog-black {
-			position: fixed;
-			top: 0;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			background-color: $uni-bg-color-mask;
-			z-index: 10000;
-		}
-
+<style lang="scss" scoped>
 		.double-dialog-close {
 			width: 70rpx;
 			height: 70rpx;
@@ -89,15 +68,8 @@
 		}
 
 		.double-dialog-body {
-			position: fixed;
-			z-index: 2;
 			width: 636rpx;
 			height: 758rpx;
-			top: 88rpx;
-			left: 50%;
-			margin-left: -318rpx;
-			z-index: 10000;
-
 			.ddb-bg {
 				width: 100%;
 				position: absolute;
@@ -185,5 +157,4 @@
 			top: 20rpx;
 			z-index: 1;
 		}
-	}
 </style>

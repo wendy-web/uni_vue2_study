@@ -27,12 +27,12 @@
           :focus="true"
           :border="false"
           @change="changeHandle"
-          @clickIcon="price_num = 0"
+          @clickIcon="price_num = ''"
         ></van-field>
       </view>
       <view class="cont_total box_fl">
-        可提现金额 ¥{{vipObject.balance || 0}}
-        <view class="total_all" @click="price_num = vipObject.balance" v-if="Number(vipObject.balance)">全部</view>
+        可提现金额 ¥{{ balanceValue || 0}}
+        <view class="total_all" @click="price_num = balanceValue" v-if="Number(balanceValue)">全部</view>
       </view>
       <!-- <view class="service_price fl_bet">
         <view>手续费</view>
@@ -47,23 +47,37 @@
         <view class="cont_rem-item">2. 每次提现收取{{vipObject.lv}}元手续费（首次提现免手续费）。</view>
       </view> -->
     </view>
-    <view class="confirm_btn" @click="confirmHandle">确认提现</view>
+    <view :class="['confirm_btn', isWithdrawLoad ? 'active' : '']" @click="confirmHandle">
+      {{ isWithdrawLoad ? '提现中' : '确认提现' }}<text class="dot_box" v-if="isWithdrawLoad"></text>
+    </view>
+    <report-success-dia
+      :isShow="isShowSuccess"
+      title="提现成功"
+      label="约1~3个工作日到账"
+      @close="closeSuccessHandle"
+  ></report-success-dia>
 </view>
 </template>
 <script>
+import { msgTemplate, withdraw } from "@/api/modules/card.js";
+import reportSuccessDia from '@/components/reportSuccessDia.vue';
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { reduceFun } from '@/utils/index.js';
 import { mapGetters } from "vuex";
-import { withdraw, msgTemplate } from "@/api/modules/card.js";
 export default {
   name: "withdrawalIndex",
   mixins: [MescrollMixin],
   components: {
+    reportSuccessDia
   },
   data() {
     return {
       topHeight: "", //自定义导航栏高度
       price_num: '',
+      isWithdrawLoad: false,
+      isShowSuccess: false,
+      balanceValue: 0
     };
   },
   computed: {
@@ -71,15 +85,15 @@ export default {
   },
   methods: {
     changeHandle({ detail }) {
-      this.price_num = Number(detail);
+      this.price_num = detail;
     },
-    // blurHandle({ detail }) {
-    //   const value = Number(detail.value);
-    //   if(value >= Number(this.vipObject.balance)) this.price_num = Number(this.vipObject.balance);
-    //   if(value <= 0) this.price_num = '';
-    // },
     goPage(url){
       this.$go(url);
+    },
+    closeSuccessHandle() {
+      this.balanceValue = reduceFun(this.balanceValue, this.price_num, 2);
+      this.price_num = '';
+      this.isShowSuccess = false;
     },
     async confirmHandle() {
       const minValue = (this.vipObject.first_withdraw == 1) ? 0.1 : Number(this.vipObject.withdraw_min);
@@ -99,10 +113,13 @@ export default {
       });
     },
     async requestWithdraw() {
+      if(this.isWithdrawLoad) return;
+      this.isWithdrawLoad = true;
       const params = { money: this.price_num };
       const res = await withdraw(params);
-      if(res.code !=1) return this.$toast(res.msg);
-      this.goPage(`/pages/cardModule/withdrawal/detail`);
+      this.isWithdrawLoad = false;
+      if(res.code != 1) return this.$toast(res.msg);
+      this.isShowSuccess = true;
     }
   },
   onLoad() {
@@ -110,6 +127,7 @@ export default {
       let { navBarHeight, statusBarHeight } = res;
       this.topHeight = navBarHeight + statusBarHeight;
     });
+    this.balanceValue = this.vipObject.balance;
   }
 }
 </script>
@@ -195,5 +213,27 @@ page {
   font-size: 32rpx;
   text-align: center;
   color: #fff;
+  &.active {
+    background: rgba($color:#ef2b20, $alpha: .6);
+  }
+}
+.dot_box {
+  display: inline-block;
+  height: 1em;
+  line-height: 1;
+  text-align: left;
+  vertical-align: -.25em;
+  overflow: hidden;
+}
+.dot_box::before {
+  display: block;
+  content: '...\A..\A.';
+  white-space: pre-wrap;
+  // step-end 会使 keyframes 动画到了定义的关键帧处直接突变，并没有变化的过程
+  animation: dot 1s infinite step-start both;
+}
+@keyframes dot {
+    33% { transform: translateY(-2em); }
+    66% { transform: translateY(-1em); }
 }
 </style>

@@ -3,11 +3,11 @@
 		<van-popup :show="show" @close="popupClose" custom-style="background-color: transparent;"
 			:close-on-click-overlay="false" :z-index="10000">
 			<view class="war-horse-win-box">
-				<image class="zm-win-head" src="/static/warHorse/zm_win_head.png" mode="aspectFill"></image>
+				<image class="zm-win-head" src="https://file.y1b.cn/public/hn29th/warHorse/zm_win_head.png" mode="aspectFill"></image>
 				<!-- card -->
 				<view class="zm-card">
-					<image class="zm-card-left" src="/static/warHorse/zm_card_left.png" mode="aspectFill"></image>
-					<image class="zm-card-right" src="/static/warHorse/zm_card_right.png" mode="aspectFill"></image>
+					<image class="zm-card-left" src="https://file.y1b.cn/public/hn29th/warHorse/zm_card_left.png" mode="aspectFill"></image>
+					<image class="zm-card-right" src="https://file.y1b.cn/public/hn29th/warHorse/zm_card_right.png" mode="aspectFill"></image>
 					<view class="zm-card-title">
 						1元乐享战马换购券
 					</view>
@@ -16,13 +16,13 @@
 					</view>
 				</view>
 				<!-- 背景 -->
-				<image class="zm-bg" src="/static/warHorse/zm_bg.png" mode="aspectFill"></image>
+				<image class="zm-bg" src="https://file.y1b.cn/public/hn29th/warHorse/zm_bg.png" mode="aspectFill"></image>
 				<!-- 操作按钮 -->
 				<view class="zm-tools">
-					<image class="zm-crkb" src="/static/warHorse/zm_crkb.png" mode="aspectFill" @click="goCardBag">
+					<image class="zm-crkb" src="https://file.y1b.cn/public/hn29th/warHorse/zm_crkb.png" mode="aspectFill" @click="goCardBag">
 					</image>
 					<view class="zm-exchange">
-						<image class="zm-item-bg" src="/static/warHorse/zm_msdh.png"></image>
+						<image class="zm-item-bg" src="https://file.y1b.cn/public/hn29th/warHorse/zm_msdh.png"></image>
 						<button v-if="userInfo.mobile" class="zm-item-btn" @click="exchange"></button>
 						<button v-else class="zm-item-btn" open-type="getPhoneNumber"
 							@getphonenumber="exchangeBefore"></button>
@@ -101,7 +101,7 @@
 							expire: this.expire
 						}).then(() => {})
 						this.$redirectTo({
-							url: '/pages/personal/myCardBag/index'
+							url: '/pages/personal/myCardBag/index?type=1'
 						});
 					}
 				})

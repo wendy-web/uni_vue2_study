@@ -3,7 +3,8 @@
 		<van-popup :show="show" @close="popupClose" custom-style="background-color: transparent;"
 			:close-on-click-overlay="false" :z-index="10000">
 			<view class="war-horse-msg-box">
-				<image class="zm-msg-head" src="/static/warHorse/zm_msg_head.png" mode="aspectFill"></image>
+				<image class="zm-msg-head" src="https://file.y1b.cn/public/hn29th/warHorse/zm_msg_head.png"
+					mode="aspectFill"></image>
 				<!-- 主标题 -->
 				<view class="zm-msg-title">
 					{{msg}}
@@ -13,11 +14,13 @@
 					{{msgSmall}}
 				</view>
 				<!-- 背景 -->
-				<image class="zm-bg" src="/static/warHorse/zm_bg.png" mode="aspectFill"></image>
+				<image class="zm-bg" src="https://file.y1b.cn/public/hn29th/warHorse/zm_bg.png" mode="aspectFill">
+				</image>
 				<!-- 操作按钮 -->
 				<view class="zm-tools">
 					<view class="zm-exchange" @click="popupClose">
-						<image class="zm-item-btn" src="/static/warHorse/zm_msg_btn.png"></image>
+						<image class="zm-item-btn" src="https://file.y1b.cn/public/hn29th/warHorse/zm_msg_btn.png">
+						</image>
 						<view class="zm-item-btn zm-exchange-text">继续扫码</view>
 					</view>
 				</view>
@@ -47,8 +50,7 @@
 					this.msgSmall = '';
 				}
 				//特殊情况
-				if (this.msg == '无效二维码' || this.msg == '亲，请扫红牛拉环二维码') {
-					this.msg = '亲，请扫正确的促销拉环二维码！';
+				if (this.msg == '无效二维码') {
 					this.msgSmall = ''
 				}
 				this.show = true;

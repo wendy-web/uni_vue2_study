@@ -5,5 +5,5 @@
   <view wx:if="{{ !text }}" class="van-circle__text">
     <slot></slot>
   </view>
-  <view wx:else class="van-circle__text">{{ text }}</view>
+  <cover-view wx:else class="van-circle__text">{{ text }}</cover-view>
 </view>

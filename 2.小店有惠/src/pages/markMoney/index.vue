@@ -230,7 +230,7 @@ export default {
     },
      data() {
         return {
-        default_url: "/static/images/default_avatarUrl.png",
+        default_url: "https://file.y1b.cn/store/1-0/24131/65ba392989ede.png",
         topHeight: 0,
         order: config.orders,
         menu: config.menus,

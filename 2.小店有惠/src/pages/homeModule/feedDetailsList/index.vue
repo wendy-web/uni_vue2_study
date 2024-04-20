@@ -104,14 +104,15 @@
 </view>
 </template>
 <script>
-import { goodsQuery, bysubunionid, toggleCollect } from '@/api/modules/jsShop.js';
-import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
+import { bysubunionid, goodsQuery, toggleCollect } from '@/api/modules/jsShop.js';
 import {
-    goodsDetail,
-    goodsSearch,
-    toggleCollect as pddToggleCollect,
-    goodsPromotion
+goodsDetail,
+goodsPromotion,
+goodsSearch,
+toggleCollect as pddToggleCollect
 } from '@/api/modules/pddShop.js';
+import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
+import { mapMutations } from 'vuex';
 let timer = null;
 	export default {
 		data() {
@@ -230,6 +231,9 @@ let timer = null;
 			this.getFeedList();
 		},
 		methods: {
+			...mapMutations({
+				setMiniProgram: "user/setMiniProgram",
+			}),
 			getNextMargin(index=0, time=0) {
 				const contDomHeight = 504 + uni.upx2px(278)  + 16;
 				this.nextMargin = this.screenHeight - contDomHeight;
@@ -363,6 +367,7 @@ let timer = null;
 				const skuItem = await api(params);
 				if (skuItem.code != 1) return this.$toast(skuItem.msg);
 				const { type_id, jdShareLink, mobile_url } = skuItem.data;
+                this.setMiniProgram(this.shop_type);
 				this.$openEmbeddedMiniProgram({
 					appId: type_id,
 					path: jdShareLink || mobile_url,

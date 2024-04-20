@@ -15,8 +15,7 @@
 			</view>
 			<view class="wecome-msg" @click="checkAvatarUrl">
 				<van-field :value="nickName" :disabled="hasAvatarUrl" :input-align="'center'" right-icon="edit"
-					type="nickname" placeholder="请输入用户名" :maxlength="15" :focus="focus" @blur="focus = false"
-					@change="nickNameChange" />
+					type="nickname" placeholder="请输入用户名" :maxlength="15" :focus="focus" @change="nickNameChange" />
 			</view>
 		</view>
 		<!-- 提示信息 -->
@@ -181,7 +180,7 @@
 					//展示上传结果   
 					this.avatarUrl = res
 
-					this.handleTouchInput()
+					// this.handleTouchInput()
 
 				} catch (error) {
 					console.log(error)
@@ -242,67 +241,35 @@
 			/*微信登录*/
 			loginConfirm() {
 				this.loading = true
-				// if (this.hasAvatarUrl) {
-				// 	this.loading = false
-				// 	return this.$refs.xhNotify.show({
-				// 		type: 'warning',
-				// 		message: '请选择您的头像',
-				// 		duration: 2000
-				// 	});
-				// }
 
 				let nickName = this.nickName.replace(/\s/g, '')
 
-				// if (!nickName) {
-				// 	this.loading = false
-				// 	return this.$refs.xhNotify.show({
-				// 		type: 'warning',
-				// 		message: '请输入您的用户名',
-				// 		duration: 2000
-				// 	});
-				// }
 				//未勾选协议
 				if (!this.isAgreement) {
 					this.loading = false
 					this.$refs.protocolConfirm.show()
-					// return this.$refs.xhNotify.show({
-					// 	type: 'warning',
-					// 	message: '请阅读并同意登录协议',
-					// 	duration: 2000
-					// });
 					return
 				}
 
-				if (!nickName || this.hasAvatarUrl) {
-
+				if (this.hasAvatarUrl) {
 					this.isShow = true
-
-					// wx.showModal({
-					// 	title: '温馨提示',
-					// 	content: "我们未获得您的微信昵称或头像使用授权，将为您随机创建昵称和头像，是否同意继续",
-					// 	confirmText: "同意",
-					// 	confirmColor: "#67C23A",
-					// 	success: (res) => {
-					// 		if (res.confirm) {
-					// 			this.login({
-					// 				nickName,
-					// 				avatarUrl: this.hasAvatarUrl ? '' : this.avatarUrl
-					// 			})
-					// 			return
-					// 		}
-					// 		this.loading = false
-					// 	},
-					// 	fail: () => {
-					// 		this.loading = false
-					// 	}
-					// })
-
-				} else {
-					this.login({
-						nickName,
-						avatarUrl: this.avatarUrl
-					})
+					return
 				}
+
+				if (!nickName) {
+					this.loading = false;
+					return this.$refs.xhNotify.show({
+						type: 'warning',
+						message: '昵称不能为空',
+						duration: 2000
+					});
+				}
+
+				this.login({
+					nickName,
+					avatarUrl: this.avatarUrl
+				})
+
 			},
 			// 默认授权确认
 			handler(confirm) {
@@ -314,14 +281,14 @@
 						avatarUrl: this.hasAvatarUrl ? '' : this.avatarUrl
 					})
 				} else {
-					// debugger
 					this.loading = false
 					if (!this.hasAvatarUrl) {
-						this.handleTouchInput()
+						// this.handleTouchInput()
 					}
 				}
 			},
 			handleTouchInput() {
+				this.focus = false;
 				if (wx.requirePrivacyAuthorize) {
 					wx.requirePrivacyAuthorize({
 						success: res => {
@@ -334,7 +301,9 @@
 						}
 					})
 				} else {
-					this.focus = true;
+					setTimeout(() => {
+						this.focus = true;
+					}, 0)
 				}
 			},
 			login(data) {

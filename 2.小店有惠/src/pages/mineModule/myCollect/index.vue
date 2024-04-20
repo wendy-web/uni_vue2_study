@@ -30,7 +30,7 @@
             <view>
               <view class="list-item-title">
                 <view class="name_icon" v-if="item.face_value && item.credits">
-                    <image class="bg_img" mode="scaleToFill" src="../static/credit/name_icon.png" ></image>
+                    <image class="bg_img" mode="scaleToFill" src="https://file.y1b.cn/store/1-0/24131/65ba3900d759c.png" ></image>
                     抵{{ item.face_value}}元{{item.lx_type == 2 ? '券' : ''}}
                 </view>
                 {{ item.goods_name }}
@@ -60,10 +60,11 @@
 </template>
 
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { collectList, doCollect } from "@/api/modules/mine.js";
 import { bysubunionid, toggleCollect } from '@/api/modules/jsShop.js';
+import { collectList, doCollect } from "@/api/modules/mine.js";
 import { goodsPromotion, toggleCollect as pddToggleCollect, } from '@/api/modules/pddShop.js';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { mapMutations } from 'vuex';
 export default {
   mixins: [MescrollMixin],
   data() {
@@ -82,6 +83,9 @@ export default {
     mescrollRef.mescroll.resetUpScroll();
   },
   methods: {
+    ...mapMutations({
+      setMiniProgram: "user/setMiniProgram",
+    }),
     upCallback(page) {
       let params = {
         size: 10,
@@ -129,6 +133,7 @@ export default {
 				  const skuItem = await api(params);
           if (skuItem.code != 1) return this.$toast(skuItem.msg);
           const { type_id, jdShareLink, mobile_url } = skuItem.data;
+          this.setMiniProgram(lx_type);
           this.$openEmbeddedMiniProgram({
             appId: type_id,
             path: jdShareLink || mobile_url,

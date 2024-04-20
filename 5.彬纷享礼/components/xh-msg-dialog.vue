@@ -1,6 +1,6 @@
 <!-- 消息处理提示 -->
 <template>
-	<view class="xh-dialog xh-msg-dialog" :style="{display: isShow?'block':'none'}">
+	<view class="xh-dialog xh-msg-dialog" :style="{display: isShow ? 'block' : 'none'}">
 		<view class="xh-dialog-body xhDialog">
 			<!-- toast 背景 -->
 			<image class="dialog-bg" src="../static/images/dialog_bg.png"></image>
@@ -26,11 +26,14 @@
 					<view class="xdb-item-text suer-btn">{{buttonText}}</view>
 					<image class="xdb-item-bg" src="../../../static/images/dialog_btn_bg01.png"></image>
 				</view>
+				<view class="xdb-item" v-if="buttonRightText" @click="goTTxlBtnHandle">
+					<view class="xdb-item-text suer-btn">{{buttonRightText}}</view>
+					<image class="xdb-item-bg" src="../../../static/images/dialog_btn_bg02.png"></image>
+				</view>
 			</view>
-
 		</view>
 		<!-- 关闭按钮 -->
-		<image class="xh-dialog-close fadeInOpacity" :style="{display: isShow?'block':'none'}"
+		<image class="xh-dialog-close fadeInOpacity" :style="{display: isShow ? 'block' : 'none'}"
 			src="../static/images/toast_close.png" @click="close" />
 		<!-- 黑幕 -->
 		<view class="xh-dialog-black" @touchmove.stop></view>
@@ -38,16 +41,18 @@
 </template>
 
 <script>
-	import {
-		mapGetters
-	} from 'vuex'
-	//回调函数名
+	import { mapGetters } from 'vuex';
+	// 回调函数名
 	let _method = '';
 	export default {
 		props: {
 			buttonText: {
 				type: String,
 				default: '确认'
+			},
+			buttonRightText: {
+				type: String,
+				default: ''
 			}
 		},
 		data() {
@@ -74,7 +79,7 @@
 			},
 			show(res, method) { //{msg,msgSmall,method}
 				//消息主标题
-				this.msg = res.msg.replace('（异常）', '');
+				res.msg && (this.msg = res.msg.replace('（异常）', ''));
 				//副标题
 				if (res.data && res.data.tips) {
 					this.msgSmall = res.data.tips.replace('（异常）', '');
@@ -85,7 +90,6 @@
 				_method = method;
 				//特殊情况
 				if (this.msg == '无效二维码' || this.msg == '亲，请扫红牛拉环二维码') {
-					this.msg = '亲，请扫正确的促销拉环二维码';
 					this.msgSmall = ''
 				}
 				//显示弹窗
@@ -103,7 +107,10 @@
 				}
 			},
 			goTTxl() {
-				this.$ttxlUserPosition('code_abnormal')
+				this.$ttxlUserPosition('code_abnormal');
+			},
+			goTTxlBtnHandle() {
+				this.$emit('onWelfare');
 			}
 		}
 	};
@@ -164,6 +171,7 @@
 
 		.suer-btn {
 			color: #614900;
+			white-space: nowrap;
 		}
 
 		.xh-dialog-close {

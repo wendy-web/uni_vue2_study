@@ -3,7 +3,8 @@
 		<van-popup :show="isShow" @close="popupClose" custom-style="background-color: transparent;"
 			:close-on-click-overlay="false" :z-index="10000">
 			<view class="zm-exchange-box">
-				<image class="zm-msg-head" src="/static/warHorse/zm_msg_head.png" mode="aspectFill"></image>
+				<image class="zm-msg-head" src="https://file.y1b.cn/public/hn29th/warHorse/zm_msg_head.png"
+					mode="aspectFill"></image>
 				<!-- 主标题 -->
 				<view class="zm-msg-title">
 					核对换购数量
@@ -15,11 +16,13 @@
 					<text>罐？</text>
 				</view>
 				<!-- 背景 -->
-				<image class="zm-bg" src="/static/warHorse/zm_bg.png" mode="aspectFill"></image>
+				<image class="zm-bg" src="https://file.y1b.cn/public/hn29th/warHorse/zm_bg.png" mode="aspectFill">
+				</image>
 				<!-- 操作按钮 -->
 				<view class="zm-tools">
 					<view class="zm-exchange">
-						<image class="zm-item-bg" src="/static/warHorse/zm_msg_btn.png"></image>
+						<image class="zm-item-bg" src="https://file.y1b.cn/public/hn29th/warHorse/zm_msg_btn.png">
+						</image>
 						<button v-if="userInfo.mobile" class="zm-item-btn zm-exchange-text"
 							@click="exchange">马上兑换</button>
 						<button v-else class="zm-item-btn zm-exchange-text" open-type="getPhoneNumber"

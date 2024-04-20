@@ -1,38 +1,35 @@
 <template>
-	<view class="currency-list">
-
-		<mescroll-uni ref="mescrollRef" height="100%" @init="mescrollInit" :up="upOption" :down="downOption"
-			@down="downCallback" @emptyclick="emptyClick">
-			<!-- 品牌或活动 -->
-			<view class="currency-item" v-for="(item,index) in config" hover-class="currency-item-hover" :key="index">
-				<easy-loadimage :link="item.link" imageClass="news-imageclass" mode="aspectFill"
-					@imageClick="previewImage" :image-src="item.img"></easy-loadimage>
-				<view class="currency-item-info" @click="previewImage(item.link)">
-					<!-- 主标题 -->
-					<view class="currency-item-title">
-						<view>
-							{{item.title}}
-						</view>
-						<!-- 					<view>
-							{{activeIndexText[index]}}
-						</view> -->
-					</view>
-					<!-- 副标题 -->
-					<view class="currency-item-small">
-						{{item.digest}}
-					</view>
+<view class="currency-list">
+	<mescroll-uni ref="mescrollRef" height="100%" @init="mescrollInit" :up="upOption" :down="downOption"
+		@down="downCallback" @emptyclick="emptyClick">
+		<!-- 品牌或活动 -->
+		<view class="currency-item" v-for="(item,index) in config" hover-class="currency-item-hover" :key="index">
+			<easy-loadimage :link="item.link" imageClass="news-imageclass" mode="aspectFill"
+				@imageClick="previewImage" :image-src="item.img"></easy-loadimage>
+			<view class="currency-item-info" @click="previewImage(item.link)">
+				<!-- 主标题 -->
+				<view class="currency-item-title">
+					<view>{{item.title}}</view>
+					<!-- 					<view>
+						{{activeIndexText[index]}}
+					</view> -->
+				</view>
+				<!-- 副标题 -->
+				<view class="currency-item-small">
+					{{item.digest}}
 				</view>
 			</view>
-			<view class="banner-ad nav_cont" v-if="isAd">
-				<!-- 视频广告 -->
-				<ad unit-id="adunit-e3c4adfda6df676d" ad-type="video" ad-theme="white"></ad>
-				<!-- banner广告 -->
-				<!-- <ad unit-id="adunit-4df581ce4afefb6d"></ad> -->
-				<!-- 原生模板 -->
-				<xh-banner-ads :isFillet="false" unit-id="adunit-b793e54ad6d19f17" />
-			</view>
-		</mescroll-uni>
-	</view>
+		</view>
+		<view class="banner-ad" v-if="isAd">
+			<!-- 视频广告 -->
+			<ad unit-id="adunit-e3c4adfda6df676d" ad-type="video" ad-theme="white"></ad>
+			<!-- banner广告 -->
+			<!-- <ad unit-id="adunit-4df581ce4afefb6d"></ad> -->
+			<!-- 原生模板 -->
+			<xh-banner-ads :isFillet="false" unit-id="adunit-b793e54ad6d19f17" />
+		</view>
+	</mescroll-uni>
+</view>
 </template>
 <script>
 	import {
@@ -119,7 +116,7 @@
 
 <style lang="scss">
 	.currency-list {
-
+		height: 100%;
 		.currency-item {
 			background-color: #FFFFFF;
 			border-radius: 5px;

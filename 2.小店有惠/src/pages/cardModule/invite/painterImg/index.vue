@@ -10,7 +10,7 @@
     :lock-scroll="true"
     @touchmove.native.stop.prevent
   >
-    <image class="dia_close" src="/static/images/close.png" mode="aspectFit" @click="close"></image>
+    <image class="dia_close" src="https://file.y1b.cn/store/1-0/24131/65ba395cf1ec7.png" mode="aspectFit" @click="close"></image>
     <van-image
       width="628rpx"
       height="1180rpx"

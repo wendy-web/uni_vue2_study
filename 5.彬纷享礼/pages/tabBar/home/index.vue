@@ -5,7 +5,7 @@
 		<home-tabs :currTabs="currTabs" @tabsChange="tabsChange" />
 		<!-- 轮播 -->
 		<view class="home-page-list nav_cont">
-			<swiper :current="currTabs" @change="swiperChange">
+			<swiper class="swiper_box" :current="currTabs" @change="swiperChange">
 				<!-- 新闻 -->
 				<!-- <swiper-item>
 					<news-list v-if="showbrand" :isShowAd="isShowAd"/>
@@ -20,12 +20,11 @@
 				</swiper-item>
 			</swiper>
 			<!-- 公众号引流 -->
-		<xh-official-account customClass="official-account-home" eventName="followwoa_1"></xh-official-account>
+			<xh-official-account customClass="official-account-home" eventName="followwoa_1"></xh-official-account>
 		</view>
 
 		<!-- 自定義廣告 -->
 		<user-guide ref="userGuide" ids="home" :isNoJump="true" />
-		
 		<!-- 福利广告 -->
 		<welfare-ppopup ref="welfarePpopup" :isCustom="true"></welfare-ppopup>
 		<!-- 导航栏 -->
@@ -141,5 +140,10 @@
 		bottom: 0;
 		height: auto;
 		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		.swiper_box{
+			flex: 1;
+		}
 	}
 </style>

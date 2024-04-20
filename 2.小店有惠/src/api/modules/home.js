@@ -1,5 +1,5 @@
-import API from '../xhHttp.js';
 import { getPlatform } from "@/utils/auth.js";
+import API from '../xhHttp.js';
 const platform = getPlatform();
 //商品分组
 export function goodsGroup() {
@@ -63,6 +63,15 @@ export function updateInfo(data) {
 export function singleton(data) {
     return API.request({
         url: '/api/Team_apply/singleton',
+        method: 'post',
+        data
+    });
+}
+
+// 绑定来源的接口
+export function userPosition(data) {
+    return API.request({
+        url: '/api/User/userPosition',
         method: 'post',
         data
     });

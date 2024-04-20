@@ -3,7 +3,7 @@
 		<view id="_drag_button" class="ttxl-order-box" :class="{transition: isDock && !isMove }"
 			:style="'left: ' + left + 'px; top:' + top + 'px;'" @touchstart="touchstart"
 			@touchmove.stop.prevent="touchmove" @touchend="touchend" @click.stop.prevent="click">
-			<image class="ttxl-order" src="/static/ttxl/ttxl_order.png" mode="aspectFill"></image>
+			<image class="ttxl-order" src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_order.png" mode="aspectFill"></image>
 			<view>订单</view>
 			<view class="ttxl-order-redrot" v-if="redRot"></view>
 		</view>

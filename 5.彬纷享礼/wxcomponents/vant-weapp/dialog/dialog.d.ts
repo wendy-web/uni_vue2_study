@@ -1,20 +1,30 @@
 /// <reference types="miniprogram-api-typings" />
-declare type DialogAction = 'confirm' | 'cancel';
-declare type DialogOptions = {
+/// <reference types="miniprogram-api-typings" />
+export type Action = 'confirm' | 'cancel' | 'overlay';
+type DialogContext = WechatMiniprogram.Page.TrivialInstance | WechatMiniprogram.Component.TrivialInstance;
+interface DialogOptions {
     lang?: string;
     show?: boolean;
     title?: string;
-    width?: string | number;
+    width?: string | number | null;
     zIndex?: number;
-    context?: WechatMiniprogram.Page.TrivialInstance | WechatMiniprogram.Component.TrivialInstance;
+    theme?: string;
+    context?: (() => DialogContext) | DialogContext;
     message?: string;
     overlay?: boolean;
     selector?: string;
     ariaLabel?: string;
+    /**
+     * @deprecated use custom-class instead
+     */
     className?: string;
     customStyle?: string;
     transition?: string;
+    /**
+     * @deprecated use beforeClose instead
+     */
     asyncClose?: boolean;
+    beforeClose?: null | ((action: Action) => Promise<void | boolean> | void);
     businessId?: number;
     sessionFrom?: string;
     overlayStyle?: string;
@@ -30,18 +40,16 @@ declare type DialogOptions = {
     showCancelButton?: boolean;
     closeOnClickOverlay?: boolean;
     confirmButtonOpenType?: string;
-};
-interface Dialog {
-    (options: DialogOptions): Promise<DialogAction>;
-    alert?: (options: DialogOptions) => Promise<DialogAction>;
-    confirm?: (options: DialogOptions) => Promise<DialogAction>;
-    close?: () => void;
-    stopLoading?: () => void;
-    install?: () => void;
-    setDefaultOptions?: (options: DialogOptions) => void;
-    resetDefaultOptions?: () => void;
-    defaultOptions?: DialogOptions;
-    currentOptions?: DialogOptions;
 }
-declare const Dialog: Dialog;
+declare const Dialog: {
+    (options: DialogOptions): Promise<WechatMiniprogram.Component.TrivialInstance>;
+    alert(options: DialogOptions): Promise<WechatMiniprogram.Component.TrivialInstance>;
+    confirm(options: DialogOptions): Promise<WechatMiniprogram.Component.TrivialInstance>;
+    close(): void;
+    stopLoading(): void;
+    currentOptions: DialogOptions;
+    defaultOptions: DialogOptions;
+    setDefaultOptions(options: DialogOptions): void;
+    resetDefaultOptions(): void;
+};
 export default Dialog;

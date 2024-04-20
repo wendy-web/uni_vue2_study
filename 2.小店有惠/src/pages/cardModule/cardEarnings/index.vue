@@ -158,7 +158,7 @@ export default {
       leftImage: "/static/images/back_01.png",
       navbarColor: "linear-gradient(45deg,#f04037,#f05b37)",
       titleColor: "#FFFFFF",
-      title: "省钱卡收益",
+      title: "团长收益",
       weekMonthTab: [
         {
           name: "近7天",
@@ -178,10 +178,10 @@ export default {
         option: chartOption.option
       },
       selectDate: "",
-      showDatePicker: false, //日期组件弹窗
-      timestamp: 0, //选中的日期时间戳
-      list: [], //收益列表
-      topHeight: "", //自定义导航栏高度
+      showDatePicker: false, // 日期组件弹窗
+      timestamp: 0, // 选中的日期时间戳
+      list: [], // 收益列表
+      topHeight: "", // 自定义导航栏高度
       total_profit: 0, // 本月收益
     };
   },
@@ -204,7 +204,7 @@ export default {
     },
     getCurrentDay() {
       const date = new Date();
-      date.setDate(date.getDate() - 1);
+      // date.setDate(date.getDate() - 1);
       const year = date.getFullYear();
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       return (year + "-" + month);
@@ -235,7 +235,7 @@ export default {
       this.ec.option.xAxis.axisLabel.interval = this.weekMonthTab[this.wmIndex].interval;
       this.ec.option.series[0].data = yArr;
     },
-   profitDetailRequest(page) {
+    profitDetailRequest(page) {
       const params = {
         page: page.num,
         size: 10,
@@ -490,5 +490,11 @@ export default {
         }
       }
     }
+  }
+  // 适配底部的导航条
+  .mescroll-body.mescorll-sticky {
+    padding-bottom: calc(20rpx + constant(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(20rpx + env(safe-area-inset-bottom)) !important;
+    box-sizing: border-box;
   }
 </style>

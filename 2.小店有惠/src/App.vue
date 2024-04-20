@@ -1,13 +1,10 @@
 <script>
-import { mapActions, mapMutations, mapGetters } from "vuex";
-import { bfAppid } from "@/utils/auth.js";
-import {
-    getToken,
-    getAutoLogin,
-} from "@/utils/auth.js";
+import { userPosition } from "@/api/modules/login.js";
+import { bfAppid, getAutoLogin, getToken } from "@/utils/auth.js";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
     computed: {
-        ...mapGetters(["gift", "diaList"]),
+        ...mapGetters(["gift", "diaList", "isMiniProgram"]),
     },
     methods: {
         ...mapActions({
@@ -16,6 +13,7 @@ export default {
         }),
         ...mapMutations({
             setDiaList: "user/setDiaList",
+			setMiniProgram: "user/setMiniProgram",
             delCurrentDiaList: "user/delCurrentDiaList",
             setAutoLogin: "user/setAutoLogin",
         })
@@ -119,7 +117,7 @@ export default {
             }
         }
     },
-    onShow: function () {
+    onShow: function (event) {
         // if(!this.isAutoLogin) {
         //     const sourceData = uni.getLaunchOptionsSync();
         //     const { scene, referrerInfo } = sourceData;
@@ -128,6 +126,14 @@ export default {
         //         this.setAutoLogin(true);
         //     }
         // }
+        // &mlocid=4103942876&plocid=3108034994
+		if (!this.isMiniProgram || (this.isMiniProgram && event.query.mlocid)) {
+			const { mlocid, plocid } = event.query;
+			if(!event.query.key) {
+				userPosition({ mlocid, plocid});
+			}
+		}
+        if(this.isMiniProgram) this.setMiniProgram(0);
     },
     onHide: function () {
         console.log("App Hide");

@@ -47,7 +47,7 @@
     @up="upCallback"
     :up="upOption"
 >
-    <view class="search_lab">搜京东商品，领隐藏优惠</view>
+    <view class="search_lab">搜京东优惠，比官方更便宜</view>
     <!-- search的关键字 -->
     <view class="search_cont" v-if="searList.length">
         <view class="sear_his">搜索历史</view>
@@ -75,14 +75,14 @@
 
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import goodList from '@/components/goodList.vue';
-import getViewPort from '@/utils/getViewPort.js';
 import {
-    jdHistory,
-    delHistory,
-    keyword
+delHistory,
+jdHistory,
+keyword
 } from '@/api/modules/jsShop.js';
+import goodList from '@/components/goodList.vue';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import getViewPort from '@/utils/getViewPort.js';
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {
@@ -185,7 +185,8 @@ export default {
             let wordsArray = this.getRedWords(contentText);
             let res = contentText;
             for(let word of wordsArray){
-                const Reg = new RegExp(word, 'i');
+                let Reg = new RegExp(`(${word})(?![^<]*>|[^<>]*<\/)`, 'g');
+                if(word == '.') Reg = /(\.)(?![^<]*>|[^<>]*<\/)/g;
                 res = res.replace(Reg, `<span style="color: red;">${word}</span>`);
             }
             return res;

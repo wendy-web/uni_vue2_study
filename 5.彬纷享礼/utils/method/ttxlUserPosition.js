@@ -1,9 +1,11 @@
+import { groupGoods } from "@/api/modules/ttxl.js";
 import store from '@/store';
-
 const _defaultConfig = {
     appid: 'wx6deb62d876c03d85',
     path: '/pages/tabBar/shopMall/index'
 }
+
+const _envVersion = "trial"
 
 const _ttxlEventConfig = {
     //匹配值
@@ -22,33 +24,55 @@ const _ttxlEventConfig = {
     code_exchange: 'nmexchange',
     //本身值 需要手动调用 ttxlReportEvent
     lwvideo: 'lwvideo',
-    ntry: 'ntry', // 试试手气
-    code_newuser: 'npicture',
-    code_ntry: 'ntry'
+    code_newuser: 'npicture'
 }
 
 export function ttxlReportEvent(key) {
-    console.log('埋点', _ttxlEventConfig[key] || key)
-    wx.reportEvent(_ttxlEventConfig[key] || key)
+    console.log('埋点:', _ttxlEventConfig[key] || key);
+    wx.reportEvent(_ttxlEventConfig[key] || key);
 }
 
 export function ttxlUserPosition(key) {
-    return new Promise((resolve, reject) => {
-        let { appid: appId, path } = store.getters.ttxlJumpConfig[key] || _defaultConfig;
+    let {
+        appid: appId,
+        path
+    } = store.getters.ttxlJumpConfig[key] || _defaultConfig;
+    console.log('跳转的path：', path)
         // 没有path则不执行 并返回true
-        if (!path) return true;
+    if (!path) return true;
+    wx.navigateToMiniProgram({
+        appId,
+        path,
+        envVersion: _envVersion
+    })
+    ttxlReportEvent(key);
+}
+
+export function ttxlUserPositionAsync(key, isReport = true) {
+    return new Promise((resolve, reject) => {
+        let {
+            appid: appId,
+            path
+        } = store.getters.ttxlJumpConfig[key] || _defaultConfig;
         wx.navigateToMiniProgram({
             appId,
             path,
-            envVersion: 'trial',
-            success(res) {},
-            fail(error) {},
+            envVersion: _envVersion,
             complete: function(res) {
                 const regex = /\bcancel\b/i;
                 if (regex.test(res.errMsg)) return resolve(0); // 取消跳转
                 resolve(1);
             }
         })
-        ttxlReportEvent(key);
-    }).catch((e) => {});
+        isReport && ttxlReportEvent(key);
+    })
+}
+
+// 记录当前页面的访问 groupId：当前访问页面的路径router
+export function ttxlReportEventRequest(path) {
+    if (!path) return;
+    groupGoods({
+        path_type: -1,
+        groupId: path
+    })
 }

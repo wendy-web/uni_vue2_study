@@ -10,7 +10,8 @@ import {
 	setCheckCardVolume
 } from '@/utils/auth.js';
 import {
-	CARDTITLES
+	CARDTITLES,
+	cardNotConverted
 } from '@/utils/configJson.js';
 import {
 	addpush
@@ -23,7 +24,8 @@ const winMixin = {
 			time: "",
 			prizeratetype: 3, //25 26 代表对应活动类型 25周年 26周年 
 			CARDTITLES: CARDTITLES,
-			expire: ""
+			cardNotConverted,
+			expire: "",
 		};
 	},
 	computed: {
@@ -43,7 +45,7 @@ const winMixin = {
 				pid,
 				pull_qr,
 				prizeratetype,
-				expire
+				expire,
 			} = data;
 			this.expire = expire || ""
 			this.parmas = {

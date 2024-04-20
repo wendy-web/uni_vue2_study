@@ -10,7 +10,7 @@
     >
       <!-- 新人专享大礼包 -->
       <view class="dia_con">
-        <image class="dia_close" src="@/static/images/close.png" mode="aspectFit" @click="close"></image>
+        <image class="dia_close" src="https://file.y1b.cn/store/1-0/24131/65ba395cf1ec7.png" mode="aspectFit" @click="close"></image>
         <!-- 背景 -->
         <image
           class="dia_con-bg"
@@ -18,12 +18,6 @@
           mode="aspectFit"
           @click="openLinkHandle"
         ></image>
-        <!-- <image
-          class="dia_con-btn"
-          src="@/static/images/phone_btn.png"
-          mode="aspectFit"
-          @click="openLinkHandle"
-        ></image> -->
       </view>
     </van-popup>
   </view>

@@ -8,18 +8,17 @@
 			<!-- 用户头像与名称 -->
 			<view class="user-info" v-if="isLogin">
 				<view class="user-header" @click="goPages('/pages/personal/userInfo/index')">
-					<image class="user-img" mode="aspectFill" :src="userInfo?userInfo.avatar_url : ''" />
+					<image class="user-img" mode="aspectFill" :src="userInfo ? userInfo.avatar_url : ''" />
 					<view class="user-info-details">
-						<view class="user-info-name">{{userInfo?userInfo.nick_name:'未登录'}}
+						<view class="user-info-name">{{userInfo ? userInfo.nick_name : '未登录'}}
 							<!-- <image class="sex" mode="aspectFill"  src="../../../static/images/vip.png" /> -->
 						</view>
-						<view class="user-info-id">ID：{{userInfo?userInfo.id:''}}</view>
+						<view class="user-info-id">ID：{{userInfo ? userInfo.id : ''}}</view>
 					</view>
 				</view>
 				<view class="user-tools">
 					<view class="grand-prize" v-if="cactGetInfo" @click="goPages('/pages/scan/grandPrize/index')">
-						<image class="grand-prize-icon" src="/static/images/grand_prize_icon.png" mode="aspectFill">
-						</image>
+						<image class="grand-prize-icon" :src="sourceImg" mode="aspectFill"></image>
 						<view class="grand-prize-text">特等奖</view>
 						<!-- 去填写 -->
 						<view class="go-edit-user" v-if="!isCactComplete">去填写</view>
@@ -45,10 +44,10 @@
 			<!-- 天天享礼积分 -->
 			<view class="ttxl-user" id="ttxlUser" @click="goTtxl('my_score')">
 				<!-- 背景 -->
-				<image class="ttxl-user-bg" src="/static/ttxl/ttxl_user_jfbg.png" mode="scaleToFill"></image>
+				<image class="ttxl-user-bg" src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_user_jfbg.png" mode="scaleToFill"></image>
 				<!-- 可用积分 -->
 				<view class="ttxl-user-credits">
-					<image style="width: 178rpx;height: 30rpx;margin-right: 10rpx;" src="/static/ttxl/ttxl_user_jf.png"
+					<image style="width: 178rpx;height: 30rpx;margin-right: 10rpx;" src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_user_jf.png"
 						mode="aspectFill">
 					</image>
 					<text v-if="!isLogin" style="margin-left: 10rpx;">*</text>
@@ -57,9 +56,9 @@
 				</view>
 				<!-- 按钮 -->
 				<view class="ttxl-user-btn">
-					<image v-if="creditsData.credits>10" class="ttxl-icon" src="/static/ttxl/ttxl_user_syjf.png"
+					<image v-if="creditsData.credits > 10" class="ttxl-icon" src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_user_syjf.png"
 						mode="aspectFill"></image>
-					<image v-else class="ttxl-icon" src="/static/ttxl/ttxl_user_zjf.png" mode="aspectFill"></image>
+					<image v-else class="ttxl-icon" src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_user_zjf.png" mode="aspectFill"></image>
 				</view>
 			</view>
 			<!-- 红牛 -->
@@ -97,7 +96,7 @@
 				<view class="pcb-left" @click="goPages('/pages/personal/myCardBag/index?type=1')">
 					<view class="p-card-num" v-if="isLogin">
 						<text>{{statistics.zm_unused||0}}</text>
-						<view class="go-exchange" v-if="statistics.zm_unused>0">去换购</view>
+						<view class="go-exchange" v-if="statistics.zm_unused > 0">去换购</view>
 					</view>
 					<view class="p-card-num" v-else>
 						<text>*</text>
@@ -121,7 +120,7 @@
 				<view class="fsm-item fsm-item-first" @click="goTtxl('my_shop')">
 					<view class="fsm-item-logo">
 						<image class="fsm-item-logo-icon" mode="aspectFill"
-						src="../../../static/images/personal_icon_05.png"></image>
+							src="../../../static/images/personal_icon_05.png"></image>
 						<view class="fsm-item-new-188" v-if="user_tt_word">{{user_tt_word}}</view>
 					</view>
 					<view class="fsm-item-text" v-if="ttxlJumpConfig['my_shop']">
@@ -129,8 +128,8 @@
 					</view>
 				</view>
 				<view class="fsm-item" @click="goPages('/pages/personal/scanRecord/scanRecord')">
-					<image class="fsm-item-logo"  mode="aspectFill"
-						src="../../../static/images/personal_icon_06.png"></image>
+					<image class="fsm-item-logo" mode="aspectFill" src="../../../static/images/personal_icon_06.png">
+					</image>
 					<view class="fsm-item-text">扫码记录</view>
 				</view>
 				<!-- @click="goPages('/pages/personal/welfare/index')" -->
@@ -144,20 +143,18 @@
 					<view class="fsm-item-red animated rubberBand delay-1s" v-if="welfareTop.unused"></view>
 				</view>
 				<view class="fsm-item" @click="goPages('/pages/personal/aboutUs/index')">
-					<image class="fsm-item-logo" mode="aspectFill"
-						src="../../../static/images/personal_icon_08.png"></image>
+					<image class="fsm-item-logo" mode="aspectFill" src="../../../static/images/personal_icon_08.png">
+					</image>
 					<view class="fsm-item-text">关于我们</view>
 				</view>
 			</view>
-			<!-- 公众号引流 -->
-			<!-- <xh-official-account customClass="official-account-home" eventName="followwoa_1"></xh-official-account> -->
 			<!-- 底部 -->
 			<view class="banner-ad" v-if="isShowAd">
 				<ad unit-id="adunit-11a5f3c61ef44f16"></ad>
 			</view>
 			<!-- 天天卡券模块 -->
 			<view v-if="goodsMixin_list.length>0" style="text-align: center;font-size: 0;padding-top: 25rpx;">
-				<van-image width="260rpx" height="44rpx" src="/static/ttxl/ttxl_card_title.png" />
+				<van-image width="260rpx" height="44rpx" src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_card_title.png" />
 			</view>
 			<!-- 商品列表 -->
 			<goodList :list="goodsMixin_list" />
@@ -171,7 +168,7 @@
 				<text v-if="!isLogin" style="font-size: 32rpx;color: #FD4B47;">*</text>
 				<text v-else style="font-size: 32rpx;color: #FD4B47;">{{credits}}</text>
 				<!-- 背景 -->
-				<image class="ttxl-user-kyjf" src="/static/ttxl/ttxl_user_kyjf.png" mode="aspectFill"></image>
+				<image class="ttxl-user-kyjf" src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_user_kyjf.png" mode="aspectFill"></image>
 			</view>
 			<view class="ttxl-gddh" @click="goTtxl('my_exchange')">
 				<text>更多兑换</text>
@@ -184,33 +181,21 @@
 </template>
 
 <script>
-	import {
-		mapGetters,
-		mapActions
-	} from 'vuex';
-	import {
-		PLAQUEADVERTISING,
-		parseTime,
-		debounce
-	} from '@/utils/index.js';
-	import {
-		setWxScanQrCode,
-		getWxScanQrCode,
-		setReferer,
-		getAppLaunchNum
-	} from '@/utils/auth.js';
-	import {
-		cactGetInfo,
-		getTtxlUser
-	} from '@/api/homeApi.js';
-	import customTabBar from '@/components/customTabBar/index.vue';
-	import homeSwiper from './homeSwiper.vue';
-	// import xhOfficialAccount from '@/components/xh-official-account.vue';
-	import goodList from "@/components/ttxl/goodList.vue"
-	import ttxlOrder from "@/components/ttxl/ttxlOrder.vue"
-	import goodsMixin from "@/components/ttxl/goodsMixin.js"
-	import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-	import WxCountUp from "@/utils/WxCountUp.js"
+import { cactGetInfo, getTtxlUser } from '@/api/homeApi.js';
+import customTabBar from '@/components/customTabBar/index.vue';
+import goodList from "@/components/ttxl/goodList.vue";
+import goodsMixin from "@/components/ttxl/goodsMixin.js";
+import ttxlOrder from "@/components/ttxl/ttxlOrder.vue";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import WxCountUp from "@/utils/WxCountUp.js";
+import { getWxScanQrCode, setReferer, setWxScanQrCode } from '@/utils/auth.js';
+import { PLAQUEADVERTISING, debounce } from '@/utils/index.js';
+import { mapActions, mapGetters } from 'vuex';
+import homeSwiper from './homeSwiper.vue';
+const grand_prize_souces = {
+	6: '/static/images/grand_prize_icon.png',
+	14: '/static/images/grand_prize_icon_29.png'
+}
 
 	//插屏广告管理
 	let _PLAQUEADVERTISING = null;
@@ -218,7 +203,6 @@
 		mixins: [MescrollMixin, goodsMixin],
 		components: {
 			homeSwiper,
-			// xhOfficialAccount,
 			customTabBar,
 			goodList,
 			ttxlOrder
@@ -227,6 +211,10 @@
 			...mapGetters(['userInfo', 'statistics', 'isAuthorization', 'isLogin', 'isShowAd',
 				'welfareTop', 'user_tt_word', 'ttxlJumpConfig'
 			]),
+			sourceImg() {
+				if(!this.cactGetInfo) return;
+				return this.grand_prize_souces[this.cactGetInfo.prizeratetype];
+			},
 			isShowZm() {
 				if (!this.statistics || Object.keys(this.statistics).length === 0) return true
 				let {
@@ -242,9 +230,10 @@
 					id_card,
 					mobile,
 					detailed,
-					region
+					region,
+					noWin
 				} = this.cactGetInfo
-				return id_card && mobile && detailed && region
+				return id_card && mobile && detailed && region || noWin
 			},
 
 		},
@@ -259,7 +248,10 @@
 				credits: 0,
 				credits2: 0,
 				isSticky: false,
-				ttxlCardHeadTop: 0
+				ttxlCardHeadTop: 0,
+				grand_prize_souces,
+				reportTimer: null,
+				currentPageRouter: ''
 			};
 		},
 		watch: {
@@ -282,7 +274,9 @@
 		},
 		// 页面初始化 options为页面跳转所带来的参数
 		onLoad(o) {
-
+			const pageList = getCurrentPages();
+			const currentPageRouter = pageList[pageList.length - 1].route;
+			this.currentPageRouter = currentPageRouter;
 			wx.getPrivacySetting && wx.getPrivacySetting({
 				success: (res) => {
 					if (res.needAuthorization) {
@@ -291,7 +285,7 @@
 				}
 			})
 
-			//扫码进入当前页获取 二维码携带信息 
+			//扫码进入当前页获取 二维码携带信息
 			if (o && o.q) { //sid代表店铺ID
 				let _setReferer = 0;
 				if (new RegExp('sid').test(o.q)) {
@@ -301,7 +295,7 @@
 					let qr = decodeURIComponent(o.q);
 					setWxScanQrCode(decodeURIComponent(o.q));
 					//判断是否为拉环二维码
-					if (RegExp('HTTP://4XV.CN').test(qr)) {
+					if (RegExp('HTTP://4XV.CN', 'i').test(qr)) {
 						_setReferer = 2;
 					}
 				}
@@ -322,9 +316,14 @@
 			query.selectViewport().scrollOffset()
 			query.exec((res) => {
 				this.ttxlCardHeadTop = res[0].top
-			})
+			});
+			// 主动调用下拉使用
+			this.mescroll.triggerUpScroll();
 		},
 		onShow() {
+			clearTimeout(this.reportTimer);
+			this.reportTimer = null;
+			this.reportTimer = setTimeout(() => this.$ttxlReportEventRequest(this.currentPageRouter), 2000);
 			//更新用户信息
 			this.getUserInfo()
 			//插屏广告管理初始化
@@ -339,6 +338,10 @@
 			});
 			//初始化广告
 			_PLAQUEADVERTISING.init('adunit-2fc278170a691d0f');
+		},
+		onHide() {
+			clearTimeout(this.reportTimer);
+			this.reportTimer = null;
 		},
 		onShareAppMessage(res) {
 			if (res.from === 'button') { // 来自页面内分享按钮
@@ -371,9 +374,17 @@
 				//查询用户是否中大奖
 				cactGetInfo().then(res => {
 
-					if (res.code == 1) {
-						this.cactGetInfo = res.data
+					let data = res.data || {}
+
+					if (data.prizeratetype != 14) {
+						this.cactGetInfo = {
+							prizeratetype: 14,
+							noWin: true
+						}
+						return
 					}
+
+					this.cactGetInfo = data
 
 				})
 				getTtxlUser().then(res => {

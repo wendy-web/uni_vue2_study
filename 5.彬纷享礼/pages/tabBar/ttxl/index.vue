@@ -1,16 +1,16 @@
 <template>
 	<view class="ttxl nav_cont">
 		<!-- 背景 -->
-		<van-image class="ttxl-bg" width="100%" height="100%" use-loading-slot src="/static/ttxl/ttxl_bg.png">
+		<van-image class="ttxl-bg" width="100%" height="100%" use-loading-slot src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_bg.png">
 			<van-loading slot="loading" type="spinner" size="20" vertical />
 		</van-image>
 		<!-- head -->
 		<view class="head">
 			<van-image class="ttxl-title" width="280rpx" height="66rpx" use-loading-slot
-				src="/static/ttxl/ttxl_title.png">
+				src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_title.png">
 				<van-loading slot="loading" type="spinner" size="20" vertical />
 			</van-image>
-			<van-image class="ttxl-star" width="28rpx" height="28rpx" use-loading-slot src="/static/ttxl/ttxl_star.png">
+			<van-image class="ttxl-star" width="28rpx" height="28rpx" use-loading-slot src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_star.png">
 				<van-loading slot="loading" type="spinner" size="20" vertical />
 			</van-image>
 		</view>
@@ -30,7 +30,7 @@
 		<!-- 积分相关 -->
 		<view class="ttxl-jf" @click="goShopMall('shop_use')">
 			<van-image class="ttxl-jf-bg" width="424rpx" height="58rpx" radius="50px" use-loading-slot
-				src="/static/ttxl/ttxl_use.png">
+				src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_use.png">
 				<van-loading slot="loading" type="spinner" size="20" vertical />
 			</van-image>
 			<text class="ttxl-jf-label">可用积分</text>
@@ -38,19 +38,19 @@
 			<text class="ttxl-jf-value" v-else>*</text>
 			<!-- 去使用 -->
 			<van-image v-if="creditsData.credits>=10" class="ttxl-jf-btn" width="140rpx" height="50rpx" use-loading-slot
-				src="/static/ttxl/to_use.png">
+				src="https://file.y1b.cn/public/hn29th/ttxl/to_use.png">
 				<van-loading slot="loading" type="spinner" size="20" vertical />
 			</van-image>
 			<!-- 赚积分 -->
 			<van-image v-else class="ttxl-jf-btn" width="140rpx" height="50rpx" use-loading-slot
-				src="/static/ttxl/earn_points.png">
+				src="https://file.y1b.cn/public/hn29th/ttxl/earn_points.png">
 				<van-loading slot="loading" type="spinner" size="20" vertical />
 			</van-image>
 		</view>
 		<!-- 礼品展示 -->
 		<view class="gift-box">
 			<van-image class="gift-box-head" width="486rpx" height="284rpx" use-loading-slot
-				src="/static/ttxl/ttxl_gift_icon.png">
+				src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_gift_icon.png">
 				<van-loading slot="loading" type="spinner" size="20" vertical />
 			</van-image>
 			<!-- 礼品列表 -->
@@ -58,7 +58,7 @@
 				<!-- 商品列表 -->
 				<!-- 				<view v-for="(item,index) in list" :key="index" class="gift-item" :class="'gift-item-position-'+index">
 					<van-image class="gift-item-bg" width="180rpx" height="160rpx" use-loading-slot
-						src="/static/ttxl/gift_item_bg.png">
+						src="https://file.y1b.cn/public/hn29th/ttxl/gift_item_bg.png">
 						<van-loading slot="loading" type="spinner" size="20" vertical />
 					</van-image>
 								<van-image class="gift-item-icon" width="180rpx" height="160rpx" use-loading-slot :src="item.icon">
@@ -67,7 +67,7 @@
 				</view> -->
 				<!-- 抽奖按钮 -->
 				<!-- 				<van-image @click="goShopMall('?awardId=1')" class="ttxl-smoke" width="180rpx" height="160rpx"
-					use-loading-slot src="/static/ttxl/ttxl_smoke.png">
+					use-loading-slot src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_smoke.png">
 					<van-loading slot="loading" type="spinner" size="20" vertical />
 				</van-image> -->
 				<!-- 背景 -->
@@ -77,17 +77,17 @@
 				</van-image>
 				<!-- 红包 -->
 				<!-- 				<van-image class="red-envelope" width="114rpx" height="76rpx" use-loading-slot
-					src="/static/ttxl/red_envelope.png">
+					src="https://file.y1b.cn/public/hn29th/ttxl/red_envelope.png">
 					<van-loading slot="loading" type="spinner" size="20" vertical />
 				</van-image> -->
 				<!-- 金币 -->
 				<!-- 				<van-image class="ttxl-species" width="60rpx" height="56rpx" use-loading-slot
-					src="/static/ttxl/ttxl_species.png">
+					src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_species.png">
 					<van-loading slot="loading" type="spinner" size="20" vertical />
 				</van-image> -->
 				<!-- 券 -->
 				<!-- 			<van-image class="ttxl-ticket" width="116rpx" height="144rpx" use-loading-slot
-					src="/static/ttxl/ttxl_ticket.png">
+					src="https://file.y1b.cn/public/hn29th/ttxl/ttxl_ticket.png">
 					<van-loading slot="loading" type="spinner" size="20" vertical />
 				</van-image> -->
 			</view>

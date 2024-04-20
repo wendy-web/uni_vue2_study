@@ -1,5 +1,5 @@
-import API from '../xhHttp.js';
 import { getBaseUrl } from "@/utils/auth.js";
+import API from '../xhHttp.js';
 const BASEURL = getBaseUrl();
 //微信登录
 export function wxLogin(data) {
@@ -41,4 +41,13 @@ export function saveMobile(data) {
 //上传图片
 export function imgupload() {
     return BASEURL + '/api/tools/imgupload'
+}
+
+// 绑定来源的接口
+export function userPosition(data) {
+    return API.request({
+        url: '/api/User/userPosition',
+        method: 'post',
+        data
+    });
 }

@@ -42,18 +42,25 @@
 		<!-- 卡劵 -->
 		<view class="animated bounceIn card-coupons">
 			<!-- 25,26,27周年 -->
-			<image class="cc-left-icon" :src="'/static/images/mcb_no_converted'+(prizeratetype+24)+'.png'">
+			<image class="cc-left-icon" :src="cardNotConverted[prizeratetype]">
 			</image>
 			<!-- 右边背景 -->
 			<image class="cc-right-bg" src="/static/images/mcb_bg_white.png"></image>
-			<view class="cc-right-info">
-				<view class="cc-r-i-title">{{CARDTITLES[prizeratetype-1]}}</view>
+			<view class="cc-right-info" v-if="prizeratetype < 14">
+				<view class="cc-r-i-title">{{CARDTITLES[Number(prizeratetype)]}}</view>
 				<view class="cc-r-i-time">领取时间：{{time}}</view>
-				<view v-if="prizeratetype  >=  3" class="cc-r-i-effective animateFast tadaFast infinite">
+				<view class="cc-r-i-effective animateFast tadaFast infinite">
 					有效期：<text class="day">7</text>天
 					<view class="high-light highLight"></view>
 				</view>
 				<view class="product">产品：红牛维生素功能饮料250ml</view>
+			</view>
+			<!-- 29周年 -->
+			<view class="cc-right-29-info" v-else style="line-height: 1;">
+				<view class="cc-r-i-title">{{CARDTITLES[Number(prizeratetype)]}}</view>
+				<view class="cc-r-i-time" style="margin: 6rpx 0;">领取时间：{{time}}</view>
+				<view class="cc-r-i-time" style="margin: 6rpx 0;">有效期：{{expire}}</view>
+				<view class="product-29">产品：红牛维生素功能饮料250ml</view>
 			</view>
 		</view>
 		<!-- 按钮部分 -->
@@ -80,7 +87,7 @@
 		// data() {
 		// 	return {
 		// 		isShow: true,
-		// 		prizeratetype: 6
+		// 		prizeratetype: 14
 		// 	}
 		// }
 	};
@@ -464,6 +471,19 @@
 			z-index: 2;
 			animation-delay: 5.9s;
 			-webkit-animation-delay: 5.9s
+		}
+
+		.cc-right-29-info {
+			flex: 1;
+			margin-left: 20rpx;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
+		}
+
+		.product-29 {
+			font-size: 22rpx;
+			color: rgba(102, 102, 102, 0.5);
 		}
 
 	}

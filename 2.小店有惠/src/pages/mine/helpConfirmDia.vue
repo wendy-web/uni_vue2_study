@@ -15,7 +15,7 @@
     </view>
     <view class="cont_item">
       <view class="cont_lab">2、关于提现</view>
-      <view class="cont_txt">单次提现金额范围：11元-500元，无需手续费，提现后1~3个工作日到账。</view>
+      <view class="cont_txt">单次提现金额范围：0.1元-500元，无需手续费，提现后1~3个工作日到账。</view>
     </view>
     <van-button
       color="#F8F8F8"

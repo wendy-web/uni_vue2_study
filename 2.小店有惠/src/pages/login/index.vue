@@ -10,7 +10,7 @@
     </xh-navbar>
     <image class="login_bg" mode="widthFix" src="https://file.y1b.cn/store/1-0/231116/6555c62663786.png"></image>
     <view class="logo_cont">
-        <image class="logo_icon" mode="widthFix" src="/static/images/logo.png"></image>
+        <image class="logo_icon" mode="widthFix" src="https://file.y1b.cn/store/1-0/24131/65ba38e12f007.png"></image>
         <view>小店有惠</view>
     </view>
     <view class="btn_cont">

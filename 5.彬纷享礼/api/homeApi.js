@@ -251,11 +251,14 @@ export function videofb(data) {
 	});
 }
 
-//是否或大奖
+//是否获大奖
 export function cactGetInfo() {
 	return API.request({
 		url: '/api2/cact/getInfo',
-		method: 'post'
+		method: 'post',
+		data: {
+			prizeratetype: 14
+		}
 	});
 }
 
@@ -303,6 +306,15 @@ export function imgupload() {
 export function addpush(data) {
 	return API.request({
 		url: '/api2/cpush/addpush',
+		method: 'post',
+		data
+	});
+}
+
+//中奖列表
+export function awardList(data) {
+	return API.request({
+		url: '/api2/cact/awardList',
 		method: 'post',
 		data
 	});

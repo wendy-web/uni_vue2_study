@@ -18,9 +18,9 @@
 		<!-- 战马提示 -->
 		<!-- <war-horse-msg ref="warHorseMsg" @closeNotice="closeNotice" /> -->
 		<!-- 28周年红牛初次中奖 -->
-		<win-popup28 ref="winPopup28" @closeNotice="closeNotice" />
+		<win-popup-new ref="winPopupNew" @closeNotice="closeNotice" :awardList="awardList" />
 		<!-- 中大奖 -->
-		<grand-prize ref="grandPrize" @closeNotice="closeNotice" />
+		<grand-prize ref="grandPrize" @closeNotice="closeNotice" :awardList="awardList" />
 		<!-- 提示背景 -->
 		<cover-view class="scan-tips" v-show="isShowTips">
 			<cover-view class="scan-tips-num">扫拉环二维码</cover-view>
@@ -42,32 +42,32 @@
 
 <script>
 	import {
-		cscanQr
-	} from '@/api/homeApi.js';
+awardList,
+cscanQr
+} from '@/api/homeApi.js';
 	/*消息提示*/
 	import {
-		xhAudio
-	} from '@/utils/index.js';
-	import {
-		fileBaseUrl
-	} from '@/api/http/xhHttp.js';
-	import xhWinningWindow from './xh-winning-window.vue';
-	import winAgain from './winAgain.vue';
-	import winAgainThree from './winAgainThree.vue';
-	import winAgainFour from './winAgainFour.vue';
-	import warHorseWin from './warHorseWin.vue'
+fileBaseUrl
+} from '@/api/http/xhHttp.js';
+import {
+xhAudio
+} from '@/utils/index.js';
+import warHorseWin from './warHorseWin.vue';
+import winAgain from './winAgain.vue';
+import winAgainFour from './winAgainFour.vue';
+import winAgainThree from './winAgainThree.vue';
+import xhWinningWindow from './xh-winning-window.vue';
 	// import warHorseMsg from './warHorseMsg.vue'
-	import winPopup28 from './winPopup28.vue'
-	import grandPrize from './grandPrize.vue'
 	import {
-		removeWxScanQrCode,
-		getScanSweepNum,
-		setScanSweepNum
-	} from '@/utils/auth.js';
-	import log from '@/utils/log.js';
-	import {
-		getUserLocation
-	} from '@/utils/getUserLocation.js';
+getScanSweepNum,
+removeWxScanQrCode,
+setScanSweepNum
+} from '@/utils/auth.js';
+import {
+getUserLocation
+} from '@/utils/getUserLocation.js';
+import grandPrize from './grandPrize.vue';
+import winPopupNew from './winPopupNew.vue';
 	//scanCode
 	let _currCode = '';
 	//音频控制
@@ -106,7 +106,8 @@
 		data() {
 			return {
 				isShowTips: true,
-				isHaveProblem: false
+				isHaveProblem: false,
+				awardList: []
 			};
 		},
 		onShow() {
@@ -124,6 +125,12 @@
 					this.showScan();
 				}
 			}, 0);
+
+			awardList({
+				prizeratetype: 14
+			}).then(res => {
+				this.awardList = res.data || []
+			})
 		},
 		components: {
 			xhWinningWindow,
@@ -132,7 +139,7 @@
 			winAgainFour,
 			warHorseWin,
 			// warHorseMsg,
-			winPopup28,
+			winPopupNew,
 			grandPrize
 		},
 		methods: {
@@ -181,6 +188,10 @@
 				if (!this.isHaveProblem) this.$refs.xhScanCode.reset();
 			},
 			async winningCheck(scanCode) {
+				/*未登录或授权*/
+				if (!this.$hasLogin()) {
+					return
+				}
 
 				try {
 					//定位参数
@@ -198,7 +209,7 @@
 						//将25周年劵统一设置为 prizeratetype = 1
 						if ([null, 0].indexOf(res.data.prizeratetype) > -1) res.data.prizeratetype = 1
 						//战马券
-						if ([4, 11].includes(res.data.prizeratetype)) {
+						if ([4, 11, 15].includes(res.data.prizeratetype)) {
 							this.$refs.warHorseWin.popupShow(res.data)
 							//控制插屏广告
 							if (!wx.getStorageSync('zmcpad')) {
@@ -210,8 +221,8 @@
 							return
 						}
 						//超级大奖
-						if (res.data.prizeratetype === 6 && res.data.qr_type === 3) {
-							this.$refs.grandPrize.show(res.data)
+						if ([6, 14].includes(res.data.prizeratetype) && res.data.qr_type === 3) {
+							this.$refs.grandPrize.show(res.data.prizeratetype)
 							return
 						}
 						//累加次数
@@ -223,8 +234,13 @@
 						//再次中奖
 						switch (_number) {
 							case 1: //第一中奖
-								res.data.prizeratetype === 6 ? this.$refs.winPopup28.show(res.data) : this.$refs
-									.winningWindow.show(res.data)
+								//28-29周年样式一样
+								if ([6, 14].includes(res.data.prizeratetype)) {
+									this.$refs.winPopupNew.show(res.data)
+								} else {
+									//往期
+									this.$refs.winningWindow.show(res.data)
+								}
 								break;
 							case 2: //第二次中奖
 								this.$refs.winAgain.show(res.data);
@@ -252,7 +268,7 @@
 						});
 						return;
 					}
-					//中奖积分
+					// 中奖积分
 					if (res.code == 3) {
 						_currCode = ''
 						_number = 0; //中断连续
@@ -263,10 +279,19 @@
 						});
 						return;
 					}
-					// //其它情况
-					// this.$go({
-					// 	url: `/pages/scan/scanErr/index?type=zm&msg=${res.msg}`
-					// })
+					// 战马溯源
+					if (res.code == 6) {
+						_currCode = ''
+						_number = 0; //中断连续
+						setScanSweepNum(0);
+						const pathName = res.data.prizeratetype === 1 ? 'bottled' : 'tank'
+						this.$go({
+							url: `/pages/zm/traceability/${pathName}/index?data=${encodeURIComponent(JSON
+								.stringify(res.data))}`
+						});
+						return
+
+					}
 
 					_currCode = ''
 
@@ -277,7 +302,6 @@
 						})
 						return
 					}
-
 					this.$go({
 						url: `/pages/scan/scanErr/index?type=hn&msg=${res.msg}&tips=${res.data&&res.data.tips}`
 					})

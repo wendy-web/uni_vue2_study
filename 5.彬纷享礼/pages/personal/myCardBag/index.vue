@@ -51,17 +51,14 @@
 		<xh-notify ref="xhNotify" />
 		<!-- 自定義廣告 -->
 		<!-- <user-guide ids="myCardBag" ref="userGuide" /> -->
-		<!-- 换购操作弹窗 -->
-		<operat ref="OID" />
 	</view>
 </template>
 <script>
-	import homeTabs from './homeTabs';
-	import confirmExchange from './confirmExchange';
+	import homeTabs from './hnModule/homeTabs';
+	import confirmExchange from './hnModule/confirmExchange';
 	import zmConfirmExchange from './zmModule/zmConfirmExchange.vue';
-	import mescrollItem from './mescroll-item';
-	import operat from './operat.vue';
-	import typeTabs from './typeTabs.vue'
+	import mescrollItem from './hnModule/mescroll-item';
+	import typeTabs from './hnModule/typeTabs.vue'
 	import {
 		getNavbarData
 	} from '@/utils/xhNavbar.js';
@@ -99,7 +96,6 @@
 			confirmExchange,
 			zmConfirmExchange,
 			mescrollItem,
-			operat,
 			typeTabs
 		},
 		onLoad(option) {
@@ -213,11 +209,15 @@
 				// 	url: '/pages/personal/favoredMovie/index'
 				// });
 				if (this.type == 0) {
-					this.$refs.OID.show();
+					// this.$refs.OID.show();
+					uni.previewImage({
+						current: 'https://file.y1b.cn/public/hn29th/xfzdh1.png',
+						urls: ['https://file.y1b.cn/public/hn29th/xfzdh1.png'] // 需要预览的图片http链接列表
+					});
 				} else {
 					uni.previewImage({
-						current: 'https://file.y1b.cn/public/img/2023/zm_rm_02.png',
-						urls: ['https://file.y1b.cn/public/img/2023/zm_rm_02.png'] // 需要预览的图片http链接列表
+						current: 'https://file.y1b.cn/public/img/2023/zmb202302.png',
+						urls: ['https://file.y1b.cn/public/img/2023/zmb202302.png'] // 需要预览的图片http链接列表
 					});
 				}
 			}

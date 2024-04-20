@@ -1,57 +1,48 @@
 <template>
   <view class="good-list">
-    <view
-      class="good-list-item"
-      v-for="(good, index) in list"
-      :key="index"
-    >
+    <view class="good-list-item"
+    :style="{
+      'height': isSearchItem && 'auto'
+    }"
+      v-for="(good, index) in list" :key="index" :data-type="item.lx_type">
       <view class="item_cont" v-if="good.type == 4">
         <!-- 视频组件 -->
         <channel-video
-          class="channel_video"
-          object-fit="cover"
-          autoplay loop
-          :muted="true"
+          class="channel_video" object-fit="cover"
+          autoplay loop :muted="true"
           :feed-id="good.video_account_id"
           :finder-user-name="good.video_id"
           @error="sphError"
         >
           <!-- 商品图片 -->
-          <van-image
-            @click="openSph(good.video_account_id, good.video_id)"
-            width="100%"
-            height="100%"
-            :src="good.image"
-            use-loading-slot
-          >
-            <van-loading slot="loading" type="spinner" size="20" vertical />
+          <van-image @click="openSph(good.video_account_id, good.video_id)"
+            width="100%" height="100%"
+            use-loading-slot :src="good.image"
+          ><van-loading slot="loading" type="spinner" size="20" vertical />
           </van-image>
         </channel-video>
       </view>
       <!-- 内容 -->
-      <view class="item_cont" v-else
-        @click="goDetails(good, index)"
-      >
-        <!-- 商品图片 -->
+      <view class="item_cont" v-else @click="goDetails(good, index)">
+        <image class="is_banner_img" v-if="good.is_banner" :src="good.imgs[0] || good.picList[0] || good.image"></image>
         <view class="good-img">
           <van-image
-            height="362rpx"
-            width="100%"
-            radius="8px 8px 0 0"
+            height="362rpx" width="100%"
+            radius="8px 8px 0 0" use-loading-slot
             :src="good.imgs[0] || good.picList[0] || good.image"
-            use-loading-slot
-          >
-            <van-loading slot="loading" type="spinner" size="20" vertical />
+          ><van-loading slot="loading" type="spinner" size="20" vertical />
           </van-image>
         </view>
-
         <!-- 商品名称 -->
         <view class="good-name">
-            <view class="name_icon" v-if="good.face_value && good.credits ">
-                <image class="bg_img" mode="scaleToFill"  src="@/static/images/name_icon.png" ></image>
-                抵{{ good.face_value}}元{{good.lx_type == 2 ? '券' : ''}}
-            </view>
+          <view class="name_icon" v-if="good.face_value && good.credits ">
+            <image class="bg_img" mode="scaleToFill" src="https://file.y1b.cn/store/1-0/24131/65ba3900d759c.png" ></image>
+            抵{{ good.face_value}}元{{good.lx_type == 2 ? '券' : ''}}
+          </view>
           {{ good.goods_name || good.title }}
+        </view>
+        <view class="use_cont">
+          <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
         </view>
         <view class="search_item-box" v-if="isSearchItem ">
           <view class="credit_text">{{ good.deduction_credits || good.credits || 0 }}积分</view>
@@ -63,30 +54,14 @@
                 {{good.lowestCouponPrice||0}}
               </text>
             </view>
-            <view class="good_lab" v-if="initShowEx(good)">
-              月售{{ good.exch_user_num ||  good.inOrderCount30Days }}
-            </view>
+            <view class="good_lab" v-if="(good.lx_type == 2) && good.inOrderCount30Days">月售{{ good.inOrderCount30Days}}</view>
           </view>
         </view>
         <!-- 价格+积分 -->
         <view class="good-price-box" v-else>
           <view class="credit_text">{{ good.credits || 0 }}积分</view>
-          <!-- <view class="price_text" v-if="!([1, 2, 3].includes(good.type) && good.sale_price<=0) && good.lx_type != 2">+￥{{ good.sale_price }}</view> -->
-          <!-- <view class="price-symbol"> ￥ </view> -->
-          <!-- <view>
-            <text class="price-val">{{ good.sale_price.split(".")[0] }}.</text>
-            <text class="price-float">{{ good.sale_price.split(".")[1] }}</text>
-          </view>
-          <view class="good-credit" v-if="good.deduction_credits > 0">
-            +{{ good.deduction_credits }}积分
-          </view> -->
-          <view class="good_lab" v-if="initShowEx(good)">
-            月售{{ good.exch_user_num || good.inOrderCount30Days }}
-          </view>
-          <!-- <view class="offical-info" v-if="good.lx_type != 2">
-            <view class="tag"> 官 </view>
-            <view class="offical-num"> ￥{{ good.price }} </view>
-          </view> -->
+          <view class="good_lab" v-if="(good.lx_type == 2) && good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</view>
+          <view class="good_lab" v-if="(good.lx_type == 3) && good.sales_tip">已售{{ good.sales_tip }}</view>
         </view>
       </view>
     </view>
@@ -100,8 +75,8 @@
 </template>
 
 <script>
-import goDetailsFun from '@/utils/goDetailsFun';
 import confirmDia from "@/components/confirmDia.vue";
+import goDetailsFun from '@/utils/goDetailsFun';
 export default {
   mixins: [goDetailsFun],
   components: {
@@ -134,10 +109,6 @@ export default {
     };
   },
   methods: {
-    // 展示月售
-    initShowEx(item) {
-      return (item.lx_type == 2) && (item.exch_user_num || item.inOrderCount30Days);
-    },
     goDetails(item, index) {
       this.detailsFun_mixins(
         item,
@@ -149,10 +120,9 @@ export default {
       this.confirmDiaShow = false;
       this.$go("/pages/mineModule/myCredit/index");
     }
-  },
+  }
 };
 </script>
-
 <style lang="scss">
 .good-list {
   position: relative;
@@ -165,7 +135,7 @@ export default {
   .good-list-item {
     width: 49%;
     break-inside: avoid;
-    height: 538rpx;
+    height: 558rpx;
     background-color: #ffffff;
     border-radius: 8px;
     position: relative;
@@ -175,6 +145,15 @@ export default {
       width: 100%;
       height: 100%;
       z-index: 0;
+      .is_banner_img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        border-radius: 8px;
+      }
     }
     .channel_video{
       position: absolute;
@@ -206,7 +185,7 @@ export default {
     overflow: hidden;
     font-size: 28rpx;
     font-weight: 400;
-    color: #333333;
+    color: #333;
     padding: 0 16rpx;
     margin-top: 10rpx;
     overflow: hidden;
@@ -262,7 +241,7 @@ export default {
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
-    margin: 26rpx 16rpx 12rpx;
+    margin: 10rpx 16rpx 12rpx;
     white-space: nowrap;
     position: relative;
     .good-credit {
@@ -285,7 +264,7 @@ export default {
   }
 }
 .search_item-box{
-  padding: 0 16rpx;
+  padding: 0 16rpx 16rpx;
   box-sizing: border-box;
   .credit_text{
     font-size: 26rpx;
@@ -326,5 +305,26 @@ export default {
 .sph-item {
   width: 344rpx;
   height: 344rpx;
+}
+.use_cont {
+  height: 34rpx;
+  line-height: 34rpx;
+  font-size: 24rpx;
+  margin-top: 10rpx;
+}
+.use_cont-left {
+  color: #32a666;
+  // margin-right: 18rpx;
+  padding: 0 12rpx;
+  display: flex;
+  align-items: center;
+  position: relative;
+  &::before {
+    content: "\3000";
+    width: 30rpx;
+    height: 30rpx;
+    background: url("https://test-file.y1b.cn/store/1-0/24312/65f023e89516c.png")  0 0 / 100% 100% no-repeat;
+    margin-right: 5rpx;
+  }
 }
 </style>

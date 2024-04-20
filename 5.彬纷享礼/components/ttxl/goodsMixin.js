@@ -10,12 +10,12 @@ export default {
 			goodsMixin_pathType: 0,
 			goodsMixin_list: [],
 			goodsMixin_downOption: {
-				auto: true,
+				auto: false,
 				use: true,
 				bgColor: "#ffffff",
 			},
 			goodsMixin_upOption: {
-				auto: true, // 不自动加载
+				auto: false, // 不自动加载
 				use: true,
 				page: {
 					num: 0,

@@ -2,10 +2,11 @@
 	<!-- 注: 本示例仅演示mescroll-body写在一层子组件的情况, 其实同样适用mescroll-body写在子子..子组件的情况, 只需每一层都要写上第一步和第二步的代码即可 -->
 	<view class="scan-record">
 		<view class="sr-date-select">
-			<view class="sr-date-btn" @click="isOpen = !isOpen">
+			<view class="sr-date-btn" @click="showCalendar">
 				<image class="sr-date-logo" src="../static/date_select.png" mode="widthFix"></image>
 				<view class="notice">日期筛选</view>
-				<image class="sr-date-icon" :class="{'open':isOpen}" src="../static/date_select_icon.png" mode="widthFix">
+				<image class="sr-date-icon" :class="{'open':isOpen}" src="../static/date_select_icon.png"
+					mode="widthFix">
 				</image>
 			</view>
 			<view class="sr-date-btn-text" v-if="select_time.length>0">
@@ -30,16 +31,9 @@
 			</view>
 		</mescroll-body>
 		<!-- 时间范围 -->
-		<van-calendar 
-		:show="isOpen" 
-		type="range" 
-		allow-same-day
-		:default-date="[Date.now(),Date.now()]"
-		@close="onClose" 
-		confirm-disabled-text="请选择结束时间"
-		:min-date="minDate"
-		:max-date="maxDate"
-		@confirm="onConfirm" />
+		<van-calendar :show="isOpen" type="range" allow-same-day :default-date="[Date.now(),Date.now()]"
+			@close="onClose" confirm-disabled-text="请选择结束时间" :min-date="minDate" :max-date="maxDate"
+			@confirm="onConfirm" />
 	</view>
 </template>
 
@@ -58,14 +52,14 @@
 				isOpen: false,
 				listData: [],
 				select_time: [],
-				minDate: new Date(2020,7,1).getTime(),
+				minDate: new Date().getTime(),
 				maxDate: new Date().getTime(),
 			};
 		},
 		methods: {
 			upCallback(page) {
 				let parmas = {
-					next:page.num
+					next: page.num
 				};
 				//配置查询参数
 				if (this.select_time && this.select_time.length > 0) {
@@ -74,21 +68,23 @@
 				}
 				//联网加载数据
 				scanlog(parmas).then(res => {
-					let data = res.data||{list:[]};
-					 //    //处理显示
-					 //    data.list.forEach(function(item){
-							
-						// 	 if(item.code==0){
-						// 		 if(item.prizeratetype == 2)item.title = '26周年1元享红牛拉环扫码';
-						// 		 else if(item.prizeratetype == 3)item.title = '27周年1元乐享拉环扫码';
-						// 		 else if([null,0,1].indexOf(item.prizeratetype)>-1)item.title = '25周年1元轻松享拉环扫码';
-						// 		 else if(item.prizeratetype == 4)item.title = '战马1元乐享拉环扫码'
-						// 	 }else{
-						// 		 item.title = '拉环扫码'
-						// 	 }
-							
-						// });
-						
+					let data = res.data || {
+						list: []
+					};
+					//    //处理显示
+					//    data.list.forEach(function(item){
+
+					// 	 if(item.code==0){
+					// 		 if(item.prizeratetype == 2)item.title = '26周年1元享红牛拉环扫码';
+					// 		 else if(item.prizeratetype == 3)item.title = '27周年1元乐享拉环扫码';
+					// 		 else if([null,0,1].indexOf(item.prizeratetype)>-1)item.title = '25周年1元轻松享拉环扫码';
+					// 		 else if(item.prizeratetype == 4)item.title = '战马1元乐享拉环扫码'
+					// 	 }else{
+					// 		 item.title = '拉环扫码'
+					// 	 }
+
+					// });
+
 					//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
 					this.mescroll.endSuccess(data.list.length);
 					//设置列表数据
@@ -99,10 +95,15 @@
 					this.mescroll.endErr();
 				});
 			},
+			showCalendar() {
+				this.minDate = new Date(2020, 7, 1).getTime();
+				this.maxDate = new Date().getTime();
+				this.isOpen = true;
+			},
 			onClose() {
 				this.isOpen = false;
 			},
-			reset(){
+			reset() {
 				this.select_time = [];
 				this.mescroll.resetUpScroll();
 			},
@@ -130,8 +131,9 @@
 			z-index: 1;
 			background-color: #FFFFFF;
 		}
-		
-		.sr-date-btn,.sr-date-btn-text{
+
+		.sr-date-btn,
+		.sr-date-btn-text {
 			display: flex;
 			align-items: center;
 		}
@@ -152,14 +154,14 @@
 			transform: rotate(-180deg);
 			transition: 0.2s;
 		}
-		
-		.select-date-text{
+
+		.select-date-text {
 			font-size: 25rpx;
 			color: #999;
 			margin-left: 10rpx;
 		}
-		
-		.reset-icon{
+
+		.reset-icon {
 			width: 40rpx;
 			height: 40rpx;
 			margin-left: 8rpx;

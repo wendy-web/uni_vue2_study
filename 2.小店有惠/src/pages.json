@@ -87,21 +87,15 @@
         "backgroundColor": "#F8F8F8",
         "list": [{
                 "pagePath": "pages/home/index",
-                "text": "积分商城",
-                "iconPath": "/static/images/navbar/icon_home.png",
-                "selectedIconPath": "/static/images/navbar/icon_home_active.png"
+                "text": "积分商城"
             },
             {
                 "pagePath": "pages/card/index",
-                "text": "赚钱中心",
-                "iconPath": "/static/images/navbar/icon_card.png",
-                "selectedIconPath": "/static/images/navbar/icon_card_active.png"
+                "text": "赚钱中心"
             },
             {
                 "pagePath": "pages/mine/index",
-                "text": "我的",
-                "iconPath": "/static/images/navbar/icon_mine.png",
-                "selectedIconPath": "/static/images/navbar/icon_mine_active.png"
+                "text": "我的"
             }
         ]
     },
@@ -238,7 +232,7 @@
                     "path": "cardEarnings/index",
                     "style": {
                         "navigationStyle": "custom",
-                        "navigationBarTitleText": "省钱卡收益"
+                        "navigationBarTitleText": "团长收益"
                     }
                 },
                 {

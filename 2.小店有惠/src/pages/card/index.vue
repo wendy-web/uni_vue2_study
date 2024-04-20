@@ -44,7 +44,7 @@
             <view class="about_title">
                 <image
                     class="about_title-bg"
-                    src="/static/images/card/about_title-bg.png"
+                    src="https://file.y1b.cn/store/1-0/24131/65ba37b77b9ad.png"
                     mode="aspectFill"
                 ></image>
                 <text>关于团长</text>
@@ -100,13 +100,29 @@
                 成功邀请：{{peopleNums}}人<van-icon name="arrow" color="#fff" size="28rpx" style="margin-left: 10rpx;" />
             </view>
             <view class="top_btn heartBeat" @click="inviteHandle"></view>
+            <!-- 查看收益 -->
             <view class="top_earn" @click="goToCardEarnings"></view>
         </view>
         <view class="cont_box">
-            <view class="leader_intro fl_bet" @click="openLeadDiaHandle">
-                <view>赚钱指引</view>
-                <view class="intro_right">立即了解<van-icon name="arrow" color="#aaa" size="28rpx" style="margin-left: 10rpx;" /></view>
+            <!-- <view class="leader_intro fl_bet" @click="openLeadDiaHandle">
+                <view>赚钱指南</view>
+                <view :class="['intro_right', isShowLeadDot ? 'active' : '']">
+                    立即了解<van-icon name="arrow" color="#aaa" size="28rpx" style="margin-left: 20rpx;" />
+                </view>
+            </view> -->
+            <view class="code_box">
+                <van-image
+                    width="100%" height="100%"
+                    src="https://test-file.y1b.cn/store/1-0/2438/65eaeacd198ba.png"
+                    use-loading-slot
+                    :show-menu-by-longpress="true"
+                    fit="widthFix"
+                ><van-loading slot="loading" type="spinner" size="20" vertical />
+                </van-image>
             </view>
+
+
+
             <block v-for="(item, index) in textList" :key="index">
                 <view class="intro_title">
                     <text class="intro_title-txt">{{ item.title }}</text>
@@ -142,11 +158,6 @@
     @setIndex="setIndexHandle"
     @close="isShowLeadDia = false"
 ></leadDia>
-<confirmDia
-    :isShow="isShowResult"
-    @close="isShowResult = false"
-    @confirm="confirmHandle"
-></confirmDia>
 <!-- 报名成功 -->
 <report-success-dia
     :isShow="isShowSuccess"
@@ -154,23 +165,37 @@
     label="1-3个工作日内审核完毕"
     @close="closeSuccessHandle"
 ></report-success-dia>
+<!-- 审核成功 -->
+<report-success-dia
+    :isShow="isShowResult"
+    title="审核成功"
+    label="恭喜您成为团长"
+    btnText="马上邀请赚钱"
+    @close="closeSuccessHandle"
+></report-success-dia>
+
+<showImg-dia
+    :isShow="isShowImg"
+    @close="isShowImg = false"
+></showImg-dia>
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { apply, applyInfo, inviteXq, isSend, msgTemplate, wordConfig } from "@/api/modules/card.js";
 import reportSuccessDia from '@/components/reportSuccessDia.vue';
-import leadDia from './leadDia.vue';
-import confirmDia from './confirmDia.vue';
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
-import { mapGetters, mapActions, mapMutations } from "vuex";
-import { getShowLeadStep } from "@/utils/auth.js";
-import { apply, applyInfo, msgTemplate, wordConfig, inviteXq, isSend } from "@/api/modules/card.js";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { getBaseUrl, getShowLeadStep, getStorage, setStorage } from "@/utils/auth.js";
+import { parseTime } from '@/utils/index.js';
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import leadDia from './leadDia.vue';
+import showImgDia from './showImgDia.vue';
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {
         reportSuccessDia,
         leadDia,
-        confirmDia,
+        showImgDia
     },
     data() {
         return {
@@ -193,17 +218,17 @@ export default {
             reasonList:[
                 {
                     id: 0,
-                    icon: '/static/images/card/icon0.png',
+                    icon: 'https://file.y1b.cn/store/1-0/24131/65ba3cedf3991.png',
                     text: '收益高'
                 },
                 {
                     id: 1,
-                    icon: '/static/images/card/icon1.png',
+                    icon: 'https://file.y1b.cn/store/1-0/24131/65ba3d03ae567.png',
                     text: '长久生意'
                 },
                 {
                     id: 2,
-                    icon: '/static/images/card/icon3.png',
+                    icon: 'https://file.y1b.cn/store/1-0/24131/65ba3d22bfa62.png',
                     text: '拥有副业'
                 }
             ],
@@ -213,7 +238,13 @@ export default {
             textList: [],
             text2List: [],
             peopleNums: 0,
-            showTitleBg: false
+            showTitleBg: false,
+            timer: null,
+            isShowImg: false,
+            isShowLeadDot: false,
+            cur_date: null,
+            showLeadDotStorageKey: `${getBaseUrl()}_showLeadDot_day`,
+
         }
     },
     watch: {
@@ -231,6 +262,12 @@ export default {
             if(newValue.length && (newValue[0] == 'leadDia')) {
                 this.isShowLeadDia = true;
                 this.delCurrentDiaList();
+            }
+        },
+        isApplyStatus(newValue, oldValue) {
+            console.log('审核中', newValue)
+            if(newValue == 1 && !this.userInfo.is_team) {
+                this.setTimeApplyInfo();
             }
         }
     },
@@ -254,6 +291,10 @@ export default {
         }
     },
     async onLoad() {
+		let cur_date = parseTime(new Date(), "{y}/{m}/{d}");
+        this.cur_date = cur_date;
+        const showLeadDotStorageDay = getStorage(this.showLeadDotStorageKey);
+        if(!showLeadDotStorageDay || showLeadDotStorageDay != cur_date) this.isShowLeadDot = true;
         this.wordConfigInit();
         this.initStatus();
         const res = await getNavbarData();
@@ -293,8 +334,13 @@ export default {
             this.currIndex = index;
         },
         openLeadDiaHandle() {
-            this.currIndex = 0;
-            this.isShowLeadDia = true;
+            // this.currIndex = 0;
+            // this.isShowLeadDia = true;
+            this.isShowImg = true;
+            if(this.isShowLeadDot) {
+                this.isShowLeadDot = false;
+				setStorage(this.showLeadDotStorageKey, this.cur_date);
+            }
         },
         async wordConfigInit() {
             const res = await wordConfig();
@@ -315,37 +361,54 @@ export default {
             if(res.code!= 1) return;
             this.isApplyStatus = res.data;
             if(this.isApplyStatus == 2) {
-                return this.isShowResult = true;
+                this.isShowSuccess = false;
+                this.isShowResult = true;
+                return;
             }
             if(this.isApplyStatus && showToast) {
                 this.$toast('报名审核中');
             }
+        },
+        setTimeApplyInfo() {
+            this.timer = setTimeout(async () => {
+                const res = await applyInfo();
+                if(res.code!= 1) return;
+                if(res.data == 2) {
+                    this.isShowSuccess = false;
+                    this.isShowResult = true;
+                    return;
+                }
+                this.setTimeApplyInfo();
+            }, 1000);
         },
         domObjHeightHandle(height) {
             this.tabHeightValue = height;
         },
         async goToCardEarnings() {
             if(!this.isAutoLogin) return this.$go('/pages/login/index');
-            // 是否需要发送协议通知
-            if(!this.vipObject.is_send || !this.vipObject.is_events) {
-                const msgRes = await msgTemplate();
-                if(msgRes.code != 1) return this.$toast(msgRes.msg);
-                const { settle, events } = msgRes.data;
-                let tmplIds = [];
-                (!this.vipObject.is_send) && tmplIds.push(settle);
-                (!this.vipObject.is_events) && tmplIds.push(events);
+            const msgRes = await msgTemplate();
+            if(msgRes.code == 1 && msgRes.data) {
+                const { settle, events, invite } = msgRes.data;
+                let tmplIds = [invite];
+                (!this.vipObject.is_send && settle) && tmplIds.push(settle);
+                (!this.vipObject.is_events && events) && tmplIds.push(events);
+                tmplIds = tmplIds.filter(item => !!item);
+                // console.log('tmplIds', tmplIds)
                 const subRes = await this.$subscribeMessageHandle(tmplIds);
                 const settleResult = subRes[settle];
                 const eventsResult = subRes[events];
+                const inviteResult = subRes[invite];
                 const params = {
                     is_send: 0,
-                    is_events: 0
+                    is_events: 0,
+                    is_invite: 0
                 }
                 if(settleResult == 'accept') params.is_send = 1;
                 if(eventsResult == 'accept') params.is_events = 1;
+                if(inviteResult == 'accept') params.is_invite = 1;
                 isSend(params);
             }
-            this.$go('/pages/cardModule/cardEarnings/index');
+            this.$go("/pages/cardModule/cardEarnings/index");
         },
         inviteHandle() {
             if(!this.isAutoLogin) return this.$go('/pages/login/index');
@@ -375,25 +438,28 @@ export default {
             if(this.isApplyStatus) return this.applyInfoRequest(true);
             const res = await apply();
             if(res.code!= 1) return this.$toast(res.msg, 4000);
-            // this.$toast('报名成功');
             this.isShowSuccess = true;
             this.isApplyStatus = 1;
         },
-        confirmHandle() {
+        closeDia() {
             this.getUserInfo();
             this.getVipObject();
+            this.isShowSuccess = false;
             this.isShowResult = false;
         },
         async closeSuccessHandle(){
             const msgRes = await msgTemplate();
             if(msgRes.code != 1) return this.$toast(msgRes.msg);
-            const { team_apply, settle, events } = msgRes.data;
+            const { team_apply, settle, events, invite } = msgRes.data;
             // 收益、审核、活动
-            const tmplIds = [ team_apply, settle, events];
-            this.$subscribeMessageHandle(tmplIds).then((result) => {
-                this.isShowSuccess = false;
-            }); // 消息订阅的通知
+            const tmplIds = [team_apply, settle, events, invite].filter(item => !!item);
+            const res = await this.$subscribeMessageHandle(tmplIds); // 消息订阅的通知
+            this.closeDia();
         }
+    },
+    onHide() {
+        this.timer = null;
+        clearTimeout(this.timer);
     }
 }
 </script>
@@ -771,6 +837,17 @@ $bgColor: #FDF7DA;
     .intro_right{
         font-size: 28rpx;
         color: #aaa;
+        position: relative;
+        &.active::before {
+            content: '\3000';
+            width: 15rpx;
+            height: 15rpx;
+            position: absolute;
+            border-radius: 50%;
+            background: #EF2B20;
+            right: 28rpx;
+            top: 25rpx;
+        }
     }
 }
 .vip_cont{
@@ -883,5 +960,10 @@ $bgColor: #FDF7DA;
             }
         }
     }
+}
+.code_box{
+    width: 100%;
+    padding: 20rpx;
+    box-sizing: border-box;
 }
 </style>

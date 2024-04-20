@@ -100,7 +100,7 @@ export default {
             },
             empty: {
                 tip: '别灰心，换个词试试', // 提示
-                icon: `/static/images/img_no_data.png`
+                icon: `https://file.y1b.cn/store/1-0/24131/65ba3c86e5ee6.png`
             },
             downOption:{
                 native: true // 必须配置此项，且需在pages.json配置"enablePullDownRefresh" : true

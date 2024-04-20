@@ -48,6 +48,7 @@
 <script>
 import { orderPay } from "@/api/modules/order.js";
 import { payHooks } from "@/hooks/pay.js";
+import { mapMutations } from 'vuex';
 export default {
   props: ["config"],
   computed: {
@@ -56,6 +57,9 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setMiniProgram: "user/setMiniProgram",
+    }),
     goPay() {
       payHooks(orderPay, { id: this.config.id });
     },
@@ -67,6 +71,7 @@ export default {
       } = this.config;
       // 京东的订单
       if(goods_type === 5) {
+        this.setMiniProgram(goods_type);
         this.$openEmbeddedMiniProgram({
           appId: type_id,
           path: jdShareLink

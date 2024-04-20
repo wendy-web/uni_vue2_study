@@ -186,17 +186,17 @@
   </view>
 </template>
 <script>
+import { goodsXq } from "@/api/modules/home.js";
+import { doCollect } from "@/api/modules/mine.js";
+import { createOrder } from "@/api/modules/order.js";
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
+import goDetailsFun from '@/utils/goDetailsFun';
 import { escape2Html } from "@/utils/index.js";
-import { mapGetters, mapActions } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import confirmAccount from "./confirmAccount.vue";
 import confirmDia from "./confirmDia.vue";
 import priceChange from "./priceChange.vue";
 import productStop from "./productStop.vue";
-import { goodsXq } from "@/api/modules/home.js";
-import { createOrder } from "@/api/modules/order.js";
-import { doCollect } from "@/api/modules/mine.js";
-import goDetailsFun from '@/utils/goDetailsFun';
 //pages 参数
 let _options = null;
 export default {
@@ -292,6 +292,9 @@ export default {
       updateMobile: "user/updateMobile",
       getUserInfo: 'user/getUserInfo',
     }),
+    ...mapMutations({
+				setMiniProgram: "user/setMiniProgram",
+			}),
     init() {
       goodsXq({ id: _options.id }).then((res) => {
         /**处理数据 */
@@ -500,7 +503,7 @@ export default {
             if (open_mini_type == 2 && wx.canIUse('openEmbeddedMiniProgram')) {
                 openMiniProgram = wx.openEmbeddedMiniProgram;
             }
-            console.log('tiaoz :>> ', type_id, type_sid);
+            this.setMiniProgram(type_id);
             openMiniProgram({
                 appId: type_id,
                 path: type_sid,

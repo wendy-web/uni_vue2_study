@@ -1,6 +1,6 @@
 <template>
 	<!-- 插屏失败弹窗 -->
-	<view :class="customClass">
+	<view :class="customClass" v-if="isShow">
 		<official-account @load="load" @error="onErrors"></official-account>
 	</view>
 </template>
@@ -40,7 +40,6 @@
 	}
 
 	.official-account-home {
-		height: 100rpx;
 		margin: 20rpx;
 		border-radius: 10px;
 		box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.16);

@@ -3,31 +3,57 @@
 
 	<view class="grand-prize" :style="{display: isShow?'block':'none'}">
 		<!-- 头部 -->
-		<image class="grand-prize-head  animated  bounceInDown" src="../static/grandPrize/grand_prize_head.png"
-			mode="aspectFill"></image>
+		<image :class="grand_prize_souces[prizeratetype].headClass" class="animated  bounceInDown"
+			:src="grand_prize_souces[prizeratetype].head" mode="aspectFill"></image>
 		<!-- 身体 -->
-		<image class="grand-prize-body  animated rubberBand" src="../static/grandPrize/grand_prize_body.png"
+		<image class="grand-prize-body  animated rubberBand" :src="grand_prize_souces[prizeratetype].body"
 			mode="aspectFill"></image>
 		<!-- 按钮 -->
 		<view class="xwwh-xh-dialog-btn animated lightSpeedIn">
-			<image class="grand-prize-btn" src="../static/grandPrize/grand_prize_left.png" mode="aspectFill"
-				@click="close"></image>
-			<image class="grand-prize-btn" src="../static/grandPrize/grand_prize_right.png" mode="aspectFill"
-				@click="goAward"></image>
+			<anNoticeBarShow :awardList="awardList" margin="0 auto 20rpx" />
+			<view style="display: flex;justify-content: space-around;">
+				<image class="grand-prize-btn" src="/pages/scan/static/grandPrize/grand_prize_left.png"
+					mode="aspectFill" @click="close"></image>
+				<image class="grand-prize-btn" src="/pages/scan/static/grandPrize/grand_prize_right.png"
+					mode="aspectFill" @click="goAward"></image>
+			</view>
+
 		</view>
 	</view>
 
 </template>
 
 <script>
+	import anNoticeBarShow from "@/components/anNoticeBarShow.vue"
+
+	const grand_prize_souces = {
+		6: {
+			head: '/pages/scan/static/grandPrize/grand_prize_head.png',
+			headClass: "grand-prize-head",
+			body: '/pages/scan/static/grandPrize/grand_prize_body.png'
+		},
+		14: {
+			head: '/pages/scan/static/grandPrize/grand_prize_head_29.png',
+			headClass: "grand-prize-head_29",
+			body: '/pages/scan/static/grandPrize/grand_prize_body_29.png'
+		}
+	}
+
 	export default {
+		props: ["awardList"],
 		data() {
 			return {
-				isShow: false
+				grand_prize_souces,
+				isShow: false,
+				prizeratetype: 14
 			}
 		},
+		components: {
+			anNoticeBarShow
+		},
 		methods: {
-			show() {
+			show(prizeratetype = 14) {
+				this.prizeratetype = prizeratetype
 				this.isShow = true
 			},
 			goAward() {
@@ -46,14 +72,23 @@
 <style lang="scss">
 	.grand-prize {
 
-		.grand-prize-head {
+		.grand-prize-head,
+		.grand-prize-head_29 {
 			position: fixed;
-			width: 570rpx;
-			height: 178rpx;
 			top: 92rpx;
 			left: 50%;
 			margin-left: -285rpx;
 			z-index: 1;
+		}
+
+		.grand-prize-head {
+			width: 570rpx;
+			height: 178rpx;
+		}
+
+		.grand-prize-head_29 {
+			width: 560rpx;
+			height: 162rpx;
 		}
 
 		.grand-prize-body {
@@ -71,13 +106,11 @@
 		//按钮
 		.xwwh-xh-dialog-btn {
 			position: fixed;
-			top: 900rpx;
+			top: 918rpx;
 			left: 50%;
 			width: 700rpx;
 			margin-left: -350rpx;
 			padding-top: 20rpx;
-			display: flex;
-			justify-content: space-around;
 			margin-top: 15rpx;
 			z-index: 2;
 			-webkit-animation-delay: 2s;

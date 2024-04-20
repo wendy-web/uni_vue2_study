@@ -19,7 +19,7 @@ const GlobalOption = {
         },
         empty: {
             use: true, // 是否显示空布局
-            icon: '/static/images/img_no_data.png' //"/static/images/mescroll-empty.png" // 图标路径 (建议放入static目录, 如 /static/img/mescroll-empty.png )
+            icon: 'https://file.y1b.cn/store/1-0/24131/65ba3c86e5ee6.png' //"/static/images/mescroll-empty.png" // 图标路径 (建议放入static目录, 如 /static/img/mescroll-empty.png )
         }
     },
     // 国际化配置

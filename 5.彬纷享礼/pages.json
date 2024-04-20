@@ -89,24 +89,6 @@
 					"navigationStyle": "custom"
 				}
 			},
-			// {
-			// 	"path": "sweepRingCode/sweepRingCode",
-			// 	"style": {
-			// 		"navigationBarTitleText": "扫拉环二维码"
-			// 	}
-			// },
-			// {
-			// 	"path": "xhVideo/index",
-			// 	"style": {
-			// 		"navigationBarTitleText": "换购视频教学"
-			// 	}
-			// },
-			// {
-			// 	"path": "favoredMovie/index",
-			// 	"style": {
-			// 		"navigationBarTitleText": "换购流程"
-			// 	}
-			// },
 			{
 				"path": "aboutUs/index",
 				"style": {
@@ -184,6 +166,46 @@
 			"style": {
 				"navigationStyle": "custom"
 			}
+		}, {
+			"path": "traceability/bottled/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "traceability/tank/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "traceability/rules/bottled",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "traceability/rules/tank",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "traceability/exchangePoint/bottled",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "traceability/exchangePoint/tank",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "traceability/record/bottled",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		}, {
+			"path": "traceability/record/tank",
+			"style": {
+				"navigationStyle": "custom"
+			}
 		}]
 	}, {
 		"root": "pages/scan/",
@@ -206,13 +228,20 @@
 				"style": {
 					"navigationBarTitleText": "扫拉环二维码"
 				}
+			},
+			{
+				"path": "grandPrizeList/index",
+				"style": {
+					"navigationBarBackgroundColor": "#fff",
+					"navigationBarTitleText": "获奖名单"
+				}
 			}
 		]
 	}],
 	"preloadRule": {
 		"pages/tabBar/personal/index": {
 			"network": "all",
-			"packages": ["personal", "scan", "zm"]
+			"packages": ["scan"]
 		}
 	},
 	"globalStyle": {
@@ -266,18 +295,18 @@
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8",
 		"usingComponents": {
-			"van-popup": "/wxcomponents/vant/popup/index",
-			"van-calendar": "/wxcomponents/vant/calendar/index",
-			"van-button": "/wxcomponents/vant/button/index",
-			"van-rate": "/wxcomponents/vant/rate/index",
-			"van-cell": "/wxcomponents/vant/cell/index",
-			"van-cell-group": "/wxcomponents/vant/cell-group/index",
-			"van-field": "/wxcomponents/vant/field/index",
-			"van-image": "/wxcomponents/vant/image/index",
-			"van-row": "/wxcomponents/vant/row/index",
-			"van-col": "/wxcomponents/vant/col/index",
-			"van-dialog": "/wxcomponents/vant/dialog/index",
-			"van-icon": "/wxcomponents/vant/icon/index"
+			"van-popup": "/wxcomponents/vant-weapp/popup/index",
+			"van-calendar": "/wxcomponents/vant-weapp/calendar/index",
+			"van-button": "/wxcomponents/vant-weapp/button/index",
+			"van-rate": "/wxcomponents/vant-weapp/rate/index",
+			"van-cell": "/wxcomponents/vant-weapp/cell/index",
+			"van-cell-group": "/wxcomponents/vant-weapp/cell-group/index",
+			"van-field": "/wxcomponents/vant-weapp/field/index",
+			"van-image": "/wxcomponents/vant-weapp/image/index",
+			"van-row": "/wxcomponents/vant-weapp/row/index",
+			"van-col": "/wxcomponents/vant-weapp/col/index",
+			"van-dialog": "/wxcomponents/vant-weapp/dialog/index",
+			"van-icon": "/wxcomponents/vant-weapp/icon/index"
 		}
 	}
 }

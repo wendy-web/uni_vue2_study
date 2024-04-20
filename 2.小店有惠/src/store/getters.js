@@ -4,6 +4,7 @@ const getters = {
     isAutoLogin: state => state.user.isAutoLogin,
     isAutoPrivacy: state => state.user.isAutoPrivacy,
     uid: state => state.user.uid,
+    isMiniProgram: state => state.user.isMiniProgram, // 打开其他的小程序
     gift: state => state.user.gift,
     unionid: state => state.user.unionid,
     location: state => state.user.location,

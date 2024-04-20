@@ -1,6 +1,6 @@
 <template>
   <view class="nav" id="nav">
-	<image class="nav_bg" src="/static/images/navbar/navbar_bg01.png" mode="scaleToFill"></image>
+	<image class="nav_bg" src="https://file.y1b.cn/store/1-0/24131/65ba360dabdac.png" mode="scaleToFill"></image>
     <view class="nav_cont">
       <view
         v-for="(item, index) in navBarList" :key="item.id"
@@ -34,22 +34,22 @@ export default {
         {
           id: 0,
           title: '积分商城',
-          icon: '/static/images/navbar/icon_home.png',
-          icon_active: '/static/images/navbar/icon_home_active.png',
+          icon: 'https://file.y1b.cn/store/1-0/24131/65ba3de2571f0.png',
+          icon_active: 'https://file.y1b.cn/store/1-0/24131/65ba3dca8dc2c.png',
           url: '/pages/home/index'
         },
         {
           id: 1,
           title: '赚钱中心',
-          icon: '/static/images/navbar/icon_card.png',
-          icon_active: '/static/images/navbar/icon_card_active.png',
+          icon: 'https://file.y1b.cn/store/1-0/24131/65ba3d4adf922.png',
+          icon_active: 'https://file.y1b.cn/store/1-0/24131/65ba3d774a6e9.png',
           url: '/pages/card/index'
         },
         {
           id: 2,
           title: '我的',
-          icon: '/static/images/navbar/icon_mine.png',
-          icon_active: '/static/images/navbar/icon_mine_active.png',
+          icon: 'https://file.y1b.cn/store/1-0/24131/65ba3db35c07e.png',
+          icon_active: 'https://file.y1b.cn/store/1-0/24131/65ba3d93da3a5.png',
           url: '/pages/mine/index'
         }
       ],

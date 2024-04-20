@@ -58,7 +58,7 @@
         <view class="ib-head">
           <view class="ib-title" @click.stop="ishShowHelpDia = true">
             累计收益(元)
-          <image class="ib_title-help" src="/static/images/mine/help.png" mode="aspectFit"></image>
+          <image class="ib_title-help" src="https://file.y1b.cn/store/1-0/24131/65ba37f81a4f3.png" mode="aspectFit"></image>
           </view>
           <view class="ib-content">
             <view v-html="formatPrice(vipObject.total_profit || 0)"></view>
@@ -176,7 +176,7 @@ export default {
     },
     data() {
       return {
-        default_url: "/static/images/default_avatarUrl.png",
+        default_url: "https://file.y1b.cn/store/1-0/24131/65ba392989ede.png",
         topHeight: 0,
         order: config.orders,
         menu: config.menus,
@@ -342,23 +342,25 @@ export default {
     },
     async totalEarn() {
       if(!this.isAutoLogin) return this.$go('/pages/login/index');
-      // 是否需要发送协议通知
-      if(!this.vipObject.is_send || !this.vipObject.is_events) {
-        const msgRes = await msgTemplate();
-        if(msgRes.code != 1) return this.$toast(msgRes.msg);
-        const { settle, events } = msgRes.data;
-        let tmplIds = [];
-        (!this.vipObject.is_send) && tmplIds.push(settle);
-        (!this.vipObject.is_events) && tmplIds.push(events);
+      const msgRes = await msgTemplate();
+      if(msgRes.code == 1 && msgRes.data) {
+        const { settle, events, invite } = msgRes.data;
+        let tmplIds = [invite];
+        (!this.vipObject.is_send && settle) && tmplIds.push(settle);
+        (!this.vipObject.is_events && events) && tmplIds.push(events);
+        tmplIds = tmplIds.filter(item => !!item);
         const subRes = await this.$subscribeMessageHandle(tmplIds);
         const settleResult = subRes[settle];
         const eventsResult = subRes[events];
+        const inviteResult = subRes[invite];
         const params = {
           is_send: 0,
-          is_events: 0
+          is_events: 0,
+          is_invite: 0
         }
         if(settleResult == 'accept') params.is_send = 1;
         if(eventsResult == 'accept') params.is_events = 1;
+        if(inviteResult == 'accept') params.is_invite = 1;
         isSend(params);
       }
       this.$go("/pages/cardModule/cardEarnings/index");

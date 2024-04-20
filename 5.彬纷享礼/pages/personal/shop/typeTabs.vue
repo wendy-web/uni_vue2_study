@@ -2,15 +2,19 @@
 	<view class="type-tabs">
 		<view class="xh-tabs-item" @click="tabsChange(0)">
 			<view class="label-text" :class="{'xh-tab-active':currTabs == 0}">
-				<image v-if="currTabs == 0" class="label-text-icon" src="../static/hn_select_icon.png" mode="aspectFill"></image>
-				<image v-else class="label-text-icon" src="../static/hn_icon.png" mode="aspectFill"></image>
+				<image v-if="currTabs == 0" class="label-text-icon" src="/pages/personal/static/hn_select_icon.png"
+					mode="aspectFill"></image>
+				<image v-else class="label-text-icon" src="/pages/personal/static/hn_icon.png" mode="aspectFill">
+				</image>
 				<text>红牛</text>
 			</view>
 		</view>
 		<view class="xh-tabs-item" @click="tabsChange(1)">
 			<view class="label-text" :class="{'xh-tab-active':currTabs == 1}">
-				<image v-if="currTabs == 1" class="label-text-icon" src="../static/zm_select_icon.png" mode="aspectFill"></image>
-				<image v-else class="label-text-icon" src="../static/zm_icon.png" mode="aspectFill"></image>
+				<image v-if="currTabs == 1" class="label-text-icon" src="/pages/personal/static/zm_select_icon.png"
+					mode="aspectFill"></image>
+				<image v-else class="label-text-icon" src="/pages/personal/static/zm_icon.png" mode="aspectFill">
+				</image>
 				<text>战马</text>
 			</view>
 		</view>
@@ -24,7 +28,7 @@
 		props: ['currTabs'],
 		methods: {
 			tabsChange(index) {
-				if(this.currTabs == index)return
+				if (this.currTabs == index) return
 				this.$emit('tabsChange', index);
 			}
 		}
@@ -56,8 +60,8 @@
 			position: relative;
 			@include flex-vh-center;
 		}
-		
-		.label-text-icon{
+
+		.label-text-icon {
 			width: 50rpx;
 			height: 50rpx;
 		}
@@ -70,7 +74,7 @@
 			bottom: 6rpx;
 			background-color: #E02020;
 			transition: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
-			 // filter: grayscale(1);
+			// filter: grayscale(1);
 		}
 
 		.xh-tab-active {

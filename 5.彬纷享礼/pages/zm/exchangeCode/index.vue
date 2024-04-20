@@ -115,7 +115,7 @@
 					<text>领取时间</text>
 				</view>
 				<view class="evd-list-item" v-for="(item,i) in jsonData.list" :key="i">
-					<text>{{CARDTITLES[item.prizeratetype-1]}}</text>
+					<text>{{CARDTITLES[Number(item.prizeratetype)]}}</text>
 					<text>{{item.create_time}}</text>
 				</view>
 			</scroll-view>

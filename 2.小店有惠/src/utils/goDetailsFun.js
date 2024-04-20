@@ -1,7 +1,7 @@
 import { goodsXq } from "@/api/modules/home.js";
-import { mapGetters } from "vuex";
 import { bysubunionid } from '@/api/modules/jsShop.js';
 import { goodsPromotion } from '@/api/modules/pddShop.js';
+import { mapGetters, mapMutations } from "vuex";
 const goDetailsFun = {
     data() {
         return {}
@@ -10,19 +10,27 @@ const goDetailsFun = {
         ...mapGetters(["userInfo", 'isAutoLogin']),
     },
     methods: {
+        ...mapMutations({
+            setMiniProgram: "user/setMiniProgram",
+        }),
         detailsFun_mixins(item, index = null) {
             if (!this.isAutoLogin) return this.$go('/pages/login/index');
             const {
                 coupon_id,
                 id,
                 is_jump,
-                lx_type
+                lx_type,
+                is_banner,
+                type,
+                type_id,
+                type_sid
             } = item;
             if ([2, 3].includes(Number(lx_type))) return this.lxTypeJdFun(item, index);
             const item_id = coupon_id || id;
-            if (is_jump == 2) {
-                return this.goCouponDetails(item_id);
-            }
+            if (is_jump == 2) return this.goCouponDetails(item_id);
+            // 小程序h5的配置
+            if ((type == 5) && is_banner) return this.$go(`/pages/webview/index?link=${encodeURIComponent(type_sid)}`);
+            if (type == 3) return this.immediateFun(item);
             // 绑定当前的积分
             this.requestGoodXq_mixins(item_id);
             // 兑换成功，当前的兑换人数加一
@@ -33,7 +41,7 @@ const goDetailsFun = {
         },
         async lxTypeJdFun(item, index) {
             if (!this.isAutoLogin) return this.$go('/pages/login/index');
-            const {
+            let {
                 cid1,
                 cid3,
                 skuId,
@@ -44,7 +52,10 @@ const goDetailsFun = {
                 is_flow,
                 lx_type,
                 goods_sign,
-                has_coupon
+                has_coupon,
+                type_id,
+                jdShareLink,
+                mobile_url
             } = item;
             // feed流
             if (is_flow) {
@@ -53,6 +64,19 @@ const goDetailsFun = {
                 this.$go(`/pages/homeModule/feedDetailsList/index?${urlPar}&positionId=${positionId || 0}&has_coupon=${has_coupon}`);
                 return;
             }
+            let miniPath = '';
+            if (lx_type == 3 && mobile_url) miniPath = mobile_url;
+            if (lx_type == 2 && jdShareLink) miniPath = jdShareLink;
+            if (type_id && miniPath) {
+                this.setMiniProgram(lx_type);
+                this.$openEmbeddedMiniProgram({
+                    appId: type_id,
+                    // envVersion:'trial',
+                    path: jdShareLink || mobile_url
+                });
+                return;
+            }
+
 
             const params = { positionId };
             let api = '';
@@ -67,19 +91,37 @@ const goDetailsFun = {
                 isJdLink && (params.link = link);
             }
             const skuRes = await api(params);
-            console.log('skuRes', skuRes.data)
-                // 商品已下架
-            if (skuRes.code == 0) {
+            // 商品已下架
+            if (skuRes.code == 0 || !skuRes.data) {
                 this.$toast(skuRes.msg);
                 this.$emit('deleteBysubunionid', index);
                 return;
             }
-            const { type_id, jdShareLink, mobile_url } = skuRes.data;
+            type_id = skuRes.data.type_id;
+            mobile_url = skuRes.data.mobile_url;
+            jdShareLink = skuRes.data.jdShareLink;
+            this.setMiniProgram(type_id);
             this.$openEmbeddedMiniProgram({
                 appId: type_id,
                 // envVersion:'trial',
                 path: jdShareLink || mobile_url
             });
+        },
+        immediateFun(item) {
+            if (!this.isAutoLogin) return this.$go('/pages/login/index');
+            const { open_mini_type, type_id, type_sid, deduction_credits } = item;
+            if (this.userInfo.credits < deduction_credits) return this.confirmDiaShow = true;
+            let openMiniProgram = (open_mini_type == 2) ? this.$openEmbeddedMiniProgram : this.$navigateToMiniProgram;
+            this.setMiniProgram(type_id);
+            openMiniProgram({
+                appId: type_id,
+                path: type_sid,
+                // envVersion: 'trial',
+                success(res) {
+                    // 打开成功
+                }
+            });
+            return;
         },
         async requestGoodXq_mixins(item_id, is_popover) {
             if (!this.isAutoLogin) return this.$go('/pages/login/index');
@@ -97,7 +139,6 @@ const goDetailsFun = {
                 open_mini_type,
                 deduction_credits
             } = detailData.data;
-            console.log('deduction_credits :>> ', deduction_credits, this.userInfo.credits);
             // 牛金豆不足，并且type类型存在
             if (this.userInfo.credits < deduction_credits && type && !is_popover) {
                 this.confirmDiaShow = true;
@@ -135,7 +176,7 @@ const goDetailsFun = {
                     if (open_mini_type == 2 && wx.canIUse('openEmbeddedMiniProgram')) {
                         openMiniProgram = wx.openEmbeddedMiniProgram;
                     }
-                    console.log('tiaoz :>> ', type_id, type_sid);
+                    this.setMiniProgram(type_id);
                     openMiniProgram({
                         appId: type_id,
                         path: type_sid,
@@ -144,6 +185,10 @@ const goDetailsFun = {
                             // 打开成功
                         }
                     });
+                    break;
+                case 5:
+                    // 小程序h5的跳转
+                    this.$go(`/pages/webview/index?link=${encodeURIComponent(type_sid)}`);
                     break;
                 default:
                     this.goCouponDetails(item_id, is_popover);

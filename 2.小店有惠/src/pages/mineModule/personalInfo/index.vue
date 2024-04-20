@@ -105,7 +105,7 @@
           <image
             class="icon-omega"
             mode="aspectFit"
-            src="/static/images/mine/icon_omega.png"
+            src="https://file.y1b.cn/store/1-0/24131/65ba39d5a9b2e.png"
           ></image>
         </view>
       </view>
@@ -134,7 +134,7 @@ export default {
     },
     data() {
         return {
-            default_url: "/static/images/default_avatarUrl.png",
+            default_url: "https://file.y1b.cn/store/1-0/24131/65ba392989ede.png",
             canIuse: false,
             user_gender: "",
             genderColumns: ["先生", "女士"],

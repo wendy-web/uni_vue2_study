@@ -49,6 +49,7 @@
   </view>
 </template>
 <script>
+import { mapMutations } from 'vuex';
 export default {
   props: ["config"],
   computed: {
@@ -83,6 +84,9 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setMiniProgram: "user/setMiniProgram",
+    }),
     againHandle(id){
       uni.navigateTo({
         url: "/pages/homeModule/productDetails/index?id=" + id,
@@ -96,6 +100,7 @@ export default {
       } = this.config;
       // 京东的订单
       if(goods_type === 5) {
+        this.setMiniProgram(goods_type);
         this.$openEmbeddedMiniProgram({
           appId: type_id,
           path: jdShareLink

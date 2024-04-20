@@ -1,10 +1,10 @@
 <template>
-	<view class="exchange-code">
-		<xh-navbar :title="type===1?'换购成功':'订单详情'" titleColor="#000000" titleAlign="titleCenter"
+	<view :class="['exchange-code', type===1 ? 'active' : '']">
+		<xh-navbar :title="type===1 ? '换购成功' : '订单详情'" titleColor="#000000" titleAlign="titleCenter"
 			:leftImage="type===1?'../../static/images/home.png':'../../static/images/left_black_arrow.png'"
 			:isHome="type===1" />
 		<!-- 主体  -->
-		<view class="exchange-body" :style="{'padding-top':type === 1?'130rpx':'0rpx',top:navbarHeight+'px'}">
+		<view class="exchange-body" :style="{'padding-top': type === 1 ? '130rpx' :' 0rpx', top: navbarHeight+'px'}">
 			<!-- header -->
 			<view class="eb-header">
 				<!-- 店铺名 -->
@@ -16,7 +16,7 @@
 				</view>
 				<!-- 店铺ID -->
 				<view class="eb-h-shopid">
-					店铺ID：{{jsonData.sid||""}}
+					店铺ID：{{jsonData.sid || ""}}
 				</view>
 				<!-- 纸质码ID -->
 				<view class="eb-h-paperid" v-if="jsonData.alias_id">
@@ -84,8 +84,12 @@
 				<image v-if="!jsonData.check_uid" class="qrcode" :src="jsonData.qr"></image>
 				<image v-else class="qrcode" src="../static/shyscan.png"></image>
 			</view>
+			<!-- 跳转进入到天天的使用 -->
+			<view class="advertising_box" v-if="type === 1 && tradeJump" @click="onTradeHandle">
+				<image class="advertising_Img" :src="tradeJump" mode="widthFix"></image>
+			</view>
 			<!-- 关注公众号 -->
-			<xh-official-account eventName="followwoa_3"></xh-official-account>
+			<xh-official-account eventName="followwoa_3" v-if="!tradeJump"></xh-official-account>
 		</view>
 		<!-- 二维码核销进度 -->
 		<view class="hx-progress" v-if="type === 2&&jsonData.check_uid">
@@ -113,7 +117,7 @@
 					<text>领取时间</text>
 				</view>
 				<view class="evd-list-item" v-for="(item,i) in jsonData.list" :key="i">
-					<text>{{CARDTITLES[item.prizeratetype-1]}}</text>
+					<text>{{CARDTITLES[Number(item.prizeratetype)]}}</text>
 					<text>{{item.create_time}}</text>
 				</view>
 			</scroll-view>
@@ -128,26 +132,20 @@
 </template>
 
 <script>
-	import {
-		getcardqr
-	} from '@/api/homeApi.js';
-	import {
-		xhAudio,
-		PLAQUEADVERTISING
-	} from '@/utils/index.js';
-	import {
-		fileBaseUrl
-	} from '@/api/http/xhHttp.js';
-	import {
-		getNavbarData
-	} from '@/utils/xhNavbar.js';
-	import {
-		mapGetters
-	} from 'vuex';
-	import {
-		CARDTITLES
-	} from '@/utils/configJson.js';
-	import xhOfficialAccount from '@/components/xh-official-account.vue'
+import { getcardqr } from '@/api/homeApi.js';
+import { fileBaseUrl } from '@/api/http/xhHttp.js';
+import xhOfficialAccount from '@/components/xh-official-account.vue';
+import {
+CARDTITLES
+} from '@/utils/configJson.js';
+import {
+PLAQUEADVERTISING,
+xhAudio
+} from '@/utils/index.js';
+import {
+getNavbarData
+} from '@/utils/xhNavbar.js';
+import { mapActions, mapGetters } from 'vuex';
 	let _codeData = ''; //訂單號
 	//音频管理
 	let payment_audio = null;
@@ -161,20 +159,20 @@
 			_codeData = option.codeData;
 			//生成二维码
 			this.drawQrcode();
-			//跳转类型
+			// 跳转类型
 			this.type = Number(option.type);
 			getNavbarData().then(res => {
 				this.navbarHeight = res.statusBarHeight + res.navBarHeight;
 			});
-			//是否播放支付成功 
+			// 是否播放支付成功
 			if (option.isplay == 1) {
-				//消息轻提示
+				// 消息轻提示
 				this.$refs.xhNotify.show({
 					type: 'success',
 					message: '支付成功',
 					duration: 1500
 				});
-				//语音提示
+				// 语音提示
 				payment_audio = xhAudio({
 					url: fileBaseUrl + '/public/img/to2/cmp3/02/BFXN_MUSIC_12.mp3'
 				});
@@ -187,9 +185,15 @@
 			_PLAQUEADVERTISING.init('adunit-d51fac0e5bc82688');
 		},
 		computed: {
-			...mapGetters(['userInfo'])
+			...mapGetters(['userInfo', 'tradeJump'])
 		},
 		methods: {
+			...mapActions({
+				getConfig: 'config/getConfig',
+			}),
+			onTradeHandle() {
+				this.$ttxlUserPosition('trade_banner');
+			},
 			drawQrcode() { //生成二维码
 				//向后端拿取图片
 				getcardqr({
@@ -258,6 +262,8 @@
 			};
 		},
 		onUnload() {
+			console.log('onUnload', )
+			this.getConfig();
 			if (payment_audio) payment_audio.destroy();
 			// _PLAQUEADVERTISING.destroy();
 		}
@@ -265,11 +271,45 @@
 </script>
 
 <style lang="scss">
-	page {
-		background-color: #F4F4F4;
+page {
+	background-color: #F4F4F4;
+}
+.advertising_box {
+	margin: 20rpx 0;
+	.advertising_Img {
+		width: 100%;
+		height: 200rpx;
 	}
-
+}
 	.exchange-code {
+		&.active {
+			.exchange-body {
+				padding-bottom: 25rpx;
+			}
+			.eb-header {
+				padding: 20rpx 0 20rpx 60rpx;
+			}
+			.pay-logo{
+				width: 80rpx;
+				height: 80rpx;
+			}
+			.pay-text {
+				margin-top: 8rpx;
+			}
+			.merchants-confirm {
+				margin-top: 20rpx;
+			}
+			.qrcode {
+				width: 270rpx;
+				height: 270rpx;
+			}
+			.mc-title {
+				font-size: 38rpx;
+			}
+			.mc-tips-title{
+				padding-top: 20rpx;
+			}
+		}
 
 		.exchange-body {
 			background-color: #FFFFFF;
@@ -405,6 +445,7 @@
 			font-size: 28rpx;
 			color: #666666;
 			padding-right: 15rpx;
+			white-space: nowrap;
 		}
 
 		.ttn-value,
@@ -420,7 +461,6 @@
 			padding-top: 20rpx;
 			text-align: center;
 			position: relative;
-
 			&::before {
 				content: '';
 				position: absolute;

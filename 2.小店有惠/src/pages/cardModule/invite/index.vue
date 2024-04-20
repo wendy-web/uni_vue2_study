@@ -7,7 +7,8 @@
         @leftCallBack="$back"
     ></xhNavbar>
     <view class="cont_top">
-        <view :class="['invite_notice', isShowPeopleNum ? 'active' : '']">刚刚成功邀请 {{ peopleNum }} 位顾客</view>
+        <view :class="['invite_notice', isShowPeopleNum ? 'active' : '']"
+        :style="{ top: stickyTop }"> 刚刚成功邀请 {{ peopleNum }} 位顾客</view>
         <view class="code_img fl_center">
             <van-loading
                 size="36px" color="#ccc" vertical
@@ -37,9 +38,10 @@
 </template>
 <script>
 import { inviteXq } from "@/api/modules/card.js";
+import getViewPort from '@/utils/getViewPort.js';
 import { mapActions, mapGetters } from "vuex";
-import uQrcode from './uQrcode/index.vue';
 import painterImg from './painterImg/index.vue';
+import uQrcode from './uQrcode/index.vue';
 export default {
     components: {
         uQrcode,
@@ -47,6 +49,10 @@ export default {
     },
     computed: {
         ...mapGetters(["vipObject", 'userInfo', 'diaList']),
+        stickyTop() {
+            let viewPort = getViewPort();
+            return viewPort.navHeight + 'px';
+        },
     },
     data() {
 		return {
@@ -116,11 +122,12 @@ page {
 .cont_top{
     position: relative;
     z-index: 0;
+    background: #FFE7D1;
     &::before {
         content: '\3000';
-        background: url("https://file.y1b.cn/store/1-0/231227/658bd09be20f9.png") 0 0 / 100% 100%;
+        background: #FFE7D1 url("https://file.y1b.cn/store/1-0/231227/658bd09be20f9.png") no-repeat 0 -15rpx / 100% 100%;
         width: 100%;
-        height: 1088rpx;
+        height: 1000rpx;
         z-index: 0;
         display: block;
     }
@@ -130,7 +137,6 @@ page {
         background: rgba(255,255,255,0.24);
         position: absolute;
         left: 0;
-        top: 184rpx;
         text-align: center;
         font-size: 28rpx;
         color: #fff;
@@ -159,7 +165,7 @@ page {
     height: 248rpx;
     left: 50%;
     transform: translateX(-50%);
-    top: 546rpx;
+    top: 476rpx;
     .add_cont-load {
         position: absolute;
         top: 50%;
@@ -169,7 +175,7 @@ page {
     }
 }
 .invite_box {
-    margin: -95rpx 24rpx;
+    margin: -145rpx 24rpx;
     position: relative;
     z-index: 0;
     padding: 24rpx 22rpx 32rpx;

@@ -26,7 +26,9 @@ const getters = {
 	ttxlJumpConfig: state => state.config.ttxlJumpConfig,
 	scanResult: state => state.config.scanResult,
 	newUser: state => state.config.newUser,
+	newPeople: state => state.config.newPeople,
 	losingIcon: state => state.config.losingIcon,
-	homeIcon: state => state.config.homeIcon
+	homeIcon: state => state.config.homeIcon,
+	tradeJump: state => state.config.tradeJump,
 };
 export default getters;

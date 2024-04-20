@@ -2,7 +2,7 @@
 	<view class="online-service">
 		<!-- 头部 -->
 		<view class="os-header">
-			<image class="os-header-logo" mode="widthFix" src="/static/images/kefu.png"></image>
+			<image class="os-header-logo" mode="widthFix" src="https://file.y1b.cn/store/1-0/24131/65ba39a0d90ca.png"></image>
 			<text class="osh-tips">水果技术客服</text>
 			<text class="osh-tips-small">(点击你喜欢的水果，一对一解答)</text>
 		</view>

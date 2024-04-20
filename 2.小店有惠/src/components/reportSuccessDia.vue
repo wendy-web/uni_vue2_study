@@ -9,7 +9,7 @@
   :catchtouchmove="true"
   @close="closeHandle"
 >
-  <view class="dia_box">
+  <view class="dia_box ani_active">
     <view class="dia_cont">
         <view class="dia_title">{{ title }}</view>
         <view class="dia_lab">{{ label }}</view>
@@ -17,19 +17,17 @@
         <view class="dia_code">
           <!-- 商品图片 -->
           <van-image
-            width="100%"
-            height="100%"
-            src="https://file.y1b.cn/store/1-0/231120/655b25138bf58.jpg"
-            use-loading-slot
-            radius="14px"
+            width="100%" height="100%"
+            src="https://test-file.y1b.cn/store/1-0/24228/65dea1b5981eb.png"
+            use-loading-slot radius="14px"
             :show-menu-by-longpress="true"
           >
             <van-loading slot="loading" type="spinner" size="20" vertical />
           </van-image>
         </view>
-        <view class="dia_code-title">长按关注</view>
+        <view class="dia_code-title">长按添加</view>
     </view>
-    <view class="back_btn" @click="closeHandle">我知道了</view>
+    <view class="back_btn" @click="closeHandle">{{btnText}}</view>
   </view>
 </van-popup>
 </template>
@@ -50,7 +48,11 @@ export default {
     },
     remLab: {
       type: String,
-      default: '不错过任何一笔收益提醒'
+      default: '添加小店智囊团，带你赚钱'
+    },
+    btnText: {
+      type: String,
+      default: '我知道了'
     }
   },
   methods: {
@@ -100,7 +102,8 @@ export default {
     }
   }
   .back_btn{
-    width: 176rpx;
+    min-width: 176rpx;
+    padding: 0 20rpx;
     line-height: 64rpx;
     background: rgba(255,255,255,0.15);
     border: 2rpx solid #ffffff;
@@ -112,5 +115,8 @@ export default {
     margin: 40rpx auto 0;
   }
 }
-
+.ani_active {
+  transform: scale(0);
+  animation: openAni .3s linear 0s forwards;
+}
 </style>

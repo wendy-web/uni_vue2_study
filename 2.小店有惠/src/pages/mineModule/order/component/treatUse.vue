@@ -43,6 +43,7 @@
   </view>
 </template>
 <script>
+import { mapMutations } from 'vuex';
 export default {
   props: ["config"],
   computed: {
@@ -51,6 +52,9 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      setMiniProgram: "user/setMiniProgram",
+    }),
     goOrderDetail() {
       const {
         goods_type,
@@ -59,6 +63,7 @@ export default {
       } = this.config;
       // 京东的订单
       if(goods_type === 5) {
+        this.setMiniProgram(goods_type);
         this.$openEmbeddedMiniProgram({
           appId: type_id,
           path: jdShareLink

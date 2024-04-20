@@ -19,7 +19,7 @@
 			<!-- 右边背景 -->
 			<image class="cc-right-bg" src="/static/images/mcb_bg_white.png"></image>
 			<view class="cc-right-info">
-				<view class="cc-r-i-title">{{CARDTITLES[prizeratetype-1]}}</view>
+				<view class="cc-r-i-title">{{CARDTITLES[Number(prizeratetype)]}}</view>
 				<view class="cc-r-i-time">领取时间：{{time}}</view>
 				<view v-if="prizeratetype  >=  3" class="cc-r-i-effective animateFast tadaFast infinite">
 					有效期：<text class="day">7</text>天
