@@ -1,6 +1,6 @@
 <template>
 <view class="cash_top" id="cashFinishDom45">
-  <view class="cash_title">本页下1单，立即开<text style="color: #F84842;">现金红包</text></view>
+  <view class="cash_title">本页下1单，现金最高<text style="color: #F84842;">翻10倍</text></view>
   <view class="finish_num">
     <view class="finish_num-list">
       <view class="finish_num-left">{{ enterArr.profit_money || 0 }}</view>

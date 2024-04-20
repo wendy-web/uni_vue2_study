@@ -40,7 +40,7 @@ export function verifyOrder(data) {
         data
     });
 }
-//查询订单
+// 查询订单
 export function query(data) {
     return API.request({
         url: '/api/shop/query',
@@ -48,10 +48,18 @@ export function query(data) {
         data
     });
 }
-//支付订单
+// 支付订单
 export function pay(data) {
     return API.request({
         url: '/api/shop/pay',
+        method: 'post',
+        data
+    });
+}
+// 惠吃喝券申请退款
+export function applyRefund(data) {
+    return API.request({
+        url: '/api/profile/applyRefund',
         method: 'post',
         data
     });

@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import { formatDistance } from '@/utils/index.js';
 import { getImgUrl } from '@/utils/auth.js';
+import { formatDistance } from '@/utils/index.js';
 export default {
   props: {
     isShow: {
@@ -51,7 +51,6 @@ export default {
     formatDistance,
 		onClose() {
 			this.$emit("close");
-      console.log('dis :>> ', );
 		},
     onDisplace() {
 			this.$emit("displace");

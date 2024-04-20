@@ -63,19 +63,27 @@
     </view>
     <!-- 已退款 -->
     <view class="order_top" v-if="currentStatus == 5">
-      <view class="box_fl">
-        <view class="cd_title"> 退款金额 </view>
-        <view class="all_price">
-          <text style="font-size: 26rpx">¥</text> {{config.pay_amount}}
-        </view>
+      <view class="box_fl11" v-if="ticket_id">
+        <view class="cd_title">兑换券已退回至您账户</view>
+        <view class="cd_label" @click="goToMyCouponHandle"> 可在“我的-卡券”中查看和使用 <van-icon name="arrow" color="#666" size="26rpx"/> </view>
       </view>
-      <view class="refund_time box_fl" v-if="config.refund_time">
-        <text style="margin-right: 4rpx">退款时间：</text>{{config.refund_time}}</view>
+      <block v-else>
+        <view class="box_fl">
+          <view class="cd_title"> 退款金额 </view>
+          <view class="all_price">
+            <text style="font-size: 26rpx">¥</text> {{config.pay_amount}}
+          </view>
+        </view>
+        <view class="refund_time box_fl" v-if="config.refund_time">
+          <text style="margin-right: 4rpx">退款时间：</text>{{config.refund_time}}
+        </view>
+      </block>
+
     </view>
     <view class="order_box order_add">
         <view class="add_shop fl_bet" @click="openGpsHandle">
           {{config.restaurant_name}}
-          <view> 导航 <van-icon name="arrow" color="#33" size="28rpx"/> </view>
+          <view> 导航 <van-icon name="arrow" color="#333" size="28rpx"/> </view>
         </view>
         <view class="add_txt">{{ config.restaurant_address }}</view>
         <view class="again_btn" v-if="showAgainBtn" @click="againHandle">再来一单</view>
@@ -99,8 +107,20 @@
             </view>
           </view>
         </view>
+        <!-- 兑换券减免 -->
+        <view class="discount_box" v-if="ticket_id">
+          <view class="discount_item fl_bet" v-if="xsAmount">
+                <view class="fl_center">
+                  <image class="dis_icon" src="https://test-file.y1b.cn/store/1-0/2449/6614bbcc5f4d3.png" mode="aspectFill"></image>
+                    <view>兑换券减免</view>
+                </view>
+                <view class="dis_price">
+                    <text style="font-size: 24rpx">- ¥</text> {{ config.coupon_amount }}
+                </view>
+            </view>
+        </view>
         <!-- 限时优惠 -->
-        <view class="discount_box">
+        <view class="discount_box" v-else>
             <view class="discount_item fl_bet" v-if="xsAmount">
                 <view class="fl_center">
                     <image class="dis_icon" :src="takeImgUrl +'/dis_icon1.png'" mode="aspectFill"></image>
@@ -145,7 +165,7 @@
         <view class="line_dashed"></view>
         <view class="all_price-box fl_end">
             共{{ config.total_amount }}件商品
-            {{[2,3,4,5].includes(Number(currentStatus))? '实付' : '应付' }}
+            {{ ([2,3,4,5].includes(Number(currentStatus)) || ticket_id)  ? '实付' : '应付' }}
           <view class="all_price">
             <text style="font-size: 28rpx">¥</text>{{ config.pay_amount }}
           </view>
@@ -192,13 +212,13 @@
 <script>
 import { orderDetail } from '@/api/modules/order.js';
 import {
-  orderPay,
-  orderAgain
+orderAgain,
+orderPay
 } from '@/api/modules/takeawayMenu/luckin.js';
-import { getImgUrl } from '@/utils/auth.js';
 import uQrcode from '@/components/uQrcode/index.vue';
-import returnCash from '../../component/returnCash/index.vue';
+import { getImgUrl } from '@/utils/auth.js';
 import { mapGetters } from 'vuex';
+import returnCash from '../../component/returnCash/index.vue';
 import { statusTitle } from '../../static/config';
 export default {
     components: {
@@ -240,7 +260,8 @@ export default {
           config: null,
           codesList: [],
           restaurant_id: 0,
-          savings: null
+          savings: null,
+          ticket_id: 0
         };
     },
     onLoad(option) {
@@ -249,32 +270,33 @@ export default {
       }
     },
     onShow() {
-        if (this.oid) {
-            this.init();
-        }
+      if (this.oid) this.init();
     },
     methods: {
-      init() {
-        orderDetail({ id: this.oid }).then((res) => {
-          if(res.code !=  1) return;
-          this.config = res.data;
-          this.savings = res.data.savings;
-          this.currentStatus = this.config.status;
-          const code = this.config.qr_codes[0];
-          this.$nextTick(() => {
-            this.$refs.uQrcodeRef && this.$refs.uQrcodeRef.createCode(code);
-          });
-          this.codesList = this.config.codes;
-          const expire_time = this.config.expire_time;
-          // 过期时间的倒计时
-          this.remainTime = new Date(expire_time.replace(new RegExp(/-/gm), '/')).getTime() - Date.now();
-        })
-      },
-      againHandle() {
-        orderAgain({ oid: this.oid }).then(res => {
-          if(res.code != 1) this.$toast(res.msg);
-          this.$go(`/pages/userModule/takeawayMenu/mcDonald/index?brand_id=5&rote=1&again=true&isBack=1`);
+      async init() {
+        const res = await orderDetail({ id: this.oid });
+        if(res.code !=  1) return;
+        this.config = res.data;
+        this.savings = res.data.savings;
+        this.currentStatus = this.config.status;
+        // this.currentStatus = 5;
+        const code = this.config.qr_codes[0];
+        this.$nextTick(() => {
+          this.$refs.uQrcodeRef && this.$refs.uQrcodeRef.createCode(code);
         });
+        this.codesList = this.config.codes;
+        this.ticket_id = this.config.ticket_id;
+        const expire_time = this.config.expire_time;
+        // 过期时间的倒计时
+        this.remainTime = new Date(expire_time.replace(new RegExp(/-/gm), '/')).getTime() - Date.now();
+      },
+      goToMyCouponHandle() {
+				this.$go('/pages/userModule/myCoupon/index');
+      },
+      async againHandle() {
+        const res = await orderAgain({ oid: this.oid });
+        if(res.code != 1) this.$toast(res.msg);
+        this.$go(`/pages/userModule/takeawayMenu/mcDonald/index?brand_id=5&rote=1&again=true&isBack=1`);
       },
       countFinished() {
         // 倒计时结束 - 展示已取消
@@ -296,11 +318,9 @@ export default {
           'signType': params.signType,
           'timeStamp': params.timeStamp,
           success: (res) => {
-            console.log('支付成功 - 下单成功', );
             this.currentStatus = 2;
           },
           fail: (res) => {
-            console.log('取消支付', );
           }
         });
       },
@@ -341,10 +361,7 @@ export default {
             latitude: Number(latitude),
             longitude: Number(longitude),
             name: restaurant_name,
-            address: restaurant_address,
-            success: function () {
-                console.log('success');
-            }
+            address: restaurant_address
         });
     },
     goServerHandle() {
@@ -411,8 +428,14 @@ page {
   font-weight: 600;
   color: #333333;
   margin-top: 50rpx;
-  .cd_title{
+  .cd_title {
     margin-right: 12rpx;
+  }
+  .cd_label {
+    font-size: 26rpx;
+    color: #666;
+    margin-top: 16rpx;
+    line-height: 36rpx;
   }
   .cd_time-con{
     .item{

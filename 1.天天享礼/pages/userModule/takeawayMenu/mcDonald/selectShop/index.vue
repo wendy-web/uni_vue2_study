@@ -82,18 +82,18 @@
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import confirmDia from '../content/confirmDia.vue';
 import {
-  location,
-  restaurantQuery,
-  restaurantCar
+location,
+restaurantCar,
+restaurantQuery
 } from '@/api/modules/takeawayMenu/luckin.js';
-import getViewPort from '@/utils/getViewPort.js';
-import { mapGetters, mapMutations } from 'vuex';
-import { formatDistance } from '@/utils/index.js';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getImgUrl } from '@/utils/auth.js';
 import { getUserLocation } from '@/utils/getUserLocation.js';
+import getViewPort from '@/utils/getViewPort.js';
+import { formatDistance } from '@/utils/index.js';
+import { mapGetters, mapMutations } from 'vuex';
+import confirmDia from '../content/confirmDia.vue';
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {
@@ -141,13 +141,18 @@ export default {
           isShowShopCloseDia: false,
           isShowSelDia: false,
           sel_restaurant_id: 0,
-          isShowLoading: false
+          isShowLoading: false,
+          product_id: 0,
+          ticket_id: 0
         };
     },
     async onLoad(option) {
+      this.setBrandId(5);
       if(option.pathSource) {
         this.pathSource = option.pathSource;
       }
+      this.product_id = option.product_id;
+      this.ticket_id = option.ticket_id;
     },
     async onShow() {
       this.$refs.privacyOpen.LifetimesShow();
@@ -158,26 +163,20 @@ export default {
     methods: {
       formatDistance,
       ...mapMutations({
+        setBrandId: 'cart/setBrandId',
         setRestaurantId: 'cart/setRestaurantId',
         setCityName: 'cart/setCityName',
         setProvinceName: 'cart/setProvinceName',
       }),
       handleTouchInput() {
         if (wx.requirePrivacyAuthorize) {
-          wx.requirePrivacyAuthorize({
-            success: res => {
-              console.log('用户同意了隐私协议 或 无需用户同意隐私协议')
-            },
-            fail: res => {
-              console.log('用户拒绝了隐私协议')
-            }
-          })
+          wx.requirePrivacyAuthorize();
         }
       },
       inputValueChange({detail}) {
         this.inputValue = detail;
       },
-      confirmHandle({detail}) {
+      confirmHandle({ detail }) {
         this.inputValue = detail.trim();
         this.mescroll.resetUpScroll();
       },
@@ -267,6 +266,10 @@ export default {
         const restaurant_id = this.sel_restaurant_id;
         this.setRestaurantId(restaurant_id);
         this.$hideLoading();
+        if(this.product_id) {
+          this.$redirectTo(`/pages/userModule/takeawayMenu/mcDonald/index?brand_id=5&rote=1&isBack=1&product_id=${this.product_id}&ticket_id=${this.ticket_id}`);
+          return;
+        }
         this.$back();
       },
       // 选择城市
@@ -275,17 +278,17 @@ export default {
       },
       topCallBack() {
         // 列表没有数据 - 返回到
-        if(!this.shopList.length) {
-          let pathSource = 'shopMall';
-          if(this.pathSource) pathSource = this.pathSource;
-          this.$switchTab(`/pages/tabBar/${pathSource}/index`);
-          return;
-        };
-        uni.navigateBack({
+        if(this.shopList.length || (this.pathSource == 'back')) {
+          uni.navigateBack({
             fail() {
                 this.$reLaunch('/pages/userModule/takeawayMenu/mcDonald/index');
             }
-        });
+          });
+          return;
+        }
+        let pathSource = 'shopMall';
+        if(this.pathSource) pathSource = this.pathSource;
+        this.$switchTab(`/pages/tabBar/${pathSource}/index`);
       }
     },
 };

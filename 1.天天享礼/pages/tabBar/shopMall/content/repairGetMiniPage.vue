@@ -173,7 +173,8 @@ export default {
                 appid,
                 path,
                 positionId,
-                has_coupon
+                has_coupon,
+                is_flow
             } = item;
             // 3乐刷 2京东 4拼多多 5: 深爱购
             if(lx_type == 3) return this.$go(`/pages/userModule/allowance/repairGet/detail?goods_id=${id}`);
@@ -199,6 +200,10 @@ export default {
             }
             const skuRes = await api(params);
             if (skuRes.code == 0) return this.$toast(skuRes.msg);
+            if (is_flow == 2) {
+                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}`);
+                return;
+            }
             const { type_id, jdShareLink, mobile_url } = skuRes.data;
             this.setMiniProgram(lx_type);
             this.$openEmbeddedMiniProgram({
@@ -231,8 +236,6 @@ export default {
         },
         scrollHandle(event) {
             const {scrollLeft, scrollTop, scrollHeight, scrollWidth, deltaX, deltaY} = event.detail;
-            // console.log('scrollTop', scrollTop);
-            // this.scrollTopValue = scrollTop;
         },
         async initGoodsTheme() {
             if(this.isLoading) return;

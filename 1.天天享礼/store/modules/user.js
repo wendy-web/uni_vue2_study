@@ -2,7 +2,6 @@ import {
     getAutoLogin,
     getAutoPrivacy,
     getGift,
-    getIsAlreadyShowLight,
     getLocation,
     getToken,
     getUserInfo,
@@ -12,7 +11,6 @@ import {
     setAutoPrivacy,
     setCardNewShow,
     setGift,
-    setIsAlreadyShowLight,
     setToken
 } from '@/utils/auth.js';
 
@@ -34,13 +32,13 @@ const state = {
     gift: getGift() || 0, // 0 非新用户 1 新用户
     location: getLocation() || null,
     userTotal: {},
-    diaList: ['privacy', 'cashBack'], // 弹起列表 - 用户更新弹窗的配置
+    diaList: ['privacy'], // 弹起列表 - 用户更新弹窗的配置
     isAutoPrivacy: Boolean(getAutoPrivacy()),
     isMiniProgram: 0, // 未进入；1 已进入
     isAutoLogin: Boolean(getAutoLogin()), // 1 自动登录；
     isSelRedPacket: false,
     isSelNewPacket: false,
-    isAlreadyShowLight: getIsAlreadyShowLight(), // 是否已经展示过天天带入的商品
+    isAlreadyShowLight: false, // 是否已经展示过天天带入的商品
     profitInfo: {
         packet_amount: 0
     }, // 账户余额查询
@@ -51,7 +49,6 @@ const state = {
 const mutations = {
     setProfitInfo(state, data) {
         state.profitInfo = data;
-        // console.log('data', data)
         // state.profitInfo = {
         //     ...data,
         //     packet_amount: 10.00
@@ -69,9 +66,8 @@ const mutations = {
     setSelNewPacket(state, sel) {
         state.isSelNewPacket = sel;
     },
-    setAlreadyShowLight(state) {
-        state.isAlreadyShowLight = true;
-        setIsAlreadyShowLight(true);
+    setAlreadyShowLight(state, value = true) {
+        state.isAlreadyShowLight = value;
     },
     setAutoPrivacy(state, isAuto) {
         state.isAutoPrivacy = isAuto;
@@ -114,6 +110,10 @@ const mutations = {
     },
     setUserInfo(state, userInfo) {
         state.userInfo = userInfo
+            // state.userInfo = {
+            //     ...userInfo,
+            //     is_vip: 0
+            // }
     },
     setLocation(state, location) {
         state.location = location
@@ -128,7 +128,7 @@ const mutations = {
 }
 
 const actions = {
-    /*用户登录*/
+    /* 用户登录 */
     wxlogin({ dispatch, commit, state }, isAppLaunch) {
         return new Promise((resolve, reject) => {
             //存在token不刷新，让程序自动去刷新
@@ -146,7 +146,6 @@ const actions = {
                     }).then(res => {
                         if (res.code == 1) {
                             let { token, uid, gift } = res.data;
-                            // console.log('res.data', res.data.gift)
                             // gift = 1;
                             commit('setLoginInfo', { token, uid, gift });
                             setToken(token);
@@ -156,7 +155,6 @@ const actions = {
                                 // 记录用户日志
                             log.setFilterMsg('userToken');
                             log.info("token:", token)
-                                // console.log("token:", token)
                             return
                         }
                         reject({

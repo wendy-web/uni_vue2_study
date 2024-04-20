@@ -21,8 +21,9 @@
 </view>
 </template>
 <script>
-import goDetailsFun from "@/utils/goDetailsFun.js";
 import { popover, popoverRember } from "@/api/modules/configuration.js";
+import { hwHome, jumpLink } from '@/api/modules/discounts.js';
+import goDetailsFun from "@/utils/goDetailsFun.js";
 export default {
     mixins: [goDetailsFun],
     props: {
@@ -36,13 +37,92 @@ export default {
             isShow: false,
             config: null,
             list: [],
-            timer: null
+            timer: null,
+            payWayObj: {
+                'WXZF': {
+                    name: '微信支付订单',
+                    path: '/pages/userModule/order/detail?id=',
+                },
+                'qianzhu_x': {
+                    name: '星巴克订单',
+                    path: '/pages/userModule/takeawayMenu/starbucks/order/index?oid=',
+                },
+                'qianzhu_k': {
+                    name: '肯德基订单',
+                    path: '/pages/userModule/takeawayMenu/kfc/order/index?oid=',
+                },
+                'qianzhu_m': {
+                    name: '电影订单',
+                },
+                'HW_ruixing': {
+                    name: '瑞幸订单',
+                    path: '/pages/userModule/takeawayMenu/luckin/order/index?oid='
+                },
+                'HW_mdl': {
+                    name: '麦当劳订单',
+                    path: '/pages/userModule/takeawayMenu/mcDonald/order/index?oid='
+                },
+                'HW_wallace': {
+                    brand_id: 1,
+                    name: '华莱士订单',
+                },
+                'HW_burger': {
+                    brand_id: 2,
+                    name: '汉堡王',
+                },
+                'HW_pizza': {
+                    brand_id: 3,
+                    name: '必胜客订单',
+                },
+                'HW_heytea': {
+                    brand_id: 4,
+                    name: '喜茶订单',
+                },
+                'HW_nayuki': {
+                    brand_id: 5,
+                    name: '奈雪订单',
+                },
+            }
         };
     },
     methods: {
-        notionImgHandle() {
-            const { xf_type, qz_url } = this.config;
-            if(xf_type == 1) return this.$go('/pages/userModule/order/index?activeTab=1'); // 待付款悬浮
+        async notionImgHandle() {
+            const { xf_type, pay_way, appid, path, oid, orderNo } = this.config;
+            if(appid && path) {
+                this.$openEmbeddedMiniProgram({
+                    appId: appid,
+                    path
+                });
+                return;
+            }
+            // if(xf_type == 1) return this.$go('/pages/userModule/order/index?activeTab=1'); // 待付款悬浮
+            if(xf_type == 1) {
+                const currentObj = this.payWayObj[pay_way];
+                const { path, brand_id } = currentObj;
+                // this.$go('/pages/userModule/order/index?activeTab=1'); // 待付款悬浮
+                // if(_haiWeiObj == 'WXZF'){
+                //     this.$go(`/pages/userModule/order/detail?id=${oid}`);
+                // }
+                if(path) return this.$go(`${path}${oid}`);
+                if(brand_id) {
+                    const res = await hwHome({ brand_id });
+                    if(res.code != 1) return this.$toast(res.msg);
+                    const link = encodeURIComponent(res.data);
+                    this.$go(`/pages/webview/webview?link=${link}&bgColor=#fff`);
+                }
+                // 千猪电影订单
+                if(orderNo) {
+                    const res = await jumpLink({
+                        type: 1,
+                        page: 'order',
+                        orderNo,
+                        status: 1
+                    });
+                    const link = encodeURIComponent(res.data.url);
+                    this.$go(`/pages/webview/webview?link=${link}&bgColor=#FCDB28`);
+                }
+                return;
+            }
             if(xf_type == 2) {
                 this.$emit('draw');
                 return;

@@ -1,5 +1,5 @@
 <template>
-<view class="me-tabs" id="tabCoDomId" :class="{'tabs-fixed': fixed}"
+<view class="me-tabs" :class="{'tabs-fixed': fixed}"
 	:style="{height: tabHeightVal, top:topFixed, 'margin-top':topMargin}">
 	<scroll-view v-if="tabs.length" :id="viewId" :scroll-left="scrollLeft" scroll-x scroll-with-animation
 		:scroll-animation-duration="300">
@@ -110,7 +110,6 @@
 			this.$nextTick(()=>{
 				setTimeout(() => {
 					this.itemDomFun();
-					this.tabCoDomFun();
 				}, 1000)
 			})
 		},
@@ -124,21 +123,19 @@
 					this.initWarpRect(tabItemId).then(result => {
 						this.firstLineLeft = result.left + (result.width) / 2 + 'px';
 					});
+				} else {
+					this.firstLineLeft = this.tabs[i].left + (this.tabs[i].width /2) + 'px';
 				}
 				if (this.value != i) {
 					this.$emit("input", i);
 					this.$emit("change", i);
 				}
 			},
-			tabCoDomFun(){
-				this.initWarpRect('tabCoDomId').then(res=> {
-					this.$emit('domObjTop', res.top);
-				})
-			},
 			itemDomFun(){
 				this.tabs.forEach((res, index) => {
 					const tabItemId = `tabItemId${index}`;
 					this.initWarpRect(tabItemId).then(result => {
+						if(!result) return
 						if((index == this.value) && !this.firstLineLeft){
 							this.firstLineLeft =  result.left + result.width / 2 + 'px';
 							setTimeout(() => {
@@ -158,7 +155,7 @@
 				}
 				// let tabLeft1 = this.tabWidthPx * this.value + this.tabWidthPx / 2; // 当前tab中心点到左边的距离
 				const currentDom = this.tabs[this.value];
-				let tabLeft = currentDom.left +currentDom.width / 2; // 当前tab中心点到左边的距离
+				let tabLeft = currentDom.left + currentDom.width / 2; // 当前tab中心点到左边的距离
 				let diff = tabLeft - this.warpWidth / 2 // 如果超过tabs容器的一半,则滚动差值
 				this.scrollLeft = diff;
 				// #ifdef MP-TOUTIAO
@@ -241,9 +238,9 @@
 		.tabs-line {
 			z-index: 1;
 			position: absolute;
-			bottom: 10rpx; // 至少与.tabs-item的padding-bottom一致,才能保证在底部边缘
-			width: 38rpx;
-			height: 4rpx;
+			bottom: 12rpx; // 至少与.tabs-item的padding-bottom一致,才能保证在底部边缘
+			width: 36rpx;
+			height: 6rpx;
 			transform: translateX(-50%);
 			transition: left .3s;
 			background: #F84842;

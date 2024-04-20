@@ -91,6 +91,14 @@ const shareMixin = {
                     text: '领现金'
                 },
                 {
+                    route: 'pages/shopMallModule/productDetails/index',
+                    pageNum: 13,
+                    text: '中转详情页',
+                    defaultTitle: '',
+                    defaultImg: '',
+                    isBtnShare: 'productDetails'
+                },
+                {
                     route: 'pages/userModule/productList/index',
                     pageNum: 0, // 无后台配置
                     text: '领券中心',
@@ -239,7 +247,6 @@ const shareMixin = {
             imageUrl: share_img || defaultImg,
             path: `${pathUrl}${pathData}`
         };
-        console.log('share', share)
         if (isBtnShare == 'feedList') share = this.shareFeedBtnFun(data, pathData); // feed的分享
         if (isBtnShare == 'cordList') share = this.shareMyCollectBtnFun(data, pathData); // 记录分享
         // 专题半屏弹窗的分享
@@ -247,6 +254,15 @@ const shareMixin = {
             share = {
                 ...share,
                 ...await this.homeSpecialBtnFun(data, pathData)
+            };
+        }
+        if (isBtnShare == 'productDetails') {
+            const { lx_type, goods_name, banner_image } = this.config;
+            const proData = `&lx_type=${lx_type}&queryId=${this.queryId}&isSearch=${this.isSearch}&isHome=${this.isHome}&isJdCenter=${this.isJdCenter}&isFeed=${this.isFeed}`
+            share = {
+                title: share_title || goods_name,
+                imageUrl: share_img || (banner_image.length && banner_image[0]),
+                path: `${share.path}${proData}`
             };
         }
         return share;

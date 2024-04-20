@@ -65,6 +65,10 @@ export const goodsTypeObj = {
     9: {
         label: '手机充值',
         icon: '../../static/order/icon_phone.png'
+    },
+    10: {
+        label: '麦当劳',
+        icon: '../../static/order/icon_07.png'
     }
 }
 export const haiWeiObj = {

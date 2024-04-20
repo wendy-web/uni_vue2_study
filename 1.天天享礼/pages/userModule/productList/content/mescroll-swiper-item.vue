@@ -14,6 +14,7 @@
 <script>
 	import {
 goodsQuery,
+guessList,
 jingfen,
 material
 } from '@/api/modules/jsShop.js';
@@ -45,7 +46,15 @@ import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescrol
 				},
 				goods: [], //列表数据
 				lastOddItem: null,
-				pageNum: 1
+				pageNum: 1,
+				isAdvertiseStop: false,
+				guessListParams: {
+					index: 1,
+					pageNum: 1,
+					sizeNum: 10,
+					empty_num: 0,
+					is_first: 0
+				}
 			}
 		},
 		props:{
@@ -86,6 +95,33 @@ import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescrol
 				this.tabs[this.index]._groupIdIndex = 0;
 				this.goods = [];
 				this.pageNum = 1;
+				this.isAdvertiseStop = false;
+				this.guessListParams = {
+					index: 1,
+					pageNum: 1,
+					sizeNum: 10,
+					empty_num: 0,
+					is_first: 0
+				}
+			},
+			async guessListFun(page) {
+				const res = await guessList(this.guessListParams);
+				if(res.code != 1 || (res.data && res.data.stop)) {
+					this.isAdvertiseStop = true;
+					this.mescroll.endSuccess(10, true);
+					this.mescroll.triggerUpScroll();
+					return;
+				}
+				const { index, list, pageNum, is_first, empty_num } = res.data;
+				this.guessListParams = {
+					...this.guessListParams,
+					index,
+					pageNum,
+					empty_num,
+					is_first
+				}
+				this.goods = this.goods.concat(list); // 追加新数据
+				this.mescroll.endSuccess(10, true);
 			},
 			/*上拉加载的回调: 其中page.num:当前页 从1开始, page.size:每页数据条数,默认10 */
 			async upCallback(page) {
@@ -99,8 +135,11 @@ import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescrol
 					eliteId,
 					groupId,
 					type,
-                    lx_type
+                    lx_type,
+					is_advertise
 				} = curTab;
+				// 浏览记录推品
+				if(is_advertise && !this.isAdvertiseStop) return this.guessListFun(page);
 				let pageNum = this.pageNum;
 				let params = {
 					id,
@@ -214,7 +253,6 @@ import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescrol
                         break;
                 };
                 queryApi(params).then(res => {
-                    console.log('res', res);
                     // 设置列表数据
 					if( page.num == 1 ) {
 						this.goods = [];

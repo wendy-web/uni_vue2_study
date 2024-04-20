@@ -143,11 +143,9 @@ import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 					});
 				},
 				fail: (err) => {
-					console.log('取消支付', this.goodsType,"goodsType");
 					this.isDisabled = false
 					if (err.errMsg == 'requestPayment:fail cancel') {
 						// this.cancelPay();
-						console.log('再次取消');
 						this.$emit("againCancel");
 						return;
 					}

@@ -1,11 +1,11 @@
 <template>
 <view class="activity" id="cashFinishDom7Ref">
-  <image src="https://file.y1b.cn/store/1-0/24124/65b0af9adab79.png" mode="scaleToFill" class="act_img"></image>
-  <view class="act_btn">
-    下次活动通知我
-    <image src="https://file.y1b.cn/store/1-0/24124/65b0b0bca7769.png"
-        mode="widthFix" class="gesture_icon"
-      ></image>
+  <image src="https://test-file.y1b.cn/store/1-0/2436/65e7c3dc5f7de.png" mode="scaleToFill" class="act_img"></image>
+  <view class="act_box ">
+    <image src="https://test-file.y1b.cn/store/1-0/2436/65e7c4a2f147c.png" mode="scaleToFill" class="act_icon"></image>
+    <view class="act_text">
+      <image src="https://test-file.y1b.cn/store/1-0/2436/65e7ddeb147da.png" mode="scaleToFill" class="act_txt-icon"></image>
+    </view>
   </view>
 </view>
 </template>
@@ -51,44 +51,53 @@ export default {
 <style lang="scss" scoped>
 .activity {
   overflow: hidden;
+  padding: 0 20rpx;
   .act_img {
-    width: 324rpx;
-    height: 48rpx;
-    display: block;
-    margin: 68rpx auto 0;
-  }
-  .act_btn {
     width: 244rpx;
-    height: 64rpx;
-    border: 1rpx solid rgba(248,72,66,0.50);
-    border-radius: 16rpx;
-    font-size: 28rpx;
-    text-align: center;
-    color: #f84842;
-    line-height: 64rpx;
-    position: relative;
-    margin: 32rpx auto 48rpx;
-    position: relative;
-    .gesture_icon {
-      width: 58rpx;
-      height: 66rpx;
-      position: absolute;
-      bottom: -33rpx;
-      transform: translate(16rpx, 16rpx);
-      animation: gestureAnimation 1s linear infinite;
-    }
+    height: 36rpx;
+    display: block;
+    margin: 40rpx auto 0;
   }
 }
-
-@keyframes gestureAnimation {
-	0% {
-    transform: translate(16rpx, 16rpx);
-	}
-	50% {
-    transform: translate(0,0);
-	}
-	100% {
-    transform: translate(16rpx, 16rpx);
-	}
+.act_box {
+  position: relative;
+  margin: 40rpx auto;
+  z-index: 0;
+  overflow: hidden;
+  text-align: center;
+  &::before {
+    content: '\3000';
+    background: url("https://test-file.y1b.cn/store/1-0/2436/65e7c56c9a2b1.png") 0 0 / 100% 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+  .act_icon {
+    width: 144rpx;
+    height: 134rpx;
+    display: block;
+    margin: 12rpx auto 0;
+  }
+  .act_txt-icon {
+    width: 544rpx;
+    height: 44rpx;
+  }
+  .act_text{
+    display: inline-block;
+    margin: 22rpx auto 45rpx;
+    position: relative;
+    &::before {
+      content: '\3000';
+      background: url("https://test-file.y1b.cn/store/1-0/2436/65e7c6a6e52e1.png") 0 0 / cover;
+      position: absolute;
+      bottom: -10rpx;
+      right: 176rpx;
+      width: 148rpx;
+      height: 26rpx;
+    }
+  }
 }
 </style>

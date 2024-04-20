@@ -35,9 +35,7 @@ export default {
     return {};
   },
   methods: {
-    sphError(err) {
-      console.log("视频号err：", err);
-    },
+    sphError(err) { },
   },
 };
 </script>

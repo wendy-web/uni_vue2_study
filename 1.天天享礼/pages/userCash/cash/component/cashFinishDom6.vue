@@ -89,7 +89,7 @@ export default {
       content: '\3000';
       width: 106rpx;
       height: 46rpx;
-      background: url("https://file.y1b.cn/store/1-0/24124/65b0a5693faf2.png") 0 0 / 100% 100%;
+      background: url("https://test-file.y1b.cn/store/1-0/2426/65c1f9b2c8177.png") 0 0 / 100% 100%;
       position: absolute;
       top: -26rpx;
       right: -33rpx;

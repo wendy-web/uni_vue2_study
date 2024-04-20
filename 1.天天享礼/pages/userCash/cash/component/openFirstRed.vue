@@ -109,6 +109,7 @@ export default {
     color: #9d4218;
     line-height: 72rpx;
     text-align: center;
+    font-weight: bold;
   }
   .cash_left-btn {
     width: 366rpx;
@@ -232,7 +233,7 @@ export default {
     width: 40rpx;
     height: 40rpx;
     background: #333;
-    border-radius: 4rpx;
+    border-radius: 8rpx;
     text-align: center;
     line-height: 40rpx;
     color: #fff;

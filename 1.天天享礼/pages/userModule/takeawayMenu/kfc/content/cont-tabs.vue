@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import listItem from './listItem.vue';
 import { getImgUrl } from '@/utils/auth.js';
+import listItem from './listItem.vue';
 export default {
 	props: {
 		tabs: {
@@ -130,7 +130,6 @@ export default {
 				this.initWarpRect(tabItemId).then(result => {
 					res.top = result.top + this.scrollTopHeight;
 					res.height = result.height;
-					// console.log('result :>> ', result);
 					if(index == 0) {
 						// 底部边距的
 						res._top = result.height + uni.upx2px(48);

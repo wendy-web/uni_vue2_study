@@ -30,10 +30,10 @@
 </template>
 
 <script>
-import goDetailsFun from '@/utils/goDetailsFun';
-import { getImgUrl } from '@/utils/auth.js';
 import { bysubunionid } from '@/api/modules/jsShop.js';
 import { goodsPromotion } from '@/api/modules/pddShop.js';
+import { getImgUrl } from '@/utils/auth.js';
+import goDetailsFun from '@/utils/goDetailsFun';
 import { mapGetters } from 'vuex';
 export default{
 	props: {
@@ -65,7 +65,7 @@ export default{
 	methods:{
 		async jdHandle(item) {
 			if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
-			const { skuId, has_coupon, lx_type, goods_sign, positionId } = item;
+			const { skuId, has_coupon, lx_type, goods_sign, positionId, is_flow } = item;
 			let api = '';
             const params = { positionId };
 			if (lx_type == 3) {
@@ -79,6 +79,10 @@ export default{
             }
             const skuRes = await api(params);
 			if (skuRes.code == 0) return this.$toast(skuRes.msg);
+			if (is_flow == 2) {
+                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&isSearch=true`);
+                return;
+            }
 			const { type_id, jdShareLink, mobile_url } = skuRes.data;
 			this.$openEmbeddedMiniProgram({
                 appId: type_id,

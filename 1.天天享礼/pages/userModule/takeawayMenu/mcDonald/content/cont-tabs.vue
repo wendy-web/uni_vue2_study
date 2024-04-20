@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import listItem from './listItem.vue';
 import { getImgUrl } from '@/utils/auth.js';
+import listItem from './listItem.vue';
 export default {
 	props: {
 		tabs: {
@@ -123,7 +123,6 @@ export default {
 			// }
 			let currentIndex = this.tabs.findIndex(event => scrollTop < event._top);
 			let opacityIndex = this.tabs.findIndex(event => scrollTop <= event._top && (scrollTop > (event._top - this.itemHeight)));
-			// console.log('opacityIndex :>> ', opacityIndex, scrollTop);
 			this.opacityIndex = opacityIndex;
 			this.$emit('scroll', currentIndex);
 		},
@@ -143,7 +142,6 @@ export default {
 				this.initWarpRect(tabItemId).then(result => {
 					res.top = result.top + this.scrollTopHeight;
 					res.height = result.height;
-					// console.log('result :>> ', result);
 					if(index == 0) {
 						// 底部边距的
 						res._top = result.height ;

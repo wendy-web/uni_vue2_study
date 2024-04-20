@@ -14,9 +14,6 @@ export function showLoading(title = '加载中...', mask = true) {
     uni.showLoading({
         title,
         mask,
-        complete: (res) => {
-            console.log('res :>> ', res);
-        }
     });
 }
 

@@ -59,10 +59,24 @@
           <van-icon name="arrow" color="#999999" size="14" />
         </view>
       </view>
-      <view class="list-item" @click="animationHandle">
+      <view class="list-item" @click="animationHandle" v-if="isTest">
         <view class="li-left">测试</view>
         <view class="li-right">
           <view class="lir-item">旋转木马动画效果</view>
+          <van-icon name="arrow" color="#999999" size="14" />
+        </view>
+      </view>
+      <!-- <view class="list-item" @click="animationHandle1">
+        <view class="li-left">测试</view>
+        <view class="li-right">
+          <view class="lir-item">插件</view>
+          <van-icon name="arrow" color="#999999" size="14" />
+        </view>
+      </view> -->
+      <view class="list-item" @click="animationHandle2"  v-if="isTest">
+        <view class="li-left">测试</view>
+        <view class="li-right">
+          <view class="lir-item">库迪咖啡首页</view>
           <van-icon name="arrow" color="#999999" size="14" />
         </view>
       </view>
@@ -135,7 +149,7 @@
   </view>
 </template>
 <script>
-import { getImgUrl } from '@/utils/auth.js';
+import { getENV, getImgUrl } from '@/utils/auth.js';
 import { getAstro } from "@/utils/getAstro.js";
 import { compareVersion, parseTime } from "@/utils/index.js";
 import uploadImgAI from "@/utils/uploadImgAI.js";
@@ -147,33 +161,34 @@ export default{
     },
 	data() {
 		return {
-            canIuse: false,
-            imgUrl: getImgUrl(),
-            avatar_default: `${getImgUrl()}static/images/avatar_default.png`,
-            genderLabel: "",
-            genderList: [
-                {
-                id: 1,
-                label: '先生',
-                icon: `${getImgUrl()}static/user/gender_1.png`
-                },
-                {
-                id: 2,
-                label: '女士',
-                icon: `${getImgUrl()}static/user/gender_2.png`
-                }
-            ],
-            showGenderPicker: false,
-            showBirthPicker: false,
-            currentDate: new Date("1990/06/15").getTime(),
-            minDate: new Date("1900/01/01").getTime(),
-            maxDate: new Date().getTime(),
-            starSignName: "", //星座名
-            birthday: "",
-            constellation: "", //星座对应数字，后台传参
-            birth_constellation: '',
-            phoneNumber: '',
-            isShowConfirmDia: false
+      canIuse: false,
+      imgUrl: getImgUrl(),
+      avatar_default: `${getImgUrl()}static/images/avatar_default.png`,
+      genderLabel: "",
+      genderList: [
+          {
+          id: 1,
+          label: '先生',
+          icon: `${getImgUrl()}static/user/gender_1.png`
+          },
+          {
+          id: 2,
+          label: '女士',
+          icon: `${getImgUrl()}static/user/gender_2.png`
+          }
+      ],
+      showGenderPicker: false,
+      showBirthPicker: false,
+      currentDate: new Date("1990/06/15").getTime(),
+      minDate: new Date("1900/01/01").getTime(),
+      maxDate: new Date().getTime(),
+      starSignName: "", //星座名
+      birthday: "",
+      constellation: "", //星座对应数字，后台传参
+      birth_constellation: '',
+      phoneNumber: '',
+      isShowConfirmDia: false,
+      isTest: getENV() == 'test',
 		}
 	},
 	computed: {
@@ -187,7 +202,7 @@ export default{
     this.init();
   },
   onShow() {
-    this.$refs.privacyOpen.LifetimesShow();
+    this.$refs.privacyOpen?.LifetimesShow();
   },
 	methods:{
     ...mapActions({
@@ -203,6 +218,14 @@ export default{
     },
     animationHandle() {
       this.$go('/pages/userComModule/ani3Dflower/index')
+    },
+    animationHandle1() {
+      this.$go(`plugin://hello-plugin/hello-page`);
+      // this.$go(`plugin://express-plugin/home?shareCode=1911Fv7raS&userId=1&extra=1`);
+    },
+
+    animationHandle2() {
+      this.$go(`plugin://jtkDc/kudiindex?pub_id=27729&sid=ttxl&channel=${this.userInfo.id}`);
     },
     async uploadImg(imgPath) {
       try {
@@ -222,7 +245,6 @@ export default{
       }
     },
     async chooseImg() {
-      console.log('chooseImg :>> ');
       let chooseImage = wx.chooseMedia || wx.chooseImage;
       try {
         /**图片获取 */
@@ -259,14 +281,9 @@ export default{
       }
     },
     // 修改用户信息
-    updateUserInfo(params) {
-      this.editUpdateUser(params).then(res => {
-        console.log('res', res);
-        uni.showToast({
-          title: res.msg,
-          icon: 'none'
-        });
-      });
+    async updateUserInfo(params) {
+      const res = await this.editUpdateUser(params);
+      this.$toast(res.msg);
     },
     modifyName() {
       this.$go(`/pages/userInfo/personalInfo/modifyName/index?nickName=${this.userInfo.nick_name}`);
@@ -334,36 +351,22 @@ export default{
       }
       return obj;
     },
-    getPhoneNumber(event) {
-      console.log(event);
+    async getPhoneNumber(event) {
 			if(event.detail.errMsg !== 'getPhoneNumber:ok') return;
-      const phoneCode = event.detail.code;
-      if(phoneCode) {
-        this.updateUserNew({
-          code: phoneCode
-        }).then(res => {
-          console.log('res', res);
-          this.phoneNumber = res.data.mobile;
-          uni.showToast({
-            title: '更新成功',
-            icon: 'none'
-          });
-        });
-        return;
-      }
-      uni.showToast({
-        title: '微信版本过低，无法获取手机号',
-        icon: 'none'
-      });
+      const code = event.detail.code;
+      if(!code) return this.$toast('微信版本过低，无法获取手机号');
+      const res = await this.updateUserNew({ code });
+      this.phoneNumber = res.data.mobile;
+      this.$toast('更新成功');
     },
-        exitLoginHandle() {
-            this.isShowConfirmDia = true;
-        },
-        async confirmExitLoginHandle() {
-            this.isShowConfirmDia = false;
-            this.setAutoLogin(false)
-            this.$back();
-        }
+    exitLoginHandle() {
+        this.isShowConfirmDia = true;
+    },
+    async confirmExitLoginHandle() {
+        this.isShowConfirmDia = false;
+        this.setAutoLogin(false)
+        this.$back();
+    }
 	}
 }
 </script>

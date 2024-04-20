@@ -131,7 +131,6 @@ export default {
 					this.isDisabled = false
 					if (err.errMsg == 'requestPayment:fail cancel') {
 						// this.cancelPay();
-						console.log('再次取消');
 						this.$emit("againCancel");
 						return;
 					}

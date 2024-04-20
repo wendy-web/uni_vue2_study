@@ -45,7 +45,13 @@
             <view class="cont_box" @click="popoverRember">
             <image class="bg_img" src="https://file.y1b.cn/store/1-0/23714/64b0a3e8d8ec8.png" mode="scaleToFill"></image>
             <image class="shop_img" :src="config.jdImage" mode="scaleToFill"></image>
-            <view class="cont_txt txt_ov_ell1">{{ config.skuName }}</view>
+            <view class="cont_txt">
+              <image class="cont_txt-icon" src="https://test-file.y1b.cn/store/1-0/24321/65fbdda4a2ee6.png" mode="heightFix" v-if="
+                config.after_pay"></image>
+              <view class="cont_txt-fl txt_ov_ell1">
+                {{ config.skuName }}
+              </view>
+            </view>
             <view class="face_value">
                 <image class="bg_img" src="https://file.y1b.cn/store/1-0/23714/64b0a4064af05.png" mode="scaleToFill"></image>
                 <view>
@@ -105,6 +111,7 @@ export default {
       this.isFinShed = true;
     },
     onChangeHandle(event) {
+      // return
       let {
         hours,
         minutes,
@@ -239,9 +246,19 @@ export default {
     font-size: 30rpx;
     font-weight: 600;
     text-align: center;
-    color: #333333;
+    color: #333;
     line-height: 42rpx;
     margin-top: 24rpx;
+    display: flex;
+    align-items: center;
+    .cont_txt-icon {
+      width: 120rpx;
+      height: 30rpx;
+      margin-right: 10rpx;
+    }
+    .cont_txt-fl{
+      flex: 1;
+    }
   }
   .face_value {
     width: 510rpx;

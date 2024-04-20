@@ -1,17 +1,15 @@
-import store from '@/store'
-import log from "@/utils/log.js"
+import store from '@/store';
 import {
-    XhHttp
-} from './index'
-import {
-    setStorage,
     getBaseUrl,
-    getStorage,
-    getPlatform,
     getGift,
-    getToken
+    getPlatform,
+    getStorage,
+    getToken,
+    setStorage
 } from '@/utils/auth.js';
-//获取小程序版本号
+import log from "@/utils/log.js";
+import { XhHttp } from './index';
+// 获取小程序版本号
 const getVersion = uni.getAccountInfoSync();
 const envVersion = getVersion.miniProgram.envVersion || 'release';
 let platform = getPlatform();
@@ -92,9 +90,7 @@ export default new XhHttp({
             // 清除当前请求队列里的url
             context.popAsyncReqUrl(config.url)
                 // 关闭loading
-            if (!config.isNoLoading) {
-                context.closeLoading()
-            }
+            if (!config.isNoLoading) context.closeLoading();
             // 响应成功
             if (res.statusCode == 200 && res.data) {
                 let result = res.data;
@@ -136,12 +132,10 @@ export default new XhHttp({
                 resolve(result);
                 if (isLoginURL || !context.whiteURL.includes(config.url)) {
                     setTimeout(() => {
-                        // console.log('reqErrList-释放前', context.reqErrList.map(item => item.url))
                         for (; context.reqErrList.length > 0;) {
                             let errReq = context.reqErrList.pop()
                             if (errReq) errReq.call()
                         }
-                        // console.log('reqErrList-释放后', context.reqErrList.map(item => item.url))
                     }, 0)
                 }
                 if (config.type === 'cache' && result) {
@@ -156,6 +150,8 @@ export default new XhHttp({
                 }
                 return;
             }
+            // 跳过异常的上报提示
+            if (config.isColorErrMsg) return;
             /**请求失败 统一提示 */
             wx.showModal({
                 title: '请求异常',

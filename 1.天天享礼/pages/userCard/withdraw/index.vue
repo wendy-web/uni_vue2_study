@@ -43,7 +43,7 @@
                     <view class="draw_item_price">¥{{ parseFloat(profitInfo.total_amount).toFixed(2) }}</view>
                 </view>
             </view>
-            <view class="draw_lab">* 领取后需等次月30天后可提现</view>
+            <view class="draw_lab">* 订单已完成且无退换货，可提现到微信零钱</view>
         </view>
         <view class="record_box" v-if="goods.length">
             <view class="record_title">返现记录</view>
@@ -78,11 +78,11 @@
 
 <script>
 import { msgTemplate, profitGet, profitList, profitMes } from '@/api/modules/user.js';
-import pCountup from '@/components/p-countUp/countUp.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getImgUrl } from '@/utils/auth.js';
 import getViewPort from '@/utils/getViewPort.js';
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import pCountup from './countUp.vue';
 import helpConfirmDia from './helpConfirmDia.vue';
 
 export default {
@@ -120,7 +120,6 @@ export default {
     watch: {
         'profitInfo.packet_amount': {
             handler:async function (newValue, oldValue) {
-                // console.log('profitInfo.packet_amount:',newValue);
                 // this.gradualAnimation(newValue);
             },
             deep: true

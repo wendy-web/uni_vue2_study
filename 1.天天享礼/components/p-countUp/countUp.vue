@@ -7,28 +7,13 @@
  fontSize：字体大小
  <countup :num="123.453" color="#ff9e50" width='13' height='23' fontSize='23'></countup>
  -->
-<template>
+ <template>
 	<view
-		class="number-box"
-		:style="{fontWeight:fontWeight}"
+	class="number-box"
+	:style="{fontWeight:fontWeight}"
 	>
 		<block v-for="(myIndex, index) in indexArr" :key="index">
-			<swiper
-				class="swiper" vertical="true"
-				:autoplay="isAutoplay && myIndex !== 10"
-				:interval="10"
-				:circular="true"
-				:current="myIndex"
-				circular="true"
-				v-bind:style="{
-					color:color,
-					width: myIndex == 10 ? dotWidth+'px' : width+'px',
-					height:height+'px',
-					lineHeight:fontSize+'px',
-					fontSize:fontSize+'px',
-					fontWeight: fontWeight
-				}"
-				>
+			<swiper class="swiper" vertical="true" :current="myIndex" circular="true" v-bind:style="{color:color,width:myIndex == 10 ? '7px' : width+'px',height:height+'px',lineHeight:fontSize+'px',fontSize:fontSize+'px'}">
 				<swiper-item>
 					<view class="swiper-item">0</view>
 				</swiper-item>
@@ -59,7 +44,7 @@
 				<swiper-item>
 					<view class="swiper-item">9</view>
 				</swiper-item>
-				<swiper-item v-if="myIndex == 10">
+				<swiper-item>
 					<view class="swiper-item">.</view>
 				</swiper-item>
 			</swiper>
@@ -70,7 +55,7 @@
 <script>
 	export default {
 		props: {
-			num:[String, Number],
+			num: [String, Number],
 			color: {
 				type: String,
 				default: '#000000'
@@ -90,56 +75,33 @@
 			fontWeight: {
 				type: Number,
 				default: 400
-			},
-			dotWidth: {
-				type: String,
-				default: '7'
-			},
-			isSetTimeAutoNum: {
-				type: Number,
-				default: 0
 			}
 		},
 		data() {
 			return {
-				indexArr: [],
-				fillNum: 0,
-				isAutoplay: false
+				indexArr: []
 			};
 		},
 		created() {
-			let { num } = this;
-            if(!num) return this.indexArr = [0];
+			let {
+				num
+			} = this;
 			let arr = new Array(num.toString().length);
-			arr.fill(this.fillNum);
+			arr.fill(0);
 			this.indexArr = arr;
 		},
 		watch: {
 			num: function(val, oldVal) {
 				// 处理新老数据长度不一样的情况
-				if(!val) return this.indexArr = [0];
 				let arr = Array.prototype.slice.apply(this.indexArr);
 				let newLen = val.toString().length;
 				let oldLen = oldVal.toString().length;
-				if(newLen == oldLen && this.isSetTimeAutoNum) {
-					this.isAutoplay = true;
-					arr = arr.map(res => {
-						if(res == 10) return res;
-						const randomNum = Math.floor(Math.random() * 10);
-						if(res == randomNum) return res ? 0 : 9;
-						return randomNum;
-					});
-					// console.log('arr', arr)
-					this.indexArr = arr;
-				}
-				// 增加一位小数
 				if (newLen > oldLen) {
 					for (let i = 0; i < newLen - oldLen; i++) {
-						arr.push(this.fillNum);
+						arr.push(0);
 					}
 					this.indexArr = arr;
 				}
-				// 去除一位小数
 				if (newLen < oldLen) {
 					for (let i = 0; i < oldLen - newLen; i++) {
 						arr.pop();
@@ -162,8 +124,9 @@
 			 * @value 数字
 			 */
 			numChange(num) {
-                if(!num) return this.indexArr = [0];
-				let { indexArr } = this;
+				let {
+					indexArr
+				} = this;
 				let copyIndexArr = Array.prototype.slice.apply(indexArr);
 				let _num = num.toString();
 				for (let i = 0; i < _num.length; i++) {
@@ -173,10 +136,7 @@
 						copyIndexArr[i] = Number(_num[i]);
 					}
 				}
-				setTimeout(() => {
-					this.isAutoplay = false;
-					this.indexArr = copyIndexArr;
-				}, this.isAutoplay ?  this.isSetTimeAutoNum : 0);
+				this.indexArr = copyIndexArr;
 			}
 		}
 	};

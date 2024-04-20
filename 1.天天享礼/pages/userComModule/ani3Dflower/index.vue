@@ -130,7 +130,6 @@ export default {
   },
   onShow() {
     this.init();
-    console.log('this.list.le', this.list.length)
 
   },
   methods: {
@@ -167,7 +166,6 @@ export default {
       this.clearNumTimer();
       // if(this.isEndClick) return;
       if(this.isStartClick) {
-        // console.log('结束', 结束);
         // this.speakNum = 50;
         this.isEndClick = true;
         this.interSubSpeak();
@@ -218,7 +216,6 @@ export default {
         if(this.speakNum < 60 && this.speakNum > 10) this.speakNum -= 5;
         // if(this.speakNum < 40 && this.speakNum >= 10) this.speakNum -= 15;
         if(this.speakNum <= 10 && this.speakNum > 5) this.speakNum -= 2;
-        // console.log('this.speakNum', this.speakNum);
         if(this.speakNum <= 5 && this.speakNum >0) {
           this.speakNum -= 1;
           return this.intervalTimeFun(1000);

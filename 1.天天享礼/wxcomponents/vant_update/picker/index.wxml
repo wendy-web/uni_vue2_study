@@ -1,12 +1,10 @@
 <wxs src="./index.wxs" module="computed" />
 
-<view class="van-picker custom-class">
+<view class="van-picker custom-class" style="--picker-background-color:{{backgroundColor}}">
   <include wx:if="{{ toolbarPosition === 'top' }}" src="./toolbar.wxml" />
-
   <view wx:if="{{ loading }}" class="van-picker__loading">
     <loading color="#1989fa"/>
   </view>
-
   <view
     class="van-picker__columns"
     style="{{ computed.columnsStyle({ itemHeight, visibleItemCount }) }}"

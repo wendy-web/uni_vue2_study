@@ -38,8 +38,8 @@ import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/me
 import getViewPort from '@/utils/getViewPort.js';
 
 
-import { getImgUrl, formatPrice } from '@/utils/auth.js';
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { formatPrice, getImgUrl } from '@/utils/auth.js';
+import { mapGetters } from "vuex";
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {
@@ -74,7 +74,6 @@ export default {
 			this.mescroll.endSuccess(0);
         },
         copyHandle(str) {
-            console.log('str', str)
             uni.setClipboardData({
                 data: str,
                 success: () => this.$toast('复制成功')

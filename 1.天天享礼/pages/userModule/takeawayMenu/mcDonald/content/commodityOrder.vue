@@ -42,8 +42,20 @@
             <view>×{{ item.amount }}</view>
           </view>
         </view>
+        <!-- 兑换券减免 -->
+        <view class="discount_box" v-if="ticket_id">
+          <view class="discount_item fl_bet">
+            <view class="fl_center">
+              <image class="dis_icon" src="https://test-file.y1b.cn/store/1-0/2449/6614bbcc5f4d3.png" mode="aspectFill"></image>
+              <view>兑换券减免</view>
+            </view>
+            <view class="dis_price">
+                <text style="font-size: 24rpx">- ¥</text> {{ coupon_amount }}
+            </view>
+          </view>
+        </view>
         <!-- 限时优惠 -->
-        <view class="discount_box">
+        <view class="discount_box" v-else>
             <view class="discount_item fl_bet" v-if="savings.time_amount">
                 <view class="fl_center">
                     <image class="dis_icon" :src="takeImgUrl +'/dis_icon1.png'" mode="aspectFill"></image>
@@ -126,7 +138,7 @@
     <!-- 去支付 -->
     <view class="toPay_box fl_bet">
       <view class="toPay_left">
-        <view class="all_price-box fl_end">
+        <view class="all_price-box fl_start">
           应付<view class="all_price"><text style="font-size: 28rpx">¥</text>{{ pay_amount }}</view>
           <view class="all_price-vip" v-if="savings.get_saving">含开卡折扣¥{{ disPrice }}</view>
         </view>
@@ -200,7 +212,14 @@ export default {
       car_id: '', // 购物车id
       continuePayObj: null,
       paymentParams: null,
-      savings: null
+      savings: null,
+      ticket_id: 0
+    }
+  },
+  watch: {
+    isShow(newVal) {
+      if(newVal) return;
+      setTimeout(() => this.ticket_id = false, 500);
     }
   },
   computed: {
@@ -215,15 +234,17 @@ export default {
     ...mapActions({
       requestCarList: 'cart/requestCarList',
     }),
-    popupShow({ products, isAloneProducts }) {
+    popupShow({ products, isAloneProducts, ticket_id }) {
       this.radio = 'TAKE_AWAY';
       this.paymentParams = null;
       this.car_id = '';
+      this.ticket_id = ticket_id;
       // submitList筛选购物车的列表
       let params = {
         brand_id: this.brand_id,
         restaurant_id: this.restaurant_id,
-        products
+        products,
+        ticket_id
       }
       // 单个商品的立即购买
       this.isAloneProducts = isAloneProducts;
@@ -315,13 +336,22 @@ export default {
         phone_number: this.phoneValue,
         restaurant_name: this.restaurant_name,
         restaurant_address: this.restaurant_address,
-        savings: this.savings
+        savings: this.savings,
+        ticket_id: this.ticket_id
       }
       this.orderCreateParams = orderCreateParams;
       const res =  await orderCreate(this.orderCreateParams);
       if(res.code != 1) return;
       const { oid } = res.data;
       this.oid = oid;
+      // 囤券的直接进入到订单的详情页
+      if(this.ticket_id)  {
+        this.isShow = false;
+        setTimeout(() => {
+          this.$go( `/pages/userModule/takeawayMenu/mcDonald/order/index?oid=${this.oid}`);
+        }, 300);
+        return;
+      }
       const orderRes = await orderPay({oid});
       const { code, data, msg } = orderRes;
       if(code != 1) return this.$toast(msg);
@@ -338,8 +368,8 @@ export default {
         'signType': params.signType,
         'timeStamp': params.timeStamp,
         success: (res) => {
-          this.$go( `/pages/userModule/takeawayMenu/mcDonald/order/index?oid=${this.oid}`);
           this.isShow = false;
+          this.$go( `/pages/userModule/takeawayMenu/mcDonald/order/index?oid=${this.oid}`);
         },
         fail: (res) => {
           this.$emit('cancelPay', {

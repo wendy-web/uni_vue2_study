@@ -18,4 +18,8 @@ export declare const pickerProps: {
         type: NumberConstructor;
         value: number;
     };
+    backgroundColor: {
+        type: StringConstructor,
+        value: string
+    }
 };

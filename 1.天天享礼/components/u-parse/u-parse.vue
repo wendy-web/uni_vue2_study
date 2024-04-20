@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import HtmlToJson from './libs/html2json';
 import wxParseTemplate from './components/wxParseTemplate0';
+import HtmlToJson from './libs/html2json';
 
 export default {
   name: 'wxParse',
@@ -93,7 +93,6 @@ export default {
       };
       const results = HtmlToJson(parseData, customHandler, imageProp, this);
       this.imageUrls = results.imageUrls;
-      console.log(results)
       return results.nodes;
     },
   },

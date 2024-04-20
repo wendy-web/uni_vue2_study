@@ -67,12 +67,8 @@
 		},
 		methods:{
 			popupShow(config){
-				console.log(config, "config")
 				this.config = config
 				this.show = true;
-				// if(this.config.type == 1 & ) {
-					// this.$emit('startAnim')
-				// }
 			},
 			popupClose(){
 				this.show = false
@@ -81,14 +77,6 @@
 				}
 			},
 			popupConfirm(){
-				// if (this.config.type == 2) {
-				// 	uni.navigateTo({
-				// 		url: `/pages/userModule/serviceRecharge/index?id=${this.config.coupon_id}`
-				// 	})
-				// }
-				// if(this.config.btnText === '继续抽奖'){
-				// 	this.$emit('again','CREDITS_DOUBLE')
-				// }
 				this.popupClose()
 			}
 		}

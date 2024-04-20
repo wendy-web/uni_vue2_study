@@ -265,14 +265,7 @@ export default {
     },
     handleTouchInput() {
       if (wx.requirePrivacyAuthorize) {
-        wx.requirePrivacyAuthorize({
-          success: res => {
-            console.log('用户同意了隐私协议 或 无需用户同意隐私协议')
-          },
-          fail: res => {
-            console.log('用户拒绝了隐私协议')
-          }
-        })
+        wx.requirePrivacyAuthorize();
       }
     },
     formatProducePrice(brand_id, item) {

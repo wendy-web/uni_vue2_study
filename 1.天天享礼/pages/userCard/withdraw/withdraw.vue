@@ -22,7 +22,7 @@
           :focus="isFocus"
           :border="false"
           @change="changeHandle"
-          @clickIcon="price_num = 0"
+          @clickIcon="price_num = ''"
         ></van-field>
       </view>
       <view class="cont_total box_fl">
@@ -34,11 +34,13 @@
           <van-icon name="question-o" color="#ccc"/>
           <text style="margin-left: 12rpx">提现须知</text>
         </view>
-        <view class="cont_rem-item">1、单笔提现额度1元起提，提现免手续费；</view>
-        <view class="cont_rem-item">2、提现立即到账。</view>
+        <view class="cont_rem-item">1、提现金额{{ profitInfo.withdraw_min2 }}元起（首次0.1元起）；</view>
+        <view class="cont_rem-item">2、提现免手续费，立即到账。</view>
       </view>
     </view>
-    <view class="confirm_btn" @click="confirmHandle">确认提现</view>
+    <view :class="['confirm_btn', isWithdrawLoad ? 'active' : '']" @click="confirmHandle">
+      {{ isWithdrawLoad ? '提现中' : '确认提现' }}<text class="dot_box" v-if="isWithdrawLoad"></text>
+    </view>
     <view class="record_history" @click="goToHistoryList">提现记录</view>
 		<withdrawSuccessDia
       :isShow="isShowWithdrawDia"
@@ -60,7 +62,8 @@ export default {
       imgUrl: getImgUrl(),
       price_num: '',
       isShowWithdrawDia: false,
-      isFocus: false
+      isFocus: false,
+      isWithdrawLoad: false
     };
   },
   computed: {
@@ -75,7 +78,7 @@ export default {
       this.$go('/pages/userCard/withdraw/historyList');
     },
     changeHandle({ detail }) {
-      this.price_num = Number(detail);
+      this.price_num = detail;
     },
     closeHandleDia() {
       this.price_num = '';
@@ -102,8 +105,11 @@ export default {
       });
     },
     async requestWithdraw() {
+      if(this.isWithdrawLoad) return;
+      this.isWithdrawLoad = true;
       const params = { money: this.price_num };
       const res = await withdraw(params);
+      this.isWithdrawLoad = false;
       if(res.code != 1) return this.$toast(res.msg);
       this.isShowWithdrawDia = true;
     }
@@ -197,6 +203,28 @@ page {
   font-size: 32rpx;
   text-align: center;
   color: #fff;
+  &.active {
+    background: rgba($color:#ef2b20, $alpha: .6);
+  }
+}
+.dot_box {
+  display: inline-block;
+  height: 1em;
+  line-height: 1;
+  text-align: left;
+  vertical-align: -.25em;
+  overflow: hidden;
+}
+.dot_box::before {
+  display: block;
+  content: '...\A..\A.';
+  white-space: pre-wrap;
+  // step-end 会使 keyframes 动画到了定义的关键帧处直接突变，并没有变化的过程
+  animation: dot 1s infinite step-start both;
+}
+@keyframes dot {
+    33% { transform: translateY(-2em); }
+    66% { transform: translateY(-1em); }
 }
 .record_history{
   position: absolute;

@@ -11,7 +11,7 @@
 		<view class="order_tag">{{item.channel_flag}}</view>
 		<view class="order_cont" v-for="(orderItem, index) in item.detail" :key="index">
 			<view class="order-img fl_center">
-				<image class="widHei" mode="widthFix" :src="orderItem.product.product_img || currentHaiwei.product_img"></image>
+				<image class="widHei" mode="aspectFit" :src="orderItem.product.product_img || currentHaiwei.product_img"></image>
 			</view>
 			<view class="order-detail">
 				<view class="order-detail_txt">
@@ -26,7 +26,7 @@
 	<view class="pay-info" @click="toOrderDetailHandle">
 		<!-- 其他的品牌 >=2 -->
 		<view class="total_amount" v-if="showTotalAmount(item.total_amount)">共{{ item.total_amount }}件</view>
-		<text class="pay-info_label">{{[2,3,4,5].includes(Number(item.status))? '实付' : '应付' }}</text>
+		<text class="pay-info_label">{{[2,3,4,5].includes(Number(item.status)) ? '实付' : '应付' }}</text>
 		<view v-html="formatPrice(item.pay_amount)"></view>
 	</view>
 	<!-- 只有瑞幸与麦当劳 - 呈现 -->
@@ -49,7 +49,9 @@
 		>
 			<view class="take_btn">取餐码</view>
 		</view>
-		<view class="take" @click="againHandle(item.id)">
+		<view class="take"
+			v-if="Number(item.status)"
+			@click="againHandle(item.id)">
 			<view class="take_btn">再来一单</view>
 		</view>
 	</block>
@@ -90,8 +92,8 @@ export default {
 		return { }
 	},
 	methods: {
-		formatPrice(price, type) {
-			if (!price) return;
+		formatPrice(price = 0, type) {
+			// if (!price) return;
 			price = Number(price / 100).toFixed(2);
 			let splitPrice = price.split(".");
 			let dom= '';
@@ -127,11 +129,9 @@ export default {
 				'signType': params.signType,
 				'timeStamp': params.timeStamp,
 				success: (res) => {
-					console.log('支付成功 - 下单成功', );
 					this.toOrderDetailHandle();
 				},
 				fail: (res) => {
-					console.log('取消支付', );
 				}
 			});
 		},

@@ -42,9 +42,8 @@ const closeOtherPagePopUp = (closePopUp) => {
   })
 }
 import {
-    mapGetters,
-    mapMutations,
-    mapActions
+mapGetters,
+mapMutations
 } from 'vuex';
 export default {
   data() {
@@ -85,8 +84,6 @@ export default {
         this.setAutoPrivacy(true)
         wx.getPrivacySetting({
         success: res => {
-            // console.log("是否需要授权：", res.needAuthorization, "隐私协议的名称为：", res.privacyContractName)
-            // console.log('this.diaList', this.diaList)
             if (res.needAuthorization) {
                 return this.popUp()
             }
@@ -150,17 +147,9 @@ export default {
     },
     // 打开翻看协议
     openPrivacyContract() {
-      wx.openPrivacyContract({
-        success: res => {
-          console.log('openPrivacyContract success')
-        },
-        fail: res => {
-          console.error('openPrivacyContract fail', res)
-        }
-      })
+      wx.openPrivacyContract();
     },
     LifetimesShow() {
-      console.log('LifetimesShow :>> ', );
       if (this.closePopUp) {
         privacyHandler = resolve => {
           privacyResolves.add(resolve)

@@ -192,9 +192,8 @@ import { orderDetail } from '@/api/modules/order.js';
 import { orderAgain } from '@/api/modules/takeawayMenu/kfc.js';
 import { getImgUrl } from '@/utils/auth.js';
 import { mapGetters } from 'vuex';
-import { getENV } from '@/utils/auth.js';
-import { statusTitle } from '../../static/config';
 import returnCash from '../../component/returnCash/index.vue';
+import { statusTitle } from '../../static/config';
 export default {
     components: {
       returnCash
@@ -227,7 +226,6 @@ export default {
 		      imgUrl: getImgUrl(),
           takeImgUrl: getImgUrl() + '/static/subPackages/userModule/takeawayMenu',
           cardImgUrl:`${getImgUrl()}static/card/`,
-          isTest: getENV() == 'test', // 是否是测试环境
           currentStatus: 0,
           remainTime: 0,
           timeData: null,
@@ -328,10 +326,7 @@ export default {
           latitude: Number(latitude),
           longitude: Number(longitude),
           name: restaurant_name,
-          address: restaurant_address,
-          success: function () {
-            console.log('success');
-          }
+          address: restaurant_address
         });
       },
       goServerHandle(){

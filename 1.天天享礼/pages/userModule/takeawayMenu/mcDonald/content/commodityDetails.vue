@@ -30,7 +30,7 @@
           <view class="price_num">
             <text style="font-size: 24rpx">¥</text>
             {{config.user_price}}
-            <text class="price_num-old">¥{{ config.product_price }}</text>
+            <text class="price_num-old" v-if="!ticket_id">¥{{ config.product_price }}</text>
           </view>
         </view>
       </view>
@@ -86,22 +86,24 @@
         <view class="add_sel fl_bet">
           <view class="price_num fl_center">
             <text style="font-size: 24rpx;line-height: 32rpx;align-self:flex-end;">¥</text>
-            {{totalPrice}}
-            <view class="price_num-dis coupon_price">
-              <image class="bg_img" :src="takeImgUrl +'/cart_dis_bg1.png'" mode="scaleToFill"></image>
-              <text>已省</text>
-              <text class="coupon_price">￥{{config.coupon_price}}</text>
+            {{ ticket_id ? 0 : totalPrice }}
+            <view class="price_num-dis">
+              {{ ticket_id ? '兑换券抵' : '已省' }}
+              <text class="coupon_price">￥{{ ticket_id ? totalPrice : config.coupon_price }}</text>
             </view>
           </view>
-          <view class="num_box fl_center">
+          <view class="num_box fl_center" v-if="!ticket_id">
             <image class="num_icon" :src="takeImgUrl +'/md_sub_icon.png'" mode="aspectFill" @click="subHandle"></image>
             <view class="num_txt">{{ currenComNum }}</view>
             <image class="num_icon" :src="takeImgUrl +'/md_add_icon.png'" mode="aspectFill" @click="addHandle"></image>
           </view>
         </view>
         <view class="add_btn-box fl_bet">
-          <view class="add_btn btn_buy" @click="buyHandle" v-if="isShowBuyBtn">立即购买</view>
-          <view class="add_btn btn_add" @click="addCartHandle">加入购物车</view>
+          <view class="add_btn btn_buy" @click="buyHandle" v-if="ticket_id">立即点餐</view>
+          <block v-else>
+            <view class="add_btn btn_buy" @click="buyHandle" v-if="isShowBuyBtn">立即购买</view>
+            <view class="add_btn btn_add" @click="addCartHandle">加入购物车</view>
+          </block>
         </view>
       </view>
   </view>
@@ -111,11 +113,11 @@
 
 <script>
 import {
-  menuDetails,
-  orderCar
+menuDetails,
+orderCar
 } from '@/api/modules/takeawayMenu/luckin.js';
-import { mapActions, mapGetters } from 'vuex';
 import { getImgUrl } from '@/utils/auth.js';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   props: {
     isShowBuyBtn: {
@@ -137,6 +139,7 @@ export default {
       currentIndex: 0,
       requiredList: [], // 已选中的商品
       optionalList: [], // 可选的商品列表
+      ticket_id: 0
     }
   },
   computed: {
@@ -172,6 +175,12 @@ export default {
       return detail;
     }
   },
+  watch: {
+    isShow(newVal) {
+      if(newVal) return;
+      setTimeout(() => this.ticket_id = false, 500);
+    }
+  },
   methods: {
     ...mapActions({
       requestCarList: 'cart/requestCarList',
@@ -179,11 +188,13 @@ export default {
     updateIndex(tabIndex, index) {
       this.tabIndex = tabIndex;
       this.currentIndex = index;
+      if(this.ticket_id) this.isShow = true;
     },
     async popupShow(item, tabIndex = 0, index = 0,) {
       this.requiredList = [];
       this.optionalList = [];
-      const { product_id, isReturn } = item;
+      const { product_id, isReturn, ticket_id } = item;
+      this.ticket_id = ticket_id;
       this.product_id = product_id;
       this.tabIndex = tabIndex;
       this.currentIndex = index;
@@ -200,9 +211,11 @@ export default {
           this.requiredList = required;
           this.optionalList = optional;
         }
-        this.isShow = true;
+        if(!this.ticket_id) this.isShow = true;
         return;
       }
+      ticket_id && this.$emit('noTicket');
+      this.ticket_id = 0;
       // 产品详情错误
       !isReturn && this.$emit('showError');
     },
@@ -264,7 +277,7 @@ export default {
       if(this.product_details.length) {
         products[0].skuArr = this.product_details;
       }
-      this.$emit('imBuy', products);
+      this.$emit('imBuy', products, this.ticket_id);
       this.isShow = false;
     },
     addCartHandle() {
@@ -381,24 +394,39 @@ export default {
   .price_num-dis {
     height: 36rpx;
     line-height: 36rpx;
-    padding: 0 8rpx;
-    position: relative;
-    z-index: 0;
+    padding-left: 8rpx;
     font-size: 22rpx;
     color: #F95731;
     margin-left: 16rpx;
+    background: #FEF5F3;
+    border-radius: 8rpx;
+    overflow: hidden;
     .coupon_price {
-      margin-left: 20rpx;
       min-width: 56rpx;
       display: inline-block;
       color: #fff;
       text-align: center;
+      position: relative;
+      z-index: 0;
+      padding: 0 8rpx 0 20rpx;
+      background: #FEF5F3;
+      &::after {
+        content: '\3000';
+        font-size: 0;
+        position: absolute;
+        width: 100%;
+        height: 36rpx;
+        top: 0;
+        right: 0;
+        background: url("https://test-file.y1b.cn/store/1-0/24411/66174f8b5e68e.png") 0 0 / 100% 100%;
+        z-index: -1;
+      }
     }
   }
 }
 .det_list{
   // margin-top: 56rpx;
-  .list_lab{
+  .list_lab {
     font-size: 26rpx;
     color: #aaa;
     line-height: 36rpx;
@@ -484,8 +512,8 @@ export default {
     z-index: -1;
   }
   .add_sel {
+    padding: 36rpx 0;
     .num_box {
-      padding: 36rpx 0;
       .num_icon{
         width: 44rpx;
         height: 44rpx;

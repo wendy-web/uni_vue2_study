@@ -1,12 +1,12 @@
+import store from '@/store';
 import {
-    setStorage,
-    getStorage
+    getStorage,
+    setStorage
 } from '@/utils/auth.js';
+import log from '@/utils/log.js';
 import {
     VALID_CACHE
 } from './index.js';
-import log from '@/utils/log.js';
-import store from '@/store'
 let _overtime = null;
 
 const locationError = {
@@ -120,7 +120,6 @@ export function getUserLocation(isFailBack = false, isOverTime = true) {
                 if (isFailBack) { //异常自行处理
                     return reject(isWXPermission(err.errMsg));
                 }
-                console.log('getLocation', err.errMsg)
                 wx.showModal({
                     title: '定位授权',
                     content: '具体原因与网络、信号、手机定位权限等因素相关，请检查后再尝试，谢谢',

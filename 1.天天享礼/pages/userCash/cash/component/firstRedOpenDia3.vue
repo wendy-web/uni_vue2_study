@@ -7,7 +7,7 @@
   >
     <view :class="['dia_cont', 'ani_active', isShowGetMoney ? 'profit_active' : '']">
       <!-- 单个红包open -->
-      <view class="red_box" @click="closeHandle">
+      <view class="red_box" @click="getProfitHandle(true)">
         <view class="cont_title">本页任意下1单，立得现金红包</view>
         <image src="https://file.y1b.cn/store/1-0/24123/65af9c020b5ae.png" mode="widthFix" class="red_bg"></image>
         <view></view>
@@ -37,9 +37,9 @@
       </view>
       <!-- 交互的领取红包显示 -->
       <view class="get_money-box">
-        <view class="cash_title"><text style="color: #feeaa1; margin-right: 10rpx;">{{ enterArr.profit_money || 0}}元</text> 现金领取成功！</view>
+        <view class="cash_title"><text style="color: #feeaa1; margin-right: 10rpx;">{{ enterArr.finally_profit_money || 0}}元</text> 现金领取成功！</view>
         <view class="cash_lab fl_center">我的现金</view>
-        <view class="cash_num">{{ enterArr.profit_money || 0 }}</view>
+        <view class="cash_num">{{ enterArr.finally_profit_money || 0 }}</view>
         <view class="cash_txt">已存入【我的】-【零钱】</view>
         <view class="pop_btn" @click="goToWithdrawHandle">前往查看</view>
         <view class="cash_bottom">退单将扣除现金奖励！</view>

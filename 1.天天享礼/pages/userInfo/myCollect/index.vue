@@ -1,137 +1,129 @@
 <template>
 <view class="my-collect">
-    <mescroll-body
-      ref="mescrollRef"
-      height="100"
-      @init="mescrollInit"
-      @down="downCallback"
-      @up="upCallback"
-      :up="upOption"
-      :down="downOption"
-    >
-      <view class="list-box">
-        <van-swipe-cell
-          :right-width="84"
-          v-for="(item, index) in list"
-          :key="index"
-          :data-id="item.coupon_id"
-          @click="goDetails($event, item, { listIndex: index })"
-          @open="onOpenHandle(index)"
-          @close="onCloseHandle(index)"
-        >
-          <!-- 主要内容 -->
-          <view class="list-item">
-            <!-- <image class="list-icon" :src="item.image"></image> -->
-            <view class="list-icon">
-                <van-image
-                    height="240rpx"
-                    width="240rpx"
-                    radius="16rpx"
-                    :src="item.image"
-                    use-loading-slot
-                    use-error-slot
-                >
-                    <van-loading slot="loading" type="spinner" size="24" vertical />
-                    <van-icon slot="error" color="#edeef1" size="120" name="photo-fail" />
-                </van-image>
-            </view>
-            <view class="list-txt">
-              <view class="list-item-title txt_ov_ell2">
-                <view class="jd_icon_box" v-if="item.lx_type != 1 && Number(item.face_value)">
-                  <image class="bg_img" mode="scaleToFill"
-                    :src="imgUrl + 'static/shopMall/jd_icon_bg.png'"
-                  ></image>
-                  抵¥{{parseInt(item.face_value)}}券
-                </view>
-                {{ item.title }}
+  <mescroll-body
+    ref="mescrollRef"
+    height="100"
+    @init="mescrollInit"
+    @down="downCallback"
+    @up="upCallback"
+    :up="upOption"
+    :down="downOption"
+  >
+    <view class="list-box">
+      <van-swipe-cell
+        :right-width="84"
+        v-for="(item, index) in list" :key="index"
+        :data-id="item.coupon_id"
+        @click="goDetails($event, item, { listIndex: index })"
+        @open="onOpenHandle(index)"
+        @close="onCloseHandle(index)"
+      >
+        <view class="list-item">
+          <view class="list-icon">
+            <van-image
+              height="240rpx" width="240rpx"
+              radius="16rpx" :src="item.image"
+              use-loading-slot
+              use-error-slot>
+              <van-loading slot="loading" type="spinner" size="24" vertical />
+              <van-icon slot="error" color="#edeef1" size="120" name="photo-fail" />
+            </van-image>
+          </view>
+          <view class="list-txt">
+            <view class="list-item-title txt_ov_ell2">
+              <view class="ty_store" v-if="item.type == 12"></view><!-- 到店吃 -->
+              <view class="jd_icon_box" v-else-if="item.lx_type != 1 && Number(item.face_value)">
+                <image class="bg_img" mode="scaleToFill"
+                  :src="imgUrl + 'static/shopMall/jd_icon_bg.png'"
+                ></image>抵¥{{parseInt(item.face_value)}}券
               </view>
-              <view class="list_cont">
-                <view class="list_cont-left">
-                  <view class="exchange-num" :style="{ opacity: item.lx_type == 1 ? 1 : 0 }">
+              {{ item.title }}
+            </view>
+            <view class="list_cont">
+              <view class="use_cont">
+                <view class="use_cont-left" v-if="item.after_pay">先用后付</view>
+                <view class="use_cont-right" v-if="userInfo.is_vip">0豆特权</view>
+              </view>
+              <view class="list_cont-bottom fl_bet">
+                <view class="list_cont-left box_fl">
+                  <view class="cowpea-num">
+                    <text :class="['value', userInfo.is_vip ? 'active' : '']">{{ item.credits }}</text>牛金豆
+                  </view>
+                  <view class="exchange-num" v-if="item.lx_type == 1">
                     {{ Number(item.exch_user_num) + Number(item.user_num) }}人兑换
                   </view>
-                  <view class="vip_box box_fl" v-if="userInfo.is_vip">
-                    0豆特权
-                    <image class="vip_img" :src="cardImgUrl + 'vip_box.png'" mode="scaleToFill"></image>
-                  </view>
-                  <view class="cowpea-num" v-else>
-                    <text class="value">{{ item.credits }}</text>牛金豆
-                  </view>
+                  <view class="exchange-num" v-else-if="item.inOrderCount30Days">月售{{ item.inOrderCount30Days }}</view>
+                    <view class="exchange-num" v-else-if="item.sales_tip">已售{{ item.sales_tip }}</view>
                 </view>
-                <view :class="['collection-btn', item.isOpenCell ? 'active' : '']"
-                  v-if="!item.isOpenCell">
-                  <button
-                    open-type="share"
-                    class="share_btn"
-                    :data-item="item"
-                    @click.stop="shareHandle"
-                  ></button>
-                  <text>分享</text>
+                <view :class="['collection-btn', item.isOpenCell ? 'active' : '']" v-if="!item.isOpenCell">
+                  <button open-type="share" class="share_btn"
+                    :data-item="item" @click.stop="shareHandle"></button>
+                    <text>分享</text>
                 </view>
               </view>
             </view>
           </view>
-          <!-- 侧滑内容 -->
-          <view class="right-swipe" slot="right"
-            @click="toggleCollectHandle(item, index)">
-            <view>取消</view>
-            <view>收藏</view>
-          </view>
-        </van-swipe-cell>
-      </view>
-      <!-- 列表为空时呈现 -->
-      <view class="empty_box fl_col_cen" v-if="isEmpty">
-        <image class="empty_box_img" :src="empty.icon" mode="widthFix"></image>
-        <view>{{ empty.tip }}</view>
-      </view>
-      <view class="you_like-title" v-if="goods.length">
-        <image class="left-icon" mode="aspectFill"
-          :src="imgUrl + 'static/shopMall/love_left_icon.png'"></image>
-          猜你喜欢
-        <image class="right-icon" mode="aspectFill"
-          :src="imgUrl + 'static/shopMall/love_right_icon.png'"></image>
-      </view>
-      <good-list
-        :list="goods"
-        :isBolCredits="true"
-        :isJdLink="true"
-        @notEnoughCredits="notEnoughCreditsHandle"
-      ></good-list>
-    </mescroll-body>
-    <!-- 背景 -->
-    <view class="list-bg"></view>
-    <!-- 牛金豆不足的情况 -->
-    <exchangeFailed
-      :isShow="exchangeFailedShow"
-      @goTask="goTaskHandle"
-      @close="exchangeFailedShow = false"
-    ></exchangeFailed>
-    <!-- 赚取牛金豆 -->
-    <serviceCredits
-      ref="serviceCredits"
-      :isShow="serviceCreditsShow"
-      @showAdPlay="showAdPlayHandle"
-      @close="closeHandle"
-    ></serviceCredits>
+        </view>
+        <!-- 侧滑内容 -->
+        <view class="right-swipe" slot="right"
+          @click="toggleCollectHandle(item, index)">
+          <view>取消</view>
+          <view>收藏</view>
+        </view>
+      </van-swipe-cell>
+    </view>
+    <!-- 列表为空时呈现 -->
+    <view class="empty_box fl_col_cen" v-if="isEmpty">
+      <image class="empty_box_img" :src="empty.icon" mode="widthFix"></image>
+      <view>{{ empty.tip }}</view>
+    </view>
+    <view class="you_like-title" v-if="goods.length">
+      <image class="left-icon" mode="aspectFill"
+        :src="imgUrl + 'static/shopMall/love_left_icon.png'"></image>
+        猜你喜欢
+      <image class="right-icon" mode="aspectFill"
+        :src="imgUrl + 'static/shopMall/love_right_icon.png'"></image>
+    </view>
+    <good-list
+      :list="goods"
+      :isBolCredits="true"
+      :isJdLink="true"
+      @notEnoughCredits="notEnoughCreditsHandle"
+    ></good-list>
+  </mescroll-body>
+  <!-- 背景 -->
+  <view class="list-bg"></view>
+  <!-- 牛金豆不足的情况 -->
+  <exchangeFailed
+    :isShow="exchangeFailedShow"
+    @goTask="goTaskHandle"
+    @close="exchangeFailedShow = false"
+  ></exchangeFailed>
+  <!-- 赚取牛金豆 -->
+  <serviceCredits
+    ref="serviceCredits"
+    :isShow="serviceCreditsShow"
+    @showAdPlay="showAdPlayHandle"
+    @close="closeHandle"
+></serviceCredits>
 </view>
 </template>
 <script>
-import goDetailsFun from "@/utils/goDetailsFun";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import goDetailsFun from "@/utils/goDetailsFun";
 // 牛金豆不足混入的组件与方法
+import { groupRecommend } from "@/api/modules/index.js";
+import { goodsQuery, toggleCollect as jdToggleCollect, jingfen, material } from "@/api/modules/jsShop.js";
+import { toggleCollect as pddToggleCollect } from "@/api/modules/pddShop.js";
+import { couponCollect, toggleCollect } from "@/api/modules/user.js";
+import goodList from "@/components/goodList.vue";
 import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
 import serviceCredits from "@/components/serviceCredits/index.vue";
 import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
-import goodList from "@/components/goodList.vue";
-import { couponCollect, toggleCollect } from "@/api/modules/user.js";
-import { toggleCollect as jdToggleCollect } from "@/api/modules/jsShop.js";
-import { toggleCollect as pddToggleCollect } from "@/api/modules/pddShop.js";
-import getViewPort from "@/utils/getViewPort.js";
 import { getImgUrl } from "@/utils/auth.js";
-import { groupRecommend } from "@/api/modules/index.js";
-import { material, jingfen, goodsQuery } from "@/api/modules/jsShop.js";
-import { mapActions, mapGetters } from 'vuex';
+import getViewPort from "@/utils/getViewPort.js";
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import { mapActions, mapGetters } from 'vuex';
 export default {
   mixins: [MescrollMixin, goDetailsFun, serviceCreditsFun, shareMixin],
   components: {
@@ -141,7 +133,7 @@ export default {
   },
   data() {
     return {
-        cardImgUrl:`${getImgUrl()}static/card/`,
+      cardImgUrl:`${getImgUrl()}static/card/`,
       list: [],
       empty: {
         tip: "~ 暂无更多信息 ~", // 提示
@@ -180,9 +172,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters([
-        "userInfo",
-    ]),
+    ...mapGetters(["userInfo"]),
     mescrollHeight() {
       let viewPort = getViewPort();
       let mescrollHeight = viewPort.windowHeight;
@@ -198,7 +188,7 @@ export default {
   },
   methods: {
     ...mapActions({
-        getUserInfo: 'user/getUserInfo',
+      getUserInfo: 'user/getUserInfo',
     }),
     onOpenHandle(index) {
       this.list[index].isOpenCell = true;
@@ -207,7 +197,6 @@ export default {
       this.list[index].isOpenCell = false;
     },
     shareHandle() {
-      console.log("分享 :>> 此事件添加为防止事件冒泡");
     },
     warpRectDom(idName) {
       return new Promise((resolve) => {
@@ -231,44 +220,34 @@ export default {
       this.exchangeFailedShow = true;
     },
     upCallback(page) {
-      //参数
       let params = {
         size: 10,
         page: page.num,
       };
       // 是否请求推荐列表，我的收藏列表请求完毕后进行其他接的请求事件
-      if (!this.isRecommendRequest) {
-        //联网加载数据
-        couponCollect(params)
-          .then((res) => {
-            let list = res.data ? res.data.data : [];
-            //联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-            this.mescroll.endSuccess(params.size, true);
-            //设置列表数据
-            if (page.num == 1) this.list = []; //如果是第一页需手动制空列表
-            this.list = this.list.concat(list); //追加新数据
-            this.list = this.list.map((res) => {
-              return {
-                ...res,
-                isOpenCell: false,
-              };
-            });
-            if (!this.list.length) this.isEmpty = true;
-            // this.mescroll.endUpScroll(false);
-            // 加载另一个
-            if (list.length < params.size) {
-              this.isRecommendRequest = true;
-              this.requestRem(page);
-              return;
-            }
-          })
-          .catch((err) => {
-            this.mescroll.endErr();
-          });
-      } else {
-        this.requestRem(page);
-      }
-      //联网失败, 结束加载
+      if (this.isRecommendRequest) return this.requestRem(page);
+      couponCollect(params).then((res) => {
+        let list = res.data ? res.data.data : [];
+        //联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+        this.mescroll.endSuccess(params.size, true);
+        //设置列表数据
+        if (page.num == 1) this.list = []; //如果是第一页需手动制空列表
+        this.list = this.list.concat(list); //追加新数据
+        this.list = this.list.map((res) => {
+          return {
+            ...res,
+            isOpenCell: false,
+          };
+        });
+        if (!this.list.length) this.isEmpty = true;
+        // this.mescroll.endUpScroll(false);
+        // 加载另一个
+        if (list.length < params.size) {
+          this.isRecommendRequest = true;
+          this.requestRem(page);
+          return;
+        }
+      }).catch((err) => this.mescroll.endErr());
     },
     async requestRem(page) {
       if (!this.groupRecommendData) {
@@ -361,27 +340,25 @@ export default {
       let { detail } = event;
       if (detail == "cell") {
         // 最后一个参数代码判断牛金豆不足的拦截
-        this.detailsFun_mixins(item, { listIndex }, this.list, true);
+        this.detailsFun_mixins(item, { listIndex }, true);
       }
     },
     async toggleCollectHandle(item, index) {
         const { id, skuId, lx_type, goods_sign, goods_id } = item;
         let queryCollect = toggleCollect;
-        let params = {
-            coupon_id: id,
-        };
-        //   京东商品
+        let params = { coupon_id: id };
+        // 京东商品
         if (lx_type == 2) {
-            queryCollect = jdToggleCollect;
-            params.skuId = skuId;
-            delete params.coupon_id;
+          queryCollect = jdToggleCollect;
+          params.skuId = skuId;
+          delete params.coupon_id;
         }
         // 拼多多商品
         if (lx_type == 3) {
-            queryCollect = pddToggleCollect;
-            params.goods_sign = goods_sign;
-            params.goods_id = goods_id;
-            delete params.coupon_id;
+          queryCollect = pddToggleCollect;
+          params.goods_sign = goods_sign;
+          params.goods_id = goods_id;
+          delete params.coupon_id;
         }
         const res = await queryCollect(params)
         if (res.code != 1) return this.$toast(res.msg);
@@ -392,7 +369,6 @@ export default {
   },
 };
 </script>
-
 <style lang="scss" scoped>
 page {
   font-family: PingFang SC, PingFang SC-5;
@@ -412,11 +388,10 @@ page {
   }
   .list-txt {
     flex: 1;
-    padding: 16rpx 0;
     align-self: stretch;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
   }
 }
 
@@ -449,9 +424,9 @@ page {
   .list-item-title {
     font-size: 28rpx;
     font-weight: 600;
-    color: #333333;
+    color: #333;
     line-height: 40rpx;
-    max-height: 80rpx;
+    height: 80rpx;
   }
   .jd_icon_box {
     padding: 0 10rpx 0 20rpx;
@@ -465,12 +440,17 @@ page {
     white-space: nowrap;
     display: inline-block;
   }
-
+  .ty_store {
+    width: 118rpx;
+    height: 34rpx;
+    background: url("https://test-file.y1b.cn/store/1-0/24412/6619090ba6bf5.png") 0 0 / 100% 100% no-repeat;
+    margin-right: 8rpx;
+    transform: translateY(8rpx);
+    display: inline-block;
+  }
   .exchange-num {
     font-size: 24rpx;
-    color: #999999;
-    margin-top: 24rpx;
-    margin-bottom: 8rpx;
+    color: #999;
   }
 
   .cowpea-num {
@@ -478,10 +458,15 @@ page {
     font-weight: 500;
     color: #f84842;
     line-height: 44rpx;
+    margin-right: 10rpx;
   }
 
   .cowpea-num .value {
     font-size: 32rpx;
+    font-weight: bold;
+    &.active {
+      text-decoration: line-through;
+    }
   }
   .vip_box{
     font-size: 32rpx;
@@ -507,9 +492,10 @@ page {
   }
 }
 .list_cont {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  margin-top: 30rpx;
+  .list_cont-bottom{
+    margin-top: 8rpx;
+  }
 }
 .collection-btn {
   position: relative;
@@ -537,6 +523,37 @@ page {
     width: 26rpx;
     height: 26rpx;
     margin: -4rpx 2rpx 0 0;
+  }
+}
+.use_cont {
+  display: flex;
+  font-size: 24rpx;
+  line-height: 34rpx;
+  height: 34rpx;
+  .use_cont-left {
+    color: #32a666;
+    margin-right: 18rpx;
+    display: flex;
+    align-items: center;
+    &::before {
+      content: "\3000";
+      width: 30rpx;
+      height: 30rpx;
+      background: url("https://test-file.y1b.cn/store/1-0/24312/65f023e89516c.png")  0 0 / 100% 100% no-repeat;
+      margin-right: 5rpx;
+    }
+  }
+  .use_cont-right{
+    color: #c16e15;
+    display: flex;
+    align-items: center;
+    &::before {
+      content: "\3000";
+      width: 24rpx;
+      height: 24rpx;
+      background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
+      margin-right: 5rpx;
+    }
   }
 }
 </style>

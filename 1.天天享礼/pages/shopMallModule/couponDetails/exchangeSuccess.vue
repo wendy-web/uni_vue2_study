@@ -74,7 +74,8 @@
 				} = this.config;
 				this.show = false;
 				this.$emit('exchangeEnd');
-				if (!voucherType || voucherType === 1) {
+				// 商品与惠才喝商品
+				if (!voucherType || [1, 12].includes(voucherType)) {
 					this.$emit('openServiceRecharge', id);
 					return;
 					// 去使用
@@ -96,10 +97,7 @@
 						if (wx.openChannelsActivity) {
 							wx.openChannelsActivity({
 								finderUserName: video_id,
-								feedId: video_account_id,
-								complete(res) {
-									console.log(res)
-								}
+								feedId: video_account_id
 							});
 						} else {
 							wx.showModal({

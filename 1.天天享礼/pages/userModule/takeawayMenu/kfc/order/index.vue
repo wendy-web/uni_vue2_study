@@ -177,7 +177,6 @@ import { orderDetail } from '@/api/modules/order.js';
 import { orderAgain } from '@/api/modules/takeawayMenu/kfc.js';
 import { getImgUrl } from '@/utils/auth.js';
 import { mapGetters } from 'vuex';
-import { getENV } from '@/utils/auth.js';
 import returnCash from '../../component/returnCash/index.vue';
 import { statusTitle } from '../../static/config';
 export default {
@@ -212,7 +211,6 @@ export default {
 		      imgUrl: getImgUrl(),
           takeImgUrl: getImgUrl() + '/static/subPackages/userModule/takeawayMenu',
           cardImgUrl:`${getImgUrl()}static/card/`,
-          isTest: getENV() == 'test', // 是否是测试环境
           currentStatus: 0,
           remainTime: 0,
           timeData: null,
@@ -261,7 +259,7 @@ export default {
       toQzMiniPay() {
         let path = "/pages/pay/pay";
         const { token, third_order_id, orderParam } = this.config;
-        let query = `?pageType=1&token=${token}&orderNo=${third_order_id}&orderType=${orderParam}&isTest=${this.isTest}`;
+        let query = `?pageType=1&token=${token}&orderNo=${third_order_id}&orderType=${orderParam}&isTest=false`;
         this.$openEmbeddedMiniProgram({
           appId:"wx8820200042415db1",
           path:`${path}${query}`,
@@ -313,9 +311,6 @@ export default {
           longitude: Number(longitude),
           name: restaurant_name,
           address: restaurant_address,
-          success: function () {
-            console.log('success');
-          }
         });
       },
       goServerHandle() {

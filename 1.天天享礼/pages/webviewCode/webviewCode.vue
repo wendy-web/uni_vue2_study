@@ -9,8 +9,8 @@
 	let _link = '';
 	let _isReward = false;
 	import {
-		articleAward
-	} from '@/api/modules/task.js'
+articleAward
+} from '@/api/modules/task.js';
 	export default {
 		data() {
 			return {
@@ -24,7 +24,6 @@
 			};
 		},
 		onLoad(option) {
-			console.log(option);
 			_link = option.link;
 			this.link = decodeURIComponent(option.link);
 			// 看文有奖传参

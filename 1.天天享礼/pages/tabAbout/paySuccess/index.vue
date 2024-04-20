@@ -67,17 +67,17 @@
 </template>
 
 <script>
-	import MescrollMixin from '@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js';
-	import configurationDia from '@/components/configurationDia/index.vue';
-	import configurationFun from '@/components/configurationDia/configurationFun.js';
-	import { getImgUrl } from '@/utils/auth.js';
-	import goodList from '@/components/goodList.vue';
 	import { groupRecommend } from '@/api/modules/index.js';
-	import { material, jingfen, goodsQuery } from '@/api/modules/jsShop.js';
+import { goodsQuery, jingfen, material } from '@/api/modules/jsShop.js';
+import configurationFun from '@/components/configurationDia/configurationFun.js';
+import configurationDia from '@/components/configurationDia/index.vue';
+import goodList from '@/components/goodList.vue';
+import MescrollMixin from '@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js';
+import { getImgUrl } from '@/utils/auth.js';
 	// 牛金豆不足混入的组件与方法
 	import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
-	import serviceCredits from '@/components/serviceCredits/index.vue';
-	import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js';
+import serviceCredits from '@/components/serviceCredits/index.vue';
+import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js';
 	export default {
 		mixins: [MescrollMixin, configurationFun, serviceCreditsFun], // 使用mixin
 		components:{
@@ -113,7 +113,6 @@
 			}
 		},
 		onLoad(options){
-			console.log("onLoad:",options);
 			if(options.payment){
 				this.payment = options.payment;
 			}

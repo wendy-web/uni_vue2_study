@@ -137,10 +137,8 @@
 				this.tabs.forEach((res, index) => {
 					const tabItemId = `tabItemId${index}`;
 					this.initWarpRect(tabItemId).then(result => {
-						// console.log('this.value :>> ', this.value);
 						if((index == this.value) && !this.firstLineLeft){
 							this.firstLineLeft =  result.left + result.width / 2 + 'px';
-							// console.log('this.firstLineLeft :>> ', this.firstLineLeft);
 							setTimeout(() => {
 								this.scrollCenter();
 							}, 0)

@@ -31,13 +31,16 @@
 		</view>
 	</view>
 	<!-- 支付金额 -->
-	<view class="pay-info" @click="jumpLinkHandle(item)">
+	<view class="pay-info">
 		<view class="pay-info-num">总价¥{{item.amount / 100}}</view>
 		<view class="pay-info-num">优惠¥{{item.coupon_amount}}</view>
 		<text class="pay-info_label">{{ [2,3,4,5].includes(Number(item.status)) ? '实付' : '应付' }}</text>
 		<view v-html="formatPrice(item.pay_amount)"></view>
 	</view>
-    <view class="take" @click="goToUse(item, true)">
+	<view class="take" @click="goToUse(item)" v-if="!Number(item.status)">
+		<view class="take_btn">'去支付</view>
+	</view>
+    <view class="take" @click="againHandle" v-else-if="item.again_jdShareLink">
 		<view class="take_btn">再来一单</view>
 	</view>
 </view>
@@ -55,9 +58,8 @@ export default {
 		}
 	},
 	methods: {
-		formatPrice(price, type) {
-			// console.log("price:",price);
-			if (!price) return;
+		formatPrice(price = 0, type) {
+			// if (!price) return;
 			price = Number(price / 100).toFixed(2);
 			let splitPrice = price.split(".");
 			let dom= '';
@@ -72,16 +74,23 @@ export default {
 			return dom;
 		},
 		goToUse(item, again = false) {
+			if(item.status) return this.againHandle();
 			const {
 				again_jdShareLink,
 				jdShareLink,
-				type_id
+				type_id,
+				appid
 			} = item;
+			const appId = (again && again_jdShareLink) ? appid : type_id;
 			const path = again ? again_jdShareLink : jdShareLink;
+			if(again && (!again_jdShareLink || !appid)) return;
 			this.$openEmbeddedMiniProgram({
-				appId: type_id,
+				appId,
 				path
 			});
+		},
+		againHandle() {
+			return this.$emit('again', this.item);
 		}
 	}
 }

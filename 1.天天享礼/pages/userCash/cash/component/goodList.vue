@@ -19,11 +19,14 @@
             {{ good.title }}
           </view>
           <view class="good_remind txt_ov_ell1">
-            <text class="good_remind-price"> {{ good.price || 0 }}</text>
+            <!-- <block v-if="!subIndex || (subIndex && ![1, 2, 3, 4].includes(enterPageStatus))">
+              <text v-if="parseInt(good.face_value)">券后</text>
+              <text class="good_remind-price"> {{ good.price || 0 }}</text>
+            </block> -->
             <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
           </view>
-          <view class="jd_face_value" v-if="[1, 2, 3,4].includes(enterPageStatus)">
-          下单约{{ (enterPageStatus == 4) ? '翻倍' : '开出' }}{{parseFloat(good.profit) || 0}}元</view>
+          <view class="jd_face_value" v-if="subIndex && [1, 2, 3, 4].includes(enterPageStatus)">
+          下单约{{ (enterPageStatus == 4) ? `翻${parseFloat(good.double || 0)}倍` : `开出${parseFloat(good.profit) || 0}元` }}</view>
       </view>
     </view>
   </view>
@@ -40,6 +43,10 @@ export default {
     list: {
       type: Array,
       default:[],
+    },
+    subIndex: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -56,7 +63,8 @@ export default {
         positionId,
         goods_sign,
         active_id,
-        tag
+        tag,
+        is_flow
       } = item;
       const params = { positionId, active_id, tag };
       let requestAPI = '';
@@ -69,6 +77,10 @@ export default {
       }
       const skuRes = await requestAPI(params);
       if (skuRes.code == 0) return this.$toast(skuRes.msg);
+      if (is_flow == 2) {
+        this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}`);
+        return;
+      }
       const {
         type_id,
         jdShareLink,
@@ -122,6 +134,7 @@ export default {
     .good_remind {
       font-size: 26rpx;
       color: #e7331b;
+      height: 36rpx;
       line-height: 36rpx;
       white-space: nowrap;
       width: 100%;

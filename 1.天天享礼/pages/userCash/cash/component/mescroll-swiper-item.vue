@@ -124,7 +124,6 @@ import goodList from './goodList.vue';
 				}).catch(()=>this.mescroll.endErr());
 			},
 			requestShopGroup(page){
-				console.log('this.shopGroup', this.shopGroup,this.shopGroupIndex);
 				if(!this.shopGroup.length) return this.mescroll.endSuccess(0);
 				let shopGroupItem = this.shopGroup[this.shopGroupIndex];
 				const {

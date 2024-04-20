@@ -106,13 +106,13 @@
 </template>
 
 <script>
-import { leshuaDetails, leakOrder } from '@/api/modules/allowance.js';
+import { leakOrder, leshuaDetails } from '@/api/modules/allowance.js';
+import { query } from '@/api/modules/order.js';
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
 import { getImgUrl } from '@/utils/auth.js';
 import { parseTime } from '@/utils/index.js';
 import continuePhoneRegDia from './continuePhoneRegDia.vue';
 import noProductDia from './noProductDia.vue';
-import { query } from '@/api/modules/order.js';
 let _request = false;
 export default {
   components: {
@@ -195,10 +195,8 @@ export default {
         return `¥<span style="font-weight:500;font-size: 26px">${splitPrice[0]}.<span style="font-size: 15px;">${splitPrice[1]}</span></span>`;
       }
     },
-    //倒计时结束
-    countFinished(e) {
-      console.log(e);
-    },
+    // 倒计时结束
+    countFinished(e) { },
     onChangeHandle(event) {
       let {
         hours,
@@ -277,7 +275,6 @@ export default {
     },
     // 发起支付
     createPayment(obj) {
-      console.log('发起支付 :>> ');
       uni.requestPayment({
         'nonceStr': obj.nonceStr,
         'package': obj.package,

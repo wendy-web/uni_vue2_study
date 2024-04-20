@@ -26,7 +26,7 @@
 			<view class="use-status-box" v-if="showMarker">
 				<view class="use-title">
 					<view>使用状态</view>
-					<view class="sub-title" v-if="orderInfo.status==3">用完标记一下</view>
+					<view class="sub-title" v-if="orderInfo.status == 3">用完标记一下</view>
 					<view class="sub-title" v-if="orderInfo.status == 4">使用时间：{{orderInfo.complete_time}}</view>
 				</view>
 				<view>
@@ -50,8 +50,8 @@
 
 <script>
 	import {
-		verifyOrder
-	} from '@/api/modules/order.js'
+	verifyOrder
+} from '@/api/modules/order.js';
 	export default {
 		props: {
 			orderInfo: {
@@ -96,13 +96,9 @@
 		watch: {
 			orderInfo: {
 				handler(newVal, oldVal) {
-					console.log("watch:", newVal)
-					if (newVal) {
-						let {
-							status
-						} = this.orderInfo;
-						this.checked = status == 4 ? true : false;
-					}
+					if (!newVal) return;
+					let { status } = this.orderInfo;
+					this.checked = status == 4 ? true : false;
 				},
 				immediate: true,
 				deep: true
@@ -129,16 +125,13 @@
 					} = res;
 					if (code == 1) {
 						this.$emit('updateOrderInfo')
-						let {
-							status
-						} = this.orderInfo;
+						let { status } = this.orderInfo;
 						status = status == 3 ? 4 : 3;
 						let check = status == 4 ? true : false;
 						let orderInfo = this.orderInfo;
 						orderInfo.status = status;
 						this.orderInfo = orderInfo;
 						this.checked = check;
-						console.log("verifyOrder：", this.orderInfo);
 						this.show = false;
 						return
 					}

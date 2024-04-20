@@ -90,6 +90,7 @@
   @imBuy="imBuyHandle"
   @editCart="editCartHandle"
   @showError="showErrorDetails"
+  @noTicket="isShowNoTicket = true"
 >
 </commodityDetails>
 
@@ -99,8 +100,7 @@
   remindText="确定清空购物车？"
   @close="isShowDelCartDia = false"
   @confirm="confirmDelCartHandle"
->
-</confirmDia>
+></confirmDia>
 
 <!-- 订单 -->
 <commodityOrder
@@ -125,8 +125,7 @@
   @close="isShowConfirmShopDia = false"
   @displace="displaceHandle"
   @confirm="confirmShopHandle"
->
-</confirmShopDia>
+></confirmShopDia>
 
 <confirmDia
   :isShow="isShowShopCloseDia"
@@ -135,8 +134,7 @@
   cancelText="返回"
   @confirm="goSelectShopHandle"
   @close="topCallBack"
->
-</confirmDia>
+></confirmDia>
 
 <confirmDia
   :isShow="isUpdateOrderCloseDia"
@@ -144,8 +142,7 @@
   confirmText="我知道了"
   :isInform="true"
   @confirm="updateOrderHandle"
->
-</confirmDia>
+></confirmDia>
 
 <confirmDia
   :isShow="isUpdateOrderPriceCloseDia"
@@ -153,42 +150,49 @@
   confirmText="我知道了"
   :isInform="true"
   @confirm="updateOrderPriceHandle"
->
-</confirmDia>
+></confirmDia>
 <!-- 挽留取消支付的弹窗 -->
 <continuePay
   :isShow="isShowContinuePay"
   :config="continuePayConfig"
   @close="closeContinuePayHandle"
   @confirm="continuePayHandle"
->
-</continuePay>
+></continuePay>
+
+<!-- 囤券的商品的使用 -->
+<confirmDia
+  :isShow="isShowNoTicket"
+  remindText="该餐品不在点餐时段内"
+  confirmText="我知道了"
+  :isInform="true"
+  @confirm="isShowNoTicket = false"
+></confirmDia>
 <privacyOpen ref="privacyOpen"></privacyOpen>
 </view>
 </template>
 
 <script>
+import {
+location,
+menuQuery,
+restaurantQuery,
+} from '@/api/modules/takeawayMenu/luckin.js';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import meTabs from './content/me-tabs.vue';
-import contTabs from './content/cont-tabs.vue';
-import commodityDetails from './content/commodityDetails.vue';
+import { getImgUrl } from '@/utils/auth.js';
+import { getUserLocation } from '@/utils/getUserLocation.js';
+import getViewPort from '@/utils/getViewPort.js';
+import { formatDistance } from '@/utils/index.js';
+import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import commodityBuy from './content/commodityBuy.vue';
-import commodityCart from './content/commoditycart.vue';
+import commodityDetails from './content/commodityDetails.vue';
 import commodityOrder from './content/commodityOrder.vue';
+import commodityCart from './content/commoditycart.vue';
 import confirmDia from './content/confirmDia.vue';
 import confirmShopDia from './content/confirmShopDia.vue';
+import contTabs from './content/cont-tabs.vue';
 import continuePay from './content/continuePay.vue';
-import getViewPort from '@/utils/getViewPort.js';
-import {
-  location,
-  menuQuery,
-  restaurantQuery,
-} from '@/api/modules/takeawayMenu/luckin.js';
-import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { getImgUrl } from '@/utils/auth.js';
-import { formatDistance } from '@/utils/index.js';
-import { getUserLocation } from '@/utils/getUserLocation.js';
-import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import meTabs from './content/me-tabs.vue';
 export default {
   mixins: [MescrollMixin, shareMixin], // 使用mixin
   components: {
@@ -256,6 +260,8 @@ export default {
       pathSource: '',
       againInit: false, // 再来一单事件 ---进入
       isBack: 0, // 是否反回上一页
+      ticket_id: 0, // 是囤券订单id进入
+      isShowNoTicket: false, // 囤券进入订单的不可使用
     }
   },
   computed: {
@@ -291,6 +297,7 @@ export default {
         if(produceIndex >= 0) {
           this.$refs.commodityDetails.updateIndex(index, produceIndex); // 设置需要更新
           this.shop_product_id = 0;
+          this.ticket_id = 0;
         }
       });
     }
@@ -309,7 +316,8 @@ export default {
     }
     // 从惠吃喝过来，带商品的ID
     if(option.product_id){
-      this.shop_product_id = Number( option.product_id);
+      this.shop_product_id = Number(option.product_id);
+      this.ticket_id = Number(option.ticket_id);
     }
     // search页面筛选的商品购物车
     if(option.searchCartNum) {
@@ -353,14 +361,7 @@ export default {
     formatDistance,
     handleTouchInput() {
       if (wx.requirePrivacyAuthorize) {
-        wx.requirePrivacyAuthorize({
-          success: res => {
-            console.log('用户同意了隐私协议 或 无需用户同意隐私协议')
-          },
-          fail: res => {
-            console.log('用户拒绝了隐私协议')
-          }
-        })
+        wx.requirePrivacyAuthorize();
       }
     },
     updateOrderHandle() {
@@ -453,8 +454,9 @@ export default {
       // 从惠吃喝过来，带商品的ID - 请求商品的详情
       this.shop_product_id && this.$refs.commodityDetails.popupShow({
         product_id: this.shop_product_id,
-        isReturn: true
-     }); // 设置需要更新
+        isReturn: true,
+        ticket_id: this.ticket_id
+      }); // 设置需要更新
       // 请求列表
       menuQuery({
         brand_id: this.brand_id,
@@ -481,7 +483,6 @@ export default {
         this.mescroll.endErr();
         this.isLoading = false;
       }).finally(() => {
-        // console.log('finally :>> ', res);
         this.isFirstUpdate = false;
       });
     },
@@ -522,7 +523,6 @@ export default {
         // 去结算 - 确认订单
         this.$refs.commodityCart.popupClose();
         this.$refs.commodityOrder.popupShow({
-            restaurant_id: this.restaurant_id,
             products: this.submitList,
             isAloneProducts: false, // 是否是单个商品
         });
@@ -539,7 +539,7 @@ export default {
     },
     confirmShopHandle(){
       this.isShowConfirmShopDia = false;
-      if(!this.isContinuePay) return;
+      if(!this.isContinuePay) return ;
       // 继续走支付的流程 - 创建订单
       this.$refs.commodityOrder.orderCreateRequest();
     },
@@ -585,12 +585,12 @@ export default {
             }, 20)
         })
     },
-    imBuyHandle(products) {
+    imBuyHandle(products, ticket_id = 0) {
         if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
         this.$refs.commodityOrder.popupShow({
-            restaurant_id: this.restaurant_id,
             products,
             isAloneProducts: true, // 是否是单个商品
+            ticket_id
         });
     },
     editCartHandle({

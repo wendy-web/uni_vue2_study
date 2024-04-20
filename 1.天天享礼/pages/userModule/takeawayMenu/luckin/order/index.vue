@@ -178,14 +178,14 @@
 <script>
 import { orderDetail } from '@/api/modules/order.js';
 import {
-  orderPay,
-  orderAgain
+orderAgain,
+orderPay
 } from '@/api/modules/takeawayMenu/luckin.js';
-import { getImgUrl } from '@/utils/auth.js';
 import uQrcode from '@/components/uQrcode/index.vue';
+import { getImgUrl } from '@/utils/auth.js';
 import { mapGetters } from 'vuex';
-import { statusTitle } from '../../static/config';
 import returnCash from '../../component/returnCash/index.vue';
+import { statusTitle } from '../../static/config';
 export default {
     components: {
       uQrcode,
@@ -289,11 +289,9 @@ export default {
           'signType': params.signType,
           'timeStamp': params.timeStamp,
           success: (res) => {
-            console.log('支付成功 - 下单成功', );
             this.currentStatus = 2;
           },
           fail: (res) => {
-            console.log('取消支付', );
           }
         });
       },
@@ -334,10 +332,7 @@ export default {
           latitude: Number(latitude),
           longitude: Number(longitude),
           name: restaurant_name,
-          address: restaurant_address,
-          success: function () {
-            console.log('success');
-          }
+          address: restaurant_address
         });
       },
       goServerHandle(){

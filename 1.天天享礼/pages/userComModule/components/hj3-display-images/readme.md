@@ -59,7 +59,6 @@
 		},
 		methods: {
 			tap:function (e) {
-				console.log(1)
 				this.current = e 
 			}
 		}

@@ -41,20 +41,19 @@ export default {
 		}
 	},
 	mounted() {
-		//获取导航栏数据
+		// 获取导航栏数据
 		getNavbarData().then(res => {
 			this.navBarConfig = res;
-		})
+		});
 		this.show();
 	},
 	methods: {
 		show() {
 			clearTimeout(this.countDown);
 			let isShow = Boolean(getStorage('bootModule'));
-			if (!isShow) {
-				this.isShow = true;
-				this.countDown = setTimeout(() => this.close(), 15000);
-			}
+			if (isShow) return;
+			this.isShow = true;
+			this.countDown = setTimeout(() => this.close(), 15000);
 		},
 		close() {
 			this.isShow = false;

@@ -30,8 +30,8 @@
     class="banner_com"
     @change="tabChangeHandle"
   ></banner-tabs>
-    <view class="ban_more" @click="moreHandle" v-if="tabList.length > 5">
-      <image class="bg_img" src="https://file.y1b.cn/store/1-0/23817/64dde6b050eda.png" mode="scaleToFill"></image>
+    <view class="ban_more" @click="moreHandle" v-if="tabList.length > 2">
+      <image class="bg_img" src="https://test-file.y1b.cn/store/1-0/24313/65f15d948c157.png" mode="scaleToFill"></image>
     </view>
   </view>
   <!-- 列表内容 -->
@@ -64,18 +64,18 @@
 </template>
 
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import getViewPort from '@/utils/getViewPort.js';
-import configurationDia from '@/components/configurationDia/index.vue';
-import configurationFun from '@/components/configurationDia/configurationFun.js';
-import { getImgUrl } from '@/utils/auth.js';
-import bannerTabs from './banner-tabs.vue';
-import contTabs from './cont-tabs.vue';
-import listDia from './listDia.vue';
 import {
   categoryCoupon
 } from '@/api/modules/allowance.js';
+import configurationFun from '@/components/configurationDia/configurationFun.js';
+import configurationDia from '@/components/configurationDia/index.vue';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { getImgUrl } from '@/utils/auth.js';
+import getViewPort from '@/utils/getViewPort.js';
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import bannerTabs from './banner-tabs.vue';
+import contTabs from './cont-tabs.vue';
+import listDia from './listDia.vue';
 export default {
   mixins: [MescrollMixin, configurationFun, shareMixin], // 使用mixin
   components: {
@@ -251,7 +251,7 @@ export default {
   width: 100%;
   background: var(--bg);
   .ban_more {
-    width: 78rpx;
+    width: 85rpx;
     height: 154rpx;
     position: absolute;
     top: 22rpx;

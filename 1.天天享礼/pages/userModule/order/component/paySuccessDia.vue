@@ -3,11 +3,11 @@
     :show="isShow"
     custom-style="overflow: visible;background: transparent;"
     round
+    @close="onClose"
 		:safe-area-inset-bottom="false"
 >
   <view class="cont_box">
     <image class="cont_top_icon" src="https://file.y1b.cn/store/1-0/23713/64afe59a93497.png" mode="aspectFit"></image>
-    <view>我得现金</view>
     <view class="cont_txt">支付成功</view>
     <view class="cont_pay">¥{{payment}}</view>
     <view class="pop_btn" @click="onClose">完成</view>

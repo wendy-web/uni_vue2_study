@@ -145,7 +145,6 @@ export default {
         },
         onPageScroll(event) {
             const scrollTop = Math.ceil(event.scrollTop);
-            // console.log('scrollTop :>> ', scrollTop);
             if(scrollTop >= this.navHeight) {
                 this.isShowNavBerColor = true;
                 return;
@@ -185,13 +184,10 @@ export default {
                 'signType': obj.signType,
                 'timeStamp': obj.timeStamp,
 				success: (res) => {
-                    console.log('支付成功', res);
                     this.getUserInfo();
                     this.isPaySuccessShow = true;
                 },
-				fail: (err) => {
-                    console.log('支付失败', err);
-                }
+				fail: (err) => { }
             });
         },
         confirmHandle() {

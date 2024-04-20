@@ -147,7 +147,7 @@
 <script>
 import { msgTemplate } from '@/api/modules/takeawayMenu/luckin.js';
 import { orderSure2, starbucksOrder } from '@/api/modules/takeawayMenu/starbucks.js';
-import { getENV, getImgUrl } from '@/utils/auth.js';
+import { getImgUrl } from '@/utils/auth.js';
 import { isPhoneReg } from '@/utils/index.js';
 import { mapActions, mapGetters } from 'vuex';
 export default {
@@ -202,7 +202,6 @@ export default {
       paymentParams: null,
       orderItems: null,
       savings: null,
-      isTest: getENV() == 'test', // 是否是测试环境
     }
   },
   computed: {

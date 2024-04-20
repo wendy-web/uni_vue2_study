@@ -140,7 +140,6 @@ export default {
                 const { bg_color, bg_img, share_word, share_img } = res.data;
                 this.subjectColor = bg_color;
                 this.bg_img = bg_img;
-                // console.log('share_word, share_img', share_word, share_img)
                 this.$emit('specialLisShare', {  share_word, share_img });
             }
             const { goods_lx_type, list, total_count } = this.configData;

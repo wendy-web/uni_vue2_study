@@ -48,7 +48,7 @@ const goDetailsFun = {
             } = item;
             // configDia 配置弹窗的事件
             // 京东的商品
-            if ((lx_type == 2 || lx_type == 3) && type == 12) return this.lxTypeJdFun(item, {});
+            if ((lx_type == 2 || lx_type == 3) && [12].includes(type)) return this.lxTypeJdFun(item, {});
             switch (type) {
                 case 1:
                     return this.goCouponDetails(coupon_id_android, is_popover);
@@ -64,9 +64,6 @@ const goDetailsFun = {
                         wx.openChannelsActivity({
                             finderUserName: video_id,
                             feedId: video_account_id,
-                            complete(res) {
-                                console.log(res)
-                            }
                         });
                     } else {
                         wx.showModal({
@@ -110,15 +107,20 @@ const goDetailsFun = {
                             cid1,
                             skuId,
                             cid3,
-                            positionId
+                            positionId,
+                            lx_type,
+                            goods_sign,
+                            has_coupon
                         } = item;
                         if (is_jump == 1) {
-                            this.$go(`/pages/shopMallModule/feedDetailsList/index?cid1=${cid1}&skuId=${skuId}&cid3=${cid3}&is_popover=1&positionId=${positionId}`);
+                            let urlPar = `cid1=${cid1}&skuId=${skuId}&cid3=${cid3}`
+                            if (lx_type == 3) urlPar = `goods_sign=${goods_sign}`; // 拼多多商品
+                            this.$go(`/pages/shopMallModule/feedDetailsList/index?${urlPar}&positionId=${positionId || 0}&has_coupon=${has_coupon}`);
                             return;
                         }
                         this.lxTypeJdFun({
+                            ...item,
                             skuId: type_id,
-                            positionId,
                             is_popover: 1
                         }, {});
                         return;
@@ -170,11 +172,11 @@ const goDetailsFun = {
                     if (this.$refs.recommendDia) {
                         this.$refs.recommendDia.initGtData(item);
                         // 扫码异常打开推券的弹窗
-                        // if (isCodeErrorShow) {
-                        setTimeout(() => {
-                            this.setDiaList('codeError');
-                        }, 0);
-                        // }
+                        if (isCodeErrorShow) {
+                            setTimeout(() => {
+                                this.setDiaList('codeError');
+                            }, 0);
+                        }
                     };
                     break;
                 case 11:
@@ -196,7 +198,7 @@ const goDetailsFun = {
         // 列表的跳转事件
         async detailsFun_mixins(
             item, { listIndex = null, index = null },
-            goodList, isBolCredits
+            isBolCredits
         ) {
             if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
             const _that = this;
@@ -214,22 +216,18 @@ const goDetailsFun = {
                 is_banner
             } = item;
             // 接入移动积分
-            if (type == 11 && is_banner) {
-                this.$go(`/pages/webview/webview?link=${encodeURIComponent(item.qz_url)}`);
-                return;
-            }
+            if (type == 11 && is_banner) return this.$go(`/pages/webview/webview?link=${encodeURIComponent(item.qz_url)}`);
             // 小程序配置内部页面 - 专题已捡漏页面
-            if (is_jl || is_zt) {
-                return this.jlZtOpenFun(item);
-            }
+            if (is_jl || is_zt) return this.jlZtOpenFun(item);
             // 京东的商品
-            if (lx_type == 2 || lx_type == 3) return this.lxTypeJdFun(item, { listIndex, index }, goodList, isBolCredits);
+            if (lx_type == 2 || lx_type == 3) return this.lxTypeJdFun(item, { listIndex, index }, isBolCredits);
             // 拼多多
             const item_id = coupon_id || id;
-            if (is_jump == 2 || [1, 11].includes(type)) {
-                // type == 11 移动积分 - 进入详情
-                return this.goCouponDetails(item_id, is_popover);
-            }
+            if (is_jump == 2 || [1, 11, 12].includes(type)) return this.goCouponDetails(item_id, is_popover);
+
+            // 小程序的直接跳转
+            if (item.type == 4) return this.immediateFun(item);
+
             const detailData = await couponDetails({ id: item_id });
             let {
                 activity_id,
@@ -267,8 +265,6 @@ const goDetailsFun = {
                 is_popover,
             });
             if (!exchangeData.code) return;
-            // console.log('item', item)
-            // console.log('item:type', type)
             let link = is_main === 1 ? article_url : main_url;
             switch (type) {
                 // 公众号
@@ -280,10 +276,7 @@ const goDetailsFun = {
                     if (wx.openChannelsActivity) {
                         wx.openChannelsActivity({
                             finderUserName: video_id,
-                            feedId: video_account_id,
-                            complete(res) {
-                                console.log(res)
-                            }
+                            feedId: video_account_id
                         });
                     } else {
                         wx.showModal({
@@ -341,8 +334,6 @@ const goDetailsFun = {
                     // 移动积分 - 进入详情
                     // this.goCouponDetails(item_id, is_popover);
             }
-            // 兑换成功，当前的兑换人数加一
-            // this.addExchNum(item, { listIndex, index }, goodList);
         },
         // 小程序内页
         pageToUrl(pageData) {
@@ -407,12 +398,12 @@ const goDetailsFun = {
             return bgColor;
         },
         // isBolCredits ; 是否需要判断当前用户的牛金豆的情况
-        async lxTypeJdFun(item, { listIndex, index }, goodList, isBolCredits = false) {
+        async lxTypeJdFun(item, { listIndex, index }, isBolCredits = false) {
             if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
             // is_flow
             // 0-半屏打开小程序 （type_id:小程序APPID，jdShareLink: 京东的跳转链接， mobile_url：拼多多的跳转链接）
             // 1-跳转feed流页面，请求关键词搜索商品接口，传参cid1
-            const {
+            let {
                 lx_type,
                 is_flow,
                 cid1,
@@ -424,7 +415,10 @@ const goDetailsFun = {
                 link,
                 is_popover = 0,
                 goods_sign,
-                has_coupon
+                has_coupon,
+                type_id,
+                jdShareLink,
+                mobile_url,
             } = item;
             // 牛金豆不足:进行弹窗的展示
             if (!this.userInfo.is_vip && isBolCredits && (credits > this.userInfo.credits)) {
@@ -432,7 +426,7 @@ const goDetailsFun = {
                 this.exchangeFailedShow = true; // 混入方法的参数赋值
                 return;
             }
-            if (is_flow) {
+            if (is_flow == 1) {
                 let urlPar = `cid1=${cid1}&skuId=${skuId}&cid3=${cid3}`
                 if (lx_type == 3) urlPar = `goods_sign=${goods_sign}`; // 拼多多商品
                 this.$go(`/pages/shopMallModule/feedDetailsList/index?${urlPar}&positionId=${positionId || 0}&has_coupon=${has_coupon}`);
@@ -457,30 +451,20 @@ const goDetailsFun = {
                 this.$emit('deleteBysubunionid', { listIndex, index });
                 return;
             }
-            const {
-                type_id,
-                jdShareLink,
-                mobile_url
-            } = skuRes.data;
+            // 半屏的中转详情页面
+            if (is_flow == 2) {
+                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&isSearch=${this.isSearchJdModel|| false}&isHome=${this.isHome || false}&isJdCenter=${this.isJdCenter || false}`);
+                return;
+            }
+            type_id = skuRes.data.type_id;
+            mobile_url = skuRes.data.mobile_url;
+            jdShareLink = skuRes.data.jdShareLink;
             this.setMiniProgram(lx_type);
             this.$openEmbeddedMiniProgram({
                 appId: type_id,
                 path: jdShareLink || mobile_url
             });
-            // this.addExchNum(item, { listIndex, index }, goodList);
 
-        },
-        addExchNum(item, { listIndex, index }, goodList) {
-            if ((item.exch_user_num >= 0) && (listIndex !== null)) {
-                let currentIndex = listIndex;
-                let list = goodList;
-                if (index !== null) {
-                    list = goodList[listIndex].dateList;
-                    currentIndex = index;
-                }
-                list[currentIndex].exch_user_num = list[currentIndex].exch_user_num + 1;
-                return list;
-            }
         },
         // 红包的跳转
         async redPacketFun(id) {
@@ -532,10 +516,7 @@ const goDetailsFun = {
                     if (wx.openChannelsActivity) {
                         wx.openChannelsActivity({
                             finderUserName: video_id,
-                            feedId: video_account_id,
-                            complete(res) {
-                                console.log(res)
-                            }
+                            feedId: video_account_id
                         });
                     } else {
                         wx.showModal({
@@ -568,6 +549,46 @@ const goDetailsFun = {
                     this.pageToUrl(detailData.data);
                     break;
             }
+
+        },
+        async immediateFun(item) {
+            let {
+                id,
+                coupon_id,
+                stock_num,
+                status,
+                is_popover,
+                open_mini_type,
+                type_id,
+                type_sid
+            } = item;
+            const item_id = coupon_id || id;
+            if (!type_id || !type_sid) {
+                const detailData = await couponDetails({ id: item_id });
+                type_id = detailData.data.type_id;
+                type_sid = detailData.data.type_sid;
+                stock_num = detailData.data.stock_num;
+            }
+            if ((stock_num <= 0) || (status == 0)) {
+                return this.goCouponDetails(item_id, is_popover);
+            }
+            let openMiniProgram = wx.navigateToMiniProgram;
+            if (open_mini_type == 2 && wx.canIUse('openEmbeddedMiniProgram')) {
+                openMiniProgram = wx.openEmbeddedMiniProgram;
+            }
+            openMiniProgram({
+                appId: type_id,
+                path: type_sid,
+                // envVersion: 'trial',
+                fail: function(error) {
+                    _that.$emit('notOpenMini');
+                },
+                success: function(res) {}
+            });
+            const exchangeData = await exchange({
+                id: item_id,
+                is_popover,
+            });
 
         },
         goCouponDetails(id, is_popover) {

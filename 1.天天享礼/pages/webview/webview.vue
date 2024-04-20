@@ -7,7 +7,9 @@
 
 <script>
 let _isReward = false;
-import { articleAward } from '@/api/modules/task.js'
+import { teamBind } from "@/api/modules/packet.js";
+import { articleAward } from '@/api/modules/task.js';
+
 export default {
 	data() {
 		return {
@@ -18,13 +20,12 @@ export default {
 				}
 			},
 			fromArticle: false, //来自看文拿奖
-			isButton: false
+			isButton: false,
 		};
 	},
 	onLoad(option) {
-		console.log(option);
 		this.link = decodeURIComponent(option.link);
-		console.log('this.link:', this.link)
+		option.xdyh_teamId && teamBind({xdyh_teamId: option.xdyh_teamId});
 		// 看文有奖传参
 		if (option.fromArticle) {
 			this.fromArticle = option.fromArticle

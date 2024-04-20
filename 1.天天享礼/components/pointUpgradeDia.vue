@@ -208,7 +208,6 @@ export default {
                 this.showGift();
             }
         }
-        // console.log('diaType, ', diaType, this.diaList,)
       }
     },
     showGift() {

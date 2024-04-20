@@ -6,6 +6,7 @@
     :z-index="100"
 	  :safe-area-inset-bottom="false"
 	  :catchtouchmove="true"
+    @close="baCloseHandle"
   >
 	<view class="cont_box">
       <view class="cont_text">
@@ -59,6 +60,9 @@
 		},
     onConfirm() {
 			this.$emit("confirm");
+    },
+    baCloseHandle() {
+      this.isInform ? this.onConfirm() : this.onClose();
     }
 	}
 }

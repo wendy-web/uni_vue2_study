@@ -50,14 +50,14 @@
 </template>
 
 <script>
-	import { getAstro } from '../utils/index.js';
-	import { parseTime } from '@/utils/index.js';
 	import {
-		setGender,
-		setConstellation
-	} from '@/api/modules/task.js';
-	import { getImgUrl } from '@/utils/auth.js';
-    import { mapGetters } from 'vuex';
+setConstellation,
+setGender
+} from '@/api/modules/task.js';
+import { getImgUrl } from '@/utils/auth.js';
+import { parseTime } from '@/utils/index.js';
+import { mapGetters } from 'vuex';
+import { getAstro } from '../utils/index.js';
 	let _request = false;
 	export default {
 		props: {
@@ -169,16 +169,12 @@
 				this.dateToStar(date)
 			},
 			dateConfirm(e) {
-				let {
-					detail
-				} = e;
-				console.log(detail)
+				let { detail } = e;
 				let date = new Date(detail);
 				let format_date = parseTime(detail, "{y}年{m}月{d}日");
 				this.birthday = parseTime(detail, "{y}-{m}-{d}")
 
 				let time_stamp = date.getTime();
-				console.log(date.getTime());
 				this.isConfirmed = true;
 				this.dateToStar(format_date)
 

@@ -1,17 +1,13 @@
 import {
-    setToken,
-    getToken,
-} from '@/utils/auth.js';
-import {
-    carList,
-    orderCar,
-    clearCar
-} from '@/api/modules/takeawayMenu/luckin.js';
-import {
     carList as kfcCarList,
     clearCar as kfcClearCar,
     orderCar as kfcOrderCar
 } from '@/api/modules/takeawayMenu/kfc.js';
+import {
+    carList,
+    clearCar,
+    orderCar
+} from '@/api/modules/takeawayMenu/luckin.js';
 const state = {
     cartComList: [],
     resultList: [],
@@ -92,7 +88,6 @@ const actions = {
                     content: '确定不要了吗？',
                     success: function(res) {
                         if (res.confirm) {
-                            console.log('用户点击确定');
                             state.cartComList.splice(_index, 1);
                             commit('getResultList', state.cartComList);
                             api(params).then(res => {
@@ -101,8 +96,6 @@ const actions = {
                                     amount: params.amount
                                 })
                             });
-                        } else if (res.cancel) {
-                            console.log('用户点击取消');
                         }
                     }
                 });

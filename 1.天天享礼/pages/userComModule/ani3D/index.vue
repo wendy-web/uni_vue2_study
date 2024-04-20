@@ -1,5 +1,5 @@
 <template>
-<view class="recharge" :style="{'--bg': subjectColor}">
+<view class="rechargenavberColor">
 <mescroll-body
   :sticky="true"
   ref="mescrollRef"
@@ -12,7 +12,6 @@
 <xh-navbar
   :leftImage="imgUrl+'/static/images/left_back.png'"
   @leftCallBack="$topCallBack"
-  :navberColor="subjectColor"
   :fixed="true"
   :fixedNum="9"
 >
@@ -67,11 +66,9 @@ export default {
     },
     // 旋转事件
     changeHandle(index){
-      console.log(index, 'index')
     },
     // 点击事件
     gotoHandle(index){
-      console.log(index, 'index')
     },
 		onPageScroll(event) {
       const scrollTop = Math.ceil(event.scrollTop);

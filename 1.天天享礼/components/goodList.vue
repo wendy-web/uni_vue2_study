@@ -1,15 +1,14 @@
 <template>
 <view class="good-list">
     <view
-      :style="{
-        '--height': userInfo.is_vip ? '605rpx' : '546rpx'
-      }"
+      :style="{ '--height': '576rpx'}"
       v-for="(good, index) in list" :key="index"
       :class="[
         (isSearchJdModel || isJdCenter)? 'autoHeight' : '',
         good.type == 9 ? 'swiper_list' : 'good-list-item',
         good.is_light && !isAlreadyShowLight ? 'lightShow' : ''
       ]"
+      :data-id="good.id || good.groupId"
     >
     <!-- good.type == 9:是单横排的使用 -->
       <image class="light_head anima_head" mode="scaleToFill"
@@ -37,14 +36,19 @@
           <!-- 搜索模块 -->
           <view class="good_cont js_search_box" v-else-if="isSearchJdModel">
               <view class="good_name_box txt_ov_ell2">
-                <view class="jd_icon_box" v-if="good.lx_type != 1 && parseInt(good.face_value)">
+                <view class="ty_store" v-if="good.type == 12"></view><!-- 到店吃 -->
+                <view class="jd_icon_box" v-else-if="good.lx_type != 1 && parseInt(good.face_value)">
                   抵¥{{ parseInt(good.face_value) || 0 }}券
                 </view>
                 {{ good.title }}
               </view>
-              <view :class="['js_search_credits', good.lx_type != 1 ? 'opacity_active' : 'opacity_non']"
-                v-if="!userInfo.is_vip">{{ good.credits || 0 }}
-              牛金豆</view>
+              <view class="use_cont">
+                <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
+                <view class="use_cont-right" v-if="userInfo.is_vip">0豆特权</view>
+                <view v-else-if="good.lx_type != 1" class="js_search_credits">
+                  {{ good.credits || 0 }}牛金豆
+                </view>
+              </view>
               <!-- 乐刷的商品 -->
               <view class="good_remind txt_ov_ell1" v-if="good.lx_type == 1">
                   <text :class="['good_remind-left' ,userInfo.is_vip ? 'vip_line' : '' ]"
@@ -56,92 +60,71 @@
                   <text class="good_total2">{{ Number(good.exch_user_num) + Number(good.user_num) }}人兑换</text>
               </view>
               <view class="good_remind txt_ov_ell1" v-else>
-                  <text>券后</text>
-                  <text class="good_credits">
-                      <text style="font-size: 24rpx">￥</text>
-                      {{ good.lowestCouponPrice || 0 }}
-                  </text>
-                  <text class="good_total" v-if="good.inOrderCount30Days" >月售{{ good.inOrderCount30Days }}</text>
-                  <text class="good_total" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
+                <text v-if="parseInt(good.face_value)">券后</text>
+                <text class="good_credits">
+                    <text style="font-size: 24rpx">￥</text>
+                    {{ good.lowestCouponPrice || 0 }}
+                </text>
+                <text class="good_total" v-if="good.inOrderCount30Days" >月售{{ good.inOrderCount30Days }}</text>
+                <text class="good_total" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
               </view>
-              <block v-if="userInfo.is_vip">
-                <view class="vip_cont fl_bet" v-if="good.lx_type == 1">
-                  <view><text style="font-size: 36rpx;margin-right: 4rpx;">0</text>豆特权</view>
-                </view>
-                <view class="vip_cont-box" v-else>{{ good.credits || 0 }}牛金豆</view>
-              </block>
           </view>
           <!-- 其他猜你喜欢模块 -->
           <view class="good_cont js_box" v-else-if="isJdModel">
-              <view class="good_name_box txt_ov_ell2">
-                  <view class="jd_icon_box" v-if="parseInt(good.face_value)">
-                    抵¥{{ parseInt(good.face_value) || 0 }}券
-                  </view>
-                  {{ good.title }}
-              </view>
-              <view class="good_remind txt_ov_ell1">
-                  <text :class="['good_remind-left', userInfo.is_vip ? 'vip_line' : '']"
-                    v-if="good.credits">
-                      <text class="good_credits">{{ good.credits || 0 }}</text>
-                      <text>牛金豆</text>
-                  </text>
-                  <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
-                  <text class="good_total2" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
-              </view>
-              <view class="vip_cont fl_bet" v-if="userInfo.is_vip">
-                  <view><text style="font-size: 36rpx;margin-right: 4rpx;">0</text>豆特权</view>
-              </view>
+            <view class="good_name_box txt_ov_ell2">
+              <view class="jd_icon_box" v-if="parseInt(good.face_value)">
+                抵¥{{ parseInt(good.face_value) || 0 }}券
+              </view>{{ good.title }}
+            </view>
+            <view class="use_cont">
+              <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
+              <view class="use_cont-right" v-if="userInfo.is_vip">0豆特权</view>
+            </view>
+            <view class="good_remind txt_ov_ell1">
+              <text :class="['good_remind-left', userInfo.is_vip ? 'vip_line' : '']"
+                v-if="good.credits">
+                  <text class="good_credits">{{ good.credits || 0 }}</text>
+                  <text>牛金豆</text>
+              </text>
+              <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
+              <text class="good_total2" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
+            </view>
           </view>
           <!-- 专属中心的模块 -->
           <view class="good_cont js_center" v-else-if="isJdCenter">
               <view class="good_name_box txt_ov_ell2"> {{ good.title }}</view>
-              <view class="vip_credits" v-if="userInfo.is_vip">{{ good.credits || 0 }}牛金豆</view>
-              <view class="good_remind txt_ov_ell1" v-if="!userInfo.is_vip">
-                <text class="good_remind-left" v-if="good.credits">
-                    <text class="good_credits">{{ good.credits || 0 }}</text>
-                    <text>牛金豆</text>
-                </text>
-                <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
-                <text class="good_total2" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
+              <view class="use_cont">
+                <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
+                <view class="use_cont-right" v-if="userInfo.is_vip">0豆特权</view>
               </view>
-              <view class="vip_cont box_fl" v-else>
-                <view><text style="font-size: 36rpx;margin-right: 4rpx;">0</text>豆特权</view>
+              <view class="good_remind txt_ov_ell1">
+                <text class="good_remind-left" v-if="good.credits">
+                  <text :class="['good_credits', userInfo.is_vip ? 'active' : '']">{{ good.credits || 0 }}</text>
+                  <text>牛金豆</text>
+                </text>
                 <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
                 <text class="good_total2" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
               </view>
               <view class="jd_face_value" v-if="parseInt(good.face_value)">领{{parseInt(good.face_value) || 0}}元券</view>
           </view>
           <!-- 首页呈现 -->
-          <view class="good_cont" v-else>
+          <view class="good_cont home_cont" v-else>
             <view class="good-name txt_ov_ell2">
-                <view class="jd_icon_box" v-if="good.lx_type != 1 && parseInt(good.face_value)">
-                  抵¥{{ parseInt(good.face_value) || 0 }}券
-                </view>
-                {{ good.title }}
-            </view>
-            <!-- 省钱卡会员 -->
-            <block v-if="userInfo.is_vip">
-              <view class="vip_credits" v-if="good.credits">{{ good.credits || 0 }}牛金豆</view>
-              <block v-else>
-                <view class="vip_credits0" v-if="good.lx_type == 1"></view>
-                <view class="good_remind txt_ov_ell1" v-else>
-                  <text class="good_remind-price"> {{ good.price || 0 }}</text>
-                  <!-- <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text> -->
-                </view>
-              </block>
-              <view class="vip_cont box_fl noAfter">
-                <view><text style="font-size: 36rpx;margin-right: 4rpx;">0</text>豆特权</view>
-                <!-- 首页呈现兑换人数 / 其他的呈现月售 -->
-                <text class="good_total2" v-if="isHome" >{{ Number(good.exch_user_num) + Number(good.user_num) }}人兑换</text>
-                <text class="good_total2" v-else-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
+              <view class="ty_store" v-if="good.type == 12"></view><!-- 到店吃 -->
+              <view class="jd_icon_box" v-else-if="good.lx_type != 1 && parseInt(good.face_value)">
+                抵¥{{ parseInt(good.face_value) || 0 }}券
               </view>
-            </block>
-            <!-- 非省钱卡 -->
-            <view class="good_remind txt_ov_ell1" v-else>
-              <text class="good_remind-left">
-                <text class="good_credits">{{ good.credits || 0 }}</text>
-                <text>牛金豆</text>
+              {{ good.title }}
+            </view>
+            <view class="use_cont">
+              <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
+              <view class="use_cont-right" v-if="userInfo.is_vip">0豆特权</view>
+            </view>
+            <view class="good_remind txt_ov_ell1">
+              <text class="good_remind-left" v-if="good.credits">
+                <text :class="['good_credits', userInfo.is_vip ? 'active' : '']">{{ good.credits || 0 }}</text>牛金豆
               </text>
+              <text class="good_remind-price" v-else-if="good.lx_type != 1"> {{ good.price || 0 }}</text>
               <!-- 首页呈现兑换人数 / 其他的呈现月售 -->
               <text class="good_total2" v-if="isHome">{{ Number(good.exch_user_num) + Number(good.user_num) }}人兑换</text>
               <text class="good_total2" v-else-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
@@ -238,9 +221,7 @@ export default {
         wx.openChannelsActivity({
           finderUserName: video_id,
           feedId: video_account_id,
-          complete(res) {
-            console.log(res);
-          },
+          complete(res) { },
         });
       }
     },
@@ -257,8 +238,8 @@ export default {
           isJdLink: this.isJdLink
         },
         { listIndex },
-        this.list,
-        this.isBolCredits
+        this.isBolCredits,
+        this.isSearchJdModel
       );
     },
     collectHandle(skuId, index) {
@@ -285,9 +266,7 @@ export default {
       }
       return spliceStr;
     },
-    shareHandle() {
-      console.log("分享 :>> 防止事件冒泡");
-    },
+    shareHandle() {},
   },
 };
 </script>
@@ -331,7 +310,7 @@ export default {
     font-size: 20rpx;
     font-weight: 400;
     text-align: right;
-    color: #999999;
+    color: #999;
   }
 
   .special {
@@ -350,7 +329,6 @@ export default {
     .good-name {
       color: #333;
       font-size: 28rpx;
-      margin-bottom: 40rpx;
       line-height: 40rpx;
       height: 80rpx;
     }
@@ -358,19 +336,29 @@ export default {
       font-size: 26rpx;
       color: #e7331b;
       line-height: 36rpx;
-      // display: flex;
-      // align-items: flex-end;
       white-space: nowrap;
       width: 100%;
       .good_credits {
         font-size: 36rpx;
-        // line-height: 48rpx;
         margin-right: 4rpx;
-        font-weight: 500;
+        font-weight: bold;
+        position: relative;
+        &.active::before {
+          content: '\3000';
+          position: absolute;
+          width: 110%;
+          height: 4rpx;
+          background: currentColor;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%) rotate(0deg);
+          // text-decoration: line-through;
+        }
       }
       .vip_line{
         text-decoration:  line-through;
-        .good_credits{
+        font-weight: bold;
+        .good_credits {
          font-size: 26rpx;
         }
       }
@@ -383,19 +371,24 @@ export default {
       .good_remind-left{
         margin-right: 13rpx;
       }
-      .good_remind-price{
-        font-size: 34rpx;
-        font-weight: 600;
-        text-align: center;
-        color: #e7331b;
-        line-height: 32rpx;
-        margin-right: 13rpx;
-        &::before {
-          content: '￥';
-          font-size: 24rpx;
-        }
-      }
     }
+  }
+}
+.home_cont {
+  .good_remind {
+    margin-top: 18rpx;
+  }
+}
+.good_remind-price{
+  font-size: 36rpx;
+  font-weight: 600;
+  text-align: center;
+  color: #e7331b;
+  line-height: 48rpx;
+  margin-right: 13rpx;
+  &::before {
+    content: '￥';
+    font-size: 24rpx;
   }
 }
 .jd_icon_box {
@@ -420,35 +413,22 @@ export default {
     z-index: -1;
   }
 }
+.ty_store {
+  width: 118rpx;
+  height: 34rpx;
+  background: url("https://test-file.y1b.cn/store/1-0/24412/6619090ba6bf5.png") 0 0 / 100% 100% no-repeat;
+  margin-right: 8rpx;
+  transform: translateY(8rpx);
+  display: inline-block;
+}
 
 .vip_cont{
   font-size: 24rpx;
   color: #e7331b;
   line-height: 34rpx;
   margin-top: 18rpx;
-  &.noAfter {
-    &::after {
-	    display: none;
-    }
-    .good_total2 {
-      margin-left: 10rpx;
-    }
-  }
-  &::after {
-    content: "\3000";
-    background: url("https://file.y1b.cn/store/1-0/231031/6540d03065d34.png") 0 0 / 100% 100% no-repeat;
-    width: 136rpx;
-    height: 38rpx;
-    margin-right: -16rpx;
-    display: inline-block;
-  }
-  &.vip_cont-xs {
-    &::after {
-      width: 134rpx;
-      height: 32rpx;
-      margin:0;
-      background-image: url("https://file.y1b.cn/store/1-0/23119/654c56d866fbb.png");
-    }
+  .good_total2 {
+    margin-left: 10rpx;
   }
 }
 .good_total2 {
@@ -474,7 +454,6 @@ export default {
   align-items: center;
   font-size: 24rpx;
   color: #999;
-  // line-height: 34rpx;
   .collection-btn {
     width: 50%;
     display: flex;
@@ -484,7 +463,6 @@ export default {
     margin-top: 28rpx;
     line-height: 34rpx;
     &:first-child {
-      // line-height: 26rpx;
       &::after {
         content: "\3000";
         position: absolute;
@@ -518,6 +496,7 @@ export default {
 .js_search_box {
   .good_remind {
     margin-top: 12rpx;
+    line-height: 48rpx;
   }
   .good_credits {
     margin-left: 8rpx;
@@ -553,7 +532,6 @@ export default {
   line-height: 36rpx;
   display: flex;
   align-items: center;
-  margin-top: 8rpx;
   &::before {
     content: "\3000";
     background: url("https://file.y1b.cn/public/img/ttxl/static/shopMall/js_search_icon.png") 0 0 / cover no-repeat;
@@ -566,7 +544,7 @@ export default {
 
 .js_box {
   .good_remind {
-    margin-top: 28rpx;
+    margin-top: 18rpx;
   }
 }
 // 领券中心
@@ -596,30 +574,9 @@ export default {
     }
   }
   .vip_cont{
-    &::after {
-      display: none;
-    }
     .good_total2{
       margin-left: 13rpx;
     }
-  }
-}
-.vip_credits0 {
-  position: relative;
-  z-index: 0;
-  display: inline-block;
-  width: 106rpx;
-  height: 32rpx;
-  line-height: 32rpx;
-  &::before {
-    content: "\3000";
-    background: url("https://file.y1b.cn/store/1-0/231212/6577ce322713f.png") 0 0 / 100% 100% no-repeat;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
   }
 }
 .vip_credits{
@@ -665,5 +622,36 @@ export default {
     right: -50rpx;
   }
 }
-
+.use_cont {
+  display: flex;
+  font-size: 24rpx;
+  line-height: 34rpx;
+  height: 34rpx;
+  margin-top: 10rpx;
+  .use_cont-left {
+    color: #32a666;
+    margin-right: 18rpx;
+    display: flex;
+    align-items: center;
+    &::before {
+      content: "\3000";
+      width: 30rpx;
+      height: 30rpx;
+      background: url("https://test-file.y1b.cn/store/1-0/24312/65f023e89516c.png")  0 0 / 100% 100% no-repeat;
+      margin-right: 5rpx;
+    }
+  }
+  .use_cont-right{
+    color: #c16e15;
+    display: flex;
+    align-items: center;
+    &::before {
+      content: "\3000";
+      width: 24rpx;
+      height: 24rpx;
+      background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
+      margin-right: 5rpx;
+    }
+  }
+}
 </style>

@@ -31,10 +31,7 @@ export function getAstro(strBirthday) {
         birthMonth = strBirthday.split("年")[1].split("月")[0];
         birthDay = strBirthday.split("年")[1].split("月")[1].split("日")[0];
     }
-    if (!birthMonth || !birthDay) {
-        console.log("格式不对")
-        return null
-    }
+    if (!birthMonth || !birthDay) return null;
     var s = "摩羯水瓶双鱼牡羊金牛双子巨蟹狮子处女天秤天蝎射手摩羯";
     var arr = [20, 19, 21, 21, 21, 22, 23, 23, 23, 23, 22, 22];
     let obj = {}

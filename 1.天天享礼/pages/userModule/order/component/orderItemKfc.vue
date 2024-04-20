@@ -17,7 +17,7 @@
 			:key="index"
 		>
 			<view class="order-img fl_center">
-				<image class="widHei" mode="widthFix" :src="orderItem.imageUrl"></image>
+				<image class="widHei" mode="aspectFit" :src="orderItem.imageUrl"></image>
 			</view>
 			<view class="order-detail">
 				<view class="order-detail_txt">
@@ -49,7 +49,7 @@
 		</view>
 		<view class="btn">去支付</view>
 	</view>
-    <view class="take" @click="againHandle(item.id)">
+    <view class="take" @click="againHandle(item.id)" v-if="Number(item.status)">
 		<view class="take_btn">再来一单</view>
 	</view>
 </view>

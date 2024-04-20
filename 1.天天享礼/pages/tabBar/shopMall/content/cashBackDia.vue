@@ -61,7 +61,7 @@ export default {
       if(!status) return this.closeHandle();
       this.cashStatus = status;
       this.cashInfo = info;
-      if((this.diaList.length && (this.diaList[0] != 'cashBack')) || !this.isAutoLogin) {
+      if(this.diaList.length || !this.isAutoLogin) {
         return this.setDiaList('cashBack');
       }
       this.isShow = true;

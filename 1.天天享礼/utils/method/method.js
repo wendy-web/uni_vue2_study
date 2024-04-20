@@ -11,7 +11,6 @@ if (platform == 'android') {
 // 设备属性：devices，0 代表Android，1 代表iOS
 // 来源属性：source，0 代表优惠券详情进入，1 代表专属优惠券进入
 export function wxReportEvent(eventId, paramsData) {
-    console.log('埋点事件：', eventId)
     let source = '';
     if (paramsData) {
         source = paramsData.source;
@@ -31,9 +30,9 @@ export function navigateToMiniProgram(data) {
 
 // 打开半屏
 export function openEmbeddedMiniProgram(data) {
-    let openMiniProgram = uni.navigateToMiniProgram;
-    if (uni.canIUse('openEmbeddedMiniProgram')) {
-        openMiniProgram = uni.openEmbeddedMiniProgram;
+    let openMiniProgram = wx.navigateToMiniProgram;
+    if (wx.canIUse('openEmbeddedMiniProgram')) {
+        openMiniProgram = wx.openEmbeddedMiniProgram;
     }
     openMiniProgram(data);
 }

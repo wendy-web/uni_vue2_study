@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import {getImgUrl} from '@/utils/auth.js';
 import uQrcode from '@/components/uQrcode/index.vue';
+import { getImgUrl } from '@/utils/auth.js';
 export default {
   name: "codeDia",
   components: {
@@ -57,8 +57,6 @@ export default {
         this.$nextTick(() => {
           this.$refs.uQrcodeRef && this.$refs.uQrcodeRef.createCode(code);
         });
-        // this.code_show = newValue;
-        // return;
       }
       setTimeout(() => {
         this.code_show = newValue;

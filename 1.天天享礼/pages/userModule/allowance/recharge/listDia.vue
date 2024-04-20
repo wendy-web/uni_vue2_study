@@ -56,7 +56,6 @@ export default {
     mescrollHeight() {
       let viewPort = getViewPort();
       let mescrollHeight =  viewPort.windowHeight - viewPort.navHeight - uni.upx2px(62);
-      console.log('mescrollHeight :>> ', mescrollHeight);
       return mescrollHeight + 'px';
     },
   },

@@ -97,3 +97,20 @@ export function getOrder(data) {
         data
     });
 }
+// 京东的更新
+export function overDo(data) {
+    return API.request({
+        url: '/api/index/overDo',
+        method: 'post',
+        data,
+        isColorErrMsg: true
+    });
+}
+// 根据浏览记录推荐 - 猜你喜欢
+export function guessList(data) {
+    return API.request({
+        url: '/api/Jd/guessList',
+        method: 'post',
+        data
+    });
+}

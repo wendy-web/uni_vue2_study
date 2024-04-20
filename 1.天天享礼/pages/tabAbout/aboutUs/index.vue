@@ -6,11 +6,9 @@
 			<view class="about_title">天天享礼{{version}}</view>
 			<view class="about_txt">生活省钱小帮手</view>
 		</view>
-		<!-- <van-cell title="版本号"  :value="version" is-link @click="versionHandle" /> -->
 		<van-cell title="服务协议" @click="agreementLook('/agreement/service-agreement.html')" is-link />
 		<van-cell title="隐私协议" @click="agreementLook('/agreement/privacy-agreement.html')" is-link />
 		<van-cell title="服务热线" @click="hotLine" :value="phoneNumber" is-link />
-		<!-- <van-cell title="开发者" @click="developer" is-link /> -->
 		<van-cell title="服务时间" value="工作日 8:30 - 17:30" value-class="right_txt"/>
 	</view>
 	<view class="cont_remind">
@@ -21,12 +19,11 @@
 </template>
 
 <script>
-	import {getBaseUrl, getVersion} from '@/utils/auth.js';
-	import {getImgUrl} from '@/utils/auth.js';
+	import { getBaseUrl, getImgUrl } from '@/utils/auth.js';
 	export default {
 		onLoad() {
 			let version = wx.getAccountInfoSync().miniProgram.version;
-			this.version = version ? `v${version}` : getVersion();
+			this.version = version ? `v${version}` : 'v1.0.0';
 		},
 		data(){
 		   return {
@@ -36,25 +33,9 @@
 		   }
 		},
 		methods: {
-			versionHandle() {
-				uni.showToast({
-					title: '已经是最新版本啦~',
-					icon: 'none',
-					duration: 2000
-				});
-			},
 			agreementLook(link) {
 				link = getBaseUrl() + link;
-				uni.navigateTo({
-					url: `/pages/webview/webview?link=${encodeURIComponent(link)}`
-				});
-			},
-			developer() {
-				uni.showToast({
-					title: 'TXC BIG DATA-DEPTH RESEARCH',
-					icon: 'none',
-					duration: 2000
-				});
+				this.$go(`/pages/webview/webview?link=${encodeURIComponent(link)}`);
 			},
 			hotLine() {
 				wx.makePhoneCall({

@@ -1,9 +1,8 @@
 import { getBaseUrl } from '@/utils/auth';
-const Mock = require('./module/WxMock');
-const BASEURL = getBaseUrl();
-console.log('BASEURL :>> ', BASEURL);
 import './mode/home.js'; // 首页的mock数据
 import './mode/task.js'; // 首页的mock数据
+const Mock = require('./module/WxMock');
+const BASEURL = getBaseUrl();
 
 
 // 商品详情

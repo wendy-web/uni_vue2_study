@@ -11,10 +11,9 @@
 
 <script>
 import {
-  jumpLink,
-  qianzhuOrder
+jumpLink,
+qianzhuOrder
 } from '@/api/modules/discounts.js';
-import {getENV} from '@/utils/auth.js';
 export default {
   components: {},
   data() {
@@ -27,7 +26,6 @@ export default {
       isGoOrderInfoUrl: 0,
       bgColor: '#F84842',
       type: 0,
-      isTest: getENV() == 'test',
       isShowGiftBtn: false
     }
   },
@@ -35,8 +33,6 @@ export default {
     // 来源, 订单编号,订单类型,订单详情页地址
     if(options) {
       const {source , orderNo ,orderParam ,orderInfoUrl, token } = options;
-      // KFC CINEMA STARBUCKS
-      console.log('source , orderNo ,orderParam ,orderInfoUrl, token :>> ', source , orderNo ,orderParam ,orderInfoUrl, token);
       this.source = source;
       this.orderNo = orderNo;
       this.orderParam = orderParam;
@@ -74,7 +70,7 @@ export default {
   computed: {},
   methods: {
     getOrder() {
-      qianzhuOrder().then(res => console.log('res :>> ', res))
+      qianzhuOrder();
     },
     sourceFun() {
       const source = this.source;
@@ -97,10 +93,7 @@ export default {
     toQzMini(){
         const that = this;
         let path = "/pages/pay/pay";
-        let qzToken = ""; // 千猪token
-        let isTest = this.isTest; // 如果是正式环境即为 “false”
-        let query = `?pageType=1&token=${this.token}&orderNo=${this.orderNo}&orderType=${this.orderParam}&isTest=${isTest}`;
-        console.log('query :>> ', query);
+        let query = `?pageType=1&token=${this.token}&orderNo=${this.orderNo}&orderType=${this.orderParam}&isTest=false`;
         let openMiniProgram = uni.navigateToMiniProgram;
         if(uni.canIUse('openEmbeddedMiniProgram')) {
           openMiniProgram =  uni.openEmbeddedMiniProgram;
@@ -110,13 +103,10 @@ export default {
           path:`${path}${query}`,
           success(res) {
             that.isGoOrderInfoUrl = 1;
-            console.log('res :>> ', res, that.isGoOrderInfoUrl);
           },
           fail(error) {
-            console.log('error_失败 :>> ', error);
           },
           complete(res) {
-            console.log('res_完成 :>> ', res);
             if (/cancel/g.test(res.errMsg)) {
               that.isGoOrderInfoUrl = 2;
               uni.navigateTo({

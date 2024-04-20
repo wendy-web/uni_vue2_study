@@ -109,7 +109,7 @@
                 {
                     "path": "login/index",
                     "style": {
-                        "navigationBarTitleText": "登录",
+                        "navigationBarTitleText": "",
                         "navigationBarBackgroundColor": "#FFFFFF",
                         "navigationBarTextStyle": "black",
                         "navigationStyle": "custom"
@@ -162,6 +162,12 @@
                 },
                 {
                     "path": "feedDetailsList/index",
+                    "style": {
+                        "navigationStyle": "custom"
+                    }
+                },
+                {
+                    "path": "productDetails/index",
                     "style": {
                         "navigationStyle": "custom"
                     }
@@ -230,7 +236,13 @@
                         "navigationBarBackgroundColor": "#F7F7F7"
                     }
                 }
-            ]
+            ],
+            "plugins" : {
+                "jtkDc" : {
+                    "version" : "1.3.7",
+                    "provider" : "wx6c999744b6d125ef"
+                }
+            }
         },
         {
             "root": "pages/userModule/",
@@ -245,7 +257,7 @@
                     "path": "myCoupon/index",
                     "style": {
                         "navigationBarTextStyle": "black",
-                        "navigationBarTitleText": "专属优惠券",
+                        "navigationBarTitleText": "",
                         "navigationBarBackgroundColor": "#F7F7F7",
                         "disableScroll": true,
                         "navigationStyle": "custom"
@@ -262,24 +274,6 @@
                 },
                 {
                     "path": "order/detail",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationBarTextStyle": "black",
-                        "navigationBarBackgroundColor": "#f7f7f7",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "order/payDetail",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationBarTextStyle": "black",
-                        "navigationBarBackgroundColor": "#f7f7f7",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "order/useDetail",
                     "style": {
                         "navigationBarTitleText": "",
                         "navigationBarTextStyle": "black",
@@ -364,7 +358,7 @@
                 {
                     "path": "takeawayMenu/kfc/index",
                     "style": {
-                        "navigationBarTitleText": "kfc菜单",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom"
                     }
                 },
@@ -392,7 +386,7 @@
                 {
                     "path": "takeawayMenu/starbucks/index",
                     "style": {
-                        "navigationBarTitleText": "kfc菜单",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom"
                     }
                 },
@@ -420,7 +414,7 @@
                 {
                     "path": "allowance/redPacket/index",
                     "style": {
-                        "navigationBarTitleText": "红包",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom",
                         "backgroundColor": "#FFECBD"
                     }
@@ -428,28 +422,28 @@
                 {
                     "path": "allowance/recharge/index",
                     "style": {
-                        "navigationBarTitleText": "直充",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom"
                     }
                 },
                 {
                     "path": "allowance/repairGet/index",
                     "style": {
-                        "navigationBarTitleText": "限时捡漏",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom"
                     }
                 },
                 {
                     "path": "allowance/repairGet/detail",
                     "style": {
-                        "navigationBarTitleText": "捡漏详情",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom"
                     }
                 },
                 {
                     "path": "allowance/specialList/index",
                     "style": {
-                        "navigationBarTitleText": "聚合页",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom"
                     }
                 }
@@ -461,7 +455,7 @@
             "pages": [{
                     "path": "card/cardVip/redPayIndex",
                     "style": {
-                        "navigationBarTitleText": "省钱卡红包",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom",
                         "backgroundColor": "#fff"
                     }
@@ -469,7 +463,7 @@
                 {
                     "path": "card/cardVip/index",
                     "style": {
-                        "navigationBarTitleText": "省钱卡会员",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom",
                         "backgroundColor": "#F5F6FA"
                     }
@@ -477,7 +471,7 @@
                 {
                     "path": "card/cardVip/payIndex",
                     "style": {
-                        "navigationBarTitleText": "续费",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom",
                         "backgroundColor": "#fff"
                     }
@@ -485,7 +479,7 @@
                 {
                     "path": "card/cardVip/openIndex",
                     "style": {
-                        "navigationBarTitleText": "未开通",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom",
                         "backgroundColor": "#fff"
                     }
@@ -525,7 +519,7 @@
                 {
                     "path": "card/cardVip/payDetail",
                     "style": {
-                        "navigationBarTitleText": "省钱明细",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom",
                         "backgroundColor": "#fff"
                     }
@@ -541,7 +535,7 @@
                 {
                     "path": "withdraw/index",
                     "style": {
-                        "navigationBarTitleText": "我的零钱",
+                        "navigationBarTitleText": "",
                         "backgroundColor": "#F7F7F7",
                         "navigationStyle": "custom"
                     }
@@ -549,7 +543,7 @@
                 {
                     "path": "withdraw/withdraw",
                     "style": {
-                        "navigationBarTitleText": "提现",
+                        "navigationBarTitleText": "",
                         "backgroundColor": "#F7F7F7",
                         "navigationStyle": "custom"
                     }
@@ -557,7 +551,7 @@
                 {
                     "path": "withdraw/historyList",
                     "style": {
-                        "navigationBarTitleText": "提现记录",
+                        "navigationBarTitleText": "",
                         "backgroundColor": "#F7F7F7",
                         "navigationStyle": "custom"
                     }
@@ -570,10 +564,26 @@
             "pages": [{
                     "path": "cash/index",
                     "style": {
-                        "navigationBarTitleText": "领红包",
+                        "navigationBarTitleText": "",
                         "navigationStyle": "custom",
-                        "backgroundColor": "#fff",
-                        "onReachBottomDistance": 500
+                        "backgroundColor": "#fff"
+                    }
+                },
+                {
+                    "path": "cash/activityRecord",
+                    "style": {
+                        "navigationBarTitleText": "活动记录",
+                        "backgroundColor": "#f7f7f7",
+                        "navigationBarBackgroundColor": "#fff"
+                    }
+                },
+                {
+                    "path": "cash/accelerateList",
+                    "style": {
+                        "navigationBarTitleText": "",
+                        "backgroundColor": "#f7f7f7",
+                        "navigationStyle": "custom",
+                        "navigationBarBackgroundColor": "#fff"
                     }
                 }
             ]
@@ -649,7 +659,8 @@
             "van-swipe-cell": "/wxcomponents/vant_update/swipe-cell/index",
             "van-datetime-picker": "/wxcomponents/vant_update/datetime-picker/index",
             "van-radio-group": "/wxcomponents/vant_update/radio-group/index",
-            "van-radio": "/wxcomponents/vant_update/radio/index"
+            "van-radio": "/wxcomponents/vant_update/radio/index",
+            "van-area": "/wxcomponents/vant_update/area/index"
         }
     },
     "easycom": {

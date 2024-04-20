@@ -37,9 +37,9 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import {getImgUrl} from '@/utils/auth.js';
+import { getImgUrl } from '@/utils/auth.js';
 import goDetailsFun from '@/utils/goDetailsFun';
+import { mapGetters, mapMutations } from "vuex";
 export default {
   mixins: [goDetailsFun],
   computed: {
@@ -72,6 +72,9 @@ export default {
   mounted() {
   },
   methods: {
+    ...mapMutations({
+      delCurrentDiaList: "user/delCurrentDiaList",
+    }),
     popupClose() {
       this.$emit('close');
     },
@@ -81,6 +84,7 @@ export default {
         ...this.config,
         is_popover: 1
       }, {});
+      this.delCurrentDiaList("award");
       this.$emit('award');
     }
   },

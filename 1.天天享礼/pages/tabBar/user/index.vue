@@ -50,13 +50,19 @@
         ><van-loading slot="loading" type="spinner" size="20" vertical />
         </van-image>
       </view>
-      <view v-if="isAutoLogin">
+      <view v-if="isAutoLogin" class="fl1">
         <view :class="['nick-name', userInfo.is_vip ? 'active' : '']">
           {{ userInfo.nick_name || "未登录" }}
         </view>
         <view class="user-id"> ID：{{ userInfo.id || 0 }} </view>
         </view>
       <view v-else class="not_login"> Hi~请登录<van-icon custom-style="font-weight: 600;" name="arrow"/></view>
+      <!-- 领取返现的入口 -->
+      <view class="use_right fl_col_cen" @click.stop="goToCashHandle" v-if="isAutoLogin && userTotal.have_profit">
+        <view :class="['cash_icon fl_center', showCashRed ? 'active' : '']">
+          免单返现<van-icon name="arrow" color="#666" size="12" style="margin-left: 8rpx;" />
+        </view>
+      </view>
     </view>
     <!-- 省钱卡会员 -->
     <view class="card_vip_box" v-if="userInfo.is_vip"
@@ -114,7 +120,7 @@
           <view class="uab_item-cont" :class="{'card-new-show': userTotal.coupon_read > 0}">
             {{ userTotal.coupon || 0 }}<text class="uab_item-lab">张</text>
           </view>
-          <view class="uab_item-lab">优惠券</view>
+          <view class="uab_item-lab">卡券</view>
         </view>
         <view class="uab_item" @click="goWithdrawHandle">
           <view class="uab_item-cont" :class="{'card-new-show': profitInfo.total_num > 0}">
@@ -230,7 +236,7 @@ import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js"
 import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
 import swiperSearch from '@/components/swiperSearch.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { getImgUrl } from "@/utils/auth.js";
+import { getBaseUrl, getImgUrl, getStorage, setStorage } from "@/utils/auth.js";
 import getViewPort from "@/utils/getViewPort.js";
 import { parseTime } from '@/utils/index.js';
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
@@ -298,7 +304,9 @@ export default {
         'https://file.y1b.cn/store/1-0/24116/65a5e5c3a9370.png',
         'https://file.y1b.cn/store/1-0/24116/65a5e6a9acfe5.png',
         'https://file.y1b.cn/store/1-0/24116/65a5e6bf21e01.png'
-      ]
+      ],
+      cashStorageKey: `${getBaseUrl()}_useRedDot_cashDay`,
+      isShowRed: true
     };
   },
   watch: {
@@ -326,7 +334,6 @@ export default {
 		},
     'profitInfo.packet_amount': {
       handler:async function (newValue, oldValue) {
-				// console.log('profitInfo.packet_amount:零钱的使用',newValue);
         this.gradualAnimation(newValue);
 			},
 			deep: true
@@ -364,6 +371,13 @@ export default {
         color = this.userInfo.is_vip ? '#FCEECE' : '#F8EDE3';
       }
       return color;
+    },
+    showCashRed() {
+      const currentDate = new Date();
+      let cur_date = parseTime(currentDate, "{y}/{m}/{d}");
+      const showProfitStatusDay = getStorage(this.cashStorageKey);
+      if(showProfitStatusDay || showProfitStatusDay == cur_date) return false;
+      return this.isShowRed || this.userTotal.profit_status;
     }
   },
   onLoad() {
@@ -403,17 +417,14 @@ export default {
     },
     gradualAnimation(targetValue, duration = 10) {
         let currentValue = this.showExpandNum;
-        const totalSteps = targetValue;
         let step = (targetValue - this.showExpandNum) / duration;
-        // let intervalDuration = duration / totalSteps * 10;
         let intervalDuration =  100;
-        // if(step < 1) intervalDuration = 10;
         const interval = setInterval(() => {
             currentValue = Number(currentValue) + Number(step);
             this.showExpandNum = parseFloat(currentValue).toFixed(2);
             if (currentValue >= targetValue) {
-            this.showExpandNum = targetValue;
-            clearInterval(interval);
+              this.showExpandNum = targetValue;
+              clearInterval(interval);
             }
         }, intervalDuration);
     },
@@ -491,6 +502,14 @@ export default {
       if (path === "share") return;
       if (isCean) this.setCardNewShow(false);
       this.$go(path);
+    },
+    goToCashHandle() {
+      if(this.showCashRed) {
+        let cur_date = parseTime(new Date(), "{y}/{m}/{d}");
+        setStorage(this.cashStorageKey, cur_date);
+      }
+      this.isShowRed = false;
+      this.$go(`/pages/userCash/cash/index?is_close=1`);
     },
     /*上拉加载的回调: 其中page.num:当前页 从1开始, page.size:每页数据条数,默认10 */
     downCallback() {
@@ -594,7 +613,6 @@ export default {
         this.showTitleBg = false;
       }
       this.scrollTopNum = scrollTop;
-      // console.log('scrollTop >= this.stickyTitleTop :>> ', scrollTop ,this.stickyTitleTop);
       // 滚动到吸顶的active的行为
       if (scrollTop >= this.stickyTitleTop) {
         this.isStickyActiveScroll = true;
@@ -1189,5 +1207,38 @@ button::after {
   right: -24rpx;
   top: -87rpx;
 }
-
+.use_right {
+  align-self: stretch;
+  z-index: 1;
+  position: relative;
+}
+.cash_icon{
+  text-align: center;
+  font-weight: 600;
+  font-size: 28rpx;
+  color: #666;
+  line-height: 40rpx;
+  background: rgba($color: #fff, $alpha: .6);
+  border-radius: 28rpx 0 0 28rpx;
+  padding: 8rpx 16rpx 8rpx 24rpx;
+  position: relative;
+  &::before {
+    content: '\3000';
+    width: 26rpx;
+    height: 24rpx;
+    display: block;
+    background: url("https://test-file.y1b.cn/store/1-0/24219/65d2f0de2989c.png") 0 0 / cover;
+    margin-right: 6rpx;
+  }
+  &.active::after {
+    content: '\3000';
+    width: 15rpx;
+    height: 15rpx;
+    background: #f84842;
+    border-radius: 50%;
+    position: absolute;
+    top: 6rpx;
+    right: 35rpx;
+  }
+}
 </style>

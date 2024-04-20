@@ -29,14 +29,14 @@
 </template>
 <script>
 	import {
-		cancelOrder,
-		pay,
-		query
-	} from '@/api/modules/order.js';
-	import Toast from '@/wxcomponents/vant_update/toast/toast.js';
-	import {
-		getImgUrl
-	} from '@/utils/auth.js'
+cancelOrder,
+pay,
+query
+} from '@/api/modules/order.js';
+import {
+getImgUrl
+} from '@/utils/auth.js';
+import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 	export default {
 		props: {
 			orderInfo: {
@@ -56,13 +56,11 @@
 			}
 		},
 		mounted() {
-			console.log("mounted");
 			let randomPercent = Math.random() * 14 + 85;
 			randomPercent = Number(randomPercent).toFixed(2);
 			this.randomPercent = randomPercent;
 		},
 		beforeDestroy() {
-			console.log("beforeDestroy");
 			this.isDisabled = false;
 		},
 		methods: {
@@ -92,11 +90,9 @@
 						title: msg
 					})
 				})
-				console.log("cancel");
 
 			},
 			toPay() {
-				console.log("pay");
 				this.isDisabled = true;
 				let params = {
 					id: this.orderInfo.id
@@ -207,7 +203,6 @@
 		border: none;
 		padding: unset;
 	}
-
 	.payment-box {
 		box-sizing: border-box;
 		position: fixed;
@@ -218,11 +213,10 @@
 		justify-content: flex-end;
 		padding: 32rpx;
 		z-index: 10;
-		padding-bottom: constant(safe-area-inset-bottom); /* 兼容 IOS<11.2 */
-  		padding-bottom: env(safe-area-inset-bottom); /* 兼容 IOS>11.2 */
+		padding-bottom: calc(10rpx + constant(safe-area-inset-bottom)); /* 兼容 IOS<11.2 */
+  		padding-bottom: calc(10rpx + env(safe-area-inset-bottom)); /* 兼容 IOS>11.2 */
 		.btn-box {
 			display: flex;
-
 			.btn-cancel {
 				width: 192rpx;
 				height: 88rpx;

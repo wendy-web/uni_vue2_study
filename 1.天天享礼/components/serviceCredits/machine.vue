@@ -33,16 +33,16 @@
 	</view>
 </template>
 <script>
-	import anNoticeBar from './an-notice-bar.vue'
 	import {
-		lotteryOption,
-		lottery,
-		lotteryToday,
-		showWinningInfo
-	} from '@/api/modules/index.js'
-	import {
-		getImgUrl
-	} from '@/utils/auth.js'
+lottery,
+lotteryOption,
+lotteryToday,
+showWinningInfo
+} from '@/api/modules/index.js';
+import {
+getImgUrl
+} from '@/utils/auth.js';
+import anNoticeBar from './an-notice-bar.vue';
 	let speed = 100;
 	let myset = null;
 	let times = 0; // 轮循的次数
@@ -206,7 +206,6 @@
 			goFun() {
 				this.selectIndex = pathArr[pathArr.length - times]
 				times--;
-				console.log(this.selectIndex, times, speed)
 				if (times >= startTimes) { // 开始阶段，speed 加速，减少值
 					speed -= 1;
 				}

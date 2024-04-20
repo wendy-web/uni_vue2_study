@@ -50,15 +50,11 @@
                 :duration="500"
                 :circular="true"
               >
-                <swiper-item
-                  class="swiper_item"
-                  v-for="(item33, idx) in item.imageList"
-                  :key="idx"
+                <swiper-item class="swiper_item"
+                  v-for="(item33, idx) in item.imageList" :key="idx"
                 >
-                  <image
-                    class="banner_img-bg"
-                    :src="item33.url"
-                    mode="aspectFill"
+                  <image class="banner_img-bg"
+                    :src="item33.url" mode="aspectFill"
                   ></image>
                   <van-image
                     :width="screenWidth + 'px'"
@@ -78,7 +74,7 @@
                   </van-image>
                 </swiper-item>
               </swiper>
-              <view class="swiper_banner-num" v-if="item.imageList.length > 1">
+              <view class="swiper_banner-num" v-if="item.imageList && item.imageList.length > 1">
                 {{ item.bannerCurrIndex + 1 }}/{{ item.imageList.length }}
               </view>
             </view>
@@ -171,20 +167,20 @@
 </template>
 <script>
 import {
-  goodsQuery,
-  toggleCollect,
-  bysubunionid,
+bysubunionid,
+goodsQuery,
+toggleCollect,
 } from "@/api/modules/jsShop.js";
 import {
-    goodsDetail,
-    goodsSearch,
-    toggleCollect as pddToggleCollect,
-    goodsPromotion
+goodsDetail,
+goodsPromotion,
+goodsSearch,
+toggleCollect as pddToggleCollect
 } from '@/api/modules/pddShop.js';
-import { getImgUrl } from "@/utils/auth.js";
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
-import { mapGetters } from "vuex";
+import { getImgUrl } from "@/utils/auth.js";
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import { mapGetters } from "vuex";
 let timer = null;
 export default {
     mixins: [shareMixin], // 使用mixin
@@ -277,9 +273,11 @@ export default {
         }
         if (this.goods_sign) {
             const detRes = await goodsDetail({ goods_sign: this.goods_sign });
-            this.feedList.push(detRes.data);
-            this.goods_id = detRes.data.goods_id
-            this.params.cat_id = detRes.data.cat_id
+            this.params.cat_id = detRes.data.cat_id;
+            if(detRes.code == 1 && detRes.data) {
+              this.feedList.push(detRes.data);
+              this.goods_id = detRes.data.goods_id;
+            }
         }
         this.getFeedList();
     },
@@ -407,16 +405,21 @@ export default {
     changeHandle(event) {},
     // 去领取
     async getBtnHandle(item) {
-        const { skuId, positionId, goods_sign } = item;
+        const { skuId, positionId, goods_sign,lx_type, is_flow } = item;
         let api = bysubunionid
         let params = { skuId, positionId }
         // 拼多多
         if(this.shop_type == 3) {
-            params = { goods_sign };
-            api = goodsPromotion;
+          params = { goods_sign };
+          api = goodsPromotion;
         }
         const skuItem = await api(params);
         if (skuItem.code != 1) return this.$toast(skuItem.msg);
+        // 中转详情页
+        if (is_flow == 2) {
+          this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&isFeed=true`);
+          return;
+        }
         const { type_id, jdShareLink, mobile_url } = skuItem.data;
         this.$openEmbeddedMiniProgram({
             appId: type_id,

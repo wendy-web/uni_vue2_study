@@ -100,7 +100,7 @@
     ></paySuccessDia>
     <applySuccessDia
         :isShow="isApplyVip"
-        @close="$topCallBack"
+        @close="isApplyVip = false"
     ></applySuccessDia>
     <confirmDia
         :isShow="isShowConfirmDia"

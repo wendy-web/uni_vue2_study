@@ -12,10 +12,11 @@
         :focus="focus"
         @change="change"
         @clickIcon="clickIcon"
+        @blur="blurHandle"
         :clearable="true"
       ></van-field>
       <view class="tips">20个字符，可由中文、英文、数字、-和_组成</view>
-      <view :class="['btn-save', isChange ? 'active': '']" @click="updateUserHandle">确认</view>
+      <view :class="['btn-save', isChange ? 'active' : '']" @click="updateUserHandle">确认</view>
     </view>
     <privacyOpen ref="privacyOpen"></privacyOpen>
   </view>
@@ -32,11 +33,13 @@ export default {
       nickName: "微信默认昵称",
       isChange: false,
       focus: false,
+      firstNickName: ''
     };
   },
   onLoad(options) {
     if(options.nickName) {
       this.nickName = options.nickName;
+      this.firstNickName = this.nickName;
       this.currentName = options.nickName;
     }
   },
@@ -55,47 +58,23 @@ export default {
     },
     handleTouchInput() {
       if (wx.requirePrivacyAuthorize) {
-        wx.requirePrivacyAuthorize({
-          success: res => {
-            console.log('用户同意了隐私协议 或 无需用户同意隐私协议')
-            // 用户同意隐私协议后给昵称input聚焦
-            this.focus = true;
-          },
-          fail: res => {
-            console.log('用户拒绝了隐私协议')
-          }
-        })
+        wx.requirePrivacyAuthorize();
       } else {
         this.focus = true;
       }
     },
+    blurHandle({detail}) {
+      this.change({ detail: detail.value })
+    },
     change({ detail }) {
-      console.log('detail', detail);
-      if(detail == '' || detail == this.currentName) {
-        this.isChange = false;
-      } else {
-        this.isChange = true;
-      }
+      this.isChange = Boolean(detail.trim()) && (detail.trim() != this.firstNickName);
       this.nickName = detail;
     },
-    updateUserHandle() {
+    async updateUserHandle() {
       if(!this.isChange) return;
-      this.editUpdateUser({
-        nick_name: this.nickName
-      }).then(result => {
-        console.log('result', result);
-        uni.showToast({
-          title: '更新成功',
-          icon: 'none'
-        });
-        uni.navigateBack({
-          fail(e) {
-            uni.switchTab({
-              url: '/pages/tabBar/shopMall/index'
-            })
-          }
-        });
-      });
+      await this.editUpdateUser({ nick_name: this.nickName });
+      this.$toast('更新成功');
+      setTimeout(() => this.$leftBack(), 300);
     }
   },
 };

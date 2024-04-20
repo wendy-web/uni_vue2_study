@@ -1,125 +1,113 @@
 <template>
 <view class="my-collect">
-    <mescroll-body
-        ref="mescrollRef"
-        height="100"
-        @init="mescrollInit"
-        @down="downCallback"
-        @up="upCallback"
-        :up="upOption"
-        :down="downOption"
-    >
-      <view class="list-box">
-        <view v-for="(dateItem, idx) in list" :key="idx">
-          <view class="date_time">{{ dateItem.dateTime }}</view>
-          <van-swipe-cell
-            :right-width="84"
-            v-for="(item, index) in dateItem.dateList"
-            :key="index"
-            :data-id="item.id"
-            :data-item="item"
-            async-close
-            @click="goDetails($event, { listIndex: idx, index })"
-            @close="onCloseHandle($event, idx, index)"
-            @open="onOpenHandle($event, idx, index)"
-          >
-            <!-- 主要内容 -->
-            <view class="list-item">
-              <!-- <image class="list-icon" :src="item.image" mode="scaleToFill"></image> -->
-                <view class="list-icon">
-                    <van-image
-                        height="240rpx"
-                        width="240rpx"
-                        radius="16rpx"
-                        :src="item.image"
-                        use-loading-slot
-                        use-error-slot>
-                      <van-loading slot="loading" type="spinner" size="24" vertical />
-                      <van-icon slot="error" color="#edeef1" size="120" name="photo-fail" />
-                    </van-image>
+  <mescroll-body
+    ref="mescrollRef"
+    height="100"
+    @init="mescrollInit"
+    @down="downCallback"
+    @up="upCallback"
+    :up="upOption"
+    :down="downOption"
+  >
+    <view class="list-box">
+      <view v-for="(dateItem, idx) in list" :key="idx">
+        <view class="date_time">{{ dateItem.dateTime }}</view>
+        <van-swipe-cell
+          :right-width="84"
+          v-for="(item, index) in dateItem.dateList" :key="index"
+          :data-id="item.id" :data-item="item" async-close
+          @click="goDetails($event, { listIndex: idx, index })"
+          @close="onCloseHandle($event, idx, index)"
+          @open="onOpenHandle($event, idx, index)"
+        >
+          <view class="list-item">
+            <view class="list-icon">
+              <van-image
+                height="240rpx" width="240rpx"
+                radius="16rpx" :src="item.image"
+                use-loading-slot use-error-slot>
+                <van-loading slot="loading" type="spinner" size="24" vertical />
+                <van-icon slot="error" color="#edeef1" size="120" name="photo-fail" />
+              </van-image>
+            </view>
+            <view class="list-txt">
+              <view class="list-item-title txt_ov_ell2">
+                <view class="ty_store" v-if="item.type == 12"></view><!-- 到店吃 -->
+                <view class="jd_icon_box" v-else-if="item.lx_type != 1 && Number(item.face_value)">
+                  <image class="bg_img" mode="scaleToFill"
+                    :src="imgUrl + 'static/shopMall/jd_icon_bg.png'"></image>
+                  抵¥{{parseInt(item.face_value)}}券
+                </view>{{ item.title }}
+              </view>
+              <view class="list_cont">
+                <view class="use_cont">
+                  <view class="use_cont-left" v-if="item.after_pay">先用后付</view>
+                  <view class="use_cont-right" v-if="userInfo.is_vip">0豆特权</view>
                 </view>
-              <view class="list-txt">
-                <view class="list-item-title txt_ov_ell2">
-                  <view class="jd_icon_box" v-if="item.lx_type != 1 && Number(item.face_value)">
-                    <image class="bg_img" mode="scaleToFill"
-                      :src="imgUrl + 'static/shopMall/jd_icon_bg.png'"></image>
-                    抵¥{{parseInt(item.face_value)}}券
-                  </view>
-                  {{ item.title }}
-                </view>
-                <view class="list_cont">
-                  <view class="list_cont-left">
-                    <view class="exchange-num" :style="{ opacity: item.lx_type == 1 ? 1 : 0 }" >
-                      {{ item.exch_user_num }}人兑换
+                <view class="list_cont-bottom fl_bet">
+                  <view class="list_cont-left box_fl">
+                    <view class="cowpea-num">
+                      <text :class="['value', userInfo.is_vip ? 'active' : '']">{{ item.credits }}</text>牛金豆
                     </view>
-                    <view class="vip_box box_fl" v-if="userInfo.is_vip">
-                    0豆特权
-                    <image class="vip_img" :src="cardImgUrl + 'vip_box.png'" mode="scaleToFill"></image>
+                    <view class="exchange-num" v-if="item.lx_type == 1">{{ item.exch_user_num + Number(item.user_num)}}人兑换</view>
+                    <view class="exchange-num" v-else-if="item.inOrderCount30Days">月售{{ item.inOrderCount30Days }}</view>
+                    <view class="exchange-num" v-else-if="item.sales_tip">已售{{ item.sales_tip }}</view>
+
                   </view>
-                    <view class="cowpea-num" v-else>
-                      <text class="value">{{ item.credits }}</text>牛金豆
-                    </view>
-                  </view>
-                  <view v-if="!item.isOpenCell"
-                    :class="['bottom-tools', item.isOpenCell ? 'active' : '']" >
+                  <view v-if="!item.isOpenCell" :class="['bottom-tools', item.isOpenCell ? 'active' : '']" >
                     <view :class="['collection-btn', item.is_collect ? 'active' : '']"
                       @click.stop="collectHandle(item, idx, index)">
                       {{ item.is_collect ? "已收藏" : "收藏" }}
                     </view>
                     <view class="collection-btn">
-                      <button
-                        open-type="share"
-                        class="share_btn"
-                        :data-item="item"
-                        @click.stop="shareHandle"
-                      ></button>
+                      <button open-type="share" class="share_btn"
+                        :data-item="item" @click.stop="shareHandle"></button>
                       <text>分享</text>
                     </view>
                   </view>
                 </view>
               </view>
             </view>
-            <!-- 侧滑内容 -->
-            <view class="right-swipe" slot="right">
-              <view>删除</view>
-              <view>记录</view>
-            </view>
-          </van-swipe-cell>
-        </view>
+          </view>
+          <!-- 侧滑内容 -->
+          <view class="right-swipe" slot="right">
+            <view>删除</view>
+            <view>记录</view>
+          </view>
+        </van-swipe-cell>
       </view>
-    </mescroll-body>
-    <!-- 背景 -->
-    <view class="list-bg"></view>
-    <!-- 牛金豆不足的情况 -->
-    <exchangeFailed
-      :isShow="exchangeFailedShow"
-      @goTask="goTaskHandle"
-      @close="exchangeFailedShow = false"
-    ></exchangeFailed>
-    <!-- 赚取牛金豆 -->
-    <serviceCredits
-      ref="serviceCredits"
-      :isShow="serviceCreditsShow"
-      @showAdPlay="showAdPlayHandle"
-      @close="closeHandle"
-    ></serviceCredits>
+    </view>
+  </mescroll-body>
+  <!-- 背景 -->
+  <view class="list-bg"></view>
+  <!-- 牛金豆不足的情况 -->
+  <exchangeFailed
+    :isShow="exchangeFailedShow"
+    @goTask="goTaskHandle"
+    @close="exchangeFailedShow = false"
+  ></exchangeFailed>
+  <!-- 赚取牛金豆 -->
+  <serviceCredits
+    ref="serviceCredits"
+    :isShow="serviceCreditsShow"
+    @showAdPlay="showAdPlayHandle"
+    @close="closeHandle"
+  ></serviceCredits>
 </view>
 </template>
 <script>
-import goDetailsFun from "@/utils/goDetailsFun";
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-// 牛金豆不足混入的组件与方法
+import { toggleCollect as jdToggleCollect } from "@/api/modules/jsShop.js";
+import { toggleCollect as pddToggleCollect } from "@/api/modules/pddShop.js";
+import { toggleCollect, watchDel, watchLog } from "@/api/modules/user.js";
 import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
 import serviceCredits from "@/components/serviceCredits/index.vue";
 import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
-import { watchLog, watchDel } from "@/api/modules/user.js";
-import { toggleCollect as jdToggleCollect } from "@/api/modules/jsShop.js";
-import { toggleCollect as pddToggleCollect } from "@/api/modules/pddShop.js";
-import { toggleCollect } from "@/api/modules/user.js";
-import { parseTime } from "@/utils/index.js";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getImgUrl } from "@/utils/auth.js";
-import { mapActions, mapGetters } from 'vuex';
+import goDetailsFun from "@/utils/goDetailsFun";
+import { parseTime } from "@/utils/index.js";
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import { mapActions, mapGetters } from 'vuex';
 export default {
   mixins: [MescrollMixin, goDetailsFun, serviceCreditsFun, shareMixin],
   components: {
@@ -131,6 +119,9 @@ export default {
       list: [],
       upOption: {
         auto: true,
+        page: {
+          size: 5
+        }
       },
       downOption: {
         auto: false, // 不自动加载 (mixin已处理第一个tab触发downCallback)
@@ -143,10 +134,6 @@ export default {
   computed: {
     ...mapGetters(["userInfo"])
   },
-  onShow() {
-    // let mescrollRef = this.$refs.mescrollRef;
-    // mescrollRef.mescroll.resetUpScroll();
-  },
   onLoad(options) {
     let date = new Date();
     this.currentYear = parseTime(date, "{y}");
@@ -156,7 +143,6 @@ export default {
     ...mapActions({
         getUserInfo: 'user/getUserInfo',
     }),
-    // 收藏
     async collectHandle(item, index, itemIndex) {
         const { coupon_id, skuId, lx_type, goods_sign, goods_id } = item;
         let apiToggleCollect = toggleCollect;
@@ -180,47 +166,43 @@ export default {
         this.$toast(res.msg);
     },
     shareHandle() {
-      console.log("分享 :>> 防止事件冒泡");
     },
     upCallback(page) {
-        //参数
-        let params = {
-            size: 10,
-            page: page.num,
-        };
-        // 联网加载数据
-        watchLog(params).then((res) => {
-            let dataObj = res.data ? res.data : [];
-            //设置列表数据
-            if (page.num == 1) this.list = []; //如果是第一页需手动制空列表
-            let list = [];
-            Object.keys(dataObj).forEach((value) => {
-                const itemYear = parseTime(value, "{y}");
-                const itemList = dataObj[value].map((res) => {
-                    return {
-                    ...res,
-                    isOpenCell: false,
-                    };
-                });
-                const cFormat = this.currentYear == itemYear ? "{m}月{d}日" : "{y}年{m}月{d}日";
-                list.push({
-                    dateTime: parseTime(value, cFormat),
-                    dateList: itemList,
-                });
-            });
-            this.list = this.list.concat(list); // 追加新数据
-            //联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-            this.mescroll.endSuccess(list.length);
-        }).catch((err) => {
-            this.mescroll.endErr();
+      let params = {
+        size: page.size,
+        page: page.num,
+      };
+      // 联网加载数据
+      watchLog(params).then((res) => {
+        let dataObj = res.data ? res.data : [];
+        // 设置列表数据
+        if (page.num == 1) this.list = []; //如果是第一页需手动制空列表
+        let list = [];
+        Object.keys(dataObj).forEach((value) => {
+          const itemYear = parseTime(value, "{y}");
+          const itemList = dataObj[value].map((res) => {
+            return {
+              ...res,
+              isOpenCell: false,
+            };
+          });
+          const cFormat = this.currentYear == itemYear ? "{m}月{d}日" : "{y}年{m}月{d}日";
+          list.push({
+            dateTime: parseTime(value, cFormat),
+            dateList: itemList,
+          });
         });
+        this.list = this.list.concat(list); // 追加新数据
+        // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+        this.mescroll.endSuccess(list.length);
+      }).catch((err) =>  this.mescroll.endErr());
     },
     goDetails(event, { listIndex, index }) {
       let { detail, currentTarget } = event;
       if (detail == "cell") {
         let { item } = currentTarget.dataset;
         // 最后一个参数代码判断牛金豆不足的拦截
-        this.detailsFun_mixins(item, { listIndex, index }, this.list, true);
+        this.detailsFun_mixins(item, { listIndex, index }, true);
       }
     },
     onCloseHandle(event, index, itemIndex) {
@@ -255,7 +237,7 @@ page {
   padding-left: 24rpx;
   font-size: 36rpx;
   font-weight: 500;
-  color: #333333;
+  color: #333;
   line-height: 50rpx;
   margin-bottom: 24rpx;
 }
@@ -273,11 +255,10 @@ page {
   }
   .list-txt {
     flex: 1;
-    padding: 16rpx 0;
     align-self: stretch;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
   }
 }
 
@@ -312,7 +293,7 @@ page {
     font-weight: 600;
     color: #333333;
     line-height: 40rpx;
-    max-height: 80rpx;
+    height: 80rpx;
   }
   .jd_icon_box {
     padding: 0 10rpx 0 20rpx;
@@ -326,12 +307,19 @@ page {
     white-space: nowrap;
     display: inline-block;
   }
+  .ty_store {
+  width: 118rpx;
+  height: 34rpx;
+  background: url("https://test-file.y1b.cn/store/1-0/24412/6619090ba6bf5.png") 0 0 / 100% 100% no-repeat;
+  margin-right: 8rpx;
+  transform: translateY(8rpx);
+  display: inline-block;
+}
 
   .exchange-num {
     font-size: 24rpx;
-    color: #999999;
-    margin-top: 24rpx;
-    margin-bottom: 8rpx;
+    color: #999;
+    white-space: nowrap;
   }
 
   .cowpea-num {
@@ -339,10 +327,14 @@ page {
     font-weight: 500;
     color: #f84842;
     line-height: 44rpx;
-  }
-
-  .cowpea-num .value {
-    font-size: 32rpx;
+    margin-right: 10rpx;
+    white-space: nowrap;
+    .value {
+      font-size: 32rpx;
+      &.active {
+        text-decoration: line-through;
+      }
+    }
   }
 
   .list-bg {
@@ -374,7 +366,7 @@ page {
     border: 1rpx solid #aaa;
     text-align: center;
     &:first-child {
-      margin-right: 20rpx;
+      margin-right: 10rpx;
     }
     &.active {
       background: #f84842;
@@ -392,20 +384,52 @@ page {
   }
 }
 .list_cont {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  margin-top: 30rpx;
+  .list_cont-bottom{
+    margin-top: 8rpx;
+  }
 }
 .vip_box{
-    font-size: 32rpx;
-    font-weight: 500;
-    color: #f84842;
-    line-height: 44rpx;
-    white-space: nowrap;
-    .vip_img{
-        width: 126rpx;
-        height: 38rpx;
-        margin-left: 4rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #f84842;
+  line-height: 44rpx;
+  white-space: nowrap;
+  .vip_img{
+    width: 126rpx;
+    height: 38rpx;
+    margin-left: 4rpx;
+  }
+}
+.use_cont {
+  display: flex;
+  font-size: 24rpx;
+  line-height: 34rpx;
+  height: 34rpx;
+  .use_cont-left {
+    color: #32a666;
+    margin-right: 18rpx;
+    display: flex;
+    align-items: center;
+    &::before {
+      content: "\3000";
+      width: 30rpx;
+      height: 30rpx;
+      background: url("https://test-file.y1b.cn/store/1-0/24312/65f023e89516c.png")  0 0 / 100% 100% no-repeat;
+      margin-right: 5rpx;
     }
+  }
+  .use_cont-right{
+    color: #c16e15;
+    display: flex;
+    align-items: center;
+    &::before {
+      content: "\3000";
+      width: 24rpx;
+      height: 24rpx;
+      background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
+      margin-right: 5rpx;
+    }
+  }
 }
 </style>

@@ -157,7 +157,7 @@ export default {
             if(page.num == 1) this.goods = [];
             this.configData = res.data;
             const { bg_color, bg_img, share_word, share_img } = res.data;
-            this.subjectColor = bg_color;
+            bg_color && (this.subjectColor = bg_color);
             this.bg_img = bg_img;
             // 混合方法中得对象键值的赋值
             this.getShareCont.share_title = share_word;

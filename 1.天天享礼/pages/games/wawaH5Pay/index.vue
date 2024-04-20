@@ -20,7 +20,6 @@ export default {
     }
   },
   onLoad(options) {
-    console.log('options :>> ', options);
     // linkTo -- 跳转支付小程序路径
     // linkData -- 跳转支付小程序参数，JSON.stringify后的字符串
     // appId -- 跳转支付小程序appid
@@ -31,8 +30,6 @@ export default {
       this.appId = appId;
       this.toPayHandle();
     }
-    // const params = this.getLinkParam(options);
-    // console.log('params :>> ', params);
   },
   methods: {
     toPayHandle() {
@@ -45,7 +42,6 @@ export default {
         appId: this.appId,
         path: `${this.linkTo}?${query}`,
         success(res) {
-          console.log('开启半屏 :>> ', );
         }
       });
     },

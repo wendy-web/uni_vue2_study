@@ -18,12 +18,6 @@ export function getAutoLogin() {
     let isAutoLogin = getStorage(`${baseUrl}_isAutoLogin`);
     return isAutoLogin;
 }
-export function setIsAlreadyShowLight(data) {
-    setStorage(`${baseUrl}_isAlreadyShowLight`, data);
-}
-export function getIsAlreadyShowLight() {
-    return getStorage(`${baseUrl}_isAlreadyShowLight`);
-}
 export function setToken(data) {
     setStorage('token', data);
 }
@@ -82,7 +76,6 @@ export function getLocation() {
 }
 
 export function setStorage(key, data) {
-
     try {
         uni.setStorageSync(key, data);
     } catch (e) {
@@ -134,11 +127,7 @@ export function getFileUrl() {
 export function getImgUrl() {
     return 'https://file.y1b.cn/public/img/ttxl/';
 }
-// 当前的版本号
-export function getVersion() {
-    const version = 'v1.3.0';
-    return version;
-}
+
 // 当前的设备
 export function getPlatform() {
     let platform = wx.getSystemInfoSync().platform;

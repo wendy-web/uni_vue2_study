@@ -149,7 +149,7 @@
             open-type="getPhoneNumber"
             class="get-phone"
             @getphonenumber="getPhoneNumber"
-            v-if="!userInfo.mobile && config.open_mini_type != 2 && isAutoLogin && config.voucherType !== 11"
+            v-if="isGetPhone"
           ></button>
           <!-- 立即兑换 -->
           <view :class="['redeem-now',
@@ -223,7 +223,7 @@
       @close="closeHandle"
     >
     </serviceCredits>
-    <service-recharge ref="serviceRecharge" />
+    <service-recharge ref="serviceRecharge" @close="closeServiceHandle" />
     <!-- 其它成功情况 -->
     <!-- <other-exchange-success ref="otherExchangeSuccess" /> -->
     <!-- 新人用户的更新 -->
@@ -321,6 +321,9 @@ export default {
   },
   computed: {
     ...mapGetters(["userInfo", 'isAutoLogin']),
+    isGetPhone() {
+      return !this.userInfo.mobile && (this.config.open_mini_type != 2) && this.isAutoLogin &&  [11, 12].includes(this.config.voucherType);
+    }
   },
   onShow() {
     this.$refs.privacyOpen.LifetimesShow();
@@ -346,7 +349,6 @@ export default {
     // 获取屏幕宽度
     let system = uni.getSystemInfoSync();
     this.screenWidth = system.screenWidth || 375;
-    console.log(system);
     _msgTemplateUpdate = !this.userInfo.avatar_url;
     let viewPort = getViewPort();
     this.stickTop = viewPort.navHeight + 26;
@@ -365,6 +367,9 @@ export default {
       getUserTotal: "user/getUserTotal",
       updateUserNew: "user/updateUserNew",
     }),
+    closeServiceHandle() {
+      this.searchExchangeCk();
+    },
     async searchExchangeCk() {
       const res = await exchangeCk({ id: _coupon_id});
       if (!res.code) return;
@@ -573,7 +578,7 @@ export default {
       this.redeemClickLoading = false;
     },
     openServiceRecharge(id) {
-      this.$refs.serviceRecharge.popupShow(id);
+      this.$refs.serviceRecharge.popupShow(id, this.config.voucherType);
     },
     // 半屏打开的回调
     openMiniSuccHandle(open_type) {
@@ -619,17 +624,12 @@ export default {
       }
       this.exchange();
     },
-    sphError(err) {
-      console.log("视频号err：", err);
-    },
+    sphError(err) { },
     openSph() {
       if (this.config.video_account_id && wx.openChannelsActivity) {
         wx.openChannelsActivity({
           finderUserName: this.config.video_id,
           feedId: this.config.video_account_id,
-          complete(res) {
-            console.log(res);
-          },
         });
       }
     },

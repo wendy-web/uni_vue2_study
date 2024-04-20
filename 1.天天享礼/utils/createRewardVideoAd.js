@@ -33,7 +33,6 @@ export default function(adUnitId, closeFun, errorFun) {
                         title: this.videoAdErrHandle(err),
                         icon: 'none'
                     });
-                    console.log(this.videoAdErrHandle(err), 'this.videoAd__create的onError')
                 });
                 // 监听关闭
                 this.videoAd.onClose((status) => {
@@ -51,8 +50,6 @@ export default function(adUnitId, closeFun, errorFun) {
             this.videoAd = null;
         },
         videoAdErrHandle(err) {
-            console.log('视频加载失败')
-            console.log(err)
             const errHandle = {
                 1000: '后端接口调用失败',
                 1001: '参数错误',

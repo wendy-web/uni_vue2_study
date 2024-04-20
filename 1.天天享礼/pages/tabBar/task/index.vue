@@ -161,16 +161,16 @@
 		></specialLisMiniPage>
 		<!-- 牛金豆不足的情况 -->
 		<exchangeFailed
-		:isShow="exchangeFailedShow"
-		@goTask="goTaskHandle"
-		@close="exchangeFailedShow = false"
+			:isShow="exchangeFailedShow"
+			@goTask="goTaskHandle"
+			@close="exchangeFailedShow = false"
 		></exchangeFailed>
 		<!-- 赚取牛金豆 -->
 		<serviceCredits
-		ref="serviceCredits"
-		:isShow="serviceCreditsShow"
-		@showAdPlay="showAdPlayHandle"
-		@close="closeHandle"
+			ref="serviceCredits"
+			:isShow="serviceCreditsShow"
+			@showAdPlay="showAdPlayHandle"
+			@close="closeHandle"
 		></serviceCredits>
 	</view>
 </template>
@@ -196,8 +196,8 @@ import viewArticle from './components/viewArticle.vue';
 /*任务完成弹窗*/
 import cowpeaDouble from '@/components/serviceCredits/popup/cowpeaDouble.vue';
 import happyHarvest from '@/components/serviceCredits/popup/happyHarvest.vue';
+import taskComplete from '@/components/taskComplete.vue';
 import cowpeaAnim from './popup/cowpeaAnim.vue';
-import taskComplete from './popup/taskComplete.vue';
 import turntableModel from './popup/turntableModel.vue';
 /* 积分升级成功 */
 import {
@@ -344,7 +344,7 @@ import userGuidance from './popup/userGuidance.vue';
 			this.initRewardedVideoAd()
 		},
 		onShow() {
-			/*看文拿奖返回处理*/
+			/* 看文拿奖返回处理 */
 			if (uni.getStorageSync('READ_ARTICLE')) {
 				let reward = uni.getStorageSync('READ_ARTICLE')
 				//立即清除
@@ -380,7 +380,7 @@ import userGuidance from './popup/userGuidance.vue';
 				this.textDetailsFun_mixins({
 					...item,
 					configDia: true
-				})
+				});
 			},
 			// 列表广告位 - 跳转至半屏推券
 			goodListBannerHandle(item) {
@@ -486,7 +486,6 @@ import userGuidance from './popup/userGuidance.vue';
 				}, 200)
 			},
 			turntableSuccess(event) {
-				console.log("选中第", event, "个");
 				this.updateData();
 			},
 			showHide() {
@@ -506,7 +505,6 @@ import userGuidance from './popup/userGuidance.vue';
 				})
 			},
 			countFinished(e) {
-				console.log("countFinished:", e);
 			},
 			// 玩游戏扣除豆子
 			deductBeans(num) {

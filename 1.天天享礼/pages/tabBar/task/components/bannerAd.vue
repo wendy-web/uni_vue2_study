@@ -21,16 +21,13 @@
 		},
 		methods: {
 			adLoad() {
-				// console.log('Banner 广告加载成功');
 				this.isShow = true;
 			},
 			adError(err) {
-			    // console.log('Banner 广告加载失败', err);
 				this.isShow = false;
 
 			},
 			adClose() {
-			    // console.log('Banner 广告关闭');
 				this.isShow = false;
 			}
 

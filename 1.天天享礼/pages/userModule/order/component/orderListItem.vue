@@ -15,7 +15,12 @@
 		@showTakeCode="(item) => this.$emit('showTakeCode', item)"
 	>
 	</orderItemHaiwei>
-	<orderItemPhone ref="orderItemPhone" :item="item" v-else-if="[9].includes(item.goods_type)"></orderItemPhone>
+	<orderItemPhone
+		ref="orderItemPhone"
+		:item="item"
+		v-else-if="[9].includes(item.goods_type)"
+		@again="() => this.$emit('againPhone')"
+	></orderItemPhone>
 	<view class="item" v-else>
 		<view class="type_top">
 			<view class="type_lft">
@@ -29,14 +34,9 @@
 		<view class="order" @click="goToUse(item)">
 			<view class="order_cont">
 				<van-image
-                    height="160rpx"
-                    width="160rpx"
-                    radius="16rpx"
-                    :src="item.goods_imgs"
-                    use-loading-slot
-                    use-error-slot
-					class="order-img"
-					v-if="item.goods_imgs"
+                    height="160rpx" width="160rpx" radius="16rpx"
+                    use-loading-slot use-error-slot class="order-img"
+                    :src="item.goods_imgs" v-if="item.goods_imgs"
                 >
                     <van-loading slot="loading" type="spinner" size="24" vertical />
                     <van-icon slot="error" color="#edeef1" size="120" name="photo-fail" />
@@ -49,7 +49,7 @@
 		</view>
 		<!-- 支付金额 -->
 		<view class="pay-info" @click="goToUse(item)">
-			<text class="pay-info_label">{{[2,3,4,5].includes(Number(item.status))?'实付':'应付'}}</text>
+			<text class="pay-info_label">{{[2,3,4,5].includes(Number(item.status)) ? '实付' : '应付'}}</text>
 			<view v-html="formatPrice(item.pay_amount)"></view>
 		</view>
 		<!-- 待支付||去使用 - 京东/深爱购模式不呈现-->
@@ -77,9 +77,10 @@
 			<view class="btn btn_status3">去使用</view>
 		</view>
 		<!-- 所有状态都打开 -->
-		<view class="order-operate" @click="goCouponDetailsHandle(item)">
+		<view class="order-operate">
             <view class="expire-time"></view>
-			<view class="btn btn_status3">再来一单</view>
+			<view class="btn btn_status3"  @click="goCouponDetailsHandle(item)" v-if="Number(item.status)">再来一单</view>
+			<view class="btn btn_status3" v-else-if="[5, 7].includes(Number(item.goods_type))" @click="goToUse(item)">去支付</view>
 		</view>
 	</view>
 </block>
@@ -156,14 +157,13 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 		},
 		mounted() {
 		},
-
 		methods: {
 			countFinished(e) {
 				timerEnd = true;
 				this.$emit("updateOrderInfo");
 			},
-			formatPrice(price, type) {
-				if (!price) return;
+			formatPrice(price = 0, type) {
+				// if (!price) return;
 				price = Number(price / 100).toFixed(2);
 				let splitPrice = price.split(".");
 				let dom= '';
@@ -178,11 +178,7 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 				return dom;
 			},
 			goToUse(item) {
-				const {
-					goods_type,
-					jdShareLink,
-					type_id
-				} = item;
+				const { goods_type, jdShareLink, type_id } = item;
                 // 京东/拼多多 深爱购的详情
 				if([5, 7, 8].includes(goods_type)) {
 					this.$openEmbeddedMiniProgram({
@@ -191,14 +187,7 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 					});
 					return;
 				}
-				const status = item.status;
-				let pathUrl = '/pages/userModule/order/detail';
-				if(status == 0) {
-					pathUrl = '/pages/userModule/order/payDetail';
-				} else if(status == 3) {
-					pathUrl = '/pages/userModule/order/useDetail';
-				}
-                this.$go(`${pathUrl}?id=${item.id}&status=${item.status}`);
+                this.$go(`/pages/userModule/order/detail?id=${item.id}`);
 			},
 			goCouponDetailsHandle(item) {
 				const {
@@ -225,11 +214,7 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 				let params = { id: item.id };
 				if (!this.paymentParams) {
 					pay(params).then(res => {
-						let {
-							code,
-							data,
-							msg
-						} = res;
+						let { code, data, msg } = res;
 						if (code == 1) {
 							this.paymentParams = JSON.parse(data.jspay_info);
 							this.pay_order_id = data.order_id;
@@ -243,7 +228,7 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 				}
 				this.createPayment(this.paymentParams)
 			},
-			//发起支付
+			// 发起支付
 			createPayment(obj) {
 				uni.requestPayment({
 					'nonceStr': obj.nonceStr,
@@ -254,15 +239,9 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 					success: (res) => {
 						this.isDisabled = false
 						// 支付成功，用order_id 查询结果
-						let params = {
-							id: this.pay_order_id
-						}
+						let params = { id: this.pay_order_id };
 						query(params).then(res => {
-							let {
-								code,
-								data,
-								msg
-							} = res;
+							let { code, data, msg } = res;
 							if (code == 1) {
 								// 支付成功刷新订单信息
 								this.$emit('updateOrderInfo');

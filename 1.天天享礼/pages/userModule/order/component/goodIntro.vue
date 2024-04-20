@@ -1,29 +1,25 @@
 <template>
-	<view>
-		<view class="good-intro-box" v-if="content&&content!='<p><br></p>'">
-			<view class="title">使用说明</view>
-			<view class="content">
-				<u-parse :content="content"></u-parse>
-			</view>
-
-		</view>
-		<!-- 兑换须知 -->
-		<view class="good-intro-box" v-if="exchangeRule&&exchangeRule!='<p><br></p>'">
-			<view class="title">兑换须知</view>
-			<view class="content">
-				<u-parse :content="exchangeRule"></u-parse>
-			</view>
+<view>
+	<view class="good-intro-box" v-if="content&&content!='<p><br></p>'">
+		<view class="title">使用说明</view>
+		<view class="content">
+			<u-parse :content="content"></u-parse>
 		</view>
 	</view>
-
+	<view class="good-intro-box" v-if="exchangeRule&&exchangeRule!='<p><br></p>'">
+		<view class="title">兑换须知</view>
+		<view class="content">
+			<u-parse :content="exchangeRule"></u-parse>
+		</view>
+	</view>
+</view>
 </template>
-
 <script>
 	import uParse from '@/components/u-parse/u-parse.vue';
-	import {
-		escape2Html,
-		checkRichText
-	} from '@/utils/index.js'
+import {
+checkRichText,
+escape2Html
+} from '@/utils/index.js';
 	export default {
 		props: {
 			orderInfo: {
@@ -36,7 +32,6 @@
 		},
 		computed: {
 			content() {
-
 				let {
 					goods_instruction,
 					order_guide
@@ -52,7 +47,6 @@
 					} else {
 						return ''
 					}
-					// return escape2Html(goods_instruction||'')
 				}
 				return ''
 			},
@@ -61,9 +55,7 @@
 					goods_details
 				} = this.orderInfo
 				if (goods_details) {
-					// return escape2Html(goods_details||'')
 					let html = escape2Html(goods_details || '')
-					console.log(html)
 					let result = checkRichText(html)
 					if (result) {
 						return html
@@ -74,14 +66,6 @@
 				return ''
 			}
 		}
-		// methods: {
-		// 	escapeHtml(data){
-		// 		if(data){
-		// 			return escape2Html(data||'')
-		// 		}
-		// 		return '&amp;lt;p&amp;gt;'
-		// 	}
-		// }
 	}
 </script>
 

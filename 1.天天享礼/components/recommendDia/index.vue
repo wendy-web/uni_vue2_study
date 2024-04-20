@@ -54,7 +54,7 @@
             </view>
             <!-- 悬浮的倒计时 -->
             <view class="timer_fixed fl_ard" v-if="isShowRemainTime">
-                <view class="timer_fixed-left">{{ couponPrice }}</view>
+                <view class="timer_fixed-left">{{ max_coupon_money }}</view>
                 <view class="timer_fixed-right">
                     <van-count-down
                         @finish="countFinished"
@@ -193,11 +193,8 @@ export default {
             adUnitId: 'adunit-ea094960cd12b9c4'
         })
         interstitialAd.onLoad(() => interstitialAd.initFinish = true);
-        interstitialAd.onError((err) => {
-            console.log('插屏广告加载失败', err);
-        })
+        interstitialAd.onError((err) => { })
         interstitialAd.onClose(() => {
-            console.log('关闭插屏广告- 再执行事件', );
             this.$emit('close');
         })
     },
@@ -228,7 +225,7 @@ export default {
             this.openEmbeddedRequest(item);
         },
         async openEmbeddedRequest(item){
-            const { skuId, positionId, lx_type, goods_sign } = item;
+            const { skuId, positionId, lx_type, goods_sign, is_flow } = item;
             let apiRequest = '';
             const params = { positionId };
             if (lx_type == 3) {
@@ -241,6 +238,10 @@ export default {
             }
             const skuRes = await apiRequest(params);
             if (skuRes.code == 0) return this.$toast(skuRes.msg);
+            if (is_flow == 2) {
+                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}`);
+                return;
+            }
             const {
                 type_id,
                 jdShareLink,
@@ -307,7 +308,6 @@ export default {
             countDown && countDown.start();
         },
         async initShow(jdDate = null){
-            // console.log('jdDate', jdDate)
             this.isClickList = false;
             if(jdDate) {
                 this.jdDate = jdDate;
@@ -350,7 +350,6 @@ export default {
         },
         // 弹窗进入 初始化
         initGtData(data) {
-            // console.log('data', data)
             this.isClickList = false;
             this.pageNum = 1;
             this.goods = [];
@@ -391,7 +390,6 @@ export default {
             // if(!over) this.popupClose(); // 倒计时结束
             this.couponPrice = coupon && coupon[0];
             this.max_coupon_money = max_coupon_money;
-            // console.log('goods_lx_type', goods_lx_type)
             this.jdDate = {
                 id: group_id,
                 cid: group_cid,
@@ -420,7 +418,6 @@ export default {
                 lx_type,
                 positionId
             } = this.jdDate;
-            // console.log('lx_type:request', lx_type)
             let params = {
                 id,
                 page: this.pageNum,
@@ -563,12 +560,9 @@ export default {
         font-weight: 600;
         line-height: 96rpx;
         position: relative;
-        &::after {
-            content: '元';
-            font-size: 28rpx;
-        }
         .detail_num {
             position: relative;
+            white-space: nowrap;
             &::before {
                 content: '\3000';
                 background: url("https://file.y1b.cn/store/1-0/24119/65a9cd74bec29.png") 0 0 / cover;
@@ -576,7 +570,11 @@ export default {
                 height: 32rpx;
                 position: absolute;
                 top: 5rpx;
-                right: -74rpx;
+                right: -40rpx;
+            }
+            &::after {
+                content: '元';
+                font-size: 28rpx;
             }
         }
     }
@@ -668,8 +666,8 @@ export default {
     .good_name_box {
         margin: 20rpx 16rpx 0;
         font-size: 28rpx;
-        min-height: 84rpx;
-        color: #333333;
+        min-height: 80rpx;
+        color: #333;
     }
     .list_price{
         font-size: 24rpx;
@@ -763,39 +761,53 @@ export default {
 
     }
 }
-.timer_fixed{
+.timer_fixed {
     position: fixed;
     bottom: 146rpx;
     left: 32rpx;
     padding: 4rpx 0;
     z-index: 1;
-    &::before {
-        content: '\3000';
-        background: url("https://file.y1b.cn/store/1-0/23913/650152f7cac02.png") 0 0 / 100% 100%;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-    }
-    .timer_fixed-left{
+    border-radius: 20rpx;
+    height: 94rpx;
+    overflow: hidden;
+    .timer_fixed-left {
         font-size: 36rpx;
         font-weight: 600;
         color: #fff;
-        margin-right: 24rpx;
-        min-width: 88rpx;
+        padding: 0 12rpx;
         text-align: center;
+        height: 100%;
+        line-height: 94rpx;
+        background: #FFA244;
+        box-sizing: border-box;
+        margin-right: 20rpx;
+        position: relative;
         &::before {
             content: '￥';
             font-size: 24rpx;
         }
+        &::after {
+            content: '\3000';
+            background: url("https://test-file.y1b.cn/store/1-0/2424/65bf2fbb64d36.png") 0 0 / 100% 100%;
+            width: 21rpx;
+            height: 94rpx;
+            position: absolute;
+            top:0;
+            right: -20rpx;
+        }
     }
-    .timer_fixed-right{
+    .timer_fixed-right {
+        height: 100%;
+        background: #fff;
         font-size: 22rpx;
-        color: #666666;
+        color: #666;
         min-width: 112rpx;
-        padding-right: 12rpx;
+        padding: 0 24rpx 0 12rpx;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
     }
 }
 

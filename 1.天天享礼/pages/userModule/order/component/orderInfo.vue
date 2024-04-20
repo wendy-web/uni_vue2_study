@@ -65,33 +65,8 @@
 		"ZFBZF":'支付宝支付',
 		// 3:'银行卡支付',
 	}
-	import {debounce} from '@/utils/index.js';
-	import {modifyChargeAccount} from '@/api/modules/order.js';
+	import { modifyChargeAccount } from '@/api/modules/order.js';
 	export default {
-		// props:{
-		// 	orderInfo:{
-		// 		type:Object
-		// 	}
-		// },
-		// watch:{
-		// 	orderInfo:{
-		// 		handler(newVal, oldVal) {
-		// 			console.log("watch:",newVal)
-		// 			if(newVal){
-		// 				this.orderId = this.orderInfo.id;
-		// 				this.orderInfo.payType = payType[this.orderInfo.payment];
-		// 				console.log(this.orderInfo);
-		// 			}
-		// 		},
-		// 		immediate: true,
-		// 		deep: true
-		// 	}
-		// },
-		// computed:{
-		// 	payType(){
-		// 		return  payType[this.orderInfo.payment];
-		// 	}
-		// },
 		data() {
 			return {
 				inputBoxShow:false,
@@ -106,7 +81,7 @@
 			init(data){
 				this.orderInfo = data
 				this.orderId = data.id;
-				this.orderInfo.payType = payType[data.pay_way];
+				this.orderInfo.payType = payType[data.pay_way] || '微信支付';
 			},
 			copy(str){
 				uni.setClipboardData({
@@ -114,13 +89,10 @@
 					success: () => this.$toast('复制成功')
 				})
 			},
-			//显示输入框
+			// 显示输入框
 			showInput(){
 				this.inputBoxShow = true;
 				this.newAccount = this.orderInfo.charge_account;
-			},
-			// 修改充值账号
-			edit(){
 			},
 			confirmHandle(){
 				if(_request) return _request = true;
@@ -129,7 +101,7 @@
 					charge_account: this.newAccount
 				}
 				modifyChargeAccount(params).then(res=>{
-					let {code,msg} = res;
+					let { code, msg} = res;
 					if(code == 1){
 						this.inputBoxShow = false;
 						this.$emit('updateOrderInfo')
@@ -139,17 +111,13 @@
 						icon:'none',
 						title:msg
 					})
-				}).catch(err=>{
-					_request = false;
-				})
+				}).catch(err=>_request = false);
 			},
 			cancel(){
 				this.inputBoxShow = false;
 			},
-			goServerHandle(){
-				uni.navigateTo({
-					url:'/pages/tabAbout/service/service'
-				})
+			goServerHandle() {
+				this.$go('/pages/tabAbout/service/service');
 			}
 		}
 	}

@@ -171,7 +171,6 @@
 			this.deg = 360 / this.list.length;
 			this.index = this.list.length - 1
 			this.setStyle(this.index)
-			console.log(this.list, this.deg, this.index, this.list)
 		},
 		methods:{
 			startHandle(e){

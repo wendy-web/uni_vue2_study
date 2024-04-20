@@ -151,7 +151,7 @@ orderCreate,
 orderSure,
 } from '@/api/modules/takeawayMenu/kfc.js';
 import { msgTemplate } from '@/api/modules/takeawayMenu/luckin.js';
-import { getENV, getImgUrl } from '@/utils/auth.js';
+import { getImgUrl } from '@/utils/auth.js';
 import { isPhoneReg } from '@/utils/index.js';
 import { mapActions, mapGetters } from 'vuex';
 export default {
@@ -206,7 +206,6 @@ export default {
       paymentParams: null,
       items: null,
       savings: null,
-      isTest: getENV() == 'test', // 是否是测试环境
     }
   },
   computed: {
@@ -300,7 +299,7 @@ export default {
       const that = this;
       let path = "/pages/pay/pay";
       const { token, orderNo, orderParam, oid } = this.paymentParams;
-      let query = `?pageType=1&token=${token}&orderNo=${orderNo}&orderType=${orderParam}&isTest=${this.isTest}`;
+      let query = `?pageType=1&token=${token}&orderNo=${orderNo}&orderType=${orderParam}&isTest=false`;
       this.$openEmbeddedMiniProgram({
         appId:"wx8820200042415db1",
         path:`${path}${query}`,

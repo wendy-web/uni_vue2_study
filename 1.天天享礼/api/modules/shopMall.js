@@ -111,3 +111,28 @@ export function fromUrl() {
         method: 'post'
     });
 }
+
+export function giftCreate() {
+    return API.request({
+        url: '/api/index/giftCreate',
+        method: 'post'
+    });
+}
+
+// 奖品查看-跳转天天享礼调用
+export function drawPopover(data) {
+    return API.request({
+        url: '/api/whirligig/drawPopover',
+        method: 'post',
+        data
+    });
+}
+
+// 详情内容获取
+export function goodsDetails(data) {
+    return API.request({
+        url: '/api/pinduoduo/goodsDetails',
+        method: 'post',
+        data
+    });
+}

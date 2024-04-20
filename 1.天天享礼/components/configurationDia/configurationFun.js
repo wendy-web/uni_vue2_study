@@ -83,7 +83,6 @@ const serviceCredits = {
     watch: {
         diaList: {
             handler(newValue, oldValue) {
-                console.log('监听弹窗diaList', newValue);
                 if (newValue.length && newValue[0] == "config") {
                     this.isShowConfig = true;
                     this.delCurrentDiaList('config');
@@ -100,7 +99,6 @@ const serviceCredits = {
             }
         },
         isShowConfig(newValue, oldValue) {
-            // console.log('isShowConfig : 弹窗的监听newValue::', newValue, oldValue);
             // if (!newValue && oldValue) {
             //     this.delCurrentDiaList('config');
             // }
@@ -168,6 +166,7 @@ const serviceCredits = {
             // codeErrorId - 从彬纷有礼的扫码异常进入； losingNew： 新人未中奖
             this.codeErrorId && (pageNum = 9);
             this.losingNew && (pageNum = 11);
+            this.tradeIn && (pageNum = 13);
             const params = {
                 page: pageNum,
                 people_type: this.gift || 2,
@@ -179,9 +178,10 @@ const serviceCredits = {
             const { list, people_type, lightArr } = res.data;
             lightArr && this.setLightArr(lightArr);
             // 扫码异常/新人未中奖 - 进行的
-            if ((this.codeErrorId || this.losingNew) && !list.length) {
+            if ((this.codeErrorId || this.losingNew || this.tradeIn) && !list.length) {
                 this.codeErrorId = null;
                 this.losingNew = null;
+                this.tradeIn = null;
                 this.configurationInit();
             }
             if (this.lsite) this.lsite = null;
@@ -201,7 +201,6 @@ const serviceCredits = {
             this.showDia();
         },
         showDia() {
-            console.log('this.diaList', this.diaList)
             if (!this.showList.length) return;
             this.config = this.showList[0];
             let {
@@ -255,7 +254,6 @@ const serviceCredits = {
                     // 展示倒计时的弹窗
                     if (is_advertisement) {
                         this.interstitialAd.show().catch((err) => {
-                            // console.log(err);
                             this.requestPopoverRember()
                         });
                     } else {
@@ -281,7 +279,7 @@ const serviceCredits = {
                 ...item,
                 configDia: true,
                 is_popover: 1,
-                isCodeErrorShow: this.codeErrorId && isAuto, // 扫码异常展示推券的事件区分
+                isCodeErrorShow: (this.codeErrorId || this.tradeIn) && isAuto, // 扫码异常展示推券的事件区分
             });
             this.closeShowConfig(id || this.currentId, false);
         },
@@ -292,13 +290,14 @@ const serviceCredits = {
             // return;
             // 记录已点击的事件
             await popoverRember({ id: currentId });
-            if ((this.showList.length > 1 && nextDia) || this.codeErrorId || this.losingNew || this.psite) {
+            if ((this.showList.length > 1 && nextDia) || this.codeErrorId || this.losingNew || this.psite || this.tradeIn) {
                 if (this.codeErrorId && isCloseClick && this.config.image) {
                     this.$wxReportEvent("closetc");
                 }
                 this.codeErrorId = null;
                 this.losingNew = null;
                 this.psite = null;
+                this.tradeIn = null;
                 setTimeout(() => this.configurationInit(), 3000);
             }
         },

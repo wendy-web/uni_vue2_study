@@ -6,17 +6,15 @@
     :interval="2000"
     :duration="500"
     :circular="true"
-    v-if="isSwiper && good.lx_type == 2 && !(index%7)"
+    v-if="isSwiper && [2, 3].includes(good.lx_type) && !(index%7) && good.imageList"
   >
-    <swiper-item
-      class="good-img"
-      v-for="(item33, idx) in good.imageList"
-      :key="idx"
+    <swiper-item class="good-img"
+      v-for="(item, idx) in good.imageList" :key="idx"
     >
       <van-image
         width="352rpx"
         height="352rpx"
-        :src="item33.url"
+        :src="item.url || item"
         use-loading-slot
         class="banner_img"
         radius="8px 8px 0 0"
@@ -32,8 +30,7 @@
       radius="8px 8px 0 0"
       :src="good.image"
       use-loading-slot
-    >
-      <van-loading slot="loading" type="spinner" size="20" vertical />
+    ><van-loading slot="loading" type="spinner" size="20" vertical />
     </van-image>
   </view>
 </view>
@@ -59,9 +56,7 @@ export default {
     return {};
   },
   methods: {
-    sphError(err) {
-      console.log("视频号err：", err);
-    },
+    sphError(err) { },
   },
 };
 </script>

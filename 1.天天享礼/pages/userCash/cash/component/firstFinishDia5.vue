@@ -31,12 +31,11 @@
         <view class="cash_num-value">
           <view class="get_cash-active"></view>
           <p-countup
-            :num="parseFloat(profitMoney).toFixed(2)"
+            :num="parseFloat(enterArr.finally_profit_money).toFixed(2)"
             width="20" height='30' dotWidth="10"
             color="#58bf6a"
             fontSize="30"
             fontWeight="600"
-            :isSetTimeAutoNum="isSetTimeAutoNum"
             ></p-countup>
           </view>
         </view>
@@ -46,9 +45,9 @@
         ></image>
     </view>
     <view class="get_money-box">
-      <view class="cash_title"><text style="color: #feeaa1; margin-right: 10rpx;">{{ enterArr.profit_money || 0}}元</text> 现金领取成功！</view>
+      <view class="cash_title"><text style="color: #feeaa1; margin-right: 10rpx;">{{ enterArr.finally_profit_money || 0}}元</text> 现金领取成功！</view>
       <view class="cash_lab fl_center">我的现金</view>
-      <view class="cash_num">{{ enterArr.profit_money || 0 }}</view>
+      <view class="cash_num">{{ enterArr.finally_profit_money || 0 }}</view>
       <view class="cash_txt">已存入【我的】-【零钱】</view>
       <view class="pop_btn" @click="goToWithdrawHandle">前往查看</view>
       <view class="cash_bottom">退单将扣除现金奖励！</view>
@@ -57,8 +56,8 @@
 </van-popup>
 </template>
 <script>
-import pCountup from '@/components/p-countUp/countUp.vue';
 import cashMixin from '../static/cashMixin.js'; // 混入分享的混合方法
+import pCountup from './countUp.vue';
 export default {
   mixins: [cashMixin], // 使用mixin
   components: {
@@ -67,8 +66,7 @@ export default {
   data() {
     return {
       profitMoney: 0,
-      isShowCountUp: false,
-      isSetTimeAutoNum: 3000
+      isSetTimeAutoNum: 2000
     };
   },
   watch: {
@@ -76,9 +74,8 @@ export default {
       if(!newVal) return;
       this.profitMoney = 0;
       setTimeout(() => {
-        this.profitMoney = this.enterArr.profit_money;
-        setTimeout(() => this.isShowCountUp = true, this.isSetTimeAutoNum);
-      }, 1000);
+        this.profitMoney = this.enterArr.finally_profit_money;
+      }, 500);
     }
   },
   mounted() {
@@ -323,7 +320,7 @@ export default {
       animation: opacityAni .2s linear 1s forwards;
     }
   }
-  .ani_second{
+  .ani_second {
     opacity: 0;
     animation: OpenOpacityAni .2s linear 3.8s forwards;
   }

@@ -19,7 +19,7 @@
 
 <script>
 	import { popover } from '@/api/modules/configuration.js';
-    import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 	export default {
 		data() {
 			return {

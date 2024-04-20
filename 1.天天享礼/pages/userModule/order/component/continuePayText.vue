@@ -33,12 +33,11 @@
 </template>
 
 <script>
-	import {
-		cancelOrder,
-		pay,
-		query
-	} from '@/api/modules/order.js';
-	import Toast from '@/wxcomponents/vant_update/toast/toast.js';
+import {
+pay,
+query
+} from '@/api/modules/order.js';
+import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 	export default {
     props: {
       isShow: {
@@ -79,16 +78,12 @@
 	methods: {
 		onConfirm() {
 			this.$emit("confirm");
-			// this.toPay();
 		},
 		onClose() {
 			this.$emit("close");
 		},
 		toPay() {
-			console.log("pay");
-			let params = {
-				id: this.orderId
-			}
+			let params = { id: this.orderId };
 			if (!this.paymentParams) {
 				pay(params).then(res => {
 					let {
@@ -123,9 +118,7 @@
 				'timeStamp': obj.timeStamp,
 				success: (res) => {
 					// 支付成功，用order_id 查询结果
-					let params = {
-						id: this.pay_order_id
-					}
+					let params = { id: this.pay_order_id };
 					query(params).then(res => {
 						let {
 							code,
@@ -158,7 +151,6 @@
 					this.isDisabled = false
 					if (err.errMsg == 'requestPayment:fail cancel') {
 						// this.cancelPay();
-						console.log('再次取消');
 						this.$emit("againCancel");
 						return;
 					}

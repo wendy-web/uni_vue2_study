@@ -35,10 +35,12 @@
                 left: searchLeft + 'px'
             }"
         >
-            <image class="search_icon" src="../static/productList/search_icon01.png" mode="aspectFill"></image>
-            <view class="line"></view>
+            <block v-if="!searchValue">
+                <image class="search_icon" src="../static/productList/search_icon01.png" mode="aspectFill"></image>
+                <view class="line"></view>
+            </block>
             <view class="swiper_box" @click="toSearchHandle">
-                <view v-if="searchValue" style="color: #333">{{ searchValue }}</view>
+                <view v-if="searchValue" style="color: #333" class="txt_ov_ell1">{{ searchValue }}</view>
                 <!-- 无搜索的推荐文本轮播 -->
                 <swiper v-else-if="textList.length"
                     class="swiper"
@@ -121,8 +123,7 @@
                 :isShowBanner="true"
                 @notEnoughCredits="notEnoughCreditsHandle"
                 v-if="goods.length"
-            >
-            </good-list>
+            ></good-list>
             <block v-if="pddGoods.length">
                 <view class="list_lab" >以下优惠商品由拼多多提供</view>
                 <good-list
@@ -146,6 +147,7 @@
                 <image class="right-icon" :src="imgUrl + 'static/shopMall/love_right_icon.png'" mode="aspectFill"></image>
             </view>
             <good-list
+                v-if="recommendGoods.length"
                 :list="recommendGoods"
                 :isJdModel="true"
                 :isBolCredits="true"
@@ -242,7 +244,7 @@ export default {
             upOption: {
                 page: {
                     num : 0 ,
-                    size : 1,
+                    size : 3,
                     time : null
                 },
                 empty: {
@@ -355,12 +357,10 @@ export default {
         tabIndex(i) {
             if(this.disableScroll) {
 				this.disableScroll = false // 当disableScroll=true时,scroll-view的scrollTo会失效,需先开启,再置顶
-                this.$nextTick(()=>{
+                this.$nextTick(() => {
                     let mescroll = this.getMescroll(i)
                     mescroll && mescroll.scrollTo(0,0);
-                    setTimeout(() => { // 经测试android真机需延时300ms才能恢复禁止滚动,否则scrollTo有可能无效
-                        this.disableScroll = true
-                    },300)
+                    setTimeout(() => this.disableScroll = true, 300);
                 })
             }
         }
@@ -540,11 +540,13 @@ export default {
         },
         async searchPddList(params, page) {
             const res = await groupSearch(params).catch(()=>{ this.mescroll.endErr() });
-            let { list } = res.data;
+            let { list, total_count } = res.data;
             if(page.num == 1) this.pddGoods = [];
             this.searchPageNum += 1;
             this.pddGoods = this.pddGoods.concat(list);
-            this.mescroll.endSuccess(list.length);
+            this.mescroll.endBySize(list.length, total_count);
+            // this.mescroll.endUpScroll(true);
+            // if(!list.length) this.mescroll.showEmpty();
             // 搜索无结果
             if(!this.goods.length && !this.pddGoods.length) {
                 this.isEmpty = true;
@@ -602,7 +604,7 @@ export default {
                     params.size = 20;
                     break;
             };
-            queryApi(params).then(res=>{
+            queryApi(params).then(res => {
                 const {
                     list,
                     total_count
@@ -648,7 +650,7 @@ export default {
         },
         toSearchHandle() {
             if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
-            if(this.source == 'home') return this.$back();
+            if(this.source == 'home')return this.$leftBack();
             const pathUrl = '/pages/userModule/productList/search';
             const placeholderValue = this.textList.length ? this.textList[this.currentIndex] : '';
             if(this.searchValue) return this.$redirectTo(`${pathUrl}?inputValue=${encodeURIComponent(this.searchValue)}`);
@@ -685,6 +687,8 @@ page {
     background: rgba($color: #f7f7f7, $alpha: .8);
     border-radius: 32rpx 32rpx 0rpx 0rpx;
     overflow: hidden;
+    padding-bottom: constant(safe-area-inset-bottom); /* 兼容 IOS<11.2 */
+    padding-bottom: env(safe-area-inset-bottom); /* 兼容 IOS>11.2 */
 }
 .title_box{
     height: 100%;
@@ -746,6 +750,7 @@ page {
         height: 100%;
         flex: 1;
         line-height: 68rpx;
+        width: 0;
         .swiper_item{
             height: 100%;
         }

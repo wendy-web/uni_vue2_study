@@ -40,7 +40,7 @@
 		</view>
 		<view class="btn">去支付</view>
 	</view>
-	<view class="take" @click="jumpLinkHandle(item, 'home')">
+	<view class="take" @click="jumpLinkHandle(item, 'home')" v-if="Number(item.status)">
 		<view class="take_btn">再来一单</view>
 	</view>
 </view>
@@ -70,8 +70,8 @@ export default {
 		}
 	},
 	methods: {
-		formatPrice(price, type) {
-			if (!price) return;
+		formatPrice(price = 0, type) {
+			// if (!price) return;
 			price = Number(price / 100).toFixed(2);
 			let splitPrice = price.split(".");
 			let dom= '';

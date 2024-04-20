@@ -29,24 +29,26 @@ const shareMixin = {
         // 进入状态的监听
         enterPageStatus: {
             handler: function(newValue) {
-                console.log('enterPageStatus:进入状态的监听--------', newValue)
                 switch (newValue) {
                     case 1:
+                        this.$emit('closeElseDia');
                         this.isShowStatus1 = true;
                         this.isShowStatusAni = true;
                         setTimeout(() => {
                             this.isShowStatusAni = false;
-                            setTimeout(() => this.isShowStatus1 = false, 1000)
-                        }, 4500);
+                            setTimeout(() => this.isShowStatus1 = false, 1000);
+                        }, 7500);
                         break;
                     case 2:
                         break;
                     case 3:
+                        this.$emit('closeElseDia');
                         this.isShowStatus3 = true;
                         break;
                     case 4:
                         break;
                     case 5:
+                        this.$emit('closeElseDia');
                         this.isShowStatus5 = true;
                         break;
                     case 6:
@@ -86,6 +88,7 @@ const shareMixin = {
         // 倒计时结束
         countFinished() {},
         onChangeHandle(event) {
+            // return;
             let {
                 hours,
                 minutes,
@@ -93,9 +96,10 @@ const shareMixin = {
                 milliseconds,
                 days
             } = event.detail;
-            hours = hours < 10 ? '0' + hours : hours
-            minutes = minutes < 10 ? '0' + minutes : minutes
-            seconds = seconds < 10 ? '0' + seconds : seconds
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            days = days < 10 ? '0' + days : days;
             milliseconds = Math.floor(milliseconds / 10);
             this.timeData = {
                 hours,

@@ -103,15 +103,15 @@
 </template>
 
 <script>
-	import Toast from '@/wxcomponents/vant_update/toast/toast.js';
-	import continueDia from './continueDia.vue';
-	import { applyCoupon, buy } from '@/api/modules/user.js';
 	import { query } from '@/api/modules/order.js';
-	import { getImgUrl } from '@/utils/auth.js';
-	import {
-		escape2Html,
-		checkRichText
-	} from '@/utils/index.js'
+import { applyCoupon, buy } from '@/api/modules/user.js';
+import { getImgUrl } from '@/utils/auth.js';
+import {
+checkRichText,
+escape2Html
+} from '@/utils/index.js';
+import Toast from '@/wxcomponents/vant_update/toast/toast.js';
+import continueDia from './continueDia.vue';
 	let _request = false;
 	export default {
 		components: {
@@ -172,7 +172,6 @@
 			}
 		},
 		onLoad(options) {
-			console.log("页面传参：", options);
 			if (options.id) {
 				this.id = options.id;
 				this.init();
@@ -258,7 +257,6 @@
 					charge_account: this.account, //充值账号
 					goods_market_price: this.couponInfo.goods_market_price * 100 //商品价格
 				}
-				console.log("传参：", params);
 				if (!this.paymentParams) {
 					buy(params).then(res => {
 						let {
@@ -347,7 +345,7 @@
 							// 	},
 							// })
 							uni.navigateTo({
-								url: `/pages/userModule/order/payDetail?id=${this.order_id}&isPay=1&source=${this.source}`
+								url: `/pages/userModule/order/detail?id=${this.order_id}&isPay=1&source=${this.source}`
 							});
 							return
 

@@ -82,15 +82,15 @@
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import confirmDia from '../content/confirmDia.vue';
 import { location } from '@/api/modules/takeawayMenu/luckin.js';
 import { starbucksStore } from '@/api/modules/takeawayMenu/starbucks.js';
-import getViewPort from '@/utils/getViewPort.js';
-import { mapGetters, mapMutations } from 'vuex';
-import { formatDistance } from '@/utils/index.js';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getImgUrl } from '@/utils/auth.js';
 import { getUserLocation } from '@/utils/getUserLocation.js';
+import getViewPort from '@/utils/getViewPort.js';
+import { formatDistance } from '@/utils/index.js';
+import { mapGetters, mapMutations } from 'vuex';
+import confirmDia from '../content/confirmDia.vue';
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {
@@ -161,14 +161,7 @@ export default {
       }),
       handleTouchInput() {
         if (wx.requirePrivacyAuthorize) {
-          wx.requirePrivacyAuthorize({
-            success: res => {
-              console.log('用户同意了隐私协议 或 无需用户同意隐私协议')
-            },
-            fail: res => {
-              console.log('用户拒绝了隐私协议')
-            }
-          })
+          wx.requirePrivacyAuthorize();
         }
       },
       inputValueChange({ detail }) {

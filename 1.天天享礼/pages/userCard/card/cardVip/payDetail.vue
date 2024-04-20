@@ -138,7 +138,6 @@ export default {
         },
         onPageScroll(event) {
             const scrollTop = Math.ceil(event.scrollTop);
-            // console.log('scrollTop :>> ', scrollTop);
             if(scrollTop >= this.navHeight) {
                 this.isShowNavBerColor = true;
                 return;

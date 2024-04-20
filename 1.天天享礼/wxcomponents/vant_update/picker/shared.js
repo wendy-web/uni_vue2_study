@@ -18,4 +18,8 @@ export const pickerProps = {
         type: Number,
         value: 44,
     },
+    backgroundColor: {
+        type: String,
+        value: '#fff'
+    }
 };

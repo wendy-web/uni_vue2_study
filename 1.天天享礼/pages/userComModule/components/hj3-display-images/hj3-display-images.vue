@@ -100,7 +100,6 @@
 		methods: {
 			tranHandle(index) {
 				return;
-				console.log('index:::', index)
 				let old = this.current
 				this.current = index;
 				let c = (index - old) * this.de
@@ -134,11 +133,9 @@
 					let index = (this.current - c) % 8;
 					this.current = index > 0 ? index : (8 + index)
 					this.ss = this.start + c * this.de;
-					console.log('this.ss', this.ss, this.de);
 					const endTans = -Math.ceil(this.ss / this.de);
 					let leIndex = endTans % this.imagesList.length;
 					leIndex = (leIndex >= 0) ? leIndex : (leIndex + this.imagesList.length);
-					console.log('endTans', endTans, leIndex )
 					this.start = null;
 				}
 			},
@@ -158,7 +155,6 @@
 						this.autoPlayHandle();
 					} else {
 						this.deDiffValue = this.de + (this.ss % this.de) - 4;
-						// console.log('this.diffValue', this.diffValue)
 						this.endPlayHandle();
 						return;
 						this.ss -= deDiff;

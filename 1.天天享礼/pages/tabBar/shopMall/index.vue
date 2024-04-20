@@ -155,6 +155,32 @@
     ></returnCashDia>
     <!-- 红包返现 -->
     <cashBackDia ref="cashBackDiaRef" @close="closeCashBackDiaHandle"></cashBackDia>
+    <!-- 赠送牛金豆 -->
+		<task-complete ref="taskComplete" :countDownNum="countDownNum" @startAnim="showCowpeaAnim" />
+
+    <!-- 动画抽奖的弹窗-->
+    <van-popup
+      :show="isShowDrawPopoverDia"
+      custom-style="background-color: transparent;overflow:visible;"
+      :z-index="100"
+      :catchtouchmove="true"
+      @close="drawPopoverCloseHandle"
+    >
+      <view class="draw_cont dia_cont ani_active">
+        <image class="draw_close" mode="scaleToFill"
+          src="https://test-file.y1b.cn/store/1-0/24314/65f2ac09a0204.png"
+          @click="drawPopoverCloseHandle"
+        ></image>
+        <van-image
+          width="262rpx" height="304rpx"
+          fit="widthFix" use-loading-slot class="draw_image"
+          :src="drawPopoverData.image"
+        ><van-loading slot="loading" type="spinner" size="20" vertical />
+        </van-image>
+        <view class="draw_title">{{ drawPopoverData.name }}</view>
+        <view class="draw_btn" @click="getDrawPopoverHandle"></view>
+      </view>
+    </van-popup>
 </view>
 </template>
 <script>
@@ -163,8 +189,9 @@ goodsQuery,
 jingfen,
 keywordList,
 material,
+overDo
 } from "@/api/modules/jsShop.js";
-import { bfxlPopup, couponGroup, couponList } from "@/api/modules/shopMall.js";
+import { bfxlPopup, couponGroup, couponList, drawPopover, giftCreate } from "@/api/modules/shopMall.js";
 import awardDia from "@/components/configurationDia/awardDia.vue";
 import configurationFun from "@/components/configurationDia/configurationFun.js";
 import configurationDia from "@/components/configurationDia/index.vue";
@@ -174,6 +201,7 @@ import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
 import serviceCredits from "@/components/serviceCredits/index.vue";
 import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
 import swiperSearch from "@/components/swiperSearch.vue";
+import taskComplete from '@/components/taskComplete.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import getViewPort from "@/utils/getViewPort.js";
 import anNoticeBarShow from "./content/anNoticeBarShow.vue";
@@ -217,7 +245,8 @@ export default {
     swiperSearch,
     myBeans,
     returnCashDia,
-    cashBackDia
+    cashBackDia,
+    taskComplete,
   },
   data() {
     return {
@@ -252,6 +281,7 @@ export default {
       textList: [], // 搜索的提示文字
       currentIndex: 0,
       codeErrorId: 0,
+      tradeIn: 0,
       isShowStatus: true, // 是否展示tab的导航栏
       isFirstHidden: false,
       groupRecommendData: null,
@@ -263,6 +293,13 @@ export default {
       is_lx_type: 1,
       psite: 0,
       lsite: 0,
+      giftRewardId: 0,
+      countDownNum: -1,
+      giftRewardInter: null,
+      taskCompleteData: null,
+      gameAnimationId: 0,
+      drawPopoverData: null, // 中奖
+      isShowDrawPopoverDia: false
     };
   },
   watch: {
@@ -285,14 +322,15 @@ export default {
       if (newValue.length && newValue[0] == "award") {
         this.isShowAwardDia = true;
       }
+      if (newValue.length && newValue[0] == "giftReward") {
+        this.showTaskComplete();
+      }
+      if (newValue.length && newValue[0] == "drawPopover") {
+        this.isShowDrawPopoverDia = true;
+      }
     },
     isShowSticky(newVal, oldValue) {
-      if (newVal) {
-        // this.isAutoLogin && this.$refs.anNoticeImgShow.popupShow();
-        this.$refs.anNoticeBarShow.init();
-        return;
-      }
-      // this.$refs.anNoticeImgShow.popupClose();
+      if (newVal) return this.$refs.anNoticeBarShow.init();
       this.$refs.anNoticeBarShow.close();
     }
   },
@@ -368,9 +406,9 @@ export default {
     }
   },
   async onLoad(options) {
-    //初始化话窗口参数
+    // 初始化话窗口参数
     this.handleOptions(options);
-    /*初始化激励视频*/
+    /* 初始化激励视频 */
     this.initRewardedVideoAd();
     const res = await keywordList();
     if (res.code == 1 && res.data) {
@@ -394,6 +432,7 @@ export default {
     if (this.$refs.anNoticeImgShow) this.$refs.anNoticeImgShow.init() // 渲染的初始化
   },
   onHide() {
+    this.setShowLightHandle();
     this.$refs.anNoticeBarShow.clearNoticeTime();
     const type = getDiaType();
     if (type == "award") {
@@ -428,7 +467,8 @@ export default {
     },
     setShowLightHandle() {
       // 设置展示高亮的存储
-      if(this.skuId && !this.isAlreadyShowLight) {
+      if(this.skuId) {
+        this.skuId = null;
         this.setAlreadyShowLight();
       }
     },
@@ -512,7 +552,7 @@ export default {
     /*下拉刷新的回调 */
     downCallback() {
       this.isScrollTo = false;
-      this.getUserInfo(); //获取用户信息
+      (!this.giftRewardId) && this.getUserInfo(); //获取用户信息
       // 各种初始化
       // if (this.$refs.anNoticeImgShow) this.$refs.anNoticeImgShow.init() // 渲染的初始化
       if (this.$refs.goldenBean) this.$refs.goldenBean.init(); // 牛金豆
@@ -576,6 +616,7 @@ export default {
           if (!curTab.goods) curTab.goods = [];
           curTab.goods = curTab.goods.concat(list); //追加新数据
           this.tabs[this.tabIndex] = curTab;
+          if(!this._index && this.pageNem == 1) overDo();
           this.pageNem += 1;
           //   首项的添加
           if (this.tabIndex == 0) {
@@ -704,24 +745,30 @@ export default {
         }
       }).catch(() => this.mescroll.endErr());
     },
-    showCowpeaAnim() {
+    showCowpeaAnim(isUpdate = false) {
       const creditsDom = this.$refs.goldenBean.getCreditsDom();
-      if (creditsDom) {
+      if (creditsDom && !this.userInfo.is_vip) {
         const { width, height, left, top } = creditsDom;
         this.$refs.cowpeaAnim.show({
           left: left + width / 2,
           top: top + height / 2,
         });
+      } else if(isUpdate) {
+        this.getUserInfo();
+        // this.delCurrentDiaList("giftReward");
+        this.closeGiftRewardHandle();
       }
     },
     // 关闭新人的弹窗
     getHandle() {
       this.showCowpeaAnim();
+      this.delCurrentDiaList("giftReward");
     },
     // 新人播放的弹窗
     updateData() {
       this.showDia(); // 混合模式展示弹窗
       this.getUserInfo(); // 获取用户信息
+      if(this.giftRewardId) this.closeGiftRewardHandle();
     },
     changeTabIndexHandle(index) {
       this.isScrollTo = true;
@@ -779,19 +826,33 @@ export default {
       awardId,
       recommendId,
       codeErrorId,
+      tradeIn,
       losingNew,
       skuId,
       specialUrl,
       psite,
-      lsite
+      lsite,
+      giftRewardId,
+      gameAnimationId
     }) {
       this.awardId = awardId; // 彬纷进入 - 抽奖
       this.recommendId = recommendId; // 彬纷进入 - 半屏推券
       this.codeErrorId = codeErrorId; // 彬纷进入 - 扫码异常
+      this.tradeIn = tradeIn; // 彬纷进入 - 换购详情配置图片弹窗
       this.losingNew = losingNew; // 彬纷进入 - 新人扫码未中奖
       this.skuId = skuId;
+      this.skuId && this.setAlreadyShowLight(false);
       this.psite = psite; // 全局配置弹窗
       this.lsite = lsite;
+      this.giftRewardId = giftRewardId;
+      this.gameAnimationId = gameAnimationId; // 旋转木马进入
+      if(this.gameAnimationId) {
+        this.initDrawPopover();
+      }
+      if(this.giftRewardId) {
+        this.getUserInfo();
+        this.initGiftReward();
+      }
       if (this.awardId) {
         this.initAward();
         setDiaType("award");
@@ -822,6 +883,79 @@ export default {
         ...item,
         interval_time: item.type_sid
       });
+    },
+    async initGiftReward() {
+      const res = await giftCreate();
+      if (res.code != 1 || !res.data) {
+        this.awardId = null;
+        this.configurationInit();
+        return this.delCurrentDiaList("giftReward");
+      };
+      this.taskCompleteData = res.data;
+      this.setDiaList("giftReward");
+      if (this.diaList.length) return;
+      this.showTaskComplete();
+    },
+     async initDrawPopover() {
+      const res = await drawPopover({ id: this.gameAnimationId });
+      if (res.code != 1 || !res.data) {
+        this.gameAnimationId = null;
+        this.configurationInit();
+        return this.delCurrentDiaList("drawPopover");
+      };
+      this.drawPopoverData = res.data;
+      this.setDiaList("drawPopover");
+      if (this.diaList.length) return;
+      // this.showTaskComplete();
+      this.isShowDrawPopoverDia = true;
+
+    },
+    drawPopoverCloseHandle() {
+      this.isShowDrawPopoverDia = false;
+      this.delCurrentDiaList("drawPopover");
+    },
+    getDrawPopoverHandle(config) {
+      this.isShowDrawPopoverDia = false;
+      // 跳转类型jump_type 0：自己小程序页面；1：半屏小程序；2：webview页面
+      const { jump_type, link_url, type_id } = this.drawPopoverData;
+      switch(jump_type) {
+        case 0:
+          this.$go(link_url);
+          break;
+        case 1:
+          this.$openEmbeddedMiniProgram({
+            appId: type_id,
+            path: link_url
+          });
+          break;
+        case 2:
+          this.$go(`/pages/webview/webview?link=${encodeURIComponent(link)}`);
+          break;
+      }
+      setTimeout(() => {
+        this.delCurrentDiaList("drawPopover");
+      }, 1000);
+    },
+    showTaskComplete() {
+      this.$refs.taskComplete.show({
+				reward: this.taskCompleteData,
+        isUpdate: true
+			});
+      this.countDownNum = 5;
+      this.giftRewardInter = setInterval(() => {
+        this.countDownNum -= 1;
+        if(this.countDownNum <= 1) {
+          this.$refs.taskComplete.close();
+          clearInterval(this.giftRewardInter);
+          this.giftRewardInter = null;
+        }
+      }, 1000);
+    },
+    closeGiftRewardHandle() {
+      this.giftRewardId = null;
+      this.delCurrentDiaList("giftReward");
+      clearInterval(this.giftRewardInter);
+      this.giftRewardInter = null;
     },
     async initAward() {
       const res = await bfxlPopup({ platform: this.platform });
@@ -1081,6 +1215,62 @@ page {
       z-index: 0;
       background: rgba($color: #000, $alpha: 0.75);
       border-radius: 0;
+    }
+  }
+}
+
+.draw_cont{
+  position: relative;
+  width: 750rpx;
+  height: 764rpx;
+  z-index: 0;
+  padding-top: 208rpx;
+  box-sizing: border-box;
+  &::before {
+      content: '\3000';
+      background: url("https://test-file.y1b.cn/store/1-0/24314/65f2abcd99a51.png") 0 0 / 100% 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+  }
+  .draw_close {
+    width: 48rpx;
+    height: 48rpx;
+    position: absolute;
+    top: -88rpx;
+    right: 48rpx;
+  }
+  .draw_image{
+    width: 262rpx;
+    height: 304rpx;
+    display: block;
+    margin: 0 auto;
+  }
+  .draw_title {
+    text-align: center;
+    margin: 34rpx auto 0;
+    font-size: 32rpx;
+    color: #fffbec;
+    font-weight: bold;
+  }
+  .draw_btn{
+    width: 382rpx;
+    height: 122rpx;
+    position: relative;
+    z-index: 0;
+    margin: 48rpx auto 0;
+    &::before {
+      content: '\3000';
+      background: url("https://test-file.y1b.cn/store/1-0/24314/65f2ae30ca09b.png") 0 0 / 100% 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
     }
   }
 }

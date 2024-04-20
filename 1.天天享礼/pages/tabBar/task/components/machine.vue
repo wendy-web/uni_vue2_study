@@ -52,15 +52,15 @@
 </template>
 
 <script>
-	import anNoticeBar from '@/components/serviceCredits/an-notice-bar.vue';
 	import {
-		lotteryOption,
-		lottery,
-		lotteryToday,
-		showWinningInfo
-	} from '@/api/modules/index.js';
-    import { mapGetters } from 'vuex';
-	import { getImgUrl} from '@/utils/auth.js';
+lottery,
+lotteryOption,
+lotteryToday,
+showWinningInfo
+} from '@/api/modules/index.js';
+import anNoticeBar from '@/components/serviceCredits/an-notice-bar.vue';
+import { getImgUrl } from '@/utils/auth.js';
+import { mapGetters } from 'vuex';
 	let speed = 100;
 	let myset = null;
 	let times = 0; // 轮循的次数
@@ -202,7 +202,6 @@
 					type: 1
 				}).then(res => {
 					speed = 100;
-					console.log(res, "----")
 					if (res.code == 1) {
 						// 取任务配置：reward.cost
 						this.$emit('deductBeans', this.taskReward.cost);
@@ -245,8 +244,6 @@
 				this.selectIndex = pathArr[pathArr.length - times]
 
 				times--;
-
-				console.log(this.selectIndex, times, speed)
 
 				if (times >= startTimes) { // 开始阶段，speed 加速，减少值
 					speed -= 1;
@@ -336,7 +333,6 @@
 			},
 			// 更新今日收益
 			updateTodayEarned() {
-				console.log("更新今日收益");
 				// 今日收益
 				lotteryToday().then(res => {
 					if (res.code == 1) {

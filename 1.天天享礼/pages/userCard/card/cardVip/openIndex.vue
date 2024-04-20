@@ -152,14 +152,12 @@ export default {
                 'signType': obj.signType,
                 'timeStamp': obj.timeStamp,
 				success: (res) => {
-                    console.log('支付成功', res)
                     this.$toast('开通省钱卡');
                     this.getUserInfo();
                     this.$redirectTo('/pages/userCard/card/cardVip/index?isOpenVip=true');
                     // this.$topCallBack();
                 },
 				fail: (err) => {
-                    console.log('支付失败', err)
                 }
             });
         }

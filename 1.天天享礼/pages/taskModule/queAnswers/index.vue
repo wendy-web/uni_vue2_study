@@ -136,13 +136,13 @@
 
 <script>
 	import {
-		quiz,
-		quizAnswer,
-		revealTimes,
-		quizReveal
-	} from '@/api/modules/index.js';
-	import RewardedVideoAd from '@/utils/rewardVideoAd.js';
-	import {getImgUrl} from '@/utils/auth.js';
+quiz,
+quizAnswer,
+quizReveal,
+revealTimes
+} from '@/api/modules/index.js';
+import { getImgUrl } from '@/utils/auth.js';
+import RewardedVideoAd from '@/utils/rewardVideoAd.js';
 	//总题数
 	let _topicList = [];
 	//已答題記錄
@@ -284,7 +284,6 @@
 				})
 			},
 			lookResult() {
-				console.log('this.rightNum=', this.rightNum)
 				this.isLookResult = true
 
 			},

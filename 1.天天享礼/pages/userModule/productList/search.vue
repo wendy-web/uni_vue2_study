@@ -10,7 +10,9 @@
     :fixedNum="9"
 >
     <view class="search_box" slot="title">
-        <image class="search_icon" src="../static/productList/search_icon01.png" mode="aspectFill"></image>
+        <image src="../static/productList/search_icon01.png"
+        mode="aspectFill" class="search_icon"
+        v-if="!focusValue && !inputValue"></image>
         <van-field
             :value="inputValue"
             :placeholder="placeholderValue || '搜你想买的'"
@@ -29,12 +31,9 @@
     :style="{height: mescrollHeight}"
     scroll-y="true"
     class="keyword_box"
-    v-if="keywordList.length"
->
+    v-if="keywordList.length">
     <view class="keyword_item"
-        v-for="(item, index) in keywordList"
-        :key="index"
-    >
+        v-for="(item, index) in keywordList" :key="index">
         <view v-html="brightenKeyword(item.key)" @click="searchBtnHandle(item.key)"></view>
     </view>
 </scroll-view>
@@ -51,7 +50,7 @@
     @up="upCallback"
     :up="upOption"
 >
-    <view class="search_lab">搜京东商品，领隐藏优惠</view>
+    <view class="search_lab">搜京东优惠，比官方更便宜</view>
     <!-- search的关键字 -->
     <view class="search_cont" v-if="searList.length">
         <view class="sear_his">搜索历史</view>
@@ -106,21 +105,16 @@
 
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import meTabs from './content/me-tabs.vue';
-import goodList from '@/components/goodList.vue';
-import { getImgUrl } from '@/utils/auth.js';
-import getViewPort from '@/utils/getViewPort.js';
-import { material, jingfen, goodsQuery } from '@/api/modules/jsShop.js';
 import { groupRecommend } from '@/api/modules/index.js';
+import { delHistory, goodsQuery, jdHistory, jingfen, keyword, material } from '@/api/modules/jsShop.js';
+import goodList from '@/components/goodList.vue';
 import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
 import serviceCredits from '@/components/serviceCredits/index.vue';
 import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js';
-import {
-    jdHistory,
-    delHistory,
-    keyword
-} from '@/api/modules/jsShop.js';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { getImgUrl } from '@/utils/auth.js';
+import getViewPort from '@/utils/getViewPort.js';
+import meTabs from './content/me-tabs.vue';
 export default {
     mixins: [MescrollMixin, serviceCreditsFun], // 使用mixin
     components: {
@@ -323,14 +317,14 @@ export default {
             }
             return wordsArray;
         },
-        //将文字标红
+        // 将文字标红
         brightenKeyword(contentText) {
             let wordsArray = this.getRedWords(contentText);
             let res = contentText;
             for(let word of wordsArray){
                 let Reg = new RegExp(`(${word})(?![^<]*>|[^<>]*<\/)`, 'g');
+                if(word == '.') Reg = /(\.)(?![^<]*>|[^<>]*<\/)/g;
                 res = res.replace(Reg, `<span style="color: red;">${word}</span>`);
-                console.log('res', res)
             }
             return res;
         },
@@ -388,11 +382,11 @@ page {
     height: 68rpx;
     background: #fff;
     border-radius: 38rpx;
-    padding: 0 2rpx 0 45rpx;
+    padding: 0 2rpx;
     display: flex;
     align-items: center;
     font-size: 26rpx;
-    color: #999999;
+    color: #999;
     position: relative;
     border: 3rpx solid #f04138;
     box-sizing: border-box;
@@ -401,8 +395,7 @@ page {
         width: 28rpx;
         height: 28rpx;
         flex: 0 0 28rpx;
-        position: absolute;
-        left: 32rpx;
+        margin-left: 24rpx;
     }
     .search_btn{
         width: 120rpx;

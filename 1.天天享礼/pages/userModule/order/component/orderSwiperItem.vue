@@ -13,6 +13,7 @@
 		:list="list"
 		@updateOrderInfo="downCallback"
 		@showTakeCode="(item) => this.$emit('showTakeCode', item)"
+		@againPhone="() => this.$emit('againPhone')"
 	>
 	</orderListItem>
 	<!-- 列表为空时呈现 -->
@@ -35,19 +36,19 @@
 </template>
 
 <script>
-	import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-	import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mixins/mescroll-more-item.js";
-	import orderListItem from './orderListItem.vue'
-	import { getImgUrl } from '@/utils/auth.js';
-	import goodList from '@/components/goodList.vue';
-	import { orderList as orderListApi } from '@/api/modules/order.js';
 	import { groupRecommend } from '@/api/modules/index.js';
-	import {
-		material,
-		jingfen,
-		goodsQuery
-	} from '@/api/modules/jsShop.js';
-	import { orderStatus } from '../static/config';
+import {
+goodsQuery,
+jingfen,
+material
+} from '@/api/modules/jsShop.js';
+import { orderList as orderListApi } from '@/api/modules/order.js';
+import goodList from '@/components/goodList.vue';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mixins/mescroll-more-item.js";
+import { getImgUrl } from '@/utils/auth.js';
+import { orderStatus } from '../static/config';
+import orderListItem from './orderListItem.vue';
 	let _times = {}
 	export default {
 		mixins: [MescrollMixin, MescrollMoreItemMixin], // 注意此处还需使用MescrollMoreItemMixin (必须写在MescrollMixin后面)
@@ -249,12 +250,15 @@
 					if (item.card_status == 2) {
 						item.order_status_name = '已过期'
 					}
+					if(item.pay_way == 'order') {
+						if (item.status == 2) item.order_status_name = '待使用';
+						if ([3, 4].includes(item.status)) item.order_status_name = '已使用';
+					}
 					if (curTab < 2 && item.status == 0) {
 						// 后台接口使用过期时间
 						let expire_time = new Date(item.expire_time.replace(new RegExp(/-/gm), '/')).getTime();
-						// item.expire_date = parseTime(item.expire_time,"{y}-{m}-{d} {h}:{i}:{s}")
 						item.remainTime = expire_time - cur_time;
-						item.isRequest = false; //是否在请求中
+						item.isRequest = false; // 是否在请求中
 						item.open = item.remainTime > 0;
 						if (item.open) {
 							count++;

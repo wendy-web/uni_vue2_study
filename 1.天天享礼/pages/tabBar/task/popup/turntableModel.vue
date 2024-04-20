@@ -74,12 +74,6 @@
 			},
 			popupConfirm() {
 				if (this.config.type == 2) {
-					// uni.navigateTo({
-					// 	url: `/pages/userModule/serviceRecharge/index?id=${this.config.coupon_id}`
-					// });
-					// uni.navigateTo({
-					// 	url: `/pages/shopMallModule/couponDetails/index?id=${this.config.coupon_id}&applyCouponId=${this.config.coupon_log_id}&isGetWxMsgId=true`
-					// });
 					uni.navigateTo({
 						url: `/pages/userModule/myCoupon/index?applyCouponId=${this.config.coupon_log_id}`
 					});

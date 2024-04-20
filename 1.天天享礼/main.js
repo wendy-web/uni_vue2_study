@@ -1,10 +1,10 @@
+import '@/static/css/common.scss';
+import '@/utils/method/index';
+import '@/utils/mixin/index';
+import { router } from '@/utils/router';
 import Vue from 'vue';
 import App from './App';
 import store from './store';
-import { router } from '@/utils/router';
-import '@/utils/method/index';
-import '@/utils/mixin/index';
-import '@/static/css/common.scss';
 // import Mock from './mock'; // mock数据的重定向使用
 
 import xhNavbar from '@/components/xhNavbar/xh-navbar.vue';
@@ -28,9 +28,7 @@ App.mpType = 'app';
 
 Vue.prototype.$store = store;
 Vue.prototype.$router = router;
-Vue.prototype.getHandle = function() {
-    console.log('main :>> ');
-}
+Vue.prototype.getHandle = function() {}
 
 const app = new Vue({
     ...App

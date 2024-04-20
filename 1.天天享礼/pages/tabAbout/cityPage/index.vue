@@ -35,11 +35,11 @@
 </view>
 </template>
 <script>
-import SwitchCityList from './SwitchCityList.vue';
-import { cityQuery, cities } from '@/api/modules/takeawayMenu/index.js';
+import { cities, cityQuery } from '@/api/modules/takeawayMenu/index.js';
 import { location } from '@/api/modules/takeawayMenu/luckin.js';
 import { getUserLocation } from '@/utils/getUserLocation.js';
 import { mapGetters, mapMutations } from 'vuex';
+import SwitchCityList from './SwitchCityList.vue';
   export default {
     components: {
       SwitchCityList
@@ -83,14 +83,7 @@ import { mapGetters, mapMutations } from 'vuex';
       }),
       handleTouchInput() {
         if (wx.requirePrivacyAuthorize) {
-          wx.requirePrivacyAuthorize({
-            success: res => {
-              console.log('用户同意了隐私协议 或 无需用户同意隐私协议')
-            },
-            fail: res => {
-              console.log('用户拒绝了隐私协议')
-            }
-          })
+          wx.requirePrivacyAuthorize()
         }
       },
       // 更新定位

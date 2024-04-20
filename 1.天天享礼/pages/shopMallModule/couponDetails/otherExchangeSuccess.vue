@@ -78,23 +78,19 @@
 				} = this.config
 
 				switch (voucherType) {
-					//公众号
+					// 公众号
 					case 2:
 						let link = is_main === 1 ? article_url : main_url
 						uni.navigateTo({
 							url: `/pages/webview/webview?link=${encodeURIComponent(link)}`
 						})
 						break
-						//视频号
+						// 视频号
 					case 3:
 						if (wx.openChannelsActivity) {
 							wx.openChannelsActivity({
 								finderUserName: video_id,
 								feedId: video_account_id,
-
-								complete(res) {
-									console.log(res)
-								}
 							})
 						} else {
 							wx.showModal({
@@ -104,15 +100,12 @@
 							})
 						}
 						break
-						//小程序
+						// 小程序
 					case 4:
 						wx.navigateToMiniProgram({
 							appId: type_id,
 							path: type_sid,
 							// envVersion: 'trial',
-							success(res) {
-								// 打开成功
-							}
 						})
 						break
 				}

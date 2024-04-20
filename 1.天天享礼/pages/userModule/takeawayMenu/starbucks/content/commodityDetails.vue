@@ -97,8 +97,8 @@
 
 <script>
 import { orderCar } from '@/api/modules/takeawayMenu/kfc.js';
-import { mapActions, mapGetters } from 'vuex';
 import { getImgUrl } from '@/utils/auth.js';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   props: {
     isShowBuyBtn: {
@@ -161,7 +161,6 @@ export default {
     isCatchtouchmove() {
         let isScroll = this.optionalList.length>=4;
         const findItem = this.optionalList.findIndex(res => res.list.length > 3);
-        // console.log('findItem', findItem);
         if(this.optionalList.length==3 && findItem >= 0){
             isScroll = true;
         }
@@ -264,7 +263,6 @@ export default {
         currentObj[tag] = list[selectIndex].cupSize
       })
       let products = [currentObj];
-      console.log('currentObj', currentObj)
       this.$emit('imBuy', products);
       this.isShow = false;
     },
@@ -309,7 +307,6 @@ export default {
       });
     },
     scrollHandle(event) {
-        // console.log('event', event.detail)
         const { scrollTop, scrollHeight } = event.detail;
         this.scroll_top = scrollTop;
         this.scroll_height = scrollHeight;

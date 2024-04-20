@@ -233,6 +233,16 @@ export function isPhoneReg(num) {
     }
     return true;
 }
+// 校验姓名
+export function checkName(name) {
+    const reg = /^(?!.*?[\u3000-\u303F\u4DC0-\u4DFF\u2800-\u28FF\u3200-\u32FF\u3300-\u33FF\u2700-\u27BF\u2600-\u26FF\uFE10-\uFE1F\uFE30-\uFE4F])[\u4e00-\u9fbb\u2E80-\uFE4F.·]+$/;
+
+    if (!reg.test(name)) {
+        return false;
+    }
+
+    return true;
+}
 //判断是否为空对象
 export function hasNoEmptyObject(o) {
     if (typeof o === 'object' && Object.keys(o).length > 0) {
@@ -249,7 +259,6 @@ export function logPagePerformance() {
         entries.forEach(entry => {
             result[entry.name] = entry
         });
-        console.log(result)
     });
     observer.observe({ entryTypes: ['navigation', 'render', 'script'] });
 }

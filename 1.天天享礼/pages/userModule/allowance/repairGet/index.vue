@@ -98,16 +98,16 @@
 </template>
 
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import getViewPort from '@/utils/getViewPort.js';
-import { getImgUrl } from '@/utils/auth.js';
 import { leakList } from '@/api/modules/allowance.js';
-import confirmDia from './confirmDia.vue';
-import { parseTime } from '@/utils/index.js';
 import { bysubunionid } from '@/api/modules/jsShop.js';
 import { goodsPromotion } from '@/api/modules/pddShop.js';
-import { mapGetters, mapMutations } from 'vuex';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { getImgUrl } from '@/utils/auth.js';
+import getViewPort from '@/utils/getViewPort.js';
+import { parseTime } from '@/utils/index.js';
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import { mapGetters, mapMutations } from 'vuex';
+import confirmDia from './confirmDia.vue';
 export default {
   mixins: [MescrollMixin, shareMixin], // 使用mixin
   components: {
@@ -181,7 +181,8 @@ export default {
             appid,
             path,
             positionId,
-            has_coupon
+            has_coupon,
+            is_flow
         } = item;
         // 3乐刷 2京东 4拼多多 5: 深爱购
         if(lx_type == 3) return this.$go(`/pages/userModule/allowance/repairGet/detail?goods_id=${id}`);
@@ -207,6 +208,10 @@ export default {
         }
         const skuRes = await api(params);
         if (skuRes.code == 0) return this.$toast(skuRes.msg);
+        if (is_flow == 2) {
+          this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&isSearch=true`);
+          return;
+        }
         const { type_id, jdShareLink, mobile_url } = skuRes.data;
         this.setMiniProgram(lx_type);
         this.$openEmbeddedMiniProgram({

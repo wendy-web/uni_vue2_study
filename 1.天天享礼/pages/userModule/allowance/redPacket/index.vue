@@ -80,21 +80,21 @@
 </template>
 
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import getViewPort from '@/utils/getViewPort.js';
-import { getImgUrl } from '@/utils/auth.js';
-import configurationDia from '@/components/configurationDia/index.vue';
-import configurationFun from '@/components/configurationDia/configurationFun.js';
 import {
-	takeList,
-  takeCoupon,
-  takePower
+takeCoupon,
+takeList,
+takePower
 } from '@/api/modules/allowance.js';
-import { parseTime } from '@/utils/index.js';
 import { wxmsgid } from '@/api/modules/index.js';
+import configurationFun from '@/components/configurationDia/configurationFun.js';
+import configurationDia from '@/components/configurationDia/index.vue';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { getImgUrl } from '@/utils/auth.js';
+import getViewPort from '@/utils/getViewPort.js';
 import goDetailsFun from '@/utils/goDetailsFun';
-import { mapGetters } from 'vuex';
+import { parseTime } from '@/utils/index.js';
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import { mapGetters } from 'vuex';
 export default {
   mixins: [MescrollMixin, goDetailsFun, configurationFun, shareMixin], // 使用mixin
   components: {
@@ -153,11 +153,9 @@ export default {
     init() {
       takeList().then(res => {
         if(res.code != 1) return;
-        const {
-          bg_color
-        } = res.data;
+        const { bg_color } = res.data;
         this.configData = res.data;
-        this.subjectColor = bg_color;
+        bg_color && (this.subjectColor = bg_color);
       })
     },
     async openMiniProgramHandle(type) {
@@ -240,7 +238,6 @@ export default {
     },
 		onPageScroll(event) {
       const scrollTop = Math.ceil(event.scrollTop);
-      // console.log('scrollTop :>> ', scrollTop);
       if(scrollTop >= this.nav_bgTop) {
         this.isShowNavBerColor = true;
         return;

@@ -10,16 +10,16 @@
   <view class="confirm_cont">
     <view class="cont_title">温馨说明</view>
     <view class="cont_item">
-      <view class="cont_lab">1、可提现金额</view>
-      <view class="cont_txt">零钱次月30天后才可以提现。如果订单发生退款，相应的返利金额从零钱扣掉</view>
+      <view class="cont_lab">1. 可提现金额</view>
+      <view class="cont_txt">零钱次月30天后才可以提现。如果订单发生退款，相应的返现金额从零钱扣掉。</view>
     </view>
     <view class="cont_item">
-      <view class="cont_lab">2.关于提现</view>
-      <view class="cont_txt">1元起提，不需手续费，1个工作日内可到账。</view>
+      <view class="cont_lab">2. 关于提现</view>
+      <view class="cont_txt"> 提现金额1元起（首次0.1元起），不需手续费，立即到账。</view>
     </view>
     <view class="cont_item">
-      <view class="cont_lab">3.订单返现</view>
-      <view class="cont_txt">订单支付完成后可领取到“我的零钱”，7天后不领则自动失效</view>
+      <view class="cont_lab">3. 订单返现</view>
+      <view class="cont_txt">订单支付完成后可领取到“我的零钱”，60天后不领则自动失效。</view>
     </view>
     <view class="confirm_btn" @click="closeHandle">我知道了</view>
   </view>

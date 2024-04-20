@@ -90,7 +90,6 @@
 					topStep = currentDom._top;
 				}
 				topStep = topStep < 0 ? 0 : topStep;
-				// console.log('leftStep :>> ',currentDom, leftStep,  this.value);
 				this.lineTop = topStep;
 			},
 			getTabName(tab) {

@@ -187,41 +187,31 @@ export default {
   // 第一个红包背景
   .cash_bg {
     transform: scale(1, 0);
-    animation: cashBgWidth .1s linear;
-    animation-delay: .8s;
-		animation-fill-mode: forwards;
+    animation: cashBgWidth .1s linear .8s forwards;
   }
   .cont_box {
     // 关闭红包的icon的动画
-    animation: cashCont .1s linear;
-    animation-delay: 2.5s;
-    animation-fill-mode: forwards;
+    animation: cashCont .1s linear 3.5s forwards;
     // 红包icon的图标从下到上的偏移
     &::after {
       opacity: 0;
-      animation: cashIconTrans .2s linear;
-      animation-delay: .9s;
-		  animation-fill-mode: forwards;
+      animation: cashIconTrans .2s linear .9s forwards;
     }
     .cont_title {
       // opacity: 0;
       transform: translate(-50%, -50%) scale(0);
-      animation: titleScale .5s linear;
-      animation-delay: .3s;
-      animation-fill-mode: forwards;
+      animation: titleScale .5s linear .3s forwards;
     }
   }
   // 红包open动画
   .red_box {
     transform: scale(0);
-    animation: cashContTrans 2s linear;
-    animation-delay: 2.5s;
-    animation-fill-mode: forwards;
+    animation: cashContTrans 4s linear 3.5s forwards;
     .cont_title {
-      animation: opacityAni .2s linear 3.5s forwards;
+      animation: opacityAni .2s linear 6.5s forwards;
     }
     .red_bg {
-      animation: opacityAni .2s linear 3.5s forwards;
+      animation: opacityAni .2s linear 6.5s forwards;
     }
   }
 }

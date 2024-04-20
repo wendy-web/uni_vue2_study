@@ -123,7 +123,7 @@ export default {
 		}
 	},
 	onShow: function(event) {
-		console.log('event.query:options:', event.query)
+		console.log('event.query:options:', event.query);
 		if (!this.isMiniProgram || (this.isMiniProgram && event.query.mlocid)) {
 			const { mlocid, plocid } = event.query;
 			if(!event.query.key) {
@@ -140,7 +140,7 @@ export default {
 	onHide: function() {
 		this.setIconFindHandle();
 		this.setShowLightHandle();
-		this.setEnterPageStatus(0)
+		// if(!this.isMiniProgram) this.setEnterPageStatus(0);
 	}
 }
 </script>

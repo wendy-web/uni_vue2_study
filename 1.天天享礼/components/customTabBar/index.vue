@@ -109,9 +109,7 @@ export default {
                 is_power: 0
               }
               if (resultState == "accept") params.is_power = 1;
-              powerTemplete(params).then(res => {
-                console.log('res___', res)
-              })
+              powerTemplete(params)
             }
         });
     }

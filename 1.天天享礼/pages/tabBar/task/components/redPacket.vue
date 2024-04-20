@@ -20,17 +20,17 @@
 </template>
 <script>
 	import {
-		scheduleActivity,
-		xseckill
-	} from '@/api/modules/task.js';
-	import {
-		wxmsgid
-	} from '@/api/modules/index.js'
-	import {
-		parseTime
-	} from '@/utils/index.js';
-	import {getImgUrl} from '@/utils/auth.js';
-	import { mapGetters } from 'vuex';
+wxmsgid
+} from '@/api/modules/index.js';
+import {
+scheduleActivity,
+xseckill
+} from '@/api/modules/task.js';
+import { getImgUrl } from '@/utils/auth.js';
+import {
+parseTime
+} from '@/utils/index.js';
+import { mapGetters } from 'vuex';
 
 	export default {
 		data() {
@@ -63,7 +63,6 @@
 			// 领红包：先判断是否在活动时间内
 			getRedPacket() {
 				let result = this.checkActTime();
-				console.log("结果：", result);
 			},
 			// 活动时间
 			checkActTime() {
@@ -78,7 +77,7 @@
 					id,
 					is_power: this.isPowerStatus
 				}
-				xseckill(params).then(res => console.log('res', res));
+				xseckill(params);
 				let today = parseTime(now, '{y}/{m}/{d} {h}:{i}:{s}')
 				//每天
 				if (mode == 2) {
@@ -126,14 +125,12 @@
 				return;
 				let local_date = uni.getStorageSync('limitCouponWxMsgId');
 				let cur_date = parseTime(Date.now(), "{y}-{m}-{d}");
-				console.log("cur_date:", cur_date)
 				// 今日授权过一次就不在授权
 				if (local_date && cur_date == local_date) {
 					this.checkActTime();
 					return;
 				}
 				wxmsgid().then(res => {
-					console.log(res)
 					const accuentIds = res.data[1];
 					if (accuentIds) {
 						uni.requestSubscribeMessage({
@@ -146,7 +143,6 @@
 								} else {
 									this.isPowerStatus = 0;
 								}
-								console.log("requestSubscribeMessage", event)
 								this.checkActTime()
 							}
 						})
