@@ -1,0 +1,127 @@
+{
+    "name" : "积分商城",
+    "appid" : "__UNI__025F68A",
+    "description" : "",
+    "versionName" : "1.0.0",
+    "versionCode" : "100",
+    "transformPx" : false,
+    /* 5+App特有相关 */
+    "app-plus" : {
+        "bounce" : false,
+        "usingComponents" : true,
+        "nvueStyleCompiler" : "uni-app",
+        "compilerVersion" : 3,
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : true,
+            "waiting" : true,
+            "autoclose" : true,
+            "delay" : 0
+        },
+        /* 模块配置 */
+        "modules" : {},
+        /* 应用发布信息 */
+        "distribute" : {
+            /* android打包配置 */
+            "android" : {
+                "permissions" : [
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                ]
+            },
+            /* ios打包配置 */
+            "ios" : {},
+            /* SDK配置 */
+            "sdkConfigs" : {}
+        }
+    },
+    /* 快应用特有相关 */
+    "quickapp" : {},
+    /* 小程序特有相关 */
+    "mp-weixin" : {
+        "appid" : "wx6deb62d876c03d85",
+        "setting" : {
+            "urlCheck" : false,
+            "es6" : false,
+            "minified" : true,
+            "postcss" : false
+        },
+        "usingComponents" : true,
+        "plugins" : {},
+        // "express-plugin" : {
+        //     "version" : "1.0.0",
+        //     "provider" : "wx1b1f66316b427c74"
+        // },
+        // "hello-plugin" : {
+        //     "version" : "dev-5d2771cabacb3e563055da0e0348cf71",
+        //     "provider" : "wx6deb62d876c03d85"
+        // },
+        // "coral-adv": {
+        //     "version": "1.0.23",
+        //     "provider": "wx0e203209e27b1e66"
+        //   }
+        "__usePrivacyCheck__" : true,
+        "permission" : {
+            "scope.userFuzzyLocation" : {
+                "desc" : "你的位置信息将用于小程序位置接口的效果展示"
+            },
+            "scope.userLocation" : {
+                "desc" : "你的位置信息将用于小程序位置接口的效果展示" // 高速公路行驶持续后台定位
+            }
+        },
+        // getLocation getFuzzyLocation
+        "requiredPrivateInfos" : [ "getLocation" ],
+        /*
+            美团丨外卖美食买菜酒店电影购物：wxde8ac0a21135c07d
+            京东购物：wx91d27dbf599dff74
+            拼多多福利券：wxa918198f16869201
+            权益惠聚：wx8820200042415db1
+            心链狸猫版：wx53b04dc636c231e2
+            饿了么小程序:wxece3a9a4c82f58c9
+			口碑小程序ID:wx7d26a9e29d2a69c7
+            彬纷享礼：wxbb29c5aec6891525
+            点亮城市攒能量：wx98a1cc9f6a76fdf3
+            半屏幕小程序的添加配置
+        */
+        "embeddedAppIdList" : [
+            "wxde8ac0a21135c07d",
+            "wx91d27dbf599dff74",
+            "wxa918198f16869201",
+            "wx8820200042415db1",
+            "wx53b04dc636c231e2",
+            "wx8820200042415db1",
+            "wxece3a9a4c82f58c9",
+            "wx7d26a9e29d2a69c7",
+            "wxbb29c5aec6891525",
+            "wx98a1cc9f6a76fdf3"
+        ]
+    },
+    "mp-alipay" : {
+        "usingComponents" : true
+    },
+    "mp-baidu" : {
+        "usingComponents" : true
+    },
+    "mp-toutiao" : {
+        "usingComponents" : true
+    },
+    "uniStatistics" : {
+        "enable" : false
+    },
+    "vueVersion" : "2",
+    "mp-qq" : {
+        "appid" : "1112270139"
+    }
+}
