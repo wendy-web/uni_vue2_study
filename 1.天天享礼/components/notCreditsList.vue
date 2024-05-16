@@ -80,7 +80,7 @@ export default{
             const skuRes = await api(params);
 			if (skuRes.code == 0) return this.$toast(skuRes.msg);
 			if (is_flow == 2) {
-                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&isSearch=true`);
+                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&positionId=${positionId}`);
                 return;
             }
 			const { type_id, jdShareLink, mobile_url } = skuRes.data;

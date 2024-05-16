@@ -199,7 +199,7 @@ export default {
       returnCash
     },
     computed: {
-      ...mapGetters(['brand_id']),
+      ...mapGetters(['brand_id', 'userInfo']),
       navbarTitle() {
         return statusTitle[this.currentStatus].title;
       },
@@ -207,7 +207,7 @@ export default {
         return [0].includes(Number(this.currentStatus)) && (this.remainTime > 0);
       },
       showAgainBtn() {
-        return [4, 5].includes(Number(this.currentStatus));
+        return [4, 5].includes(Number(this.currentStatus)) && this.userInfo.buy_vip;
       },
       detailsList() {
         return (this.config && this.config.details) || [];

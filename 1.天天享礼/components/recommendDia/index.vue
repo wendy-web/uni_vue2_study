@@ -239,7 +239,7 @@ export default {
             const skuRes = await apiRequest(params);
             if (skuRes.code == 0) return this.$toast(skuRes.msg);
             if (is_flow == 2) {
-                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}`);
+                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&positionId=${positionId}`);
                 return;
             }
             const {
@@ -294,9 +294,9 @@ export default {
                 days
             }
         },
-        //倒计时结束
+        // 倒计时结束
         countFinished(e) {
-            this.isOver = true;
+            // this.isOver = true;
         },
         resetTime() {
             // 时间重置
@@ -378,9 +378,9 @@ export default {
             if(end_time || interval_time) {
                 const cur_date = new Date().getTime();
                 let over_time = new Date(end_time?.replace(new RegExp(/-/gm), '/')).getTime(); // 结束时间戳
-                if(interval_time) {
-                    over_time = cur_date + (interval_time*60*60*1000);
-                }
+                // if(interval_time) {
+                //     over_time = cur_date + (interval_time*60*60*1000);
+                // }
                 this.remainTime = over_time - cur_date;
                 this.showOverTime = parseTime(over_time, "{y}年{m}月{d}日 {h}:{i}");
                 this.isShowRemainTime = true;
@@ -388,6 +388,7 @@ export default {
                 this.isShowRemainTime = false
             }
             // if(!over) this.popupClose(); // 倒计时结束
+            this.isOver = Boolean(over);
             this.couponPrice = coupon && coupon[0];
             this.max_coupon_money = max_coupon_money;
             this.jdDate = {

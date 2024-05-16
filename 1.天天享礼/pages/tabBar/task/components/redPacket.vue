@@ -8,13 +8,6 @@
             :src="actInfo.image|| imgUrl+'/task/img_mt_coupon.png'">
             <van-loading slot="loading" type="spinner" size="20" vertical />
         </van-image>
-        <!-- <view class="progress-bar flex-row-between">
-            <view class="progress-box">
-                <van-progress :show-pivot="false" color="#8A4A1E" :percentage="progress" stroke-width="10"
-                    track-color="#FFE5AA" />
-            </view>
-            <view class="progress-num">{{progress}}%</view>
-        </view> -->
     </view>
 </view>
 </template>

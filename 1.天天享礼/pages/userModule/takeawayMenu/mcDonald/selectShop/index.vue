@@ -147,7 +147,8 @@ export default {
         };
     },
     async onLoad(option) {
-      this.setBrandId(5);
+      // 囤券进入到 - 将品牌的id转化为麦当劳的使用
+      if(this.brand_id != 5) this.setBrandId(5);
       if(option.pathSource) {
         this.pathSource = option.pathSource;
       }
@@ -280,15 +281,14 @@ export default {
         // 列表没有数据 - 返回到
         if(this.shopList.length || (this.pathSource == 'back')) {
           uni.navigateBack({
-            fail() {
-                this.$reLaunch('/pages/userModule/takeawayMenu/mcDonald/index');
+            fail: () => {
+              this.$reLaunch('/pages/userModule/takeawayMenu/mcDonald/index');
             }
           });
           return;
         }
-        let pathSource = 'shopMall';
-        if(this.pathSource) pathSource = this.pathSource;
-        this.$switchTab(`/pages/tabBar/${pathSource}/index`);
+        if(this.pathSource == 'discounts') return this.$reLaunch('/pages/discounts/discounts/index');
+        this.$switchTab(`/pages/tabBar/shopMall/index`);
       }
     },
 };

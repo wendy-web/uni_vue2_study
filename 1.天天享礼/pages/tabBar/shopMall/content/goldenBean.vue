@@ -1,23 +1,8 @@
 <template>
-<view id="beanDomBox" :class="['bean',
-	userInfo.is_vip ? 'vip_active' : '',
+<view id="beanDomBox" :class="[
+	'bean',
 	(iconFindLightIndex >= 0) ? 'list_light-box' : ''
 ]">
-	<!-- vip的呈现样式 -->
-	<view :class="['vip_cont fl_bet', vipObject.packet_num ? 'packet_red' : '']" v-if="userInfo.is_vip">
-		<block v-if="vipObject.packet_num">{{ vipObject.packet_num }}张红包可用</block>
-		<block v-else>累计已省 {{ vipObject.saving_money || 0}} 元</block>
-		<image
-			src="https://file.y1b.cn/store/1-0/23118/654aff55216ef.png"
-			class="cont_right-img" mode="widthFix"
-			@click="gotoVipHandle"
-		></image>
-	</view>
-	<view class="bean_cont fl_bet" v-else>
-		<p-countup id="credits" :num="num" width="12" height='26' color="#FE9B22" fontSize="20" fontWeight="600">
-		</p-countup>
-		<view class="cont_right" @click="goToTask"></view>
-	</view>
 	<view class="bean_list-box">
 		<view :class="['bean_list', (iconFindLightIndex >= 0) ? 'list_light-box' : '']">
 			<view v-for="(item,index) in list" :key="index"
@@ -48,7 +33,7 @@
                     ><van-loading slot="loading" type="spinner" size="12" vertical />
                     </van-image>
                 </view>
-				<view :style="{color: item.color || '#666', fontWeight: item.bold ? 600 : 400,position: 'relative'}">{{item.title}}</view>
+				<view :style="{color: item.color || '#333', fontWeight: item.bold ? 600 : 400,position: 'relative'}">{{item.title}}</view>
 			</view>
 		</view>
 	</view>
@@ -205,36 +190,10 @@ export default {
 .bean {
 	width: 100%;
 	position: relative;
-	margin-top: 30rpx;
-	&::before {
-		content: '\3000';
-		background: url("https://file.y1b.cn/store/1-0/23826/64e9689de3190.png") 0 0 / 100% 100% no-repeat;
-		position: absolute;
-		left: 50%;
-		transform: translateX(-50%);
-		top: 0;
-		width: 718rpx;
-		height: 100%;
-		z-index: -1;
-	}
-	&::after {
-		content: '\3000';
-		background: url("https://file.y1b.cn/public/img/ttxl/static/shopMall/credit_icon.png") 0 0 / cover no-repeat;
-		width: 212rpx;
-		height: 64rpx;
-		position: absolute;
-		top: 11rpx;
-		left: 62rpx;
-		z-index: -1;
-	}
-	&.vip_active{
-		&::before {
-			background-image: url("https://file.y1b.cn/store/1-0/23118/654afbb14f36f.png");
-		}
-		&::after{
-			background: none;
-		}
-	}
+	// margin-top: 20rpx;
+	// background: linear-gradient(180deg,#ffffff, rgba(255,255,255,0.04) 50%);
+	// background: #fff;
+	// border-radius: 28rpx 28rpx 0rpx 0;
 	.credit_icon {
 		width: 212rpx;
 		height: 64rpx;
@@ -251,90 +210,24 @@ export default {
 		z-index: -1;
 		height: 92rpx;
 	}
-	.vip_cont {
-		margin: 0 54rpx 0 84rpx;
-		padding-top: 20rpx;
-		position: relative;
-		font-size: 30rpx;
-		font-weight: 600;
-		color: #b75a30;
-		.cont_right-img {
-			width: 142rpx;
-			height: 32rpx;
-		}
-		&::before {
-			content: '\3000';
-			background: url("https://file.y1b.cn/public/img/ttxl/static/card/card_icon.png") center / contain no-repeat;
-			position: absolute;
-			left: -34rpx;
-			width: 26rpx;
-			height: 26rpx;
-			// z-index: -1;
-		}
-		&.packet_red::before {
-			background-image: url("https://file.y1b.cn/store/1-0/23118/654b06516b55b.png");
-		}
-	}
-	.bean_cont {
-		margin: 0 50rpx 0 90rpx;
-		position: relative;
-		padding-top: 20rpx;
-		// z-index: -1;
-		&::before {
-			content: '\3000';
-			background: url("https://file.y1b.cn/store/1-0/231229/658e35ae1c017.png") center / contain no-repeat;
-			position: absolute;
-			left: -52rpx;
-			width: 52rpx;
-			height: 48rpx;
-		}
-		.bean_num {
-			width: 116rpx;
-			height: 66rpx;
-			font-size: 48rpx;
-			font-weight: 500;
-			color: #84372e;
-			line-height: 66rpx;
-		}
-		.cont_right {
-			&::before {
-				content: '\3000';
-				background: url("https://file.y1b.cn/public/img/ttxl/static/shopMall/cont_right-txt.png") center / contain no-repeat;
-				display: inline-block;
-				width: 116rpx;
-				height: 28rpx;
-				margin-right: 10rpx;
-				padding-top: 10rpx;
-			}
-			&::after {
-				content: '\3000';
-				background: url("https://file.y1b.cn/public/img/ttxl/static/shopMall/golden_right-icon.png") center / contain no-repeat;
-				display: inline-block;
-				width: 22rpx;
-				height: 22rpx;
-			}
-		}
-	}
 }
 .bean_list-box {
 	width: 100%;
 	box-sizing: border-box;
-	min-height: 358rpx;
-	padding: 10rpx 32rpx 22rpx;
+	min-height: 340rpx;
+	padding: 0 4rpx;
 }
 .bean_list{
 	display: flex;
 	align-items: center;
 	font-size: 24rpx;
 	text-align: center;
-	color: #666;
 	line-height: 34rpx;
 	flex-wrap: wrap;
 	position: relative;
-	padding-top: 20rpx;
 }
 .bean_list-item {
-	margin-top: 30rpx;
+	margin-top: 28rpx;
 	// margin-bottom: 24rpx;
 	width: 20%;
 	flex: 0 0 20%;
@@ -342,22 +235,20 @@ export default {
 }
 .bean_small_icon {
 	position: absolute;
-	right: -20rpx;
-	top: -18rpx;
+	right: -16rpx;
+	top: -14rpx;
 	width: 64rpx;
 	height: 40rpx;
 	z-index: 1;
 }
 .list_img {
-	width: 88rpx;
-	height: 88rpx;
+	width: 96rpx;
+	height: 96rpx;
 	font-size: 0;
 	position: relative;
 	margin: 0 auto 2rpx;
 }
-.list_light-box{
-	.vip_cont,
-	.bean_cont,
+.list_light-box {
 	.bean_list-item {
 		z-index: -1;
 	}

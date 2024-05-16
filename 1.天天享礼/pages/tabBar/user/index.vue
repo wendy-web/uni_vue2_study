@@ -7,13 +7,14 @@
     titleAlign="titleRight"
     :navberColor="showTitleBgColor"
   >
-    <view slot="title" class="nav-custom fl_bet">
+    <view slot="title" class="nav-custom
+    ">
       <image
         :class="['title_icon ani_head', (!isShowAvaTitle || !textList.length) ? 'ani_head-in' : 'ani_head-out']"
         src="https://file.y1b.cn/store/1-0/2368/648173c3f15cf.png"
         mode="aspectFill"
-        v-if="!isShowAvaTitle || !textList.length"
       ></image>
+      <!-- v-if="!isShowAvaTitle || !textList.length -->
       <!-- 关闭用户信息的展示 -->
       <!-- <view :class="['my_user ani_head', isShowAvaTitle ? 'ani_head-in' : 'ani_head-out']">
         <image class="my_user-avatar" mode="aspectFill"
@@ -173,7 +174,7 @@
     ></good-list>
   </mescroll-body>
   <custom-tab-bar
-    currentIndex="3"
+    currentIndex="2"
     @domObjHeight="domObjHeightHandle"
     @recommend="recommendUpdate"
   />
@@ -664,7 +665,7 @@ page {
 }
 .swiper_search{
   flex: 1;
-  transition: all .3s;
+  transition: all .5s;
   &.ani_flex-in {
     flex: 1;
   }
@@ -703,10 +704,15 @@ button::after {
 
 .nav-custom {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   .title_icon {
     width: 84rpx;
     height: 46rpx;
     margin-right: 20rpx;
+    position: absolute;
+    left: 20rpx;
   }
 }
 .my_user {

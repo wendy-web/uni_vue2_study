@@ -59,10 +59,6 @@
 			<!-- 退款信息 -->
 			<view class="refund-info-box" v-if="!is_pay_way && orderInfo.status == 5">
 				<view class="title">退款信息</view>
-				<!-- <view class="table-row">
-					<view class="subtitle">退还牛金豆：</view>
-					<view class="content">{{orderInfo.third_order_id}}</view>
-				</view> -->
 				<view class="table-row">
 					<view class="subtitle">退款金额：</view>
 					<view class="content">
@@ -370,9 +366,7 @@ let _payFunc = null
 page {
 	background-color: #f7f7f7;
 }
-.payment_bottom {
-	padding-bottom: 206rpx;
-}
+
 .box {
 	box-sizing: border-box;
 	padding-bottom: calc(10rpx + constant(safe-area-inset-bottom));
@@ -380,6 +374,9 @@ page {
 	.pd24 {
 		padding: 24rpx;
 	}
+}
+.payment_bottom {
+	padding-bottom: 206rpx;
 }
 .play_btn {
 	width: 180rpx;

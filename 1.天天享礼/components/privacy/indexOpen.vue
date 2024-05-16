@@ -53,6 +53,7 @@ export default {
       currentPage: '', // 当前页面地址
       disagreePrivacyPageList: [
         'pages/tabBar/discounts/index',
+        'pages/discounts/discounts/index',
         'pages/userModule/takeawayMenu/mcDonald/index',
         'pages/userModule/takeawayMenu/luckin/index',
         'pages/userModule/takeawayMenu/kfc/index',
@@ -64,6 +65,13 @@ export default {
   },
   computed: {
     ...mapGetters(['diaList', 'isAutoPrivacy'])
+  },
+  watch: {
+    // diaList(newValue, oldValue) {
+    //   if (newValue.length && newValue[0] == "privacy") {
+    //     this.innerShow = true;
+    //   }
+    // }
   },
   mounted() {
     const pageList = getCurrentPages();
@@ -135,8 +143,12 @@ export default {
     },
     popUp() {
         if (this.innerShow === false) {
-            this.innerShow = true;
-            this.setDiaList('privacy')
+          this.setDiaList('privacy')
+          this.innerShow = true;
+          // if(this.diaList[0] == 'privacy') {
+          //   return  this.innerShow = true;
+          // }
+          // return this.setDiaList('privacy');
         }
     },
     disPopUp() {

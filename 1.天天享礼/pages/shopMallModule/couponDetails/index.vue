@@ -56,15 +56,15 @@
 				<image class="back_btn-icon" :src="subImgUrl +'/close_back.png'" mode="aspectFill"></image>
 			</view> -->
       <!-- 商品价值 -->
-      <!-- 省钱卡的 -->
-      <vip-card
+      <!-- 省钱卡的 - 去掉省钱卡的概念 -->
+      <!-- <vip-card
         v-if="userInfo.is_vip"
         :config="config"
         :samePlatform="samePlatform"
-      />
+      /> -->
       <!-- 正常 -->
       <normal-card
-        v-else-if="cardType === 1"
+        v-if="cardType === 1"
         :config="config"
         :samePlatform="samePlatform"
       />
@@ -117,21 +117,14 @@
       <!-- 底部操作按钮 -->
       <view class="bottom-tools-box" v-if="stockType === 1">
         <view class="remind_box" v-if="exchangeCk_id" @click="goMyCouponHandle">
-          <image
-            class="bg_img"
-            :src="subImgUrl + '/remind_box-bg.png'"
-            mode="aspectFit"
-          ></image>
+          <image class="bg_img" :src="subImgUrl + '/remind_box-bg.png'" mode="scaleToFill"></image>
           <view class="remind_left">
             <image  class="left_icon" mode="aspectFill"
               :src="subImgUrl + '/remind_left-icon.png'"
             ></image>
             你有该优惠券未使用
           </view>
-          <view class="remind_right">
-            去使用
-            <van-icon name="arrow" color="#F84842" size="26rpx" />
-          </view>
+          <view class="remind_right">去使用<van-icon name="arrow" color="#F84842" size="26rpx" /></view>
         </view>
         <view class="bottom-tools" v-if="samePlatform">
           <!-- 收藏按钮 -->
@@ -154,11 +147,11 @@
           <!-- 立即兑换 -->
           <view :class="['redeem-now',
               redeemClickLoading ? 'redeem-no_active' : '',
-              userInfo.is_vip ? 'vip_active' : ''
+              config.zero_credits ? 'vip_active' : ''
             ]"
             @click="getWxMsgId">
-            <block v-if="userInfo.is_vip">
-                <image class="coupon_vip" :src="cardImgUrl + '/coupon_vip.png'" mode="aspectFit"></image>
+            <block v-if="config.zero_credits">
+                <image class="coupon_vip" src="https://file.y1b.cn/store/1-0/24514/6642fce9a8839.png" mode="heightFix"></image>
                 <view class="redeem-now-left">
                     <view class="rnl-value">0</view>
                     <view class="rnl-label"> 牛金豆 </view>
@@ -176,7 +169,7 @@
                     <view class="rnl-value" v-else>
                         {{ config.is_popover ? 0 :(config.seckill_credits || config.credits) }}
                     </view>
-                    <view class="rnl-label"> 牛金豆 </view>
+                    <view class="rnl-label">牛金豆</view>
                 </view>
                 <view class="icon_middle"></view>
                 <view class="redeem-now-right">
@@ -415,6 +408,7 @@ export default {
           open_mini_type,
           qz_url,
           btn_word,
+          zero_credits
         } = res.data;
         let seckillTime = null;
         /*有时间说明是秒杀活动*/
@@ -476,6 +470,7 @@ export default {
           qz_url,
           btn_word,
           is_popover: this.is_popover,
+          zero_credits
         };
         // 混合模式的share变量赋值
         this.getShareCont.share_title = title;
@@ -774,7 +769,7 @@ page {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   .remind_box {
     padding: 0 40rpx;
     height: 68rpx;
@@ -865,7 +860,7 @@ page {
   &.vip_active{
     background: #333333;
     .coupon_vip {
-        width: 202rpx;
+        width: 136rpx;
         height: 46rpx;
         position: absolute;
         right: 0;

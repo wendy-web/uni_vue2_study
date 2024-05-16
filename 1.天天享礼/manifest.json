@@ -59,16 +59,19 @@
             "postcss" : false
         },
         "usingComponents" : true,
-        // "plugins" : {
-        //     "express-plugin" : {
-        //         "version" : "1.0.0",
-        //         "provider" : "wx1b1f66316b427c74"
-        //     },
-        //     "hello-plugin" : {
-        //         "version" : "dev-5d2771cabacb3e563055da0e0348cf71",
-        //         "provider" : "wx6deb62d876c03d85"
-        //     }
+        "plugins" : {},
+        // "express-plugin" : {
+        //     "version" : "1.0.0",
+        //     "provider" : "wx1b1f66316b427c74"
         // },
+        // "hello-plugin" : {
+        //     "version" : "dev-5d2771cabacb3e563055da0e0348cf71",
+        //     "provider" : "wx6deb62d876c03d85"
+        // },
+        // "coral-adv": {
+        //     "version": "1.0.23",
+        //     "provider": "wx0e203209e27b1e66"
+        //   }
         "__usePrivacyCheck__" : true,
         "permission" : {
             "scope.userFuzzyLocation" : {

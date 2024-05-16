@@ -21,6 +21,11 @@ const serviceCredits = {
                     text: '惠生活'
                 },
                 {
+                    route: 'pages/discounts/discounts/index',
+                    pageNum: 2,
+                    text: '惠生活'
+                },
+                {
                     route: 'pages/tabBar/task/index',
                     pageNum: 3,
                     text: '福利中心'
@@ -159,6 +164,7 @@ const serviceCredits = {
             // people_type 1 是新用户 2 是老用户
             // this.gift
             let pageNum = this.currentPageNum;
+            if (pageNum == 6 && this.searchValue) return;
             if (pageNum == 1 && isBesidesPage) {
                 if (this.$refs.cashBackDiaRef) this.$refs.cashBackDiaRef.init(); // 领红包的监听 - 结束后访问当前
                 return;
@@ -208,7 +214,9 @@ const serviceCredits = {
                 popover_start,
                 popover_over,
                 is_advertisement,
-                id
+                id,
+                headImgArr,
+                show_type
             } = this.config;
             this.currentId = id;
             const currentDate = new Date();
@@ -216,6 +224,7 @@ const serviceCredits = {
                 const secondTime = second * 1000;
                 this.showTimer = setTimeout(() => {
                     this.remainTime = 60 * 1000;
+                    if ((show_type == 1) && headImgArr) this.remainTime = 60 * 1000 * 5;
                     this.$refs.configurationDia.resetTime();
                     if (is_advertisement) {
                         this.interstitialAd.show().catch((err) => {
@@ -250,6 +259,7 @@ const serviceCredits = {
                 const secondTime = this.config.second * 1000;
                 this.showTimer = setTimeout(() => {
                     this.remainTime = 60 * 1000;
+                    if (this.config.headImgArr && (this.config.show_type == 1)) this.remainTime = 60 * 1000 * 5;
                     this.$refs.configurationDia.resetTime();
                     // 展示倒计时的弹窗
                     if (is_advertisement) {

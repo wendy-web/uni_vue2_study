@@ -185,6 +185,9 @@ export default {
     ...mapActions({
       requestCarList: 'cart/requestCarList',
     }),
+    updateTicketStatus(ticket_id = 0) {
+      this.ticket_id = ticket_id;
+    },
     updateIndex(tabIndex, index) {
       this.tabIndex = tabIndex;
       this.currentIndex = index;

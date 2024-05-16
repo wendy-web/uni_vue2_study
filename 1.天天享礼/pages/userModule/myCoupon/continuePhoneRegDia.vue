@@ -41,7 +41,6 @@
     },
 		data() {
 			return {
-				randomPercent: '' //随机百分比
 			}
 		},
 		methods: {

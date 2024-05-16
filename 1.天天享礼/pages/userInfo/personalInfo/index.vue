@@ -213,6 +213,16 @@ export default{
       setUserInfo: 'user/setUserInfo',
       setAutoLogin: 'user/setAutoLogin'
     }),
+    onadload(e) {
+      console.log('广告数据加载成功');
+    },
+    onadclose(e) {
+		 console.log("onadclose",e);
+    },
+    onaderror(e) {
+      // 广告加载失败
+      console.log("onerror: ", e.detail);
+    },
     chooseAvatar(event) {
       this.uploadImg(event.detail.avatarUrl);
     },
@@ -223,7 +233,6 @@ export default{
       this.$go(`plugin://hello-plugin/hello-page`);
       // this.$go(`plugin://express-plugin/home?shareCode=1911Fv7raS&userId=1&extra=1`);
     },
-
     animationHandle2() {
       this.$go(`plugin://jtkDc/kudiindex?pub_id=27729&sid=ttxl&channel=${this.userInfo.id}`);
     },

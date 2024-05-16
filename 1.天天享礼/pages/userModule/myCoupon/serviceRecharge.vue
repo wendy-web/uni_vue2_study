@@ -120,13 +120,13 @@
 						/>
 					</view>
 				</block>
-                <view class="discount_item fl_bet" v-if="couponInfo.is_vip">
+                <!-- <view class="discount_item fl_bet" v-if="couponInfo.zero_credits">
                     <view class="fl_center">
                         <image class="dis_icon" :src="cardImgUrl +'/card_icon5.png'" mode="aspectFill"></image>
                         <view>0豆特权</view>
                     </view>
                     <view class="dis_noPrice">免{{couponInfo.credits}}牛金豆</view>
-                </view>
+                </view> -->
                 <view class="discount_item fl_bet">
                     <view class="fl_center">
                         <image class="dis_icon" :src="cardImgUrl +'/card_icon6.png'" mode="aspectFill"></image>
@@ -227,8 +227,8 @@
 <continueDia
 	:isShow="isShowBackDia"
 	:faceValue="couponFaceValue"
+	:zeroCredits="couponInfo.zero_credits"
 	:creditsValue="couponInfo.credits"
-    :isVip="couponInfo.is_vip"
 	@close="confirmBackHandle"
 	@confirm="closeDiaHandle"
 ></continueDia>
@@ -323,8 +323,8 @@ let _request = false;
 			}
 		},
 		watch: {
-			restaurant_id(newValue) {
-				if(!this.isMcDonaldType || !newValue) return;
+			restaurant_id(newValue, oldValue) {
+				if(!this.isMcDonaldType || !newValue || !oldValue) return;
 				this.initLocation(12, newValue);
 			}
 		},
@@ -390,6 +390,8 @@ let _request = false;
                 setSelRedPacket: 'user/setSelRedPacket',
                 setSelNewPacket: 'user/setSelNewPacket',
 				setBrandId: 'cart/setBrandId',
+				setRestaurantId: 'cart/setRestaurantId',
+				setCityName: 'cart/setCityName'
             }),
             formatPrice,
             goredPayIndexHandle(isLab = false){
@@ -447,6 +449,7 @@ let _request = false;
 					this.location_city = cityInfo.city;
 					this.location_province = cityInfo.province;
 				}
+				this.setCityName(this.location_city);
 				const params = {
 					brand_id: 5,
 					lng,
@@ -460,6 +463,10 @@ let _request = false;
 				const res = await restaurantQuery(params);
 				if(res.code != 1 || res.data.upgrade) return;
 				this.restaurantStore = res.data;
+				const restaurantIdRes = res.data.restaurant_id;
+				if(!this.restaurant_id) {
+					this.setRestaurantId(restaurantIdRes); // 门店id
+				}
 			},
 			closePayHandle() {
             	this.show = false;
@@ -631,10 +638,6 @@ let _request = false;
 						if (err.errMsg == 'requestPayment:fail cancel') {
 							this.$wxReportEvent('refusetobuy', {source: this.source});
 							// 取消支付
-							if(this.isMcDonaldType) {
-								// this.closePayHandle();
-								return;
-							};
 							this.isShowContinuePay = true;
 						}
 						Toast({

@@ -83,9 +83,9 @@
                 <view class="cont_no-credits" v-if="!item.credits">
                     <text style="font-size: 36rpx;">￥</text>{{item.price}}
                 </view>
-                <view class="cont_vip box_fl" v-else-if="userInfo.is_vip">
-                    <view>{{ item.credits }}牛金豆</view>
-                    <image class="price_vip" src="../static/price_vip.png" mode="widthFix" ></image>
+                <view class="cont_vip box_fl" v-else-if="item.zero_credits">
+                  <view>{{ item.credits }}牛金豆</view>
+                  <image class="price_vip" src="../static/zero_credits.png" mode="heightFix" ></image>
                 </view>
                 <view class="cont_price" v-else>
                     <view class="cont_price-left">
@@ -102,7 +102,7 @@
                 </view>
                 <view class="cont_txt">
                   <view class="box_fl">
-                      <view class="mer_price" v-if="userInfo.is_vip && item.credits">
+                      <view class="mer_price" v-if="item.zero_credits && item.credits">
                           <image class="price_icon" src="../static/price_icon.png" mode="scaleToFill" ></image>
                           {{ item.face_value }}元券
                       </view>
@@ -185,7 +185,7 @@ let timer = null;
 export default {
     mixins: [shareMixin], // 使用mixin
     data() {
-        return {
+      return {
         imgUrl: getImgUrl(),
         feedList: [],
         current: 0,
@@ -211,7 +211,7 @@ export default {
         positionId: 0, // 首页推广位ID
         subImgUrl: `${getImgUrl()}static/subPackages/shopMallModule`,
         has_coupon: 0
-        };
+      };
     },
     computed: {
       ...mapGetters([
@@ -417,7 +417,7 @@ export default {
         if (skuItem.code != 1) return this.$toast(skuItem.msg);
         // 中转详情页
         if (is_flow == 2) {
-          this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&isFeed=true`);
+          this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&positionId=${positionId}`);
           return;
         }
         const { type_id, jdShareLink, mobile_url } = skuItem.data;

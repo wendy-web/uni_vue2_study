@@ -87,6 +87,7 @@ export default {
     },
     methods: {
         async notionImgHandle() {
+            // this.popupClose(true);
             const { xf_type, pay_way, appid, path, oid, orderNo } = this.config;
             if(appid && path) {
                 this.$openEmbeddedMiniProgram({
@@ -140,12 +141,12 @@ export default {
         async popupClose(isRecode) {
             this.isShow = false;
             if(!this.config) return;
-            const { id } = this.config;
+            const { id, xf_type } = this.config;
             if (isRecode) {
-                this.config = null;
                 this.list.shift();
                 this.$emit("heightUpdate", 0);
-                id && await popoverRember({ id });
+                id && await popoverRember({ id, xf_type });
+                this.config = null;
                 if(this.list.length) {
                     this.timer = setTimeout(() => {
                         this.config = this.list[0];
@@ -155,7 +156,7 @@ export default {
             }
         },
         async init() {
-            this.isShow = false;
+            // this.isShow = false;
             const res = await popover({
                 page: 1,
                 people_type: 2,
@@ -194,7 +195,8 @@ export default {
   font-size: 0;
   .close_icon{
     position: absolute;
-    right: 32rpx;
+    right: 12rpx;
+    padding: 20rpx;
     top: 50%;
     width: 40rpx;
     height: 40rpx;

@@ -298,6 +298,10 @@ export default {
           this.$refs.commodityDetails.updateIndex(index, produceIndex); // 设置需要更新
           this.shop_product_id = 0;
           this.ticket_id = 0;
+        } else if(this.ticket_id) {
+          this.isShowNoTicket = true;
+          this.ticket_id = 0;
+          this.$refs.commodityDetails.updateTicketStatus(); // 去掉兑换券的内容
         }
       });
     }
@@ -337,7 +341,7 @@ export default {
   },
   async onShow() {
     this.$refs.privacyOpen.LifetimesShow();
-    if(!this.lng && !this.lat && !this.firstShow){
+    if(!this.lng && !this.lat && !this.firstShow) {
       this.mescroll.resetUpScroll();
       return;
     }
@@ -650,10 +654,9 @@ export default {
     },
     // 直接退回首页
     topCallBack() {
-      let pathSource = 'shopMall';
       if(this.isBack) return this.$leftBack();
-      if(this.pathSource) pathSource = this.pathSource;
-      this.$switchTab(`/pages/tabBar/${pathSource}/index`);
+      if(this.pathSource == 'discounts') return this.$reLaunch('/pages/discounts/discounts/index');
+      this.$switchTab(`/pages/tabBar/shopMall/index`);
     },
     displaceHandle(){
       // 确定门店
@@ -673,9 +676,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.mcDonald {
-  // background: #F5F5F5;
-}
 .title_left {
   width: 350rpx;
   height: 44rpx;

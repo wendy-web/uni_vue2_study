@@ -358,6 +358,7 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 		},
 		// 页面周期函数--监听页面加载
 		async onLoad(option) {
+			this.$storageRemove(this.remindStorageKey);
 			this.$nextTick(()=>{
 				setTimeout(() => this.orderTitleDom(), 1000);
 			});
@@ -767,7 +768,7 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 					let cur_date = parseTime(currentDate, "{y}/{m}/{d}");
 					const showBackFirstStorageDay = getStorage(this.backFirstStorageKey);
 					const showBackSecondStorageDay = getStorage(this.backSecondStorageKey);
-					if(this.enterPageStatus == 2 && (!showBackFirstStorageDay || showBackFirstStorageDay != cur_date )) {
+					if([1, 2].includes(this.enterPageStatus) && (!showBackFirstStorageDay || showBackFirstStorageDay != cur_date )) {
 						this.isShowBackFirstDia = true;
 						setStorage(this.backFirstStorageKey, cur_date);
 						return;
@@ -778,7 +779,6 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 						return;
 					}
 				}
-
 				uni.navigateBack({
 					fail() {
 						uni.switchTab({

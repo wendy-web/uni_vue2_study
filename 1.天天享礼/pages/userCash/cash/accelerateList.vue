@@ -24,7 +24,9 @@
 	</xh-navbar>
 	<image  mode="widthFix" class="nav_bg"
 		:style="{'--margin': navHeight + 'px' }" :src="bg_img" id="navBgId"></image>
-	<view :class="['remind_lab', isShowTitle ? 'opacity_active' : 'opacity_non']" :style="{'--top': navHeight + 'px' }">下单约2分钟后查看结果</view>
+	<view :class="['remind_lab', isShowTitle ? 'opacity_active' : 'opacity_non']" :style="{'--top': navHeight + 'px' }">
+		下单约2分钟后查看结果
+	</view>
 	<good-list :list="listData"></good-list>
 </mescroll-body>
 </view>

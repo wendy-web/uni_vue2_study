@@ -14,10 +14,8 @@
 						<p-countup :num="userInfo.credits" width="11" height='18' color="#FE9B22" fontSize="18" fontWeight="600">
 						</p-countup>
 					</view>
-					<image
-						class="search_icon"
+					<image class="search_icon" mode="aspectFill"
 						src="https://file.y1b.cn/store/1-0/231123/655eeada7864e.png"
-						mode="aspectFill"
 						@click="toSearchHandle"
 					></image>
 				</view>
@@ -41,7 +39,6 @@
 				<!-- 我的金豆 -->
 				<view class="bean-box">
 					<view class="today-bean">今日收益：
-						<!-- {{userInfo.credits>99999?'99999+':userInfo.credits}} -->
 						<p-countup :num="isAutoLogin ? totalToady : 0" width="8" height='13' color="#999999" fontSize="12"></p-countup>
 					</view>
 					<view class="total-bean-box">
@@ -55,7 +52,6 @@
 						<view class="total-bean">
 							<image class="icon-colon-bl" :src="imgUrl+'task/icon_colon_bottom.png'" mode="aspectFit">
 							</image>
-							<!-- {{userInfo.credits>9999?'9999+':userInfo.credits}} -->
 							<view style="margin-bottom: -4rpx;">
 								<p-countup id="todayBean" :num="userInfo.credits" width="20" height='36' color="#666666"
 									fontSize="36"></p-countup>
@@ -66,10 +62,6 @@
 					</view>
 				</view>
 			</view>
-			<!-- 积分升级预留 -->
-			<!-- <pointsUpgrade ref="pointsUpgrade" v-if="taskReward['RCREDITS_UPGRADE'].isShow"
-				:taskReward="taskReward['RCREDITS_UPGRADE']"
-				@updateSuccess="pointUpdateSuccess"></pointsUpgrade> -->
 			<!-- 订单超时 -->
 			<orderTimeout ref="orderTimeout"></orderTimeout>
 			<!-- 看视频奖励 -->
@@ -98,18 +90,34 @@
 			<!-- 答题闯关 -->
 			<answerQuestion v-if="taskReward['QUIZ_ANSWER'].isShow" ref="answerQuestion"
 			:taskReward="taskReward['QUIZ_ANSWER']"></answerQuestion>
-			<!-- 换购券即将过期:已授权&有即将过期的换购券才显示 -->
-			<exchangeCoupon v-if="taskReward['CARD_EXPIRE'].isShow"
-				:taskReward="taskReward['CARD_EXPIRE']" ref="exchangeCoupon"></exchangeCoupon>
-			<!-- 广告 -->
-			<!-- <bannerAd></bannerAd> -->
 			<!-- 转盘游戏 -->
 			<turnTable v-if="taskReward['BIG_WHEEL'].isShow" ref="turnTable" @success="turntableSuccess"
 				@deductBeans="deductBeans" @showAwardModel="startAnim"
 				:taskReward="taskReward['BIG_WHEEL']"></turnTable>
 			<!-- 看文拿奖 -->
-			<viewArticle v-if="taskReward['READ_ARTICLE'].isShow" ref="viewArticle"
-				:taskReward="taskReward['READ_ARTICLE']"></viewArticle>
+			<view v-if="articleTask.isShow">
+				<view class="art_box" @click="openArticle" v-if="articleInfo">
+					<view class="flex-row-between">
+						<view class="title">{{articleTask.title}}</view>
+						<view class="flex-row-between">
+							<image class="icon-beans" :src="imgUrl+'/task/icon_beans.png'" mode="aspectFit" lazy-load></image>
+							<view class="subtitle">{{articleTask.subtitle}}</view>
+						</view>
+					</view>
+					<view class="content" style="height: auto;">
+						<!-- 背景图 -->
+						<van-image
+							class="bg-view-article"
+							use-loading-slot
+							lazy-load
+							width="702rpx"
+							fit="widthFix"
+							:src="articleInfo.image">
+							<van-loading slot="loading" type="spinner" size="20" vertical />
+						</van-image>
+					</view>
+				</view>
+			</view>
 			<!-- 星座特权 -->
 			<starSign v-if="(!userInfo.gender||!userInfo.constellation)&&taskReward['HOROSCOPE'].isShow" ref="starSign"
 				:userInfo='userInfo' :taskReward="taskReward['HOROSCOPE']" @showToast="showToast"
@@ -117,11 +125,24 @@
 			<!-- 扫拉环任务 -->
 			<pullRingQr v-if="taskReward['SCAN_PULL'].isShow" ref="pullRingQr"
 				:taskReward="taskReward['SCAN_PULL']" @showAwardModel="startAnim"></pullRingQr>
-			<!-- 点亮中国 -->
-			<lightUp ref="lightUp" v-if="taskReward['MINI_PROGRAM'].isShow"></lightUp>
+
 			<!-- 插入插屏广告 -->
 			<bannerAd unitId="adunit-9e6abbb19accaec7"></bannerAd>
-			<listImg ref="listImg" @imgItem="imgItemHandle"></listImg>
+			<!-- <listImg ref="listImg" @imgItem="imgItemHandle"></listImg> -->
+			<view class="list_img" v-for="(item, index) in listImg" :key="index">
+				<view class="title">{{item.title}}</view>
+				<view class="list_img-box" @click="imgItemHandle(item)">
+					<van-image
+						class="img_item"
+						use-loading-slot lazy-load
+						width="100%"
+						:src="item.image"
+						fit="widthFix"
+					>
+						<van-loading slot="loading" type="spinner" size="20" vertical />
+					</van-image>
+				</view>
+			</view>
 		</mescroll-body>
 		<!-- toast提示 -->
 		<van-toast id="van-toast" />
@@ -140,7 +161,7 @@
 		<!-- 用户引导 -->
 		<userGuidance ref="userGuidance"></userGuidance>
 		<!-- 导航栏 -->
-		<custom-tab-bar currentIndex="2"/>
+		<custom-tab-bar currentIndex="1"/>
 		<!-- 配置的弹窗管理 -->
 		<configurationDia
 			ref="configurationDia"
@@ -175,16 +196,12 @@
 	</view>
 </template>
 <script>
-import MescrollMixin from '@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js';
-// import pointsUpgrade from './components/pointsUpgrade.vue';
 import pCountup from '@/components/p-countUp/countUp.vue';
+import MescrollMixin from '@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js';
 import answerQuestion from './components/answerQuestion.vue';
 import bannerAd from './components/bannerAd.vue';
 import discountCoupon from './components/discountCoupon.vue';
-import exchangeCoupon from './components/exchangeCoupon.vue';
 import focusWechatAccount from './components/focusWechatAccount.vue';
-import lightUp from './components/lightUp.vue';
-import listImg from './components/listImg.vue';
 import machine from './components/machine.vue';
 import orderTimeout from './components/orderTimeout.vue';
 import pullRingQr from './components/pullRingQr.vue';
@@ -192,22 +209,28 @@ import redPacket from './components/redPacket.vue';
 import starSign from './components/starSign.vue';
 import turnTable from './components/turnTable.vue';
 import videoReward from './components/videoReward.vue';
-import viewArticle from './components/viewArticle.vue';
 /*任务完成弹窗*/
+import cowpeaAnim from '@/components/cowpeaAnim.vue';
 import cowpeaDouble from '@/components/serviceCredits/popup/cowpeaDouble.vue';
 import happyHarvest from '@/components/serviceCredits/popup/happyHarvest.vue';
 import taskComplete from '@/components/taskComplete.vue';
-import cowpeaAnim from './popup/cowpeaAnim.vue';
 import turntableModel from './popup/turntableModel.vue';
 /* 积分升级成功 */
+import { popover } from '@/api/modules/configuration.js';
 import {
+articleList,
+lightTask,
 taskReward,
 totalToady,
 videoAward
 } from '@/api/modules/task.js';
+
 import configurationFun from '@/components/configurationDia/configurationFun.js';
 import configurationDia from '@/components/configurationDia/index.vue';
 import customTabBar from '@/components/customTabBar/index.vue';
+import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
+import serviceCredits from "@/components/serviceCredits/index.vue";
+import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
 import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
 import { getImgUrl } from '@/utils/auth.js';
 import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
@@ -215,10 +238,6 @@ import getViewPort from '@/utils/getViewPort.js';
 import goDetailsFun from '@/utils/goDetailsFun.js';
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
 import Toast from '@/wxcomponents/vant_update/toast/toast.js';
-
-import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
-import serviceCredits from "@/components/serviceCredits/index.vue";
-import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
 import {
 mapActions,
 mapGetters
@@ -230,20 +249,16 @@ import userGuidance from './popup/userGuidance.vue';
 	export default {
 		mixins: [MescrollMixin, configurationFun, shareMixin, goDetailsFun, serviceCreditsFun],
 		components: {
-			// pointsUpgrade,
 			pullRingQr,
 			redPacket,
 			videoReward,
-			exchangeCoupon,
 			focusWechatAccount,
 			discountCoupon,
 			bannerAd,
 			orderTimeout,
 			answerQuestion,
-			viewArticle,
 			starSign,
 			turnTable,
-			lightUp,
 			machine,
 			pCountup,
 			taskComplete,
@@ -255,13 +270,15 @@ import userGuidance from './popup/userGuidance.vue';
 			userGuidance,
 			customTabBar,
 			configurationDia,
-			listImg,
 			specialLisMiniPage,
 			exchangeFailed,
 			serviceCredits
 		},
 		computed: {
-			...mapGetters(['userInfo', 'isAutoLogin'])
+			...mapGetters(['userInfo', 'isAutoLogin']),
+			articleTask() {
+				return this.taskReward['READ_ARTICLE'];
+			}
 		},
 		watch: {
 			userInfo(newValue, oldValue) {
@@ -272,6 +289,7 @@ import userGuidance from './popup/userGuidance.vue';
 		},
 		data() {
 			return {
+				listImg: [],
 				downOption: {
 					auto: false, // 不自动加载 (mixin已处理第一个tab触发downCallback)
 					bgColor: "#ffffff",
@@ -330,15 +348,10 @@ import userGuidance from './popup/userGuidance.vue';
 				stickyTop: 0,
 				_RewardedVideoAd: null, // 激励视频
 				adunit: 'adunit-bc00b5948e4bbd52',
+				articleInfo: null,
 			}
 		},
 		onLoad(options) {
-			// // 彬纷享礼跳转传参：积分，头像，昵称
-			// var {
-			// 	data,
-			// 	type
-			// } = options;
-			// this.handleOptions(type, data)
 			this.stickyTop = getViewPort().navHeight;
 			/*初始化激励视频*/
 			this.initRewardedVideoAd()
@@ -369,6 +382,43 @@ import userGuidance from './popup/userGuidance.vue';
 			...mapActions({
 				getUserTotal: 'user/getUserTotal',
 			}),
+			openArticle() {
+                if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
+				this.$wxReportEvent('readingpassage');
+				let articleInfo = this.articleInfo
+				let item = articleInfo;
+				let link = encodeURIComponent(item.link);
+				uni.navigateTo({
+					url: `/pages/webview/webview?title=${item.title}&link=${link}&isButton=true`
+				});
+
+			},
+			async articleInit() {
+				const res = await articleList()
+				let {code, data } = res;
+				if (code != 1)  return this.articleInfo = null;
+				this.articleInfo = data;
+			},
+			async lightInit() {
+				const res = await lightTask();
+				if (res.code != 1) return;
+				let {
+					reward_rules,
+					name,
+					subtitle,
+					title,
+					image
+				} = res.data;
+				let { app_id, path } = JSON.parse(reward_rules)
+				this.lightConfig = {
+					name,
+					subtitle,
+					title,
+					image,
+					app_id,
+					path
+				}
+			},
 			// 分享的文案获取
 			specialLisShareHandle({ share_word, share_img }) {
 				this.currentSharePageObj.btnShareObj = {
@@ -468,15 +518,20 @@ import userGuidance from './popup/userGuidance.vue';
 					})
 				});
 			},
-			initCommon() {
+			async initCommon() {
 				wx.nextTick(() => {
+					this.lightInit();
+					this.articleInit();
 					Object.keys(this.$refs).forEach((key) => {
 						if (this.$refs[key].init) {
 							this.$refs[key].init()
 						}
 					})
 					if (this.$refs.userGuidance) this.$refs.userGuidance.popupInit()
-				})
+				});
+				const res = await popover({ page: 10 });
+				if(res.code != 1) return;
+				this.listImg = res.data.list;
 			},
 			downCallback(event) {
 				this.initOptions()
@@ -563,24 +618,26 @@ import userGuidance from './popup/userGuidance.vue';
                 if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
 				this.$wxReportEvent('goldenbeans');
 				this.goPages('/pages/userModule/myCowpea/index');
-			},
-			// handleOptions(type, data) {
-			// 	log.addFilterMsg('taskIndex')
-			// 	log.info("type,data:", type, data)
-			// 	// 彬纷享礼跳转
-			// 	if (type && type == "bfxl") {
-			// 		setStorage('bfxl_userdata', decodeURIComponent(data))
-			// 		wx.nextTick(() => {
-			// 			if (this.$refs.pointsUpgrade) this.$refs.pointsUpgrade.showPop();
-			// 		})
-			// 	}
-			// }
+			}
 		},
 	}
 </script>
 
 <style lang="scss">
 	@import 'style/conmon.css';
+	.list_img {
+		box-sizing: border-box;
+		padding: 0rpx 24rpx 48rpx 24rpx;
+	}
+	.list_img-box {
+		position: relative;
+		padding-bottom: 15rpx;
+		width: 702rpx;
+		margin-top: 32rpx;
+		.img_item{
+			width: 100%;
+		}
+	}
 	page {
 		background-color: #f7f7f7;
 	}
@@ -621,7 +678,6 @@ import userGuidance from './popup/userGuidance.vue';
 		width: 64rpx;
 		height: 64rpx;
 	}
-
 	.border-line {
 		position: absolute;
 		left: 0;
@@ -631,15 +687,12 @@ import userGuidance from './popup/userGuidance.vue';
 		background: linear-gradient(270deg, rgba(239, 43, 32, 0.00), #ef2b20);
 		border-radius: 6rpx;
 	}
-
 	.fade-in {
 		opacity: 1;
 	}
-
 	.fade-out {
 		opacity: 0;
 	}
-
 	.my-beans {
 		display: flex;
 		align-items: center;
@@ -649,14 +702,9 @@ import userGuidance from './popup/userGuidance.vue';
 		transform: translateY(-50%);
 		transition: opacity .5s;
 		min-width: 200rpx;
-		// height: 58rpx;
 		height: 64rpx;
 		box-sizing: border-box;
-		// padding-left: 20rpx;
-		// padding-right: 20rpx;
 		margin-bottom: 8rpx;
-		// font-size: 30rpx;
-		// font-weight: 500;
 		font-weight: 600;
 		color: #fe9b22;
 		font-size: 36rpx;
@@ -680,13 +728,6 @@ import userGuidance from './popup/userGuidance.vue';
 			transform: translateX(-50%);
 		}
 	}
-	
-
-
-	// .my-beans-icon {
-	// 	width: 40rpx;
-	// 	height: 32rpx;
-	// }
 	.my-beans-icon {
 		width: 66rpx;
 		height: 62rpx;
@@ -792,5 +833,42 @@ import userGuidance from './popup/userGuidance.vue';
 			height: 26rpx;
 			margin: 0 0 6rpx 10rpx;
 		}
+	}
+	.art_box {
+		box-sizing: border-box;
+		padding: 0rpx 24rpx 48rpx 24rpx;
+	}
+
+	.content {
+		position: relative;
+		box-sizing: border-box;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		padding-bottom: 15rpx;
+		width: 702rpx;
+		height: 330rpx;
+		z-index: 1;
+		margin-top: 32rpx;
+	}
+
+	.bg-lightup {
+		width: 702rpx;
+		height: 330rpx;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: -1;
+	}
+
+	.btn {
+		height: 36rpx;
+		line-height: 36rpx;
+		font-size: 26rpx;
+		font-weight: 600;
+		text-align: center;
+		color: #c36e1d;
+		letter-spacing: 0.58px;
+		text-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.25) inset;
 	}
 </style>

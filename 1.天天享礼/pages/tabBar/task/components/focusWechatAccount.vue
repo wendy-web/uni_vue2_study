@@ -4,7 +4,6 @@
 		<view class="flex-row-between">
 			<view class="title">{{taskReward.title}}</view>
 			<view class="flex-row-between">
-				<!-- <image class="icon-beans" :src="imgUrl+'/task/icon_beans.png'" mode="aspectFit" lazy-load></image> -->
 				<view class="subtitle">{{taskReward.subtitle}}</view>
 			</view>
 		</view>
@@ -18,34 +17,12 @@
 				:src="taskReward.image"
 			><van-loading slot="loading" type="spinner" size="20" vertical />
 			</van-image>
-			<!-- 			<view class="flex-col-between">
-				<view class="flex-row-between category-box">
-					<view class="flex-col-center">
-						<image class="icon-category" mode="aspectFit" :src="imgUrl+'/task/icon_zixun.png'" lazy-load>
-						</image>
-						<view class="name">优惠资讯</view>
-					</view>
-					<view class="flex-col-center">
-						<image class="icon-category" mode="aspectFit" :src="imgUrl+'/task/icon_fuli.png'" lazy-load>
-						</image>
-						<view class="name">更多福利</view>
-					</view>
-					<view class="flex-col-center">
-						<image class="icon-category" mode="aspectFit" :src="imgUrl+'/task/icon_kefu.png'" lazy-load>
-						</image>
-						<view class="name">专属客服</view>
-					</view>
-				</view>
-				<view class="btn-box flex-row-center">
-					<button class="btn">去关注</button>
-				</view>
-			</view> -->
 		</view>
 	</view>
 </template>
 <script>
 	import { getImgUrl } from '@/utils/auth.js';
-    import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex';
 	export default {
 		props: {
 			taskReward: {

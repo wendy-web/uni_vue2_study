@@ -112,7 +112,8 @@ const mutations = {
         state.userInfo = userInfo
             // state.userInfo = {
             //     ...userInfo,
-            //     is_vip: 0
+            //     is_vip: 0,
+            //     buy_vip: 1
             // }
     },
     setLocation(state, location) {

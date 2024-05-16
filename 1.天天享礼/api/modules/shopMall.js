@@ -136,3 +136,11 @@ export function goodsDetails(data) {
         data
     });
 }
+// api/post/advertisementConfig
+export function advertisementConfig(data) {
+    return API.request({
+        url: '/api/post/advertisementConfig',
+        method: 'post',
+        data
+    });
+}

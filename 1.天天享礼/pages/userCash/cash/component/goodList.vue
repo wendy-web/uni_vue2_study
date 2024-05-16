@@ -78,7 +78,7 @@ export default {
       const skuRes = await requestAPI(params);
       if (skuRes.code == 0) return this.$toast(skuRes.msg);
       if (is_flow == 2) {
-        this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}`);
+        this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&positionId=${positionId}&active_id=${active_id}&tag=${tag}`);
         return;
       }
       const {

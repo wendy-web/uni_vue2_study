@@ -60,7 +60,7 @@
       <view class="refund_time box_fl" v-if="config.refund_time">
         <text style="margin-right: 4rpx">退款时间：</text>{{config.refund_time}}</view>
     </view>
-    <view class="order_box order_add">
+    <view class="order_box order_add" v-if="userInfo.buy_vip">
         <view class="add_shop fl_bet" @click="openGpsHandle">
           {{config.restaurant_name}}
           <view style="color:#0022AB"> 导航 <van-icon name="arrow" color="#0022AB" size="28rpx"/> </view>
@@ -192,7 +192,7 @@ export default {
       returnCash
     },
     computed: {
-      ...mapGetters(['brand_id']),
+      ...mapGetters(['brand_id', 'userInfo']),
       navbarTitle() {
         return statusTitle[this.currentStatus].title;
       },

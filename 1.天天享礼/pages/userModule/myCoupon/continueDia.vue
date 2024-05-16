@@ -15,7 +15,9 @@
         <view class="con_price">
           <text style="color: #ef2b20">¥{{faceValue}}</text> 限时优惠
         </view>
-        <view class="con_credit" v-if="!isVip">{{creditsValue}}牛金豆不退还</view>
+        <view class="con_credit">
+          {{ zeroCredits ? '近期最大优惠' : `${creditsValue}牛金豆不退还` }}
+        </view>
       </view>
     </view>
     <view class="btns_box">
@@ -45,10 +47,6 @@
         type: Number,
         default: 0
       },
-      isVip: {
-        type: Number,
-        default: 0
-      },
       cancelText: {
         type: String,
         default: '离开'
@@ -56,6 +54,10 @@
       confirmText: {
         type: String,
         default: '再考虑下'
+      },
+      zeroCredits: {
+        type: [String, Number],
+        default: 0
       }
     },
 		data() {

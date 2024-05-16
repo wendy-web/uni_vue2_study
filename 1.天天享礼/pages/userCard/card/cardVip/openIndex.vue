@@ -54,7 +54,11 @@
         </view>
     </view>
     <view class="pay_lab fl_center">安心保障 · 不自动续费</view>
-    <view class="pay_agree">开通即同意
+    <view class="pay_agree">
+        <van-checkbox checked-color="#FE9433" icon-size="12px" style="--checkbox-label-margin:5px;"
+            :value="isAgreement" @change="changeHandle">
+            <text style="color: #999;">我已阅读并同意</text>
+        </van-checkbox>
         <text style="color: #FE9433;" @click="toAgreeLook('/agreement/savings-server.html')">《省钱卡会员服务协议》</text> 和
         <text style="color: #FE9433;" @click="toAgreeLook('/agreement/savings-rule.html')">《会员规则》</text>
     </view>
@@ -89,7 +93,8 @@ export default {
             vipLists: [],
             isSelectVipIndex: 1,
             paymentParams: null,
-            isSpread: true
+            isSpread: true,
+            isAgreement: false
         }
     },
     computed: {
@@ -129,7 +134,11 @@ export default {
             if(scrollTop >= this.navHeight) return this.isShowNavBerColor = true;
             this.isShowNavBerColor = false;
         },
+        changeHandle(event) {
+            this.isAgreement = event.detail;
+        },
         async buyVipHandle() {
+            if(!this.isAgreement) return this.$toast('请勾选服务协议与规则');
             if(this.paymentParams) return this.createPayment();
             const goods_id = this.vipLists[this.isSelectVipIndex].id;
             const res = await buy({goods_id});
@@ -323,12 +332,17 @@ page {
             margin-right: 10rpx;
         }
     }
-    .pay_agree{
+    .pay_agree {
         font-size: 26rpx;
         text-align: center;
         color: #aaaaaa;
         line-height: 36rpx;
         margin-top: 16rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        white-space: nowrap;
     }
 }
 </style>

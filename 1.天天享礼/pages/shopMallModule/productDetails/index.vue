@@ -5,6 +5,9 @@
     <image class="icon_box-icon" mode="aspectFill"
       :src="imgUrl + 'static/images/icon_close.png'"></image>
   </view>
+  <view class="notice_box" >
+    <anNoticeBarShow ref="anNoticeBarShow" />
+  </view>
   <view class="content_box">
     <view :class="['swiper_box', !banner_image.length ? 'loading_circle1' : '']" :style="{ height: screenWidth + 'px'}">
       <swiper class="good-img"
@@ -26,25 +29,11 @@
         </swiper-item>
       </swiper>
       <view class="dot_lab" v-if="banner_image.length">{{ myIndex + 1 }} / {{ banner_image.length }}</view>
-      <view class="notice_box" >
-        <anNoticeBarShow
-          :list="buy_log"
-          :config="config"
-          :isSearch="isSearch"
-          :isHome="isHome"
-          :isShowGetText="isShowGetText"
-          :isShow="isShowBuyLog"
-          @swiperEnd="isShowBuyLog = false"
-        />
-      </view>
     </view>
     <!-- 商品主要信息 -->
     <view :class="['cont_box', !config ? 'loading_circle3' : '']" :style="{ '--padding': packet ? '68rpx' : '0rpx' }">
       <productCont
         :config="config"
-        :isSearch="isSearch"
-        :isHome="isHome"
-        :isShowPrice="isShowPrice"
         @confirm="confirmHandle"
         v-if="config"
       ></productCont>
@@ -63,18 +52,17 @@
         </van-image>
       </view>
     </view>
-
     <!-- 底部操作按钮 -->
     <view :class="['bottom-tools-box', !config ? 'loading_circle2' : '']">
       <view class="remind_box" @click="goMyCouponHandle" v-if="packet">
-        <image class="bg_img"  mode="aspectFit"
+        <image class="bg_img"  mode="scaleToFill"
           :src="subImgUrl + '/remind_box-bg.png'"></image>
         <view class="remind_left">
           <image  class="left_icon" mode="aspectFill"
             src="https://test-file.y1b.cn/store/1-0/24330/66078e0856ee8.png"></image>
-            领超级红包，享优惠叠加
+            先领超级红包，再享优惠叠加
         </view>
-        <view class="remind_right">查看<van-icon name="arrow" color="#F84842" size="26rpx" /></view>
+        <view class="remind_right">推荐<van-icon name="arrow" color="#F84842" size="26rpx" /></view>
       </view>
       <view class="bottom-tools">
         <view class="bottom-tools-left">
@@ -91,19 +79,23 @@
           </view>
         </view>
         <!-- 立即兑换 -->
-        <view class="redeem-now" @click="confirmHandle">
-          <block v-if="isShowPrice">
-            <view class="redeem-now-left">
-              <view class="rnl-label" v-if="config.face_value">券后</view>
-              <view class="rnl-value">{{ config.price }}</view>
+        <view :class="['redeem-now', showInitBuy ? '' : 'active']">
+            <block v-if="showInitBuy">
+              <view class="redeem-now-left" @click="confirmHandle(false)">
+                <view class="rnl-value">{{ config.face_value + config.price }}</view>
+                <view class="rnl-label">原价购买</view>
+              </view>
+              <!-- <view class="icon_middle" @click="confirmHandle"></view> -->
+            </block>
+            <view class="redeem-now-right" @click="confirmHandle">
+                <liu-customize-swiper :swiperList="headImgArr"
+                  ref="headImgArrRef" class="customize_box"
+                ></liu-customize-swiper>
+              <view class="fl_col_cen">
+                <view class="rnl-value">{{ config.price }}</view>
+                <view class="rnl-label">{{ config.face_value ? '券后价购买' : '立即购买' }}</view>
+              </view>
             </view>
-            <view class="icon_middle"></view>
-            <view class="redeem-now-right"> {{ config.face_value ? "领券购买" : '立即购买' }}</view>
-          </block>
-          <view class="redeem-now-txt" v-else>
-            <text v-if="config.face_value">{{ isShowGetText ? '领' : '兑'}}{{ config.face_value }}元券</text>
-            <text v-else>立即购买</text>
-          </view>
         </view>
       </view>
       <view class="van-submit-bar__safe"></view>
@@ -121,22 +113,19 @@ import { getViewPort } from "@/utils/index.js";
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
 import { mapActions, mapGetters } from "vuex";
 import anNoticeBarShow from "./anNoticeBarShow.vue";
+import liuCustomizeSwiper from './components/liu-customize-swiper/liu-customize-swiper';
 import productCont from "./productCont.vue";
 export default {
   components: {
     productCont,
-    anNoticeBarShow
+    anNoticeBarShow,
+    liuCustomizeSwiper
   },
   mixins: [shareMixin], // 采用混合的模式添加
   data() {
     return {
       isCollect: false, // 收藏状态
       config: null,
-      buy_log: [],
-      isSearch: false,
-      isHome: false,
-      isJdCenter: false,
-      isFeed: false,
       packet: null,
       myIndex: 0,
       screenWidth: 375, // 屏幕宽度
@@ -145,32 +134,29 @@ export default {
       stickTop: "",
       navBarHeight: 40,
       topHeight: 0,
-      isShowBuyLog: false,
       banner_image: [],
       attsList: [],
       detail_image: [],
-      queryId: 0
+      queryId: 0,
+      currentIndex: 0,
+      headImgArr: [],
     };
   },
   computed: {
     ...mapGetters(["userInfo", 'isAutoLogin']),
-    isShowGetText() {
-      return this.userInfo.is_vip || this.isJdCenter || (this.isFeed && this.config.credits);
-    },
-    isShowPrice() {
-      return this.isSearch || (this.config && !this.config.credits);
+    showInitBuy() {
+      return this.config && this.config.face_value && this.config.pathXq;
     }
   },
   onLoad(options) {
     const params = {
       queryId: options.queryId,
-      lx_type: options.lx_type
+      lx_type: options.lx_type,
+      positionId: options.positionId || 0,
+      active_id: options.active_id || 0,
+      tag: options.tag || 0
     }
     this.queryId = options.queryId;
-    this.isSearch = JSON.parse(options.isSearch || false);
-    this.isHome = JSON.parse(options.isHome || false);
-    this.isJdCenter = JSON.parse(options.isJdCenter || false);
-    this.isFeed = JSON.parse(options.isFeed || false);
     this.initQuery(params);
     // 获取屏幕宽度
     let system = uni.getSystemInfoSync();
@@ -211,6 +197,8 @@ export default {
         this.attsList = atts;
         this.detail_image = detail_image;
       }
+      this.headImgArr = this.config.headImgArr;
+      if(this.headImgArr && this.headImgArr.length) this.$refs.headImgArrRef.init(this.headImgArr);
       this.packet = packet;
       // this.config = {
       //   ...detail,
@@ -226,11 +214,8 @@ export default {
       //     avatar_url: 'https://img.pddpic.com/mms-material-img/2022-03-26/f2a26563-f58b-4f90-b9ab-2e2990805db7.png'
       //   }
       // ];
-      if(buy_log.length) setTimeout(() => {
-        this.buy_log = buy_log;
-        this.isShowBuyLog = true;
-        if(buy_log.length == 1) setTimeout(() => this.isShowBuyLog = false, 3000);
-      }, 2000);
+      if(!buy_log.length) return;
+      this.$refs.anNoticeBarShow.init(buy_log);
     },
     async collectHandle() {
       if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
@@ -245,16 +230,19 @@ export default {
       if (res.code == 1) this.config.is_collect = !this.config.is_collect;
       this.$toast(res.msg);
     },
-    async confirmHandle() {
+    async confirmHandle(isGet = true) {
       if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
-      const { appid, path } = this.config;
+      const { appid, path, pathXq } = this.config;
       this.$openEmbeddedMiniProgram({
         appId: appid,
         // envVersion:'trial',
-        path
-    });
+        path: isGet ? path : pathXq
+      });
     },
   },
+  onUnload() {
+    this.$refs.headImgArrRef && this.$refs.headImgArrRef.clearIntervalTimer();
+  }
 };
 </script>
 <style lang="scss">
@@ -262,6 +250,12 @@ export default {
 page {
   background-color: #f7f7f7;
   overflow: hidden;
+}
+.notice_box {
+  position: fixed;
+  top: 196rpx;
+  left: 24rpx;
+  z-index: 2;
 }
 .loading_circle2::before {
   content: '\3000';
@@ -322,11 +316,6 @@ page {
     right: 0;
     bottom: 23rpx;
   }
-  .notice_box {
-    position: absolute;
-    top: 196rpx;
-    left: 24rpx;
-  }
 }
 .coupon-details {
   width: 100vw;
@@ -370,7 +359,7 @@ page {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   .bottom-tools-left {
     display: flex;
     // flex: 1;
@@ -390,7 +379,6 @@ page {
     .remind_left {
       display: flex;
       align-items: center;
-      margin-left: 16rpx;
       font-weight: bold;
       .left_icon {
         width: 30rpx;
@@ -469,54 +457,99 @@ page {
   // min-width: 408rpx;
   flex: 1;
   height: 88rpx;
-  padding: 0 20rpx;
   box-sizing: border-box;
-  background: #f84842;
-  border-radius: 8px;
+  border-radius: 48rpx;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   position: relative;
   color: #ffffff;
   font-weight: bold;
   text-align: center;
+  overflow: hidden;
+  background: linear-gradient(173deg,#f84842 41%, #fe8f72 100%);
+  &.active {
+    .customize_box {
+      margin-right: 30rpx;
+    }
+  }
   .redeem-now-txt {
     flex: 1;
     text-align: center;
   }
+  .customize_box {
+    margin-left: -40rpx;
+  }
 }
 .redeem-now-left {
   display: flex;
-  align-items: baseline;
-  flex: 1;
+  align-items: center;
   justify-content: center;
+  flex-direction: column;
   white-space: nowrap;
   padding-right: 10rpx;
   white-space: nowrap;
-  .rnl-label {
-    font-size: 24rpx;
-    margin-right: 8rpx;
-    font-weight: normal;
-  }
-  .rnl-value {
-    font-size: 40rpx;
-    text-align: left;
-    &::before {
-      content: '￥';
-      font-size: 24rpx;
-    }
+  align-self: stretch;
+  background: linear-gradient(167deg,#f48f28 0%, #ffc654 100%);
+  padding: 0 38rpx 0 38rpx;
+  position: relative;
+  &::after {
+    content: '\3000';
+    position: absolute;
+    height: 100%;
+    width: 40rpx;
+    background: url("https://file.y1b.cn/store/1-0/24426/662b10834d629.png") 0 0 / 100% 100%;
+    right: -20rpx;
   }
 }
-.redeem-now-right{
+.rnl-label {
+  font-size: 22rpx;
+  font-weight: normal;
+}
+.rnl-value {
+  font-size: 32rpx;
+  text-align: left;
+  &::before {
+    content: '￥';
+    font-size: 20rpx;
+  }
+}
+
+.redeem-now-right {
+  align-self: stretch;
+  background: linear-gradient(173deg,#f84842 41%, #fe8f72 100%);
   flex: 1;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // margin-left: -28rpx;
 }
-.icon_middle {
-  width: 2rpx;
-  height: 20rpx;
-  background: #ffffff;
-  border-radius: 2rpx;
-}
+
+// .icon_middle {
+//   height: 100%;
+//   width: 34rpx;
+//   background: url("https://file.y1b.cn/store/1-0/24426/662b0a54f2953.png") 0 0 / 100% 100%;
+// }
+// .icon_middle {
+//   width: 30rpx;
+//   height: 120%;
+//   background: linear-gradient(167deg,#f48f28 0%, #ffc654 100%);
+//   background: linear-gradient(167deg,#f48f28 0%, #ffc654 100%);
+//   // position: absolute;
+//   transform: rotate(-15deg);
+//   position: relative;
+//   // margin-left: -5rpx;
+//   left: -10rpx;
+//   &::before {
+//     content: '\3000';
+//     width: 15rpx;
+//     height: 100%;
+//     position: absolute;
+//     background: linear-gradient(173deg,#f84842 41%, #fe8f72 100%);
+//     // margin-left: -5rpx;
+//   }
+// }
 
 .van-submit-bar__safe {
   padding-bottom: 32rpx;

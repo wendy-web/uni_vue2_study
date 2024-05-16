@@ -7,17 +7,12 @@
 				<view class="subtitle">{{taskReward.subtitle}}</view>
 			</view>
 		</view>
-
 		<view class="content" @click="checkGender(true)">
 			<!-- 背景图 -->
 			<van-image class="bg-star-sign" use-loading-slot lazy-load width="702rpx" height="562rpx"
 				:src="taskReward.image">
 				<van-loading slot="loading" type="spinner" size="20" vertical />
 			</van-image>
-			<!-- 			<van-image custom-class="btn" use-loading-slot lazy-load width="276rpx" height="72rpx"
-				:src="imgUrl+'/task/btn_star_sign.png'">
-				<van-loading slot="loading" type="spinner" size="20" vertical />
-			</van-image> -->
 		</view>
 		<!-- 性别弹窗 -->
 		<van-popup :show="genderShow" @close="onClose" closeable round>

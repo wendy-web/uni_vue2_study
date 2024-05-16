@@ -1,75 +1,68 @@
 <template>
-<view v-if="isShow" class="an-notice-box">
-    <swiper
-        :vertical="true"
-        :autoplay="true"
-        :interval="3000"
-        :duration="1000"
-        style="height: 100%;"
-        :current="myIndex"
-        @change="swiperChangeHandle"
-    >
-        <swiper-item v-for="item in list" :key="item.id">
-            <view class="an_notice_cont box_fl">
-                <van-image class="user-icon" height="52rpx" width="52rpx" :src="item.avatar_url" radius="50%"
-                    use-loading-slot><van-loading slot="loading" type="spinner" size="20" vertical />
-                </van-image>
-                <view class="nk-name txt_ov_ell1">
-                    <text>{{item.nick_name}}</text>
-                    <text class="nk-tips" v-if="isSearch || (isHome && !config.face_value)">刚刚购买了该优惠券</text>
-                    <text class="nk-tips" v-else>刚刚{{ isShowGetText ? '领取' : '兑换' }}了该优惠券</text>
-                </view>
-            </view>
-        </swiper-item>
-    </swiper>
+<view :class="['an-notice-box', isShow ? 'active' : '']">
+    <view class="an_notice_cont box_fl">
+        <van-image class="user-icon" height="52rpx" width="52rpx" :src="config.avatar_url" radius="50%"
+            use-loading-slot><van-loading slot="loading" type="spinner" size="20" vertical />
+        </van-image>
+        <view class="nk-name txt_ov_ell1">
+            <text>{{config.nick_name}}</text>
+            <text class="nk-tips">刚刚购买了该商品</text>
+        </view>
+    </view>
 </view>
 </template>
 <script>
 export default {
     props: {
-        config: {
-			type: Object,
-			default () {
-				return {
-				}
-			}
-		},
-        isShow: {
-            type: Boolean,
-            default: false
-        },
-        list: {
-            type: Array,
-            default () {
-                return []
-            }
-        },
-        isSearch: {
-            type: Boolean,
-            default: false
-        },
-        isHome: {
-            type: Boolean,
-            default: false
-        },
-        isShowGetText: {
-            type: Boolean,
-            default: false
-        }
     },
     data() {
         return {
-            myIndex: 0
+            myIndex: 0,
+            config: null,
+            isShow: false,
+            list: [],
+            listTimer: null,
+            switchTime: 2000
         };
     },
-    methods: {
-        swiperChangeHandle(event) {
-            const current = event.detail.current;
-            if(current >= (this.list.length - 1)) {
-                setTimeout(() => this.$emit('swiperEnd'), 3000);
+    watch: {
+        config(newVal) {
+            clearTimeout(this.listTimer);
+            if(newVal) {
+                this.isShow = true;
+                this.listTimer = setTimeout(() => {
+                    this.isShow = false;
+                    setTimeout(() => {
+                        this.config = null;
+                        this.timerFun();
+                    }, 1000);
+                }, this.switchTime);
+                return
             }
+            this.isShow = false;
         }
     },
+    methods: {
+        init(list) {
+            this.list = list;
+            this.popupShow();
+        },
+        popupShow() {
+            if(!this.list.length) return;
+            this.config = this.list.splice(0, 1)[0];
+        },
+        timerFun() {
+            this.timer = null;
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => {
+                this.popupShow();
+            }, 5000);
+        },
+    },
+    beforeDestroy() {
+        this.timer = null;
+        clearTimeout(this.timer);
+    }
 }
 </script>
 <style lang="scss">
@@ -81,6 +74,11 @@ export default {
     position: relative;
     z-index: 0;
     color: #fff;
+    opacity: 0;
+    transition: all 1s;
+    &.active {
+        opacity: 1;
+    }
     &::before {
         content: '\3000';
         position: absolute;

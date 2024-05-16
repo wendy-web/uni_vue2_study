@@ -46,9 +46,9 @@
               <view class="item_lab">{{item.exch_user_num + item.user_num}}人兑换</view>
             </view>
             <view class="fl_bet">
-              <view class="vip_box box_fl" v-if="userInfo.is_vip">
+              <view class="vip_box box_fl" v-if="item.zero_credits">
                 0豆特权
-                <image class="vip_img" :src="cardImgUrl + 'vip_box.png'" mode="scaleToFill"></image>
+                <!-- <image class="vip_img" :src="cardImgUrl + 'vip_box.png'" mode="scaleToFill"></image> -->
               </view>
               <view class="item_price fl_center" v-else>
                 <text class="item_price-lab">{{item.credits}}</text>

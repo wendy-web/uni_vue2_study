@@ -42,12 +42,12 @@
             <view class="list_cont">
               <view class="use_cont">
                 <view class="use_cont-left" v-if="item.after_pay">先用后付</view>
-                <view class="use_cont-right" v-if="userInfo.is_vip">0豆特权</view>
+                <view class="use_cont-right" v-if="item.zero_credits">0豆特权</view>
               </view>
               <view class="list_cont-bottom fl_bet">
                 <view class="list_cont-left box_fl">
                   <view class="cowpea-num">
-                    <text :class="['value', userInfo.is_vip ? 'active' : '']">{{ item.credits }}</text>牛金豆
+                    <text :class="['value', item.zero_credits ? 'active' : '']">{{ item.credits }}</text>牛金豆
                   </view>
                   <view class="exchange-num" v-if="item.lx_type == 1">
                     {{ Number(item.exch_user_num) + Number(item.user_num) }}人兑换
@@ -466,6 +466,7 @@ page {
     font-weight: bold;
     &.active {
       text-decoration: line-through;
+      // text-decoration: line-through solid #f84842 4rpx;
     }
   }
   .vip_box{

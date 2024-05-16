@@ -24,6 +24,7 @@ export default {
 		};
 	},
 	onLoad(option) {
+		console.log('option', option)
 		this.link = decodeURIComponent(option.link);
 		option.xdyh_teamId && teamBind({xdyh_teamId: option.xdyh_teamId});
 		// 看文有奖传参
@@ -49,6 +50,14 @@ export default {
 				backgroundColor: option.bgColor
 			});
 		}
+		if(option.query){
+            const qUrl = decodeURIComponent(option.q);
+			console.log('option:q', qUrl)
+        }
+		if(option.q){
+            const queryUrl = decodeURIComponent(option.query);
+			console.log('query:', queryUrl)
+        }
 	},
 	onReachBottom() {
 		if (this.fromArticle && !_isReward) {

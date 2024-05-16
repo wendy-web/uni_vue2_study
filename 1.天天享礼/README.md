@@ -85,3 +85,21 @@ tab的切换与搜索的使用，直接通过获取appid与path地址跳转；
 进行来源的判定 同步用户信息
 
 - 彬纷享礼 appID: wxbb29c5aec6891525
+
+``{
+   "path": "pages/demo/demo",
+   "style": {
+      "navigationBarTitleText": "demo",
+      "usingComponents": {
+         "coral-adv": "plugin://coral-adv/adv"
+      }
+   }
+}``
+
+
+## 测试进入
+
+- 进入商品列表的高亮：
+添加参数：skuId=pddE9r2LP8Ekc9k2DRxwebd3ELo3mPPTv49_JQ37rHM2L7
+
+- 配置icon的高亮的使用 - 在icon的配置中添加跳转进入的事件，参数为：psite=popover_12&lsite=light_12

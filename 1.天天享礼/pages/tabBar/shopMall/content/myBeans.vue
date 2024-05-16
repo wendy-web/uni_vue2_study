@@ -1,32 +1,32 @@
 <template>
-<view class="my_beans" v-if="(isShowCowpeaNav && !userInfo.is_vip) || !isShowCowpeaNav">
-    <view
-        class="my-beans ani_head"
-        :class="isShowCowpeaNav ? 'ani_head-in' : 'ani_head-out'"
-        v-if="isShowCowpeaNav && !userInfo.is_vip"
-    >
+<view class="my_beans ani_head"
+    :class="!isShowCowpeaNav ? 'ani_head-in' : 'ani_head-out'"
+    v-if="!isShowCowpeaNav"
+>
+    <view class="my-beans" @click="goToTask">
         <p-countup
             :num="userInfo.credits"
-            width="11"
-            height="18"
-            color="#FE9B22"
-            fontSize="18"
+            width="8"
+            height="14"
+            color="#804815"
+            fontSize="14"
             fontWeight="600"
         ></p-countup>
+        <image class="login_right" mode="widthFix"
+            src="https://file.y1b.cn/store/1-0/24513/6641dbdf4f586.png"
+        ></image>
     </view>
-    <image
-        :class="['bg-loveRecord ani_head',
-        !isShowCowpeaNav ? 'ani_head-in' : 'ani_head-out']"
-        :src="imgUrl + 'static/shopMall/nav_icon.png'"
-        mode="aspectFill" v-if="!isShowCowpeaNav"
-      ></image>
+    <view class="bg-loveRecord ">
+        <image class="login_bg" mode="widthFix"
+            src="https://file.y1b.cn/store/1-0/24513/6641d6de2ef32.png"
+        ></image>
+    </view>
 </view>
 
 </template>
 <script>
 import pCountup from "@/components/p-countUp/countUp.vue";
 import { mapGetters } from "vuex";
-import { getImgUrl } from "@/utils/auth.js";
 export default {
     props: {
         isShowCowpeaNav: {
@@ -38,14 +38,17 @@ export default {
         pCountup,
     },
     computed: {
-        ...mapGetters(["userInfo"])
+        ...mapGetters(["userInfo", "isAutoLogin"])
     },
     data() {
         return {
-            imgUrl: getImgUrl(),
         };
     },
     methods: {
+        goToTask() {
+            if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
+			this.$emit('goTask');
+		},
         animationfinishHandle(event) {
             this.$emit('animaFinish', event.detail.current);
         },
@@ -53,51 +56,51 @@ export default {
 }
 </script>
 <style lang="scss" scope>
-.my_beans{
-    margin-right: 20rpx;
-}
 .my-beans {
     display: flex;
     align-items: center;
     transition: opacity 0.5s;
-    min-width: 198rpx;
     box-sizing: border-box;
-    padding-left: 20rpx;
-    padding-right: 32rpx;
-    height: 64rpx;
-    font-size: 36rpx;
+    padding-left: 72rpx;
+    padding-right: 24rpx;
+    height: 56rpx;
+    font-size: 28rpx;
     font-weight: 600;
     text-align: center;
-    color: #fe9b22;
-    background: rgba(255, 255, 255, 0.5);
-    border: 2rpx solid rgba(255, 255, 255, 0.35);
+    color: #804815;
+    // background: rgba(255, 255, 255, 0.5);
+    // border: 2rpx solid rgba(255, 255, 255, 0.35);
     border-radius: 34rpx;
     position: relative;
     z-index: 0;
-    &::after {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 8rpx;
-        background: linear-gradient(180deg, #f9e8d8, #ea8b2e);
-        border-radius: 50%;
-        filter: blur(4rpx);
-        bottom: -8rpx;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: -1;
-    }
     &::before {
         content: "\3000";
-        background: url("https://file.y1b.cn/public/img/ttxl/static/shopMall/beans-icon.png") center / contain no-repeat;
-		display: inline-block;
-        width: 66rpx;
-        height: 62rpx;
-        margin-top: 5rpx;
+        position: absolute;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: url("https://file.y1b.cn/store/1-0/24513/6641d9c87906a.png") 0 0 / 100% 100% no-repeat;
+    }
+    .login_right {
+        width: 10rpx;
+        height: 18rpx;
+        margin-left: 10rpx;
     }
 }
 .bg-loveRecord {
-  width: 198rpx;
-  height: 40rpx;
+    position: absolute;
+    width: 100vw;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: -1;
+    .login_bg{
+        width: 242rpx;
+        height: 62rpx;
+        display: block;
+        margin: 0 auto;
+    }
 }
 </style>

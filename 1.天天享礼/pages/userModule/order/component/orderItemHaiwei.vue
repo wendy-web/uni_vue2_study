@@ -2,7 +2,7 @@
 <view class="item">
 	<view class="type_top">
 		<view class="type_lft">
-			<image class="type_top-icon" mode="scaleToFill" :src="currentHaiwei.icon"></image>
+			<!-- <image class="type_top-icon" mode="scaleToFill" :src="currentHaiwei.icon"></image> -->
 			<text class="type_lft-label">{{ item.restaurant_name }} </text>
 		</view>
 		<view class="type_rit" :class="'order-status-'+ item.status">{{ status_title }}</view>
@@ -43,17 +43,13 @@
 			</view>
 			<view class="btn">去支付</view>
 		</view>
-		<view class="take"
-			v-if="[3].includes(Number(item.status))"
-			@click="takeCodeHandle"
-		>
-			<view class="take_btn">取餐码</view>
+		<view class="take_box fl_end">
+			<view class="take_btn" v-if="Number(item.status) && userInfo.buy_vip"
+				@click="againHandle(item.id)">再来一单</view>
+			<view class="take_btn" v-if="[3].includes(Number(item.status))"
+				@click="takeCodeHandle">取餐码</view>
 		</view>
-		<view class="take"
-			v-if="Number(item.status)"
-			@click="againHandle(item.id)">
-			<view class="take_btn">再来一单</view>
-		</view>
+
 	</block>
 </view>
 </template>
@@ -62,6 +58,7 @@
 import { hwHome } from '@/api/modules/discounts.js';
 import { orderAgain, orderPay } from '@/api/modules/takeawayMenu/luckin.js';
 import { parseTime } from '@/utils/index.js';
+import { mapGetters } from 'vuex';
 import { haiWeiObj, haiWeiStatus } from '../static/config';
 export default {
 	props: {
@@ -79,6 +76,7 @@ export default {
 		}
 	},
 	computed: {
+        ...mapGetters(['userInfo']),
 		status_title() {
 			const status = this.item.status;
 			return haiWeiStatus[status].title;
@@ -89,7 +87,12 @@ export default {
 		}
 	},
 	data() {
-		return { }
+		return {
+			
+		}
+	},
+	mounted() {
+		console.log('this.userInfo', this.userInfo)
 	},
 	methods: {
 		formatPrice(price = 0, type) {
@@ -288,10 +291,8 @@ export default {
 	margin-top: 24rpx;
 	padding: 21rpx 24rpx 0;
 }
-.take{
-	display: flex;
-	justify-content: flex-end;
-	margin: 32rpx 24rpx 0 0;
+.take_box{
+	margin-top: 32rpx;
 	.take_btn {
 		padding: 0 30rpx;
 		display: inline-block;
@@ -301,6 +302,7 @@ export default {
 		text-align: center;
 		font-size: 28rpx;
 		color: #333333;
+		margin-right: 24rpx;
 	}
 }
 

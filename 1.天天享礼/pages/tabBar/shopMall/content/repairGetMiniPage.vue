@@ -187,12 +187,11 @@ export default {
                 });
                 return;
             }
-            const params = { is_popover: 1 }
+            const params = { is_popover: 1, positionId }
             let api = '';
             if (lx_type == 2) {
                 api = bysubunionid;
                 params.skuId = skuId;
-                params.positionId = positionId;
                 params.has_coupon = has_coupon || 0;
             } else {
                 api = goodsPromotion;
@@ -201,7 +200,7 @@ export default {
             const skuRes = await api(params);
             if (skuRes.code == 0) return this.$toast(skuRes.msg);
             if (is_flow == 2) {
-                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}`);
+                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&positionId=${positionId}`);
                 return;
             }
             const { type_id, jdShareLink, mobile_url } = skuRes.data;

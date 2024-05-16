@@ -134,10 +134,15 @@ const goDetailsFun = {
                         this.$go(`/pages/userModule/productList/index?typeIndex=${type_id || 0}`);
                         return;
                     }
+                    console.log('this.', this.userInfo.buy_vip);
+                    if (this.userInfo.buy_vip) {
+                        return this.$go('/pages/discounts/discounts/index');
+                    }
+                    this.$toast('维护中，敬请留意');
                     // 惠生活
-                    uni.switchTab({
-                        url: `/pages/tabBar/discounts/index`
-                    });
+                    // uni.switchTab({
+                    //     url: `/pages/tabBar/discounts/index`
+                    // });
                     break;
                 case 8:
                     // 跳转瑞幸点单 - 入口标识：第一次进入为1； 0：否；1：是
@@ -227,7 +232,6 @@ const goDetailsFun = {
 
             // 小程序的直接跳转
             if (item.type == 4) return this.immediateFun(item);
-
             const detailData = await couponDetails({ id: item_id });
             let {
                 activity_id,
@@ -328,7 +332,10 @@ const goDetailsFun = {
                     break;
                 case 10:
                     // 广告位 - 打开半屏推券的使用
-                    this.$emit('isBannerClick', item);
+                    this.$emit('isBannerClick', {
+                        ...item,
+                        end_time
+                    });
                     break;
                 case 11:
                     // 移动积分 - 进入详情
@@ -344,9 +351,10 @@ const goDetailsFun = {
             } = pageData;
             switch (page_index) {
                 case 1:
-                    uni.switchTab({
-                        url: `/pages/tabBar/discounts/index`
-                    });
+                    this.$go('/pages/discounts/discounts/index');
+                    // uni.switchTab({
+                    //     url: `/pages/tabBar/discounts/index`
+                    // });
                     break;
                 case 2:
                     uni.switchTab({
@@ -453,7 +461,7 @@ const goDetailsFun = {
             }
             // 半屏的中转详情页面
             if (is_flow == 2) {
-                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&isSearch=${this.isSearchJdModel|| false}&isHome=${this.isHome || false}&isJdCenter=${this.isJdCenter || false}`);
+                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&positionId=${positionId}`);
                 return;
             }
             type_id = skuRes.data.type_id;

@@ -1,10 +1,10 @@
 <template>
 <view :class="['pre_box', isSpread ? 'active' : '']">
     <view :class="['pre_title', (titleStyle == 'center') ? 'center_active' : '']">省钱卡特权</view>
-    <image mode="scaleToFill" class="pre_img01" src="https://file.y1b.cn/store/1-0/231129/656702611abb2.png"></image>
+    <!-- <image mode="scaleToFill" class="pre_img01" src="https://file.y1b.cn/store/1-0/231129/656702611abb2.png"></image> -->
+    <image mode="scaleToFill" class="pre_img02" src="https://file.y1b.cn/store/1-0/231129/656702f041a80.png"></image>
     <view class="spread_imgs">
-        <image mode="scaleToFill" class="pre_img02" src="https://file.y1b.cn/store/1-0/231129/656702f041a80.png"></image>
-        <image mode="scaleToFill" class="pre_img03" src="https://file.y1b.cn/store/1-0/231129/656703012c2c8.png"></image>
+        <image mode="scaleToFill" class="pre_img03" src="https://file.y1b.cn/store/1-0/24513/6641c8524263b.png"></image>
     </view>
     <view class="pre_icon" @click="spreadHandle">
         {{ isSpread ? '收起' : '展开'}}
@@ -49,7 +49,7 @@ export default {
     }
     &.active {
         .spread_imgs {
-            height: 820rpx;
+            height: 358rpx;
         }
         .arrow_close{
             transform: rotate(180deg);

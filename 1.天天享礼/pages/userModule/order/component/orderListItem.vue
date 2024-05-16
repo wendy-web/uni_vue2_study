@@ -18,13 +18,13 @@
 	<orderItemPhone
 		ref="orderItemPhone"
 		:item="item"
-		v-else-if="[9].includes(item.goods_type)"
+		v-else-if="[9, 11].includes(item.goods_type)"
 		@again="() => this.$emit('againPhone')"
 	></orderItemPhone>
 	<view class="item" v-else>
 		<view class="type_top">
 			<view class="type_lft">
-				<image class="type_top-icon" mode="scaleToFill" :src="item.goodsTypeIcon"></image>
+				<image class="type_top-icon" mode="scaleToFill" :src="item.goodsTypeIcon" v-if="item.goods_type !=10"></image>
 				<text>{{ item.goodsTypeTxt }} </text>
 			</view>
 			<view class="type_rit" :class="'order-status-'+ item.status">
@@ -43,12 +43,13 @@
                 </van-image>
 				<view class="order-detail">
 					<view class="maxTwoLine">{{item.goods_sku_name}}</view>
-					<view v-html="formatPrice(item.amount, 1)"></view>
+					<view v-html="formatPrice(item.amount, 1)" v-if="![12].includes(item.goods_type)"></view>
 				</view>
 			</view>
 		</view>
 		<!-- 支付金额 -->
 		<view class="pay-info" @click="goToUse(item)">
+			<view class="userFee_value" v-if="[12].includes(item.goods_type) && Number(item.userFee)"><view v-html="formatPrice(item.userFee, 1)"></view></view>
 			<text class="pay-info_label">{{[2,3,4,5].includes(Number(item.status)) ? '实付' : '应付'}}</text>
 			<view v-html="formatPrice(item.pay_amount)"></view>
 		</view>
@@ -77,9 +78,10 @@
 			<view class="btn btn_status3">去使用</view>
 		</view>
 		<!-- 所有状态都打开 -->
-		<view class="order-operate">
+		<view class="order-operate" v-if="![12].includes(item.goods_type)">
             <view class="expire-time"></view>
-			<view class="btn btn_status3"  @click="goCouponDetailsHandle(item)" v-if="Number(item.status)">再来一单</view>
+			<view class="btn btn_status3"  @click="useMcHandle(item)" v-if="item.status == 2 && [10].includes(item.goods_type)">去用券</view>
+			<view class="btn btn_status3" @click="goCouponDetailsHandle(item)" v-else-if="showAgain(item)">再来一单</view>
 			<view class="btn btn_status3" v-else-if="[5, 7].includes(Number(item.goods_type))" @click="goToUse(item)">去支付</view>
 		</view>
 	</view>
@@ -88,9 +90,11 @@
 </template>
 
 <script>
-	import { pay, query } from '@/api/modules/order.js';
+	import { bysubunionid } from '@/api/modules/jsShop.js';
+import { pay, query } from '@/api/modules/order.js';
+import { goodsPromotion } from '@/api/modules/pddShop.js';
 import { parseTime } from '@/utils/index.js';
-import Toast from '@/wxcomponents/vant_update/toast/toast.js';
+import { mapGetters } from 'vuex';
 import { goodsTypeObj, orderClass, orderStatus } from '../static/config';
 import orderItemHaiwei from './orderItemHaiwei.vue';
 import orderItemKfc from './orderItemKfc.vue';
@@ -104,7 +108,7 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 			orderItemKfc,
 			orderItemStarbucks,
 			orderItemHaiwei,
-			orderItemPhone
+			orderItemPhone,
 		},
 		props: {
 			list: {
@@ -131,6 +135,7 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 
 		},
 		computed: {
+			...mapGetters(['userInfo']),
 			newList() {
 				const list = this.list;
 				const showList = list.map(item => {
@@ -146,7 +151,7 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 					}
 				});
 				return showList;
-			},
+			}
 		},
 		data() {
 			return {
@@ -158,12 +163,15 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 		mounted() {
 		},
 		methods: {
+			showAgain(item) {
+				console.log('this.userInfo.buy_vip', this.userInfo.buy_vip)
+				return (Number(item.status) && ![10].includes(item.goods_type)) || (this.userInfo.buy_vip && [10].includes(item.goods_type))
+			},
 			countFinished(e) {
 				timerEnd = true;
 				this.$emit("updateOrderInfo");
 			},
 			formatPrice(price = 0, type) {
-				// if (!price) return;
 				price = Number(price / 100).toFixed(2);
 				let splitPrice = price.split(".");
 				let dom= '';
@@ -178,7 +186,7 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 				return dom;
 			},
 			goToUse(item) {
-				const { goods_type, jdShareLink, type_id } = item;
+				const { goods_type, jdShareLink, type_id} = item;
                 // 京东/拼多多 深爱购的详情
 				if([5, 7, 8].includes(goods_type)) {
 					this.$openEmbeddedMiniProgram({
@@ -187,29 +195,57 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 					});
 					return;
 				}
+				if([12].includes(goods_type)) {
+					const link = encodeURIComponent(jdShareLink);
+					this.$go(`/pages/webview/webview?link=${link}`);
+					return;
+				}
                 this.$go(`/pages/userModule/order/detail?id=${item.id}`);
 			},
-			goCouponDetailsHandle(item) {
+			useMcHandle(item) {
+				const { goods_id, ticket_id } = item;
+				this.$go(`/pages/userModule/takeawayMenu/mcDonald/index?brand_id=5&rote=1&isBack=1&product_id=${goods_id || 0}&ticket_id=${ticket_id}`);
+			},
+			async goCouponDetailsHandle(item) {
 				const {
 					goods_type,
 					coupon_id,
 					cid1,
 					skuId,
 					cid3,
-                    goods_sign
+                    goods_sign,
+					lx_type,
+					queryId
 				} = item;
                 if(goods_type === 8) return this.goToUse(item);
                 let pathUrl = `/pages/shopMallModule/couponDetails/index?id=${coupon_id}`;
 				// 京东的进入feed流
-				if(goods_type == 5) pathUrl = `/pages/shopMallModule/feedDetailsList/index?cid1=${cid1}&skuId=${skuId}&cid3=${cid3}`;
-                if(goods_type == 7) pathUrl = `/pages/shopMallModule/feedDetailsList/index?goods_sign=${goods_sign}`;
-				this.$go(pathUrl)
+				// if(goods_type == 5) pathUrl = `/pages/shopMallModule/feedDetailsList/index?cid1=${cid1}&skuId=${skuId}&cid3=${cid3}`;
+                // if(goods_type == 7) pathUrl = `/pages/shopMallModule/feedDetailsList/index?goods_sign=${goods_sign}`;
+				// 京东/拼多多的进入 - 中转详情页
+				if([5, 7].includes(goods_type)) {
+					const params = {  };
+					let requestApi = '';
+					if (lx_type == 3) {
+						requestApi = goodsPromotion;
+						params.goods_sign = queryId;
+					} else {
+						requestApi = bysubunionid;
+						params.skuId = queryId;
+					}
+					const skuRes = await requestApi(params);
+					if (skuRes.code == 0) {
+						this.$toast(skuRes.msg);
+						return;
+					}
+					pathUrl = `/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${queryId}`;
+				}
+				this.$go(pathUrl);
 			},
 			checkOrderClass(val) {
 				return orderClass[val];
 			},
 			toPay(item) {
-				_CURRDATA = item
 				this.isDisabled = true;
 				let params = { id: item.id };
 				if (!this.paymentParams) {
@@ -259,20 +295,17 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 					},
 					fail: (err) => {
 						this.isDisabled = false
-						if (err.errMsg == 'requestPayment:fail cancel') {
-							// this.$emit('cancelPlay', () => {
-							// 	this.toPay(_CURRDATA)
-							// })
-							Toast({
-								message: "您已取消支付操作",
-								position: 'bottom'
-							});
-							return;
-						}
-						Toast({
-							message: err.errMsg,
-							position: 'bottom'
-						});
+						// if (err.errMsg == 'requestPayment:fail cancel') {
+						// 	Toast({
+						// 		message: "您已取消支付操作",
+						// 		position: 'bottom'
+						// 	});
+						// 	return;
+						// }
+						// Toast({
+						// 	message: err.errMsg,
+						// 	position: 'bottom'
+						// });
 					}
 				});
 			},
@@ -377,14 +410,24 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 .pay-info {
 	font-size: 24rpx;
 	font-weight: 400;
-	color: #333333;
+	color: #333;
 	line-height: 36rpx;
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
 	padding: 0 24rpx;
+	position: relative;
 	.pay-info_label {
 		margin-right: 8rpx;
+	}
+	.userFee_value{
+		position: absolute;
+		left: 24rpx;
+		display: flex;
+		&::before {
+			content: '返';
+			margin-right: 8rpx;
+		}
 	}
 }
 .pay-price {
@@ -423,6 +466,12 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 .expire-time {
 	font-size: 26rpx;
 	color: #aaaaaa;
+	line-height: 36rpx
+}
+.off_time {
+	font-size: 26rpx;
+	color: #aaa;
+	margin-left: 24rpx;
 	line-height: 36rpx
 }
 .btn {

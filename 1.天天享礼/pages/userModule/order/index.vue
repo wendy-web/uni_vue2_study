@@ -76,7 +76,7 @@
 </view>
 </template>
 <script>
-	import returnCashDia from '@/components/returnCashDia.vue';
+import returnCashDia from '@/components/returnCashDia.vue';
 import { getImgUrl } from '@/utils/auth.js';
 import getViewPort from '@/utils/getViewPort.js';
 import codeDia from './component/codeDia.vue';

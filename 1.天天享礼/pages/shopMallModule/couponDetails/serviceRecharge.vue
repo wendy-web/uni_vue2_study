@@ -119,13 +119,13 @@
 						/>
 					</view>
 				</block>
-                <view class="discount_item fl_bet" v-if="couponInfo.is_vip">
+                <!-- <view class="discount_item fl_bet" v-if="couponInfo.zero_credits">
                     <view class="fl_center">
                         <image class="dis_icon" :src="cardImgUrl +'/card_icon5.png'" mode="aspectFill"></image>
                         <view>0豆特权</view>
                     </view>
                     <view class="dis_noPrice">免{{couponInfo.credits}}牛金豆</view>
-                </view>
+                </view> -->
                 <view class="discount_item fl_bet">
                     <view class="fl_center">
                         <image class="dis_icon" :src="cardImgUrl +'/card_icon6.png'" mode="aspectFill"></image>
@@ -229,7 +229,7 @@
 	:isShow="isShowBackDia"
 	:faceValue="couponFaceValue"
 	:creditsValue="couponInfo.credits"
-    :isVip="couponInfo.is_vip"
+	:zeroCredits="couponInfo.zero_credits"
 	@close="confirmBackHandle"
 	@confirm="closeDiaHandle"
 ></continueDia>
@@ -389,8 +389,8 @@ let _request = false;
             }
 		},
 		watch: {
-			restaurant_id(newValue) {
-				if(!this.isMcDonaldType || !newValue) return;
+			restaurant_id(newValue, oldValue) {
+				if(!this.isMcDonaldType || !newValue || !oldValue) return;
 				this.initLocation(12, newValue);
 			},
 			show(newVal) {
@@ -402,6 +402,7 @@ let _request = false;
                 setSelRedPacket: 'user/setSelRedPacket',
                 setSelNewPacket: 'user/setSelNewPacket',
 				setBrandId: 'cart/setBrandId',
+				setRestaurantId: 'cart/setRestaurantId',
 				setCityName: 'cart/setCityName',
             }),
             formatPrice,
@@ -411,7 +412,7 @@ let _request = false;
                 this.$go(`/pages/userCard/card/cardVip/redPayIndex?saving_money=${saving_money}&ly_type=0`);
             },
 			popupClose(){
-				if(this.isMcDonaldType) return this.show = false;
+				// if(this.isMcDonaldType) return this.show = false;
 				this.isShowBackDia = true;
 			},
 			closeDiaHandle() {
@@ -467,6 +468,10 @@ let _request = false;
 				const res = await restaurantQuery(params);
 				if(res.code != 1 || res.data.upgrade) return;
 				this.restaurantStore = res.data;
+				const restaurantIdRes = res.data.restaurant_id;
+				if(!this.restaurant_id) {
+					this.setRestaurantId(restaurantIdRes); // 门店id
+				}
 			},
 			goSelectShopHandle() {
 				this.$go(`/pages/userModule/takeawayMenu/mcDonald/selectShop/index?pathSource=back`);
@@ -646,10 +651,7 @@ let _request = false;
 						if (err.errMsg == 'requestPayment:fail cancel') {
 							this.$wxReportEvent('refusetobuy', {source: this.source});
 							// 取消支付
-							if(this.isMcDonaldType) {
-								// this.closePayHandle();
-								return;
-							};
+							// if(this.isMcDonaldType) {return; };
 							this.isShowContinuePay = true;
 						}
 						Toast({

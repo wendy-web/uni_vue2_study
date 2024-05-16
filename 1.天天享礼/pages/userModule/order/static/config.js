@@ -42,7 +42,7 @@ export const goodsTypeObj = {
     },
     4: {
         label: '千猪星巴克',
-        icon: '../../static/order/icon_04.png'
+        icon: 'https://file.y1b.cn/store/1-0/24424/6628c97ae962e.png'
     },
     5: {
         label: '京东',
@@ -54,7 +54,7 @@ export const goodsTypeObj = {
     },
     7: {
         label: '拼多多',
-        icon: '../../static/order/icon_08.png'
+        icon: 'https://file.y1b.cn/store/1-0/24424/6628c932e563c.png'
     },
     // 深爱购 - 展示是直充的类型
     8: {
@@ -67,8 +67,16 @@ export const goodsTypeObj = {
         icon: '../../static/order/icon_phone.png'
     },
     10: {
-        label: '麦当劳',
-        icon: '../../static/order/icon_07.png'
+        label: '麦当劳兑换券',
+        icon: 'https://file.y1b.cn/store/1-0/24424/6628c94cdaf47.png'
+    },
+    11: {
+        label: '库迪咖啡',
+        icon: 'https://file.y1b.cn/store/1-0/24424/6628c81e94765.png',
+    },
+    12: {
+        label: '一分购',
+        icon: 'https://file.y1b.cn/store/1-0/2459/663c7efbaf104.png'
     }
 }
 export const haiWeiObj = {
@@ -79,33 +87,41 @@ export const haiWeiObj = {
     },
     'HW_mdl': {
         type: 1,
-        icon: '../../static/order/icon_07.png',
+        icon: 'https://file.y1b.cn/store/1-0/24424/6628c94cdaf47.png',
         path: '/pages/userModule/takeawayMenu/mcDonald'
     },
     'HW_wallace': {
         type: 2,
-        icon: '../../static/order/icon_09.png',
+        icon: 'https://file.y1b.cn/store/1-0/24424/6628c88c6f10c.png',
         product_img: 'https://file.y1b.cn/store/1-0/23124/656d7cf501530.png'
     },
     'HW_burger': {
         type: 3,
-        icon: '../../static/order/icon_10.png',
+        icon: 'https://file.y1b.cn/store/1-0/24424/6628c8a8a193a.png',
         product_img: 'https://file.y1b.cn/store/1-0/23124/656d7d3a90115.png'
     },
     'HW_pizza': {
         type: 4,
-        icon: '../../static/order/icon_11.png',
+        icon: 'https://file.y1b.cn/store/1-0/24424/6628c8e05bbfb.png',
         product_img: 'https://file.y1b.cn/store/1-0/23124/656d7d1c22d7c.png'
     },
     'HW_heytea': {
         type: 4,
-        icon: '../../static/order/icon_12.png',
+        icon: 'https://file.y1b.cn/store/1-0/24424/6628c9000440f.png',
         product_img: 'https://file.y1b.cn/store/1-0/23124/656d7d4cccc81.png'
     },
     'HW_nayuki': {
         type: 4,
-        icon: '../../static/order/icon_13.png',
+        icon: 'https://file.y1b.cn/store/1-0/24424/6628c86e4d157.png',
         product_img: 'https://file.y1b.cn/store/1-0/23124/656d7d5ece54d.png'
+    },
+    'kudi': {
+        product_img: 'https://file.y1b.cn/store/1-0/24424/66285ee803d19.png',
+        product_name: '库迪咖啡'
+    },
+    'xl_hf': {
+        product_img: 'https://file.y1b.cn/store/1-0/2416/6598c9ea9fb0a.png',
+        product_name: '话费充值'
     }
 }
 export const haiWeiStatus = {

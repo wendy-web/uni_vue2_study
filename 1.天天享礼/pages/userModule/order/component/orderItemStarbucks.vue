@@ -2,7 +2,7 @@
 <view class="item">
 	<view class="type_top">
 		<view class="type_lft">
-			<image class="type_top-icon" mode="scaleToFill" src="../../static/order/icon_04.png"></image>
+			<!-- <image class="type_top-icon" mode="scaleToFill" src="https://file.y1b.cn/store/1-0/24424/6628c97ae962e.png"></image> -->
 			<text class="type_lft-label">{{ item.starbucks.goods_sku_name }} </text>
 		</view>
 		<view class="type_rit" :class="'order-status-'+item.status">
@@ -30,12 +30,12 @@
 	</view>
 	<!-- 支付金额 -->
 	<view class="pay-info" @click="jumpLinkHandle(item)">
-		<view class="total_amount" v-if="item.starbucks.total_amount>3">共{{ item.starbucks.total_amount }}件</view>
-		<text class="pay-info_label">{{[2,3,4,5].includes(Number(item.status))?'实付':'应付'}}</text>
+		<view class="total_amount" v-if="item.starbucks.total_amount > 3">共{{ item.starbucks.total_amount }}件</view>
+		<text class="pay-info_label">{{[2,3,4,5].includes(Number(item.status)) ? '实付' : '应付'}}</text>
 		<view v-html="formatPrice(item.amount)"></view>
 	</view>
 	<!-- 待支付||去使用-->
-	<view class="order-operate" v-if="item.status== 0" @click="jumpLinkHandle(item)">
+	<view class="order-operate" v-if="item.status == 0" @click="jumpLinkHandle(item)">
 		<view class="order-remain-time">
 			<block v-if="item.remainTime">
 				<view>剩余时间：</view>
@@ -46,14 +46,12 @@
 		</view>
 		<view class="btn">去支付</view>
 	</view>
-    <view class="take"
-		v-if="[3].includes(Number(item.status))"
-		@click="jumpLinkHandle(item)"
-	>
-		<view class="take_btn">取单口令</view>
-	</view>
-    <view class="take" @click="againHandle(item.id)" v-if="Number(item.status)">
-		<view class="take_btn">再来一单</view>
+	<view class="take_box fl_end">
+		<view class="take_btn" v-if="Number(item.status) && userInfo.buy_vip"
+			@click="againHandle(item.id)">再来一单</view>
+		<view class="take_btn" v-if="[3].includes(Number(item.status))"
+			@click="jumpLinkHandle(item)"
+		>取单口令</view>
 	</view>
 </view>
 </template>
@@ -62,6 +60,7 @@
 import { jumpLink } from '@/api/modules/discounts.js';
 import { orderAgain } from '@/api/modules/takeawayMenu/kfc.js';
 import { parseTime } from '@/utils/index.js';
+import { mapGetters } from 'vuex';
 export default {
 	props: {
 		item: {
@@ -78,6 +77,7 @@ export default {
 		}
 	},
 	computed: {
+        ...mapGetters(['userInfo']),
 		eatTypeText() {
 			const eatTypeIndex = this.item.starbucks.takeout;
 			return ['到店取餐', '外卖'][eatTypeIndex];
@@ -327,10 +327,8 @@ export default {
 	line-height: 36rpx;
 	white-space: nowrap;
 }
-.take{
-	display: flex;
-	justify-content: flex-end;
-	margin: 32rpx 24rpx 0 0;
+.take_box {
+	margin-top: 32rpx;
 	.take_btn {
 		padding: 0 30rpx;
 		display: inline-block;
@@ -339,7 +337,8 @@ export default {
 		border-radius: 32rpx;
 		text-align: center;
 		font-size: 28rpx;
-		color: #333333;
+		color: #333;
+		margin-right: 24rpx;
 	}
 }
 </style>

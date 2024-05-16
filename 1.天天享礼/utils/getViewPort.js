@@ -1,4 +1,4 @@
-import log from '@/utils/log.js'
+import log from '@/utils/log.js';
 export default function() {
     let res = uni.getSystemInfoSync()
     log.addFilterMsg('systeminfo')
@@ -14,5 +14,7 @@ export default function() {
         customHeight: custom.height,
         statusBarHeight: res.statusBarHeight,
         safeAreaInsets: res.safeAreaInsets, // 获取安全区域插入位置
+        customTop: custom.top,
+
     }
 }

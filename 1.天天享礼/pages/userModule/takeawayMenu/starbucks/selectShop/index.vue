@@ -67,8 +67,7 @@
     confirmText="我知道了"
     :isInform="true"
     @confirm="isShowShopCloseDia = false"
-  >
-  </confirmDia>
+  ></confirmDia>
 
   <confirmDia
     :isShow="isShowSelDia"
@@ -76,8 +75,7 @@
     confirmText="去确定"
     @close="isShowSelDia = false"
     @confirm="goToMenu"
-  >
-  </confirmDia>
+  ></confirmDia>
   <privacyOpen ref="privacyOpen"></privacyOpen>
 </view>
 </template>
@@ -118,27 +116,27 @@ export default {
     },
     data() {
         return {
-			imgUrl: getImgUrl(),
-            takeImgUrl: getImgUrl() + 'static/subPackages/userModule/takeawayMenu',
-            upOption: {
-                page: {
-                    size : 9
-                },
-                empty: {
-                    tip: '暂无门店，敬请期待',
-                    icon: 'https://file.y1b.cn/store/1-0/2389/64d352c3c15a1.png'
-                }
+			    imgUrl: getImgUrl(),
+          takeImgUrl: getImgUrl() + 'static/subPackages/userModule/takeawayMenu',
+          upOption: {
+            page: {
+              size : 9
             },
-            selIndex: -1,
-            location_city: '',
-            shopList: [],
-            inputValue: '',
-            latitude: 0,
-            longitude: 0,
-            isShowShopCloseDia: false,
-            isShowSelDia: false,
-            sel_storeCode: 0,
-            isShowLoading: false
+            empty: {
+              tip: '暂无门店，敬请期待',
+              icon: 'https://file.y1b.cn/store/1-0/2389/64d352c3c15a1.png'
+            }
+          },
+          selIndex: -1,
+          location_city: '',
+          shopList: [],
+          inputValue: '',
+          latitude: 0,
+          longitude: 0,
+          isShowShopCloseDia: false,
+          isShowSelDia: false,
+          sel_storeCode: 0,
+          isShowLoading: false
         };
     },
     async onLoad(option) {
@@ -252,15 +250,14 @@ export default {
       topCallBack() {
         // 列表没有数据 - 返回到
         if(!this.shopList.length) {
-          let pathSource = 'shopMall';
-          if(this.pathSource) pathSource = this.pathSource;
-          this.$switchTab(`/pages/tabBar/${pathSource}/index`);
+          if(this.pathSource == 'discounts') return this.$reLaunch('/pages/discounts/discounts/index');
+          this.$switchTab(`/pages/tabBar/shopMall/index`);
           return;
         };
         uni.navigateBack({
-            fail() {
-                this.$reLaunch('/pages/userModule/takeawayMenu/starbucks/index');
-            }
+          fail: () => {
+            this.$reLaunch('/pages/userModule/takeawayMenu/starbucks/index');
+          }
         });
       }
     },

@@ -44,15 +44,15 @@
               </view>
               <view class="use_cont">
                 <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
-                <view class="use_cont-right" v-if="userInfo.is_vip">0豆特权</view>
+                <view class="use_cont-right" v-if="good.zero_credits">0豆特权</view>
                 <view v-else-if="good.lx_type != 1" class="js_search_credits">
                   {{ good.credits || 0 }}牛金豆
                 </view>
               </view>
               <!-- 乐刷的商品 -->
               <view class="good_remind txt_ov_ell1" v-if="good.lx_type == 1">
-                  <text :class="['good_remind-left' ,userInfo.is_vip ? 'vip_line' : '' ]"
-                    v-if="(userInfo.is_vip && good.credits) || !userInfo.is_vip"
+                  <text :class="['good_remind-left', good.zero_credits ? 'vip_line' : '' ]"
+                    v-if="good.credits"
                   >
                     <text class="good_credits">{{ good.credits || 0 }}</text>
                     <text>牛金豆</text>
@@ -78,10 +78,10 @@
             </view>
             <view class="use_cont">
               <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
-              <view class="use_cont-right" v-if="userInfo.is_vip">0豆特权</view>
+              <view class="use_cont-right" v-if="good.zero_credits">0豆特权</view>
             </view>
             <view class="good_remind txt_ov_ell1">
-              <text :class="['good_remind-left', userInfo.is_vip ? 'vip_line' : '']"
+              <text :class="['good_remind-left', good.zero_credits ? 'vip_line' : '']"
                 v-if="good.credits">
                   <text class="good_credits">{{ good.credits || 0 }}</text>
                   <text>牛金豆</text>
@@ -95,11 +95,11 @@
               <view class="good_name_box txt_ov_ell2"> {{ good.title }}</view>
               <view class="use_cont">
                 <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
-                <view class="use_cont-right" v-if="userInfo.is_vip">0豆特权</view>
+                <view class="use_cont-right" v-if="good.zero_credits">0豆特权</view>
               </view>
               <view class="good_remind txt_ov_ell1">
                 <text class="good_remind-left" v-if="good.credits">
-                  <text :class="['good_credits', userInfo.is_vip ? 'active' : '']">{{ good.credits || 0 }}</text>
+                  <text :class="['good_credits', good.zero_credits ? 'active' : '']">{{ good.credits || 0 }}</text>
                   <text>牛金豆</text>
                 </text>
                 <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
@@ -118,13 +118,13 @@
             </view>
             <view class="use_cont">
               <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
-              <view class="use_cont-right" v-if="userInfo.is_vip">0豆特权</view>
+              <view class="use_cont-right" v-if="good.zero_credits">0豆特权</view>
             </view>
             <view class="good_remind txt_ov_ell1">
-              <text class="good_remind-left" v-if="good.credits">
-                <text :class="['good_credits', userInfo.is_vip ? 'active' : '']">{{ good.credits || 0 }}</text>牛金豆
+              <text class="good_remind-left" v-if="good.credits || ( good.lx_type == 1 && !good.credits)">
+                <text :class="['good_credits', good.zero_credits ? 'active' : '']">{{ good.credits || 0 }}</text>牛金豆
               </text>
-              <text class="good_remind-price" v-else-if="good.lx_type != 1"> {{ good.price || 0 }}</text>
+              <text class="good_remind-price" v-else> {{ good.price || 0 }}</text>
               <!-- 首页呈现兑换人数 / 其他的呈现月售 -->
               <text class="good_total2" v-if="isHome">{{ Number(good.exch_user_num) + Number(good.user_num) }}人兑换</text>
               <text class="good_total2" v-else-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
@@ -343,6 +343,9 @@ export default {
         margin-right: 4rpx;
         font-weight: bold;
         position: relative;
+        // &.active {
+        //   text-decoration: line-through solid currentColor 4rpx;
+        // }
         &.active::before {
           content: '\3000';
           position: absolute;
@@ -356,6 +359,7 @@ export default {
         }
       }
       .vip_line{
+        // text-decoration: line-through solid currentColor 4rpx;
         text-decoration:  line-through;
         font-weight: bold;
         .good_credits {
@@ -502,29 +506,6 @@ export default {
     margin-left: 8rpx;
   }
 }
-.vip_cont-box {
-  position: relative;
-  z-index: 0;
-  height: 32rpx;
-  font-size: 22rpx;
-  text-decoration:  line-through;
-  text-align: center;
-  color: #c16e15;
-  line-height: 32rpx;
-  padding: 0 10rpx 0 126rpx;
-  display: inline-block;
-  margin-top: 6rpx;
-  &::before {
-    content: "\3000";
-    background: url("https://file.y1b.cn/store/1-0/23118/654b6b29d20c3.png") 0 0 / 100% 100% no-repeat;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-  }
-}
 .js_search_credits {
   font-size: 26rpx;
   text-align: center;
@@ -577,27 +558,6 @@ export default {
     .good_total2{
       margin-left: 13rpx;
     }
-  }
-}
-.vip_credits{
-  font-size: 22rpx;
-  text-decoration:  line-through;
-  text-align: center;
-  color: #c16e15;
-  line-height: 32rpx;
-  padding: 0 16rpx 0 122rpx;
-  position: relative;
-  z-index: 0;
-  display: inline-block;
-  &::before {
-    content: "\3000";
-    background: url("https://file.y1b.cn/store/1-0/23128/65727fb16a4d3.png") 0 0 / 100% 100% no-repeat;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
   }
 }
 .lightShow {

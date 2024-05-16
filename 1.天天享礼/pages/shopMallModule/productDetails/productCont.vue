@@ -1,19 +1,11 @@
 <template>
-<view :class="['pro_cont', !userInfo.is_vip ? 'active' : '',]">
-	<view :class="['vip_card', userInfo.is_vip ? 'active' : '']">
+<view class="pro_cont">
+	<view class="vip_card active">
 		<view class="cowpea_box">
-			<view class="box_fl_end search" :class="{'faveValueTxt' :config.face_value}" v-if="isShowPrice">
+			<view class="box_fl_end search" :class="{'faveValueTxt' :config.face_value}">
 				<text class="cowpea-num">{{ config.price }}</text>
 			</view>
-			<view class="box_fl_end" v-else>
-				<text class="cowpea-num">{{ !userInfo.is_vip ? config.credits : 0 }}</text>
-				<text class="cowpea-label">牛金豆</text>
-				<view class="cowpea_value" v-if="config.credits && userInfo.is_vip">{{ config.credits }}牛金豆</view>
-			</view>
-			<view class="cowpea_order-value" v-if="isHome && config.exch_user_num && config.face_value">
-				{{ config.exch_user_num}} 人兑换
-			</view>
-			<view class="cowpea_order-value" v-else-if="config.sale_num">
+			<view class="cowpea_order-value" v-if="config.sale_num">
 				{{ (config.lx_type == 2) ? '月售' : '已售' }}{{ config.sale_num }}
 			</view>
 		</view>
@@ -36,7 +28,7 @@
 				<view class="cowpea_txt fl_bet">
 					<view>
 						<view>优惠券
-							<text v-if="isSearch">({{userInfo.is_vip ? '0豆特权' : `${config.credits}牛金豆兑`}})</text>
+							<text>（{{config.zero_credits ? '0豆特权' : `${config.credits}牛金豆兑`}}）</text>
 						</view>
 						<view class="cowpea_txt-lab">使用期限：{{ config.coupon_start_time }} ~ {{ config.coupon_end_time }}</view>
 					</view>
@@ -65,18 +57,6 @@ export default {
 				return {
 				}
 			}
-		},
-		isSearch: {
-			type: Boolean,
-			default: false
-		},
-		isHome: {
-			type: Boolean,
-			default: false
-		},
-		isShowPrice: {
-			type:Boolean,
-			default: false
 		}
 	},
 	data() {
@@ -97,19 +77,6 @@ export default {
 .pro_cont{
 	margin: 0 24rpx;
 	padding-top: 4rpx;
-	&.active {
-		background: #ffffff;
-		border-radius: 24rpx;
-		padding-top: 26rpx;
-		padding-bottom: 32rpx;
-		.cowpea_box {
-			color: #F84842;
-			margin-top: 0rpx;
-		}
-		.cowpea_order-value{
-			color: #666;
-		}
-	}
 }
 .vip_card {
 	position: relative;
@@ -149,13 +116,6 @@ export default {
 	.cowpea-num {
 		font-size: 48rpx;
 		font-weight: bold;
-		// &::after {
-		// 	content: '牛金豆';
-		// 	font-size: 28rpx;
-		// 	line-height: 40rpx;
-		// 	font-weight: 600;
-		// 	margin: 0 16rpx 0 6rpx;
-		// }
 	}
 	.cowpea-label {
 		font-size: 28rpx;
@@ -267,10 +227,6 @@ export default {
 		&:not(:last-child) {
 			margin-right: 10rpx;
 		}
-		// &:first-child {
-		// 	background: #9d6b36;
-		// 	color: #fff;
-		// }
 	}
 }
  </style>

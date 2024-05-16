@@ -1,7 +1,29 @@
 <template>
 <view class="home nav_cont">
+  <!-- <view class="video_cont" v-if="isShowAddel">
+    <view class="video_btn"
+      v-if="isShowAd" @click="isShowAddel = false"
+      :style="{
+        top: navHeightTop + 'px'
+      }"
+    >({{ isShowAdNum }}秒) | 跳过</view>
+    <coral-adv
+      :appid="appid"
+      :type="type"
+      :target="target"
+      :isshow="isShowAd"
+      @errorCb="errorCbHandle"
+      @loadCb="loadCbHandle"
+      @finishedCb="finishedCb"
+      @quitCb="quitCb"
+      @showAdv="showAdv"
+    >
+    </coral-adv>
+    <ad adpid="121294" type="1"  isshow  bind:finishedCb="finishedCb" bind:quitCb="quitCb"></ad>
+  </view> -->
   <xh-navbar
-    navbarImage="https://file.y1b.cn/store/1-0/2384/64cccbab8f19f.png"
+    :navbarImage="isShowCowpeaNav ? '' : 'https://file.y1b.cn/store/1-0/24515/664462046066a.png'"
+    :navberColor="isShowCowpeaNav ? '#fff' : ''"
     navbarImageMode="widthFix"
     :paddingBottomHeight="paddingBottomHeight"
     :overFlow="true"
@@ -10,13 +32,48 @@
   >
     <view slot="title" class="nav_cont_box fl_bet">
       <!-- 展示牛金豆/天天享礼的标识-->
-      <myBeans :isShowCowpeaNav="isShowCowpeaNav"></myBeans>
+      <myBeans :isShowCowpeaNav="isShowCowpeaNav" @goTask="goTaskHandle"></myBeans>
       <!-- 搜索的swiper的文本 -->
-      <swiperSearch
+      <!-- <swiperSearch
         :textList="textList"
         source="home"
         :class="['swiper_search', textList.length ? 'ani_flex-in' : 'ani_flex-out',]"
-      ></swiperSearch>
+      ></swiperSearch> -->
+    </view>
+    <view class="search_box"
+      slot="title_cont"
+      id="titleContBox"
+      :style="{
+        top: searchTop +'px',
+        width: searchWidth + 'px',
+        left: searchLeft + 'px'
+      }"
+    >
+      <image class="search_icon" src="https://file.y1b.cn/store/1-0/24514/6642bf0c83c51.png" mode="aspectFill"></image>
+      <view class="line"></view>
+      <view class="swiper_box" @click="toSearchHandle">
+        <!-- 无搜索的推荐文本轮播 -->
+        <swiper v-if="textList.length"
+          class="swiper"
+          style="height: 100%;"
+          :autoplay="true"
+          interval="3000"
+          :duration="300"
+          :circular="true"
+          :vertical="true"
+          :current="currentIndex"
+          @animationfinish="animationfinishHandle"
+        >
+          <swiper-item
+            v-for="(item, index) in textList" :key="index"
+            class="swiper_item" catchtouchmove='onTouchMove'
+          >
+            {{ item }}
+          </swiper-item>
+        </swiper>
+        <view v-else>请搜索喜欢的商品</view>
+        </view>
+      <view class="search_btn" v-if="!searchValue" @click="searchRequireHandle">搜索</view>
     </view>
   </xh-navbar>
   <mescroll-body
@@ -29,6 +86,7 @@
   >
   <!-- 图文的配置 -->
     <view :class="['golden_bean-box', (iconFindLightIndex >= 0) ? 'light_bg' : '']"
+      :style="{ '--top': paddingBottomHeight + 'px'}"
       @click="setIconFindHandle">
       <golden-bean
         id="goldenBean"
@@ -181,6 +239,7 @@
         <view class="draw_btn" @click="getDrawPopoverHandle"></view>
       </view>
     </van-popup>
+
 </view>
 </template>
 <script>
@@ -191,10 +250,11 @@ keywordList,
 material,
 overDo
 } from "@/api/modules/jsShop.js";
-import { bfxlPopup, couponGroup, couponList, drawPopover, giftCreate } from "@/api/modules/shopMall.js";
+import { advertisementConfig, bfxlPopup, couponGroup, couponList, drawPopover, giftCreate } from "@/api/modules/shopMall.js";
 import awardDia from "@/components/configurationDia/awardDia.vue";
 import configurationFun from "@/components/configurationDia/configurationFun.js";
 import configurationDia from "@/components/configurationDia/index.vue";
+import cowpeaAnim from "@/components/cowpeaAnim.vue";
 import customTabBar from "@/components/customTabBar/index.vue";
 import goodList from "@/components/goodList.vue";
 import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
@@ -212,7 +272,6 @@ import goldenBean from "./content/goldenBean.vue";
 import meTabs from "./content/me-tabs.vue";
 import myBeans from "./content/myBeans.vue";
 import repairGetMiniPage from "./content/repairGetMiniPage.vue";
-import cowpeaAnim from "./popup/cowpeaAnim.vue";
 // 拼多多的列表
 import { groupRecommend } from "@/api/modules/index.js";
 import {
@@ -265,7 +324,8 @@ export default {
       pageNem: 1,
       _index: 0,
       tabHeightValue: 0,
-      navbarBottom: 5,
+      fixationValue: uni.upx2px(96),
+      paddingBottomHeight: uni.upx2px(96),
       exchangeFailedShow: false, // 牛金豆不足的弹窗
       serviceCreditsShow: false, // 赚取牛金豆的弹窗
       _RewardedVideoAd: null, // 激励视频
@@ -299,7 +359,16 @@ export default {
       taskCompleteData: null,
       gameAnimationId: 0,
       drawPopoverData: null, // 中奖
-      isShowDrawPopoverDia: false
+      isShowDrawPopoverDia: false,
+      appid: 121294,
+      type: 9,
+      target: 4,
+      videoRet: null,
+      isShowAd: false,
+      isShowAdNum: 5,
+      isShowAddel: false,
+      scroll_top: 0,
+      currentIndex: 0
     };
   },
   watch: {
@@ -365,7 +434,16 @@ export default {
     // 吸顶的的top值
     stickyTop() {
       let viewPort = getViewPort();
-      return viewPort.navHeight + this.navbarBottom;
+      return viewPort.navHeight;
+    },
+    // 吸顶的的top值
+    navHeightTop() {
+      let viewPort = getViewPort();
+      return viewPort.customTop;
+    },
+    statusBarHeight() {
+      let viewPort = getViewPort();
+      return viewPort.statusBarHeight;
     },
     // goodList的内容高度
     swiperHeight() {
@@ -373,16 +451,15 @@ export default {
       let swiperHeight =
         viewPort.windowHeight -
         this.tabHeightValue -
-        viewPort.navHeight -
-        this.navbarBottom;
+        viewPort.navHeight;
       swiperHeight = swiperHeight - uni.upx2px(this.tabHeight);
       return swiperHeight + "px";
     },
     // 头部标题后超出的内容的展示
-    paddingBottomHeight() {
-      if (this.isShowSticky) return this.navbarBottom + uni.upx2px(this.tabHeight);
-      return this.navbarBottom;
-    },
+    // paddingBottomHeight() {
+    //   if (this.isShowSticky) return this.navbarBottom + uni.upx2px(this.tabHeight);
+    //   return this.navbarBottom;
+    // },
     tabHeight() {
       let tab_height = this.isShowStatus ? 112 : 0;
       return tab_height;
@@ -397,17 +474,64 @@ export default {
     },
     // tab-bar以上的高度
     navTopHeight() {
-      let topHeight = this.goldenBeanComHeight + this.anNoticeBarComHeight - this.navbarBottom;
+      let topHeight = this.goldenBeanComHeight + this.anNoticeBarComHeight;
       // 导航栏自定开关 - 重新计算高度
       if(this.isFirstHidden) {
         topHeight = topHeight - uni.upx2px(112);
       }
       return topHeight;
+    },
+    searchTop() {
+      let initSearchTop = uni.upx2px(92);
+      let differentValue = uni.upx2px(92) - uni.upx2px(6);
+      let scrollValue = (differentValue / this.fixationValue) * this.scroll_top;
+      const searchTopValue = uni.upx2px(92) - scrollValue;
+      if(searchTopValue < 0) {
+          initSearchTop = uni.upx2px(6);
+      } else if(searchTopValue > uni.upx2px(92)) {
+          initSearchTop = uni.upx2px(92);
+      } else {
+          initSearchTop = searchTopValue
+      }
+      return initSearchTop;
+    },
+    searchWidth() {
+      const titleBoxWidth = uni.upx2px(502);
+      let differentValue = uni.upx2px(702) - uni.upx2px(502);
+      let scrollValue = (differentValue / this.fixationValue) * this.scroll_top;
+      const searchWidthValue = uni.upx2px(702) - scrollValue;
+      let value = 0;
+      if(searchWidthValue < titleBoxWidth) {
+          value = titleBoxWidth
+      } else if(searchWidthValue > uni.upx2px(702)) {
+          value = uni.upx2px(702)
+      } else {
+          value = searchWidthValue
+      }
+      return value;
+    },
+    searchLeft() {
+      const titleBoxLeft = uni.upx2px(24);
+      let differentValue = uni.upx2px(24  ) - uni.upx2px(24);
+      let scrollValue = (differentValue / this.fixationValue) * this.scroll_top;
+      const searchLeftValue =  uni.upx2px(24) + scrollValue;
+      let value = 0;
+      if(searchLeftValue > titleBoxLeft) {
+          value = titleBoxLeft;
+      } else if(searchLeftValue < uni.upx2px(24)) {
+          value = uni.upx2px(24);
+      } else {
+          value = searchLeftValue;
+      }
+      return value;
     }
   },
   async onLoad(options) {
     // 初始化话窗口参数
     this.handleOptions(options);
+    // wx.nextTick(() => {
+      // this.initAdvertisementConfig();
+    // });
     /* 初始化激励视频 */
     this.initRewardedVideoAd();
     const res = await keywordList();
@@ -440,6 +564,76 @@ export default {
     }
   },
   methods: {
+    animationfinishHandle(event){
+      this.currentIndex = event.detail.current;
+    },
+    toSearchHandle() {
+      if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
+      let placeholderValue = "";
+      if (this.textList.length) {
+        placeholderValue = this.textList[this.currentIndex];
+        placeholderValue = encodeURIComponent(placeholderValue);
+      }
+      // 去领券中心的搜索页
+      this.$go(`/pages/userModule/productList/search?placeholderValue=${placeholderValue}&source=home`);
+    },
+    searchRequireHandle() {
+      if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
+      const recommendTxt = this.textList.length ? this.textList[this.currentIndex] : '';
+      if(!recommendTxt) return this.$go('/pages/userModule/productList/search');
+      this.$go(`/pages/userModule/productList/index?searchValue=${encodeURIComponent(recommendTxt)}&is_search=1`);
+    },
+    async initAdvertisementConfig() {
+      const res = await advertisementConfig();
+      console.log('res', res);
+      if(res.code != 1 || !res.data) return;
+      this.isShowAddel = res.data.status;
+      if(!this.isShowAddel) return this.delCurrentDiaList();
+      this.clearInterLoadCb();
+      this.adInterVal = setInterval(() => {
+        this.isShowAdNum--;
+        if(!this.isShowAdNum) {
+          this.clearInterLoadCb();
+          this.isShowAddel = false;
+          this.delCurrentDiaList();
+        }
+      }, 1000)
+
+    },
+    showAdv(res) {
+      console.log('showAdv', res)
+      this.isShowAd = true;
+    },
+    finishedCb(e) {
+      console.log('finishedCb', e)
+      this.isShowAd= false
+    },
+    quitCb (e) {
+      console.log('quitCb', e)
+      this.isShowAd = false;
+    },
+    errorCbHandle(error) {
+      console.log('error: errorCbHandle', error)
+      this.isShowAddel = false;
+    },
+    loadCbHandle(res) {
+      this.isShowAd = true;
+      this.clearInterLoadCb();
+      console.log('res: loadCbHandle', res);
+      this.adInterVal = setInterval(() => {
+        this.isShowAdNum--;
+        if(!this.isShowAdNum) {
+          this.clearInterLoadCb();
+          this.isShowAddel = false;
+          this.delCurrentDiaList();
+        }
+      }, 1000);
+    },
+    clearInterLoadCb() {
+      clearInterval(this.adInterVal);
+      this.adInterVal = null;
+      this.isShowAdNum = 5;
+    },
     ...mapActions({
       getUserInfo: "user/getUserInfo",
       profitInfoRequest: 'user/profitInfoRequest'
@@ -778,10 +972,13 @@ export default {
       !this.isAlreadyShowLight && this.setShowLightHandle(); // 关闭天天过来时高亮展示的样式
       this.setIconFindHandle(); // 关闭天天过来时高亮展示的样式
       const scrollTopNum = Math.ceil(event.scrollTop);
+      this.scroll_top = scrollTopNum;
       this.showTitleBg = (scrollTopNum > 0);
       this.isShowCowpeaNav = (scrollTopNum >= this.stickyTop);
       this.isShowSticky = (scrollTopNum >= this.navTopHeight);
       this.isFirstHidden && (this.isShowStatus = this.isShowSticky);
+      let padding_height = this.fixationValue - scrollTopNum;
+      this.paddingBottomHeight = (padding_height < 0) ? 0 : padding_height;
       if(this.isShowSticky) {
         this.isAutoLogin && this.$refs.anNoticeImgShow.popupShow();
         return;
@@ -999,7 +1196,7 @@ page {
   z-index: 0;
   &::before {
     content: '\3000';
-    background: url("https://file.y1b.cn/store/1-0/2384/64cccbab8f19f.png") 0 0 / cover;
+    background: url("https://file.y1b.cn/store/1-0/24515/664462046066a.png") 0 0 / cover;
     position: absolute;
     left: 0;
     top: 0;
@@ -1030,9 +1227,9 @@ page {
     height: 1220rpx;
     background: linear-gradient(180deg, #ffffff 6%, rgba(247, 247, 247, 0) 23%);
   }
-  &.active::before {
-    border-radius: 40rpx 40rpx 0 0;
-  }
+  // &.active::before {
+  //   border-radius: 40rpx 40rpx 0 0;
+  // }
   &.zindex_99 {
     z-index: 10;
     &::before {
@@ -1201,8 +1398,11 @@ page {
     text-align: center;
   }
 }
-.golden_bean-box{
+.golden_bean-box {
   position: relative;
+  margin-top: var(--top);
+  background: #fff;
+	border-radius: 28rpx 28rpx 0rpx 0;
   &.light_bg {
     z-index: 10;
     &::before {
@@ -1272,6 +1472,79 @@ page {
       height: 100%;
       z-index: -1;
     }
+  }
+}
+.video_cont{
+  width: 100%;
+  height: 500rpx;
+  // background: gray;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  .video_btn{
+    position: absolute;
+    z-index: 999;
+    background: rgba($color: #fff, $alpha: .6);
+    line-height: 64rpx;
+    left: 30rpx;
+    text-align: center;
+    padding: 0 20rpx;
+    border-radius: 30rpx;
+    font-size: 26rpx;
+    border: 2rpx solid #fff;
+  }
+}
+
+.search_box{
+  font-size: 26rpx;
+  color: #444;
+  height: 68rpx;
+  background: #ffffff;
+  border-radius: 38rpx;
+  box-sizing: border-box;
+  padding: 0 2rpx 0 32rpx;
+  display: flex;
+  align-items: center;
+  border: 2rpx solid #F84842;
+  box-sizing: border-box;
+  line-height: 36rpx;
+  position: absolute;
+  top: 92rpx; // 68 + 24
+  // left: 50%;
+  // transform: translateX(-50%);
+  width: 702rpx;
+  .search_icon{
+    width: 32rpx;
+    height: 32rpx;
+  }
+  .line {
+    width: 2rpx;
+    height: 28rpx;
+    background: #d1d1d1;
+    border-radius: 200rpx;
+    margin: 0 20rpx 0 16rpx;
+  }
+  .swiper_box{
+    height: 100%;
+    flex: 1;
+    line-height: 68rpx;
+    width: 0;
+    .swiper_item{
+      height: 100%;
+    }
+  }
+  .search_btn{
+    width: 124rpx;
+    line-height: 60rpx;
+    background: linear-gradient(172deg,#f6b761 0%, #f84842 46%);
+    border-radius: 32rpx;
+    font-size: 28rpx;
+    text-align: center;
+    color: #ffffff;
+    margin-right: 2rpx;
   }
 }
 </style>

@@ -39,10 +39,10 @@
 					{{ item.title }}
 				</view>
 				<view class="cont_txt-lab">
-					<view class="use_cont-right" v-if="userInfo.is_vip">0豆特权</view>
+					<view class="use_cont-right" v-if="item.zero_credits">0豆特权</view>
 					<view class="item_remind box_fl">
 						<view class="vip_credits" v-if="Number(item.credits)">
-							<text :class="['item_credits', userInfo.is_vip ? 'active' : '']">{{ item.credits || 0 }}</text>牛金豆
+							<text :class="['item_credits', item.zero_credits ? 'active' : '']">{{ item.credits || 0 }}</text>牛金豆
 						</view>
 						<view class="txt_lab">{{ item.exch_user_num + item.user_num }}人兑换</view>
 					</view>

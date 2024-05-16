@@ -25,9 +25,9 @@
 </template>
 
 <script>
-	import { scanTask } from '@/api/modules/task.js'
-    import { mapGetters } from 'vuex';
-	import { getImgUrl } from '@/utils/auth.js'
+	import { scanTask } from '@/api/modules/task.js';
+import { getImgUrl } from '@/utils/auth.js';
+import { mapGetters } from 'vuex';
 	export default {
 		props: {
 			taskReward: {
@@ -54,43 +54,25 @@
 			}
 		},
 		methods: {
-			init() {
-				scanTask({
-					type: 0
-				}).then(res => {
-					let {
-						code,
-						data,
-						msg
-					} = res;
-					if (code == 1) {
-						this.times = data.times;
-						this.num = Number(data.num);
-						this.credits = data.credits;
-						/*达到领取扫码奖励的条件*/
-
-						if (data.status == 0 && this.times >= this.num) {
-							if (this.times > 0) {
-								this.getAward()
-							}
-						}
-						return
+			async init() {
+				const res = await scanTask({ type: 0 });
+				let { code, data, msg } = res;
+				if (code != 1) return this.$toast(msg);
+				this.times = data.times;
+				this.num = Number(data.num);
+				this.credits = data.credits;
+				/*达到领取扫码奖励的条件*/
+				if (data.status == 0 && this.times >= this.num) {
+					if (this.times > 0) {
+						this.getAward()
 					}
-					uni.showToast({
-						title: msg,
-						icon: 'none'
-					})
-				})
+				}
 			},
-			getAward() {
-				scanTask({
-					type: 1
-				}).then(res => {
-					if (res.code == 1) {
-						this.$emit('showAwardModel', 'SCAN_PULL', {
-							reward: res.data.credits
-						})
-					}
+			async getAward() {
+				const res = await scanTask({ type: 1 });
+				if (res.code != 1) return;
+				this.$emit('showAwardModel', 'SCAN_PULL', {
+					reward: res.data.credits
 				})
 			},
 			checkAuth() {

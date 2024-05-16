@@ -1,4 +1,6 @@
+import { bysubunionid } from '@/api/modules/jsShop.js';
 import { share } from "@/api/modules/login.js";
+import { goodsPromotion } from '@/api/modules/pddShop.js';
 const shareMixin = {
     data() {
         return {
@@ -21,6 +23,17 @@ const shareMixin = {
                     defaultTitle: '肯德基点餐5折起，天天疯狂星期四',
                     defaultImg: 'https://file.y1b.cn/store/1-0/23527/64719ea4deed0.png',
                     isBtnShare: 'specialMini',
+                    shareRoute: 'pages/tabBar/discounts/index?show_kudi=1', // 分享进入的路径
+                    btnShareObj: null
+                },
+                {
+                    route: 'pages/discounts/discounts/index',
+                    pageNum: 2,
+                    text: '惠生活',
+                    defaultTitle: '肯德基点餐5折起，天天疯狂星期四',
+                    defaultImg: 'https://file.y1b.cn/store/1-0/23527/64719ea4deed0.png',
+                    isBtnShare: 'specialMini',
+                    shareRoute: 'pages/discounts/discounts/index?show_kudi=1', // 分享进入的路径
                     btnShareObj: null
                 },
                 {
@@ -164,8 +177,8 @@ const shareMixin = {
             if (res.code != 1) return;
             this.getShareCont = res.data;
         },
-        // 我的收藏与浏览记录的分享
-        shareMyCollectBtnFun(data, pathData) {
+        // 我的收藏与浏览记录的分享 --
+        async shareMyCollectBtnFun(data, pathData) {
             let share = {};
             if (data.from == "button") {
                 if (data.target.dataset) {
@@ -173,18 +186,29 @@ const shareMixin = {
                     // 进入分享页后返回上一页的页面路径 - 目前取消，默认跳转首页
                     // const sourceUrl = "/pages/userModule/productList/index";
                     const sourceUrl = "";
-                    const { title, image, skuId, cid1, cid3, lx_type, coupon_id, goods_sign, positionId } = shareItem;
+                    const { title, image, skuId, cid1, cid3, lx_type, coupon_id, goods_sign, positionId, } = shareItem;
                     share.title = title;
                     share.imageUrl = image;
-                    if (lx_type == 2) {
-                        // 分享进入feed流
-                        share.path = `/pages/shopMallModule/feedDetailsList/index?cid1=${cid1}&skuId=${skuId}&cid3=${cid3}&sourceUrl=${sourceUrl}${pathData}`;
-                    } else if (lx_type == 3) {
-                        // 拼多多
-                        share.path = `/pages/shopMallModule/feedDetailsList/index?goods_sign=${goods_sign}&positionId=${positionId || 0}${pathData}`;
+                    if ([2, 3].includes(lx_type)) {
+                        const params = {};
+                        let requestApi = '';
+                        if (lx_type == 3) {
+                            requestApi = goodsPromotion;
+                            params.goods_sign = goods_sign;
+                        } else {
+                            requestApi = bysubunionid;
+                            params.skuId = skuId;
+                        }
+                        const skuRes = await requestApi(params);
+                        if (skuRes.code == 0) {
+                            this.$toast(skuRes.msg);
+                        } else {
+                            share.path = `/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${skuId || goods_sign}&positionId=${positionId}`;
+                        }
                     } else {
                         share.path = `/pages/shopMallModule/couponDetails/index?id=${coupon_id}${pathData}`;
                     }
+
                 }
             }
             return share;
@@ -208,12 +232,16 @@ const shareMixin = {
                 cid3,
                 goods_sign,
                 positionId,
+                lx_type
             } = shareItem;
-            let shareUrl = `cid1=${cid1}&skuId=${skuId}&cid3=${cid3}`;
-            if (this.shop_type == 3) shareUrl = `goods_sign=${goods_sign}&positionId=${positionId || 0}`
+            // let shareUrl = `cid1=${cid1}&skuId=${skuId}&cid3=${cid3}`;
+            // if (this.shop_type == 3) shareUrl = `goods_sign=${goods_sign}&positionId=${positionId || 0}`
+
+            let queryId = skuId;
+            if (this.shop_type == 3) queryId = goods_sign;
             share.title = title || "领券啦！领了优惠券再下单，又省了一笔钱";
             share.imageUrl = image;
-            share.path = `/pages/shopMallModule/feedDetailsList/index?${shareUrl}${pathData}`;
+            share.path = `/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${queryId}${pathData}`;
             return share;
         },
         // 首页专题分享

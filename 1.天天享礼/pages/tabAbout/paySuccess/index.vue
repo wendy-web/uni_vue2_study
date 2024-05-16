@@ -113,6 +113,7 @@ import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js'
 			}
 		},
 		onLoad(options){
+			uni.setNavigationBarTitle({ title: ''});
 			if(options.payment){
 				this.payment = options.payment;
 			}

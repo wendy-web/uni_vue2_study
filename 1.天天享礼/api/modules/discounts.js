@@ -81,3 +81,12 @@ export function hwStatus(data) {
         data
     });
 }
+
+// 库迪图标高亮配置
+export function lightConfig(data) {
+    return API.request({
+        url: '/api/shop/lightConfig',
+        method: 'post',
+        data
+    });
+}

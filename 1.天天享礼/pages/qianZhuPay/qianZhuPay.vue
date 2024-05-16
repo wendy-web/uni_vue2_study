@@ -63,7 +63,7 @@ export default {
       });
     } else if(this.isGoOrderInfoUrl == 3) {
       uni.reLaunch({
-        url:'/pages/tabBar/discounts/index'
+        url:'/pages/discounts/discounts/index'
       });
     }
   },

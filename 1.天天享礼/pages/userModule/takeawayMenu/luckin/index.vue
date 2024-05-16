@@ -610,11 +610,10 @@ export default {
     // 直接退回首页
     topCallBack() {
         if(this.isBack) return this.$leftBack();
-        let pathSource = 'shopMall';
-        if(this.pathSource) pathSource = this.pathSource;
-        this.$switchTab(`/pages/tabBar/${pathSource}/index`);
+        if(this.pathSource == 'discounts') return this.$reLaunch('/pages/discounts/discounts/index');
+        this.$switchTab(`/pages/tabBar/shopMall/index`);
     },
-    displaceHandle(){
+    displaceHandle() {
       // 确定门店
       this.isShowConfirmShopDia = false;
       this.selectShopHandle();

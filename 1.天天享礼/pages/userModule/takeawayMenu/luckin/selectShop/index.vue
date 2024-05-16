@@ -264,15 +264,14 @@ export default {
       topCallBack() {
         // 列表没有数据 - 返回到
         if(!this.shopList.length) {
-          let pathSource = 'shopMall';
-          if(this.pathSource) pathSource = this.pathSource;
-          this.$switchTab(`/pages/tabBar/${pathSource}/index`);
+          if(this.pathSource == 'discounts') return this.$reLaunch('/pages/discounts/discounts/index');
+          this.$switchTab(`/pages/tabBar/shopMall/index`);
           return;
         };
         uni.navigateBack({
-            fail() {
-                this.$reLaunch('/pages/userModule/takeawayMenu/luckin/index');
-            }
+          fail: () => {
+            this.$reLaunch('/pages/userModule/takeawayMenu/luckin/index');
+          }
         });
       }
     },

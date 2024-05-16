@@ -40,15 +40,15 @@
 		</view>
 		<view class="btn">去支付</view>
 	</view>
-	<view class="take" @click="jumpLinkHandle(item, 'home')" v-if="Number(item.status)">
+	<view class="take" @click="jumpLinkHandle(item, 'home')" v-if="Number(item.status) && userInfo.buy_vip">
 		<view class="take_btn">再来一单</view>
 	</view>
 </view>
 </template>
-
 <script>
 import { jumpLink } from '@/api/modules/discounts.js';
 import { parseTime } from '@/utils/index.js';
+import { mapGetters } from 'vuex';
 export default {
 	props: {
 		item: {
@@ -68,6 +68,9 @@ export default {
 		return {
 			bgColor:'#FCDB28'
 		}
+	},
+	computed: {
+        ...mapGetters(['userInfo']),
 	},
 	methods: {
 		formatPrice(price = 0, type) {

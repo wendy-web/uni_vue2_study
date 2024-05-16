@@ -8,7 +8,7 @@
   <view class="cont_box">
     <image class="cont_top_icon" src="https://file.y1b.cn/store/1-0/23713/64afe59a93497.png" mode="aspectFit"></image>
     <view class="cont_txt">提现申请提交成功</view>
-    <view class="cont_lab">预计1个工作日到账</view>
+    <view class="cont_lab">请留意微信支付的通知</view>
     <view class="pop_btn" @click="onClose">我知道了</view>
   </view>
 </van-popup>

@@ -14,8 +14,7 @@
             <van-loading slot="loading" type="spinner" size="20" vertical />
         </van-image>
         <!-- 倒计时 -->
-        <view class="count-down" >
-            <!-- <van-count-down :use-slot="true" :time="time" @change="onChange" > -->
+        <view class="count-down">
             <van-count-down :use-slot="true" :time="time" @change="onChange" @finish="init" millisecond
                 format="HH:mm:ss:SS">
                 <view class="flex-row-between">
@@ -37,8 +36,8 @@
 </template>
 <script>
 	import { expireOrder } from '@/api/modules/task.js';
-	import { getImgUrl } from '@/utils/auth.js';
-    import { mapGetters } from 'vuex';
+import { getImgUrl } from '@/utils/auth.js';
+import { mapGetters } from 'vuex';
 	let _request = false;
 	export default {
 		data() {

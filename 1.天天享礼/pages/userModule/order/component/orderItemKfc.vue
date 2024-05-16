@@ -2,7 +2,7 @@
 <view class="item">
 	<view class="type_top">
 		<view class="type_lft">
-			<image class="type_top-icon" mode="scaleToFill" src="../../static/order/icon_03.png"></image>
+			<!-- <image class="type_top-icon" mode="scaleToFill" src="../../static/order/icon_03.png"></image> -->
 			<text class="type_lft-label">{{ item.kfc.goods_sku_name }} </text>
 		</view>
 		<view class="type_rit" :class="'order-status-'+item.status">
@@ -49,7 +49,7 @@
 		</view>
 		<view class="btn">去支付</view>
 	</view>
-    <view class="take" @click="againHandle(item.id)" v-if="Number(item.status)">
+    <view class="take" @click="againHandle(item.id)" v-if="Number(item.status) && userInfo.buy_vip">
 		<view class="take_btn">再来一单</view>
 	</view>
 </view>
@@ -58,6 +58,7 @@
 <script>
 import { orderAgain } from '@/api/modules/takeawayMenu/kfc.js';
 import { parseTime } from '@/utils/index.js';
+import { mapGetters } from 'vuex';
 export default {
 	props: {
 		item: {
@@ -75,6 +76,7 @@ export default {
 
 	},
 	computed: {
+        ...mapGetters(['userInfo']),
 		eatTypeText() {
 			const eatTypeIndex = this.item.kfc.eatType;
 			return ['', '店内用餐', '自提带走'][eatTypeIndex];

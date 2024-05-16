@@ -147,24 +147,24 @@
 </template>
 
 <script>
+import { cityStores, kfcMenus } from '@/api/modules/takeawayMenu/kfc.js';
+import { location } from '@/api/modules/takeawayMenu/luckin.js';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import meTabs from './content/me-tabs.vue';
-import contTabs from './content/cont-tabs.vue';
-import commodityDetails from './content/commodityDetails.vue';
+import { getImgUrl } from '@/utils/auth.js';
+import { getUserLocation } from '@/utils/getUserLocation.js';
+import getViewPort from '@/utils/getViewPort.js';
+import { formatDistance } from '@/utils/index.js';
+import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import commodityBuy from './content/commodityBuy.vue';
-import commodityCart from './content/commoditycart.vue';
+import commodityDetails from './content/commodityDetails.vue';
 import commodityOrder from './content/commodityOrder.vue';
+import commodityCart from './content/commoditycart.vue';
 import confirmDia from './content/confirmDia.vue';
 import confirmShopDia from './content/confirmShopDia.vue';
+import contTabs from './content/cont-tabs.vue';
 import continuePay from './content/continuePay.vue';
-import getViewPort from '@/utils/getViewPort.js';
-import { location } from '@/api/modules/takeawayMenu/luckin.js';
-import { cityStores, kfcMenus } from '@/api/modules/takeawayMenu/kfc.js';
-import { mapActions, mapGetters, mapMutations } from 'vuex';
-import { getImgUrl } from '@/utils/auth.js';
-import { formatDistance } from '@/utils/index.js';
-import { getUserLocation } from '@/utils/getUserLocation.js';
-import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import meTabs from './content/me-tabs.vue';
 export default {
   mixins: [MescrollMixin, shareMixin], // 使用mixin
   components: {
@@ -598,9 +598,8 @@ export default {
     // 直接退回首页
     topCallBack() {
         if(this.isBack) return this.$leftBack();
-        let pathSource = 'shopMall';
-        if(this.pathSource) pathSource = this.pathSource;
-        this.$switchTab(`/pages/tabBar/${pathSource}/index`);
+        if(this.pathSource == 'discounts') return this.$reLaunch('/pages/discounts/discounts/index');
+        this.$switchTab(`/pages/tabBar/shopMall/index`);
     },
     displaceHandle(){
       // 确定门店

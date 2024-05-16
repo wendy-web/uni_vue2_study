@@ -123,7 +123,7 @@ export default {
       titleIcon: "/static/network/new_icon.png",
       shoType: "",
       currentPage: '',
-      noShowList: ['pages/tabBar/discounts/index'], // 不展示弹窗的类别
+      noShowList: ['pages/tabBar/discounts/index', 'pages/discounts/discounts/index'], // 不展示弹窗的类别
 			imgUrl: getImgUrl() + 'static/network',
     };
   },

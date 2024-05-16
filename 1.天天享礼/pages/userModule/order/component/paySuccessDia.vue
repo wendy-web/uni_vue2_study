@@ -1,10 +1,10 @@
 <template>
 <van-popup
-    :show="isShow"
-    custom-style="overflow: visible;background: transparent;"
-    round
-    @close="onClose"
-		:safe-area-inset-bottom="false"
+  :show="isShow"
+  custom-style="overflow: visible;background: transparent;"
+  round
+  @close="onClose"
+  :safe-area-inset-bottom="false"
 >
   <view class="cont_box">
     <image class="cont_top_icon" src="https://file.y1b.cn/store/1-0/23713/64afe59a93497.png" mode="aspectFit"></image>

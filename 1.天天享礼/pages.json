@@ -1,669 +1,653 @@
 {
-    "insetLoader": {
-        "config": {
-            "confirm": "<pointUpgradeDia ref='pointUpgradeDia' @happyGet='getHandle'/>",
-            "privacyOpen": "<privacyOpen ref='privacyOpen'></privacyOpen>"
-
-        },
-        "label": [
-            "confirm",
-            "privacyOpen"
-        ],
-        "rootEle": "view"
-    },
-    "pages": [
-       {
-            "path": "pages/tabBar/shopMall/index",
-            "style": {
-                "navigationStyle": "custom",
-                "onReachBottomDistance": 500
-            }
-        },
-        {
-            "path": "pages/tabBar/discounts/index",
-            "style": {
-                "navigationStyle": "custom"
-            }
-        },
-        {
-            "path": "pages/tabBar/task/index",
-            "style": {
-                "navigationStyle": "custom"
-            }
-        },
-        {
-            "path": "pages/tabBar/user/index",
-            "style": {
-                "navigationStyle": "custom"
-            }
-        },
-        {
-            "path": "pages/webview/webview",
-            "style": {
-                "navigationBarBackgroundColor": "#2B7FDA",
-                "navigationBarTextStyle": "white",
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/webviewCode/webviewCode",
-            "style": {
-                "navigationBarBackgroundColor": "#2B7FDA",
-                "navigationBarTextStyle": "white",
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/games/wawaH5Pay/index",
-            "style": {
-                "navigationBarTitleText": "支付"
-            }
-        },
-        {
-            "path": "pages/qianZhuPay/qianZhuPay",
-            "style": {
-                "navigationBarTitleText": "支付"
-            }
-        },
-        {
-            "path": "pages/payment/index",
-            "style": {
-                "navigationBarTitleText": "支付"
-            }
-        }
-    ],
-    "subPackages": [
-        {
-            "root": "pages/tabAbout/",
-            "name": "tabAbout",
-            "pages": [{
-                    "path": "aboutUs/index",
-                    "style": {
-                        "navigationBarTitleText": "关于我们",
-                        "navigationBarBackgroundColor": "#fff",
-                        "navigationBarTextStyle": "black"
-                    }
-                },
-                {
-                    "path": "service/service",
-                    "style": {
-                        "navigationBarTitleText": "客服中心",
-                        "navigationBarBackgroundColor": "#ffffff",
-                        "navigationBarTextStyle": "black"
-                    }
-                },
-                {
-                    "path": "paySuccess/index",
-                    "style": {
-                        "navigationBarBackgroundColor": "#f7f7f7",
-                        "navigationBarTitleText": ""
-                    }
-                },
-                {
-                    "path": "cityPage/index",
-                    "style": {
-                        "navigationBarTitleText": "选择城市",
-                        "navigationBarBackgroundColor": "#fff"
-                    }
-                },
-                {
-                    "path": "login/index",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationBarBackgroundColor": "#FFFFFF",
-                        "navigationBarTextStyle": "black",
-                        "navigationStyle": "custom"
-                    }
-                }
-            ]
-        },
-        {
-            "root": "pages/batchPick/",
-            "name": "batchPick",
-            "pages": [{
-                    "path": "user/index",
-                    "style": {
-                        "navigationStyle": "custom",
-                        "disableScroll": true
-                    }
-                },
-                {
-                    "path": "receive/index",
-                    "style": {
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "details/index",
-                    "style": {
-                        "navigationBarTextStyle": "black",
-                        "navigationBarTitleText": "礼品卡详情",
-                        "navigationBarBackgroundColor": "#F5F5F5"
-                    }
-                },
-                {
-                    "path": "coupon/index",
-                    "style": {
-                        "navigationBarTitleText": "我的卡劵",
-                        "navigationBarTextStyle": "black",
-                        "navigationBarBackgroundColor": "#F5F5F5"
-                    }
-                }
-            ]
-        },
-        {
-            "root": "pages/shopMallModule/",
-            "name": "shopMallModule",
-            "pages": [{
-                    "path": "couponDetails/index",
-                    "style": {
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "feedDetailsList/index",
-                    "style": {
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "productDetails/index",
-                    "style": {
-                        "navigationStyle": "custom"
-                    }
-                }
-            ]
-        },
-        {
-            "root": "pages/taskModule/",
-            "name": "taskModule",
-            "pages": [{
-                "path": "queAnswers/index",
-                "style": {
-                    "navigationStyle": "custom"
-                }
-            }]
-        },
-        {
-            "root": "pages/userInfo/",
-            "name": "userInfo",
-            "pages": [{
-                    "path": "personalInfo/index",
-                    "style": {
-                        "navigationBarTextStyle": "black",
-                        "navigationBarTitleText": "个人资料",
-                        "navigationBarBackgroundColor": "#fff",
-                        "disableScroll": true
-                    }
-                },
-                {
-                    "path": "personalInfo/modifyName/index",
-                    "style": {
-                        "navigationBarTitleText": "修改昵称",
-                        "navigationBarBackgroundColor": "#ffffff"
-                    }
-                },
-                {
-                    "path": "myCouponHistory/index",
-                    "style": {
-                        "navigationBarTextStyle": "black",
-                        "navigationBarTitleText": "历史记录",
-                        "navigationBarBackgroundColor": "#FFFFFF"
-                    }
-                },
-                {
-                    "path": "cowpeaRecord/index",
-                    "style": {
-                        "navigationBarTextStyle": "black",
-                        "navigationBarTitleText": "牛金豆记录",
-                        "navigationBarBackgroundColor": "#F7F7F7",
-                        "disableScroll": true
-                    }
-                },
-                {
-                    "path": "myCollect/index",
-                    "style": {
-                        "navigationBarTextStyle": "black",
-                        "navigationBarTitleText": "我的收藏",
-                        "navigationBarBackgroundColor": "#F7F7F7"
-                    }
-                },
-                {
-                    "path": "lookRecord/index",
-                    "style": {
-                        "navigationBarTextStyle": "black",
-                        "navigationBarTitleText": "浏览记录",
-                        "navigationBarBackgroundColor": "#F7F7F7"
-                    }
-                }
-            ],
+	"insetLoader": {
+		"config": {
+			"confirm": "<pointUpgradeDia ref='pointUpgradeDia' @happyGet='getHandle'/>",
+			"privacyOpen": "<privacyOpen ref='privacyOpen'></privacyOpen>"
+		},
+		"label": [
+			"confirm",
+			"privacyOpen"
+		],
+		"rootEle": "view"
+	},
+	"pages": [
+		{
+			"path": "pages/tabBar/shopMall/index",
+			"style": {
+				"navigationStyle": "custom",
+				"onReachBottomDistance": 500
+				// "usingComponents": {
+				// 	"coral-adv": "plugin://coral-adv/adv"
+				// }
+			}
+		},
+		{
+			"path": "pages/tabBar/task/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/tabBar/user/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/webview/webview",
+			"style": {
+				"navigationBarBackgroundColor": "#2B7FDA",
+				"navigationBarTextStyle": "white",
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/webviewCode/webviewCode",
+			"style": {
+				"navigationBarBackgroundColor": "#2B7FDA",
+				"navigationBarTextStyle": "white",
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/games/wawaH5Pay/index",
+			"style": {
+				"navigationBarTitleText": "支付"
+			}
+		},
+		{
+			"path": "pages/qianZhuPay/qianZhuPay",
+			"style": {
+				"navigationBarTitleText": "支付"
+			}
+		},
+		{
+			"path": "pages/payment/index",
+			"style": {
+				"navigationBarTitleText": "支付"
+			}
+		}
+	],
+	"subPackages": [
+		{
+			"root": "pages/discounts",
+			"name": "discounts",
+			"pages": [
+				{
+					"path": "discounts/index",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/tabAbout/",
+			"name": "tabAbout",
+			"pages": [
+				{
+					"path": "aboutUs/index",
+					"style": {
+						"navigationBarTitleText": "关于我们",
+						"navigationBarBackgroundColor": "#fff",
+						"navigationBarTextStyle": "black"
+					}
+				},
+				{
+					"path": "service/service",
+					"style": {
+						"navigationBarTitleText": "客服中心",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationBarTextStyle": "black"
+					}
+				},
+				{
+					"path": "paySuccess/index",
+					"style": {
+						"navigationBarBackgroundColor": "#f7f7f7",
+						"navigationBarTitleText": ""
+					}
+				},
+				{
+					"path": "cityPage/index",
+					"style": {
+						"navigationBarTitleText": "选择城市",
+						"navigationBarBackgroundColor": "#fff"
+					}
+				},
+				{
+					"path": "login/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor": "#FFFFFF",
+						"navigationBarTextStyle": "black",
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/shopMallModule/",
+			"name": "shopMallModule",
+			"pages": [
+				{
+					"path": "couponDetails/index",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "feedDetailsList/index",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "productDetails/index",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/taskModule/",
+			"name": "taskModule",
+			"pages": [
+				{
+					"path": "queAnswers/index",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/userInfo/",
+			"name": "userInfo",
+			"pages": [
+				{
+					"path": "personalInfo/index",
+					"style": {
+						"navigationBarTextStyle": "black",
+						"navigationBarTitleText": "个人资料",
+						"navigationBarBackgroundColor": "#fff",
+						"disableScroll": true
+					}
+				},
+				{
+					"path": "personalInfo/modifyName/index",
+					"style": {
+						"navigationBarTitleText": "修改昵称",
+						"navigationBarBackgroundColor": "#ffffff"
+					}
+				},
+				{
+					"path": "myCouponHistory/index",
+					"style": {
+						"navigationBarTextStyle": "black",
+						"navigationBarTitleText": "历史记录",
+						"navigationBarBackgroundColor": "#FFFFFF"
+					}
+				},
+				{
+					"path": "cowpeaRecord/index",
+					"style": {
+						"navigationBarTextStyle": "black",
+						"navigationBarTitleText": "牛金豆记录",
+						"navigationBarBackgroundColor": "#F7F7F7",
+						"disableScroll": true
+					}
+				},
+				{
+					"path": "myCollect/index",
+					"style": {
+						"navigationBarTextStyle": "black",
+						"navigationBarTitleText": "我的收藏",
+						"navigationBarBackgroundColor": "#F7F7F7"
+					}
+				},
+				{
+					"path": "lookRecord/index",
+					"style": {
+						"navigationBarTextStyle": "black",
+						"navigationBarTitleText": "浏览记录",
+						"navigationBarBackgroundColor": "#F7F7F7"
+					}
+				}
+			],
             "plugins" : {
                 "jtkDc" : {
                     "version" : "1.3.7",
                     "provider" : "wx6c999744b6d125ef"
                 }
             }
-        },
-        {
-            "root": "pages/userModule/",
-            "name": "userModule",
-            "pages": [{
-                    "path": "myCowpea/index",
-                    "style": {
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "myCoupon/index",
-                    "style": {
-                        "navigationBarTextStyle": "black",
-                        "navigationBarTitleText": "",
-                        "navigationBarBackgroundColor": "#F7F7F7",
-                        "disableScroll": true,
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "order/index",
-                    "style": {
-                        "navigationBarTitleText": "我的订单",
-                        "navigationBarTextStyle": "black",
-                        "navigationBarBackgroundColor": "#fff",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "order/detail",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationBarTextStyle": "black",
-                        "navigationBarBackgroundColor": "#f7f7f7",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "serviceRecharge/index",
-                    "style": {
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "productList/index",
-                    "style": {
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "productList/search",
-                    "style": {
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/luckin/index",
-                    "style": {
-                        "navigationBarTitleText": "luckin",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/luckin/search",
-                    "style": {
-                        "navigationBarTitleText": "luckinSearch",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/luckin/order/index",
-                    "style": {
-                        "navigationBarTitleText": "order",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/luckin/selectShop/index",
-                    "style": {
-                        "navigationBarTitleText": "selectShop",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/mcDonald/index",
-                    "style": {
-                        "navigationBarTitleText": "mcDonald",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/mcDonald/search",
-                    "style": {
-                        "navigationBarTitleText": "mcDonaldSearch",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/mcDonald/order/index",
-                    "style": {
-                        "navigationBarTitleText": "order",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/mcDonald/selectShop/index",
-                    "style": {
-                        "navigationBarTitleText": "selectShop",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/kfc/index",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/kfc/search",
-                    "style": {
-                        "navigationBarTitleText": "kfcSearch",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/kfc/order/index",
-                    "style": {
-                        "navigationBarTitleText": "kfcOrder",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/kfc/selectShop/index",
-                    "style": {
-                        "navigationBarTitleText": "kfcSelectShop",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/starbucks/index",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/starbucks/search",
-                    "style": {
-                        "navigationBarTitleText": "starbucksSearch",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/starbucks/order/index",
-                    "style": {
-                        "navigationBarTitleText": "kfcOrder",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "takeawayMenu/starbucks/selectShop/index",
-                    "style": {
-                        "navigationBarTitleText": "starbucksSelectShop",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "allowance/redPacket/index",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom",
-                        "backgroundColor": "#FFECBD"
-                    }
-                },
-                {
-                    "path": "allowance/recharge/index",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "allowance/repairGet/index",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "allowance/repairGet/detail",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "allowance/specialList/index",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom"
-                    }
-                }
-            ]
-        },
-        {
-            "root": "pages/userCard/",
-            "name": "userCard",
-            "pages": [{
-                    "path": "card/cardVip/redPayIndex",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom",
-                        "backgroundColor": "#fff"
-                    }
-                },
-                {
-                    "path": "card/cardVip/index",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom",
-                        "backgroundColor": "#F5F6FA"
-                    }
-                },
-                {
-                    "path": "card/cardVip/payIndex",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom",
-                        "backgroundColor": "#fff"
-                    }
-                },
-                {
-                    "path": "card/cardVip/openIndex",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom",
-                        "backgroundColor": "#fff"
-                    }
-                },
-                {
-                    "path": "card/cardVip/recordIndex",
-                    "style": {
-                        "navigationBarTitleText": "购买记录",
-                        "backgroundColor": "#fff",
-                        "navigationBarBackgroundColor": "#fff"
-                    }
-                },
-                {
-                    "path": "card/cardVip/detail",
-                    "style": {
-                        "navigationBarTitleText": "购买详情",
-                        "backgroundColor": "#fff",
-                        "navigationBarBackgroundColor": "#fff"
-                    }
-                },
-                {
-                    "path": "card/cardVip/redPacket",
-                    "style": {
-                        "navigationBarTitleText": "省钱卡红包",
-                        "backgroundColor": "#f5f6fa",
-                        "navigationBarBackgroundColor": "#f5f6fa"
-                    }
-                },
-                {
-                    "path": "card/cardVip/noValidRedPacket",
-                    "style": {
-                        "navigationBarTitleText": "无效红包",
-                        "backgroundColor": "#f5f6fa",
-                        "navigationBarBackgroundColor": "#f5f6fa"
-                    }
-                },
-                {
-                    "path": "card/cardVip/payDetail",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom",
-                        "backgroundColor": "#fff"
-                    }
-                },
-                {
-                    "path": "card/cardVip/addPacket",
-                    "style": {
-                        "navigationBarTitleText": "加量包",
-                        "backgroundColor": "#f5f6fa",
-                        "navigationBarBackgroundColor": "#f5f6fa"
-                    }
-                },
-                {
-                    "path": "withdraw/index",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "backgroundColor": "#F7F7F7",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "withdraw/withdraw",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "backgroundColor": "#F7F7F7",
-                        "navigationStyle": "custom"
-                    }
-                },
-                {
-                    "path": "withdraw/historyList",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "backgroundColor": "#F7F7F7",
-                        "navigationStyle": "custom"
-                    }
-                }
-            ]
-        },
-        {
-            "root": "pages/userCash/",
-            "name": "userCash",
-            "pages": [{
-                    "path": "cash/index",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "navigationStyle": "custom",
-                        "backgroundColor": "#fff"
-                    }
-                },
-                {
-                    "path": "cash/activityRecord",
-                    "style": {
-                        "navigationBarTitleText": "活动记录",
-                        "backgroundColor": "#f7f7f7",
-                        "navigationBarBackgroundColor": "#fff"
-                    }
-                },
-                {
-                    "path": "cash/accelerateList",
-                    "style": {
-                        "navigationBarTitleText": "",
-                        "backgroundColor": "#f7f7f7",
-                        "navigationStyle": "custom",
-                        "navigationBarBackgroundColor": "#fff"
-                    }
-                }
-            ]
-        },
-        {
-            "root": "pages/userComModule/",
-            "name": "ani3D",
-            "pages": [{
-                    "path": "ani3D/index",
-                    "style": {
-                        "navigationBarTitleText": "旋转目马动画",
-                        "navigationStyle": "custom",
-                        "backgroundColor": "#fff"
-                    }
-                },
-                {
-                    "path": "ani3Dflower/index",
-                    "style": {
-                        "navigationBarTitleText": "烟花动画演示",
-                        "backgroundColor": "#fff",
-                        "navigationStyle": "custom"
-                    }
-                }
-            ]
-        }
-    ],
-    "preloadRule": {},
-    "tabBar": {
-        "custom": true,
-        "color": "#999999",
-        "selectedColor": "#EF2B20",
-        "backgroundColor": "#FFFFFF",
-        "list": [{
-                "pagePath": "pages/tabBar/shopMall/index",
-                "text": "首页"
-            },
-            {
-                "pagePath": "pages/tabBar/discounts/index",
-                "text": "惠生活"
-            },
-            {
-                "pagePath": "pages/tabBar/task/index",
-                "text": "福利中心"
-            },
-            {
-                "pagePath": "pages/tabBar/user/index",
-                "text": "我的"
-            }
-        ]
-    },
-    "globalStyle": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "天天享礼",
-        "navigationBarBackgroundColor": "#F7F7F7",
-        "backgroundColor": "#F7F7F7",
-        "usingComponents": {
-            "van-tab": "/wxcomponents/vant_update/tab/index",
-            "van-tabs": "/wxcomponents/vant_update/tabs/index",
-            "van-icon": "/wxcomponents/vant_update/icon/index",
-            "van-popup": "/wxcomponents/vant_update/popup/index",
-            "van-switch": "/wxcomponents/vant_update/switch/index",
-            "van-dialog": "/wxcomponents/vant_update/dialog/index",
-            "van-toast": "/wxcomponents/vant_update/toast/index",
-            "van-image": "/wxcomponents/vant_update/image/index",
-            "van-loading": "/wxcomponents/vant_update/loading/index",
-            "van-field": "/wxcomponents/vant_update/field/index",
-            "van-cell": "/wxcomponents/vant_update/cell/index",
-            "van-cell-group": "/wxcomponents/vant_update/cell-group/index",
-            "van-checkbox": "/wxcomponents/vant_update/checkbox/index",
-            "van-checkbox-group": "/wxcomponents/vant_update/checkbox-group/index",
-            "van-count-down": "/wxcomponents/vant_update/count-down/index",
-            "van-progress": "/wxcomponents/vant_update/progress/index",
-            "van-swipe-cell": "/wxcomponents/vant_update/swipe-cell/index",
-            "van-datetime-picker": "/wxcomponents/vant_update/datetime-picker/index",
-            "van-radio-group": "/wxcomponents/vant_update/radio-group/index",
-            "van-radio": "/wxcomponents/vant_update/radio/index",
-            "van-area": "/wxcomponents/vant_update/area/index"
-        }
-    },
-    "easycom": {
-        "^w-(.*)": "@/uni_modules/wmf-code/components/w-$1/w-$1.vue"
-    }
+		},
+		{
+			"root": "pages/userModule/",
+			"name": "userModule",
+			"pages": [
+				{
+					"path": "myCowpea/index",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "myCoupon/index",
+					"style": {
+						"navigationBarTextStyle": "black",
+						"navigationBarTitleText": "",
+						"navigationBarBackgroundColor": "#F7F7F7",
+						"disableScroll": true,
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "order/index",
+					"style": {
+						"navigationBarTitleText": "我的订单",
+						"navigationBarTextStyle": "black",
+						"navigationBarBackgroundColor": "#fff",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "order/detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationBarTextStyle": "black",
+						"navigationBarBackgroundColor": "#f7f7f7",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "serviceRecharge/index",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "productList/index",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "productList/search",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/luckin/index",
+					"style": {
+						"navigationBarTitleText": "luckin",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/luckin/search",
+					"style": {
+						"navigationBarTitleText": "luckinSearch",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/luckin/order/index",
+					"style": {
+						"navigationBarTitleText": "order",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/luckin/selectShop/index",
+					"style": {
+						"navigationBarTitleText": "selectShop",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/mcDonald/index",
+					"style": {
+						"navigationBarTitleText": "mcDonald",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/mcDonald/search",
+					"style": {
+						"navigationBarTitleText": "mcDonaldSearch",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/mcDonald/order/index",
+					"style": {
+						"navigationBarTitleText": "order",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/mcDonald/selectShop/index",
+					"style": {
+						"navigationBarTitleText": "selectShop",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/kfc/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/kfc/search",
+					"style": {
+						"navigationBarTitleText": "kfcSearch",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/kfc/order/index",
+					"style": {
+						"navigationBarTitleText": "kfcOrder",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/kfc/selectShop/index",
+					"style": {
+						"navigationBarTitleText": "kfcSelectShop",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/starbucks/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/starbucks/search",
+					"style": {
+						"navigationBarTitleText": "starbucksSearch",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/starbucks/order/index",
+					"style": {
+						"navigationBarTitleText": "kfcOrder",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "takeawayMenu/starbucks/selectShop/index",
+					"style": {
+						"navigationBarTitleText": "starbucksSelectShop",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "allowance/redPacket/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom",
+						"backgroundColor": "#FFECBD"
+					}
+				},
+				{
+					"path": "allowance/recharge/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "allowance/repairGet/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "allowance/repairGet/detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "allowance/specialList/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/userCard/",
+			"name": "userCard",
+			"pages": [
+				{
+					"path": "card/cardVip/redPayIndex",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom",
+						"backgroundColor": "#fff"
+					}
+				},
+				{
+					"path": "card/cardVip/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom",
+						"backgroundColor": "#F5F6FA"
+					}
+				},
+				{
+					"path": "card/cardVip/payIndex",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom",
+						"backgroundColor": "#fff"
+					}
+				},
+				{
+					"path": "card/cardVip/openIndex",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom",
+						"backgroundColor": "#fff"
+					}
+				},
+				{
+					"path": "card/cardVip/recordIndex",
+					"style": {
+						"navigationBarTitleText": "购买记录",
+						"backgroundColor": "#fff",
+						"navigationBarBackgroundColor": "#fff"
+					}
+				},
+				{
+					"path": "card/cardVip/detail",
+					"style": {
+						"navigationBarTitleText": "购买详情",
+						"backgroundColor": "#fff",
+						"navigationBarBackgroundColor": "#fff"
+					}
+				},
+				{
+					"path": "card/cardVip/redPacket",
+					"style": {
+						"navigationBarTitleText": "省钱卡红包",
+						"backgroundColor": "#f5f6fa",
+						"navigationBarBackgroundColor": "#f5f6fa"
+					}
+				},
+				{
+					"path": "card/cardVip/noValidRedPacket",
+					"style": {
+						"navigationBarTitleText": "无效红包",
+						"backgroundColor": "#f5f6fa",
+						"navigationBarBackgroundColor": "#f5f6fa"
+					}
+				},
+				{
+					"path": "card/cardVip/payDetail",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom",
+						"backgroundColor": "#fff"
+					}
+				},
+				{
+					"path": "card/cardVip/addPacket",
+					"style": {
+						"navigationBarTitleText": "加量包",
+						"backgroundColor": "#f5f6fa",
+						"navigationBarBackgroundColor": "#f5f6fa"
+					}
+				},
+				{
+					"path": "withdraw/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"backgroundColor": "#F7F7F7",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "withdraw/withdraw",
+					"style": {
+						"navigationBarTitleText": "",
+						"backgroundColor": "#F7F7F7",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "withdraw/historyList",
+					"style": {
+						"navigationBarTitleText": "",
+						"backgroundColor": "#F7F7F7",
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/userCash/",
+			"name": "userCash",
+			"pages": [
+				{
+					"path": "cash/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "custom",
+						"backgroundColor": "#fff"
+					}
+				},
+				{
+					"path": "cash/activityRecord",
+					"style": {
+						"navigationBarTitleText": "活动记录",
+						"backgroundColor": "#f7f7f7",
+						"navigationBarBackgroundColor": "#fff"
+					}
+				},
+				{
+					"path": "cash/accelerateList",
+					"style": {
+						"navigationBarTitleText": "",
+						"backgroundColor": "#f7f7f7",
+						"navigationStyle": "custom",
+						"navigationBarBackgroundColor": "#fff"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/userComModule/",
+			"name": "ani3D",
+			"pages": [
+				{
+					"path": "ani3D/index",
+					"style": {
+						"navigationBarTitleText": "旋转目马动画",
+						"navigationStyle": "custom",
+						"backgroundColor": "#fff"
+					}
+				},
+				{
+					"path": "ani3Dflower/index",
+					"style": {
+						"navigationBarTitleText": "烟花动画演示",
+						"backgroundColor": "#fff",
+						"navigationStyle": "custom"
+					}
+				}
+			]
+		}
+	],
+	"preloadRule": {},
+	"tabBar": {
+		"custom": true,
+		"color": "#999999",
+		"selectedColor": "#EF2B20",
+		"backgroundColor": "#FFFFFF",
+		"list": [
+			{
+				"pagePath": "pages/tabBar/shopMall/index",
+				"text": "首页"
+			},
+			// {
+			//     "pagePath": "pages/tabBar/discounts/index",
+			//     "text": "惠生活"
+			// },
+			{
+				"pagePath": "pages/tabBar/task/index",
+				"text": "福利中心"
+			},
+			{
+				"pagePath": "pages/tabBar/user/index",
+				"text": "我的"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "天天享礼",
+		"navigationBarBackgroundColor": "#F7F7F7",
+		"backgroundColor": "#F7F7F7",
+		"usingComponents": {
+			"van-tab": "/wxcomponents/vant_update/tab/index",
+			"van-tabs": "/wxcomponents/vant_update/tabs/index",
+			"van-icon": "/wxcomponents/vant_update/icon/index",
+			"van-popup": "/wxcomponents/vant_update/popup/index",
+			"van-switch": "/wxcomponents/vant_update/switch/index",
+			"van-dialog": "/wxcomponents/vant_update/dialog/index",
+			"van-toast": "/wxcomponents/vant_update/toast/index",
+			"van-image": "/wxcomponents/vant_update/image/index",
+			"van-loading": "/wxcomponents/vant_update/loading/index",
+			"van-field": "/wxcomponents/vant_update/field/index",
+			"van-cell": "/wxcomponents/vant_update/cell/index",
+			"van-cell-group": "/wxcomponents/vant_update/cell-group/index",
+			"van-checkbox": "/wxcomponents/vant_update/checkbox/index",
+			"van-checkbox-group": "/wxcomponents/vant_update/checkbox-group/index",
+			"van-count-down": "/wxcomponents/vant_update/count-down/index",
+			"van-progress": "/wxcomponents/vant_update/progress/index",
+			"van-swipe-cell": "/wxcomponents/vant_update/swipe-cell/index",
+			"van-datetime-picker": "/wxcomponents/vant_update/datetime-picker/index",
+			"van-radio-group": "/wxcomponents/vant_update/radio-group/index",
+			"van-radio": "/wxcomponents/vant_update/radio/index",
+			"van-area": "/wxcomponents/vant_update/area/index"
+		}
+	},
+	"easycom": {
+		"^w-(.*)": "@/uni_modules/wmf-code/components/w-$1/w-$1.vue"
+	}
 }

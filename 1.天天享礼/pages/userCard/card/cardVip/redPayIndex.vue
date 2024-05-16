@@ -21,7 +21,6 @@
       @change="(value) => is_vip ? changeSelHandle(value) : openChangeSelHandle(value)"
       v-if="!is_vip || dosingArr.dosing_packet_num"
     ></onOpenPacket>
-    <featureCom v-if="!is_vip"></featureCom>
     <view
       :class="['use_box', isShowCardTop ? 'active' : '', !is_vip ? 'white_bg' : '', isScrollBox ? 'set_height' : '']"
       :style="{ '--useheight': useHeight }" v-if="isContPack"
@@ -55,7 +54,7 @@
     <!-- 支付 -->
     <view class="pay_bottom">
         <view class="pay_btn fl_bet" @click="confirmHandle">
-            <image :src="cardImgUrl + 'pay_btn1.png'" mode="scaleToFill" class="bg_img" ></image>
+            <image :src="cardImgUrl + 'pay_btn1.png'" mode="scaleToFill" class="bg_img"></image>
             <view class="pay_left box_fl_end">
                 红包优惠
                 <view v-html="formatPrice(isSelectRedPacket ? saving_money : 0, 2)" class="pay_left-price"></view>
@@ -66,7 +65,11 @@
             <view class="pay_right">确认</view>
         </view>
         <view class="pay_agree">
-            同意 <text style="color: #fe9433" @click="toAgreeLook('/agreement/savings-server.html')">
+            <van-checkbox checked-color="#F95B4D" icon-size="12px" style="--checkbox-label-margin:5px;"
+              :value="isAgreement" @change="changeHandle">
+              <text style="color: #999;">我已阅读并同意</text>
+          </van-checkbox>
+          <text style="color: #fe9433" @click="toAgreeLook('/agreement/savings-server.html')">
             《省钱卡会员服务协议》</text>
         </view>
     </view>
@@ -80,7 +83,6 @@ import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/me
 import { formatPrice, getImgUrl, toAgreeLook } from "@/utils/auth.js";
 import getViewPort from "@/utils/getViewPort.js";
 import { mapGetters, mapMutations } from "vuex";
-import featureCom from '../component/featureCom.vue';
 import itemHasPacket from '../component/itemHasPacket.vue';
 import itemPacket from '../component/itemPacket.vue';
 import itemUsePacket from '../component/itemUsePacket.vue';
@@ -91,8 +93,7 @@ export default {
         onOpenPacket,
         itemPacket,
         itemUsePacket,
-        itemHasPacket,
-        featureCom
+        itemHasPacket
     },
     data() {
         return {
@@ -111,6 +112,7 @@ export default {
             useArr: [],
             dosingArr: null, // 加量包的呈现
             subjectColor: "#FFECBD",
+            isAgreement: false
         };
     },
     computed: {
@@ -165,6 +167,9 @@ export default {
     }),
     formatPrice,
     toAgreeLook,
+    changeHandle(event) {
+        this.isAgreement = event.detail;
+    },
     async init(page) {
       const res = await simulatePacket({
         saving_money: this.saving_money,
@@ -180,6 +185,7 @@ export default {
       this.useArr = useArr;
     },
     confirmHandle() {
+      if(!this.isAgreement) return this.$toast('请勾选服务协议');
       // 千猪与海威 - 直接返回上一页
       if(this.ly_type != 0) return this.$topCallBack();
       this.setSelRedPacket(this.isSelectRedPacket);
@@ -405,6 +411,11 @@ page {
     color: #aaaaaa;
     line-height: 36rpx;
     margin-top: 16rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
   }
 }
 .use_box {
