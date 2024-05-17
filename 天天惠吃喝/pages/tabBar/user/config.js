@@ -30,18 +30,6 @@ export default {
     ],
     /* 菜单 */
     menus: [{
-            id: 1,
-            name: '我的收藏',
-            icon: `https://test-file.y1b.cn/store/1-0/2434/65e586122f3f7.png`,
-            path: '/pages/userInfo/myCollect/index'
-        },
-        {
-            id: 2,
-            name: '浏览记录',
-            icon: `https://test-file.y1b.cn/store/1-0/2434/65e58633e90f2.png`,
-            path: '/pages/userInfo/lookRecord/index'
-        },
-        {
             id: 3,
             name: '我的分享',
             icon: `https://test-file.y1b.cn/store/1-0/2434/65e5864e033fa.png`,

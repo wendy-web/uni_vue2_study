@@ -219,8 +219,6 @@
     <service-recharge ref="serviceRecharge" @close="closeServiceHandle" />
     <!-- 其它成功情况 -->
     <!-- <other-exchange-success ref="otherExchangeSuccess" /> -->
-    <!-- 新人用户的更新 -->
-    <pointUpgradeDia ref="pointUpgradeDia" @happyGet="getHandle" />
     <!-- 隐私授权 -->
     <privacyOpen ref="privacyOpen"></privacyOpen>
   </view>

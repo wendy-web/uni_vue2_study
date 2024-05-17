@@ -1,7 +1,6 @@
 {
 	"insetLoader": {
 		"config": {
-			"confirm": "<pointUpgradeDia ref='pointUpgradeDia' @happyGet='getHandle'/>",
 			"privacyOpen": "<privacyOpen ref='privacyOpen'></privacyOpen>"
 		},
 		"label": [
@@ -12,17 +11,7 @@
 	},
 	"pages": [
 		{
-			"path": "pages/tabBar/shopMall/index",
-			"style": {
-				"navigationStyle": "custom",
-				"onReachBottomDistance": 500
-				// "usingComponents": {
-				// 	"coral-adv": "plugin://coral-adv/adv"
-				// }
-			}
-		},
-		{
-			"path": "pages/tabBar/task/index",
+			"path": "pages/tabBar/discounts/index",
 			"style": {
 				"navigationStyle": "custom"
 			}
@@ -35,14 +24,6 @@
 		},
 		{
 			"path": "pages/webview/webview",
-			"style": {
-				"navigationBarBackgroundColor": "#2B7FDA",
-				"navigationBarTextStyle": "white",
-				"navigationBarTitleText": ""
-			}
-		},
-		{
-			"path": "pages/webviewCode/webviewCode",
 			"style": {
 				"navigationBarBackgroundColor": "#2B7FDA",
 				"navigationBarTextStyle": "white",
@@ -70,29 +51,17 @@
 	],
 	"subPackages": [
 		{
-			"root": "pages/discounts",
-			"name": "discounts",
-			"pages": [
-				{
-					"path": "discounts/index",
-					"style": {
-						"navigationStyle": "custom"
-					}
-				}
-			]
-		},
-		{
 			"root": "pages/tabAbout/",
 			"name": "tabAbout",
 			"pages": [
-				{
-					"path": "aboutUs/index",
-					"style": {
-						"navigationBarTitleText": "关于我们",
-						"navigationBarBackgroundColor": "#fff",
-						"navigationBarTextStyle": "black"
-					}
-				},
+				// {
+				// 	"path": "aboutUs/index",
+				// 	"style": {
+				// 		"navigationBarTitleText": "关于我们",
+				// 		"navigationBarBackgroundColor": "#fff",
+				// 		"navigationBarTextStyle": "black"
+				// 	}
+				// },
 				{
 					"path": "service/service",
 					"style": {
@@ -180,39 +149,6 @@
 					"style": {
 						"navigationBarTitleText": "修改昵称",
 						"navigationBarBackgroundColor": "#ffffff"
-					}
-				},
-				{
-					"path": "myCouponHistory/index",
-					"style": {
-						"navigationBarTextStyle": "black",
-						"navigationBarTitleText": "历史记录",
-						"navigationBarBackgroundColor": "#FFFFFF"
-					}
-				},
-				{
-					"path": "cowpeaRecord/index",
-					"style": {
-						"navigationBarTextStyle": "black",
-						"navigationBarTitleText": "牛金豆记录",
-						"navigationBarBackgroundColor": "#F7F7F7",
-						"disableScroll": true
-					}
-				},
-				{
-					"path": "myCollect/index",
-					"style": {
-						"navigationBarTextStyle": "black",
-						"navigationBarTitleText": "我的收藏",
-						"navigationBarBackgroundColor": "#F7F7F7"
-					}
-				},
-				{
-					"path": "lookRecord/index",
-					"style": {
-						"navigationBarTextStyle": "black",
-						"navigationBarTitleText": "浏览记录",
-						"navigationBarBackgroundColor": "#F7F7F7"
 					}
 				}
 			],
@@ -601,16 +537,8 @@
 		"backgroundColor": "#FFFFFF",
 		"list": [
 			{
-				"pagePath": "pages/tabBar/shopMall/index",
-				"text": "首页"
-			},
-			// {
-			//     "pagePath": "pages/tabBar/discounts/index",
-			//     "text": "惠生活"
-			// },
-			{
-				"pagePath": "pages/tabBar/task/index",
-				"text": "福利中心"
+			    "pagePath": "pages/tabBar/discounts/index",
+			    "text": "惠生活"
 			},
 			{
 				"pagePath": "pages/tabBar/user/index",

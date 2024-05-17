@@ -257,7 +257,7 @@ export default {
       topCallBack() {
         // 列表没有数据 - 返回到
         if(!this.shopList.length) {
-          if(this.pathSource == 'discounts') return this.$reLaunch('/pages/discounts/discounts/index');
+          if(this.pathSource == 'discounts') return this.$reLaunch('/pages/tabBar/discounts/index');
           this.$switchTab(`/pages/tabBar/shopMall/index`);
           return;
         };

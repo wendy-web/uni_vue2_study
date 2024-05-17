@@ -51,29 +51,21 @@ export default {
       unRead: false,
       currentPage: '', // 当前页路径
       navBarList: [
-        {
-          id: 0,
-          pagePath: "/pages/tabBar/shopMall/index",
-          scrollIcon: `https://file.y1b.cn/store/1-0/23118/654b29826a6c6.png`,
-          icon: `https://file.y1b.cn/store/1-0/24511/663ed82d87b4f.png`, // 用于覆盖当前tab的展示图标，用于置顶的呈现
-          icon_active: `https://file.y1b.cn/store/1-0/24511/663ed840c33ef.png`,
-          title: "首页"
-        },
         // {
-        //   id: 1,
-        //   pagePath: "/pages/tabBar/discounts/index",
-        //   scrollIcon: ``,
-        //   icon: `https://file.y1b.cn/store/1-0/24511/663ed801e1c5e.png`,
-        //   icon_active: `https://file.y1b.cn/store/1-0/24511/663ed818d30dc.png`,
-        //   title: "惠吃喝"
+        //   id: 0,
+        //   pagePath: "/pages/tabBar/shopMall/index",
+        //   scrollIcon: `https://file.y1b.cn/store/1-0/23118/654b29826a6c6.png`,
+        //   icon: `https://file.y1b.cn/store/1-0/24511/663ed82d87b4f.png`, // 用于覆盖当前tab的展示图标，用于置顶的呈现
+        //   icon_active: `https://file.y1b.cn/store/1-0/24511/663ed840c33ef.png`,
+        //   title: "首页"
         // },
         {
-          id: 2,
-          pagePath: "/pages/tabBar/task/index",
+          id: 1,
+          pagePath: "/pages/tabBar/discounts/index",
           scrollIcon: ``,
-          icon: `https://file.y1b.cn/store/1-0/24511/663ed883183f6.png`,
-          icon_active: `https://file.y1b.cn/store/1-0/24511/663ed89392aa4.png`,
-          title: "福利中心"
+          icon: `https://file.y1b.cn/store/1-0/24511/663ed801e1c5e.png`,
+          icon_active: `https://file.y1b.cn/store/1-0/24511/663ed818d30dc.png`,
+          title: "惠吃喝"
         },
         {
           id: 3,

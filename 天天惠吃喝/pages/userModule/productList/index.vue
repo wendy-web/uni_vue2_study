@@ -156,7 +156,6 @@
             ></good-list>
         </mescroll-uni>
     </view>
-    <pointUpgradeDia ref='pointUpgradeDia' @happyGet='getHandle'/>
     <!-- 配置的弹窗管理 -->
     <configurationDia
 		ref="configurationDia"

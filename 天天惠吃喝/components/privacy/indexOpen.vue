@@ -53,7 +53,6 @@ export default {
       currentPage: '', // 当前页面地址
       disagreePrivacyPageList: [
         'pages/tabBar/discounts/index',
-        'pages/discounts/discounts/index',
         'pages/userModule/takeawayMenu/mcDonald/index',
         'pages/userModule/takeawayMenu/luckin/index',
         'pages/userModule/takeawayMenu/kfc/index',

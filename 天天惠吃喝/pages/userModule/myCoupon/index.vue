@@ -99,12 +99,6 @@
 			></good-list>
 		</mescroll-uni>
 	</view>
-	<!-- 查看历史记录 -->
-	<view class="look-history" @click="lookHistory">
-		查看历史记录
-		<van-icon name="arrow" />
-		<view class="van-submit-bar__safe"></view>
-	</view>
 	<service-recharge ref="serviceRecharge" @close="closeServiceHandle" />
 	<!-- 牛金豆不足的情况 -->
 	<exchangeFailed
@@ -433,9 +427,6 @@ import { mapGetters, mapMutations } from "vuex";
 			// 牛金豆不足的情况
 			notEnoughCreditsHandle() {
 				this.exchangeFailedShow = true;
-			},
-			lookHistory() {
-                this.$go('/pages/userInfo/myCouponHistory/index');
 			},
 			toUseHandle(data) {
 				this.$wxReportEvent('immediateuse');

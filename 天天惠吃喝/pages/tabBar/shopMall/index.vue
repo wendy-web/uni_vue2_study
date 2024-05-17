@@ -550,7 +550,6 @@ export default {
     if (type == "awardEnd") {
       setDiaType("");
       this.awardId = null;
-      this.$refs.pointUpgradeDia.upgrade(); // 新人接口访问
       this.configurationInit(); // 弹窗配置
     }
     if (this.$refs.anNoticeImgShow) this.$refs.anNoticeImgShow.init() // 渲染的初始化
@@ -1005,7 +1004,6 @@ export default {
       isDelDiaList && this.updateDiaInitial();
     },
     updateDiaInitial() {
-      this.$refs.pointUpgradeDia.upgrade();
       this.configurationInit();
       this.delCurrentDiaList();
     },

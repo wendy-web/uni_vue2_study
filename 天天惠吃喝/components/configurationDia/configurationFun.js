@@ -21,11 +21,6 @@ const serviceCredits = {
                     text: '惠生活'
                 },
                 {
-                    route: 'pages/discounts/discounts/index',
-                    pageNum: 2,
-                    text: '惠生活'
-                },
-                {
                     route: 'pages/tabBar/task/index',
                     pageNum: 3,
                     text: '福利中心'

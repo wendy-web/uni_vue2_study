@@ -10,11 +10,6 @@ import store from './store';
 import xhNavbar from '@/components/xhNavbar/xh-navbar.vue';
 Vue.component('xhNavbar', xhNavbar);
 
-// 新人弹窗的组件嵌入
-import pointUpgradeDia from '@/components/pointUpgradeDia.vue';
-Vue.component('pointUpgradeDia', pointUpgradeDia);
-
-
 // 用户隐私权限的嵌入
 import privacyOpen from '@/components/privacy/indexOpen.vue';
 Vue.component('privacyOpen', privacyOpen);

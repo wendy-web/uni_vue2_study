@@ -126,20 +126,6 @@ const shareMixin = {
                     // pages/userModule/allowance/specialList/index?id=${this.id}
                 },
                 {
-                    route: 'pages/userInfo/myCollect/index',
-                    pageNum: 0, // 无后台配置
-                    text: '我的收藏',
-                    defaultTitle: '领券下单更便宜',
-                    isBtnShare: 'cordList'
-                },
-                {
-                    route: 'pages/userInfo/lookRecord/index',
-                    pageNum: 0, // 无后台配置
-                    text: '浏览记录',
-                    defaultTitle: '领券下单更便宜',
-                    isBtnShare: 'cordList'
-                },
-                {
                     route: 'pages/shopMallModule/feedDetailsList/index',
                     pageNum: 0, // 无后台配置
                     text: 'feed流页面',

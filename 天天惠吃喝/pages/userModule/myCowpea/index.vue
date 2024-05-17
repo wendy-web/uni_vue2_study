@@ -29,16 +29,6 @@
 		:down="downOption"
 		:up="upOption"
 	>
-		<!-- 我的牛金豆 -->
-		<view class="my-cowpea-head">
-			<view class="mch-title">我的牛金豆</view>
-			<view class="mch-num" @click="goPage('/pages/userInfo/cowpeaRecord/index')">
-				<view id="taskTitle" class="countup-num">
-					<text v-if="countupComplete">{{creditsnumber || 0}}</text>
-					<text v-else>{{userTotal.credits || 0}}</text>
-				</view>
-			</view>
-		</view>
 		<!-- 签到 -->
 		<sign-module @showAwardModel="startAnim" ref="signModule" />
 		<!-- 玩转牛金豆 -->
@@ -94,26 +84,26 @@
 </template>
 
 <script>
-	import { mapGetters, mapActions } from 'vuex'
-	import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-	import signModule from './signModule.vue'
-	import goodList from '@/components/goodList.vue'
-	import taskComplete from './taskComplete.vue'
-	import cowpeaAnim from './cowpeaAnim.vue'
-	import WxCountUp from '@/utils/WxCountUp.js'
-	import getViewPort from '@/utils/getViewPort.js';
-	import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
-	import serviceCredits from '@/components/serviceCredits/index.vue';
-	import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js';
 	import { groupRecommend } from '@/api/modules/index.js';
-    import { getImgUrl } from '@/utils/auth.js';
-	import swiperSearch from '@/components/swiperSearch.vue';
-	import {
-		material,
-		jingfen,
-		goodsQuery,
-		keywordList
-	} from '@/api/modules/jsShop.js';
+import {
+goodsQuery,
+jingfen,
+keywordList,
+material
+} from '@/api/modules/jsShop.js';
+import goodList from '@/components/goodList.vue';
+import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
+import serviceCredits from '@/components/serviceCredits/index.vue';
+import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js';
+import swiperSearch from '@/components/swiperSearch.vue';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import WxCountUp from '@/utils/WxCountUp.js';
+import { getImgUrl } from '@/utils/auth.js';
+import getViewPort from '@/utils/getViewPort.js';
+import { mapActions, mapGetters } from 'vuex';
+import cowpeaAnim from './cowpeaAnim.vue';
+import signModule from './signModule.vue';
+import taskComplete from './taskComplete.vue';
 	let _options = {
 		separator: '',
 		duration: 1,

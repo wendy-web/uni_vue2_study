@@ -598,7 +598,7 @@ export default {
     // 直接退回首页
     topCallBack() {
         if(this.isBack) return this.$leftBack();
-        if(this.pathSource == 'discounts') return this.$reLaunch('/pages/discounts/discounts/index');
+        if(this.pathSource == 'discounts') return this.$reLaunch('/pages/tabBar/discounts/index');
         this.$switchTab(`/pages/tabBar/shopMall/index`);
     },
     displaceHandle(){
