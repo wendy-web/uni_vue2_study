@@ -10,12 +10,9 @@
 >
 <xh-navbar
   navbarImageMode="widthFix"
-  :leftImage="imgUrl+'/static/images/left_back.png'"
   :navberColor="isShowNavColor ? '#fff' : ''"
   :overFlow="true"
   titleAlign="titleRight"
-
-  @leftCallBack="$leftBack"
   :fixedNum="9"
 >
   <view slot="title" class="dis_title">
@@ -536,7 +533,6 @@ export default {
   display: flex;
   align-items: center;
   flex: 1;
-  padding-left: 10px;
   &::before {
     content: "\3000";
     background: url("https://file.y1b.cn/store/1-0/2368/64818bb99173b.png") 0 0 / 100% 100% no-repeat;

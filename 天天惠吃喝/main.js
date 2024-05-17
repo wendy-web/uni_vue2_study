@@ -14,10 +14,6 @@ Vue.component('xhNavbar', xhNavbar);
 import privacyOpen from '@/components/privacy/indexOpen.vue';
 Vue.component('privacyOpen', privacyOpen);
 
-// 推券列表
-import recommendDia from '@/components/recommendDia/index.vue';
-Vue.component('recommendDia', recommendDia);
-
 Vue.config.productionTip = false;
 App.mpType = 'app';
 

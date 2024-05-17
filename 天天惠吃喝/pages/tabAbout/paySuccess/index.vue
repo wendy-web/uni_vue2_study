@@ -38,53 +38,19 @@
 			@notEnoughCredits="notEnoughCreditsHandle"
 		></good-list>
 	</mescroll-body>
-	<!-- 牛金豆不足的情况 -->
-	<exchangeFailed
-			:isShow="exchangeFailedShow"
-			@goTask="goTaskHandle"
-			@close="exchangeFailedShow=false"
-		></exchangeFailed>
-		<!-- 赚取牛金豆 -->
-		<serviceCredits
-			ref="serviceCredits"
-			:isShow="serviceCreditsShow"
-			@showAdPlay="showAdPlayHandle"
-			@close="closeHandle"
-		></serviceCredits>
-
-	<!-- 配置的弹窗管理 -->
-	<configurationDia
-		ref="configurationDia"
-		:isShow="isShowConfig"
-		@close="closeShowConfig"
-		:config="config"
-		@popoverRember="requestPopoverRember"
-		:remainTime="remainTime"
-	></configurationDia>
-    <!-- 优惠推荐商品的弹窗 -->
-    <recommendDia ref="recommendDia"></recommendDia>
 </view>
 </template>
 
 <script>
 	import { groupRecommend } from '@/api/modules/index.js';
 import { goodsQuery, jingfen, material } from '@/api/modules/jsShop.js';
-import configurationFun from '@/components/configurationDia/configurationFun.js';
-import configurationDia from '@/components/configurationDia/index.vue';
 import goodList from '@/components/goodList.vue';
 import MescrollMixin from '@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js';
 import { getImgUrl } from '@/utils/auth.js';
-	// 牛金豆不足混入的组件与方法
-	import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
-import serviceCredits from '@/components/serviceCredits/index.vue';
-import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js';
-	export default {
-		mixins: [MescrollMixin, configurationFun, serviceCreditsFun], // 使用mixin
+export default {
+		mixins: [MescrollMixin], // 使用mixin
 		components:{
-			configurationDia,
-			goodList,
-			exchangeFailed,
-			serviceCredits
+			goodList
 		},
 		data(){
 			return {

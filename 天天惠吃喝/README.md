@@ -8,6 +8,7 @@
 ## 基本配置信息
 
 APPID： wx4c6b177c1b506b06
+AppSecret(小程序密钥)：9757fd34652800976c04c65ea71c6e8f
 
 正式域名：`https://ttxl.y1b.cn`
 

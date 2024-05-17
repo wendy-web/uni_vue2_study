@@ -12,8 +12,8 @@
       <view class="cont_text">
         <view class="cont_remind">
             请阅读
-            <text style="color: #F1443B;" @click="agreementLookHandle('/agreement/privacy-agreement.html')">《个人信息保护政策》</text>
-            <text style="color: #F1443B;" @click="agreementLookHandle('/agreement/service-agreement.html')">《平台服务协议》</text>
+            <text style="color: #FFC161;" @click="agreementLookHandle('/agreement/privacy-agreement.html')">《个人信息保护政策》</text>
+            <text style="color: #FFC161;" @click="agreementLookHandle('/agreement/service-agreement.html')">《平台服务协议》</text>
             的全部条款，接受后可以开始使用我们的服务
         </view>
       </view>
@@ -86,7 +86,7 @@ export default {
 }
 
 .pop_btn-confirm {
-  color: #fff;
-  background: #F1443B;
+  color: #333;
+  background: #FFC161;
 }
 </style>

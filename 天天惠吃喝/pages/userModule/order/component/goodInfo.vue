@@ -179,7 +179,6 @@ import { getImgUrl } from '@/utils/auth.js';
 			goCouponDetailsHandle() {
 				const { coupon_id, status } = this.orderInfo;
 				if(!status) return;
-                this.$go(`/pages/shopMallModule/couponDetails/index?id=${coupon_id}`);
 			},
             refundHandle() {
                 this.$emit('refund');

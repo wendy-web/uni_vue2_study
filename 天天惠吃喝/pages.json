@@ -4,7 +4,6 @@
 			"privacyOpen": "<privacyOpen ref='privacyOpen'></privacyOpen>"
 		},
 		"label": [
-			"confirm",
 			"privacyOpen"
 		],
 		"rootEle": "view"
@@ -96,42 +95,6 @@
 			]
 		},
 		{
-			"root": "pages/shopMallModule/",
-			"name": "shopMallModule",
-			"pages": [
-				{
-					"path": "couponDetails/index",
-					"style": {
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "feedDetailsList/index",
-					"style": {
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "productDetails/index",
-					"style": {
-						"navigationStyle": "custom"
-					}
-				}
-			]
-		},
-		{
-			"root": "pages/taskModule/",
-			"name": "taskModule",
-			"pages": [
-				{
-					"path": "queAnswers/index",
-					"style": {
-						"navigationStyle": "custom"
-					}
-				}
-			]
-		},
-		{
 			"root": "pages/userInfo/",
 			"name": "userInfo",
 			"pages": [
@@ -164,22 +127,6 @@
 			"name": "userModule",
 			"pages": [
 				{
-					"path": "myCowpea/index",
-					"style": {
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "myCoupon/index",
-					"style": {
-						"navigationBarTextStyle": "black",
-						"navigationBarTitleText": "",
-						"navigationBarBackgroundColor": "#F7F7F7",
-						"disableScroll": true,
-						"navigationStyle": "custom"
-					}
-				},
-				{
 					"path": "order/index",
 					"style": {
 						"navigationBarTitleText": "我的订单",
@@ -194,24 +141,6 @@
 						"navigationBarTitleText": "",
 						"navigationBarTextStyle": "black",
 						"navigationBarBackgroundColor": "#f7f7f7",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "serviceRecharge/index",
-					"style": {
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "productList/index",
-					"style": {
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "productList/search",
-					"style": {
 						"navigationStyle": "custom"
 					}
 				},
@@ -326,205 +255,6 @@
 						"navigationBarTitleText": "starbucksSelectShop",
 						"navigationStyle": "custom"
 					}
-				},
-				{
-					"path": "allowance/redPacket/index",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom",
-						"backgroundColor": "#FFECBD"
-					}
-				},
-				{
-					"path": "allowance/recharge/index",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "allowance/repairGet/index",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "allowance/repairGet/detail",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "allowance/specialList/index",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom"
-					}
-				}
-			]
-		},
-		{
-			"root": "pages/userCard/",
-			"name": "userCard",
-			"pages": [
-				{
-					"path": "card/cardVip/redPayIndex",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom",
-						"backgroundColor": "#fff"
-					}
-				},
-				{
-					"path": "card/cardVip/index",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom",
-						"backgroundColor": "#F5F6FA"
-					}
-				},
-				{
-					"path": "card/cardVip/payIndex",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom",
-						"backgroundColor": "#fff"
-					}
-				},
-				{
-					"path": "card/cardVip/openIndex",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom",
-						"backgroundColor": "#fff"
-					}
-				},
-				{
-					"path": "card/cardVip/recordIndex",
-					"style": {
-						"navigationBarTitleText": "购买记录",
-						"backgroundColor": "#fff",
-						"navigationBarBackgroundColor": "#fff"
-					}
-				},
-				{
-					"path": "card/cardVip/detail",
-					"style": {
-						"navigationBarTitleText": "购买详情",
-						"backgroundColor": "#fff",
-						"navigationBarBackgroundColor": "#fff"
-					}
-				},
-				{
-					"path": "card/cardVip/redPacket",
-					"style": {
-						"navigationBarTitleText": "省钱卡红包",
-						"backgroundColor": "#f5f6fa",
-						"navigationBarBackgroundColor": "#f5f6fa"
-					}
-				},
-				{
-					"path": "card/cardVip/noValidRedPacket",
-					"style": {
-						"navigationBarTitleText": "无效红包",
-						"backgroundColor": "#f5f6fa",
-						"navigationBarBackgroundColor": "#f5f6fa"
-					}
-				},
-				{
-					"path": "card/cardVip/payDetail",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom",
-						"backgroundColor": "#fff"
-					}
-				},
-				{
-					"path": "card/cardVip/addPacket",
-					"style": {
-						"navigationBarTitleText": "加量包",
-						"backgroundColor": "#f5f6fa",
-						"navigationBarBackgroundColor": "#f5f6fa"
-					}
-				},
-				{
-					"path": "withdraw/index",
-					"style": {
-						"navigationBarTitleText": "",
-						"backgroundColor": "#F7F7F7",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "withdraw/withdraw",
-					"style": {
-						"navigationBarTitleText": "",
-						"backgroundColor": "#F7F7F7",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "withdraw/historyList",
-					"style": {
-						"navigationBarTitleText": "",
-						"backgroundColor": "#F7F7F7",
-						"navigationStyle": "custom"
-					}
-				}
-			]
-		},
-		{
-			"root": "pages/userCash/",
-			"name": "userCash",
-			"pages": [
-				{
-					"path": "cash/index",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom",
-						"backgroundColor": "#fff"
-					}
-				},
-				{
-					"path": "cash/activityRecord",
-					"style": {
-						"navigationBarTitleText": "活动记录",
-						"backgroundColor": "#f7f7f7",
-						"navigationBarBackgroundColor": "#fff"
-					}
-				},
-				{
-					"path": "cash/accelerateList",
-					"style": {
-						"navigationBarTitleText": "",
-						"backgroundColor": "#f7f7f7",
-						"navigationStyle": "custom",
-						"navigationBarBackgroundColor": "#fff"
-					}
-				}
-			]
-		},
-		{
-			"root": "pages/userComModule/",
-			"name": "ani3D",
-			"pages": [
-				{
-					"path": "ani3D/index",
-					"style": {
-						"navigationBarTitleText": "旋转目马动画",
-						"navigationStyle": "custom",
-						"backgroundColor": "#fff"
-					}
-				},
-				{
-					"path": "ani3Dflower/index",
-					"style": {
-						"navigationBarTitleText": "烟花动画演示",
-						"backgroundColor": "#fff",
-						"navigationStyle": "custom"
-					}
 				}
 			]
 		}
@@ -552,8 +282,6 @@
 		"navigationBarBackgroundColor": "#F7F7F7",
 		"backgroundColor": "#F7F7F7",
 		"usingComponents": {
-			"van-tab": "/wxcomponents/vant_update/tab/index",
-			"van-tabs": "/wxcomponents/vant_update/tabs/index",
 			"van-icon": "/wxcomponents/vant_update/icon/index",
 			"van-popup": "/wxcomponents/vant_update/popup/index",
 			"van-switch": "/wxcomponents/vant_update/switch/index",

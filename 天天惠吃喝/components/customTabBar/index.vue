@@ -1,26 +1,16 @@
 <template>
-<view class="nav" id="nav">
-  <view class="nav_cont">
-    <view
-      v-for="(item, index) in navBarList" :key="item.id"
-      :class="['nav_item', (currentIndex === index) && 'active']"
-      @click="navbarHandle(item)"
-    >
-      <!-- 置顶的图标 -->
-      <image
-        :class="['scroll_icon', isScrollTop ? 'scroll_icon-active' : '']"
-        :src="item.scrollIcon" v-if="item.scrollIcon" mode="aspectFill">
-      </image>
-      <view :class="['tabItem_box', isScrollTop && item.scrollIcon ? 'active' : '']">
-        <image
-          class="nav_icon"
-          :src="currentIndex == index ? item.icon_active : item.icon" mode="aspectFill">
-        </image>
-        <view class="nav_icon-point" v-if="(unRead && index == (navBarList.length - 1))"></view>
-        <view class="nav_text">{{item.title}}</view>
-      </view>
-    </view>
+<view class="nav_bar" id="nav">
+  <view
+    v-for="(item, index) in navBarList" :key="item.id"
+    :class="['nav_item', (currentIndex === index) && 'active']"
+    @click="navbarHandle(item)"
+  >
+      <image class="nav_icon" mode="aspectFill"
+        :src="currentIndex == index ? item.icon_active : item.icon"></image>
+      <view class="nav_icon-point" v-if="(unRead && index == (navBarList.length - 1))"></view>
+      <view class="nav_text">{{item.title}}</view>
   </view>
+  <view class="indicator"></view>
 </view>
 </template>
 <script>
@@ -51,28 +41,20 @@ export default {
       unRead: false,
       currentPage: '', // 当前页路径
       navBarList: [
-        // {
-        //   id: 0,
-        //   pagePath: "/pages/tabBar/shopMall/index",
-        //   scrollIcon: `https://file.y1b.cn/store/1-0/23118/654b29826a6c6.png`,
-        //   icon: `https://file.y1b.cn/store/1-0/24511/663ed82d87b4f.png`, // 用于覆盖当前tab的展示图标，用于置顶的呈现
-        //   icon_active: `https://file.y1b.cn/store/1-0/24511/663ed840c33ef.png`,
-        //   title: "首页"
-        // },
         {
           id: 1,
           pagePath: "/pages/tabBar/discounts/index",
           scrollIcon: ``,
-          icon: `https://file.y1b.cn/store/1-0/24511/663ed801e1c5e.png`,
-          icon_active: `https://file.y1b.cn/store/1-0/24511/663ed818d30dc.png`,
+          icon: `./static/dia.png`,
+          icon_active: `./static/dia_active.png`,
           title: "惠吃喝"
         },
         {
-          id: 3,
+          id: 2,
           pagePath: "/pages/tabBar/user/index",
           scrollIcon: ``,
-          icon: `https://file.y1b.cn/store/1-0/24511/663ed85824312.png`,
-          icon_active: `https://file.y1b.cn/store/1-0/24511/663ed86aed942.png`,
+          icon: `./static/mine.png`,
+          icon_active: `./static/mine_active.png`,
           title: "我的"
         }
       ]
@@ -134,85 +116,106 @@ export default {
   border-radius: 50%;
   margin-left: 24rpx;
 }
-.nav {
+.nav_bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 110rpx;
   line-height: 34rpx;
-  font-size: 24rpx;
-  background-color: rgba(#fff, .75);
+  font-size: 20rpx;
+  background-color: rgba(#fff, 1);
   z-index: 9;
   padding-bottom: constant(safe-area-inset-bottom); /* 兼容 IOS<11.2 */
   padding-bottom: env(safe-area-inset-bottom); /* 兼容 IOS>11.2 */
-  backdrop-filter: blur(20px);
-  .nav_cont {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  .nav_item {
+    flex: 1;
+    font-weight: 600;
+    text-align: center;
+    color: #333;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     align-items: center;
-    // border-top: 2rpx solid #e1e1e1;
-    .nav_item {
-      flex: 1;
-      font-weight: 400;
+    position: relative;
+    .scroll_icon{
+      position: absolute;
+      width: 78rpx;
+      height: 78rpx;
+      padding: 3rpx;
+      box-sizing: border-box;
+      z-index: 1;
+      // background: #fff;
+      opacity: 0;
+      transition: all .3s;
+      &.scroll_icon-active {
+        opacity: 1;
+      }
+    }
+    &.active{
+      color: #EF2B20;
+    }
+    .nav_icon {
+      width: 48rpx;
+      height: 48rpx;
+      display: block;
+      margin: 4rpx auto 4rpx;
+      display: block;
+      position: relative;
+      &.unRead_icon::after {
+        content: '';
+        position: absolute;
+        top:0;
+        right: 0;
+        width: 20rpx;
+        height: 20rpx;
+        background-color: red;
+        border-radius: 50%;
+        margin-left: 5rpx;
+      }
+    }
+    .nav_text{
+      font-size: 20rpx;
       text-align: center;
       color: #333333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      .scroll_icon{
-        position: absolute;
-        width: 78rpx;
-        height: 78rpx;
-        padding: 3rpx;
-        box-sizing: border-box;
-        z-index: 1;
-        // background: #fff;
-        opacity: 0;
-        transition: all .3s;
-        &.scroll_icon-active {
-          opacity: 1;
-        }
-      }
-      &.active{
-        color: #EF2B20;
-      }
-      .nav_icon {
-        width: 48rpx;
-        height: 48rpx;
-        display: block;
-        margin: 0 auto 4rpx;
-        display: block;
-        position: relative;
-        &.unRead_icon::after {
-          content: '';
-          position: absolute;
-          top:0;
-          right: 0;
-          width: 20rpx;
-          height: 20rpx;
-          background-color: red;
-          border-radius: 50%;
-          margin-left: 5rpx;
-        }
-      }
-      .nav_text{
-        font-size: 20rpx;
-        text-align: center;
-        color: #333333;
-        line-height: 28rpx;
-      }
+      line-height: 28rpx;
     }
   }
 }
-.tabItem_box{
-  opacity: 1;
-  transition: all .3s;
-  &.active {
-    opacity: 0;
-  }
+.active {
+  // transform: translateY(-10px);
+  transition-delay: 0.25s;
+}
+.active::before {
+    opacity: 0.5;
+    transition-delay: 0.25s;
+}
+.indicator {
+  position: absolute;
+  top: -15px;
+  width: 50%;
+  height: 180px;
+  left: 0;
+  background: #fff;
+  border-radius: 50%;
+  z-index: -1;
+  transition: 0.5s;
+}
+.nav_item:nth-child(1).active ~ .indicator {
+  // transform: translateX(calc(50% * 0));
+  left: calc(50% * 0);
+}
+.nav_item:nth-child(2).active ~ .indicator {
+  left: calc(50% * 1);
+}
+.nav_item:nth-child(3).active ~ .indicator {
+    transform: translateX(calc(70px * 2));
+}
+.nav_item:nth-child(4).active ~ .indicator {
+    transform: translateX(calc(70px * 3));
+}
+.nav_item:nth-child(5).active ~ .indicator {
+    transform: translateX(calc(70px * 4));
 }
 </style>

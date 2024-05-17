@@ -1,19 +1,5 @@
 <template>
-<view class="user nav_cont" :class="{'active' : userInfo.is_vip}">
-  <xh-navbar
-    navbarImageMode="widthFix"
-    :overFlow="true"
-    :fixedNum="9"
-    titleAlign="titleRight"
-    navberColor="#F8EDE3"
-  >
-    <view slot="title" class="nav-custom">
-      <image class="title_icon"
-        src="https://file.y1b.cn/store/1-0/2368/648173c3f15cf.png"
-        mode="aspectFill"
-      ></image>
-    </view>
-  </xh-navbar>
+<view class="user">
   <mescroll-body
     id="mescrollBody"
     :sticky="true"
@@ -24,6 +10,18 @@
     :up="upOption"
     @up="upCallback"
   >
+    <xh-navbar
+      navbarImageMode="widthFix"
+      :overFlow="true"
+      :fixedNum="9"
+      titleAlign="titleRight"
+    >
+      <view slot="title" class="nav-custom">
+        <image class="title_icon" mode="aspectFill"
+          src="https://file.y1b.cn/store/1-0/24517/6646be338312e.png"
+        ></image>
+      </view>
+    </xh-navbar>
     <view class="user-info" @click="goPages('/pages/userInfo/personalInfo/index')">
       <view class="user-avatar">
         <!-- 头像 -->
@@ -60,54 +58,26 @@
     </view>
     <!-- 菜单 -->
     <view class="user-menus">
-      <scroll-view class="bean_list-box"
-        scroll-x="true"
-        scroll-with-animation
-        :scroll-animation-duration="300"
-		    @scroll="banScrollHandle"
-      >
-        <view class="swiper-item box_fl">
-          <block v-for="item in menus" :key="item.id">
-            <view v-if="item.path != 'share'"
-              class="user-menus-item fl_col_cen" @click="goPages(item.path)">
-              <image class="umi-icon" :src="item.icon" mode="aspectFill"></image>
-              <view class="umi-name">{{ item.name }}</view>
-            </view>
-            <view v-else-if="!isAutoLogin" class="user-menus-item" @click="goPages(item.path)">
-              <view class="menus-item-share-btn fl_col_cen">
-                <image class="umi-icon" :src="item.icon" mode="aspectFill"></image>
-                <view class="umi-name">{{ item.name }}</view>
-              </view>
-            </view>
-            <view v-else class="user-menus-item">
-              <button open-type="share" class="menus-item-share-btn fl_col_cen">
-                <image class="umi-icon" :src="item.icon" mode="aspectFill"></image>
-                <view class="umi-name">{{ item.name }}</view>
-              </button>
-            </view>
-          </block>
+      <view
+        v-for="item in menus" :key="item.id"
+        class="user-menus-item " @click="menusHandle(item)">
+        <view class="umi-name">{{ item.name }}</view>
+        <view class="li-right">
+          <view class="lir-item">{{ (item.id == 4) ? version : item.lab }}</view>
+          <van-icon name="arrow" color="#aaa" size="14" />
         </view>
-      </scroll-view>
-      <view class="ban_index-box">
-        <view class="ban_index-active" :style="{left: menusLeft + 'px'}"></view>
       </view>
     </view>
   </mescroll-body>
-  <custom-tab-bar
-    currentIndex="1"
-    @domObjHeight="domObjHeightHandle"
-    @recommend="recommendUpdate"
-  />
+  <custom-tab-bar currentIndex="1" />
 </view>
 </template>
 <script>
 import customTabBar from "@/components/customTabBar/index.vue";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { getBaseUrl, getImgUrl } from "@/utils/auth.js";
-import getViewPort from "@/utils/getViewPort.js";
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { getBaseUrl } from "@/utils/auth.js";
+import { mapActions, mapGetters } from "vuex";
 import config from "./config.js";
-
 export default {
   mixins: [MescrollMixin], // 使用mixin
   components: {
@@ -123,62 +93,29 @@ export default {
       upOption: {
         auto: true, // 不自动加载
         use: true,
-        page: {
-          num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
-          size: 1, // 每页数据的数量
-        },
-        noMoreSize: 4, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
-        // empty:{
-        // 	tip: '~ 空空如也 ~', // 提示
-        // 	btnText: '去看看'
-        // }
+        noMoreSize: 4,
+        empty:{
+          use : false,
+        	tip: '~ 空空如也 ~', // 提示
+        	btnText: '去看看'
+        }
       },
-      /*订单*/
       orders: config.orders,
-      /*菜单*/
       menus: config.menus,
-      default_avatar: `${getImgUrl()}/static/images/default_avatar_grey.png`,
-      cardImgUrl:`${getImgUrl()}static/card/`,
-      imgUrl: getImgUrl(),
-      scrollTopNum: 0,
-      showCowpeaNavTop: 0,
-      tabHeightValue: 0,
-      isRecommendRequest: false,
-      isStickyActiveScroll: false,
-      goods: [],
-      pageNum: 1,
-      menusLeft: 0,
-      showExpandNum: 0,
-      cashStorageKey: `${getBaseUrl()}_useRedDot_cashDay`,
-      isShowRed: true
+      default_avatar: `https://file.y1b.cn/public/img/ttxl//static/images/default_avatar_grey.png`,
+			version: '',
     };
-  },
-  watch: {
-    goods(newValue) {
-      if (newValue.length <= 4) {
-        this.mescroll.triggerUpScroll();
-      }
-    }
   },
   computed: {
     ...mapGetters([
       "userInfo",
       "userTotal",
-      "isCardNewShow",
       "isAutoLogin",
-      "profitInfo"
-    ]),
-    mescrollHeight() {
-      let viewPort = getViewPort();
-      let mescrollHeight =
-        viewPort.windowHeight -
-        viewPort.navHeight -
-        uni.upx2px(84) -
-        this.tabHeightValue;
-      return mescrollHeight + "px";
-    }
+    ])
   },
   onLoad() {
+    let version = wx.getAccountInfoSync().miniProgram.version;
+		this.version = version ? `v${version}` : 'v1.0.0';
   },
   onShow() {
   },
@@ -186,38 +123,44 @@ export default {
     ...mapActions({
       getUserTotal: "user/getUserTotal",
     }),
-    ...mapMutations({
-      setCardNewShow: "user/setCardNewShow",
-    }),
     shotOitNum(item) {
       const { id, key } = item;
       return (id < 3) && (this.userTotal[key] > 0);
     },
-    goPages(path, isCean) {
+    goPages(path) {
       if (!this.isAutoLogin) return this.$go("/pages/tabAbout/login/index");
-      if (path === "share") return;
-      if (isCean) this.setCardNewShow(false);
       this.$go(path);
+    },
+    //查看协议
+    agreementLook(link) {
+      link = getBaseUrl() + link;
+      this.$go(`/pages/webview/webview?link=${link}#ISLOGIN`);
+    },
+    menusHandle(item) {
+      const { id } = item;
+      switch(id) {
+        case 1:
+          this.agreementLook('/agreement/service-agreement.html')
+          break;
+        case 2:
+          this.agreementLook('/agreement/privacy-agreement.html')
+          break;
+        case 3:
+          wx.makePhoneCall({
+            phoneNumber: '400-870-7076'
+          });
+          break;
+        case 4:
+          this.$toast('已是最新版本');
+          break;
+      }
     },
     downCallback() {
       /*刷新统计*/
       this.getUserTotal();;
     },
     async upCallback(page) {
-    },
-    // 页面的滚动事件
-    onPageScroll(e) {
-      const scrollTop = Math.ceil(e.scrollTop);
-      this.scrollTopNum = scrollTop;
-      this.isStickyActiveScroll = false;
-    },
-    // menusLeft的左右滑动
-    banScrollHandle(event) {
-      const { scrollLeft } = event.detail;
-      let menusLeft = scrollLeft * (16 / 87);
-      menusLeft = menusLeft <= 0 ? 0 : menusLeft;
-      menusLeft = menusLeft >= 16 ? 16 : menusLeft;
-      this.menusLeft = menusLeft;
+      return this.mescroll.endSuccess(0, false);
     },
   }
 };
@@ -227,31 +170,18 @@ export default {
 page {
   background-color: #f7f7f7;
 }
-.swiper_search{
-  flex: 1;
-  transition: all .5s;
-  &.ani_flex-in {
-    flex: 1;
-  }
-  &.ani_flex-out {
-    flex: 0;
-  }
-}
 .user {
   position: relative;
   z-index: 0;
   &::before {
     content: '\3000';
-    background: url("https://file.y1b.cn/store/1-0/231213/657927fa4f20f.png") 0 0 / cover;
+    background: url("https://file.y1b.cn/store/1-0/24517/6646be03271fb.png") 0 0 / cover;
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 492rpx;
     z-index: -1;
-  }
-  &.active::before {
-    background-image: url("https://file.y1b.cn/store/1-0/231114/65534aca37eff.png");
   }
 }
 .sticky_box {
@@ -272,9 +202,8 @@ button::after {
   align-items: center;
   justify-content: flex-end;
   .title_icon {
-    width: 84rpx;
-    height: 46rpx;
-    margin-right: 20rpx;
+    width: 82rpx;
+    height: 40rpx;
     position: absolute;
     left: 20rpx;
   }
@@ -495,7 +424,7 @@ button::after {
 }
 .user-order {
   margin: 24rpx 24rpx 0;
-  border-radius: 24rpx;
+  border-radius: 20rpx;
   background: #fff;
   overflow: hidden;
   padding: 32rpx 0;
@@ -581,47 +510,26 @@ button::after {
 }
 
 .user-menus {
-  background-color: #ffffff;
-  border-radius: 16rpx;
-  margin: 24rpx 24rpx 8rpx;
-  padding: 28rpx 0;
-  box-sizing: border-box;
+  padding: 0 24rpx;
   .user-menus-item {
-    position: relative;
-    width: 25%;
-    flex: 0 0 25%;
+    margin-top: 20rpx;
+    height: 96rpx;
+    background: #ffffff;
+    border-radius: 20rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 32rpx;
+    font-size: 28rpx;
+    color: #333;
   }
-  .ban_index-box {
-    width: 48rpx;
-    height: 6rpx;
-    background: #e1e1e1;
-    border-radius: 6rpx;
-    margin: 20rpx auto 0;
-    .ban_index-active {
-      width: 32rpx;
-      height: 100%;
-      background: #F84842;
-      border-radius: 6rpx;
-      position: relative;
-    }
-}
-}
-.menus-item-share-btn {
-  position: relative;
-  background-color: #ffffff;
-  padding: 0;
-}
-
-.umi-icon {
-  width: 72rpx;
-  height: 72rpx;
-}
-
-.umi-name {
-  line-height: 1;
-  margin-top: 8rpx;
-  font-size: 26rpx;
-  color: #333;
-  line-height: 36rpx;
+  .li-right {
+    display: flex;
+    color: #aaa;
+    align-items: center;
+  }
+  .lir-item {
+    margin-right: 12rpx;
+  }
 }
 </style>

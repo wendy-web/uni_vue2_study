@@ -218,7 +218,6 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 					queryId
 				} = item;
                 if(goods_type === 8) return this.goToUse(item);
-                let pathUrl = `/pages/shopMallModule/couponDetails/index?id=${coupon_id}`;
 				// 京东的进入feed流
 				// if(goods_type == 5) pathUrl = `/pages/shopMallModule/feedDetailsList/index?cid1=${cid1}&skuId=${skuId}&cid3=${cid3}`;
                 // if(goods_type == 7) pathUrl = `/pages/shopMallModule/feedDetailsList/index?goods_sign=${goods_sign}`;
