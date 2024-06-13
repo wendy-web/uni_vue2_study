@@ -289,7 +289,7 @@ export default{
 .mc_store {
 	padding: 20rpx;
 	background: #fff;
-	border: 1rpx solid #f1f1f1;
+	border: 2rpx solid #f1f1f1;
 	border-radius: 16rpx;
 	margin: 0 24rpx 24rpx;
 	.intro-title {

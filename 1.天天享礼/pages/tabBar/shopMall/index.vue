@@ -43,11 +43,7 @@
     <view class="search_box"
       slot="title_cont"
       id="titleContBox"
-      :style="{
-        top: searchTop +'px',
-        width: searchWidth + 'px',
-        left: searchLeft + 'px'
-      }"
+      :style="{ top: searchTop +'px', width: searchWidth + 'px', left: searchLeft + 'px'}"
     >
       <image class="search_icon" src="https://file.y1b.cn/store/1-0/24514/6642bf0c83c51.png" mode="aspectFill"></image>
       <view class="line"></view>
@@ -78,6 +74,7 @@
   </xh-navbar>
   <mescroll-body
     :sticky="true"
+    height="100%"
     ref="mescrollRef"
     @init="mescrollInit"
     @down="downCallback"
@@ -239,16 +236,16 @@
         <view class="draw_btn" @click="getDrawPopoverHandle"></view>
       </view>
     </van-popup>
-
 </view>
 </template>
 <script>
 import {
-goodsQuery,
-jingfen,
-keywordList,
-material,
-overDo
+  goodsQuery,
+  guessList,
+  jingfen,
+  keywordList,
+  material,
+  overDo
 } from "@/api/modules/jsShop.js";
 import { advertisementConfig, bfxlPopup, couponGroup, couponList, drawPopover, giftCreate } from "@/api/modules/shopMall.js";
 import awardDia from "@/components/configurationDia/awardDia.vue";
@@ -275,12 +272,12 @@ import repairGetMiniPage from "./content/repairGetMiniPage.vue";
 // 拼多多的列表
 import { groupRecommend } from "@/api/modules/index.js";
 import {
-goodsRecommend,
-goodsSearch,
+  goodsRecommend,
+  goodsSearch,
 } from '@/api/modules/pddShop.js';
 import { taskNum } from "@/api/modules/task.js";
 import returnCashDia from '@/components/returnCashDia.vue';
-import { getDiaType, getImgUrl, getPlatform, getUrlKey, setDiaType, setStorage } from "@/utils/auth.js";
+import { getDiaType, getDrawShowDiaStorage, getImgUrl, getPlatform, getUrlKey, setDiaType, setStorage } from "@/utils/auth.js";
 import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
 import { mapActions, mapGetters, mapMutations } from "vuex";
@@ -350,7 +347,15 @@ export default {
       isScrollTo : true,
       skuId: '',
       isShowReturnCashDia: false,
-      is_lx_type: 1,
+      is_lx_type: 0,
+      guessListParams: {
+        index: 1,
+        pageNum: 1,
+        sizeNum: 10,
+        empty_num: 0,
+        is_first: 0,
+        is_home: 1
+      },
       psite: 0,
       lsite: 0,
       giftRewardId: 0,
@@ -368,7 +373,8 @@ export default {
       isShowAdNum: 5,
       isShowAddel: false,
       scroll_top: 0,
-      currentIndex: 0
+      currentIndex: 0,
+      isLoadRequestList: false
     };
   },
   watch: {
@@ -404,7 +410,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["userInfo", "gift", "diaList", 'isAutoLogin', 'isAlreadyShowLight', 'iconFindLightIndex']),
+    ...mapGetters(["userInfo", "gift", "diaList", 'isAutoLogin', 'isAlreadyShowLight', 'iconFindLightIndex', 'isConnected']),
     // 列表数据
     goods() {
       if (this.tabs.length > 0 ) {
@@ -598,7 +604,6 @@ export default {
           this.delCurrentDiaList();
         }
       }, 1000)
-
     },
     showAdv(res) {
       console.log('showAdv', res)
@@ -646,12 +651,15 @@ export default {
       setLightArr: "user/setLightArr"
 
     }),
-    drawHandle() {
-      this.profitInfoRequest().then((result) => {
-        if(result.total_num) return this.isShowReturnCashDia = true;
-        this.$toast('暂无待领取订单');
-        this.$refs.anNoticeImgShow.popupClose();
-      });
+    async drawHandle() {
+      const result = await this.profitInfoRequest();
+      const drawShowDiaStorage = getDrawShowDiaStorage();
+      if(result.total_num) {
+        if(drawShowDiaStorage) return this.$go('/pages/userCard/withdraw/index');
+        return this.isShowReturnCashDia = true;
+      }
+      this.$toast('暂无待领取订单');
+      this.$refs.anNoticeImgShow.popupClose();
     },
     getDrawHandle() {
       this.isShowReturnCashDia = false;
@@ -743,8 +751,14 @@ export default {
     domObjHeightHandle(height) {
       this.tabHeightValue = height;
     },
+    inNotConnected() {
+      this.$toast('网络连接不可用，请检查');
+      this.mescroll.endSuccess(0);
+      this.mescroll.removeEmpty();
+    },
     /*下拉刷新的回调 */
     downCallback() {
+      if(!this.isConnected) return this.inNotConnected();
       this.isScrollTo = false;
       (!this.giftRewardId) && this.getUserInfo(); //获取用户信息
       // 各种初始化
@@ -762,6 +776,9 @@ export default {
       this.mescroll.endSuccess();
     },
     async upCallback(page) {
+      if(!this.isConnected) return this.inNotConnected();
+      // if(this.isLoadRequestList) return;
+      // this.isLoadRequestList = true;
       this._index = this._index || 0;
       if (!this.tabs.length) {
         let res = await couponGroup();
@@ -787,6 +804,7 @@ export default {
       if (!this.tabs[this._index]) {
         // 首页tab的数据加载完成 - 加载推广位的使用 / 列表的数据使用
         if (!this.tabIndex) {
+          if(!this.is_lx_type) return this.guessListFun();
           return this.requestRem(page);
         }
         return this.mescroll.endSuccess(0);
@@ -833,6 +851,38 @@ export default {
             this.mescroll.endBySize(list.length, total);
           }
       }).catch(() => this.mescroll.endErr());
+    },
+    async guessListFun() {
+      const res = await guessList(this.guessListParams);
+      if(res.code != 1 || (res.data && res.data.stop)) {
+        this.isAdvertiseStop = true;
+        this.mescroll.endSuccess(10, true);
+        this.is_lx_type = 1;
+        this.mescroll.triggerUpScroll();
+        return;
+      }
+      const { index, list, pageNum, is_first, empty_num } = res.data;
+      this.guessListParams = {
+        ...this.guessListParams,
+        index,
+        pageNum,
+        empty_num,
+        is_first
+      }
+      let curTab = this.tabs[this.tabIndex] || {
+        goods: null
+      };
+      if (!curTab.goods) curTab.goods = [];
+      curTab.goods = curTab.goods.concat(list); // 追加新数据
+      if(this.tabs.length) {
+        this.tabs[this.tabIndex] = curTab;
+      } else {
+        // tab 的列表数据为空 加载推券的使用
+        this.tabs.push(curTab);
+        this._index = 99; // 将列表的索引加置无限大
+      }
+      // this.goods = this.goods.concat(list); // 追加新数据
+      this.mescroll.endSuccess(10, true);
     },
     async requestRem(page) {
       if (!this.groupRecommendData || (this.is_lx_type == 2)) {
@@ -972,6 +1022,11 @@ export default {
       !this.isAlreadyShowLight && this.setShowLightHandle(); // 关闭天天过来时高亮展示的样式
       this.setIconFindHandle(); // 关闭天天过来时高亮展示的样式
       const scrollTopNum = Math.ceil(event.scrollTop);
+      const scrollHeight = this.mescroll.getScrollHeight();
+      const scrollBody = this.mescroll.getBodyHeight();
+      // console.log('event', event);
+      // console.log('-------scrollHeight', scrollHeight);
+      // console.log('-------scrollBody', scrollBody);
       this.scroll_top = scrollTopNum;
       this.showTitleBg = (scrollTopNum > 0);
       this.isShowCowpeaNav = (scrollTopNum >= this.stickyTop);
@@ -984,6 +1039,9 @@ export default {
         return;
       }
       this.$refs.anNoticeImgShow.popupClose();
+    },
+    onReachBottom(event) {
+      // console.log('onReachBottom::::event-------------------------------------', )
     },
     refreshGoods(data) {
       if (this.goods.length == 0) return;
@@ -1093,7 +1151,7 @@ export default {
       if (this.diaList.length) return;
       this.showTaskComplete();
     },
-     async initDrawPopover() {
+    async initDrawPopover() {
       const res = await drawPopover({ id: this.gameAnimationId });
       if (res.code != 1 || !res.data) {
         this.gameAnimationId = null;

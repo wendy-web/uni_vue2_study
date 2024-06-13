@@ -43,11 +43,24 @@
               <view class="use_cont">
                 <view class="use_cont-left" v-if="item.after_pay">先用后付</view>
                 <view class="use_cont-right" v-if="item.zero_credits">0豆特权</view>
+                  <view v-else-if="show_lowestCouponPrice && item.credits && item.lowestCouponPrice"
+                    class="js_search_credits">
+                    {{ item.credits || 0 }}牛金豆
+                  </view>
               </view>
               <view class="list_cont-bottom fl_bet">
                 <view class="list_cont-left box_fl">
                   <view class="cowpea-num">
-                    <text :class="['value', item.zero_credits ? 'active' : '']">{{ item.credits }}</text>牛金豆
+                    <block v-if="show_lowestCouponPrice && item.lowestCouponPrice">
+                      <text v-if="parseInt(item.face_value)">券后</text>
+                      <text class="good_credits">
+                          <text style="font-size: 24rpx">￥</text>
+                          {{ item.lowestCouponPrice || 0 }}
+                      </text>
+                    </block>
+                    <block v-else>
+                      <text :class="['value', item.zero_credits ? 'active' : '']">{{ item.credits }}</text>牛金豆
+                    </block>
                   </view>
                   <view class="exchange-num" v-if="item.lx_type == 1">
                     {{ Number(item.exch_user_num) + Number(item.user_num) }}人兑换
@@ -85,6 +98,7 @@
         :src="imgUrl + 'static/shopMall/love_right_icon.png'"></image>
     </view>
     <good-list
+      v-if="goods.length"
       :list="goods"
       :isBolCredits="true"
       :isJdLink="true"
@@ -172,7 +186,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["userInfo"]),
+    ...mapGetters(["userInfo", 'show_lowestCouponPrice']),
     mescrollHeight() {
       let viewPort = getViewPort();
       let mescrollHeight = viewPort.windowHeight;
@@ -504,7 +518,7 @@ page {
   width: 96rpx;
   height: 44rpx;
   border-radius: 24rpx;
-  border: 1rpx solid #aaa;
+  border: 2rpx solid #aaa;
   text-align: center;
   font-size: 24rpx;
   color: #666;
@@ -556,5 +570,27 @@ page {
       margin-right: 5rpx;
     }
   }
+}
+.js_search_credits {
+  font-size: 26rpx;
+  text-align: center;
+  color: #f97f02;
+  line-height: 36rpx;
+  display: flex;
+  align-items: center;
+  &::before {
+    content: "\3000";
+    background: url("https://file.y1b.cn/public/img/ttxl/static/shopMall/js_search_icon.png") 0 0 / cover no-repeat;
+    width: 30rpx;
+    height: 30rpx;
+    margin-right: 4rpx;
+    display: inline-block;
+  }
+}
+.good_credits {
+  font-size: 36rpx;
+  margin-right: 4rpx;
+  font-weight: bold;
+  position: relative;
 }
 </style>

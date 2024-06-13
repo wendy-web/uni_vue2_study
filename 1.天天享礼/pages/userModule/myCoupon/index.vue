@@ -91,6 +91,7 @@
 				<image class="right-icon" :src="imgUrl + 'static/shopMall/love_right_icon.png'" mode="aspectFill"></image>
 			</view>
 			<good-list
+				v-if="goods.length"
 				:list="goods"
 				:isBolCredits="true"
 				:isJdLink="true"
@@ -132,18 +133,16 @@ import serviceRecharge from './serviceRecharge.vue';
 // 牛金豆不足混入的组件与方法
 import { groupRecommend } from '@/api/modules/index.js';
 import { goodsQuery, jingfen, material } from '@/api/modules/jsShop.js';
-import {
-location,
-restaurantQuery
-} from '@/api/modules/takeawayMenu/luckin.js';
+import { location, restaurantQuery } from '@/api/modules/takeawayMenu/luckin.js';
 import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
 import serviceCredits from '@/components/serviceCredits/index.vue';
 import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js';
 import { getUserLocation } from '@/utils/getUserLocation.js';
 import getViewPort from "@/utils/getViewPort.js";
+import lxTypeJdFunMixin from '@/utils/mixin/lxTypeJdFunMixin.js'; // 混入京东/拼多多方法
 import { mapGetters, mapMutations } from "vuex";
 	export default {
-		mixins: [MescrollMixin, serviceCreditsFun],
+		mixins: [MescrollMixin, serviceCreditsFun, lxTypeJdFunMixin],
 		components: {
 			serviceRecharge,
 			exchangeFailed,
@@ -505,6 +504,10 @@ import { mapGetters, mapMutations } from "vuex";
 						// 移动积分商品的跳转
 						this.$go(`/pages/webview/webview?link=${encodeURIComponent(qz_url)}`)
 						break;
+					case 13:
+						// 调用京东/拼多多的混入事件
+						this.lxTypeJdFun(data);
+						break;
 				}
 			}
 		}
@@ -755,7 +758,7 @@ page {
 .mc_store {
 	padding: 20rpx;
 	background: #fff;
-	border: 1rpx solid #f1f1f1;
+	border: 2rpx solid #f1f1f1;
 	border-radius: 16rpx;
 	margin: 0 24rpx 24rpx;
 	.intro-title {

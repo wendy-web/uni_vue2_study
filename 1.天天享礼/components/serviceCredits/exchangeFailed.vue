@@ -30,8 +30,8 @@
 </template>
 
 <script>
-	import {getImgUrl} from '@/utils/auth.js';
-	import { mapGetters } from 'vuex';
+	import { getImgUrl } from '@/utils/auth.js';
+import { mapGetters } from 'vuex';
 	export default {
 		props: {
 			isShow: {
@@ -104,7 +104,7 @@
 		font-weight: 400;
 		height: 52rpx;
 		background: #f7f8f9;
-		border: 1rpx solid #eaecf0;
+		border: 2rpx solid #eaecf0;
 		border-radius: 8rpx;
 		font-size: 26rpx;
 		font-family: PingFang SC, PingFang SC-Regular;

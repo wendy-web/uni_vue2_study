@@ -43,6 +43,9 @@ const getters = {
             credits: 0
         }
     },
+    show_lowestCouponPrice: (state, getters) => {
+        return getters.userInfo && getters.userInfo.show_lowestCouponPrice
+    },
     userTotal: (state, getters) => {
         const isAutoLogin = getters.isAutoLogin;
         return isAutoLogin ? state.user.userTotal : {

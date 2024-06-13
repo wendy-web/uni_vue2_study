@@ -154,6 +154,7 @@ import { mapGetters } from 'vuex';
 		justify-content: center;
 		width: 246rpx;
 		box-sizing: border-box;
+		margin-top: 18rpx;
 	}
 
 	.step-item {

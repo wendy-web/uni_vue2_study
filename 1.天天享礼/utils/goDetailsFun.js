@@ -427,6 +427,8 @@ const goDetailsFun = {
                 type_id,
                 jdShareLink,
                 mobile_url,
+                active_id,
+                tag
             } = item;
             // 牛金豆不足:进行弹窗的展示
             if (!this.userInfo.is_vip && isBolCredits && (credits > this.userInfo.credits)) {
@@ -440,7 +442,11 @@ const goDetailsFun = {
                 this.$go(`/pages/shopMallModule/feedDetailsList/index?${urlPar}&positionId=${positionId || 0}&has_coupon=${has_coupon}`);
                 return;
             }
-            const params = { positionId };
+            const params = {
+                positionId,
+                tag: tag || 0,
+                active_id: active_id || 0
+            };
             let api = '';
             if (lx_type == 3) {
                 api = goodsPromotion;
@@ -461,7 +467,7 @@ const goDetailsFun = {
             }
             // 半屏的中转详情页面
             if (is_flow == 2) {
-                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&positionId=${positionId}`);
+                this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&positionId=${positionId}&active_id=${active_id || 0}&tag=${tag || 0}`);
                 return;
             }
             type_id = skuRes.data.type_id;

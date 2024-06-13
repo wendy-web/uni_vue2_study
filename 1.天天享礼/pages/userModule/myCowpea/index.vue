@@ -10,10 +10,6 @@
 	>
 		<view slot="title" class="nav-custom fl_bet">
 			<van-icon name="arrow-left" color="#333333" size="24" @click="$leftBack" />
-			<!-- <image class="search_icon" mode="aspectFill"
-				src="https://file.y1b.cn/store/1-0/231123/655eeada7864e.png"
-				@click="toSearchHandle"
-			></image> -->
 			<swiperSearch
 				:textList="textList"
 				:isSwiperTxt="showTitleBg"
@@ -94,33 +90,28 @@
 </template>
 
 <script>
-	import { mapGetters, mapActions } from 'vuex'
-	import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-	import signModule from './signModule.vue'
-	import goodList from '@/components/goodList.vue'
-	import taskComplete from './taskComplete.vue'
-	import cowpeaAnim from './cowpeaAnim.vue'
-	import WxCountUp from '@/utils/WxCountUp.js'
-	import getViewPort from '@/utils/getViewPort.js';
-	import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
-	import serviceCredits from '@/components/serviceCredits/index.vue';
-	import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js';
-	import { groupRecommend } from '@/api/modules/index.js';
-    import { getImgUrl } from '@/utils/auth.js';
-	import swiperSearch from '@/components/swiperSearch.vue';
-	import {
-		material,
-		jingfen,
-		goodsQuery,
-		keywordList
-	} from '@/api/modules/jsShop.js';
+	import { keywordList } from '@/api/modules/jsShop.js';
+import goodList from '@/components/goodList.vue';
+import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
+import serviceCredits from '@/components/serviceCredits/index.vue';
+import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js';
+import swiperSearch from '@/components/swiperSearch.vue';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import WxCountUp from '@/utils/WxCountUp.js';
+import { getImgUrl } from '@/utils/auth.js';
+import getViewPort from '@/utils/getViewPort.js';
+import groupRecommendMixin from '@/utils/mixin/groupRecommendMixin.js'; // 混入推荐商品列表的方法
+import { mapActions, mapGetters } from 'vuex';
+import cowpeaAnim from './cowpeaAnim.vue';
+import signModule from './signModule.vue';
+import taskComplete from './taskComplete.vue';
 	let _options = {
 		separator: '',
 		duration: 1,
 	}
 	let _firstload = 0;
 	export default {
-		mixins: [MescrollMixin, serviceCreditsFun], // 使用mixin
+		mixins: [MescrollMixin, serviceCreditsFun, groupRecommendMixin], // 使用mixin
 		components: {
 			signModule,
 			goodList,
@@ -171,13 +162,9 @@
 						icon: 'https://file.y1b.cn/store/1-0/23713/64afe358058d7.png'
 					}
 				],
-				goods: [],
 				creditsnumber: 0,
 				countupComplete: false,
 				showTitleBg: false,
-				pageNum: 1,
-				groupId_index: 0,
-				lastOddItem: null,
 				textList: [],
 				discount_Top: 0
 			}
@@ -201,11 +188,6 @@
 				},
 				immediate: true,
 				deep: true
-			},
-			goods(newValue) {
-				if(newValue.length <=4) {
-					this.mescroll.triggerUpScroll();
-				}
 			}
 		},
 		onLoad() {
@@ -249,95 +231,7 @@
 				this.$go(`/pages/userModule/productList/search`);
 			},
 			upCallback(page) {
-				this.requestRem(page);
-			},
-			async requestRem(page) {
-				if(!this.groupRecommendData) {
-					const recRes = await groupRecommend({ page: 4 });
-					if(recRes.code != 1 || !recRes.data) return this.mescroll.endSuccess(0);
-					this.groupRecommendData = recRes.data;
-				}
-				const {
-					id,
-					cid,
-					cid2,
-					cid3,
-					eliteId,
-					groupId,
-					type
-				} = this.groupRecommendData;
-				let pageNum = this.pageNum;
-				// const pageNum = page.num;
-				let params = {
-					id,
-					page: pageNum,
-					size: 10,
-				}
-				let queryApi = goodsQuery;
-				// type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-				switch(type) {
-					case 1:
-						queryApi = material;
-						params.eliteId = eliteId;
-						params.groupId = groupId;
-						params.size = 10;
-						break;
-					case 2:
-						queryApi = jingfen;
-						params.eliteId = eliteId;
-						params.groupId = groupId;
-						params.size = 20;
-						break;
-					case 3:
-						queryApi = goodsQuery;
-						params.cid1 = cid;
-						params.cid2 = cid2;
-						params.cid3 = cid3;
-						break;
-					case 4:
-						queryApi = jingfen;
-						const groupId_index = this.groupId_index;
-						params.eliteId = eliteId;
-						params.groupId = groupId[groupId_index];
-						params.size = 20;
-						break;
-				};
-				queryApi(params).then(res=>{
-					const {
-						list,
-						total_count
-					} = res.data;
-					// 设置列表数据
-					if( page.num == 1 ) {
-						this.goods = [];
-						this.pageNum = 1;
-						this.lastOddItem = null;
-					}; //如果是第一页需手动制空列表
-					// 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-					let isNextPage = (pageNum * params.size) < total_count;
-					if(!isNextPage && type == 4 && this.groupId_index < (groupId.length - 1)) {
-						// 无下一页
-						this.groupId_index += 1;
-						this.mescroll.endSuccess(total_count, true);
-						this.pageNum = 1;
-						this.mescroll.triggerUpScroll();
-					} else {
-						this.mescroll.endSuccess(list.length || total_count, isNextPage);
-					}
-					if(list.length == 0 && (pageNum * params.size) < total_count){
-						this.mescroll.triggerUpScroll();
-					}
-					if(this.lastOddItem) {
-						this.goods.push(this.lastOddItem);
-						this.lastOddItem = null;
-					}
-					this.pageNum += 1;
-					this.goods = this.goods.concat(list); // 追加新数据
-					const goodLength = this.goods.length;
-					if(goodLength % 2 && goodLength > 6) {
-						this.lastOddItem = this.goods.pop();
-					}
-				}).catch(()=> this.mescroll.endErr());
+				this.requestGoodList(page);
 			},
 			warpRectDom(idName) {
 				return new Promise(resolve => {

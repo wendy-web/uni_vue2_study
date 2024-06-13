@@ -356,7 +356,7 @@
 			width: 120rpx;
 			height: 50rpx;
 			background-image: linear-gradient(135deg, #ffefdf, #fcd5d2);
-			border: 1rpx solid #ffc5c2;
+			border: 2rpx solid #ffc5c2;
 			border-radius: 4px;
 			font-size: 24rpx;
 			font-weight: 400;

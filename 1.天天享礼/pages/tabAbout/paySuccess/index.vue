@@ -31,6 +31,7 @@
 			<image class="right-icon" :src="imgUrl + 'static/shopMall/love_right_icon.png'" mode="aspectFill"></image>
 		</view>
 		<good-list
+			v-if="goods.length"
 			:list="goods"
 			:isJdModel="true"
 			:isBolCredits="true"
@@ -279,7 +280,7 @@ import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js'
 	.tools-btn{
 		width: 176rpx;
 		height: 64rpx;
-		border: 1rpx solid;
+		border: 2rpx solid;
 		border-radius: 20px;
 		box-sizing: border-box;
 		font-size: 28rpx;

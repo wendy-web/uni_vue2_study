@@ -189,7 +189,7 @@ export default {
 	top: 0;
 	left: 0;
 	background: rgba(228,0,48,0.04);
-	border: 1rpx solid rgba(228,0,48,0.60);
+	border: 2rpx solid rgba(228,0,48,0.60);
 	border-radius: 24rpx;
 	color: $kfcColor;
 	.remind_icon{

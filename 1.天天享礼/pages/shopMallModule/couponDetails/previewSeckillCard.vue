@@ -168,7 +168,7 @@
 			height: 40rpx;
 			text-align: center;
 			background: linear-gradient(135deg,#ffefdf, #fcd5d2);
-			border: 1rpx solid #ffd0ce;
+			border: 2rpx solid #ffd0ce;
 			border-radius: 8rpx;
 			font-size: 24rpx;
 			font-family: YouSheBiaoTiHei, YouSheBiaoTiHei-Regular;

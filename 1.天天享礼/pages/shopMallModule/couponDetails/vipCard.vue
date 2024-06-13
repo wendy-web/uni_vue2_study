@@ -141,7 +141,7 @@
 }
 .face_dis {
     background: rgba(255,255,255,0.40);
-    border: 1rpx solid rgba(255,255,255,0.40);
+    border: 2rpx solid rgba(255,255,255,0.40);
     border-radius: 24rpx;
     margin-top: 10rpx;
 	margin-bottom: -10rpx;

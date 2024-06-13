@@ -49,7 +49,11 @@
 		</view>
 		<!-- 支付金额 -->
 		<view class="pay-info" @click="goToUse(item)">
-			<view class="userFee_value" v-if="[12].includes(item.goods_type) && Number(item.userFee)"><view v-html="formatPrice(item.userFee, 1)"></view></view>
+			<view class="userFee_value" v-if="[12].includes(item.goods_type) && Number(item.userFee)">
+				<view v-html="formatPrice(item.userFee, 1)"></view>
+			</view>
+			<!-- 牛金豆呈现 - 已付款的状态&京东&拼多多-->
+			<view class="channel_flag" v-if="item.channel_flag && Number(item.status) && [5, 7].includes(item.goods_type)">{{ item.channel_flag }}</view>
 			<text class="pay-info_label">{{[2,3,4,5].includes(Number(item.status)) ? '实付' : '应付'}}</text>
 			<view v-html="formatPrice(item.pay_amount)"></view>
 		</view>
@@ -164,7 +168,6 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 		},
 		methods: {
 			showAgain(item) {
-				console.log('this.userInfo.buy_vip', this.userInfo.buy_vip)
 				return (Number(item.status) && ![10].includes(item.goods_type)) || (this.userInfo.buy_vip && [10].includes(item.goods_type))
 			},
 			countFinished(e) {
@@ -417,6 +420,34 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 	justify-content: flex-end;
 	padding: 0 24rpx;
 	position: relative;
+	.channel_flag {
+		margin-right: 20rpx;
+		font-size: 28rpx;
+		padding-right: 24rpx;
+		font-size: 28rpx;
+		font-weight: bold;
+		color: #ff8f2a;
+		// border-right: 2rpx solid #C9C9C9;
+		position: relative;
+		&::before {
+			content: '牛金豆:';
+			font-size: 26rpx;
+			color: #333;
+			margin-right: 8rpx;
+		}
+		&::after {
+			content: '\3000';
+			position: absolute;
+			width: 2rpx;
+			height: 24rpx;
+			background: #c9c9c9;
+			border-radius: 2rpx;
+			right: 0;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+	}
 	.pay-info_label {
 		margin-right: 8rpx;
 	}
@@ -480,7 +511,7 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 	line-height: 56rpx;
 	box-sizing: border-box;
 	text-align: center;
-	border: 1rpx solid #f84842;
+	border: 2rpx solid #f84842;
 	border-radius: 32rpx;
 	font-size: 28rpx;
 	color: #f84842;

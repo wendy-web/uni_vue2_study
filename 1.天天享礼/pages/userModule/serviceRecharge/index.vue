@@ -460,7 +460,7 @@ page {
 	.shop_title-label {
 		display: inline-block;
 		height: 28rpx;
-		border: 1rpx solid #f84842;
+		border: 2rpx solid #f84842;
 		border-radius: 4rpx;
 		font-weight: 400;
 		color: #f84842;
@@ -493,7 +493,7 @@ page {
 	.shop_title-label {
 		display: inline-block;
 		height: 28rpx;
-		border: 1rpx solid #f84842;
+		border: 2rpx solid #f84842;
 		border-radius: 4rpx;
 		font-weight: 400;
 		color: #f84842;

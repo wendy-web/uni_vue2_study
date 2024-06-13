@@ -54,9 +54,10 @@ export default {
         {
           id: 0,
           pagePath: "/pages/tabBar/shopMall/index",
-          scrollIcon: `https://file.y1b.cn/store/1-0/23118/654b29826a6c6.png`,
-          icon: `https://file.y1b.cn/store/1-0/24511/663ed82d87b4f.png`, // 用于覆盖当前tab的展示图标，用于置顶的呈现
-          icon_active: `https://file.y1b.cn/store/1-0/24511/663ed840c33ef.png`,
+          // https://file.y1b.cn/store/1-0/23118/654b29826a6c6.png
+          scrollIcon: `/static/tabsImg/scrollTop.png`,
+          icon: `/static/tabsImg/home-icon.png`, // 用于覆盖当前tab的展示图标，用于置顶的呈现
+          icon_active: `/static/tabsImg/home-select-icon.png`,
           title: "首页"
         },
         // {
@@ -71,16 +72,16 @@ export default {
           id: 2,
           pagePath: "/pages/tabBar/task/index",
           scrollIcon: ``,
-          icon: `https://file.y1b.cn/store/1-0/24511/663ed883183f6.png`,
-          icon_active: `https://file.y1b.cn/store/1-0/24511/663ed89392aa4.png`,
+          icon: `/static/tabsImg/scan.png`,
+          icon_active: `/static/tabsImg/scan_select.png`,
           title: "福利中心"
         },
         {
           id: 3,
           pagePath: "/pages/tabBar/user/index",
           scrollIcon: ``,
-          icon: `https://file.y1b.cn/store/1-0/24511/663ed85824312.png`,
-          icon_active: `https://file.y1b.cn/store/1-0/24511/663ed86aed942.png`,
+          icon: `/static/tabsImg/personal.png`,
+          icon_active: `/static/tabsImg/personal_select.png`,
           title: "我的"
         }
       ]

@@ -186,6 +186,7 @@ const shareMixin = {
                     // 进入分享页后返回上一页的页面路径 - 目前取消，默认跳转首页
                     // const sourceUrl = "/pages/userModule/productList/index";
                     const sourceUrl = "";
+                    let queryId = '';
                     const { title, image, skuId, cid1, cid3, lx_type, coupon_id, goods_sign, positionId, } = shareItem;
                     share.title = title;
                     share.imageUrl = image;
@@ -195,15 +196,17 @@ const shareMixin = {
                         if (lx_type == 3) {
                             requestApi = goodsPromotion;
                             params.goods_sign = goods_sign;
+                            queryId = goods_sign;
                         } else {
                             requestApi = bysubunionid;
                             params.skuId = skuId;
+                            queryId = skuId;
                         }
                         const skuRes = await requestApi(params);
                         if (skuRes.code == 0) {
                             this.$toast(skuRes.msg);
                         } else {
-                            share.path = `/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${skuId || goods_sign}&positionId=${positionId}`;
+                            share.path = `/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${queryId}&positionId=${positionId}`;
                         }
                     } else {
                         share.path = `/pages/shopMallModule/couponDetails/index?id=${coupon_id}${pathData}`;
@@ -284,9 +287,10 @@ const shareMixin = {
                 ...await this.homeSpecialBtnFun(data, pathData)
             };
         }
+        // 中转详情页的配置
         if (isBtnShare == 'productDetails') {
-            const { lx_type, goods_name, banner_image } = this.config;
-            const proData = `&lx_type=${lx_type}&queryId=${this.queryId}&isSearch=${this.isSearch}&isHome=${this.isHome}&isJdCenter=${this.isJdCenter}&isFeed=${this.isFeed}`
+            const { goods_name, banner_image } = this.config;
+            const proData = `&lx_type=${this.lx_type}&queryId=${this.queryId}`
             share = {
                 title: share_title || goods_name,
                 imageUrl: share_img || (banner_image.length && banner_image[0]),

@@ -50,7 +50,7 @@
 
 <script>
 	import {
-	verifyOrder
+verifyOrder
 } from '@/api/modules/order.js';
 	export default {
 		props: {
@@ -192,7 +192,7 @@
 		height: 50rpx;
 		line-height: 50rpx;
 		background: #ffffff;
-		border: 1rpx solid #e1e1e1;
+		border: 2rpx solid #e1e1e1;
 		border-radius: 26rpx;
 		text-align: center;
 

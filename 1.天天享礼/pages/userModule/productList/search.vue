@@ -78,6 +78,7 @@
         <image class="right-icon" :src="imgUrl + 'static/shopMall/love_right_icon.png'" mode="aspectFill"></image>
     </view>
     <good-list
+        v-if="goods.length"
         :list="goods"
         :isJdModel="true"
         :isBolCredits="true"
@@ -177,6 +178,7 @@ export default {
         };
     },
     async onLoad(option) {
+        console.log('option.inputValue', option.inputValue)
         if(option.inputValue) {
             this.inputValue = decodeURIComponent(option.inputValue);
         }
@@ -194,6 +196,8 @@ export default {
     },
     onShow() {
         this.focusValue = true;
+        console.log('show', this.inputValue)
+        if(this.inputValue) this.inputValueChange({ detail: this.inputValue})
     },
     methods: {
         // 牛金豆不足的情况
@@ -438,10 +442,10 @@ page {
     display: flex;
     flex-wrap: wrap;
     .search_list-item{
-        line-height: 60rpx;
+        // line-height: 60rpx;
         background: #f1f1f1;
         border-radius: 30rpx;
-        padding: 0 20rpx;
+        padding: 10rpx 20rpx;
         font-size: 26rpx;
         color: #666666;
         margin-top: 24rpx;

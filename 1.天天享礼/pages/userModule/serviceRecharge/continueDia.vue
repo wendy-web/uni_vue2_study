@@ -136,7 +136,7 @@
 }
 .cont_remind {
   height: 48rpx;
-  border: 1rpx solid #666666;
+  border: 2rpx solid #666666;
   border-radius: 25rpx;
   font-size: 26rpx;
   text-align: center;

@@ -234,7 +234,9 @@ export default{
       // this.$go(`plugin://express-plugin/home?shareCode=1911Fv7raS&userId=1&extra=1`);
     },
     animationHandle2() {
-      this.$go(`plugin://jtkDc/kudiindex?pub_id=27729&sid=ttxl&channel=${this.userInfo.id}`);
+      // this.$go(`plugin://jtkDc/kudiindex?pub_id=27729&sid=ttxl&channel=${this.userInfo.id}`);
+      this.$go(`plugin://jtkDc/index?pub_id=27729&sid=ttxl&channel=${this.userInfo.id}`);
+      // plugin://jtkDc/index?pub_id=26&sid=123456
     },
     async uploadImg(imgPath) {
       try {
@@ -488,7 +490,7 @@ export default{
   .gender_box {
     width: 434rpx;
     height: 80rpx;
-    border: 1rpx solid #e1e1e1;
+    border: 2rpx solid #e1e1e1;
     border-radius: 16rpx;
     font-size: 28rpx;
     text-align: left;
@@ -521,7 +523,7 @@ export default{
   text-align: center;
   margin: 0 auto;
   background: #ffffff;
-  border: 1rpx solid rgba(202, 151, 103, 0.5);
+  border: 2rpx solid rgba(202, 151, 103, 0.5);
   border-radius: 16rpx;
   font-size: 24rpx;
   font-weight: 500;

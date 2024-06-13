@@ -17,7 +17,6 @@ export default {
 	},
 	methods: {
 		...mapActions({
-			wxlogin: 'user/wxlogin',
 			setConnected: 'app/setConnected',
 			profitInfoRequest: 'user/profitInfoRequest'
 		}),
@@ -79,11 +78,12 @@ export default {
 				const networkType = res.networkType;
 				if (networkType === 'none') {
 					this.setConnected(false);
-					uni.showToast({
-						title: '当前无网络',
-						icon: 'loading',
-						duration: 2000
-					});
+					// uni.showToast({
+					// 	title: '当前无网络',
+					// 	icon: 'loading',
+					// 	duration: 2000
+					// });
+					this.$toast('网络连接不可用，请检查');
 					return
 				}
 				this.setConnected(true);
@@ -96,11 +96,11 @@ export default {
 		uni.onNetworkStatusChange((res) => {
 			if (!res.isConnected) {
 				this.setConnected(false);
-				uni.showToast({
-					title: '网络已断开',
-					icon: 'loading',
-					duration: 2000
-				});
+				// uni.showToast({
+				// 	title: '网络已断开',
+				// 	icon: 'loading',
+				// 	duration: 2000
+				// });
 			} else {
 				this.setConnected(true);
 				uni.hideToast();

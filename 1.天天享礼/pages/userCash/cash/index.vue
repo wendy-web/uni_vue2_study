@@ -60,8 +60,12 @@
 				<cashFinishDom6 v-if="[6].includes(enterPageStatus)" @cashFinishDom6Ref="cashFinishDom6RefHandle">
 				</cashFinishDom6>
 				<!-- 活动 -->
-				<cashFinishDom7 v-if="[7].includes(enterPageStatus)" @cashFinishDom7Ref="cashFinishDom7RefHandle">
-				</cashFinishDom7>
+				<cashFinishDom7
+					v-if="[7].includes(enterPageStatus)"
+					:isShowScan="subIndex"
+					@cashFinishDom7Ref="cashFinishDom7RefHandle"
+					@scanResult="scanResultHandle"
+				></cashFinishDom7>
 			</keep-alive>
 
 			<!-- 上拉的浮动定位显示 -->
@@ -449,7 +453,7 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 				this.tabsList = [];
 				this.showTabsList = [];
 				(this.subIndex < 0) && await this.initActiveCk();
-				(this.subIndex < 0) && (this.subIndex = 0);
+				(this.subIndex < 0) && (this.subIndex = 1);
 				// 标题头部的呈现
 				this.title_img = !this.subIndex ? 'https://test-file.y1b.cn/store/1-0/24312/65f0171b9d916.png': 'https://file.y1b.cn/store/1-0/24123/65af146cd8811.png';
 				if(!this.subIndex) {
@@ -482,6 +486,11 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 			},
 			goToActivityRecordHandle() {
 				this.$go(`/pages/userCash/cash/activityRecord?active_id=${this.freeEnterArr.active_id || 0}`)
+			},
+			// 扫红牛码的使用 - 列表的数据更新
+			scanResultHandle() {
+				this.is_close = 0;
+				this.downCallback();
 			},
 			async upCallback(page) {
 				// 获取tab的列表

@@ -50,6 +50,10 @@ export default new XhHttp({
     loadingDelaySecond: 5,
     /**拦截器 */
     interceptor: {
+        // 当前的网络状态
+        isConnectedStatus() {
+            return store.getters.isConnected;
+        },
         /**请求前 */
         request(config, context, resolve) {
             let isContinueExecute = true;
@@ -139,7 +143,6 @@ export default new XhHttp({
                     }, 0)
                 }
                 if (config.type === 'cache' && result) {
-
                     if (result.code == 1 && result.data) {
                         //添加缓存
                         setStorage(config.url, JSON.stringify({
@@ -152,12 +155,14 @@ export default new XhHttp({
             }
             // 跳过异常的上报提示
             if (config.isColorErrMsg) return;
-            /**请求失败 统一提示 */
-            wx.showModal({
-                title: '请求异常',
-                content: context.getHttpErrMsg(res),
-                showCancel: false
-            });
+            if (res.statusCode) {
+                /**请求失败 统一提示 */
+                wx.showModal({
+                    title: '请求异常',
+                    content: context.getHttpErrMsg(res),
+                    showCancel: false
+                });
+            }
             reject(res);
             log.setFilterMsg('网络请求异常');
             log.warn('请求接口：' + config.url);

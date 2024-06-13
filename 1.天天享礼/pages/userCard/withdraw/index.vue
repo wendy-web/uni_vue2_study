@@ -23,7 +23,7 @@
                 <!-- {{ showExpandNum }} -->
                 <p-countup
                     :num="parseFloat(profitInfo.packet_amount).toFixed(2)"
-                    width="24" height='36' dotWidth="12"
+                    width="21" height='36' dotWidth="10"
                     color="#333"
                     fontSize="36"
                     fontWeight="600"
@@ -31,16 +31,18 @@
                 ></p-countup>
             </view>
             <view class="draw_items fl_bet">
-                <view class="draw_item" @click="goToWithdraw">
-                    <view class="draw_item_lab">可提现</view>
+                <view class="draw_item withdraw_box" @click="goToWithdraw">
+                    <view class="draw_item_lab add_icon">可提现</view>
                     <view class="draw_item_price">
-                        ¥{{ parseFloat(profitInfo.balance).toFixed(2) }}
-                        <van-icon name="arrow" color="#999" size="28rpx" />
+                        ¥{{parseFloat(profitInfo.balance).toFixed(2)}}
+                        <van-icon name="arrow" color="#fff" size="28rpx" />
                     </view>
                 </view>
                 <view class="draw_item">
                     <view class="draw_item_lab">累计返</view>
-                    <view class="draw_item_price">¥{{ parseFloat(profitInfo.total_amount).toFixed(2) }}</view>
+                    <view class="draw_item_price">
+                        ¥{{parseFloat(profitInfo.total_amount).toFixed(2)}}
+                    </view>
                 </view>
             </view>
             <view class="draw_lab">* 订单已完成且无退换货，可提现到微信零钱</view>
@@ -51,6 +53,7 @@
                 v-for="(item, index) in goods"
                 :key="index"
                 @click="profitGetItemHandle(item, index)"
+                :class="{ 'active' : (item.profit_status == 0) && (index < goods.length - 1) && (goods[index+1].profit_status != 0) }"
             >
                 <view class="record_left">
                     <view class="record_txt">{{ item.title }}</view>
@@ -59,11 +62,17 @@
                 <view class="record_right">
                     <!-- 待领取 -->
                     <view class="record_txt-wait" v-if="item.profit_status == 0">
-                        {{ parseFloat(item.profit).toFixed(2) }}待领<van-icon name="arrow" color="#fff" size="28rpx" style="margin-left: 8rpx;" />
+                        ¥{{ parseFloat(item.profit).toFixed(2) }}待领<van-icon name="arrow" color="#f85a55" size="28rpx" style="margin-left: 8rpx;" />
                     </view>
-                    <view class="record_txt" v-else-if="item.profit_status == 1">+{{ parseFloat(item.profit).toFixed(2) }}</view>
-                    <view class="record_txt" v-else-if="item.profit_status == 2">-{{ parseFloat(item.profit).toFixed(2) }}</view>
-                    <view class="record_txt" v-else-if="item.profit_status == 3" style="color: #aaa;">{{ parseFloat(item.profit).toFixed(2) }}已失效</view>
+                    <view class="record_txt" v-else-if="item.profit_status == 1">
+                        +¥{{ parseFloat(item.profit).toFixed(2) }}
+                    </view>
+                    <view class="record_txt" v-else-if="item.profit_status == 2">
+                        -¥{{ parseFloat(item.profit).toFixed(2) }}
+                    </view>
+                    <view class="record_txt" v-else-if="item.profit_status == 3" style="color: #aaa;">
+                        ¥{{ parseFloat(item.profit).toFixed(2) }}已失效
+                    </view>
                     <view class="record_lab" v-if="item.note && item.profit_status != 1">{{ item.note }}</view>
                 </view>
             </view>
@@ -190,6 +199,12 @@ export default {
             this.$go('/pages/userCard/withdraw/withdraw');
         },
         async upCallback(page) {
+            if(page.num == 1) {
+                const res = await profitList({ type: 1 });
+                const { list, total_count } = res.data;
+                this.goods = [];
+                this.goods = this.goods.concat(list); // 追加新数据
+            }
             let params = {
                 size: 10,
                 page: page.num,
@@ -197,7 +212,7 @@ export default {
             profitList(params).then((res) => {
                 if(res.code != 1) return this.mescroll.endSuccess(0);
                 const { list, total_count } = res.data;
-                if(page.num == 1) this.goods = [];
+                // if(page.num == 1) this.goods = [];
                 this.goods = this.goods.concat(list); // 追加新数据
                 this.mescroll.endBySize(list.length, total_count);
             }).catch((err) => this.mescroll.endErr());
@@ -291,7 +306,29 @@ page {
             width: 50%;
             text-align: center;
             position: relative;
-            .draw_item_lab{
+            &.withdraw_box {
+                .draw_item_lab {
+display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    &::before {
+                        content: '\3000';
+                        background: url("https://file.y1b.cn/store/1-0/2463/665d338d09823.png") 0 0 / 100% 100%;
+                        width: 26rpx;
+                        height: 26rpx;
+                        display: inline-block;
+                        margin-right: 4rpx;
+                    }
+                }
+                .draw_item_price {
+                    display: inline-block;
+                    background: url("https://file.y1b.cn/store/1-0/2463/665d56a7c55c8.png") 0 0 / 100% 100%;
+                    color: #fff;
+                    padding: 4rpx 12rpx;
+                    margin-top: 4rpx;
+                }
+            }
+            .draw_item_lab {
                 font-size: 26rpx;
                 color: #999;
             }
@@ -321,7 +358,7 @@ page {
 .record_box{
     background: #fff;
     border-radius: 24rpx;
-    padding: 0 24rpx 40rpx;
+    padding: 0 24rpx;
     margin-top: 16rpx;
     margin-bottom: calc(20rpx + constant(safe-area-inset-bottom));
     margin-bottom: calc(20rpx + env(safe-area-inset-bottom));
@@ -330,19 +367,25 @@ page {
         color: #333;
         padding-top: 32rpx;
         font-weight: 600;
+        margin-bottom: 8rpx;
+    }
+    .active {
+        border-bottom: 2rpx solid #E9E9E9;
     }
     .record_item {
-        margin-top: 40rpx;
+        // margin-top: 25rpx;
+        padding: 24rpx 0;
         .record_txt-wait{
             height: 40rpx;
-            background: #f84842;
+            // background: #f84842;
             border-radius: 20rpx;
             line-height: 40rpx;
             padding: 0 12rpx;
             font-size: 28rpx;
-            color: #fff;
+            color: #F85A55;
             display: inline-block;
             font-weight: 600;
+            border: 1rpx solid #f85a55;
         }
         .record_txt{
             font-size: 28rpx;

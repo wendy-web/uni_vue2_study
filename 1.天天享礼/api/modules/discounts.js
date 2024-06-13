@@ -1,12 +1,5 @@
 import API from '../xhHttp.js';
 //  type = 2-肯德基 3-星巴克
-export function products(data) {
-    return API.request({
-        url: '/api/Qian_zhu/products',
-        method: 'post',
-        data
-    });
-}
 
 // 获取城市列表
 export function cities() {

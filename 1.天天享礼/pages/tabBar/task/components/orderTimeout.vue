@@ -173,7 +173,7 @@ import { mapGetters } from 'vuex';
 		font-size: 26rpx;
 		padding-left: 2rpx;
 		box-sizing: border-box;
-		border: 1rpx solid #e1e1e1;
+		border: 2rpx solid #e1e1e1;
 		border-radius: 4rpx;
 		overflow: hidden;
 	}

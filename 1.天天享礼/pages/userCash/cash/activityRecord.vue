@@ -61,7 +61,7 @@
 </template>
 <script>
 import {
-	activeLog
+activeLog
 } from '@/api/modules/cash.js';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import freeRepairAddressDia from './component/freeRepairAddressDia.vue';
@@ -271,7 +271,7 @@ export default {
 }
 .repair_btn{
 	line-height: 64rpx;
-	border: 1rpx solid #ccc;
+	border: 2rpx solid #ccc;
 	border-radius: 33rpx;
 	margin: 28rpx 24rpx 0 auto;
 	padding: 0 36rpx;

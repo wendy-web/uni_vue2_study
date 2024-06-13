@@ -1,5 +1,5 @@
 const state = {
-    isConnected: true //当前网络状态
+    isConnected: true // 当前网络状态
 };
 
 const mutations = {
@@ -11,7 +11,7 @@ const mutations = {
 
 const actions = {
     setConnected({ commit }, isConnected) { //网络状态
-        commit('setConnected', isConnected)
+        commit('setConnected', isConnected);
     }
 };
 

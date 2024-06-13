@@ -111,7 +111,7 @@ export default {
 		min-width: 200rpx;
 		padding: 18rpx;
 		font-size: 28rpx;
-		border: 1rpx solid #999999;
+		border: 2rpx solid #999999;
 		border-radius: 60rpx;
 		color: #999999;
 	}

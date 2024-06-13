@@ -168,7 +168,7 @@
 		.operate{
 			width: 72rpx;
 			line-height: 44rpx;
-			border: 1rpx solid #e1e1e1;
+			border: 2rpx solid #e1e1e1;
 			border-radius: 8rpx;
 			font-size: 24rpx;
 			color: #666666;
@@ -191,7 +191,7 @@
 			flex-shrink: 0;
 			width: 562rpx;
 			height: 52rpx;
-			border: 1rpx solid #e1e1e1;
+			border: 2rpx solid #e1e1e1;
 			border-radius: 8rpx;
 			display: flex;
 			align-items: center;

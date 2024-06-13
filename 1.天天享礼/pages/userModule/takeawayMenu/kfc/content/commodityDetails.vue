@@ -84,8 +84,8 @@
 
 <script>
 import { orderCar } from '@/api/modules/takeawayMenu/kfc.js';
-import { mapActions, mapGetters } from 'vuex';
 import { getImgUrl } from '@/utils/auth.js';
+import { mapActions, mapGetters } from 'vuex';
 export default {
   props: {
     isShowBuyBtn: {
@@ -474,7 +474,7 @@ export default {
   white-space: nowrap;
   width: 128rpx;
   // height: 32rpx;
-  border: 1rpx solid #E40030;
+  border: 2rpx solid #E40030;
   border-radius: 4rpx;
   font-size: 20rpx;
   font-weight: 600;
@@ -486,7 +486,7 @@ export default {
     display: inline-block;
     width: 54rpx;
     background: #e40030;
-    border: 1rpx solid #fff;
+    border: 2rpx solid #fff;
     border-radius: 2rpx;
     text-align: center;
     color: #fff;

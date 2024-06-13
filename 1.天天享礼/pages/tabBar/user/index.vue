@@ -1,5 +1,5 @@
 <template>
-<view class="user nav_cont" :class="{'active' : userInfo.is_vip}">
+<view :class="['user nav_cont', userInfo.is_vip ? 'active' : '' ]">
   <xh-navbar
     navbarImageMode="widthFix"
     :overFlow="true"
@@ -7,8 +7,7 @@
     titleAlign="titleRight"
     :navberColor="showTitleBgColor"
   >
-    <view slot="title" class="nav-custom
-    ">
+    <view slot="title" class="nav-custom">
       <image
         :class="['title_icon ani_head', (!isShowAvaTitle || !textList.length) ? 'ani_head-in' : 'ani_head-out']"
         src="https://file.y1b.cn/store/1-0/2368/648173c3f15cf.png"
@@ -59,7 +58,7 @@
         </view>
       <view v-else class="not_login"> Hi~请登录<van-icon custom-style="font-weight: 600;" name="arrow"/></view>
       <!-- 领取返现的入口 -->
-      <view class="use_right fl_col_cen" @click.stop="goToCashHandle" v-if="isAutoLogin && userTotal.have_profit">
+      <view class="use_right fl_col_cen" @click.stop="goToCashHandle" v-if="isAutoLogin">
         <view :class="['cash_icon fl_center', showCashRed ? 'active' : '']">
           免单返现<van-icon name="arrow" color="#666" size="12" style="margin-left: 8rpx;" />
         </view>
@@ -105,7 +104,7 @@
       </view>
       <view class="return_cash fl_bet" v-if="profitInfo.total_num" @click="drawHandle">
         <view class="rc_left fl_center">你有 {{ profitInfo.total_num }} 笔订单返现待领取</view>
-        <view class="rc_right">领取</view>
+        <view class="rc_right">领返现</view>
       </view>
     </view>
     <view class="user-assets">
@@ -118,13 +117,13 @@
           <view class="uab_item-lab">牛金豆</view>
         </view>
         <view class="uab_item" @click="goPages('/pages/userModule/myCoupon/index', true)">
-          <view class="uab_item-cont" :class="{'card-new-show': userTotal.coupon_read > 0}">
+          <view :class="['uab_item-cont', userTotal.coupon_read ? 'card-new-show' : '']">
             {{ userTotal.coupon || 0 }}<text class="uab_item-lab">张</text>
           </view>
           <view class="uab_item-lab">卡券</view>
         </view>
         <view class="uab_item" @click="goWithdrawHandle">
-          <view class="uab_item-cont" :class="{'card-new-show': profitInfo.total_num > 0}">
+          <view :class="['uab_item-cont', profitInfo.total_num ? 'card-new-show' : '']">
             <view v-html="formatPrice(showExpandNum)" class="uab_item-price"></view>
           </view>
           <view class="uab_item-lab">零钱</view>
@@ -166,6 +165,7 @@
       </view>
     </view>
     <good-list
+      v-if="goods.length"
       :list="goods"
       :isBolCredits="true"
       :isJdLink="true"
@@ -222,8 +222,7 @@
 </view>
 </template>
 <script>
-import { groupRecommend } from "@/api/modules/index.js";
-import { goodsQuery, jingfen, keywordList, material } from "@/api/modules/jsShop.js";
+import { keywordList } from "@/api/modules/jsShop.js";
 import { savingInfo } from "@/api/modules/packet.js";
 import { msgTemplate, profitMes } from '@/api/modules/user.js';
 import configurationFun from "@/components/configurationDia/configurationFun.js";
@@ -237,15 +236,16 @@ import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js"
 import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
 import swiperSearch from '@/components/swiperSearch.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { getBaseUrl, getImgUrl, getStorage, setStorage } from "@/utils/auth.js";
+import { getBaseUrl, getDrawShowDiaStorage, getImgUrl, getStorage, setStorage } from "@/utils/auth.js";
 import getViewPort from "@/utils/getViewPort.js";
 import { parseTime } from '@/utils/index.js';
-import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
+import groupRecommendMixin from '@/utils/mixin/groupRecommendMixin.js'; // 混入推荐商品列表的方法
+import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的方法
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import config from "./config.js";
 
 export default {
-  mixins: [MescrollMixin, configurationFun, serviceCreditsFun, shareMixin], // 使用mixin
+  mixins: [MescrollMixin, configurationFun, serviceCreditsFun, shareMixin, groupRecommendMixin], // 使用mixin
   components: {
     customTabBar,
     configurationDia,
@@ -270,11 +270,12 @@ export default {
           num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
           size: 1, // 每页数据的数量
         },
-        noMoreSize: 4, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看; 默认5
-        // empty:{
-        // 	tip: '~ 空空如也 ~', // 提示
-        // 	btnText: '去看看'
-        // }
+        noMoreSize: 4,
+        empty: {
+          use: false,
+        	tip: '~ 空空如也 ~', // 提示
+        	btnText: '去看看'
+        }
       },
       /*订单*/
       orders: config.orders,
@@ -290,11 +291,7 @@ export default {
       stickyTitleTop: 0,
       isRecommendRequest: false,
       isStickyActiveScroll: false,
-      goods: [],
-      pageNum: 1,
-      groupId_index: 0,
       interstitialAd: null,
-      lastOddItem: null,
       vipObject: null,
       todayTime: parseTime(Date.now(), '{y}-{m}-{d}'),
       isShowReturnCashDia: false, // 领取提现
@@ -318,11 +315,6 @@ export default {
         return;
       }
       this.isStickyActiveScroll = false;
-    },
-    goods(newValue) {
-      if (newValue.length <= 4) {
-        this.mescroll.triggerUpScroll();
-      }
     },
     'userInfo.is_vip': {
 			handler:async function (newValue, oldValue) {
@@ -522,88 +514,7 @@ export default {
       }, 300);
     },
     async upCallback(page) {
-      this.requestRem(page);
-    },
-    async requestRem(page) {
-      if (!this.groupRecommendData) {
-        const recRes = await groupRecommend({ page: 2 });
-        if (recRes.code != 1 || !recRes.data)
-          return this.mescroll.endSuccess(0);
-        this.groupRecommendData = recRes.data;
-      }
-      const { id, cid, cid2, cid3, eliteId, groupId, type } =
-        this.groupRecommendData;
-      let pageNum = this.pageNum;
-      let params = {
-        id,
-        page: pageNum,
-        size: 10,
-      };
-      let queryApi = goodsQuery;
-      // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-      switch (type) {
-        case 1:
-          queryApi = material;
-          params.eliteId = eliteId;
-          params.groupId = groupId;
-          params.size = 10;
-          break;
-        case 2:
-          queryApi = jingfen;
-          params.eliteId = eliteId;
-          params.groupId = groupId;
-          params.size = 20;
-          break;
-        case 3:
-          queryApi = goodsQuery;
-          params.cid1 = cid;
-          params.cid2 = cid2;
-          params.cid3 = cid3;
-          break;
-        case 4:
-          queryApi = jingfen;
-          const groupId_index = this.groupId_index;
-          params.eliteId = eliteId;
-          params.groupId = groupId[groupId_index];
-          params.size = 20;
-          break;
-      }
-      queryApi(params).then((res) => {
-        const { list, total_count } = res.data;
-        // 设置列表数据
-        if (page.num == 1) {
-          this.goods = [];
-          this.pageNum = 1;
-          this.lastOddItem = null;
-        } //如果是第一页需手动制空列表
-        // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-        let isNextPage = pageNum * params.size < total_count;
-        if (
-          !isNextPage &&
-          type == 4 &&
-          this.groupId_index < groupId.length - 1
-        ) {
-          // 无下一页
-          this.groupId_index += 1;
-          this.mescroll.endSuccess(total_count, true);
-          this.pageNum = 0;
-        } else {
-          this.mescroll.endSuccess(list.length || total_count, isNextPage);
-        }
-        if (this.lastOddItem) {
-          this.goods.push(this.lastOddItem);
-          this.lastOddItem = null;
-        }
-        this.pageNum += 1;
-        this.goods = this.goods.concat(list); // 追加新数据
-        const goodLength = this.goods.length;
-        if (goodLength % 2 && goodLength > 6) {
-          this.lastOddItem = this.goods.pop();
-        }
-        if (list.length <= 0 && pageNum * params.size < total_count) {
-          this.mescroll.triggerUpScroll();
-        }
-      }).catch(() =>  this.mescroll.endErr());
+      this.requestGoodList(page); // 调用推荐的猜你喜欢的
     },
     // 页面的滚动事件
     onPageScroll(e) {
@@ -640,7 +551,11 @@ export default {
     },
     drawHandle() {
       this.profitInfoRequest().then((result) => {
-        if(result.total_num) return this.isShowReturnCashDia = true;
+        const drawShowDiaStorage = getDrawShowDiaStorage();
+        if(result.total_num) {
+          if(drawShowDiaStorage) return this.$go('/pages/userCard/withdraw/index');
+          return this.isShowReturnCashDia = true;
+        }
         return this.$toast('暂无待领取订单');
       });
     },
@@ -820,7 +735,7 @@ button::after {
   box-sizing: border-box;
   padding: 0 16rpx;
   background: linear-gradient(135deg, #fbfbfb, #f5f5f5);
-  border: 1rpx solid #fff;
+  border: 2rpx solid #fff;
   border-radius: 22rpx;
   font-size: 24rpx;
   font-weight: 400;
@@ -979,18 +894,18 @@ button::after {
       color: #666;
       &::before {
         content: '\3000';
-        background: url("https://file.y1b.cn/store/1-0/231212/6578168403ed1.png") 0 0 / cover;
+        background: url("https://file.y1b.cn/store/1-0/2463/665d2bd5c3134.png") 0 0 / cover;
         display: block;
-        width: 32rpx;
-        height: 38rpx;
+        width: 38rpx;
+        height: 36rpx;
         z-index: 0;
         margin-right: 12rpx;
       }
     }
-    .rc_right{
-      width: 136rpx;
+    .rc_right {
+      width: 120rpx;
       height: 56rpx;
-      background: #f84842;
+      background:#58BF6A url("https://file.y1b.cn/store/1-0/2463/665d2e531c989.png")  0 0 / cover;
       border-radius: 16rpx;
       font-size: 26rpx;
       color: #fff;

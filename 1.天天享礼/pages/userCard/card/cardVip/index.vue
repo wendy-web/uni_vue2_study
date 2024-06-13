@@ -466,7 +466,7 @@ export default {
         .top_cont-right{
             width: 136rpx;
             height: 68rpx;
-            border: 1rpx solid rgba(252,241,215,0.80);
+            border: 2rpx solid rgba(252,241,215,0.80);
             border-radius: 35rpx;
             line-height: 68rpx;
             text-align: center;

@@ -61,7 +61,7 @@
   </view>
 </template>
 <script>
-import {getImgUrl} from '@/utils/auth.js';
+import { getImgUrl } from '@/utils/auth.js';
 export default {
   props: {
     cityName: {
@@ -280,7 +280,7 @@ input {
     overflow: hidden;
     width: 23%;
     box-sizing: border-box;
-    border: 1rpx solid #e1e1e1;
+    border: 2rpx solid #e1e1e1;
     border-radius: 4rpx;
     margin: 8rpx 0;
     line-height: 60rpx;

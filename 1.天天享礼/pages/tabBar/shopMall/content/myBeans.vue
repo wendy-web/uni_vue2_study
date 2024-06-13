@@ -4,13 +4,15 @@
     v-if="!isShowCowpeaNav"
 >
     <view class="my-beans" @click="goToTask">
+        <text v-if="isShowCredits >= 1000000">1百万+</text>
         <p-countup
-            :num="userInfo.credits"
+            :num="isShowCredits"
             width="8"
             height="14"
             color="#804815"
             fontSize="14"
             fontWeight="600"
+            v-else
         ></p-countup>
         <image class="login_right" mode="widthFix"
             src="https://file.y1b.cn/store/1-0/24513/6641dbdf4f586.png"
@@ -42,7 +44,17 @@ export default {
     },
     data() {
         return {
+            isShowCredits: 0
         };
+    },
+    watch: {
+        'userInfo.credits': {
+            handler: function (newValue, oldValue) {
+                this.isShowCredits = newValue;
+            },
+            deep: true,
+            immediate: true
+        },
     },
     methods: {
         goToTask() {

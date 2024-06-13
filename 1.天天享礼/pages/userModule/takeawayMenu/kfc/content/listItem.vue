@@ -83,7 +83,7 @@ export default {
 	position: relative;
 	z-index: 0;
 	background: #ffffff;
-	border: 1rpx solid #e9e9e9;
+	border: 2rpx solid #e9e9e9;
 	border-radius: 8rpx;
 	padding: 16rpx;
 	.com_img-box {
@@ -157,7 +157,7 @@ export default {
             white-space: nowrap;
 			width: 128rpx;
 			height: 32rpx;
-			border: 1rpx solid #E40030;
+			border: 2rpx solid #E40030;
 			border-radius: 8rpx;
 			margin-top: 8rpx;
 			font-size: 20rpx;

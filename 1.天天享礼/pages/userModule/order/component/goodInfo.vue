@@ -403,7 +403,7 @@ import { getImgUrl } from '@/utils/auth.js';
   text-align: right;
   .apply_refund {
     line-height: 64rpx;
-    border: 1rpx solid #aaa;
+    border: 2rpx solid #aaa;
     border-radius: 8rpx;
     padding: 0 24rpx;
     display: inline-block;

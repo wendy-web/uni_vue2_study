@@ -18,6 +18,14 @@ export function getAutoLogin() {
     let isAutoLogin = getStorage(`${baseUrl}_isAutoLogin`);
     return isAutoLogin;
 }
+// 只展示一次领现的弹窗
+export function setDrawShowDiaStorage() {
+    setStorage(`${baseUrl}_drawDiaShow`, 1);
+}
+export function getDrawShowDiaStorage() {
+    let isAutoLogin = getStorage(`${baseUrl}_drawDiaShow`);
+    return isAutoLogin;
+}
 export function setToken(data) {
     setStorage('token', data);
 }

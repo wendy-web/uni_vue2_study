@@ -272,7 +272,7 @@ export default {
 	line-height: 60rpx;
 	box-sizing: border-box;
 	text-align: center;
-	border: 1rpx solid #f84842;
+	border: 2rpx solid #f84842;
 	border-radius: 36rpx;
 	font-size: 28rpx;
 	font-weight: 400;
@@ -333,7 +333,7 @@ export default {
 		padding: 0 30rpx;
 		display: inline-block;
 		line-height: 56rpx;
-		border: 1rpx solid #cccccc;
+		border: 2rpx solid #cccccc;
 		border-radius: 32rpx;
 		text-align: center;
 		font-size: 28rpx;

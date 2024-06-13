@@ -27,6 +27,7 @@
 		<image class="right-icon" :src="imgUrl + 'static/shopMall/love_right_icon.png'" mode="aspectFill"></image>
 	</view>
 	<good-list
+		v-if="goods.length"
 		:list="goods"
 		:isBolCredits="true"
 		:isJdLink="true"
@@ -36,22 +37,17 @@
 </template>
 
 <script>
-	import { groupRecommend } from '@/api/modules/index.js';
-import {
-goodsQuery,
-jingfen,
-material
-} from '@/api/modules/jsShop.js';
 import { orderList as orderListApi } from '@/api/modules/order.js';
 import goodList from '@/components/goodList.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mixins/mescroll-more-item.js";
 import { getImgUrl } from '@/utils/auth.js';
+import groupRecommendMixin from '@/utils/mixin/groupRecommendMixin.js'; // 混入推荐商品列表的方法
 import { orderStatus } from '../static/config';
 import orderListItem from './orderListItem.vue';
 	let _times = {}
 	export default {
-		mixins: [MescrollMixin, MescrollMoreItemMixin], // 注意此处还需使用MescrollMoreItemMixin (必须写在MescrollMixin后面)
+		mixins: [MescrollMixin, MescrollMoreItemMixin, groupRecommendMixin], // 注意此处还需使用MescrollMoreItemMixin (必须写在MescrollMixin后面)
 		components: {
 			orderListItem,
 			goodList,
@@ -61,9 +57,6 @@ import orderListItem from './orderListItem.vue';
 				imgUrl: getImgUrl(),
 				groupRecommendData: null,
 				isRecommendRequest: false,
-				goods: [],
-				pageNum: 1,
-				groupId_index: 0,
 				isEmpty: false,
 				empty: {
 					tip: '暂无订单数据 ~', // 提示
@@ -136,7 +129,7 @@ import orderListItem from './orderListItem.vue';
 								this.isEmpty = true;
 								this.mescroll.endSuccess(10, true);
 								this.isRecommendRequest = true;
-								this.requestRem(page);
+								this.requestGoodList(page); // 调用推荐的猜你喜欢的
 								return;
 							}
 						}
@@ -144,97 +137,7 @@ import orderListItem from './orderListItem.vue';
 					}).catch(err => this.mescroll.endErr());
 					return;
 				}
-				this.requestRem(page);
-			},
-			async requestRem(page) {
-				if(!this.groupRecommendData) {
-					const recRes = await groupRecommend({ page: 5 });
-					if(recRes.code != 1 || !recRes.data) return this.mescroll.endSuccess(0);
-					this.groupRecommendData = recRes.data;
-				}
-				const {
-					id,
-					cid,
-					cid2,
-					cid3,
-					eliteId,
-					groupId,
-					type
-				} = this.groupRecommendData;
-				let pageNum = this.pageNum;
-				// const pageNum = page.num;
-				let params = {
-					id,
-					page: pageNum,
-					size: 10,
-				}
-				let queryApi = goodsQuery;
-				// type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-				switch(type) {
-					case 1:
-						queryApi = material;
-						params.eliteId = eliteId;
-						params.groupId = groupId;
-						params.size = 10;
-						break;
-					case 2:
-						queryApi = jingfen;
-						params.eliteId = eliteId;
-						params.groupId = groupId;
-						params.size = 20;
-						break;
-					case 3:
-						queryApi = goodsQuery;
-						params.cid1 = cid;
-						params.cid2 = cid2;
-						params.cid3 = cid3;
-						break;
-					case 4:
-						queryApi = jingfen;
-						const groupId_index = this.groupId_index;
-						params.eliteId = eliteId;
-						params.groupId = groupId[groupId_index];
-						params.size = 20;
-						break;
-				};
-				queryApi(params).then(res=>{
-					const {
-						list,
-						total_count
-					} = res.data;
-					// 设置列表数据
-					if( page.num == 1 ) {
-						this.goods = [];
-						this.pageNum = 1;
-						this.lastOddItem = null;
-					}; //如果是第一页需手动制空列表
-					// 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-					let isNextPage = (pageNum * params.size) < total_count;
-					if(!isNextPage && type == 4 && this.groupId_index < (groupId.length - 1)) {
-						// 无下一页
-						this.groupId_index += 1;
-						this.mescroll.endSuccess(total_count, true);
-						this.pageNum = 0;
-					} else {
-						this.mescroll.endSuccess(list.length || total_count, isNextPage);
-					}
-					if(list.length == 0 && (pageNum * params.size) < total_count){
-						this.mescroll.triggerUpScroll();
-					}
-					if(this.lastOddItem) {
-						this.goods.push(this.lastOddItem);
-						this.lastOddItem = null;
-					}
-					this.pageNum += 1;
-					this.goods = this.goods.concat(list); // 追加新数据
-					const goodLength = this.goods.length;
-					if(goodLength % 2 && goodLength > 6) {
-						this.lastOddItem = this.goods.pop();
-					}
-				}).catch(()=>{
-					//联网失败, 结束加载
-					// this.mescroll.endErr();
-				});
+				this.requestGoodList(page); // 调用推荐的猜你喜欢的
 			},
 			initOrderCountdown(data) {
 				let cur_time = new Date().getTime();

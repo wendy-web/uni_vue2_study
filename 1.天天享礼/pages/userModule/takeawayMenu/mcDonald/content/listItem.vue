@@ -155,7 +155,7 @@ export default {
             white-space: nowrap;
 			width: 128rpx;
 			height: 32rpx;
-			border: 1rpx solid #db0007;
+			border: 2rpx solid #db0007;
 			border-radius: 8rpx;
 			font-size: 22rpx;
 			color: #db0007;

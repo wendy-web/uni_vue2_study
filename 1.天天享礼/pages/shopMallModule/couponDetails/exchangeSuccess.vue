@@ -22,9 +22,11 @@
 </view>
 </template>
 <script>
-	import { getImgUrl } from '@/utils/auth.js';
+import { getImgUrl } from '@/utils/auth.js';
+import lxTypeJdFunMixin from '@/utils/mixin/lxTypeJdFunMixin.js'; // 混入京东/拼多多方法
 	let _time = null;
 	export default {
+		mixins: [lxTypeJdFunMixin],
 		data() {
 			return {
 				show: false,
@@ -70,7 +72,7 @@
 					type_id,
 					type_sid,
 					open_mini_type,
-					qz_url
+					qz_url,
 				} = this.config;
 				this.show = false;
 				this.$emit('exchangeEnd');
@@ -78,11 +80,6 @@
 				if (!voucherType || [1, 12].includes(voucherType)) {
 					this.$emit('openServiceRecharge', id);
 					return;
-					// 去使用
-					// uni.navigateTo({
-					// 	url: `/pages/userModule/serviceRecharge/index?id=${id}&source=0`
-					// });
-					// return;
 				}
 				switch (voucherType) {
 					//公众号
@@ -130,9 +127,12 @@
 							});
 						}
 						break;
+					case 13:
+						// 调用京东/拼多多的混入事件
+						this.lxTypeJdFun(this.config);
+						break;
 				}
-
-			}
+			},
 		},
 		beforeDestroy() {
 			clearTimeout(_time)

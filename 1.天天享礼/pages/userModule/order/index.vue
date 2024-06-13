@@ -77,7 +77,7 @@
 </template>
 <script>
 import returnCashDia from '@/components/returnCashDia.vue';
-import { getImgUrl } from '@/utils/auth.js';
+import { getDrawShowDiaStorage, getImgUrl } from '@/utils/auth.js';
 import getViewPort from '@/utils/getViewPort.js';
 import codeDia from './component/codeDia.vue';
 import orderSwiperItem from './component/orderSwiperItem.vue';
@@ -153,6 +153,8 @@ import { mapGetters } from "vuex";
 		},
 		methods: {
 			confirmHandle() {
+				const drawShowDiaStorage = getDrawShowDiaStorage();
+				if(drawShowDiaStorage) return this.$go('/pages/userCard/withdraw/index');
 				this.isShowReturnCashDia = true;
 			},
 			getDrawHandle() {

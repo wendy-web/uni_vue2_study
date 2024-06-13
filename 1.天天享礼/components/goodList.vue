@@ -1,10 +1,25 @@
 <template>
 <view class="good-list">
+    <!-- loading模块 -->
+    <block v-if="!list.length">
+      <view
+        :style="{ '--height': '576rpx'}"
+        class="loading_item"
+        v-for="(item, idx) in loadingLength" :key="idx"
+      >
+        <view class="loading_img"></view>
+        <view class="good_cont">
+          <view class="good_name_box"></view>
+          <view class="use_cont"></view>
+          <view class="good_remind"></view>
+        </view>
+      </view>
+    </block>
     <view
       :style="{ '--height': '576rpx'}"
       v-for="(good, index) in list" :key="index"
       :class="[
-        (isSearchJdModel || isJdCenter)? 'autoHeight' : '',
+        (isSearchJdModel || isJdCenter) ? 'autoHeight' : '',
         good.type == 9 ? 'swiper_list' : 'good-list-item',
         good.is_light && !isAlreadyShowLight ? 'lightShow' : ''
       ]"
@@ -31,6 +46,7 @@
         >
           <!-- 是否展示广告位 - 直接覆盖到整个 -->
           <image class="is_banner_img" v-if="isShowBanner && good.is_banner" :src="good.image"></image>
+          <block v-if="(isSearchJdModel || isJdCenter) || !(isShowBanner && good.is_banner)">
           <showImg :good="good" :isSwiper="isSwiper" :index="index"></showImg>
           <slot name="cont" v-if="isSlot"></slot>
           <!-- 搜索模块 -->
@@ -92,20 +108,38 @@
           </view>
           <!-- 专属中心的模块 -->
           <view class="good_cont js_center" v-else-if="isJdCenter">
-              <view class="good_name_box txt_ov_ell2"> {{ good.title }}</view>
+              <view class="good_name_box txt_ov_ell2">
+                <view class="ty_store" v-if="good.type == 12"></view><!-- 到店吃 -->
+                <view class="jd_icon_box" v-else-if="good.lx_type != 1 && parseInt(good.face_value)">
+                  抵¥{{ parseInt(good.face_value) || 0 }}券
+                </view>
+                {{ good.title }}
+              </view>
               <view class="use_cont">
                 <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
-                <view class="use_cont-right" v-if="good.zero_credits">0豆特权</view>
+                <view v-if="show_lowestCouponPrice && good.credits && good.lowestCouponPrice" class="js_search_credits">
+                  {{ good.credits || 0 }}牛金豆
+                </view>
+                <view class="use_cont-right" v-else-if="good.zero_credits">0豆特权</view>
               </view>
               <view class="good_remind txt_ov_ell1">
-                <text class="good_remind-left" v-if="good.credits">
+                <block v-if="show_lowestCouponPrice && good.lowestCouponPrice">
+                  <text v-if="parseInt(good.face_value)">券后</text>
+                  <text class="good_credits" style="margin-right: 8rpx;">
+                      <text style="font-size: 24rpx">￥</text>
+                      {{ good.lowestCouponPrice || 0 }}
+                  </text>
+                </block>
+                <text class="good_remind-left" v-else-if="good.credits">
                   <text :class="['good_credits', good.zero_credits ? 'active' : '']">{{ good.credits || 0 }}</text>
                   <text>牛金豆</text>
                 </text>
                 <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
                 <text class="good_total2" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
               </view>
-              <view class="jd_face_value" v-if="parseInt(good.face_value)">领{{parseInt(good.face_value) || 0}}元券</view>
+              <view class="jd_face_value" v-if="parseInt(good.face_value)">
+                使用{{parseInt(good.face_value) || 0}}元券购买
+              </view>
           </view>
           <!-- 首页呈现 -->
           <view class="good_cont home_cont" v-else>
@@ -127,9 +161,13 @@
               <text class="good_remind-price" v-else> {{ good.price || 0 }}</text>
               <!-- 首页呈现兑换人数 / 其他的呈现月售 -->
               <text class="good_total2" v-if="isHome">{{ Number(good.exch_user_num) + Number(good.user_num) }}人兑换</text>
-              <text class="good_total2" v-else-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
+              <block v-else>
+                <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
+                <text class="good_total" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
+              </block>
             </view>
           </view>
+          </block>
         </view>
       </block>
     </view>
@@ -156,6 +194,10 @@ export default {
       default() {
         return [];
       },
+    },
+    loadingLength: {
+      type: [Number, String],
+      default: 6
     },
     navTop: {
       type: Number,
@@ -213,7 +255,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([ "userInfo", 'isAlreadyShowLight']),
+    ...mapGetters([ "userInfo", 'isAlreadyShowLight', 'show_lowestCouponPrice']),
   },
   methods: {
     openSph(video_account_id, video_id) {
@@ -271,6 +313,34 @@ export default {
 };
 </script>
 <style lang="scss">
+.loading_item {
+  width: 352rpx;
+  height: var(--height);
+  border-radius: 8px;
+  margin-right: 14rpx;
+  margin-bottom: 16rpx;
+  background: #fff;
+  overflow: hidden;
+  // background: linear-gradient(270deg,#f6f8fb 80%, #eaeef6);
+  // animation: backAni 1s infinite;
+  .loading_img {
+    width: 352rpx;
+    height: 352rpx;
+    font-size: 0;
+    background: linear-gradient(270deg,#f6f8fb 80%, #eaeef6);
+    animation: backAni 1s infinite;
+  }
+  .good_name_box,
+  .use_cont,
+  .good_remind {
+    background: linear-gradient(270deg,#f6f8fb 80%, #eaeef6);
+    animation: backAni 1s infinite;
+  }
+  .good_remind {
+    height: 36rpx;
+    margin-top: 18rpx;
+  }
+}
 .good-list {
   position: relative;
   overflow: hidden;
@@ -321,10 +391,10 @@ export default {
   .good_cont {
     padding: 20rpx 20rpx 24rpx;
     .good_name_box {
-        font-size: 28rpx;
-        color: #333;
-        line-height: 40rpx;
-        height: 80rpx;
+      font-size: 28rpx;
+      color: #333;
+      line-height: 40rpx;
+      height: 80rpx;
     }
     .good-name {
       color: #333;
@@ -612,6 +682,17 @@ export default {
       background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
       margin-right: 5rpx;
     }
+  }
+}
+@keyframes backAni {
+  0% {
+    background: linear-gradient(270deg,#f6f8fb 80%, #eaeef6);
+  }
+  50% {
+    background: linear-gradient(270deg,#f6f8fb 60%, #eaeef6);
+  }
+  100% {
+    background: linear-gradient(270deg,#f6f8fb 30%, #eaeef6);
   }
 }
 </style>

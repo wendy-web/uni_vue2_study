@@ -612,7 +612,7 @@ export default {
     width: 64rpx;
     height: 64rpx;
     background: #f7f7f7;
-    border: 1rpx solid #e3e3e3;
+    border: 2rpx solid #e3e3e3;
     border-radius: 34rpx;
     padding: 18rpx;
     box-sizing: border-box;

@@ -481,7 +481,7 @@ export default {
       if((!this.lng && !this.lat) || page.num == 1) {
         let locRes = await getUserLocation(false, false).catch(error => {
           this.isLoading = false;
-          this.mescroll.optUp.empty.tip = "别慌，刷新试试";
+          this.mescroll.optUp.empty.tip = "网络开小差，请稍后重试";
           this.mescroll.optUp.empty.btnText = "刷新";
           return;
         });
@@ -511,7 +511,7 @@ export default {
       let locRes = await getUserLocation(false, false).catch(error => {
         // this.mescroll.resetUpScroll();
         this.isLoading = false;
-        this.mescroll.optUp.empty.tip = "别慌，刷新试试";
+        this.mescroll.optUp.empty.tip = "网络开小差，请稍后重试";
         this.mescroll.optUp.empty.btnText = "刷新";
         return this.mescroll.endSuccess(0, false);
       });
@@ -851,7 +851,7 @@ export default {
   .item_list-img{
     width: 202rpx;
     height: 152rpx;
-    border: 1rpx solid #e9e9e9;
+    border: 2rpx solid #e9e9e9;
     border-radius: 16rpx;
     overflow: hidden;
   }
@@ -879,7 +879,7 @@ export default {
     white-space: nowrap;
     width: 128rpx;
     height: 32rpx;
-    border: 1rpx solid #F84842;
+    border: 2rpx solid #F84842;
     border-radius: 8rpx;
     font-size: 22rpx;
     color: #F84842;
@@ -1368,7 +1368,7 @@ export default {
   .item_list-img{
     width: 202rpx;
     height: 152rpx;
-    border: 1rpx solid #e9e9e9;
+    border: 2rpx solid #e9e9e9;
     border-radius: 16rpx;
     overflow: hidden;
   }
@@ -1396,7 +1396,7 @@ export default {
     white-space: nowrap;
     width: 128rpx;
     height: 32rpx;
-    border: 1rpx solid #F84842;
+    border: 2rpx solid #F84842;
     border-radius: 8rpx;
     font-size: 22rpx;
     color: #F84842;

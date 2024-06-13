@@ -223,7 +223,7 @@ import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 				line-height: 88rpx;
 				box-sizing: border-box;
 				text-align: center;
-				border: 1rpx solid #333333;
+				border: 2rpx solid #333333;
 				border-radius: 16rpx;
 
 				font-size: 28rpx;

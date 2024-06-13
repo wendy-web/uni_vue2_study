@@ -1,6 +1,6 @@
 <template>
 <view class="pro_cont">
-	<view class="vip_card active">
+	<view class="vip_card">
 		<view class="cowpea_box">
 			<view class="box_fl_end search" :class="{'faveValueTxt' :config.face_value}">
 				<text class="cowpea-num">{{ config.price }}</text>
@@ -76,28 +76,27 @@ export default {
 <style lang="scss" scoped>
 .pro_cont{
 	margin: 0 24rpx;
-	padding-top: 4rpx;
+	background: #fff;
+	border-radius: 24rpx;
+	padding: 24rpx;
 }
 .vip_card {
 	position: relative;
 	z-index: 0;
 	overflow: hidden;
-	&.active {
-		background: #F84842 url("https://test-file.y1b.cn/store/1-0/24329/660679e2dbc63.png") 0 0 / 100% auto no-repeat;
-		border-radius: 28rpx;
-		margin-bottom: 24rpx;
-	}
+	// &.active {
+	// 	background: #F84842 url("https://test-file.y1b.cn/store/1-0/24329/660679e2dbc63.png") 0 0 / 100% auto no-repeat;
+	// 	border-radius: 28rpx;
+	// 	margin-bottom: 24rpx;
+	// }
 }
 .cowpea_box {
-	color: #fff;
+	color: #F84842;
 	display: flex;
-	align-items: flex-end;
+	align-items: center;
 	justify-content: space-between;
-	padding: 0 24rpx;
 	font-size: 26rpx;
-	margin-top: 10rpx;
 	line-height: 1;
-	margin-bottom: 10rpx;
 	.search {
 		&.faveValueTxt::before{
 			content: '券后';
@@ -106,6 +105,8 @@ export default {
 			margin-right: 8rpx;
 		}
 		.cowpea-num {
+			font-size: 48rpx;
+			font-weight: bold;
 			&::before{
 				content: '￥';
 				font-size: 26rpx;
@@ -113,37 +114,22 @@ export default {
 			}
 		}
 	}
-	.cowpea-num {
-		font-size: 48rpx;
-		font-weight: bold;
-	}
-	.cowpea-label {
-		font-size: 28rpx;
-		font-weight: 600;
-		margin-left: 6rpx;
-	}
-	.cowpea_value {
+	.cowpea_order-value {
 		font-size: 26rpx;
-		text-decoration: line-through;
-		margin-left: 20rpx;
-		opacity: 0.6;
+		color: #666;
 	}
 }
 .cowpea_cont {
-	background: #fff;
-	border-radius: 28rpx;
-	margin: 0 4rpx 4rpx 4rpx;
-	padding: 24rpx 16rpx 0;
 	overflow: hidden;
 	.cont_top {
-		padding: 10rpx 24rpx;
+		padding: 0 24rpx;
 		position: relative;
 		z-index: 0;
 		font-size: 26rpx;
 		font-weight: bold;
 		color: #2faa5e;
-		line-height: 36rpx;
-		margin-bottom: 26rpx;
+		line-height: 56rpx;
+		margin-top: 18rpx;
 		.cont_top-icon{
 			width: 34rpx;
 			height: 34rpx;
@@ -152,10 +138,11 @@ export default {
 	}
 }
 .scroll_box {
-	margin-bottom: 24rpx;
+	// margin-bottom: 24rpx;
+	margin-top: 24rpx;
 }
 .lab_box {
-	display: flex;
+	display: flex;   
 	flex-wrap: nowrap;
 	.lab_txt {
 		border: 0.8rpx solid rgba(248,72,66,0.35);
@@ -166,7 +153,7 @@ export default {
 		padding: 0 10rpx;
 		white-space: nowrap;
 		&:not(:last-child) {
-			margin-right: 10rpx;
+			margin-right: 12rpx;
 		}
 	}
 }
@@ -174,7 +161,7 @@ export default {
 	position: relative;
 	z-index: 0;
 	padding: 12rpx 0;
-	margin-bottom: 24rpx;
+	margin-top: 24rpx;
 	.cowpea_val {
 		width: 140rpx;
 		flex: 0 0 140rpx;
@@ -204,7 +191,7 @@ export default {
 	}
 }
 .pro_title-cont {
-	margin: 0 20rpx;
+	margin-top: 24rpx;
 }
 .product_title {
   font-size: 32rpx;

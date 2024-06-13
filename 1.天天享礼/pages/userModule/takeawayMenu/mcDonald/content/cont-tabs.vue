@@ -200,7 +200,7 @@ export default {
 	top: 0;
 	left: 0;
 	background: rgba(255,184,0,0.08);
-	border: 1rpx solid rgba(255,184,0,0.60);
+	border: 2rpx solid rgba(255,184,0,0.60);
 	border-radius: 24rpx;
 	color: #333;
 	.remind_icon{

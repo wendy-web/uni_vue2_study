@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { setDrawShowDiaStorage } from "@/utils/auth.js";
 import { mapGetters } from "vuex";
 export default {
     computed: {
@@ -35,7 +36,7 @@ export default {
     data() {
         return {
             totalNum: 0,
-            totalProfit: 0
+            totalProfit: 0,
         }
     },
     watch: {
@@ -47,9 +48,11 @@ export default {
     },
     methods: {
         popupClose() {
+            setDrawShowDiaStorage();
             this.$emit('close');
         },
         async drawHandle() {
+            setDrawShowDiaStorage();
             this.$emit('getDraw');
             setTimeout(() => this.$go('/pages/userCard/withdraw/index'), 300);
         },

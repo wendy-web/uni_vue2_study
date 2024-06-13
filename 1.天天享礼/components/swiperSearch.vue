@@ -70,7 +70,7 @@ export default {
 .search_box {
     height: 64rpx;
     background: rgba(255, 255, 255, 0.5);
-    border: 1rpx solid #ffffff;
+    border: 2rpx solid #ffffff;
     border-radius: 33rpx;
     transition: all 0.5s;
     &::before {

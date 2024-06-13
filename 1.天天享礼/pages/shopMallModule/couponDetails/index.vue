@@ -379,10 +379,8 @@ export default {
     init() {
       couponDetails({ id: _coupon_id }).then((res) => {
         let {
-          credits,
-          explain,
-          face_value,
           id,
+          explain,
           image,
           title,
           collect,
@@ -392,23 +390,12 @@ export default {
           activity_id,
           activity_num,
           activity_enter_num,
-          exch_user_num,
-          user_num,
           stock_num,
           status,
           act,
           type,
-          is_main,
-          article_url,
-          main_url,
-          video_account_id,
-          video_id,
-          type_id,
-          type_sid,
-          open_mini_type,
-          qz_url,
-          btn_word,
-          zero_credits
+          exch_user_num,
+          user_num
         } = res.data;
         let seckillTime = null;
         /*有时间说明是秒杀活动*/
@@ -443,34 +430,14 @@ export default {
         this.stockType = stockType;
         this.isCollect = Boolean(collect);
         this.config = {
-          credits,
-          exch_user_num,
-          user_num,
+          ...res.data,
           explain: escape2Html(explain),
-          face_value,
-          id,
-          image,
-          title,
-          collect,
           end_time,
           start_time,
           seckill_credits,
           seckillTime,
-          activity_id,
-          act,
           voucherType: type,
-          is_main,
-          article_url,
-          main_url,
-          video_account_id,
-          video_id,
-          type_id,
-          type_sid,
-          open_mini_type,
-          qz_url,
-          btn_word,
           is_popover: this.is_popover,
-          zero_credits
         };
         // 混合模式的share变量赋值
         this.getShareCont.share_title = title;
@@ -524,6 +491,7 @@ export default {
       if (res.code != 1) {
         this.$toast(res.msg);
         this.redeemClickLoading = false;
+        return;
       }
       let {
         face_value,
@@ -547,6 +515,7 @@ export default {
         this.$go(`/pages/webview/webview?link=${encodeURIComponent(qz_url)}`);
       } else {
         this.$refs.exchangeSuccess.popupShow({
+          ...this.config,
           id: res.data,
           title: this.config.title,
           face_value,
@@ -810,7 +779,7 @@ page {
 .collection-btn {
   width: 246rpx;
   height: 88rpx;
-  border: 1rpx solid #d9d9d9;
+  border: 2rpx solid #d9d9d9;
   border-radius: 8px;
   box-sizing: border-box;
   display: flex;

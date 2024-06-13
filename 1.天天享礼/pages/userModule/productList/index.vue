@@ -29,11 +29,7 @@
         <view class="search_box"
             slot="title_cont"
             id="titleContBox"
-            :style="{
-                top: searchTop +'px',
-                width: searchWidth + 'px',
-                left: searchLeft + 'px'
-            }"
+            :style="{ top: searchTop +'px', width: searchWidth + 'px', left: searchLeft + 'px' }"
         >
             <block v-if="!searchValue">
                 <image class="search_icon" src="../static/productList/search_icon01.png" mode="aspectFill"></image>
@@ -54,8 +50,7 @@
                     @animationfinish="animationfinishHandle"
                 >
                     <swiper-item
-                        v-for="(item, index) in textList"
-                        :key="index"
+                        v-for="(item, index) in textList" :key="index"
                         class="swiper_item"
                         catchtouchmove='onTouchMove'
                     >
@@ -194,11 +189,11 @@
 <script>
 import { groupRecommend } from '@/api/modules/index.js';
 import {
-goodsQuery,
-jdGroup,
-jingfen,
-keywordList,
-material
+    goodsQuery,
+    jdGroup,
+    jingfen,
+    keywordList,
+    material
 } from '@/api/modules/jsShop.js';
 import { groupSearch } from '@/api/modules/pddShop.js';
 import { taskNum } from '@/api/modules/task.js';
@@ -489,17 +484,20 @@ export default {
                 this.tabs = _tab;
             }
         },
-        async downCallbackInit() {
+        async downCallbackInit(page) {
             if(!this.searchValue) {
                 await this.initTabs();
-                const currentIndex = this.tabIndex < (this.tabs.length - 1) ? this.tabIndex : (this.tabs.length - 1);
-                let mescroll = this.getMescroll(currentIndex);
-                let compoMescroll = this.getMescroll(currentIndex, true);
-                compoMescroll.init_groupIdIndex();
-                mescroll.resetUpScroll();
+                if(page.isDownScrolling) {
+                    const currentIndex = this.tabIndex < (this.tabs.length - 1) ? this.tabIndex : (this.tabs.length - 1);
+                    let mescroll = this.getMescroll(currentIndex);
+                    let compoMescroll = this.getMescroll(currentIndex, true);
+                    compoMescroll.init_groupIdIndex();
+                    mescroll.resetUpScroll();
+                }
+                // return;
             }
             this.$refs.mescrollRefInit.mescroll.endSuccess();
-            if( this.goods.length){
+            if(this.goods.length){
                 this.is_pdd = 0;
                 this.searchPageNum = 1;
                 this.mescroll.resetUpScroll();
@@ -520,7 +518,7 @@ export default {
                 is_pdd: this.is_pdd
             }
             // 搜索请求
-            if(this.is_pdd == 2) {
+            if(this.is_pdd > 1) {
                return this.searchPddList(params, page)
             }
             this.searchJdList(params, page);
@@ -528,31 +526,43 @@ export default {
         async searchJdList(params, page) {
             const res = await groupSearch(params).catch(()=>{ this.mescroll.endErr() });
             let { list, total_count } = res.data;
-            if(page.num == 1) this.goods = [];
+            if(page.num == 1) {
+                this.goods = [];
+                this.pddGoods = [];
+            };
             this.goods = this.goods.concat(list);
             this.searchPageNum += 1;
             this.mescroll.endBySize(list.length, total_count);
             if(this.searchPageNum * params.size >= total_count) {
                 this.is_pdd += 1;
-                this.searchPageNum = 1
+                this.searchPageNum = 1;
                 this.mescroll.triggerUpScroll();
             }
         },
         async searchPddList(params, page) {
             const res = await groupSearch(params).catch(()=>{ this.mescroll.endErr() });
             let { list, total_count } = res.data;
-            if(page.num == 1) this.pddGoods = [];
             this.searchPageNum += 1;
             this.pddGoods = this.pddGoods.concat(list);
-            this.mescroll.endBySize(list.length, total_count);
+            // this.mescroll.endBySize(list.length, total_count);
+            if(list.length) {
+                return this.mescroll.endSuccess(10, true);
+            }
             // this.mescroll.endUpScroll(true);
             // if(!list.length) this.mescroll.showEmpty();
             // 搜索无结果
-            if(!this.goods.length && !this.pddGoods.length) {
+            if(!this.goods.length && !this.pddGoods.length && this.is_pdd == 3) {
                 this.isEmpty = true;
                 this.isRecommendRequest = true;
                 this.requestRem(page);
             }
+            if(this.is_pdd == 2) {
+                this.is_pdd = 3;
+                this.searchPageNum = 1;
+                this.mescroll.endSuccess(10, true);
+                this.mescroll.triggerUpScroll();
+            }
+            this.mescroll.endSuccess(0);
         },
         async requestRem(page) {
             if(!this.groupRecommendData) {

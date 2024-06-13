@@ -686,7 +686,7 @@ page {
 .item_cont-operate{
   width: 72rpx;
   height: 44rpx;
-  border: 1rpx solid #e1e1e1;
+  border: 2rpx solid #e1e1e1;
   border-radius: 8rpx;
   font-size: 24rpx;
   color: #666666;

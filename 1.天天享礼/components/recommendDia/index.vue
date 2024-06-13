@@ -4,7 +4,7 @@
     :show="isShow"
     @close="popupClose(true)"
     position="bottom"
-    custom-style="overflow: inherit; background: transparent; max-height:85vh;"
+    custom-style="overflow: inherit; background: transparent; max-height:84vh;"
     round
     safe-area-inset-bottom
     duration="5"
@@ -16,6 +16,11 @@
 <!-- :catchtouchmove="true" -->
 <view class="detail_box ani_bottom_active">
     <image class="close_icon" :src="imgUrl +'static/images/close_back.png'" mode="aspectFill" @click="popupClose(true)"></image>
+    <image
+        :class="['lab_title', isOver ? 'active' : '']"
+        src="https://file.y1b.cn/store/1-0/24523/664efdd6ea603.png"
+        mode="aspectFill" @click="popupClose(true)"
+    ></image>
     <scroll-view
         :scroll-y="true"
         class="detail_cont"
@@ -52,29 +57,32 @@
                     </view>
                 </view>
             </view>
+            <view :class="['scroll_top-sticky', isShowSticky ? 'active' : '']">
+                <view class="scroll_top_coupon">
+                    <image class="scroll_top_icon" src="https://file.y1b.cn/store/1-0/24523/664f093341eba.png" mode="aspectFill"></image>
+                    优惠券{{ max_coupon_money }}元 </view>
+                <view class="cd_txt">
+                    还剩
+                    <text class="item">{{ timeData.hours }}</text>:
+                    <text class="item">{{ timeData.minutes }}</text>:
+                    <text class="item">{{ timeData.seconds }}</text>.
+                    <text class="item">{{ timeData.milliseconds }}</text>
+                    结束
+                </view>
+            </view>
             <!-- 悬浮的倒计时 -->
-            <view class="timer_fixed fl_ard" v-if="isShowRemainTime">
+            <!-- <view class="timer_fixed fl_ard" v-if="isShowRemainTime">
                 <view class="timer_fixed-left">{{ max_coupon_money }}</view>
                 <view class="timer_fixed-right">
-                    <van-count-down
-                        @finish="countFinished"
-                        :time="remainTime"
-                        millisecond
-                        use-slot
-                        format="mm:ss"
-                        @change="onChangeHandle"
-                        style="--count-down-text-color:#F84842;--count-down-font-size:22rpx;"
-                        class="cd_time-con"
-                        :auto-start="false"
-                    >
+                    <view>
                         <text class="item_num">{{ timeData.hours }}</text>:
                         <text class="item_num">{{ timeData.minutes }}</text>:
                         <text class="item_num">{{ timeData.seconds }}</text>.
                         <text class="item">{{ timeData.milliseconds }}</text>
-                    </van-count-down>
+                    </view>
                     <view>后结束</view>
                 </view>
-            </view>
+            </view> -->
             <view class="dia_cont">
                 <view class="good-list" v-if="goods.length">
                     <view :class="['good-list-item', (item.is_expand == 1) ? 'active' : '']"
@@ -86,7 +94,18 @@
                                 <van-loading slot="loading" type="spinner" size="20" vertical />
                             </van-image>
                         </view>
-                        <view class="good_name_box txt_ov_ell2">{{item.title}}</view>
+                        <view class="good_name_box txt_ov_ell2">
+                            <view class="good_name_lab" v-if="parseInt(item.face_value)">
+                                抵¥{{ ((item.face_value <= max_coupon_money) || item.is_expand) ? parseInt(item.face_value) : max_coupon_money }}券
+                            </view>
+                            {{item.title}}
+                        </view>
+                        <view class="total_cont box_fl">
+                            <view class="use_cont-left" v-if="item.after_pay">先用后付</view>
+                            <text class="item_total" v-if="item.inOrderCount30Days">月售{{ item.inOrderCount30Days }}</text>
+                            <text class="item_total" v-if="item.sales_tip">已售{{ item.sales_tip }}</text>
+
+                        </view>
                         <!-- <view class="list_price box_fl">
                             <view>
                                 抵用后 ￥
@@ -95,13 +114,14 @@
                             <view class="price_line">¥{{ item.face_value + item.lowestCouponPrice }}</view>
                         </view> -->
                         <view class="price_btn">
-                            {{ !item.is_expand ? `免费膨胀至${item.face_value}元` : `领${item.face_value}元券` }}
+                            {{ ((item.face_value <= max_coupon_money) || item.is_expand) ? `使用${item.face_value}元券购买` : `免费膨胀至${item.face_value}元` }}
+                            <!-- {{ !item.is_expand ? `免费膨胀至${item.face_value}元` : `领${item.face_value}元券` }} -->
                         </view>
                     </view>
                 </view>
                 <view class="empty_box fl_col_sp_st" v-else-if="!isLoading">
                     <view class="empty_timer">暂无相关商品</view>
-                    <view class="empty_btn" @click="goProductListHandle">去领券中心逛逛</view>
+                    <view class="empty_btn" @click="goProductListHandle">领取更多优惠</view>
                 </view>
                 <view class="loading_box">
                     <van-loading size="14px" color="gray" v-if="isLoading">加载中...</van-loading>
@@ -110,16 +130,16 @@
             </view>
         </view>
         <view class="empty_box fl_col_sp_st" v-else>
-            <image class="empty_lab-img" src="https://file.y1b.cn/store/1-0/23912/64ffbafe6816d.png" mode="aspectFill"></image>
+            <image class="empty_lab-img" src="https://file.y1b.cn/store/1-0/24524/665011208735a.png" mode="heightFix"></image>
             <view class="empty_timer">{{ showOverTime }}前有效</view>
-            <view class="empty_btn" @click="goProductListHandle">去领券中心逛逛</view>
+            <view class="empty_btn" @click="goProductListHandle">领取更多优惠</view>
         </view>
     </scroll-view>
 </view>
 </van-popup>
 <expandDia
     :isShow="isShowExpand"
-    :couponPrice="couponPrice"
+    :couponPrice="max_coupon_money"
     :expandFaceValue="expandFaceValue"
     @close="isShowExpand = false"
     @expand="expandHandle"
@@ -185,7 +205,9 @@ export default {
             isCodeErrorShow: false, // 扫码异常展示推券的事件区分
             isClickList: false, // 未点击过商品列表
             is_advertise: 0,
-            max_coupon_money: 0
+            max_coupon_money: 0,
+            stickyTop: uni.upx2px(294),
+            isShowSticky: false
         }
     },
     mounted() {
@@ -206,9 +228,9 @@ export default {
         itemHandle(item, index) {
             this.isClickList = true;
             // is_expand 0:开始膨胀；1：已膨胀； 2：无需要膨胀
-            const { face_value, is_expand } = item;
+            const { face_value } = item;
             this.expandIndex = index;
-            if(!is_expand) {
+            if(face_value > this.max_coupon_money && !item.is_expand) {
                 this.expandFaceValue = face_value;
                 this.isShowExpand = true;
                 return;
@@ -334,19 +356,23 @@ export default {
             const { coupon, max_coupon_money, is_advertise } = this.jdDate;
             this.couponPrice = coupon && coupon[0];
             this.max_coupon_money = max_coupon_money;
+            // this.max_coupon_money = 11;
             this.is_advertise = is_advertise;
             this.popupShow();
             this.requestRem();
         },
         goProductListHandle() {
             this.popupClose();
-            this.$go(`/pages/userModule/productList/index`);
+            this.$switchTab(`pages/tabBar/shopMall/index`);
+            // this.$go(`/pages/userModule/productList/index`);
         },
         scrollToLowerHandle(event) {
             if(!this.isScroll || this.goods.length < 5) return;
             this.requestRem();
         },
         scrollHandle(event) {
+            const { scrollTop } = event.detail;
+            this.isShowSticky = scrollTop > this.stickyTop;
         },
         // 弹窗进入 初始化
         initGtData(data) {
@@ -388,9 +414,10 @@ export default {
                 this.isShowRemainTime = false
             }
             // if(!over) this.popupClose(); // 倒计时结束
-            this.isOver = Boolean(over);
+            this.isOver = Boolean(over) || (this.remainTime <= 0);
             this.couponPrice = coupon && coupon[0];
             this.max_coupon_money = max_coupon_money;
+            // this.max_coupon_money = 11;
             this.jdDate = {
                 id: group_id,
                 cid: group_cid,
@@ -498,7 +525,7 @@ export default {
 <style lang="scss">
 .detail_box {
     position: relative;
-    height: 85vh;
+    height: 84vh;
     display: flex;
     flex-direction: column;
     // padding-bottom: constant(safe-area-inset-bottom);
@@ -514,43 +541,106 @@ export default {
         padding: 16rpx;
         margin: 0 24rpx 0rpx auto;
         display: block;
+        position: absolute;
+        right: 0;
+    }
+    .lab_title{
+        width: 388rpx;
+        height: 92rpx;
+        display: block;
+        margin: auto;
+        &.active {
+            opacity: 0;
+        }
     }
 }
 
 .dia_cont{
     position: relative;
+    margin-top: -16rpx;
 }
 .detail_cont{
     background: #fffae9;
-    border-radius: 48rpx 48rpx 0rpx 0rpx;
+    border-radius: 40rpx 40rpx 0rpx 0rpx;
     position: relative;
     flex: 1;
-    overflow: scroll;
+    overflow: hidden;
+    overflow-y: scroll;
     box-sizing: border-box;
-}
-.rec_detail-box{
-    &::before {
-        content: '\3000';
-        background: url("https://file.y1b.cn/store/1-0/23911/64fedbad5cdcb.png") 0 0 / 100% 100%;
-        width: 286rpx;
-        height: 82rpx;
-        display: block;
-        // padding-top: 26rpx;
-        margin: 26rpx auto 0;
+    margin-top: 16rpx;
+    .scroll_top-sticky {
+        position: sticky;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        right: 0;
+        background: #fffae9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #ffffff;
+        transition: height .3s;
+        height: 0;
+        overflow: hidden;
+        &.active {
+            height: auto;
+            overflow: initial;
+            padding: 32rpx 46rpx;
+        }
+        &::before {
+            content: '\3000';
+            position: absolute;
+            width: 100%;
+            height: 150rpx;
+            background: #fffae9;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            filter: blur(20rpx);
+        }
+        &::after {
+            content: '\3000';
+            position: absolute;
+            width: 722rpx;
+            height: 76rpx;
+            background: #fffae9;
+            top: 16rpx;
+            left: 14rpx;
+            z-index: -1;
+            background: #fffae9 url("https://file.y1b.cn/store/1-0/24523/664f07078fb7d.png") 0 0 / 100% 100%;
+
+        }
+        .scroll_top_coupon {
+            font-size: 32rpx;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            .scroll_top_icon{
+                width: 38rpx;
+                height: 28rpx;
+                margin-right: 8rpx;
+            }
+        }
+        .cd_txt{
+            margin: 0;
+        }
     }
+}
+.rec_detail-box {
 }
 .rec_detail{
     position: relative;
     z-index: 0;
-    margin: 63rpx auto 50rpx;
     color: #fff;
+    // margin: 76rpx 0 86rpx;
+    padding: 76rpx 0 86rpx;
     &::before {
         content: '\3000';
-        background: url("https://file.y1b.cn/store/1-0/23911/64fedc16f0549.png") 0 0 / cover;
+        background: url("https://file.y1b.cn/store/1-0/24523/664efe8d4f955.png") 0 0 / 100% 100%;
         width: 100%;
-        min-height: 324rpx;
+        height: 294rpx;
         position: absolute;
-        top: -90rpx;
+        top: 0;
         left: 0;
         z-index: -1;
     }
@@ -564,15 +654,15 @@ export default {
         .detail_num {
             position: relative;
             white-space: nowrap;
-            &::before {
-                content: '\3000';
-                background: url("https://file.y1b.cn/store/1-0/24119/65a9cd74bec29.png") 0 0 / cover;
-                width: 64rpx;
-                height: 32rpx;
-                position: absolute;
-                top: 5rpx;
-                right: -40rpx;
-            }
+            // &::before {
+            //     content: '\3000';
+            //     background: url("https://file.y1b.cn/store/1-0/24119/65a9cd74bec29.png") 0 0 / cover;
+            //     width: 64rpx;
+            //     height: 32rpx;
+            //     position: absolute;
+            //     top: 5rpx;
+            //     right: -40rpx;
+            // }
             &::after {
                 content: '元';
                 font-size: 28rpx;
@@ -588,17 +678,19 @@ export default {
 }
 .cd_txt{
     font-weight: 600;
-    font-size: 36rpx;
+    font-size: 26rpx;
     color: #fff;
+    margin-top: 16rpx;
     .item{
-      width: 40rpx;
-      height: 40rpx;
-      background: rgba($color: #fff, $alpha: .6);
-      border-radius: 4rpx;
+      width: 34rpx;
+      height: 34rpx;
+      background: rgba($color: #000, $alpha: .45);
+      border-radius: 6rpx;
       text-align: center;
-      line-height: 40rpx;
+      line-height: 34rpx;
       margin: 0 8rpx;
       display: inline-block;
+      font-size: 24rpx;
     }
     .item_lab{
       margin-left: 16rpx;
@@ -668,6 +760,8 @@ export default {
         margin: 20rpx 16rpx 0;
         font-size: 28rpx;
         min-height: 80rpx;
+        height: 80rpx;
+        line-height: 40rpx;
         color: #333;
     }
     .list_price{
@@ -811,6 +905,48 @@ export default {
         justify-content: center;
     }
 }
-
-
+.good_name_lab {
+  padding: 0 10rpx 0 20rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 34rpx;
+  position: relative;
+  z-index: 0;
+  margin-right: 8rpx;
+  white-space: nowrap;
+  display: inline-block;
+  &::before {
+    content: "\3000";
+    background: url("https://file.y1b.cn/store/1-0/23810/64d44dc19f327.png") 0 0 / 100% 100% no-repeat;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+}
+.total_cont {
+    margin: 10rpx 16rpx 28rpx;
+    white-space: nowrap;
+    font-size: 26rpx;
+    height: 34rpx;
+    .use_cont-left {
+        color: #32a666;
+        display: flex;
+        align-items: center;
+        &::before {
+        content: "\3000";
+        width: 30rpx;
+        height: 30rpx;
+        background: url("https://test-file.y1b.cn/store/1-0/24312/65f023e89516c.png")  0 0 / 100% 100% no-repeat;
+        margin-right: 5rpx;
+        }
+    }
+    .item_total {
+        margin-left: 10rpx;
+        color: #aaa;
+    }
+}
 </style>

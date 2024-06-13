@@ -47,7 +47,19 @@ export class XhHttp {
     request(config) {
             this.pushAsyncReqUrl(config.url)
             return new Promise((resolve, reject) => {
-                let isContinueExecute = true
+                let isContinueExecute = true;
+                let isConnectedStatus = true;
+                if (this.interceptor.isConnectedStatus) {
+                    isConnectedStatus = this.interceptor.isConnectedStatus();
+                }
+                if (!isConnectedStatus) {
+                    uni.showToast({
+                        title: '网络连接不可用，请检查',
+                        duration: 2000,
+                        icon: 'none',
+                    });
+                    return;
+                }
                 if (this.interceptor.request) {
                     isContinueExecute = this.interceptor.request(config, this, resolve);
                 }

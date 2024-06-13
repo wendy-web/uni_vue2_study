@@ -15,7 +15,7 @@
 			"path": "pages/tabBar/shopMall/index",
 			"style": {
 				"navigationStyle": "custom",
-				"onReachBottomDistance": 500
+				"onReachBottomDistance": 300
 				// "usingComponents": {
 				// 	"coral-adv": "plugin://coral-adv/adv"
 				// }

@@ -82,7 +82,7 @@
         <view :class="['redeem-now', showInitBuy ? '' : 'active']">
             <block v-if="showInitBuy">
               <view class="redeem-now-left" @click="confirmHandle(false)">
-                <view class="rnl-value">{{ config.face_value + config.price }}</view>
+                <view class="rnl-value">{{ (config.face_value + config.price).toFixed(2) }}</view>
                 <view class="rnl-label">原价购买</view>
               </view>
               <!-- <view class="icon_middle" @click="confirmHandle"></view> -->
@@ -92,8 +92,11 @@
                   ref="headImgArrRef" class="customize_box"
                 ></liu-customize-swiper>
               <view class="fl_col_cen">
-                <view class="rnl-value">{{ config.price }}</view>
-                <view class="rnl-label">{{ config.face_value ? '券后价购买' : '立即购买' }}</view>
+                <view class="rnl-value-box fl_center">
+                  {{ showPriceLab ? '活动价' : '' }}
+                  <view class="rnl-value">{{ config.price }}</view>
+                </view>
+                <view class="rnl-label">{{ shoBtnLabText }}</view>
               </view>
             </view>
         </view>
@@ -108,7 +111,7 @@ import { toggleCollect } from "@/api/modules/jsShop.js";
 import { toggleCollect as pddToggleCollect } from '@/api/modules/pddShop.js';
 import { goodsDetails } from "@/api/modules/shopMall.js";
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
-import { getImgUrl } from "@/utils/auth.js";
+import { getImgUrl, getUrlKey } from "@/utils/auth.js";
 import { getViewPort } from "@/utils/index.js";
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
 import { mapActions, mapGetters } from "vuex";
@@ -137,26 +140,65 @@ export default {
       banner_image: [],
       attsList: [],
       detail_image: [],
-      queryId: 0,
       currentIndex: 0,
       headImgArr: [],
+      queryId: '',
+      lx_type: ''
     };
   },
   computed: {
     ...mapGetters(["userInfo", 'isAutoLogin']),
     showInitBuy() {
       return this.config && this.config.face_value && this.config.pathXq;
+    },
+    shoBtnLabText() {
+      if(!this.config) return;
+      let { lx_type, face_value, sale_num } = this.config;
+      // 拼多多
+      if(lx_type == 3) {
+        let showTxt = '';
+        if(face_value && sale_num) {
+          showTxt = `${sale_num}人用券下单`;
+        } else if(!face_value && sale_num) {
+          showTxt = `${sale_num}人购买`;
+        } else if(!face_value && !sale_num) {
+          showTxt = `立即购买`;
+        }
+        return showTxt;
+      }
+      return face_value ? '券后价购买' : '立即购买';
+    },
+    showPriceLab() {
+      if(!this.config) return;
+      let { lx_type, face_value, sale_num } = this.config;
+      return (lx_type ==3 && face_value)
     }
   },
   onLoad(options) {
-    const params = {
-      queryId: options.queryId,
-      lx_type: options.lx_type,
-      positionId: options.positionId || 0,
-      active_id: options.active_id || 0,
-      tag: options.tag || 0
+    let queryId, lx_type, positionId, active_id, tag = 0;
+    if(options.q) {
+      const codeUrl = decodeURIComponent(options.q);
+      console.log('codeUrl', codeUrl)
+      queryId = getUrlKey(codeUrl, 'queryId');
+      lx_type = getUrlKey(codeUrl, 'lx_type');
+      active_id = getUrlKey(codeUrl, 'active_id');
+      tag = getUrlKey(codeUrl, 'tag');
+    } else {
+      queryId = options.queryId;
+      lx_type = options.lx_type;
+      positionId = options.positionId;
+      active_id = options.active_id;
+      tag = options.tag;
     }
-    this.queryId = options.queryId;
+    this.queryId = queryId;
+    this.lx_type = lx_type;
+    const params = {
+      queryId,
+      lx_type,
+      positionId,
+      active_id,
+      tag
+    }
     this.initQuery(params);
     // 获取屏幕宽度
     let system = uni.getSystemInfoSync();
@@ -188,7 +230,17 @@ export default {
     },
     async initQuery(params) {
       const res = await goodsDetails(params);
-      if(res.code != 1 || !res.data) return;
+      if(res.code != 1 || !res.data) {
+        this.$showModal({
+          title: '温馨提示',
+          content: res.msg,
+          showCancel: false,
+          confirm: () => {
+            this.$back();
+          }
+        });
+        return;
+      };
       let { detail, buy_log, packet } = res.data;
       this.config = detail;
       if(this.config){
@@ -490,9 +542,11 @@ page {
   padding-right: 10rpx;
   white-space: nowrap;
   align-self: stretch;
+  // background: linear-gradient(167deg,#f48f28 0%, #ffc654 100%);
   background: linear-gradient(167deg,#f48f28 0%, #ffc654 100%);
   padding: 0 38rpx 0 38rpx;
   position: relative;
+  color: #A86E2E;
   &::after {
     content: '\3000';
     position: absolute;
@@ -505,6 +559,9 @@ page {
 .rnl-label {
   font-size: 22rpx;
   font-weight: normal;
+}
+.rnl-value-box{
+  font-size: 26rpx;
 }
 .rnl-value {
   font-size: 32rpx;

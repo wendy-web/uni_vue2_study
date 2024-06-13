@@ -84,7 +84,7 @@ import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescrol
 		},
 		methods: {
 			/*下拉刷新的回调 */
-			downCallback() {
+			downCallback(page) {
 				// 这里加载你想下拉刷新的数据, 比如刷新轮播数据
 				// loadSwiper();
 				// 下拉刷新的回调,默认重置上拉加载列表为第一页 (自动执行 page.num=1, 再触发upCallback方法 )
@@ -113,6 +113,7 @@ import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescrol
 					return;
 				}
 				const { index, list, pageNum, is_first, empty_num } = res.data;
+				if( page.num == 1 ) this.goods = [];
 				this.guessListParams = {
 					...this.guessListParams,
 					index,
@@ -191,7 +192,7 @@ import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescrol
 						total_count
 					} = res.data;
 					// 设置列表数据
-					if( page.num == 1 ) {
+					if(page.num == 1 ) {
 						this.goods = [];
 						this.tabs[this.index]._groupIdIndex = 0;
 						this.pageNum = 1;
