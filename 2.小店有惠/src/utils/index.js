@@ -29,13 +29,9 @@ export function VALID_CACHE(cacheMaxAge, lastModified) {
 
 //判断用户Session 是否过期
 export function xhCheckSession(isNoSession) {
-
     return new Promise((resolve, reject) => {
-
         if (isNoSession) return reject();
-
         if (!store.getters.token) return reject();
-
         uni.checkSession({
             success: res => {
                 resolve();
@@ -45,8 +41,7 @@ export function xhCheckSession(isNoSession) {
             }
         });
 
-    });
-
+    }).catch((e) => {});
 }
 
 /*时间转化*/

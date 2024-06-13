@@ -35,11 +35,10 @@
         <!-- v-if="[8].includes(config.status) 不展示过期时间 -->
         <view v-if="false">
           <text>过期时间：</text>
-          <text>{{ config.pay_expire_date }}</text></view
-        >
+          <text>{{ config.pay_expire_date }}</text>
+        </view>
       </view>
-      <van-button
-        size="small"
+      <van-button size="small"
         custom-style="border-radius: 4px;width: 132rpx;color:#333333;white-space: nowrap;"
         @click="againHandle(config.goods_id)"
       >

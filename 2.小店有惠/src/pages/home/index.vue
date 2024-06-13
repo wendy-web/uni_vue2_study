@@ -1,10 +1,7 @@
 <template>
 <view class="demo_bottom">
   <mescroll-body :sticky="true" ref="mescrollRef" @init="mescrollInit" @down="downCallback" @up="upCallback" :up="upOption">
-    <xh-navbar
-      navbarColor="#fff"
-      titleAlign="titleRight"
-    >
+    <xh-navbar navbarColor="#fff" titleAlign="titleRight">
       <view slot="title" class="nav_title box_fl">
         <image class="title_logo" mode="aspectFit" src="https://file.y1b.cn/store/1-0/24131/65ba377f11904.png"></image>
         <view class="nav_search fl_center" @click="toSearchHandle">
@@ -22,13 +19,9 @@
                 @animationfinish="animationfinishHandle"
                 v-if="textList.length"
 		    >
-                <swiper-item
-                    v-for="(item, index) in textList"
-                    :key="index"
-                    class="swiper_item txt_ov_ell1"
-                >
-                {{ item }}
-                </swiper-item>
+                <swiper-item class="swiper_item txt_ov_ell1"
+                    v-for="(item, index) in textList" :key="index"
+                >{{ item }}</swiper-item>
 			</swiper>
           <view class="search_txt" v-else>搜索喜欢的商品</view>
         </view>
@@ -51,12 +44,9 @@
     </view>
     <!-- 团长的标识 -->
     <view class="vip_cont" v-if="singletonImg" @click="vipHandle">
-        <van-image
-            width="100%" height="100%"
-            :src="singletonImg"
-            use-loading-slot
-        >
-            <van-loading slot="loading" type="spinner" size="20" vertical />
+        <van-image width="100%" height="100%"
+            :src="singletonImg" use-loading-slot
+        ><van-loading slot="loading" type="spinner" size="20" vertical />
         </van-image>
     </view>
     <!-- sticky吸顶悬浮的菜单, 父元素必须是 mescroll -->
@@ -64,9 +54,8 @@
       <tabs v-model="tabIndex" :height="tabsHeight" :tabs="tabs" @change="tabChange"></tabs>
     </view>
     <!-- 数据列表 -->
-    <view :style="{ minHeight: (goods && goods.length > 2) && swiperHeight}">
-        <good-list
-            :list="goods"
+    <view :style="{ minHeight: (goods && goods.length > 2) && swiperHeight, padding: '0 16rpx'}">
+        <good-list :list="goods"
             @deleteBysubunionid="deleteBysubunionidHandle"
         ></good-list>
     </view>
@@ -81,7 +70,7 @@
     </view>
   <!-- 底部导航 -->
   <navbar
-    :currentIndex="0"
+    :currentID="0"
     @domObjHeight="domObjHeightHandle"
   ></navbar>
   <!-- 话费充值的弹窗 -->
@@ -91,14 +80,23 @@
     :isShow="isShowPopoverDia"
     @close="closePopoverDiaHandle"
     @openLink="openLinkHandle"
-  >
-  </popoverDia>
+  ></popoverDia>
+    <!-- 弹窗管理 -->
+    <configurationDia
+        ref="configurationDia"
+        :isShow="isShowConfig"
+        @close="closeShowConfig"
+        :config="config"
+        @popoverRember="requestPopoverRember"
+        :remainTime="remainTime"
+    ></configurationDia>
 </view>
 </template>
 <script>
 import {
     goodsGroup,
     goodsList,
+    overDo,
     popover,
     singleton
 } from "@/api/modules/home.js";
@@ -112,24 +110,28 @@ import {
     goodsRecommend,
     goodsSearch,
 } from '@/api/modules/pddShop.js';
+import configurationFun from '@/components/configurationDia/configurationFun.js';
+import configurationDia from '@/components/configurationDia/index.vue';
 import goodList from "@/components/goodList.vue";
 import popoverDia from "@/components/popoverDia.vue";
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import WxCountUp from "@/utils/WxCountUp.js";
 import { getPlatform } from "@/utils/auth.js";
+import getViewPort from '@/utils/getViewPort.js';
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import tabs from "./component/tabs.vue";
-  let _options = {
+let _options = {
     separator: "",
     duration: 1,
-  };
+};
 export default {
-	mixins: [MescrollMixin], // 使用mixin
+	mixins: [MescrollMixin, configurationFun], // 使用mixin
     components: {
         tabs,
         goodList,
-        popoverDia
+        popoverDia,
+        configurationDia
     },
 	data() {
 		return {
@@ -154,9 +156,35 @@ export default {
                     size: 1
                 },
             },
-
+            adInterVal: null,
+            appid: 121295,
+            type: 9,
+            target: 4,
+            resGetAdNum: 0
 		}
 	},
+    computed: {
+        ...mapGetters(["userInfo", "unionid", "diaList", 'isAutoLogin']),
+        goods() {
+            return this.tabs[this.tabIndex]?.goods;
+        },
+        topBoxHeight() {
+            return this.stickyTop - uni.upx2px(16);
+        },
+        // 吸顶的的top值
+        navHeightTop() {
+            let viewPort = getViewPort();
+            return viewPort.customTop;
+        },
+        swiperHeight() {
+            // uni.upx2px(226)
+            let minHeight = (uni.getSystemInfoSync().windowHeight - uni.upx2px(88) - this.tabHeightValue - this.stickyTop) + 'px';
+            if(this.goods && !this.goods.length) {
+                minHeight = 0 + 'px';
+            }
+            return minHeight;
+        }
+    },
     watch: {
         userInfo: {
             handler(newVal, oldVal) {
@@ -170,28 +198,10 @@ export default {
             deep: true,
         },
         diaList(newValue, oldValue) {
-            
             if(newValue.length && (newValue[0] == 'phoneId')) {
                 this.isShowPopoverDia = true;
             }
         }
-    },
-    computed: {
-        ...mapGetters(["userInfo", "unionid", "diaList", 'isAutoLogin']),
-        goods() {
-            return this.tabs[this.tabIndex]?.goods
-        },
-        topBoxHeight() {
-            return this.stickyTop - uni.upx2px(16);
-        },
-        swiperHeight() {
-            // uni.upx2px(226)
-            let minHeight = (uni.getSystemInfoSync().windowHeight - uni.upx2px(88) - this.tabHeightValue - this.stickyTop) + 'px';
-            if(this.goods && !this.goods.length) {
-                minHeight = 0 + 'px';
-            }
-            return minHeight;
-        },
     },
     // 分享
     onShareAppMessage() {
@@ -276,7 +286,7 @@ export default {
         async singletonInit() {
             const res = await singleton();
             if(!res.code || !res.data) return;
-            this.singletonImg = res.data;
+            this.singletonImg = res.data.image;
         },
         /*下拉刷新的回调 */
         downCallback() {
@@ -317,6 +327,7 @@ export default {
                 let curTab = this.tabs[this.tabIndex];
                 // 设置列表数据
                 if(page.num == 1) curTab.goods = []; //如果是第一页需手动制空列表
+                if(!this.tabIndex && page.num == 1) overDo();
                 curTab.goods = curTab.goods.concat(
                 list.map(function (item) {
                     return {
@@ -333,7 +344,7 @@ export default {
                 // 需先隐藏加载状态
                 // this.mescroll.endSuccess(list.length);
                 // 更改商品列表的下拉触底的加载
-                this.mescroll.endBySize(curTab.goods.length, total_count);
+                this.mescroll.endBySize(list.length, total_count);
                 const isNextPage = (page.num * params.size) < total_count;
                 if(isNextPage && !list.length) {
                     this.mescroll.triggerUpScroll();
@@ -496,10 +507,7 @@ page {
         height: 100%;
     }
 }
-.demo_bottom{
-  padding-bottom: calc(125rpx + constant(safe-area-inset-bottom));
-  padding-bottom: calc(125rpx + env(safe-area-inset-bottom));
-}
+
 .nav_title {
   flex: 1;
   text-align: center;
@@ -593,7 +601,7 @@ page {
   }
   .credit_btn{
     line-height: 52rpx;
-    border: 2rpx solid #999999;
+    border: 2rpx solid #999;
     border-radius: 8rpx;
     padding: 0 20rpx;
     font-size: 26rpx;

@@ -1,8 +1,8 @@
-import { useChildren } from '../common/relation';
 import { VantComponent } from '../common/component';
+import { useChildren } from '../common/relation';
 VantComponent({
     field: true,
-    relation: useChildren('checkbox', function (target) {
+    relation: useChildren('checkbox', function(target) {
         this.updateChild(target);
     }),
     props: {
@@ -22,7 +22,9 @@ VantComponent({
     },
     methods: {
         updateChildren() {
-            this.children.forEach((child) => this.updateChild(child));
+            this.children.forEach((child) => {
+                return this.updateChild(child)
+            });
         },
         updateChild(child) {
             const { value, disabled, direction } = this.data;

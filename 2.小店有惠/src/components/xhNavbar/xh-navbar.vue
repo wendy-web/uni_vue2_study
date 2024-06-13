@@ -3,7 +3,10 @@
 	<!-- 具体导航 -->
 	<view class="xh-navber"
 		:class="{'fixed':fixed, 'fixedNum': fixedNum, 'overFlow': overFlow }"
-		:style="{height:statusBarHeight+navBarHeight+'px',background:navbarColor}">
+		:style="{
+            height: statusBarHeight + navBarHeight + paddingBottomHeight + 'px',
+            background: navbarColor
+        }">
 		<!-- 状态栏 -->
 		<view class="status-bar"
 			:style="{height:statusBarHeight+'px'}"
@@ -32,6 +35,8 @@
 			<view v-if="title&&!isHome" class="title-text" @click="txtClick">{{title}}</view>
 			<!-- 自定义中间部分 -->
 			<slot name="title" />
+            <!-- 标题底部的cont -->
+            <slot name="title_cont" />
 			<!-- 胶囊安全宽度 -->
 			<view class="capsule"
 				v-if="titleAlign === 'titleRight'"
@@ -59,7 +64,7 @@
 
 <script>
 import {
-    getNavbarData
+getNavbarData
 } from './xhNavbar.js';
 
 export default {
@@ -114,14 +119,18 @@ export default {
         isFloat: {
             type: Boolean,
             default: false
-        }
+        },
+        // 用于头部超出的展示
+        paddingBottomHeight: {
+            type: Number,
+            default: 0,
+        },
     },
     created () {
         getNavbarData().then(data => {
             this.navBarHeight = data.navBarHeight;
             this.statusBarHeight = data.statusBarHeight;
             this.menuWidth = data.menuWidth;
-            // console.log('this.navBarHeight', this.navBarHeight, this.statusBarHeight)
         });
     },
     data () {

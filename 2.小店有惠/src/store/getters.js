@@ -13,8 +13,12 @@ const getters = {
     diaList: state => state.user.diaList,
     userInfo: (state, getters) => {
         const isAutoLogin = getters.isAutoLogin;
-        return isAutoLogin ? state.user.userInfo : {
-            credits: 0
+        return isAutoLogin ? {
+            ...state.user.userInfo,
+            // is_team: 0
+        } : {
+            credits: 0,
+            // is_team: state.user.userInfo && state.user.userInfo.is_team
         }
     },
     vipObject: state => state.user.vipObject,

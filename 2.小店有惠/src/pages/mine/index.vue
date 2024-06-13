@@ -18,8 +18,7 @@
     <image class="mine_top-img" mode="aspectFit" lazy-load
       src="https://file.y1b.cn/store/1-0/231127/6564548377c10.png"
     ></image>
-      <view class="userinfo-box pd_w32"
-        :class="{ 'userinfo-box-bottom-line': !userInfo }"
+      <view :class="['userinfo-box pd_w32', !userInfo ? 'userinfo-box-bottom-line' : '']"
         @click="personalInfo"
       >
         <image class="img-avatar" mode="aspectFill" lazy-load
@@ -41,19 +40,8 @@
         </view>
       </view>
     <view class="bg_white">
-      <!-- 成为团长 -->
-      <view class="apply-box" @click="goToCard"  v-if="!userInfo.is_team">
-        <view class="apply-left">
-          <view class="apply-title">成为团长</view>
-          <view class="apply-tips">0元投入·掌柜尊享·坐享收益</view>
-        </view>
-        <view class="apply-right">
-          <text class="">马上报名</text>
-          <van-icon name="arrow" color="#A15619" size="12" />
-        </view>
-      </view>
       <!-- 累计收益 -->
-      <view class="income-box" @click="totalEarn" v-else>
+      <view class="income-box" @click="totalEarn" v-if="userInfo.is_team">
         <view class="check-detail">查看详情</view>
         <view class="ib-head">
           <view class="ib-title" @click.stop="ishShowHelpDia = true">
@@ -68,6 +56,17 @@
         <view class="ib-bottom">
           <view>今日预估：¥{{ vipObject.day_profit || 0 }}</view>
           <view class="withdrawn">已提现：¥{{vipObject.tx_amount || 0}}</view>
+        </view>
+      </view>
+      <!-- 成为团长 -->
+      <view class="apply-box" @click="goToCard" v-if="!userInfo.is_team && isShowCenter">
+        <view class="apply-left">
+          <view class="apply-title">成为团长</view>
+          <view class="apply-tips">0元投入·掌柜尊享·坐享收益</view>
+        </view>
+        <view class="apply-right">
+          <text class="">马上报名</text>
+          <van-icon name="arrow" color="#A15619" size="12" />
         </view>
       </view>
     </view>
@@ -148,31 +147,44 @@
     :isShow="ishShowHelpDia"
     @close="ishShowHelpDia = false"
   ></helpConfirmDia>
-  <navbar :currentIndex="2"></navbar>
+  <!-- 弹窗管理 -->
+  <configurationDia
+    ref="configurationDia"
+    :isShow="isShowConfig"
+    @close="closeShowConfig"
+    :config="config"
+    @popoverRember="requestPopoverRember"
+    :remainTime="remainTime"
+  ></configurationDia>
+  <navbar :currentID="2"></navbar>
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { mapGetters, mapActions } from "vuex";
-import config from "./config.js";
-import goodList from "@/components/goodList.vue";
-import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
-import { formatAmount } from "@/utils/index.js";
-import { expireOrder, orderPay } from "@/api/modules/order.js";
-import helpConfirmDia from './helpConfirmDia.vue';
-import { msgTemplate, isSend } from "@/api/modules/card.js";
+import { isSend, msgTemplate } from "@/api/modules/card.js";
+import { singleton } from "@/api/modules/home.js";
 import {
-  material,
-  jingfen,
   goodsQuery,
   groupRecommend,
+  jingfen,
+  material,
 } from "@/api/modules/jsShop.js";
+import { expireOrder, orderPay } from "@/api/modules/order.js";
+import configurationFun from '@/components/configurationDia/configurationFun.js';
+import configurationDia from '@/components/configurationDia/index.vue';
+import goodList from "@/components/goodList.vue";
+import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { formatAmount } from "@/utils/index.js";
+import { mapActions, mapGetters } from "vuex";
+import config from "./config.js";
+import helpConfirmDia from './helpConfirmDia.vue';
 export default {
     name: "mine",
-    mixins: [MescrollMixin], // 使用mixin
+    mixins: [MescrollMixin, configurationFun], // 使用mixin
     components: {
       goodList,
-      helpConfirmDia
+      helpConfirmDia,
+      configurationDia
     },
     data() {
       return {
@@ -206,6 +218,7 @@ export default {
         lastOddItem: null,
         showTitleBg: false,
         ishShowHelpDia: false,
+        isShowCenter: true
       };
     },
     computed: {
@@ -218,6 +231,7 @@ export default {
         let { navBarHeight, statusBarHeight } = res;
         this.topHeight = navBarHeight + statusBarHeight + "px";
       });
+      this.initCenterRequest();
     },
     onShow() {
         this.downCallback();
@@ -227,6 +241,11 @@ export default {
       getUserInfo: "user/getUserInfo",
       getVipObject: "user/getVipObject",
     }),
+    async initCenterRequest() {
+      const res = await singleton();
+      if(!res.code || !res.data) return;
+      this.isShowCenter = res.data.show;
+    },
     showDot(index,key) {
       return index < 2 && (this.userInfo[key]> 0);
     },
@@ -337,30 +356,27 @@ export default {
       price = Number(price).toFixed(2);
       let splitPrice = price.split(".");
       let amount = formatAmount(splitPrice[0]);
-      //2.重新赋值
+      // 2.重新赋值
       return `<span style="font-weight:500;font-size: 28px">${amount}.<span style="font-size: 18px;">${splitPrice[1]}</span></span>`;
     },
     async totalEarn() {
       if(!this.isAutoLogin) return this.$go('/pages/login/index');
       const msgRes = await msgTemplate();
       if(msgRes.code == 1 && msgRes.data) {
-        const { settle, events, invite } = msgRes.data;
-        let tmplIds = [invite];
+        const { settle, events } = msgRes.data;
+        let tmplIds = [];
         (!this.vipObject.is_send && settle) && tmplIds.push(settle);
         (!this.vipObject.is_events && events) && tmplIds.push(events);
         tmplIds = tmplIds.filter(item => !!item);
         const subRes = await this.$subscribeMessageHandle(tmplIds);
         const settleResult = subRes[settle];
         const eventsResult = subRes[events];
-        const inviteResult = subRes[invite];
         const params = {
           is_send: 0,
           is_events: 0,
-          is_invite: 0
         }
         if(settleResult == 'accept') params.is_send = 1;
         if(eventsResult == 'accept') params.is_events = 1;
-        if(inviteResult == 'accept') params.is_invite = 1;
         isSend(params);
       }
       this.$go("/pages/cardModule/cardEarnings/index");
@@ -728,15 +744,14 @@ export default {
 
   .menu-list {
     display: flex;
-    padding: 28rpx 40rpx;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 28rpx 0;
     background: #fff;
     margin-bottom: 10rpx;
     // border-bottom: 10rpx solid #F5F6FA;
     .menu-item {
       box-sizing: border-box;
-      &:not(:last-child) {
-        margin-right: 64rpx;
-      }
       .mil-icon {
         width: 52rpx;
         height: 52rpx;

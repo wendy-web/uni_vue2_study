@@ -57,7 +57,7 @@ export default {
     codeUrl(newValue) {
       if(newValue) {
         this.template = palette({
-          codeUrl: this.codeUrl
+          codeUrl: this.codeUrl.toString()
         })
       }
     }

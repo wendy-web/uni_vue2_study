@@ -44,7 +44,7 @@
 								</van-image>
 							</swiper-item>
 						</swiper>
-						<view class="swiper_banner-num" v-if="item.imageList.length > 1">
+						<view class="swiper_banner-num" v-if="item.imageList && item.imageList.length > 1">
 							{{item.bannerCurrIndex + 1}}/{{ item.imageList.length }}
 						</view>
 					</view>
@@ -220,10 +220,21 @@ let timer = null;
 					positionId: this.positionId,
 					has_coupon: this.has_coupon
 				});
-				this.feedList = res.data.list;
+				this.feedList = res.data.list || [];
 			}
 			if (this.goods_sign) {
 				const detRes = await goodsDetail({ goods_sign: this.goods_sign });
+				if(detRes.code != 1) {
+					this.$showModal({
+						title: '温馨提示',
+						content: detRes.msg,
+						showCancel: false,
+						confirm: () => {
+							this.$back();
+						}
+					});
+					return;
+				}
 				this.feedList.push(detRes.data);
 				this.goods_id = detRes.data.goods_id
 				this.params.cat_id = detRes.data.cat_id

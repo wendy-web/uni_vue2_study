@@ -50,8 +50,19 @@
             :up="upOption"
             @up="upCallbackSearch"
         >
-            <good-list :list="goods" :isSearchItem="true">
-            </good-list>
+            <good-list
+                :list="goods"
+                :isSearchItem="true"
+                :isRebate="is_rebate"
+            ></good-list>
+            <block v-if="pddGoods.length">
+                <!-- <view class="list_lab" >以下优惠商品由拼多多提供</view> -->
+                <good-list
+                    :list="pddGoods"
+                    :isSearchItem="true"
+                    :isRebate="is_rebate"
+                ></good-list>
+            </block>
             <!-- 列表为空时呈现 -->
             <view class="empty_box fl_col_cen" v-if="isEmpty">
                 <image class="empty_box_img" :src="empty.icon" mode="widthFix"></image>
@@ -68,17 +79,18 @@
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import goodList from '@/components/goodList.vue';
-import getViewPort from '@/utils/getViewPort.js';
 import {
-    material,
-    jingfen,
-    goodsQuery,
-    keywordList,
-    groupRecommend
+goodsQuery,
+groupRecommend,
+groupSearch,
+jingfen,
+keywordList,
+material
 } from '@/api/modules/jsShop.js';
-import { mapGetters, mapActions } from 'vuex';
+import goodList from '@/components/goodList.vue';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import getViewPort from '@/utils/getViewPort.js';
+import { mapActions, mapGetters } from 'vuex';
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {
@@ -87,6 +99,7 @@ export default {
     data() {
         return {
             goods:[],
+            pddGoods:[],
             recommendGoods: [],
             upOption: {
                 page: {
@@ -112,7 +125,10 @@ export default {
             isRecommendRequest: false,
             pageNum: 1,
             groupId_index: 0,
-            lastOddItem: null
+            lastOddItem: null,
+            is_rebate: '',
+            is_pdd: 0,
+            searchPageNum: 1
 
         };
     },
@@ -144,6 +160,7 @@ export default {
             this.searchValue = option.searchValue;
             this.scroll_top = 80; // 模拟滚动的内容
         }
+        if(option.is_rebate) this.is_rebate = option.is_rebate;
         keywordList().then(res => {
             if(res.code == 1 && res.data) {
                 this.textList = res.data;
@@ -168,7 +185,7 @@ export default {
                         resolve(data)
                     }).exec();
                 }, 20)
-            })
+            }).catch((e) => {});
         },
         // 页面的滚动事件
         onPageScroll(e) {
@@ -176,10 +193,12 @@ export default {
         async downCallbackInit(page) {
         },
         async upCallbackSearch(page) {
-            let queryApi = goodsQuery;
+            let queryApi = groupSearch;
             const params = {
-                page: page.num,
-                size: 6,
+                page: this.searchPageNum,
+                size: 10,
+                is_rebate: this.is_rebate,
+                is_pdd: this.is_pdd
             }
             if(this.searchValue) {
                 // 文字的搜索
@@ -188,22 +207,41 @@ export default {
             }
             if(!this.isRecommendRequest) {
                 queryApi(params).then(res => {
-                    let list = res.data ? res.data.list : [];
-                    if(page.num == 1) this.goods = [];
-                    this.goods = this.goods.concat(list);
-                    // this.mescroll.endSuccess();
-                    this.mescroll.endBySize(list.length, res.data.total_count);
-                    if(!this.goods.length) this.isEmpty = true;
-                    // 加载另一个
-                    if(!this.goods.length) {
+                    if(res.code != 1 || !res.data) {
+                        this.mescroll.endSuccess();
+                        this.searchPageNum = 1;
+                        this.is_pdd += 1;
+                        (this.is_pdd <= 3) && this.mescroll.triggerUpScroll();
+                        return;
+                    }
+                    let { list = [], total_count } = res.data;
+                    const isNextPage = this.searchPageNum * params.size <= total_count;
+                    this.searchPageNum += 1;
+                    if(page.num == 1) {
+                        this.goods = [];
+                        this.pddGoods = []
+                    };
+                    if([2,3].includes(this.is_pdd)) {
+                        this.pddGoods = this.pddGoods.concat(list);
+                    } else {
+                        this.goods = this.goods.concat(list);
+                    }
+                    this.mescroll.endSuccess(list.length, isNextPage);
+                    if(!this.goods.length && !this.pddGoods.length && this.is_pdd == 3) {
+                        this.isEmpty = true;
                         this.isRecommendRequest = true;
                         this.requestRem(page);
                         return;
                     }
+                    if(!isNextPage && this.is_pdd < 3) {
+                        this.is_pdd += 1;
+                        this.searchPageNum = 1;
+                        this.mescroll.triggerUpScroll();
+                    }
                 }).catch(()=>{ this.mescroll.endErr() });
-            } else {
-                this.requestRem(page);
+                return;
             }
+            this.requestRem(page);
         },
         async requestRem(page) {
             if(!this.groupRecommendData) {
@@ -297,11 +335,11 @@ export default {
         },
         toSearchHandle() {
             if(this.searchValue) {
-                this.$redirectTo(`/pages/homeModule/productList/search?inputValue=${this.searchValue}`);
+                this.$redirectTo(`/pages/homeModule/productList/search?inputValue=${this.searchValue}&is_rebate=${this.is_rebate}`);
                 return;
             }
             const placeholderValue = this.textList.length ? this.textList[this.currentIndex] : '';
-            this.$redirectTo(`/pages/homeModule/productList/search?placeholderValue=${placeholderValue}`);
+            this.$redirectTo(`/pages/homeModule/productList/search?placeholderValue=${placeholderValue}&is_rebate=${this.is_rebate}`);
         },
         // 搜索按钮
         searchRequireHandle() {
@@ -426,5 +464,11 @@ page {
     // background: rgba($color: #f7f7f7, $alpha: .8);
     // background: linear-gradient(180deg,#ffffff, #f7f7f7 12%);
     // border-radius: 32rpx 32rpx 0rpx 0rpx;
+}
+.list_lab {
+    font-size: 26rpx;
+    margin: 28rpx 0;
+    color: #999;
+    text-align: center;
 }
 </style>

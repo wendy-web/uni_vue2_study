@@ -24,17 +24,21 @@ export function isVideoFile(item) {
     }
     return false;
 }
+
 function formatImage(res) {
     return res.tempFiles.map((item) => (Object.assign(Object.assign({}, pickExclude(item, ['path'])), { type: 'image', url: item.tempFilePath, thumb: item.tempFilePath })));
 }
+
 function formatVideo(res) {
     return [
         Object.assign(Object.assign({}, pickExclude(res, ['tempFilePath', 'thumbTempFilePath', 'errMsg'])), { type: 'video', url: res.tempFilePath, thumb: res.thumbTempFilePath }),
     ];
 }
+
 function formatMedia(res) {
     return res.tempFiles.map((item) => (Object.assign(Object.assign({}, pickExclude(item, ['fileType', 'thumbTempFilePath', 'tempFilePath'])), { type: res.type, url: item.tempFilePath, thumb: res.type === 'video' ? item.thumbTempFilePath : item.tempFilePath })));
 }
+
 function formatFile(res) {
     return res.tempFiles.map((item) => (Object.assign(Object.assign({}, pickExclude(item, ['path'])), { url: item.path })));
 }
@@ -79,5 +83,5 @@ export function chooseFile({ accept, multiple, capture, compressed, maxDuration,
                 wx.chooseMessageFile(Object.assign(Object.assign({ count: multiple ? maxCount : 1, type: accept }, (extension ? { extension } : {})), { success: (res) => resolve(formatFile(res)), fail: reject }));
                 break;
         }
-    });
+    }).catch((e) => {});
 }

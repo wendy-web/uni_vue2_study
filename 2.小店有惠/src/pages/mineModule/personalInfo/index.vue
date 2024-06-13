@@ -121,12 +121,11 @@
 </template>
 
 <script>
-import { compareVersion } from "@/utils/index.js";
+import { compareVersion, parseTime } from "@/utils/index.js";
 import uploadImgAI from "@/utils/uploadImgAI.js";
-import { getAstro, constellationObj } from "./utils/index.js";
-import { parseTime } from "@/utils/index.js";
-import { mapGetters, mapActions, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import confirmDia from "./confirmDia.vue";
+import { constellationObj, getAstro } from "./utils/index.js";
 let is_hide = false; //page 是否onHide过
 export default {
     components: {
@@ -202,7 +201,7 @@ export default {
         this.editUserInfo(params);
       } catch (error) {
         console.log(error);
-        wx.hideLoading();
+        wx.hideLoading({fail() {}});
         if (error && error.isRefresh) {
           // 刷新token
           this.wxloginSmall().then((res) => {});
@@ -242,7 +241,7 @@ export default {
         };
         this.editUserInfo(params);
       } catch (error) {
-        wx.hideLoading();
+        wx.hideLoading({fail() {}});
         if (error && error.isRefresh) {
           this.wxloginSmall().then((res) => {});
         }

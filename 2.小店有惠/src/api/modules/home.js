@@ -1,12 +1,15 @@
 import { getPlatform } from "@/utils/auth.js";
 import API from '../xhHttp.js';
 const platform = getPlatform();
-//商品分组
-export function goodsGroup() {
+// 商品分组
+export function goodsGroup(data) {
     return API.request({
         url: '/api/goods/group',
         method: 'post',
-        data: { device: platform }
+        data: {
+            device: platform,
+            ...data
+        }
     });
 }
 // 商品列表
@@ -72,6 +75,24 @@ export function singleton(data) {
 export function userPosition(data) {
     return API.request({
         url: '/api/User/userPosition',
+        method: 'post',
+        data
+    });
+}
+
+// 开屏广告配置
+export function advertisementConfig(data) {
+    return API.request({
+        url: '/api/post/advertisementConfig',
+        method: 'post',
+        data
+    });
+}
+
+// 京东的更新
+export function overDo(data) {
+    return API.request({
+        url: '/api/goods/overDo',
         method: 'post',
         data
     });

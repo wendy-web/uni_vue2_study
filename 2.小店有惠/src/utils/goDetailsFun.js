@@ -1,6 +1,5 @@
 import { goodsXq } from "@/api/modules/home.js";
-import { bysubunionid } from '@/api/modules/jsShop.js';
-import { goodsPromotion } from '@/api/modules/pddShop.js';
+import { lxTypeStatusCheckout } from "@/utils/goDetailCommonFun.js";
 import { mapGetters, mapMutations } from "vuex";
 const goDetailsFun = {
     data() {
@@ -13,6 +12,40 @@ const goDetailsFun = {
         ...mapMutations({
             setMiniProgram: "user/setMiniProgram",
         }),
+        configurationDiaHandle(item) {
+            if (!this.isAutoLogin) return this.$go('/pages/login/index');
+            const {
+                lx_type,
+                type,
+                type_id,
+                type_sid,
+                coupon_id_android,
+                open_mini_type,
+                is_rebate
+            } = item;
+            switch (type) {
+                case 1:
+                    this.requestGoodXq_mixins(coupon_id_android, 1);
+                    break;
+                case 2:
+                    // 小程序
+                    const openMiniProgram = (open_mini_type == 2) ? this.$openEmbeddedMiniProgram : this.$navigateToMiniProgram;
+                    openMiniProgram({
+                        appId: type_id,
+                        path: type_sid,
+                        // envVersion: 'trial',
+                        success(res) {
+                            // 打开成功
+                        }
+                    });
+                    break;
+                case 3:
+                    if (is_rebate) return this.rebateDetail(item, 1);
+                    if ([2, 3].includes(Number(lx_type))) this.lxTypeJdFun(item);
+                    break;
+            }
+
+        },
         detailsFun_mixins(item, index = null) {
             if (!this.isAutoLogin) return this.$go('/pages/login/index');
             const {
@@ -23,8 +56,10 @@ const goDetailsFun = {
                 is_banner,
                 type,
                 type_id,
-                type_sid
+                type_sid,
+                is_rebate
             } = item;
+            if (is_rebate == 1) return this.rebateDetail(item); // 去推广详情页
             if ([2, 3].includes(Number(lx_type))) return this.lxTypeJdFun(item, index);
             const item_id = coupon_id || id;
             if (is_jump == 2) return this.goCouponDetails(item_id);
@@ -39,6 +74,21 @@ const goDetailsFun = {
                 return goodList;
             }
         },
+        async rebateDetail(item, is_popover = 0) {
+            // 检测商品是否存在进入
+            const res = await lxTypeStatusCheckout(item);
+            if (res.code != 1) return;
+            const { lx_type, goods_sign, skuId, positionId, rebate } = item;
+            this.$go(`/pages/cardModule/spreadDetail/index?lx_type=${lx_type}&goods_sign=${goods_sign || 0}&skuId=${skuId ||0}&queryId=${goods_sign || skuId}&positionId=${positionId}&rebate=${rebate}&is_popover=${is_popover}`);
+        },
+        // 赚钱推广分享页
+        async spreadHandle(item) {
+            // 检测商品是否存在进入
+            const res = await lxTypeStatusCheckout(item);
+            if (res.code != 1) return;
+            const { goods_sign, rebate, skuId } = item;
+            this.$go(`/pages/cardModule/spreadDetail/saveType?goods_sign=${goods_sign || 0}&skuId=${skuId || 0}&rebate=${rebate}`);
+        },
         async lxTypeJdFun(item, index) {
             if (!this.isAutoLogin) return this.$go('/pages/login/index');
             let {
@@ -46,9 +96,6 @@ const goDetailsFun = {
                 cid3,
                 skuId,
                 positionId,
-                isJdLink,
-                link,
-                is_popover = 0,
                 is_flow,
                 lx_type,
                 goods_sign,
@@ -76,27 +123,9 @@ const goDetailsFun = {
                 });
                 return;
             }
-
-
-            const params = { positionId };
-            let api = '';
-            if (lx_type == 3) {
-                api = goodsPromotion;
-                params.goods_sign = goods_sign;
-            } else {
-                api = bysubunionid;
-                params.skuId = skuId;
-                params.is_popover = is_popover;
-                params.has_coupon = has_coupon || 0;
-                isJdLink && (params.link = link);
-            }
-            const skuRes = await api(params);
+            const skuRes = await lxTypeStatusCheckout(item);
             // 商品已下架
-            if (skuRes.code == 0 || !skuRes.data) {
-                this.$toast(skuRes.msg);
-                this.$emit('deleteBysubunionid', index);
-                return;
-            }
+            if (skuRes.code == 0 || !skuRes.data) return this.$emit('deleteBysubunionid', index);
             type_id = skuRes.data.type_id;
             mobile_url = skuRes.data.mobile_url;
             jdShareLink = skuRes.data.jdShareLink;

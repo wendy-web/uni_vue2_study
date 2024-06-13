@@ -7,8 +7,8 @@
 global['__wxVueOptions'] = {components:{}}
 
 global['__wxRoute'] = 'Kujiale-Mobile-painter/painter'
-import Pen from './lib/pen';
 import Downloader from './lib/downloader';
+import Pen from './lib/pen';
 
 const util = require('./lib/util');
 
@@ -179,7 +179,7 @@ Component({
         if (preCount === 0) {
           resolve(paletteCopy);
         }
-      });
+      }).catch((e) => {});
     },
 
     saveImgToLocal() {

@@ -57,7 +57,9 @@ const mutations = {
         state.gift = gift;
     },
     setDiaList(state, daiName) {
-        state.diaList.push(daiName)
+        const daiIndex = state.diaList.findIndex(item => item == daiName);
+        if (daiIndex >= 0) return; // 原本数组中包含此内容
+        state.diaList.push(daiName);
     },
     delCurrentDiaList(state, daiName) {
         if (daiName) {
@@ -76,11 +78,6 @@ const mutations = {
     },
     setUserInfo(state, userInfo) {
         state.userInfo = userInfo;
-        // state.userInfo = {
-        //     ...userInfo,
-        //     is_team: 0
-        // };
-
     },
     setVipObject(state, vipObject) {
         state.vipObject = vipObject;
@@ -105,15 +102,13 @@ const actions = {
     /* 用户登录 */
     wxlogin({ commit, state }) {
         return new Promise((resolve, reject) => {
-            //存在token不刷新，让程序自动去刷新
-            if (state.token) {
-                return resolve();
-            }
+            // 存在token不刷新，让程序自动去刷新
+            if (state.token) return resolve();
             //微信登录
             uni.login({
                 provider: "weixin",
                 success: ({ code }) => {
-                    //传给后端
+                    // 传给后端
                     wxLogin({ code })
                         .then((res) => {
                             if (res.code == 1) {
@@ -149,16 +144,16 @@ const actions = {
                     });
                 },
             });
-        });
+        }).catch((e) => {});
     },
     /*用户登录*/
     wxloginSmall({ commit }) {
         return new Promise((resolve, reject) => {
-            //微信登录
+            // 微信登录
             uni.login({
                 provider: "weixin",
                 success: ({ code }) => {
-                    //传给后端
+                    // 传给后端
                     wxLogin({
                             code: code,
                         })
@@ -189,7 +184,7 @@ const actions = {
                     });
                 },
             });
-        });
+        }).catch((e) => {});
     },
     //获取用户信息
     getUserInfo({ commit }) {
@@ -205,54 +200,46 @@ const actions = {
         if (res.code != 1 || !res.data) return;
         commit("setVipObject", res.data);
     },
-    //新用户更新
+    // 新用户更新
     updateUserNew({ dispatch, commit }, parmas) {
         return new Promise((resolve, reject) => {
-            //传给后端
-            userprofile(parmas)
-                .then((res) => {
-                    if (res.code == 1) {
-                        //重新获取用户信息
-                        dispatch("getUserInfo", false);
-                        commit("setAuthorization", true);
-                        return resolve();
-                    }
-                    //异常情况
-                    uni.showModal({
-                        title: "温馨提示",
-                        content: res.msg,
-                    });
-                    reject();
-                })
-                .catch(() => {
-                    reject();
+            // 传给后端
+            userprofile(parmas).then((res) => {
+                if (res.code == 1) {
+                    //重新获取用户信息
+                    dispatch("getUserInfo", false);
+                    commit("setAuthorization", true);
+                    return resolve();
+                }
+                //异常情况
+                uni.showModal({
+                    title: "温馨提示",
+                    content: res.msg,
                 });
-        });
+                reject();
+            }).catch(() => reject());
+        }).catch((e) => {});
     },
-    //新用户更新
+    // 新用户更新
     updateMobile({ dispatch }, parmas) {
         const { code, hideModel } = parmas;
         const params = { code }
         return new Promise((resolve, reject) => {
-            //传给后端
-            saveMobile(params)
-                .then((res) => {
-                    if (res.code == 1) {
-                        //重新获取用户信息
-                        dispatch("getUserInfo");
-                        return resolve();
-                    }
-                    // 异常情况
-                    !hideModel && uni.showModal({
-                        title: "温馨提示",
-                        content: res.msg,
-                    });
-                    reject();
-                })
-                .catch(() => {
-                    reject();
+            // 传给后端
+            saveMobile(params).then((res) => {
+                if (res.code == 1) {
+                    //重新获取用户信息
+                    dispatch("getUserInfo");
+                    return resolve();
+                }
+                // 异常情况
+                !hideModel && uni.showModal({
+                    title: "温馨提示",
+                    content: res.msg,
                 });
-        });
+                reject();
+            }).catch(() => reject());
+        }).catch((e) => {});
     },
 };
 

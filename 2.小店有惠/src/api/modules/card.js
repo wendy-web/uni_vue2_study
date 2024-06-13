@@ -109,3 +109,21 @@ export function inviteXq(data) {
         data
     });
 }
+
+// 详情内容获取
+export function goodsDetails(data) {
+    return API.request({
+        url: '/api/pinduoduo/goodsDetails',
+        method: 'post',
+        data
+    });
+}
+
+// 分享
+export function goodsExtend(data) {
+    return API.request({
+        url: `/api/pinduoduo/goodsExtend`,
+        method: 'post',
+        data
+    });
+}

@@ -1,8 +1,9 @@
-import { useParent } from '../common/relation';
 import { VantComponent } from '../common/component';
-function emit(target, value) {
-    target.$emit('input', value);
-    target.$emit('change', value);
+import { useParent } from '../common/relation';
+
+function emit(target, value, range, currentIndex) {
+    target.$emit('input', { value, range, currentIndex });
+    target.$emit('change', { value, range, currentIndex });
 }
 VantComponent({
     field: true,
@@ -13,6 +14,7 @@ VantComponent({
         disabled: Boolean,
         useIconSlot: Boolean,
         checkedColor: String,
+        currentIndex: Number,
         labelPosition: {
             type: String,
             value: 'right',
@@ -32,29 +34,29 @@ VantComponent({
         direction: 'vertical',
     },
     methods: {
-        emitChange(value) {
+        emitChange(value, range) {
             if (this.parent) {
-                this.setParentValue(this.parent, value);
-            }
-            else {
-                emit(this, value);
+                this.setParentValue(this.parent, value, range);
+            } else {
+                const { currentIndex } = this.data;
+                emit(this, value, range, currentIndex);
             }
         },
-        toggle() {
+        toggle(event) {
             const { parentDisabled, disabled, value } = this.data;
             if (!disabled && !parentDisabled) {
-                this.emitChange(!value);
+                this.emitChange(!value, 'icon');
             }
         },
-        onClickLabel() {
+        onClickLabel(event) {
             const { labelDisabled, parentDisabled, disabled, value } = this.data;
             if (!disabled && !labelDisabled && !parentDisabled) {
-                this.emitChange(!value);
+                this.emitChange(!value, 'cont');
             }
         },
-        setParentValue(parent, value) {
+        setParentValue(parent, value, range) {
             const parentValue = parent.data.value.slice();
-            const { name } = this.data;
+            const { name, currentIndex } = this.data;
             const { max } = parent.data;
             if (value) {
                 if (max && parentValue.length >= max) {
@@ -62,14 +64,13 @@ VantComponent({
                 }
                 if (parentValue.indexOf(name) === -1) {
                     parentValue.push(name);
-                    emit(parent, parentValue);
+                    emit(parent, parentValue, range, currentIndex);
                 }
-            }
-            else {
+            } else {
                 const index = parentValue.indexOf(name);
                 if (index !== -1) {
                     parentValue.splice(index, 1);
-                    emit(parent, parentValue);
+                    emit(parent, parentValue, range, currentIndex);
                 }
             }
         },

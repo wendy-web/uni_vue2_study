@@ -56,9 +56,8 @@
       <view class="week-month-tab">
         <view
           class="wm-item"
-          :class="{ 'wm-active': wmIndex == index }"
-          v-for="(item, index) in weekMonthTab"
-          :key="index"
+          :class="{'wm-active': wmIndex == index}"
+          v-for="(item, index) in weekMonthTab" :key="index"
           @click="profitChartRequest(index)"
         >{{ item.name }}
         </view>
@@ -76,7 +75,7 @@
 
     <!-- 收益明细 -->
     <view class="stick-box" id="sticky-view" :style="'top:' + topHeight + 'px;'" >
-      <view class="income-title">
+      <view class="income-title" style="margin-top: 0;">
         <view class="it-pseudo-line">收益明细</view>
       </view>
       <!-- 本月收益 -->
@@ -104,22 +103,42 @@
     </view>
     <!-- 收益列表 -->
     <view class="income-list-box">
-      <view class="income-list-item" v-for="(item, index) in list" :key="index" >
-        <view class="ili-left">
-          <image
-            class="ili-avatar"
-            :src="item.avatar_url"
-            mode="aspectFit"
-            lazy-load
-          ></image>
-          <view class="ili-info">
-            <view class="ili-info-name">{{ item.nick_name }}</view>
-            <view class="ili-info-date">{{ item.create_time }}</view>
+      <view class="income-list-item" v-for="(item, index) in list" :key="index">
+        <view class="order_top fl_bet">
+          <view class="order_left">
+            <view class="order_copy" @click="copyHandle(item.third_order_id)">订单号：{{item.third_order_id}}</view>
+            <view style="margin-top: 12rpx;">下单时间：{{item.create_time}}</view>
           </view>
+          <view v-if="!item.order_status">订单退款</view>
         </view>
-        <view class="ili-right">
-          ¥{{ item.income }}
-          <view class="order_status" v-if="!item.order_status">订单退款</view>
+        <view class="order_cont" v-if="item.order_info">
+          <van-image
+            :src="productImg(item)"
+            use-loading-slot
+            width="172rpx" height="172rpx"
+            radius="8px"
+            use-error-slot
+            :show-menu-by-longpress="true"
+            fit="aspectFit"
+            class="order_cont-img"
+          >
+            <van-loading slot="loading" type="spinner" size="20" vertical />
+            <van-icon slot="error" color="#edeef1" size="20" name="photo-fail" />
+          </van-image>
+          <view class="ili-info fl_col_sp_bt">
+            <view class="ili-info-name txt_ov_ell1">{{ item.order_info.goods_sku_name }}</view>
+            <view class="price_box">
+              <view class="price_item">
+                <view class="price_num" style="color: #333;">{{ item.order_info.pay_amount }}</view>
+                订单金额
+              </view>
+              <view class="line"></view>
+              <view class="price_item">
+                <view :class="['price_num', !item.order_status ? 'active' : '']">{{item.income}}</view>
+                预估收益
+              </view>
+            </view>
+          </view>
         </view>
       </view>
     </view>
@@ -132,14 +151,16 @@
 </mescroll-body>
 </template>
 <script>
-import { formatAmount } from "@/utils/index";
-import uniEcCanvas from "../components/uni-ec-canvas/uni-ec-canvas";
-import datetimePopup from "../components/datetimePopup.vue";
-import chartOption from "./chartOption.js";
+import { profitChart, profitDetail } from "@/api/modules/card.js";
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { profitChart, profitDetail } from "@/api/modules/card.js";
-import { mapGetters, mapActions } from "vuex";
+import { formatAmount } from "@/utils/index";
+import { mapActions, mapGetters } from "vuex";
+import datetimePopup from "../components/datetimePopup.vue";
+import uniEcCanvas from "../components/uni-ec-canvas/uni-ec-canvas";
+import chartOption from "./chartOption.js";
+import { haiWeiObj } from './config';
+
 export default {
   name: "cardEarnings",
   mixins: [MescrollMixin],
@@ -159,6 +180,7 @@ export default {
       navbarColor: "linear-gradient(45deg,#f04037,#f05b37)",
       titleColor: "#FFFFFF",
       title: "团长收益",
+
       weekMonthTab: [
         {
           name: "近7天",
@@ -195,12 +217,25 @@ export default {
     ...mapActions({
         getVipObject: "user/getVipObject",
     }),
+    productImg(item) {
+      const { goods_imgs, pay_way } = item.order_info;
+      if(goods_imgs) return goods_imgs;
+			return (haiWeiObj[pay_way] && haiWeiObj[pay_way].product_img) || '122';
+		},
+    copyHandle(copyCont) {
+      uni.setClipboardData({
+        data: copyCont,
+        complete:(complete) => {
+          this.$toast('复制成功');
+        }
+      });
+    },
     formatPrice(price) {
       price = Number(price).toFixed(2);
       let splitPrice = price.split(".");
       let amount = formatAmount(splitPrice[0]);
       //2.重新赋值
-      return `<span style="font-weight:500;font-size: 28px">${amount}.<span style="font-size: 18px;">${splitPrice[1]}</span></span>`;
+      return `<span style="font-weight: 600;font-size: 28px">${amount}.<span style="font-size: 18px;">${splitPrice[1]}</span></span>`;
     },
     getCurrentDay() {
       const date = new Date();
@@ -243,12 +278,11 @@ export default {
       };
       profitDetail(params).then(res => {
         if(res.code != 1) return;
-        if (page.num == 1) {
-          this.list = [];
-        }
+        if (page.num == 1) this.list = [];
         const { list, total_profit, total_count } = res.data;
         this.total_profit = total_profit;
         this.list = this.list.concat(list); // 追加新数据
+
         this.mescroll.endBySize(list.length, total_count);
       }).catch(() => this.mescroll.endErr());
     },
@@ -270,7 +304,8 @@ export default {
     width: auto;
     height: auto;
     overflow: scroll;
-    background: unset;
+    background: #F5F6FA;
+    // background: unset;
     > view {
       height: auto;
       overflow: auto;
@@ -312,7 +347,7 @@ export default {
     box-sizing: border-box;
     padding: 0 32rpx;
     height: 160rpx;
-    border-bottom: 14rpx solid #f5f6fa;
+    background: #fff;
     .te-item {
       text-align: center;
       position: relative;
@@ -330,8 +365,8 @@ export default {
       .te-num {
         margin-top: 10rpx;
         font-size: 36rpx;
-        font-weight: 500;
-        color: #333333;
+        font-weight: 600;
+        color: #333;
       }
     }
     .te-pseudo-line::before {
@@ -362,10 +397,12 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 14rpx;
+    background: #fff;
     .it-pseudo-line {
       font-size: 32rpx;
-      font-weight: 500;
-      color: #333333;
+      font-weight: 600;
+      color: #333;
       position: relative;
       padding-left: 14rpx;
     }
@@ -384,7 +421,7 @@ export default {
       align-items: center;
       .wm-item {
         font-size: 26rpx;
-        color: #333333;
+        color: #333;
         margin-left: 14rpx;
         padding: 6rpx 18rpx;
         box-sizing: border-box;
@@ -397,18 +434,18 @@ export default {
   }
   .stick-box {
     position: sticky;
-    background-color: #ffffff;
     padding-bottom: 28rpx;
-    border-top: 14rpx solid #f5f6fa;
-    border-bottom: 2rpx solid #f1f1f1;
+    background: #fff;
+    z-index: 1;
   }
   .echart-box {
     box-sizing: border-box;
-    height: 600rpx;
+    height: 300rpx;
     width: 100%;
     padding: 0 20rpx;
     position: relative;
     z-index: 0;
+    background: #fff;
   }
   .current-income-box {
     display: flex;
@@ -422,11 +459,10 @@ export default {
     box-sizing: border-box;
     .ci-left {
       font-size: 28rpx;
-      color: #333333;
+      color: #333;
       .ci-money {
         font-size: 40rpx;
-        font-weight: 500;
-        color: #333333;
+        font-weight: 600;
       }
     }
     .ci-right {
@@ -450,51 +486,87 @@ export default {
   }
   .income-list-box {
     box-sizing: border-box;
-    padding: 0 32rpx 0 46rpx;
+    padding: 20rpx 32rpx;
+    background: #F5F6FA;
     // padding-bottom: calc(20rpx + constant(safe-area-inset-bottom));
     // padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
     .income-list-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 30rpx 0 10rpx;
-      .ili-left {
-        display: flex;
-        .ili-avatar {
-          width: 72rpx;
-          height: 72rpx;
-          border-radius: 50%;
-          background: #d8d8d8;
-        }
-        .ili-info {
-          margin-left: 16rpx;
-          .ili-info-name {
-            font-size: 28rpx;
-            color: #333333;
-          }
-          .ili-info-date {
-            font-size: 28rpx;
-            font-weight: 400;
-            color: #cccccc;
-          }
+      padding: 20rpx;
+      background: #fff;
+      border-radius: 16rpx;
+      margin-bottom: 20rpx;
+      .order_top {
+        font-size: 26rpx;
+        color: #999;
+        padding-bottom: 20rpx;
+        border-bottom: 2rpx solid #f5f4f4e6;
+        .order_left {
+          color: #aaa;
         }
       }
-      .ili-right {
-        font-size: 28rpx;
-        font-weight: 400;
-        color: #333333;
-        text-align: right;
-        .order_status{
-          font-size: 22rpx;
-          color: #F04637;
+      .order_cont {
+        display: flex;
+        margin-top: 20rpx;
+        .order_cont-img {
+          width: 172rpx;
+          height: 172rpx;
+        }
+        .ili-info {
+          margin-left: 20rpx;
+          width: 0;
+          flex: 1;
+          .ili-info-name {
+            font-size: 32rpx;
+            color: #333;
+          }
+          .price_box {
+            background: #f6f6f6;
+            border-radius: 8rpx;
+            display: flex;
+            align-items: center;
+            padding: 16rpx 0;
+            .price_item {
+              width: 50%;
+              text-align: center;
+              color: #999;
+              font-size: 26rpx;
+              .price_num {
+                font-size: 32rpx;
+                font-weight: bold;
+                color: #EF2B20;
+                &.active {
+                  color: #999;
+                }
+                &::before {
+                  content: '￥';
+                  font-size: 24rpx;
+                }
+              }
+            }
+            .line {
+              width: 2rpx;
+              height: 52rpx;
+              background: #e1e1e1;
+            }
+          }
         }
       }
     }
   }
-  // 适配底部的导航条
-  .mescroll-body.mescorll-sticky {
-    padding-bottom: calc(20rpx + constant(safe-area-inset-bottom)) !important;
-    padding-bottom: calc(20rpx + env(safe-area-inset-bottom)) !important;
-    box-sizing: border-box;
+// 适配底部的导航条
+.mescroll-body.mescorll-sticky {
+  padding-bottom: calc(20rpx + constant(safe-area-inset-bottom)) !important;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom)) !important;
+  box-sizing: border-box;
+}
+.order_copy {
+  &::after {
+    content: '';
+    width: 24rpx;
+    height: 24rpx;
+    background: url("https://file.y1b.cn/store/1-0/24530/66583e2a99bb5.png")  0 0 / 100% 100% no-repeat;
+    display: inline-block;
+    margin-left: 18rpx;
   }
+}
 </style>

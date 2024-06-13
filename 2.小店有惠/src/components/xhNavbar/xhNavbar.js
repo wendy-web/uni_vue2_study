@@ -49,5 +49,5 @@ export function getNavbarData() {
             }
         });
 
-    });
+    }).catch((e) => {});
 }

@@ -1,38 +1,39 @@
 import Vue from 'vue';
-import { getAuthorization } from '../auth.js';
 import {
-    go,
     back,
-    redirectTo,
+    go,
     reLaunch,
+    redirectTo,
     switchTab
 } from "./navigation";
 import {
-    showToast,
+    hideLoading,
+    hideNavigationBarLoading,
     hideToast,
     showLoading,
-    hideLoading,
-    showNavigationBarLoading,
-    hideNavigationBarLoading,
     showModal,
+    showNavigationBarLoading,
+    showToast,
 } from "./toast";
 
 import {
-    storageRead,
-    storageSave,
-    storageRemove,
-    storageClear,
+    makePhoneCall,
     setNavigationBarTitle,
     stopPullDownRefresh,
-    makePhoneCall,
+    storageClear,
+    storageRead,
+    storageRemove,
+    storageSave,
 } from "./util";
 
 import {
-    wxReportEvent,
-    openEmbeddedMiniProgram,
-    navigateToMiniProgram,
     agreementLookHandle,
-    subscribeMessageHandle
+    downloadFile,
+    navigateToMiniProgram,
+    openEmbeddedMiniProgram,
+    saveImageToPhotosAlbum,
+    subscribeMessageHandle,
+    wxReportEvent
 } from './method.js';
 
 // 路由跳转
@@ -72,3 +73,5 @@ Vue.prototype.$openEmbeddedMiniProgram = openEmbeddedMiniProgram;
 Vue.prototype.$navigateToMiniProgram = navigateToMiniProgram;
 Vue.prototype.$agreementLookHandle = agreementLookHandle;
 Vue.prototype.$subscribeMessageHandle = subscribeMessageHandle;
+Vue.prototype.$saveImageToPhotosAlbum = saveImageToPhotosAlbum;
+Vue.prototype.$downloadFile = downloadFile;

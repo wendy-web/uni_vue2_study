@@ -13,7 +13,7 @@
         <image class="search_icon" src="../static/search_icon.png" mode="aspectFill"></image>
         <van-field
             :value="inputValue"
-            :placeholder="placeholderValue || '请搜索喜欢的商品'"
+            :placeholder="placeholderValue || (is_rebate ? '搜你想推广的商品' : '请搜索喜欢的商品')"
             :border="false"
             @confirm="confirmHandle"
             @change="inputValueChange"
@@ -27,13 +27,11 @@
 </xh-navbar>
 <scroll-view
     :style="{height: mescrollHeight}"
-    scroll-y="true"
-    class="keyword_box"
+    scroll-y="true"class="keyword_box"
     v-if="keywordList.length"
 >
     <view class="keyword_item"
-        v-for="(item, index) in keywordList"
-        :key="index"
+        v-for="(item, index) in keywordList" :key="index"
     >
         <view v-html="brightenKeyword(item.key)" @click="searchBtnHandle(item.key)"></view>
     </view>
@@ -47,7 +45,7 @@
     @up="upCallback"
     :up="upOption"
 >
-    <view class="search_lab">搜京东优惠，比官方更便宜</view>
+    <view class="search_lab">{{ is_rebate ? '搜商品，赚佣金' : '搜拼多多商品，比官方更便宜' }} </view>
     <!-- search的关键字 -->
     <view class="search_cont" v-if="searList.length">
         <view class="sear_his">搜索历史</view>
@@ -133,6 +131,7 @@ export default {
             },
             isFocus: false,
 			groupRecommendData: null,
+            is_rebate: ''
         };
     },
     async onLoad(option) {
@@ -142,9 +141,13 @@ export default {
         if(option.placeholderValue){
             this.placeholderValue = option.placeholderValue;
         }
+        if(option.is_rebate) {
+            this.is_rebate = option.is_rebate;
+        };
     },
     onShow() {
         this.isFocus = true;
+        if(this.inputValue) this.inputValueChange({ detail: this.inputValue});
     },
     methods: {
         blurHandle() {
@@ -165,7 +168,7 @@ export default {
             }
             this.isShowNext = false;
         },
-        async inputValueChange({detail}) {
+        async inputValueChange({ detail }) {
             this.inputValue = detail;
             const res = await keyword({keyword: detail});
             this.keywordList = res.data;
@@ -204,9 +207,11 @@ export default {
         },
         searchBtnHandle(item) {
             const inputValue = item || this.inputValue.trim() || this.placeholderValue;
-            this.$go(`/pages/homeModule/productList/index?searchValue=${inputValue}`);
+            if(!inputValue) return this.isFocus = false;
+            this.$go(`/pages/homeModule/productList/index?searchValue=${inputValue}&is_rebate=${this.is_rebate}`);
         },
         leftCallBack(){
+            if(this.is_rebate) return this.$back();
             this.$switchTab('/pages/home/index');
         }
     },

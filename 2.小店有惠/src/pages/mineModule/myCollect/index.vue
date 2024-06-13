@@ -29,14 +29,29 @@
             </van-image>
             <view>
               <view class="list-item-title">
-                <view class="name_icon" v-if="item.face_value && item.credits">
-                    <image class="bg_img" mode="scaleToFill" src="https://file.y1b.cn/store/1-0/24131/65ba3900d759c.png" ></image>
-                    抵{{ item.face_value}}元{{item.lx_type == 2 ? '券' : ''}}
+                <view class="name_icon" v-if="item.face_value && item.is_rebate">
+                  <image class="bg_img" mode="scaleToFill"
+                    src="https://file.y1b.cn/store/1-0/24131/65ba3900d759c.png"></image>
+                  {{ item.face_value}}元券
+                </view>
+                <view class="name_icon" v-else-if="item.face_value && item.credits">
+                  <image class="bg_img" mode="scaleToFill"
+                    src="https://file.y1b.cn/store/1-0/24131/65ba3900d759c.png"></image>
+                  抵{{ item.face_value}}元{{item.lx_type == 2 ? '券' : ''}}
                 </view>
                 {{ item.goods_name }}
               </view>
+              <view class="fl_bet rebate_cont" v-if="item.is_rebate">
+                <view :class="['item_price fl_center', item.face_value ? 'active' : '']">
+                    <view v-html="formatItemPrice(item.lowestCouponPrice, 1)"></view>
+                    <view class="item_price-lab" v-if="item.face_value">¥{{item.sale_price}}</view>
+                </view>
+                <view class="item_btn fl_center" @click.stop="spreadHandle(item)">
+                    <view v-html="formatItemPrice(item.rebateMoney, 2)"></view>
+                </view>
+              </view>
               <!-- 价格+积分抵扣 -->
-              <view class="price-info">
+              <view class="price-info" v-else>
                 <text class="credit_text">{{ item.deduction_credits || item.credits }}积分</text>
                 <!-- <text class="price_text" v-if="item.lx_type == 2">+￥{{ item.price }}</text>
                 <text class="price_text" v-else>+￥{{ item.sale_price }}</text> -->
@@ -64,6 +79,7 @@ import { bysubunionid, toggleCollect } from '@/api/modules/jsShop.js';
 import { collectList, doCollect } from "@/api/modules/mine.js";
 import { goodsPromotion, toggleCollect as pddToggleCollect, } from '@/api/modules/pddShop.js';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { lxTypeStatusCheckout } from "@/utils/goDetailCommonFun.js";
 import { mapMutations } from 'vuex';
 export default {
   mixins: [MescrollMixin],
@@ -112,6 +128,7 @@ export default {
       let { detail, currentTarget } = event;
       if (detail == "cell") {
         let { id } = currentTarget.dataset;
+        if(item.is_rebate) return this.rebateDetail(item);
         if([2, 3].includes(Number(item.lx_type))) {
           const {
             skuId,
@@ -143,17 +160,42 @@ export default {
         this.$go("/pages/homeModule/productDetails/index?id=" + id);
       }
     },
+    async rebateDetail(item) {
+      const res = await lxTypeStatusCheckout(item);
+      if (res.code != 1) return;
+      const { lx_type, goods_sign, skuId, positionId, rebate } = item;
+      this.$go(`/pages/cardModule/spreadDetail/index?lx_type=${lx_type}&goods_sign=${goods_sign || 0}&skuId=${skuId ||0}&queryId=${goods_sign || skuId}&positionId=${positionId}&rebate=${rebate}`);
+    },
+    async spreadHandle(item) {
+      const res = await lxTypeStatusCheckout(item);
+      if (res.code != 1) return;
+      const {goods_sign, rebate, skuId } = item;
+      this.$go(`/pages/cardModule/spreadDetail/saveType?goods_sign=${goods_sign || 0}&skuId=${skuId || 0}&rebate=${rebate}`);
+    },
+    formatItemPrice(price = 0, type) {
+      let dom= '';
+      switch(type) {
+        case 1:
+          dom = `<span style="font-weight:600;font-size: 13px;">¥<span style="font-size: 20px;">${price}</span></span>`;
+          break;
+        default:
+          dom = `<span style="font-weight:600;font-size: 10px;">¥<span style="font-size: 18px;">${price}</span></span>`;
+          break;
+      }
+      return dom;
+    },
     async toggleCollect(item) {
-      const { id, skuId, lx_type, goods_sign, goods_id } = item;
-      let params = {};
+      const { id, skuId, lx_type, goods_sign, goods_id, is_rebate } = item;
+      let params = { is_rebate};
       let api = doCollect;
       switch(lx_type) {
         case 2:
-          params = { skuId };
+          params.skuId = skuId;
           api = toggleCollect;
           break;
         case 3:
-          params = { goods_sign, goods_id};
+          params.goods_sign = goods_sign;
+          params.goods_id = goods_id;
 					api = pddToggleCollect;
           break;
         default:
@@ -284,6 +326,54 @@ page {
     width: 100%;
     height: 100%;
     z-index: -1;
+  }
+}
+.rebate_cont {
+  margin-top: 34rpx;
+}
+.item_price{
+  font-size: 26rpx;
+  text-align: center;
+  color: #e7331b;
+  line-height: 50rpx;
+  font-weight: bold;
+  position: relative;
+  z-index: 0;
+  align-self: stretch;
+  &.active::before {
+    content: '券后';
+    font-size: 26rpx;
+    margin-right: 8rpx;
+    font-weight: normal;
+  }
+  .item_price-lab {
+    margin-left: 8rpx;
+    opacity: 0.45;
+    font-size: 26rpx;
+    text-decoration:  line-through;
+  }
+  &::after {
+    content: '\3000';
+    width: 412rpx;
+    height: 100%;
+    background: linear-gradient(90deg,rgba(255,242,242,0.00), #fde1e0 90%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+}
+.item_btn {
+  padding: 0 12rpx;
+  height: 64rpx;
+  background: #EF2B20;
+  border-radius: 12rpx;
+  color: #fff;
+  position: relative;
+  &::before {
+      content: '赚';
+      font-size: 26rpx;
+      margin-right: 10rpx;
   }
 }
 </style>

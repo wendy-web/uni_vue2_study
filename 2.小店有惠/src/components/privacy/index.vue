@@ -42,15 +42,14 @@ const closeOtherPagePopUp = (closePopUp) => {
   })
 }
 import {
-    mapGetters,
-    mapMutations,
-    mapActions
+  mapGetters,
+  mapMutations
 } from 'vuex';
 export default {
   data() {
     return {
-        innerShow: false,
-        privacyContractName: '《小店有惠小程序隐私保护指引》'
+      innerShow: false,
+      privacyContractName: '《小店有惠小程序隐私保护指引》'
     }
   },
   computed: {
@@ -69,23 +68,21 @@ export default {
     closeOtherPagePopUpHooks.add(closePopUp)
     this.closePopUp = closePopUp;
     if (wx.getPrivacySetting && !this.isAutoPrivacy) {
-        // console.log(' this.isAutoPrivacy',  this.isAutoPrivacy)
         this.setAutoPrivacy(true)
         wx.getPrivacySetting({
-            success: res => {
-                // console.log("是否需要授权：", res.needAuthorization, "隐私协议的名称为：", res.privacyContractName)
-                // console.log('this.diaList', this.diaList)
-                if (res.needAuthorization) {
-                    return this.popUp()
-                }
-                this.delCurrentDiaList('privacy')
-            },
-            fail: () => { },
-            complete: () => {},
+          success: res => {
+            // console.log("是否需要授权：", res.needAuthorization, "隐私协议的名称为：", res.privacyContractName)
+            if (res.needAuthorization) {
+              return this.popUp();
+            }
+            this.delCurrentDiaList('privacy');
+          },
+          fail: () => { },
+          complete: () => {},
         })
     } else {
-        this.delCurrentDiaList('privacy')
-        // 低版本基础库不支持 wx.getPrivacySetting 接口，隐私接口可以直接调用
+      this.delCurrentDiaList('privacy');
+      // 低版本基础库不支持 wx.getPrivacySetting 接口，隐私接口可以直接调用
     }
   },
   beforeDestroy() {
@@ -93,12 +90,12 @@ export default {
   },
   methods: {
     ...mapMutations({
-        setDiaList: "user/setDiaList",
         delCurrentDiaList: "user/delCurrentDiaList",
         setAutoPrivacy: "user/setAutoPrivacy",
     }),
     handleAgree(e) {
-      this.disPopUp()
+      this.$emit('agreePrivacy');
+      this.disPopUp();
       // 这里演示了同时调用多个wx隐私接口时要如何处理：让隐私弹窗保持单例，点击一次同意按钮即可让所有pending中的wx隐私接口继续执行 （看page/index/index中的 wx.getClipboardData 和 wx.startCompass）
       privacyResolves.forEach(resolve => {
         resolve({
@@ -118,30 +115,28 @@ export default {
       privacyResolves.clear()
     },
     popUp() {
-      if (this.innerShow === false) {
-        this.innerShow = true;
-        this.setDiaList('privacy');
-      }
+      if (this.innerShow) return;
+      this.innerShow = true;
     },
     disPopUp() {
-      if (this.innerShow === true) {
-        this.innerShow = false;
-        this.delCurrentDiaList('privacy');
-      }
+      if (!this.innerShow) return;
+      this.innerShow = false;
+      this.delCurrentDiaList('privacy');
     },
     // 打开翻看协议
     openPrivacyContract() {
       wx.openPrivacyContract({
         success: res => {
-          console.log('openPrivacyContract success')
         },
         fail: res => {
           console.error('openPrivacyContract fail', res)
         }
       })
     },
+    LoginShowPopUp() {
+      this.popUp();
+    },
     LifetimesShow() {
-      console.log('LifetimesShow :>> ', );
       if (this.closePopUp) {
         privacyHandler = resolve => {
           privacyResolves.add(resolve)

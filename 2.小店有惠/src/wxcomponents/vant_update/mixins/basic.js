@@ -5,7 +5,7 @@ export const basic = Behavior({
         },
         set(data) {
             this.setData(data);
-            return new Promise((resolve) => wx.nextTick(resolve));
+            return new Promise((resolve) => wx.nextTick(resolve)).catch((e) => {});;
         },
     },
 });

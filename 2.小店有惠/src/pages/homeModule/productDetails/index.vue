@@ -2,26 +2,21 @@
   <view class="product-details">
     <view class="product-details-top">
       <!-- 导航 -->
-      <view
-        class="nav-back"
+      <view class="nav-back" @click="navBack"
         :style="{ height: navBarHeight + 'px', top: topHeight + 'px' }"
-        @click="navBack"
       >
-        <image
-          class="nav-back-icon"
-          src="../static/left_icon.png"
-          mode="aspectFill"
-        />
+        <image class="nav-back-icon" mode="aspectFill"
+          src="../static/left_icon.png" />
       </view>
       <!-- 展示图片 -->
       <view class="swiper-wrap">
         <channel-video
-            :style="{width:screenWidth+'px',height:screenWidth+'px'}"
-            object-fit="contain" autoplay loop
-            :feed-id="config.video_account_id"
-            :finder-user-name="config.video_id"
-            @error="sphError"
-            v-if="config.video_account_id"
+          :style="{width:screenWidth+'px',height:screenWidth+'px'}"
+          object-fit="contain" autoplay loop
+          :feed-id="config.video_account_id"
+          :finder-user-name="config.video_id"
+          @error="sphError"
+          v-if="config.video_account_id"
         >
 					<!-- 商品图片 -->
 					<van-image
@@ -30,8 +25,7 @@
 						:height="screenWidth+'px'"
 						:src="config.picList[0]"
 						use-loading-slot
-					>
-						<van-loading slot="loading" type="spinner" size="20" vertical />
+					><van-loading slot="loading" type="spinner" size="20" vertical />
 					</van-image>
 				</channel-video>
         <swiper class="swiper" v-else
@@ -73,12 +67,8 @@
         </view>
          <!-- 收藏 -->
         <view class="is-collect" @click="collect">
-          <van-icon
-            v-if="config.is_collect === 1"
-            name="star"
-            size="36rpx"
-            color="#FFC654"
-          />
+          <van-icon name="star" size="36rpx" color="#FFC654"
+            v-if="config.is_collect === 1" />
           <van-icon v-else name="star-o" size="36rpx" color="#979797" />
           <view>{{ config.is_collect ? "已收藏" : "未收藏" }}</view>
         </view>
@@ -108,7 +98,7 @@
         :value="cz_number"
         :placeholder="placeholderText"
         :maxlength='config.cz_type == 1 ? 11 : -1'
-        custom-style="padding:20rpx 0 8rpx 0;font-size:32rpx;font-weight: 500;color:#333333;"
+        custom-style="padding:20rpx 0 8rpx 0;font-size:32rpx;font-weight: 500;color:#333;"
         placeholder-style="color:#aaaaaa;font-size:32rpx;font-weight: 500;"
         type="number"
         @change="fieldChange"
@@ -159,10 +149,8 @@
           立即购买
         </van-button>
         <!-- 先获取手机号码 - 再进行购买 -->
-        <van-button
-          v-else
-          type="danger"
-          open-type="getPhoneNumber"
+        <van-button v-else
+          type="danger" open-type="getPhoneNumber"
           @getphonenumber="buyBefore"
           :custom-style="btnStyle"
         >
@@ -320,14 +308,11 @@ export default {
     fieldChange(event) {
         this.cz_number = event.detail;
     },
-    buyBefore(e) {
+    buyBefore(event) {
         if(!this.isAutoLogin) return this.$go('/pages/login/index');
-        if(e.detail.code) {
-            this.updateMobile({ code: e.detail.code }).then(() => {
-            /**更新成功直接发起兑换 */
-            this.buyConfirm();
-            });
-            return;
+        if(event.detail.code) {
+          this.updateMobile({ code: event.detail.code }).then(() => this.buyConfirm());
+          return;
         }
         // 拒绝授权手机号
         this.buyConfirm();
@@ -335,9 +320,7 @@ export default {
     // 验证手机号码的正则
     isPhoneReg(num){
       var num_reg = /^1\d{10}$/;
-      if(!num_reg.test(num)){
-        return false;
-      }
+      if(!num_reg.test(num)) return false;
       return true;
     },
     buyConfirm() {
@@ -346,14 +329,14 @@ export default {
         let cz_number = this.cz_number.replace(/\s/g, "");
         if (goods_type === 0) {
             if (!cz_number) {
-            return uni.showToast({ title: "充值账号不能为空", icon: "none" });
+              return uni.showToast({ title: "充值账号不能为空", icon: "none" });
             }
             if (!/^[A-Za-z0-9]+$/.test(cz_number)) {
-            return uni.showToast({ title: "充值账号不符合规范", icon: "none" });
+              return uni.showToast({ title: "充值账号不符合规范", icon: "none" });
             }
             // 手机号码的类型判断
             if(cz_type == 1 && !this.isPhoneReg(cz_number)) {
-            return uni.showToast({ title: "请输入正确的手机号码", icon: "none" });
+              return uni.showToast({ title: "请输入正确的手机号码", icon: "none" });
             }
             this.$refs.confirmAccount.show(cz_number);
             return;

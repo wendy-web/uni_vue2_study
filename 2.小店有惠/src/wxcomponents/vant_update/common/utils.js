@@ -8,8 +8,7 @@ export function range(num, min, max) {
 export function nextTick(cb) {
     if (canIUseNextTick()) {
         wx.nextTick(cb);
-    }
-    else {
+    } else {
         setTimeout(() => {
             cb();
         }, 1000 / 30);
@@ -45,7 +44,7 @@ export function getRect(context, selector) {
             .select(selector)
             .boundingClientRect()
             .exec((rect = []) => resolve(rect[0]));
-    });
+    }).catch((e) => {});
 }
 export function getAllRect(context, selector) {
     return new Promise((resolve) => {
@@ -54,13 +53,12 @@ export function getAllRect(context, selector) {
             .selectAll(selector)
             .boundingClientRect()
             .exec((rect = []) => resolve(rect[0]));
-    });
+    }).catch((e) => {});
 }
 export function groupSetData(context, cb) {
     if (canIUseGroupSetData()) {
         context.groupSetData(cb);
-    }
-    else {
+    } else {
         cb();
     }
 }

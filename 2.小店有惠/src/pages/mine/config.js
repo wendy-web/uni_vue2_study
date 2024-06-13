@@ -29,6 +29,12 @@ export default {
             path: '/pages/mineModule/myCollect/index'
         },
         {
+            id: 4,
+            name: '赚钱教程',
+            icon: '/static/images/mine/icon_money.png',
+            path: '/pages/mineModule/makeMoney/index'
+        },
+        {
             id: 2,
             name: '联系客服',
             icon: '/static/images/mine/icon_contact_service.png',

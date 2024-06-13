@@ -1,4 +1,4 @@
-import log from '@/utils/log.js'
+import log from '@/utils/log.js';
 export default function() {
     let res = uni.getSystemInfoSync()
     log.addFilterMsg('systeminfo')
@@ -8,6 +8,7 @@ export default function() {
     let navBarHeight = (custom.top - res.statusBarHeight) * 2 + custom.height //计算得出导航栏高度
     return {
         navHeight: res.statusBarHeight + navBarHeight,
-        windowHeight: res.windowHeight
+        windowHeight: res.windowHeight,
+        customTop: custom.top,
     }
 }

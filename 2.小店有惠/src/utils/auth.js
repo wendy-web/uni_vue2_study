@@ -1,12 +1,4 @@
 const baseUrl = getBaseUrl();
-
-// 展示及存储用户指引步骤
-export function setShowLeadStep(data) {
-    setStorage(`${baseUrl}_isShowLeadStep`, data);
-}
-export function getShowLeadStep() {
-    return getStorage(`${baseUrl}_isShowLeadStep`);
-}
 export function setGift(data) {
     setStorage('gift', data);
 }

@@ -1,46 +1,65 @@
 import { VantComponent } from '../common/component';
-import { isImageFile, chooseFile, isVideoFile } from './utils';
-import { imageProps, videoProps, mediaProps, messageFileProps } from './shared';
 import { isBoolean, isPromise } from '../common/validator';
+import { imageProps, mediaProps, messageFileProps, videoProps } from './shared';
+import { chooseFile, isImageFile, isVideoFile } from './utils';
 VantComponent({
-    props: Object.assign(Object.assign(Object.assign(Object.assign({ disabled: Boolean, multiple: Boolean, uploadText: String, useBeforeRead: Boolean, afterRead: null, beforeRead: null, previewSize: {
+    props: Object.assign(Object.assign(Object.assign(Object.assign({
+        disabled: Boolean,
+        multiple: Boolean,
+        uploadText: String,
+        useBeforeRead: Boolean,
+        afterRead: null,
+        beforeRead: null,
+        previewSize: {
             type: null,
             value: 80,
-        }, name: {
+        },
+        name: {
             type: null,
             value: '',
-        }, accept: {
+        },
+        accept: {
             type: String,
             value: 'image',
-        }, fileList: {
+        },
+        fileList: {
             type: Array,
             value: [],
             observer: 'formatFileList',
-        }, maxSize: {
+        },
+        maxSize: {
             type: Number,
             value: Number.MAX_VALUE,
-        }, maxCount: {
+        },
+        maxCount: {
             type: Number,
             value: 100,
-        }, deletable: {
+        },
+        deletable: {
             type: Boolean,
             value: true,
-        }, showUpload: {
+        },
+        showUpload: {
             type: Boolean,
             value: true,
-        }, previewImage: {
+        },
+        previewImage: {
             type: Boolean,
             value: true,
-        }, previewFullImage: {
+        },
+        previewFullImage: {
             type: Boolean,
             value: true,
-        }, imageFit: {
+        },
+        imageFit: {
             type: String,
             value: 'scaleToFill',
-        }, uploadIcon: {
+        },
+        uploadIcon: {
             type: String,
             value: 'photograph',
-        } }, imageProps), videoProps), mediaProps), messageFileProps),
+        }
+    }, imageProps), videoProps), mediaProps), messageFileProps),
     data: {
         lists: [],
         isInCount: true,
@@ -63,11 +82,11 @@ VantComponent({
                 return;
             chooseFile(Object.assign(Object.assign({}, this.data), { maxCount: maxCount - lists.length }))
                 .then((res) => {
-                this.onBeforeRead(multiple ? res : res[0]);
-            })
+                    this.onBeforeRead(multiple ? res : res[0]);
+                })
                 .catch((error) => {
-                this.$emit('error', error);
-            });
+                    this.$emit('error', error);
+                });
         },
         onBeforeRead(file) {
             const { beforeRead, useBeforeRead } = this.data;
@@ -77,26 +96,27 @@ VantComponent({
             }
             if (useBeforeRead) {
                 res = new Promise((resolve, reject) => {
-                    this.$emit('before-read', Object.assign(Object.assign({ file }, this.getDetail()), { callback: (ok) => {
+                    this.$emit('before-read', Object.assign(Object.assign({ file }, this.getDetail()), {
+                        callback: (ok) => {
                             ok ? resolve() : reject();
-                        } }));
-                });
+                        }
+                    }));
+                }).catch((e) => {});
             }
             if (!res) {
                 return;
             }
             if (isPromise(res)) {
                 res.then((data) => this.onAfterRead(data || file));
-            }
-            else {
+            } else {
                 this.onAfterRead(file);
             }
         },
         onAfterRead(file) {
             const { maxSize, afterRead } = this.data;
-            const oversize = Array.isArray(file)
-                ? file.some((item) => item.size > maxSize)
-                : file.size > maxSize;
+            const oversize = Array.isArray(file) ?
+                file.some((item) => item.size > maxSize) :
+                file.size > maxSize;
             if (oversize) {
                 this.$emit('oversize', Object.assign({ file }, this.getDetail()));
                 return;

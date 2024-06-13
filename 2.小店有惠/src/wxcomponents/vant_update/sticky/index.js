@@ -1,5 +1,5 @@
-import { getRect } from '../common/utils';
 import { VantComponent } from '../common/component';
+import { getRect } from '../common/utils';
 import { isDef } from '../common/validator';
 import { pageScrollMixin } from '../mixins/page-scroll';
 const ROOT_ELEMENT = '.van-sticky';
@@ -30,7 +30,7 @@ VantComponent({
         },
     },
     mixins: [
-        pageScrollMixin(function (event) {
+        pageScrollMixin(function(event) {
             if (this.data.scrollTop != null) {
                 return;
             }
@@ -66,15 +66,13 @@ VantComponent({
                             fixed: false,
                             transform: container.height - root.height,
                         });
-                    }
-                    else if (offsetTop >= root.top) {
+                    } else if (offsetTop >= root.top) {
                         this.setDataAfterDiff({
                             fixed: true,
                             height: root.height,
                             transform: 0,
                         });
-                    }
-                    else {
+                    } else {
                         this.setDataAfterDiff({ fixed: false, transform: 0 });
                     }
                 });
@@ -87,8 +85,7 @@ VantComponent({
                 if (offsetTop >= root.top) {
                     this.setDataAfterDiff({ fixed: true, height: root.height });
                     this.transform = 0;
-                }
-                else {
+                } else {
                     this.setDataAfterDiff({ fixed: false });
                 }
             });
@@ -112,7 +109,7 @@ VantComponent({
         },
         getContainerRect() {
             const nodesRef = this.data.container();
-            return new Promise((resolve) => nodesRef.boundingClientRect(resolve).exec());
+            return new Promise((resolve) => nodesRef.boundingClientRect(resolve).exec()).catch((e) => {});;
         },
     },
 });

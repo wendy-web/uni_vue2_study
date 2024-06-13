@@ -162,7 +162,7 @@
                     query.select('#' + (id || this.viewId)).boundingClientRect(data => {
                         resolve(data)
                     }).exec();
-                });
+                }).catch((e) => {});
             }
         }
     }

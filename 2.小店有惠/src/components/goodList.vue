@@ -1,10 +1,10 @@
 <template>
   <view class="good-list">
     <view class="good-list-item"
-    :style="{
-      'height': isSearchItem && 'auto'
-    }"
-      v-for="(good, index) in list" :key="index" :data-type="item.lx_type">
+      :style="{ 'height': isSearchItem && 'auto' }"
+      v-for="(good, index) in list" :key="index"
+      :data-type="item.lx_type"
+    >
       <view class="item_cont" v-if="good.type == 4">
         <!-- 视频组件 -->
         <channel-video
@@ -41,10 +41,31 @@
           </view>
           {{ good.goods_name || good.title }}
         </view>
-        <view class="use_cont">
+        <view class="use_cont" v-if="!isRebate">
           <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
         </view>
-        <view class="search_item-box" v-if="isSearchItem ">
+        <!-- 推广赚钱的品 -->
+        <view class="search_item-box rebate_box" v-if="isRebate">
+          <!-- <view class="credit_text">{{ good.deduction_credits || good.credits || 0 }}积分</view> -->
+          <view class="box_fl">
+            <view class="price_text">
+              <block v-if="good.face_value">券后</block>
+              <text class="good_credits">
+                <text style="font-size: 24rpx">￥</text>
+                {{ good.lowestCouponPrice||0 }}
+              </text>
+            </view>
+            <view class="sale_price" v-if="Number(good.sale_price)">￥{{ good.sale_price }}</view>
+          </view>
+          <view class="good_lab-box">
+            <view class="good_lab" v-if="(good.lx_type == 2) && good.inOrderCount30Days">月售{{ good.inOrderCount30Days}}</view>
+            <view class="good_lab" v-if="(good.lx_type == 3) && good.sales_tip">已售{{ good.sales_tip }}</view>
+          </view>
+          <view class="spread_btn" @click.stop="spreadHandle(good)">
+            <view v-html="formatItemPrice(good.rebateMoney, 1)"></view>
+          </view>
+        </view>
+        <view class="search_item-box" v-else-if="isSearchItem ">
           <view class="credit_text">{{ good.deduction_credits || good.credits || 0 }}积分</view>
           <view class="box_fl">
             <view class="price_text">
@@ -55,6 +76,7 @@
               </text>
             </view>
             <view class="good_lab" v-if="(good.lx_type == 2) && good.inOrderCount30Days">月售{{ good.inOrderCount30Days}}</view>
+            <view class="good_lab" v-if="(good.lx_type == 3) && good.sales_tip">已售{{ good.sales_tip }}</view>
           </view>
         </view>
         <!-- 价格+积分 -->
@@ -99,6 +121,10 @@ export default {
     },
     isSearchItem: {
       type: Boolean,
+      default: false,
+    },
+    isRebate: {
+      type: [Boolean,String],
       default: false
     }
   },
@@ -109,6 +135,18 @@ export default {
     };
   },
   methods: {
+    formatItemPrice(price = 0, type) {
+      let dom= '';
+      switch(type) {
+        case 1:
+          dom = `<span style="font-weight:600;font-size: 13px;">¥<span style="font-size: 18px;">${price}</span></span>`;
+          break;
+        default:
+          dom = `<span style="font-weight:600;font-size: 10px;">¥<span style="font-size: 14px;">${price}</span></span>`;
+          break;
+      }
+      return dom;
+    },
     goDetails(item, index) {
       this.detailsFun_mixins(
         item,
@@ -129,14 +167,14 @@ export default {
   overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  // justify-content: space-between;
   flex-wrap: wrap;
-
   .good-list-item {
     width: 49%;
+    flex: 0 0 49%;
     break-inside: avoid;
     height: 558rpx;
-    background-color: #ffffff;
+    background-color: #fff;
     border-radius: 8px;
     position: relative;
     margin-bottom: 16rpx;
@@ -166,7 +204,7 @@ export default {
     }
   }
   .good-list-item:nth-child(odd) {
-    margin-right: 8rpx;
+    margin-right: 2%;
   }
   .good-img {
     width: 100%;
@@ -190,8 +228,8 @@ export default {
     margin-top: 10rpx;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-height: 80rpx;
     line-height: 40rpx;
+    height: 80rpx;
     .name_icon{
       display: inline-block;
       line-height: 40rpx;
@@ -200,41 +238,6 @@ export default {
       color: #fff;
       font-size: 24rpx;
       margin-right: 10rpx;
-    }
-  }
-
-  .tray-icon {
-    width: 208rpx;
-    height: 72rpx;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-
-  .offical-info {
-    display: inline-flex;
-    align-items: center;
-    background-color: #feefe0;
-    border-radius: 8rpx;
-    padding: 4rpx 10rpx 4rpx 4rpx;
-    position: absolute;
-    right: 0;
-    .tag {
-      width: 30rpx;
-      height: 30rpx;
-      line-height: 30rpx;
-      text-align: center;
-      background: linear-gradient(135deg, #fe9d3a, #fc9429);
-      border-radius: 8rpx;
-      font-size: 20rpx;
-      font-weight: 500;
-      color: #ffffff;
-    }
-    .offical-num {
-      font-size: 22rpx;
-      text-decoration: line-through;
-      color: #999999;
-      margin-left: 8rpx;
     }
   }
   .good-price-box {
@@ -283,6 +286,29 @@ export default {
   .price_text{
     color: #ef2b20;
   }
+  .sale_price {
+    font-size: 26rpx;
+    text-decoration:  line-through;
+    color: #e7331b;
+    margin-left: 8rpx;
+    opacity: .55;
+  }
+}
+.rebate_box {
+  margin-top: 8rpx;
+  .good_credits {
+    font-size: 40rpx;
+    font-weight: bold;
+  }
+  .good_lab-box {
+    width: 100%;
+    height: 34rpx;
+    line-height: 34rpx;
+  }
+  .good_lab {
+    font-size: 24rpx;
+    margin: 0;
+  }
 }
 .credit_text {
     font-size: 32rpx;
@@ -327,4 +353,20 @@ export default {
     margin-right: 5rpx;
   }
 }
+
+.spread_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 64rpx;
+    background: #ef2b20;
+    border-radius: 12rpx;
+    color: #fff;
+    margin-top: 12rpx;
+    &::before {
+      content: '赚';
+      margin-right: 6rpx;
+      font-size: 28rpx;
+    }
+  }
 </style>

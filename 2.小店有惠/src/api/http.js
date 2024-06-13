@@ -1,6 +1,6 @@
 import store from "@/store";
+import { getBaseUrl, getPlatform, getStorage, getUnionId, setStorage } from "@/utils/auth.js";
 import { VALID_CACHE } from "@/utils/index.js";
-import { setStorage, getStorage, getBaseUrl, getPlatform, getUnionId } from "@/utils/auth.js";
 import log from "@/utils/log.js";
 /**
  * 使用配置
@@ -151,7 +151,6 @@ XHService.prototype._request = function(config) {
                 }
                 //关闭loading
                 // if (!config.isNoLoading) _closeLoading();
-                // console.log('缓存有效，走缓存囖',config)
                 //直接返回缓存值
                 return resolve({
                     code: 1,
@@ -174,7 +173,7 @@ XHService.prototype._request = function(config) {
             complete: (response) => {
                 let res = response;
 
-                //响应前拦截
+                // 响应前拦截
                 if (this.interceptor.response) {
                     res = this.interceptor.response(res, config);
                 }
@@ -211,7 +210,7 @@ XHService.prototype._request = function(config) {
                 resolve(res);
             },
         });
-    });
+    }).catch((e) => {});
 };
 //添加缓存
 function _setCacheData(res, url) {

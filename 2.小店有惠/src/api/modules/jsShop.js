@@ -89,3 +89,11 @@ export function groupRecommend(data) {
         data
     });
 }
+// 组合查询
+export function groupSearch(data) {
+    return API.request({
+        url: `/api/Pinduoduo/groupSearch`,
+        method: 'post',
+        data
+    });
+}

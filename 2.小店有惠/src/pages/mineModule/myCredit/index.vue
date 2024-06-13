@@ -6,6 +6,7 @@
 	@init="mescrollInit"
 	@down="downCallback"
 	@up="upCallback"
+    :up="upOption"
 >
 	<!-- 背景与导航栏 -->
 	<xh-navbar
@@ -48,7 +49,7 @@
 				</view>
 			</view>
 		</view>
-		<view :class="['sign_btn', is_sign ? 'btn-active': '']" >
+		<view :class="['sign_btn', is_sign ? 'btn-active' : '']" >
 			{{ is_sign ? '已签到' : '立即签到'}}
 		</view>
 	</view>
@@ -57,10 +58,8 @@
 		<!-- <view class="play_title-right">每天0点更新</view> -->
 	</view>
 	<view class="play_box">
-		<view
-			class="play_item"
-			v-for="(item, index) in taskListArray"
-			:key="index"
+		<view class="play_item"
+			v-for="(item, index) in taskListArray" :key="index"
 			@click="taskHandle(item)"
 		>
 			<view class="play_item-left">
@@ -86,7 +85,24 @@
 		</view>
 	</view>
 	<!-- 猜你喜欢的优惠券列表 -->
-	<you-like-good-list />
+	<view class="you_like pd_32">
+		<view class="like-title">
+			<view class="like-left">为你推荐</view>
+			<view class="like-right" @click="$switchTab('/pages/home/index')">
+				查看更多<van-icon name="arrow" color="#999" size="14" />
+			</view>
+		</view>
+		<good-list :list="tabGoodList" />
+	</view>
+	<!-- 弹窗管理 -->
+	<configurationDia
+        ref="configurationDia"
+        :isShow="isShowConfig"
+        @close="closeShowConfig"
+        :config="config"
+        @popoverRember="requestPopoverRember"
+        :remainTime="remainTime"
+    ></configurationDia>
 	<!-- 幸运大转盘 -->
 	<lucky-wheel :isShow="isShowLucky" @close="closeLuckyHandle" />
 	<attention-code :isShow="isAttentionCode" @close="closeLuckyHandle" />
@@ -94,25 +110,31 @@
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { mapGetters, mapActions } from 'vuex';
+import { goodsGroup, goodsList } from "@/api/modules/home.js";
+import { goodsQuery, jingfen, material } from '@/api/modules/jsShop.js';
 import {
-	signList,
 	doSign,
-	taskIndex,
-	doTask
+	doTask,
+	signList,
+	taskIndex
 } from "@/api/modules/myCredit.js";
+import { goodsRecommend, goodsSearch } from '@/api/modules/pddShop.js';
+import configurationFun from '@/components/configurationDia/configurationFun.js';
+import configurationDia from '@/components/configurationDia/index.vue';
+import goodList from '@/components/goodList.vue';
+import adunitId from "@/static/js/adunitId.js";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
-import adunitId from "@/static/js/adunitId.js"
-import youLikeGoodList from '@/components/youLikeGoodList.vue';
-import luckyWheel from './luckyWheel.vue';
+import { mapActions, mapGetters } from 'vuex';
 import attentionCode from './attentionCode.vue';
+import luckyWheel from './luckyWheel.vue';
 	export default {
-		mixins: [MescrollMixin], // 使用mixin
+		mixins: [MescrollMixin, configurationFun], // 使用mixin
 		components: {
-			youLikeGoodList,
 			luckyWheel,
-			attentionCode
+			attentionCode,
+			goodList,
+			configurationDia
 		},
 		computed: {
 			...mapGetters(["userInfo", 'isAutoLogin']),
@@ -129,7 +151,20 @@ import attentionCode from './attentionCode.vue';
 				task_id: 0, // 签到接口任务的id
 				is_power: 0, // 任务授权id
 				adUnitId: adunitId.myCreditId, // 视频初始化的Id
-				doTaskId: 0
+				doTaskId: 0,
+				tabs: [],
+				tabIndex: 0,
+				tabGoodList: [],
+				goodPageNum: 1,
+				groupId_index: 0,
+				upOption: {
+					auto: false, // 不自动加载
+					page: {
+						num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
+						size: 1
+					}
+				},
+				is_rebate: 2
 			}
 		},
 		onLoad() {
@@ -154,31 +189,19 @@ import attentionCode from './attentionCode.vue';
 				);
 				this._RewardedVideoAd.videoAdCreate();
 			},
-			finishPlay() {
+			async finishPlay() {
 				// 视频播放完后执行的事件
-				doTask({
-					task_id: this.doTaskId
-				}).then(res => {
-					if(res.code == 1) {
-						uni.showToast({
-							title: res.msg,
-							icon: 'none',
-							duration: 2000
-						});
-						this.getTaskList();
-						this.getUserInfo(); //获取用户信息
-						this.mescroll.resetUpScroll();
-					}
-				});
+				const res = await doTask({ task_id: this.doTaskId });
+				if(res.code != 1) return;
+				this.$toast(res.msg);
+				this.getTaskList();
+				this.getUserInfo(); //获取用户信息
+				this.mescroll.resetUpScroll();
 			},
 			// 执行任务列表
 			taskHandle(item) {
                 if(!this.isAutoLogin) return this.$go('/pages/login/index');
-				const {
-					id,
-					use,
-					style
-				} = item;
+				const { id, use, style } = item;
 				this.doTaskId = id;
 				if(!use) return;
 				switch(style) {
@@ -197,15 +220,144 @@ import attentionCode from './attentionCode.vue';
 			},
 			// 下拉刷新
 			downCallback() {
-      			// this.mescroll.resetUpScroll();
+				this.tabIndex = 0;
+				this.goodPageNum = 1;
+				this.tabs = [];
+				this.tabGoodList = []
 				Promise.all([
 					this.getSignList(),
 					this.getTaskList()
 				]).then(res => {
-					this.mescroll.endSuccess();
+					// this.mescroll.endSuccess();
 				}).catch(error => {
 					this.mescroll.endErr();
 				});
+				this.mescroll.resetUpScroll();
+			},
+			async upCallback(page) {
+				if (!this.tabs.length) {
+					let res = await goodsGroup({ is_rebate: this.is_rebate });
+					if(res.code != 1) return this.mescroll.endSuccess();
+					this.tabs = res.data.map((item) => {
+						return {
+							...item,
+							goods: []
+						};
+					});
+				}
+				if(!this.tabs.length) return this.mescroll.endSuccess(0);
+				const itemTab = this.tabs[this.tabIndex];
+				if([2, 3].includes(Number(itemTab.lx_type))) return this.requestRem(page);
+				const params = {
+					page: this.goodPageNum,
+					size: 10,
+					id: this.tabs[this.tabIndex].id,
+					is_rebate: this.is_rebate
+				}
+				goodsList(params).then((res) => {
+					const {list, total_count} = res.data;
+					if(page.num == 1) this.tabGoodList = []; // 如果是第一页需手动制空列表
+					this.tabGoodList = this.tabGoodList.concat(list);
+					// 更改商品列表的下拉触底的加载
+					this.mescroll.endBySize(list.length, total_count);
+					const isNextPage = (this.goodPageNum * params.size) < total_count;
+					this.goodPageNum += 1;
+					// 没有下一页
+					if(!isNextPage && (this.tabIndex < this.tabs.length - 1)) {
+						this.tabIndex += 1;
+						this.goodPageNum = 1;
+						this.mescroll.triggerUpScroll();
+					}
+					if(isNextPage && !list.length) {
+						this.mescroll.triggerUpScroll();
+					}
+				}).catch(() =>  this.mescroll.endErr());
+			},
+			async requestRem(page) {
+				const curTab = this.tabs[this.tabIndex];
+				const {
+					id,
+					cid,
+					cid2,
+					cid3,
+					eliteId,
+					groupId,
+					type,
+					positionId,
+					lx_type
+				} = curTab;
+				let params = {
+					id,
+					positionId,
+					page: this.goodPageNum,
+					size: 10,
+					is_rebate: this.is_rebate
+				}
+				let queryApi = goodsQuery;
+				// type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
+				switch(type) {
+					case 1:
+						// 拼多多接口的访问
+						if (lx_type == 3) {
+							queryApi = goodsRecommend;
+							params.positionId = positionId;
+						} else {
+							queryApi = material;
+							params.eliteId = eliteId;
+							params.groupId = groupId;
+							params.size = 10;
+						}
+						break;
+					case 2:
+						if (lx_type == 3) {
+							queryApi = goodsSearch;
+							params.positionId = positionId;
+						} else {
+							queryApi = jingfen;
+							params.eliteId = eliteId;
+							params.groupId = groupId;
+							params.size = 20;
+						}
+						break;
+					case 3:
+						queryApi = goodsQuery;
+						params.cid1 = cid;
+						params.cid2 = cid2;
+						params.cid3 = cid3;
+						break;
+					case 4:
+						queryApi = jingfen;
+						params.eliteId = eliteId;
+						params.groupId = groupId[this.groupId_index];
+						params.size = 20;
+						break;
+				};
+				queryApi(params).then(res=>{
+					const { list, total_count } = res.data;
+					if( page.num == 1 ) this.tabGoodList = [];
+					// 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+					let isNextPage = (this.goodPageNum * params.size) < total_count;
+					this.goodPageNum += 1;
+					this.tabGoodList = this.tabGoodList.concat(list); // 追加新数据
+
+					if(!isNextPage && type == 4 && this.groupId_index < (groupId.length - 1)) {
+						// 无下一页
+						this.groupId_index += 1;
+						this.mescroll.endSuccess(total_count, true);
+						this.goodPageNum = 1;
+					} else {
+						this.mescroll.endSuccess(list.length || total_count, isNextPage);
+					}
+					if((list.length == 0) && isNextPage){
+						this.mescroll.triggerUpScroll();
+					}
+					if(!isNextPage && (this.tabIndex < this.tabs.length - 1)) {
+						this.tabIndex += 1;
+						this.goodPageNum = 1;
+						this.groupId_index = 0;
+						this.mescroll.triggerUpScroll();
+					}
+				}).catch(() => this.mescroll.endErr());
 			},
 			// 得到签到列表
 			async getSignList() {
@@ -225,47 +377,22 @@ import attentionCode from './attentionCode.vue';
 				this.taskListArray = result.data;
 				return true;
 			},
-			doSignHandle() {
+			async doSignHandle() {
                 if(!this.isAutoLogin) return this.$go('/pages/login/index');
 				if(this.is_sign) return; // 今日已签到
-				// uni.requestSubscribeMessage({
-				// 	tmplIds:[accuentIds],
-				// 	complete:(event)=>{
-				// 		const resultState = event[accuentIds];
-				// 		if(resultState == 'accept') {
-				// 			this.is_power = 1;
-				// 		} else {
-				// 			this.is_power = 0;
-				// 		}
-				// 	}
-				// });
-				doSign({
+				const res = await doSign({
 					task_id: this.task_id,
 					is_power: this.is_power
-				}).then(res => {
-					console.log('res :>> ', res);
-					if(!Number(res.code)) return;
-					this.getSignList();
-					this.getUserInfo(); //获取用户信息
-					uni.showToast({
-						icon:'none',
-						title:'签到成功'
-					});
-				});
+				})
+				if(!Number(res.code)) return;
+				this.getSignList();
+				this.getUserInfo(); // 获取用户信息
+				this.$toast('签到成功');
 			},
 			goCreditRecord() {
                 if(!this.isAutoLogin) return this.$go('/pages/login/index');
-				uni.navigateTo({
-					url: "/pages/mineModule/creditRecord/index",
-				});
-			},
-			navBack() {
-				uni.navigateBack({
-					fail() {
-						uni.reLaunch({ url: "/pages/home/index" });
-					},
-				});
-			},
+				this.$go("/pages/mineModule/creditRecord/index");
+			}
 		}
 	}
 </script>
@@ -524,5 +651,24 @@ page {
 	font-family: PingFang SC, PingFang SC-Regular;
 	font-weight: 400;
 	color: #999999;
+}
+.pd_32 {
+	padding: 0 32rpx;
+}
+.like-title {
+	margin: 60rpx auto 24rpx;
+	display: flex;
+	justify-content: space-between;
+	.like-left{
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #333333;
+		line-height: 44rpx;
+	}
+	.like-right{
+		font-size: 28rpx;
+		color: #999999;
+		line-height: 40rpx;
+	}
 }
 </style>

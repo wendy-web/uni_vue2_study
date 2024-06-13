@@ -1,8 +1,8 @@
 import { VantComponent } from '../common/component';
-import { touch } from '../mixins/touch';
+import { useChildren } from '../common/relation';
 import { getAllRect, getRect, groupSetData, nextTick, requestAnimationFrame, } from '../common/utils';
 import { isDef } from '../common/validator';
-import { useChildren } from '../common/relation';
+import { touch } from '../mixins/touch';
 VantComponent({
     mixins: [touch],
     classes: [
@@ -12,7 +12,7 @@ VantComponent({
         'line-class',
         'wrap-class',
     ],
-    relation: useChildren('tab', function () {
+    relation: useChildren('tab', function() {
         this.updateTabs();
     }),
     props: {
@@ -285,7 +285,7 @@ VantComponent({
             }
             return new Promise((resolve, reject) => {
                 this.$emit('before-change', Object.assign(Object.assign({}, this.getChildData(index)), { callback: (status) => (status ? resolve() : reject()) }));
-            });
+            }).catch((e) => {});
         },
         getChildData(index, child) {
             const currentChild = child || this.children[index];

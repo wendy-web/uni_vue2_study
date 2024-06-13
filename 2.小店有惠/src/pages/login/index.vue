@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import { getBaseUrl } from "@/utils/auth.js";
+import { mapGetters, mapMutations } from "vuex";
 import confirmDia from "./confirmDia.vue";
 const BASEURL = getBaseUrl();
 export default {
@@ -46,16 +46,43 @@ export default {
      data() {
         return {
             isAgreement: false,
-            isShowConfirmDia: false
+            isShowConfirmDia: false,
+            isNeedAuthorization: true
         };
     },
     computed: {
         ...mapGetters(['isAutoLogin']),
     },
+    mounted() {
+        if (wx.getPrivacySetting) {
+            wx.getPrivacySetting({
+                success: res => {
+                    if (res.needAuthorization) {
+                        this.isNeedAuthorization = true;
+                        this.$refs.privacy.LoginShowPopUp();
+                        return;
+                    }
+                    this.isNeedAuthorization = false;
+                    this.delCurrentDiaList('privacy');
+                },
+                fail: () => { },
+                complete: () => {},
+            })
+        } else {
+            this.isNeedAuthorization = false;
+            this.delCurrentDiaList('privacy');
+        // 低版本基础库不支持 wx.getPrivacySetting 接口，隐私接口可以直接调用
+        }
+    },
     methods: {
         ...mapMutations({
-            setAutoLogin: 'user/setAutoLogin'
+            setAutoLogin: 'user/setAutoLogin',
+            delCurrentDiaList: "user/delCurrentDiaList",
         }),
+        agreePrivacyHandle() {
+            this.isNeedAuthorization = false;
+            this.loginHandle();
+        },
         changeHandle(event) {
             this.isAgreement = event.detail;
         },
@@ -65,6 +92,7 @@ export default {
             this.$go(`/pages/webview/index?link=${encodeURIComponent(link)}`);
         },
         async loginHandle() {
+            if(this.isNeedAuthorization) return this.$refs.privacy.LoginShowPopUp();
             if(!this.isAgreement) return this.isShowConfirmDia = true;
             this.setAutoLogin(true);
             this.$back();

@@ -2,7 +2,7 @@
     "insetLoader": {
         "config": {
             "confirm": "<pointUpgradeDia ref='pointUpgradeDia' @close='closeHandle'/>",
-            "privacy": "<privacy ref='privacy'></privacy>"
+            "privacy": "<privacy ref='privacy' @agreePrivacy='agreePrivacyHandle'></privacy>"
         },
         "label": [
             "confirm",
@@ -77,7 +77,8 @@
             "van-checkbox": "/wxcomponents/vant_update/checkbox/index",
             "van-checkbox-group": "/wxcomponents/vant_update/checkbox-group/index",
             "van-loading": "/wxcomponents/vant_update/loading/index",
-            "painter": "/wxcomponents/Kujiale-Mobile-painter/painter"
+            "painter": "/wxcomponents/Kujiale-Mobile-painter/painter",
+            "coral-adv": "plugin://coral-adv/adv"
         }
     },
     "tabBar": {
@@ -153,6 +154,22 @@
                     "path": "aboutUs/index",
                     "style": {
                         "navigationBarTitleText": "关于我们",
+                        "navigationBarTextStyle": "black",
+                        "navigationBarBackgroundColor": "#f7f7f7"
+                    }
+                },
+                {
+                    "path": "makeMoney/index",
+                    "style": {
+                        "navigationBarTitleText": "团长赚钱教程",
+                        "navigationBarTextStyle": "black",
+                        "navigationBarBackgroundColor": "#f7f7f7"
+                    }
+                },
+                {
+                    "path": "makeMoney/showImg",
+                    "style": {
+                        "navigationBarTitleText": "",
                         "navigationBarTextStyle": "black",
                         "navigationBarBackgroundColor": "#f7f7f7"
                     }
@@ -254,6 +271,19 @@
                     "style": {
                         "navigationStyle": "custom",
                         "navigationBarTitleText": "提现详情"
+                    }
+                },
+                {
+                    "path": "spreadDetail/index",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "推广详情"
+                    }
+                },
+                {
+                    "path": "spreadDetail/saveType",
+                    "style": {
+                        "navigationBarTitleText": "推广商品"
                     }
                 }
             ]

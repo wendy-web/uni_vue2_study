@@ -53,7 +53,7 @@
     <report-success-dia
       :isShow="isShowSuccess"
       title="提现成功"
-      label="约1~3个工作日到账"
+      label="请留意微信支付的通知 "
       @close="closeSuccessHandle"
   ></report-success-dia>
 </view>

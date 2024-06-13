@@ -127,6 +127,7 @@ $uni-font-size-paragraph: 15px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    word-break: break-all;
 }
 
 .box_fl {
@@ -290,4 +291,17 @@ $uni-font-size-paragraph: 15px;
     animation-name: heartBeat;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
+}
+
+.van-submit-bar__safe {
+    padding-bottom: 32rpx;
+    height: constant(safe-area-inset-bottom);
+    height: env(safe-area-inset-bottom);
+    background-color: #ffffff;
+    box-sizing: border-box;
+}
+
+.demo_bottom {
+    padding-bottom: calc(125rpx + constant(safe-area-inset-bottom));
+    padding-bottom: calc(125rpx + env(safe-area-inset-bottom));
 }

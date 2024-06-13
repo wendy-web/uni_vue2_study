@@ -1,14 +1,14 @@
 import store from '@/store';
+import {
+    getBaseUrl,
+    getPlatform,
+    getStorage,
+    getToken,
+    getUnionId,
+    setStorage
+} from '@/utils/auth.js';
 import log from "@/utils/log.js";
 import { XhHttp } from './index';
-import {
-    setStorage,
-    getBaseUrl,
-    getStorage,
-    getPlatform,
-    getToken,
-    getUnionId
-} from '@/utils/auth.js';
 //获取小程序版本号
 const getVersion = uni.getAccountInfoSync();
 const envVersion = getVersion.miniProgram.envVersion || 'release';
@@ -102,6 +102,17 @@ export default new XhHttp({
                         }, 200)
                     }
                     //将未登录导致调用异常的接口缓存到队列
+                    context.reqErrList.push(() => {
+                        context.request(config).then(res => {
+                            resolve(res);
+                        }).catch(err => {
+                            reject(err);
+                        })
+                    });
+                    return;
+                }
+                // 配置彬纷的-弹窗访问
+                if (result.code == 0 && config.data && config.data.hasOwnProperty("unionid")) {
                     context.reqErrList.push(() => {
                         context.request(config).then(res => {
                             resolve(res);

@@ -25,13 +25,7 @@ export class XhHttp {
         //是否在刷新token
     isRefreshToken = false
     constructor(option) {
-        this.baseUrl = option.baseUrl
-            // if (option.config) {
-            //     this.config.header = option.config.header || this.config.header
-            //     this.config.timeout = option.config.timeout || this.config.timeout
-            //     this.config.dataType = option.config.dataType || this.config.dataType
-            //     this.config.responseType = option.config.responseType || this.config.responseType
-            // }
+        this.baseUrl = option.baseUrl;
         this.config = {
             ...this.config,
             ...option.config
@@ -46,78 +40,73 @@ export class XhHttp {
         }
     }
     request(config) {
-            this.pushAsyncReqUrl(config.url)
-            return new Promise((resolve, reject) => {
-                let isContinueExecute = true;
-                if (this.interceptor.request) {
-                    isContinueExecute = this.interceptor.request(config, this, resolve);
-                }
-                if (!isContinueExecute) return;
-                let _url = this.qs(config);
-                uni.request({
-                    url: this.baseUrl + _url,
-                    method: config.method || this.config.method,
-                    data: config.data,
-                    header: this.config.header,
-                    dataType: this.config.dataType,
-                    responseType: this.config.responseType,
-                    timeout: this.config.timeout,
-                    complete: (response) => {
-                        // 响应拦截处理
-                        if (this.interceptor.response) {
-                            this.interceptor.response(response, config, this, resolve, reject);
-                            return;
-                        }
-                        // 成功
-                        if (response.statusCode == 200) {
-                            return resolve(response);
-                        }
-                        // 失败
-                        reject(response);
-                    }
-                })
-            })
-        }
-        // 处理url参数  {id:1,name:'xiaohei'} => '/api2/ccard/createcardpay?id=1&name=xiaohei'
-    qs({
-            url,
-            params
-        }) {
-            // 没有则直接返回
-            if (Object.prototype.toString.call(params) !== "[object Object]") return url;
-            // url参数处理
-            let val = url.split('?')
-            let _url = val[0]
-            let qs = val[1] || ''
-            Object.keys(params).forEach((attr, index) => {
-                let prefix = '';
-                if (index === 0 && qs || index > 0) {
-                    prefix = '&';
-                }
-                qs += `${prefix}${attr}=${params[attr]}`;
-            });
-            return _url + '?' + qs;
-        }
-        // 关闭loading
-    closeLoading() {
-            if (this.loadingNum >= 1) {
-                //延时调用
-                this.loadingNum--;
-                if (this.loadingNum == 0) {
-                    clearTimeout(this.loadingTime);
-                    if (this.hasPageLoading) uni.hideLoading();
-                    if (this.hasNavigationBarLoading) uni.hideNavigationBarLoading();
-                    this.loadingStatus = false;
-                }
+        this.pushAsyncReqUrl(config.url)
+        return new Promise((resolve, reject) => {
+            let isContinueExecute = true;
+            if (this.interceptor.request) {
+                isContinueExecute = this.interceptor.request(config, this, resolve);
             }
-            // console.log(
-            // 	`loadingNum=${this.loadingNum} loadingStatus=${this.loadingStatus} loadingTime=${this.loadingTime}`)
+            if (!isContinueExecute) return;
+            let _url = this.qs(config);
+            uni.request({
+                url: this.baseUrl + _url,
+                method: config.method || this.config.method,
+                data: config.data,
+                header: this.config.header,
+                dataType: this.config.dataType,
+                responseType: this.config.responseType,
+                timeout: this.config.timeout,
+                complete: (response) => {
+                    // 响应拦截处理
+                    if (this.interceptor.response) {
+                        this.interceptor.response(response, config, this, resolve, reject);
+                        return;
+                    }
+                    // 成功
+                    if (response.statusCode == 200) {
+                        return resolve(response);
+                    }
+                    // 失败
+                    reject(response);
+                }
+            })
+        }).catch((e) => {});
+    }
+    qs({
+        url,
+        params
+    }) {
+        // 没有则直接返回
+        if (Object.prototype.toString.call(params) !== "[object Object]") return url;
+        // url参数处理
+        let val = url.split('?')
+        let _url = val[0]
+        let qs = val[1] || ''
+        Object.keys(params).forEach((attr, index) => {
+            let prefix = '';
+            if (index === 0 && qs || index > 0) {
+                prefix = '&';
+            }
+            qs += `${prefix}${attr}=${params[attr]}`;
+        });
+        return _url + '?' + qs;
+    }
+
+    closeLoading() { // 关闭loading
+        if (this.loadingNum >= 1) {
+            // 延时调用
+            this.loadingNum--;
+            if (this.loadingNum == 0) {
+                clearTimeout(this.loadingTime);
+                if (this.hasPageLoading) uni.hideLoading();
+                if (this.hasNavigationBarLoading) uni.hideNavigationBarLoading();
+                this.loadingStatus = false;
+            }
         }
-        //打开loading
-    startLoading() {
+    }
+
+    startLoading() { // 打开loading
         this.loadingNum++;
-        // console.log(
-        // 	`loadingNum=${this.loadingNum} loadingStatus=${this.loadingStatus} loadingTime=${this.loadingTime}`)
         if (this.loadingStatus) return;
         clearTimeout(this.loadingTime);
         /*仅在网络不好时才会显示*/
@@ -131,9 +120,7 @@ export class XhHttp {
             }
             if (this.hasNavigationBarLoading) {
                 uni.showNavigationBarLoading({
-                    complete(e) {
-                        // console.log('showNavigationBarLoading', e)
-                    }
+                    complete(e) {}
                 });
             }
         }, this.loadingDelaySecond * 1000)
@@ -142,33 +129,32 @@ export class XhHttp {
         url = url.split('?')[0]
         if (!this.whiteURL.includes(url)) {
             this.asyncReqListSize.push(url);
-            // console.log('pushAsyncReqUrl', this.asyncReqListSize)
         }
     }
     popAsyncReqUrl(url) {
-            url = url.split('?')[0];
-            if (this.asyncReqListSize.length > 0 && !this.whiteURL.includes(url)) {
-                this.asyncReqListSize.pop();
-                // console.log('popAsyncReqUrl', this.asyncReqListSize);
-            }
+        url = url.split('?')[0];
+        if (this.asyncReqListSize.length > 0 && !this.whiteURL.includes(url)) {
+            this.asyncReqListSize.pop();
         }
-        //缓存时间是否在有效期
+    }
+
     VALID_CACHE(cacheMaxAge, lastModified) {
-            return lastModified + cacheMaxAge * 1000 >= Date.now();
+        // 缓存时间是否在有效期
+        return lastModified + cacheMaxAge * 1000 >= Date.now();
+    }
+
+    setCacheData(res, url) { // 设置接口缓存
+        // 请求正确，返回值不为空
+        if (res.code == 1 && res.data) {
+            // 添加缓存
+            uni.setStorageSync(url, JSON.stringify({
+                lastModified: Date.now(),
+                data: res.data
+            }))
         }
-        //设置接口缓存
-    setCacheData(res, url) {
-            //请求正确，返回值不为空
-            if (res.code == 1 && res.data) {
-                //添加缓存
-                uni.setStorageSync(url, JSON.stringify({
-                    lastModified: Date.now(),
-                    data: res.data
-                }))
-            }
-        }
-        //处理错误信息
-    getHttpErrMsg({
+    }
+
+    getHttpErrMsg({ // 处理错误信息
         errMsg,
         statusCode
     }) {

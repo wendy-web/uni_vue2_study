@@ -46,11 +46,48 @@ export function subscribeMessageHandle(tmplIds = []) {
             complete: (event) => resolve(event),
         });
 
-    })
+    }).catch((e) => {});
 }
 export function agreementLookHandle(link) {
     link = BASEURL + link;
     uni.navigateTo({
         url: `/pages/webview/index?link=${encodeURIComponent(link)}`
     });
+}
+
+export function saveImageToPhotosAlbum(filePath) {
+    return new Promise((resolve, reject) => {
+        if (!filePath) return;
+        uni.saveImageToPhotosAlbum({ // 保存图片到系统相册。
+            filePath, //图片文件路径
+            success: () => {
+                uni.showToast({
+                    title: '素材保存成功',
+                    icon: 'none',
+                });
+                resolve();
+            },
+            fail: function(e) {
+                console.log(e);
+                uni.showToast({
+                    title: '素材保存失败',
+                    icon: 'none',
+                });
+                resolve();
+            }
+        });
+    }).catch((e) => {});
+}
+
+
+export function downloadFile(filePath) {
+    return new Promise((resolve, reject) => {
+        if (!filePath) return;
+        uni.downloadFile({
+            url: filePath,
+            complete: (res) => {
+                resolve(res);
+            }
+        });
+    }).catch((e) => {});
 }

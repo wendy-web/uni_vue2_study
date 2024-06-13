@@ -1,5 +1,5 @@
 <template>
-<view>
+<view class="demo_bottom">
 <mescroll-body
     :sticky="true"
     ref="mescrollRef"
@@ -12,10 +12,30 @@
     <xhNavbar
         :fixedNum="true"
         :fixed="true"
-        :navbarColor="showNavbarColors"
+        navbarColor="#fff"
         :title="showNavTitle"
-        :isFloat="userInfo.is_team"
-    ></xhNavbar>
+        :titleAlign="isTeam ? 'titleRight' : 'titleCenter'"
+        :overFlow="!isTeam"
+        :paddingBottomHeight="paddingBottomHeight"
+    >
+    <block v-if="isTeam">
+        <view slot="title" class="nav_title fl_start">
+            <image class="img-avatar" mode="aspectFill" lazy-load
+                :src="userInfo.avatar_url || default_url"></image>
+            <text class="nick_name">{{ userInfo.nick_name || "" }}</text>
+            <!-- 团长角标 -->
+            <image class="icon-captain" src="/static/images/mine/icon_captain.png" mode="aspectFit" lazy-load
+                v-if="userInfo.is_team"></image>
+        </view>
+        <view slot="title_cont" class="search_box fl_bet">
+            <view class="nav_search fl_center" @click="toSearchHandle">
+                <image class="search_icon" mode="aspectFit" src="@/static/images/home/search_icon.png"></image>
+                <view class="search_txt">搜你想推广的商品 </view>
+            </view>
+            <view class="search_icon-btn" @click="toSearchHandle">搜索</view>
+        </view>
+    </block>
+    </xhNavbar>
     <!-- 非团长信息 -->
     <view class="content_card" v-if="!userInfo.is_team">
         <view class="entry_btn-box heartBeat">
@@ -31,11 +51,14 @@
                 class="btn_phone" block
                 color="transparent"
                 custom-style="height:134rpx;opacity:0"
-                v-if="!isApplyStatus"
+                v-if="!isApplyStatus&&isAgreement"
             ></van-button>
         </view>
-        <view class="agree_text">
-            报名即表示阅读并同意
+        <view class="agree_text fl_center">
+            <van-checkbox checked-color="#F04037" icon-size="12px" style="--checkbox-label-margin:5px;"
+                :value="isAgreement" @change="changeHandle">
+                报名即表示阅读并同意
+            </van-checkbox>
             <text style="color:#FF4F3E" @click="$agreementLookHandle('/agreement/team-agreement.html')">
             《团长服务协议》</text>
         </view>
@@ -85,7 +108,7 @@
             <view class="leader_cont">
                 <view class="leader_cont-item">
                     <view class="leader_cont-title">拓宽用户渠道</view>
-                    <view class="leader_cont-text">选择不同渠道的优质用户，定向发放省钱卡</view>
+                    <view class="leader_cont-text">选择不同渠道的优质用户，定向邀请顾客</view>
                 </view>
                 <view class="leader_cont-item">
                     <view class="leader_cont-title">建立社群</view>
@@ -93,71 +116,78 @@
                 </view>
             </view>
         </view>
-    </view>
-    <view class="content_team" v-else>
-        <view class="cont_top">
-            <view class="top_title" @click="inviteListHandle">
-                成功邀请：{{peopleNums}}人<van-icon name="arrow" color="#fff" size="28rpx" style="margin-left: 10rpx;" />
+        <view class="leader">
+            <view class="cont_title">{{text2List.htitle}}</view>
+            <view class="cont_txtList">
+                <block v-for="(item, index) in text2List.contents" :key="index">
+                    <view class="cont_txtList-item"> {{item.title}} </view>
+                    <view class="cont_txtList-lab"> {{item.content}} </view>
+                </block>
             </view>
-            <view class="top_btn heartBeat" @click="inviteHandle"></view>
-            <!-- 查看收益 -->
-            <view class="top_earn" @click="goToCardEarnings"></view>
         </view>
-        <view class="cont_box">
-            <!-- <view class="leader_intro fl_bet" @click="openLeadDiaHandle">
-                <view>赚钱指南</view>
-                <view :class="['intro_right', isShowLeadDot ? 'active' : '']">
-                    立即了解<van-icon name="arrow" color="#aaa" size="28rpx" style="margin-left: 20rpx;" />
-                </view>
-            </view> -->
-            <view class="code_box">
-                <van-image
-                    width="100%" height="100%"
-                    src="https://test-file.y1b.cn/store/1-0/2438/65eaeacd198ba.png"
-                    use-loading-slot
-                    :show-menu-by-longpress="true"
-                    fit="widthFix"
-                ><van-loading slot="loading" type="spinner" size="20" vertical />
-                </van-image>
+    </view>
+    <!-- 团长 - 商品列表 -->
+    <view class="content_team"  :style="{ marginTop: paddingBottomHeight + 'px' }" v-else>
+        <view class="income-box" @click="goToCardEarnings">
+            <view class="ib-head">
+            <view class="ib-title">
+                累计收益(元)
+            <!-- <image class="ib_title-help" src="https://file.y1b.cn/store/1-0/24131/65ba37f81a4f3.png" mode="aspectFit"></image> -->
             </view>
-
-
-
-            <block v-for="(item, index) in textList" :key="index">
-                <view class="intro_title">
-                    <text class="intro_title-txt">{{ item.title }}</text>
-                </view>
-                <view class="vip_cont">
-                    <view class="vip_list"
-                        v-for="(listItem, index) in item.content" :key="index"
-                    >{{listItem}}</view>
-                </view>
-            </block>
-            <view class="intro_title">
-                <text class="intro_title-txt">{{text2List.htitle}}</text>
+            <view class="ib-content">
+                <view v-html="formatPrice(vipObject.total_profit || 0)"></view>
+                <view class="ib-tips" v-if="vipObject.read">你有{{vipObject.read}}笔收益到账</view>
             </view>
-            <view class="vip_cont">
-                <view class="vip_list"
-                    v-for="(item, index) in text2List.contents" :key="index"
-                >
-                    <view class="vip_list-title">{{ item.title }}</view>
-                    <view class="vip_list-cont">{{ item.content }}</view>
+            </view>
+            <view class="ib-bottom">
+            <view>今日预估：¥{{ vipObject.day_profit || 0 }}</view>
+            <view class="withdrawn">已提现：¥{{vipObject.tx_amount || 0}}</view>
+            </view>
+        </view>
+        <view class="list_box">
+            <view class="list_item fl_center"
+                v-for="(item, index) in tabGoodList" :key="index"
+                @click="couponDetailHandle(item)"
+            >
+            <image :src="item.imgs[0] || item.picList[0] || item.image" mode="scaleToFill" class="item_left"></image>
+            <view class="item_right fl_col_sp_bt">
+                <view class="item_title-box">
+                    <view class="item_title txt_ov_ell2">
+                        <view class="item_title-value">
+                            {{ item.lx_type == 2 ? '京东' : '拼多多' }}
+                        </view>
+                        {{ item.goods_name || item.title }}
+                    </view>
+                    <view class="item_lab-box">
+                        <view class="face_value" v-if="item.face_value">{{item.face_value}}元券</view>
+                        <view class="item_lab" v-if="(item.lx_type == 2) && item.inOrderCount30Days">
+                        月售{{item.inOrderCount30Days}}
+                        </view>
+                        <view class="item_lab" v-if="(item.lx_type == 3) && item.sales_tip">
+                            已售{{item.sales_tip}}
+                        </view>
+                    </view>
                 </view>
+                <view class="fl_bet">
+                    <view :class="['item_price fl_center', item.face_value ? 'active' : '']">
+                        <view v-html="formatItemPrice(item.price, 1)"></view>
+                        <view class="item_price-lab" v-if="item.face_value">¥{{item.sale_price}}</view>
+                    </view>
+                    <view class="item_btn fl_center" @click.stop="spreadHandle(item)">
+                        <view v-html="formatItemPrice(item.rebateMoney, 2)"></view>
+                    </view>
+                </view>
+            </view>
             </view>
         </view>
     </view>
 </mescroll-body>
+<view class="fix_btn" v-if="userInfo.is_team" @click="isShowImg = true"></view>
 <navbar
-    :currentIndex="1"
+    :currentID="1"
     @domObjHeight="domObjHeightHandle"
     @current="currentHandle"
 ></navbar>
-<leadDia
-    :isShow="isShowLeadDia"
-    :currIndex="currIndex"
-    @setIndex="setIndexHandle"
-    @close="isShowLeadDia = false"
-></leadDia>
 <!-- 报名成功 -->
 <report-success-dia
     :isShow="isShowSuccess"
@@ -170,10 +200,19 @@
     :isShow="isShowResult"
     title="审核成功"
     label="恭喜您成为团长"
-    btnText="马上邀请赚钱"
+    btnText="马上推广赚钱"
     @close="closeSuccessHandle"
 ></report-success-dia>
-
+<!-- 弹窗管理 -->
+<configurationDia
+    ref="configurationDia"
+    :isShow="isShowConfig"
+    @close="closeShowConfig"
+    :config="config"
+    @popoverRember="requestPopoverRember"
+    :remainTime="remainTime"
+    :currentPageNum="currentPageNum"
+></configurationDia>
 <showImg-dia
     :isShow="isShowImg"
     @close="isShowImg = false"
@@ -182,39 +221,39 @@
 </template>
 <script>
 import { apply, applyInfo, inviteXq, isSend, msgTemplate, wordConfig } from "@/api/modules/card.js";
+import { goodsGroup, goodsList } from "@/api/modules/home.js";
+import { goodsQuery, jingfen, material } from '@/api/modules/jsShop.js';
+import { goodsRecommend, goodsSearch } from '@/api/modules/pddShop.js';
+import configurationFun from '@/components/configurationDia/configurationFun.js';
+import configurationDia from '@/components/configurationDia/index.vue';
 import reportSuccessDia from '@/components/reportSuccessDia.vue';
-import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
+import showImgDia from '@/components/showImgDia.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { getBaseUrl, getShowLeadStep, getStorage, setStorage } from "@/utils/auth.js";
-import { parseTime } from '@/utils/index.js';
+import { getBaseUrl } from "@/utils/auth.js";
+import { lxTypeStatusCheckout } from "@/utils/goDetailCommonFun.js";
+import { formatAmount } from '@/utils/index.js';
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import leadDia from './leadDia.vue';
-import showImgDia from './showImgDia.vue';
 export default {
-    mixins: [MescrollMixin], // 使用mixin
+    mixins: [MescrollMixin, configurationFun], // 使用mixin
     components: {
         reportSuccessDia,
-        leadDia,
-        showImgDia
+        showImgDia,
+        configurationDia
     },
     data() {
         return {
+            default_url: "https://file.y1b.cn/store/1-0/24131/65ba392989ede.png",
             loading: false,
             finished: false,
-            list: [1, 2, 23],
-            downOption: {
-                auto: false,
-                bgColor: "#ffffff",
-            },
             upOption: {
                 auto: false, // 不自动加载
-                use: false,
+                page: {
+                    num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
+                    size: 1
+                }
             },
             tabHeightValue: 0,
-            stickyTopHeight: 0,
-            isShowLeadDia: false,
             currIndex: 0,
-            showLeadStep: null,
             reasonList:[
                 {
                     id: 0,
@@ -241,31 +280,17 @@ export default {
             showTitleBg: false,
             timer: null,
             isShowImg: false,
-            isShowLeadDot: false,
-            cur_date: null,
             showLeadDotStorageKey: `${getBaseUrl()}_showLeadDot_day`,
-
+            tabs: [],
+            tabIndex: 0,
+            tabGoodList: [],
+            goodPageNum: 1,
+            groupId_index: 0,
+            isAgreement: false
         }
     },
     watch: {
-        showLeadStep: {
-            handler: function (newValue, oldValue){
-                if(newValue || !this.userInfo.is_team) return;
-                if(this.diaList.length) {
-                    this.setDiaList('leadDia');
-                    return;
-                }
-                this.isShowLeadDia = true;
-            },
-        },
-        diaList(newValue, oldValue) {
-            if(newValue.length && (newValue[0] == 'leadDia')) {
-                this.isShowLeadDia = true;
-                this.delCurrentDiaList();
-            }
-        },
         isApplyStatus(newValue, oldValue) {
-            console.log('审核中', newValue)
             if(newValue == 1 && !this.userInfo.is_team) {
                 this.setTimeApplyInfo();
             }
@@ -273,37 +298,19 @@ export default {
     },
     computed: {
         ...mapGetters(["vipObject", 'userInfo', 'diaList', 'isAutoLogin']),
-        coneHeight() {
-            let minHeight = (uni.getSystemInfoSync().windowHeight - this.tabHeightValue - this.stickyTopHeight + 50) + 'px';
-            return minHeight;
-        },
-        showNavbarColors() {
-            if(this.userInfo.is_team) {
-                return !this.showTitleBg ? 'transparent' : '#fff';
-            }
-            return '#fff';
-        },
         showNavTitle() {
-            if(this.userInfo.is_team) {
-                return !this.showTitleBg ? '' : '赚钱中心';
-            }
-            return '报名团长';
-        }
+            return this.userInfo.is_team ? '' : '报名团长';
+        },
+        paddingBottomHeight() {
+            return this.isTeam ? uni.upx2px(112) : 0;
+        },
+        isTeam() {
+            return this.userInfo.is_team;
+        },
     },
     async onLoad() {
-		let cur_date = parseTime(new Date(), "{y}/{m}/{d}");
-        this.cur_date = cur_date;
-        const showLeadDotStorageDay = getStorage(this.showLeadDotStorageKey);
-        if(!showLeadDotStorageDay || showLeadDotStorageDay != cur_date) this.isShowLeadDot = true;
-        this.wordConfigInit();
-        this.initStatus();
-        const res = await getNavbarData();
-        let { navBarHeight, statusBarHeight } = res;
-        this.stickyTopHeight = navBarHeight + statusBarHeight;
     },
     async onShow() {
-        // 获取存储的引导弹窗的
-        this.showLeadStep = getShowLeadStep();
         const res = await inviteXq();
         if(res.code != 1) return;
         const { peopleNums } = res.data;
@@ -327,34 +334,196 @@ export default {
             setDiaList: "user/setDiaList",
             delCurrentDiaList: "user/delCurrentDiaList",
         }),
+        changeHandle(event) {
+            this.isAgreement = event.detail.value;
+        },
+        downCallback(page) {
+            this.tabIndex = 0;
+            this.goodPageNum = 1;
+            this.tabs = [];
+            this.getUserInfo();
+            // if(!this.isAutoLogin) return;
+            if(!this.isTeam) {
+                this.applyInfoRequest();
+                this.wordConfigInit();
+                return this.mescroll.endSuccess(0);
+            }
+            this.getVipObject();
+            this.mescroll.resetUpScroll();
+        },
+        async upCallback(page) {
+            if (!this.tabs.length) {
+                let res = await goodsGroup({ is_rebate: 1 });
+                this.tabs = res.data.map((item) => {
+                    return {
+                        ...item,
+                        goods: []
+                    };
+                });
+            }
+            if(!this.tabs.length) return this.mescroll.endSuccess(0);
+            const itemTab = this.tabs[this.tabIndex];
+            if([2, 3].includes(Number(itemTab.lx_type))) return this.requestRem(page);
+            const params = {
+                page: this.goodPageNum,
+                size: 10,
+                id: this.tabs[this.tabIndex].id,
+                is_rebate: 1
+            }
+            goodsList(params).then((res) => {
+                const {list, total_count} = res.data;
+                if(page.num == 1) this.tabGoodList = []; // 如果是第一页需手动制空列表
+                this.tabGoodList = this.tabGoodList.concat(list);
+                // 更改商品列表的下拉触底的加载
+                this.mescroll.endBySize(list.length, total_count);
+                const isNextPage = (this.goodPageNum * params.size) < total_count;
+                this.goodPageNum += 1;
+                // 没有下一页
+                if(!isNextPage && (this.tabIndex < this.tabs.length - 1)) {
+                    this.tabIndex += 1;
+                    this.goodPageNum = 1;
+                    this.mescroll.triggerUpScroll();
+                }
+                if(isNextPage && !list.length) {
+                    this.mescroll.triggerUpScroll();
+                }
+            }).catch(() =>  this.mescroll.endErr());
+        },
+        async requestRem(page) {
+            const curTab = this.tabs[this.tabIndex];
+            const {
+                id,
+                cid,
+                cid2,
+                cid3,
+                eliteId,
+                groupId,
+                type,
+                positionId,
+                lx_type
+            } = curTab;
+            let params = {
+                id,
+                positionId,
+                page: this.goodPageNum,
+                size: 10,
+                is_rebate: 1
+            }
+			let queryApi = goodsQuery;
+            // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
+            switch(type) {
+                case 1:
+                    // 拼多多接口的访问
+                    if (lx_type == 3) {
+                        queryApi = goodsRecommend;
+                        params.positionId = positionId;
+                    } else {
+                        queryApi = material;
+                        params.eliteId = eliteId;
+                        params.groupId = groupId;
+                        params.size = 10;
+                    }
+                    break;
+                case 2:
+                    if (lx_type == 3) {
+                        queryApi = goodsSearch;
+                        params.positionId = positionId;
+                    } else {
+                        queryApi = jingfen;
+                        params.eliteId = eliteId;
+                        params.groupId = groupId;
+                        params.size = 20;
+                    }
+                    break;
+                case 3:
+                    queryApi = goodsQuery;
+                    params.cid1 = cid;
+                    params.cid2 = cid2;
+                    params.cid3 = cid3;
+                    break;
+                case 4:
+                    queryApi = jingfen;
+                    params.eliteId = eliteId;
+                    params.groupId = groupId[this.groupId_index];
+                    params.size = 20;
+                    break;
+            };
+            queryApi(params).then(res=>{
+                const { list, total_count } = res.data;
+                if( page.num == 1 ) this.tabGoodList = [];
+                // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+                let isNextPage = (this.goodPageNum * params.size) < total_count;
+                this.goodPageNum += 1;
+                this.tabGoodList = this.tabGoodList.concat(list); // 追加新数据
+                if(!isNextPage && type == 4 && this.groupId_index < (groupId.length - 1)) {
+                    // 无下一页
+                    this.groupId_index += 1;
+                    this.mescroll.endSuccess(total_count, true);
+                    this.goodPageNum = 1;
+                } else {
+                    this.mescroll.endSuccess(list.length || total_count, isNextPage);
+                }
+                if((list.length == 0) && isNextPage){
+                    this.mescroll.triggerUpScroll();
+                }
+                if(!isNextPage && (this.tabIndex < this.tabs.length - 1)) {
+                    this.tabIndex += 1;
+                    this.goodPageNum = 1;
+                    this.groupId_index = 0;
+                    this.mescroll.triggerUpScroll();
+                }
+            }).catch(() => this.mescroll.endErr());
+		},
+        async couponDetailHandle(item) {
+            const res = await lxTypeStatusCheckout(item);
+            if (res.code != 1) return;
+            const { lx_type, goods_sign, skuId, positionId, rebate } = item;
+
+            this.$go(`/pages/cardModule/spreadDetail/index?lx_type=${lx_type}&goods_sign=${goods_sign || 0}&skuId=${skuId ||0}&queryId=${goods_sign || skuId}&positionId=${positionId}&rebate=${rebate}`)
+        },
+        async spreadHandle(item) {
+            const res = await lxTypeStatusCheckout(item);
+            if (res.code != 1) return;
+            const {goods_sign, rebate, skuId } = item;
+            this.$go(`/pages/cardModule/spreadDetail/saveType?goods_sign=${goods_sign || 0}&skuId=${skuId || 0}&rebate=${rebate}`);
+        },
+        // 进入商品的搜索
+        toSearchHandle() {
+            if(!this.isAutoLogin) return this.$go('/pages/login/index');
+            // 去领券中心的搜索页
+            this.$go(`/pages/homeModule/productList/search?is_rebate=1`);
+        },
+        formatPrice(price) {
+            price = Number(price).toFixed(2);
+            let splitPrice = price.split(".");
+            let amount = formatAmount(splitPrice[0]);
+            return `<span style="font-weight:500;font-size: 28px">${amount}.<span style="font-size: 18px;">${splitPrice[1]}</span></span>`;
+        },
+        formatItemPrice(price = 0, type) {
+            let dom= '';
+            switch(type) {
+                case 1:
+                    dom = `<span style="font-weight:600;font-size: 13px;">¥<span style="font-size: 18px;">${price}</span></span>`;
+                    break;
+                default:
+                    dom = `<span style="font-weight:600;font-size: 10px;">¥<span style="font-size: 20px;">${price}</span></span>`;
+                    break;
+            }
+            return dom;
+        },
         currentHandle() {
             this.mescroll.scrollTo(0, 0);
         },
         setIndexHandle(index) {
             this.currIndex = index;
         },
-        openLeadDiaHandle() {
-            // this.currIndex = 0;
-            // this.isShowLeadDia = true;
-            this.isShowImg = true;
-            if(this.isShowLeadDot) {
-                this.isShowLeadDot = false;
-				setStorage(this.showLeadDotStorageKey, this.cur_date);
-            }
-        },
+        // 非团长时的配置文案
         async wordConfigInit() {
             const res = await wordConfig();
             if(res.code != 1) return;
             const { text, text2 } = res.data;
             this.textList = text;
             this.text2List = text2;
-
-        },
-        async initStatus() {
-            this.getUserInfo();
-            this.getVipObject();
-            if(this.userInfo.is_team || !this.isAutoLogin) return;
-            this.applyInfoRequest();
         },
         async applyInfoRequest(showToast = false) {
             const res = await applyInfo();
@@ -388,24 +557,20 @@ export default {
             if(!this.isAutoLogin) return this.$go('/pages/login/index');
             const msgRes = await msgTemplate();
             if(msgRes.code == 1 && msgRes.data) {
-                const { settle, events, invite } = msgRes.data;
-                let tmplIds = [invite];
+                const { settle, events } = msgRes.data;
+                let tmplIds = [];
                 (!this.vipObject.is_send && settle) && tmplIds.push(settle);
                 (!this.vipObject.is_events && events) && tmplIds.push(events);
                 tmplIds = tmplIds.filter(item => !!item);
-                // console.log('tmplIds', tmplIds)
                 const subRes = await this.$subscribeMessageHandle(tmplIds);
                 const settleResult = subRes[settle];
                 const eventsResult = subRes[events];
-                const inviteResult = subRes[invite];
                 const params = {
                     is_send: 0,
                     is_events: 0,
-                    is_invite: 0
                 }
                 if(settleResult == 'accept') params.is_send = 1;
                 if(eventsResult == 'accept') params.is_events = 1;
-                if(inviteResult == 'accept') params.is_invite = 1;
                 isSend(params);
             }
             this.$go("/pages/cardModule/cardEarnings/index");
@@ -434,6 +599,7 @@ export default {
             // this.$toast('报名团长需要你授权手机号');
         },
         async applyRequest() {
+            if(!this.isAgreement) return this.$toast('请勾选团长服务协议');
             // 已提交审核 - 审核中
             if(this.isApplyStatus) return this.applyInfoRequest(true);
             const res = await apply();
@@ -446,13 +612,14 @@ export default {
             this.getVipObject();
             this.isShowSuccess = false;
             this.isShowResult = false;
+            this.downCallback();
         },
         async closeSuccessHandle(){
             const msgRes = await msgTemplate();
             if(msgRes.code != 1) return this.$toast(msgRes.msg);
-            const { team_apply, settle, events, invite } = msgRes.data;
+            const { team_apply, settle, events } = msgRes.data;
             // 收益、审核、活动
-            const tmplIds = [team_apply, settle, events, invite].filter(item => !!item);
+            const tmplIds = [team_apply, settle, events].filter(item => !!item);
             const res = await this.$subscribeMessageHandle(tmplIds); // 消息订阅的通知
             this.closeDia();
         }
@@ -467,13 +634,13 @@ export default {
 $bgColor: #FDF7DA;
 .content_card {
     background: $bgColor;
-    padding-bottom: calc(125rpx + constant(safe-area-inset-bottom));
-    padding-bottom: calc(125rpx + env(safe-area-inset-bottom));
     position: relative;
     z-index: 0;
+    overflow: hidden;
+    box-shadow: 0rpx 38rpx 16rpx 0rpx $bgColor;
     &::before {
         content: '\3000';
-        background: url("https://file.y1b.cn/store/1-0/231227/658b997bb8200.png") 0 0 / 100% 100%;
+        background: url("https://file.y1b.cn/store/1-0/24528/665536041cfe7.png") 0 0 / 100% 100%;
         width: 100%;
         height: 660rpx;
         z-index: 0;
@@ -637,10 +804,14 @@ $bgColor: #FDF7DA;
             margin: 24rpx 32rpx 0rpx;
             .cont_txtList-item {
                 font-size: 28rpx;
-                font-weight: 400;
-                color: #333333;
+                color: #333;
                 line-height: 40rpx;
                 margin-bottom: 8rpx;
+            }
+            .cont_txtList-lab {
+                font-size: 28rpx;
+                color: #999;
+                margin-bottom: 28rpx;
             }
         }
         .leader_cont {
@@ -702,172 +873,9 @@ $bgColor: #FDF7DA;
     text-align: center;
 }
 .content_team {
-    background: #FFE7D1;
     overflow: hidden;
-}
-.cont_top{
-    position: relative;
-    z-index: 0;
-    overflow: hidden;
-    &::before {
-        content: '\3000';
-        background: url("https://file.y1b.cn/store/1-0/231229/658e4db3cab7f.png") 0 0 / 100% 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 938rpx;
-        z-index: -1;
-    }
-    .top_title{
-        width: 462rpx;
-        height: 74rpx;
-        line-height: 74rpx;
-        font-size: 32rpx;
-        color: #fff;
-        text-align: center;
-        position: relative;
-        z-index: 0;
-        margin: 360rpx auto 0;
-        &::before {
-            content: '\3000';
-            background: url("https://file.y1b.cn/store/1-0/231227/658bb8730a1ba.png") 0 0 / 100% 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-    }
-    .top_btn {
-        position: relative;
-        z-index: 0;
-        width: 454rpx;
-        height: 152rpx;
-        margin: 406rpx auto 0;
-        background: url("https://file.y1b.cn/store/1-0/231227/658bb9590d47b.png") 0 0 / 100% 100%;
-        &::before {
-            content: '\3000';
-            background: url("https://file.y1b.cn/store/1-0/231227/658bb9df911c3.png") 0 0 / 100% 100%;
-            position: absolute;
-            right: 30rpx;
-            top: 0;
-            width: 228rpx;
-            height: 32rpx;
-        }
-    }
-    .top_earn{
-        background: url("https://file.y1b.cn/store/1-0/231229/658e68b52e0e9.png") 0 0 / 100% 100%;
-        width: 130rpx;
-        height: 110rpx;
-        position: absolute;
-        left: 0;
-        bottom: 28rpx;
-    }
-}
-.top_price{
-    font-size: 72rpx;
-    line-height: 60rpx;
-    color: #3D2100;
-    font-weight: 600;
-    margin-top: 12rpx;
-}
-.top_price_lab{
-    font-size: 28rpx;
-    line-height: 40rpx;
-    color: rgba(61,33,0,0.50);
-}
-.cont_box{
-    position: relative;
-    z-index: 0;
-    background: #FFF5ED;
-    margin: 34rpx 16rpx 0;
-    margin-bottom: calc(155rpx + constant(safe-area-inset-bottom));
-    margin-bottom: calc(155rpx + env(safe-area-inset-bottom));
-    border-radius: 32rpx;
-    overflow: hidden;
-    .intro_title {
-        line-height: 44rpx;
-        font-size: 32rpx;
-        text-align: center;
-        color: #333;
-        margin: 64rpx 0 32rpx;
-        font-weight: bold;
-        .intro_title-txt{
-            position: relative;
-            z-index: 0;
-            &::before {
-                content: '\3000';
-                background: url("https://file.y1b.cn/store/1-0/231229/658e6681bcb2c.png") 0 0 / 100% 100%;
-                position: absolute;
-                left: -20rpx;
-                top: -10rpx;
-                width: 94rpx;
-                height: 48rpx;
-                z-index: -1;
-            }
-            &::after {
-                content: '\3000';
-                background: url("https://file.y1b.cn/store/1-0/231229/658e66999e7be.png") 0 0 / 100% 100%;
-                position: absolute;
-                width: 56rpx;
-                height: 28rpx;
-                right: -20rpx;
-                bottom: -2rpx;
-                z-index: -1;
-            }
-        }
-
-    }
-}
-.leader_box{
-    padding-bottom: calc(125rpx + constant(safe-area-inset-bottom));
-    padding-bottom: calc(125rpx + env(safe-area-inset-bottom));
-}
-.leader_intro{
-    margin: 32rpx 24rpx 0;
-    height: 88rpx;
-    line-height: 88rpx;
-    background: rgba(255,255,255,0.50);
-    border-radius: 16rpx;
-    padding: 0 20rpx;
-    font-weight: bold;
-    color: #333;
-    .intro_right{
-        font-size: 28rpx;
-        color: #aaa;
-        position: relative;
-        &.active::before {
-            content: '\3000';
-            width: 15rpx;
-            height: 15rpx;
-            position: absolute;
-            border-radius: 50%;
-            background: #EF2B20;
-            right: 28rpx;
-            top: 25rpx;
-        }
-    }
-}
-.vip_cont{
-    margin: 0 40rpx 74rpx;
-    font-size: 28rpx;
-    color: #666;
-    line-height: 40rpx;
-    &:last-child {
-        margin-bottom: 0;
-    }
-    .vip_list {
-        margin-bottom: 8rpx;
-        .vip_list-title{
-            margin-bottom: 8rpx;
-            font-weight: bold;
-        }
-        .vip_list-cont {
-            margin-bottom: 20rpx;
-        }
-    }
+    // padding-bottom: calc(125rpx + constant(safe-area-inset-bottom));
+    // padding-bottom: calc(125rpx + env(safe-area-inset-bottom));
 }
 .leader {
     border-radius: 24rpx;
@@ -965,5 +973,323 @@ $bgColor: #FDF7DA;
     width: 100%;
     padding: 20rpx;
     box-sizing: border-box;
+}
+
+.nav_title {
+    flex: 1;
+    text-align: center;
+    font-size: 36rpx;
+    font-weight: 600;
+    font-size: 38rpx;
+    color: #272e40;
+    .img-avatar {
+        width: 56rpx;
+        height: 56rpx;
+        flex: 0 0 56rpx;
+        background: #e9e9e9;
+        border-radius: 50%;
+        margin-left: 12rpx;
+    }
+    .nick_name {
+        margin: 0 16rpx;
+    }
+    .icon-captain {
+        width: 82rpx;
+        height: 38rpx;
+    }
+}
+
+.search_icon{
+    width: 28rpx;
+    height: 28rpx;
+    margin-right: 16rpx;
+}
+.search_txt {
+    font-size: 26rpx;
+    color: #999;
+    line-height: 64rpx;
+    word-break: break-all;
+    width: calc(100% - 64rpx);
+    text-align: left;
+}
+.search_box {
+    position: absolute;
+    left: 16rpx;
+    right: 16rpx;
+    bottom: -84rpx;
+    .nav_search{
+        flex: 1;
+        height: 64rpx;
+        background: #f1f1f1;
+        border-radius: 12rpx;
+        padding: 0 20rpx;
+        box-sizing: border-box;
+        margin-right: 28rpx;
+    }
+    .search_icon-btn {
+        font-size: 32rpx;
+        color: #333;
+    }
+}
+
+.income-box {
+    position: relative;
+    height: 224rpx;
+    box-sizing: border-box;
+    z-index: 0;
+    padding: 28rpx 40rpx 10rpx 40rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 16rpx 32rpx;
+    background: linear-gradient(45deg,#f04037, #f06437);
+    border-radius: 16rpx;
+    color: #fff;
+    &::before {
+      content: '\3000';
+      background: url("https://file.y1b.cn/store/1-0/24528/6655459fbcf23.png") 0 0 / cover;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .income-box-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .check-detail {
+      width: 136rpx;
+      height: 52rpx;
+      line-height: 52rpx;
+      text-align: center;
+      box-sizing: border-box;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.78),
+        rgba(255, 255, 255, 0.9)
+      );
+      border-radius: 12rpx 0px 0px 12rpx;
+      position: absolute;
+      right: 0;
+      top: 48rpx;
+      font-size: 26rpx;
+      font-weight: 400;
+      color: #f1534b;
+    }
+
+    .ib-head {
+      z-index: 1;
+      .ib-title {
+        font-size: 28rpx;
+        position: relative;
+        display: inline-block;
+        .ib_title-help{
+          position: absolute;
+          top: 50%;
+          right: -40rpx;
+          transform: translateY(-50%);
+          width: 30rpx;
+          height: 30rpx;
+        }
+      }
+
+      .ib-content {
+        position: relative;
+        display: flex;
+        margin-top: 8rpx;
+
+        .ib-num {
+          font-size: 56rpx;
+          font-weight: 500;
+        }
+
+        .ib-tips {
+          height: 36rpx;
+          font-size: 20rpx;
+          font-weight: 500;
+          background: rgba(255, 198, 84, 0.85);
+          border-radius: 18rpx 24rpx 24rpx 0px;
+          padding: 0rpx 12rpx;
+          display: flex;
+          align-items: center;
+          margin-left: 4rpx;
+        }
+      }
+    }
+
+    .ib-bottom {
+      z-index: 1;
+      display: flex;
+      opacity: 0.85;
+      font-size: 30rpx;
+
+      .withdrawn {
+        margin-left: 24rpx;
+        padding-left: 24rpx;
+        position: relative;
+        // border-left: 2rpx solid #ffffff;
+      }
+
+      .withdrawn::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translate(50%, -50%);
+        width: 2rpx;
+        height: 20rpx;
+        background: #ffffff;
+      }
+    }
+}
+.list_box {
+    margin-top: 24rpx;
+    border-top: 10rpx solid #f5f6fa;
+    padding-bottom: 46rpx;
+    .list_item {
+        width: 100%;
+        border-radius: 40rpx;
+        padding: 0 16rpx 36rpx;
+        box-sizing: border-box;
+        margin-top: 32rpx;
+        .item_left {
+            width: 240rpx;
+            height: 240rpx;
+            border-radius: 24rpx;
+            margin-right: 24rpx;
+            flex: 0 0 240rpx;
+        }
+    .item_right{
+      flex: 1;
+      align-self: stretch;
+      position: relative;
+      &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 1rpx;
+        // box-shadow: 0rpx rpx 1rpx 0rpx #C9C9C9;
+        background: rgba(#B9B9B9, .5);
+        bottom: -36rpx;
+        left: 0;
+      }
+      .item_title-box {
+        width: 100%;
+      }
+      .fl_bet{
+         white-space: nowrap;
+      }
+      .item_title{
+        font-size: 28rpx;
+        font-weight: 600;
+        color: #333;
+        line-height: 48rpx;
+        height: 96rpx;
+        .item_title-value {
+            padding: 2rpx 10rpx;
+            font-size: 24rpx;
+            font-weight: 600;
+            color: #fff;
+            line-height: 36rpx;
+            position: relative;
+            z-index: 0;
+            margin-right: 8rpx;
+            display: inline;
+            &::before {
+                content: "\3000";
+                background: url("https://file.y1b.cn/store/1-0/2465/665fffdf7025d.png") 0 0 / 100% 100% no-repeat;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+            }
+
+        }
+      }
+      .item_lab-box {
+        margin-top: 12rpx;
+        display: flex;
+        .face_value {
+            line-height: 36rpx;
+            background: rgba(245,84,54,0.12);
+            border-radius: 4rpx;
+            padding: 0 10rpx;
+            margin-right: 12rpx;
+            font-size: 26rpx;
+            font-weight: bold;
+            text-align: left;
+            color: #f55436;
+        }
+      }
+      .item_lab{
+        font-size: 26rpx;
+        color: #aaa;
+        line-height: 36rpx;
+      }
+      .item_price{
+        font-size: 26rpx;
+        text-align: center;
+        color: #e7331b;
+        line-height: 50rpx;
+        font-weight: bold;
+        position: relative;
+        z-index: 0;
+        align-self: stretch;
+        &.active::before {
+            content: '券后';
+            font-size: 26rpx;
+            margin-right: 8rpx;
+            font-weight: normal;
+        }
+        .item_price-lab {
+            margin-left: 8rpx;
+            opacity: 0.45;
+            font-size: 26rpx;
+            text-decoration:  line-through;
+        }
+        &::after {
+            content: '\3000';
+            width: 412rpx;
+            height: 100%;
+            background: linear-gradient(90deg,rgba(255,242,242,0.00), #fde1e0 90%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+      }
+      .item_btn {
+        padding: 0 12rpx;
+        height: 64rpx;
+        background: #EF2B20;
+        border-radius: 12rpx;
+        color: #fff;
+        position: relative;
+        line-height: 64rpx;
+        &::before {
+            content: '赚';
+            font-size: 26rpx;
+            margin-right: 10rpx;
+        }
+      }
+    }
+  }
+}
+.fix_btn {
+    position: fixed;
+    width: 72rpx;
+    height: 192rpx;
+    bottom: 344rpx;
+    left: 0;
+    background: url("https://file.y1b.cn/store/1-0/2465/66600817cbed7.png") 0 0 / cover;
 }
 </style>
