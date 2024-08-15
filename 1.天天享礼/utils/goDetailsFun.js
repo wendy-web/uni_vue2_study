@@ -2,8 +2,7 @@ import { bysubunionid } from '@/api/modules/jsShop.js';
 import { goodsPromotion } from '@/api/modules/pddShop.js';
 import {
     couponDetails,
-    exchange,
-    fromUrl
+    exchange
 } from '@/api/modules/shopMall.js';
 import {
     mapGetters,
@@ -51,7 +50,8 @@ const goDetailsFun = {
             if ((lx_type == 2 || lx_type == 3) && [12].includes(type)) return this.lxTypeJdFun(item, {});
             switch (type) {
                 case 1:
-                    return this.goCouponDetails(coupon_id_android, is_popover);
+                case 14:
+                    this.goCouponDetails(coupon_id_android, is_popover);
                     break;
                     //公众号
                 case 2:
@@ -94,10 +94,7 @@ const goDetailsFun = {
                     break;
                 case 5:
                     // 千猪外链
-                    if (qz_url) {
-                        const bgColor = this.getWebviewBgColor(qz_url);
-                        this.$go(`/pages/webview/webview?link=${encodeURIComponent(qz_url)}&bgColor=${bgColor}`);
-                    }
+                    this.$goToMoviePlugin();
                     break;
                 case 6:
                     // 京东商品——半屏小程序拉起
@@ -131,22 +128,14 @@ const goDetailsFun = {
                 case 7:
                     if (configDia) {
                         // 领券中心 - 弹窗事件
-                        this.$go(`/pages/userModule/productList/index?typeIndex=${type_id || 0}`);
-                        return;
+                        return this.$go(`/pages/userModule/productList/index?typeIndex=${type_id || 0}`);
                     }
-                    console.log('this.', this.userInfo.buy_vip);
-                    if (this.userInfo.buy_vip) {
-                        return this.$go('/pages/discounts/discounts/index');
-                    }
-                    this.$toast('维护中，敬请留意');
-                    // 惠生活
-                    // uni.switchTab({
-                    //     url: `/pages/tabBar/discounts/index`
-                    // });
+                    // 跳转到惠吃喝小程序
+                    this.$goToDiscountsMini();
                     break;
                 case 8:
-                    // 跳转瑞幸点单 - 入口标识：第一次进入为1； 0：否；1：是
-                    this.$go(`/pages/userModule/takeawayMenu/luckin/index?brand_id=13&rote=1`);
+                    // 聚推客 - 打车出行
+                    this.$goToCarPlugin();
                     break;
                 case 9:
                     // 小程序的内部页面
@@ -161,18 +150,8 @@ const goDetailsFun = {
                     }
                     break;
                 case 10:
-                    // 从图文管理的模式进入
-                    if (isNavFromUrl) {
-                        // 乐维娃娃机
-                        fromUrl().then(res => {
-                            if (res.code == 1 && res.data) {
-                                this.$go(`/pages/webview/webview?link=${encodeURIComponent(res.data)}`);
-                                return;
-                            }
-                            this.$toast(res.msg);
-                        });
-                        return;
-                    }
+                    // 从图文管理的模式进入 - 乐维娃娃机
+                    if (isNavFromUrl) return this.fromUrlRequest(item);
                     // 推券弹窗
                     if (this.$refs.recommendDia) {
                         this.$refs.recommendDia.initGtData(item);
@@ -198,7 +177,16 @@ const goDetailsFun = {
                     // 接入移动积分
                     this.$go(`/pages/webview/webview?link=${encodeURIComponent(qz_url)}`);
                     break;
+                case 15:
+                    // 乐维娃娃机
+                    this.fromUrlRequest(item);
+                    break;
             }
+        },
+        fromUrlRequest(item) {
+            const { zww_jump, zww_url } = item;
+            if (zww_jump == 2) return this.$go('/pages/shopMallModule/middleCont/index');
+            this.$go(`/pages/webview/webview?link=${encodeURIComponent(zww_url)}`);
         },
         // 列表的跳转事件
         async detailsFun_mixins(
@@ -228,7 +216,7 @@ const goDetailsFun = {
             if (lx_type == 2 || lx_type == 3) return this.lxTypeJdFun(item, { listIndex, index }, isBolCredits);
             // 拼多多
             const item_id = coupon_id || id;
-            if (is_jump == 2 || [1, 11, 12].includes(type)) return this.goCouponDetails(item_id, is_popover);
+            if (is_jump == 2 || [1, 11, 12, 14].includes(type)) return this.goCouponDetails(item_id, is_popover);
 
             // 小程序的直接跳转
             if (item.type == 4) return this.immediateFun(item);
@@ -259,10 +247,7 @@ const goDetailsFun = {
             if (start_time && end_time) {
                 let currDate = new Date().getTime();
                 end_time = new Date(end_time.replace(new RegExp(/-/gm), '/')).getTime();
-                if (currDate < end_time) {
-                    this.goCouponDetails(item_id, is_popover);
-                    return;
-                }
+                if (currDate < end_time) return this.goCouponDetails(item_id, is_popover);
             }
             const exchangeData = await exchange({
                 id: item_id,
@@ -307,10 +292,7 @@ const goDetailsFun = {
                     break;
                 case 5:
                     // 千猪外链
-                    if (qz_url) {
-                        const bgColor = this.getWebviewBgColor(qz_url);
-                        this.$go(`/pages/webview/webview?link=${encodeURIComponent(qz_url)}&bgColor=${bgColor}`);
-                    }
+                    this.$goToMoviePlugin();
                     break;
                 case 6:
                     // 小程序内页
@@ -318,17 +300,9 @@ const goDetailsFun = {
                     break;
                 case 8:
                     // tag 0： 战马、 1： 红牛 跳转至公众号
-                    if (this.userInfo.tag <= 1) {
-                        return this.$go(`/pages/webview/webview?link=${encodeURIComponent(link)}`);
-                    }
+                    if (this.userInfo.tag <= 1) return this.$go(`/pages/webview/webview?link=${encodeURIComponent(link)}`);
                     // 乐维娃娃机
-                    fromUrl().then(res => {
-                        if (res.code == 1 && res.data) {
-                            this.$go(`/pages/webview/webview?link=${encodeURIComponent(res.data)}`);
-                            return;
-                        }
-                        this.$toast(res.msg);
-                    });
+                    this.fromUrlRequest(detailData.data);
                     break;
                 case 10:
                     // 广告位 - 打开半屏推券的使用
@@ -351,34 +325,28 @@ const goDetailsFun = {
             } = pageData;
             switch (page_index) {
                 case 1:
-                    this.$go('/pages/discounts/discounts/index');
-                    // uni.switchTab({
-                    //     url: `/pages/tabBar/discounts/index`
-                    // });
+                    this.$goToDiscountsMini();
                     break;
                 case 2:
-                    uni.switchTab({
-                        url: `/pages/tabBar/task/index`
-                    });
+                    this.$switchTab(`/pages/tabBar/task/index`);
                     break;
                 case 3:
                     // 领券中心的域名
                     this.$go(`/pages/userModule/productList/index?typeIndex=${eliteId_index}`);
                     break;
                 case 4:
-                    // 跳转瑞幸点单 - 入口标识：第一次进入为1； 0：否；1：是
-                    this.$go(`/pages/userModule/takeawayMenu/luckin/index?brand_id=13&rote=1&product_id=${type_sid || 0}`);
+                    this.$goToDiscountsMini();
                     break;
                 case 5:
                     this.$go(type_sid);
                     break;
                 case 6:
                     // 麦当劳
-                    this.$go(`/pages/userModule/takeawayMenu/mcDonald/index?brand_id=5&rote=1&product_id=${type_sid || 0}`);
+                    this.$goToDiscountsMini();
                     break;
                 case 7:
                     // 肯德基
-                    this.$go(`/pages/userModule/takeawayMenu/kfc/index?brand_id=97&rote=1&product_id=${type_sid || 0}`);
+                    this.$goToDiscountsMini();
                     break;
             }
         },
@@ -436,7 +404,7 @@ const goDetailsFun = {
                 this.exchangeFailedShow = true; // 混入方法的参数赋值
                 return;
             }
-            if (is_flow == 1) {
+            if (is_flow == 1 && !this.userInfo.is_vip) {
                 let urlPar = `cid1=${cid1}&skuId=${skuId}&cid3=${cid3}`
                 if (lx_type == 3) urlPar = `goods_sign=${goods_sign}`; // 拼多多商品
                 this.$go(`/pages/shopMallModule/feedDetailsList/index?${urlPar}&positionId=${positionId || 0}&has_coupon=${has_coupon}`);
@@ -465,8 +433,8 @@ const goDetailsFun = {
                 this.$emit('deleteBysubunionid', { listIndex, index });
                 return;
             }
-            // 半屏的中转详情页面
-            if (is_flow == 2) {
+            // 半屏的中转详情页面 - 会员所有京东/拼多多商品都先进商品详情（中转详情）
+            if (is_flow == 2 || this.userInfo.is_vip) {
                 this.$go(`/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&positionId=${positionId}&active_id=${active_id || 0}&tag=${tag || 0}`);
                 return;
             }
@@ -553,10 +521,7 @@ const goDetailsFun = {
                     break;
                 case 5:
                     // 千猪外链
-                    if (qz_url) {
-                        const bgColor = this.getWebviewBgColor(qz_url);
-                        this.$go(`/pages/webview/webview?link=${encodeURIComponent(qz_url)}&bgColor=${bgColor}`);
-                    }
+                    this.$goToMoviePlugin();
                     break;
                 case 6:
                     // 小程序内页

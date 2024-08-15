@@ -43,9 +43,7 @@ import { mapGetters } from 'vuex';
                 if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
 				// 打开公众号文章链接 关注公众号
 				this.$wxReportEvent('followwoa');
-				uni.navigateTo({
-					url: `/pages/webview/webview?link=${encodeURIComponent(this.taskReward.article_url)}`
-				});
+				this.$go(`/pages/webview/webview?link=${encodeURIComponent(this.taskReward.article_url)}`);
 			}
 		}
 	}

@@ -2,7 +2,7 @@
 <view class="card">
   <xh-navbar
     :leftImage="imgUrl + '/static/images/left_back.png'"
-    @leftCallBack="$topCallBack"
+    @leftCallBack="$leftBack"
     :fixed="true"
     title="省钱卡红包"
     titleColor="#333"
@@ -22,8 +22,8 @@
       v-if="!is_vip || dosingArr.dosing_packet_num"
     ></onOpenPacket>
     <view
-      :class="['use_box', isShowCardTop ? 'active' : '', !is_vip ? 'white_bg' : '', isScrollBox ? 'set_height' : '']"
-      :style="{ '--useheight': useHeight }" v-if="isContPack"
+      :class="['use_box', isShowCardTop && 'active', !is_vip && 'white_bg', isScrollBox && 'set_height']"
+      :style="{ '--useheight' : useHeight + 'px' }" v-if="isContPack"
     >
         <image :src="cardImgUrl + 'use_box.png'" mode="widthFix" class="bg_img" v-if="isShowCardTop"></image>
         <scroll-view :scroll-y="isScrollBox" class="detail_cont">
@@ -64,20 +64,21 @@
             </view>
             <view class="pay_right">确认</view>
         </view>
-        <view class="pay_agree">
-            <van-checkbox checked-color="#F95B4D" icon-size="12px" style="--checkbox-label-margin:5px;"
-              :value="isAgreement" @change="changeHandle">
-              <text style="color: #999;">我已阅读并同意</text>
+        <!-- <view class="pay_agree">
+          <van-checkbox checked-color="#F95B4D" icon-size="12px" style="--checkbox-label-margin:5px;"
+            :value="isAgreement" @change="changeHandle">
+            <text style="color: #999;">我已阅读并同意</text>
           </van-checkbox>
           <text style="color: #fe9433" @click="toAgreeLook('/agreement/savings-server.html')">
-            《省钱卡会员服务协议》</text>
-        </view>
+            《省钱卡会员服务协议》
+          </text>
+        </view> -->
     </view>
 </view>
 </template>
 <script>
 import {
-simulatePacket,
+  simulatePacket,
 } from '@/api/modules/packet.js';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { formatPrice, getImgUrl, toAgreeLook } from "@/utils/auth.js";
@@ -137,7 +138,7 @@ export default {
         useHeight() {
           let viewPort = getViewPort();
           let useHeight = viewPort.windowHeight - viewPort.navHeight;
-          return useHeight + 'px';
+          return useHeight;
         },
         isListPack() {
           const isListPack = this.useArr.length || this.useArr.length;
@@ -185,12 +186,12 @@ export default {
       this.useArr = useArr;
     },
     confirmHandle() {
-      if(!this.isAgreement) return this.$toast('请勾选服务协议');
+      // if(!this.isAgreement) return this.$toast('请勾选服务协议');
       // 千猪与海威 - 直接返回上一页
-      if(this.ly_type != 0) return this.$topCallBack();
+      if(this.ly_type != 0) return this.$leftBack();
       this.setSelRedPacket(this.isSelectRedPacket);
       if(!this.userInfo.is_vip) this.setSelNewPacket(this.isOpenSelectRedPacket);
-      this.$topCallBack();
+      this.$leftBack();
     },
     onPageScroll(event) {
       const scrollTop = Math.ceil(event.scrollTop);
@@ -380,8 +381,8 @@ page {
   border-radius: 40rpx;
   background: rgba($color: #fff, $alpha: 1);
   overflow: hidden;
-  padding-bottom: calc(10rpx + constant(safe-area-inset-bottom));
-  padding-bottom: calc(10rpx + env(safe-area-inset-bottom));
+  padding-bottom: calc(20rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
   .pay_btn {
     width: 702rpx;
     height: 92rpx;

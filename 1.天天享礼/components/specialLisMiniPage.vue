@@ -11,11 +11,7 @@
     <view :class="['detail_box', isScrollTop ? 'ani_bottom_active' : 'ani_Up_bottom_active']">
         <view class="del_top fl_bet">
             <view class="share_icon">
-                <button
-                    open-type="share"
-                    class="share_btn"
-                    :data-id="id"
-                ></button>
+                <button open-type="share" class="share_btn" :data-id="id"></button>
             </view>
             <image class="close_icon" mode="aspectFill" :src="imgUrl +'static/images/close_back.png'" @click="popupClose"></image>
         </view>
@@ -26,12 +22,12 @@
             @scrolltolower="scrollToLowerHandle"
         >
             <image mode="widthFix" class="top_img"
-                :src="bg_img" :style="{'--margin': navHeight + 'px' }"
-                @click="notEnoughCreditsHandle"></image>
+                :src="bg_img" :style="{'--margin': navHeight + 'px' }"></image>
             <good-list
-                :list="goods"
+                :list="showGoods"
                 :isShowBanner="true"
                 :isBolCredits="true"
+                :isShowProfit="true"
                 @notEnoughCredits="notEnoughCreditsHandle"
                 @isBannerClick="isBannerClickHandle"
             ></good-list>
@@ -45,15 +41,7 @@
 </template>
 <script>
 import { goodsTheme } from '@/api/modules/allowance.js';
-import {
-goodsQuery,
-jingfen,
-material,
-} from '@/api/modules/jsShop.js';
-import {
-goodsRecommend,
-goodsSearch,
-} from '@/api/modules/pddShop.js';
+import { getApiParams } from '@/api/modules/requestConfiguration/lxType.js';
 import goodList from "@/components/goodList.vue";
 import { getImgUrl } from '@/utils/auth.js';
 import getViewPort from '@/utils/getViewPort.js';
@@ -61,12 +49,6 @@ import goDetailsFun from '@/utils/goDetailsFun';
 import { mapMutations } from 'vuex';
 export default {
     mixins: [goDetailsFun], // 使用mixin
-    computed: {
-        navHeight () {
-            let viewPort = getViewPort();
-            return viewPort.statusBarHeight;
-        }
-    },
     components: {
         goodList,
     },
@@ -80,14 +62,40 @@ export default {
             pageNum: 1, // 页面num
             configData: null,
             bg_img: '',
-            groupIdIndex: 0,
+            groupId_index: 0,
             goods_lx_type: 1,
             subjectColor: '#F5EDE2',
             isScroll: true,
             isLoading: false,
             scrollTopValue: 0,
-            isScrollTop: true
+            isScrollTop: true,
+            isRequestNum: 0
         };
+    },
+    computed: {
+        navHeight () {
+            let viewPort = getViewPort();
+            return viewPort.statusBarHeight;
+        },
+        // 列表数据
+        showGoods() {
+            let list = this.goods;
+            let isType9 = 0;
+            // 列表对单列呈现进行后排数组的操作
+            list.length && list.forEach((nowItem, index) => {
+                if(nowItem.type != 9 ) return;
+                if(index%2 && (isType9%2) == 0) {
+                list[index] = list[index-1];
+                list[index - 1] = nowItem;
+                }
+                if((index%2) == 0 && isType9%2) {
+                list[index] = list[index-1];
+                list[index - 1] = nowItem;
+                }
+                isType9 += 1;
+            });
+            return list;
+        }
     },
     methods: {
         ...mapMutations({
@@ -119,8 +127,9 @@ export default {
             this.configData = null;
             this.goods = [];
             this.pageNum = 1;
-            this.groupIdIndex = 0;
+            this.groupId_index = 0;
             this.isScroll = true;
+            this.isRequestNum = 0;
             this.initGoodsTheme();
         },
         async initGoodsTheme () {
@@ -143,13 +152,12 @@ export default {
                 this.$emit('specialLisShare', {  share_word, share_img });
             }
             const { goods_lx_type, list, total_count } = this.configData;
-            this.goods_lx_type = goods_lx_type;
+            this.goods_lx_type = 2;
             switch (goods_lx_type) {
                 case 1:
                     // 自选
                     this.goods = this.goods.concat(list); // 追加新数据
                     this.isLoading = false;
-                    this.popupShow();
                     this.pageNum += 1;
                     if (!list.length) this.isScroll = false;
                     break;
@@ -159,85 +167,39 @@ export default {
                     this.requestList();
                     break;
             }
+            if(!this.isShow) this.popupShow();
         },
         async requestList () {
-            // 拼多多列表
-            const {
-                id,
-                cid,
-                cid2,
-                cid3,
-                eliteId,
-                groupId,
-                type,
-                goods_lx_type
-            } = this.configData;
             // 设置列表数据
-            if (this.pageNum == 1 && !this.groupIdIndex) {
+            if (this.pageNum == 1 && !this.groupId_index) {
                 this.goods = [];
-                this.groupIdIndex = 0;
+                this.groupId_index = 0;
                 this.pageNum = 1;
-            };
-            let pageNum = this.pageNum;
-            let params = {
-                id,
-                page: pageNum,
-                size: 10,
-            };
-            let queryApi = goodsQuery;
-            // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-            switch (type) {
-                case 1:
-                    if (goods_lx_type == 3) {
-                        queryApi = goodsRecommend;
-                    } else {
-                        queryApi = material;
-                        params.eliteId = eliteId;
-                        params.groupId = groupId;
-                    }
-                    break;
-                case 2:
-                    if (goods_lx_type == 3) {
-                        queryApi = goodsSearch;
-                    } else {
-                        queryApi = jingfen;
-                        params.eliteId = eliteId;
-                        params.groupId = groupId;
-                        params.size = 20;
-                    }
-                    break;
-                case 3:
-                    queryApi = goodsQuery;
-                    params.cid1 = cid;
-                    params.cid2 = cid2;
-                    params.cid3 = cid3;
-                    break;
-                case 4:
-                    queryApi = jingfen;
-                    params.eliteId = eliteId;
-                    params.groupId = groupId[this.groupIdIndex];
-                    params.size = 20;
-                    break;
-            };
+            }
+            // 获取配置的京东/拼多多的请求类型及参数
+            const { queryApi, params, groupId, type } = getApiParams(
+                this.configData, { pageNum: this.pageNum, groupId_index: this.groupId_index }
+            );
             queryApi(params).then(res => {
                 const { list, total_count } = res.data;
                 // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-                let isNextPage = (pageNum * params.size) < total_count;
-                if (!isNextPage && type == 4 && this.groupIdIndex < (groupId.length - 1)) {
+                let isNextPage = (this.pageNum * params.size) < total_count;
+                if (!isNextPage && type == 4 && this.groupId_index < (groupId.length - 1)) {
                     // 无下一页 - 京东
-                    this.groupIdIndex += 1;
+                    this.groupId_index += 1;
                     this.pageNum = 0;
-                    // this.mescroll.endSuccess(total_count, true);
-                } else {
-                    // this.mescroll.endSuccess(list.length || total_count, isNextPage);
                 }
-                if (list.length == 0 && (pageNum * params.size) >= total_count) {
-                    this.isScroll = false;
-                }
+                this.isScroll = (list.length || isNextPage);
                 this.pageNum += 1;
                 this.goods = this.goods.concat(list); // 追加新数据
-                this.popupShow();
                 this.isLoading = false;
+                // 请求列表俩次为空时 停止请求
+                if (!list.length && isNextPage && this.isRequestNum < 2) {
+                    this.isRequestNum += 1;
+                    this.initGoodsTheme();
+                    return;
+                }
+                this.isRequestNum = 0;
             }).catch(() => this.isLoading = false);
         },
         goProductListHandle () {

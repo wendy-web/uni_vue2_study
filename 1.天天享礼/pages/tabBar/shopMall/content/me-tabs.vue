@@ -1,28 +1,25 @@
 <!-- tab组件: <me-tabs v-model="tabIndex" :tabs="tabs" @change="tabChange"></me-tabs> -->
 <template>
-	<view class="me-tabs" :class="{'tabs-fixed': fixed}"
-		:style="{top:topFixed, 'margin-top':topMargin, height: tabHeightVal}">
-		<scroll-view v-if="tabs.length" :id="viewId" :scroll-left="scrollLeft" scroll-x scroll-with-animation
-			:scroll-animation-duration="300">
-			<view class="tabs-item" :class="{'tabs-flex':!isScroll, 'tabs-scroll':isScroll}">
-				<!-- tab -->
-				<view class="tab-item"
-                    :style="{width: tabWidthVal, height: tabHeightVal}"
-					v-for="(tab, i) in tabs"
-                    :class="{'active': value===i}"
-                    :key="i"
-                    @click="tabClick(i)"
-                >
-					{{getTabName(tab)}}
-				</view>
-				<!-- 下划线 -->
-				<view class="tabs-line" :style="{left:lineLeft}"></view>
-			</view>
-		</scroll-view>
-	</view>
+<view :class="['me-tabs', fixed && 'tabs-fixed']"
+	:style="{top: topFixed, marginTop:topMargin, height: tabHeightVal}">
+	<scroll-view v-if="tabs.length" :id="viewId" :scroll-left="scrollLeft" scroll-x scroll-with-animation
+		:scroll-animation-duration="300">
+		<view :class="['tabs-item', isScroll ? 'tabs-scroll' : 'tabs-flex']">
+			<!-- tab -->
+			<view :style="{width: tabWidthVal, height: tabHeightVal}"
+				v-for="(tab, i) in tabs" :key="i"
+				:class="['tab-item',value===i && 'active']"
+				@click="tabClick(i)"
+			>{{getTabName(tab)}}</view>
+			<!-- 下划线 -->
+			<view class="tabs-line" :style="{left:lineLeft}"></view>
+		</view>
+	</scroll-view>
+</view>
 </template>
 
 <script>
+import { warpRectDom } from '@/utils/auth.js';
 	export default {
 		props: {
 			tabs: { // 支持格式: ['全部', '待付款'] 或 [{name:'全部'}, {name:'待付款'}]
@@ -63,29 +60,29 @@
 				return this.tabWidth && this.tabs.length // 指定了tabWidth的宽度,则支持水平滑动
 			},
 			tabHeightPx() {
-				return uni.upx2px(this.height)
+				return uni.upx2px(this.height);
 			},
 			tabHeightVal() {
-				return this.tabHeightPx + 'px'
+				return this.tabHeightPx + 'px';
 			},
 			tabWidthPx() {
-				return uni.upx2px(this.tabWidth)
+				return uni.upx2px(this.tabWidth);
 			},
 			tabWidthVal() {
-				return this.isScroll ? this.tabWidthPx + 'px' : ''
+				return this.isScroll ? this.tabWidthPx + 'px' : '';
 			},
 			lineLeft() {
 				if (this.isScroll) {
-					return this.tabWidthPx * this.value + this.tabWidthPx / 2 + 'px' // 需转为px (用rpx的话iOS真机显示有误差)
+					return this.tabWidthPx * this.value + this.tabWidthPx / 2 + 'px'; // 需转为px (用rpx的话iOS真机显示有误差)
 				} else {
-					return 100 / this.tabs.length * (this.value + 1) - 100 / (this.tabs.length * 2) + '%'
+					return 100 / this.tabs.length * (this.value + 1) - 100 / (this.tabs.length * 2) + '%';
 				}
 			},
 			topFixed() {
-				return this.fixed ? this.windowTop + uni.upx2px(this.top) + 'px' : 0
+				return this.fixed ? this.windowTop + uni.upx2px(this.top) + 'px' : 0;
 			},
 			topMargin() {
-				return this.fixed ? 0 : this.top + 'rpx'
+				return this.fixed ? 0 : this.top + 'rpx';
 			}
 		},
 		watch: {
@@ -106,8 +103,9 @@
 			this.scrollCenter() // 滚动到当前下标
 		},
 		methods: {
+			warpRectDom,
 			getTabName(tab) {
-				return typeof tab === "object" ? tab[this.nameKey] : tab
+				return typeof tab === "object" ? tab[this.nameKey] : tab;
 			},
 			tabClick(i) {
 				const eventId = `coupongrouping_${i + 1}`;
@@ -120,7 +118,7 @@
 			async scrollCenter() {
 				if (!this.isScroll) return;
 				if (!this.warpWidth) { // tabs容器的宽度
-					let rect = await this.initWarpRect()
+					let rect = await this.warpRectDom()
 					this.warpWidth = rect ? rect.width : this.windowWidth; // 某些情况下取不到宽度,暂时取屏幕宽度
 				}
 				let tabLeft = this.tabWidthPx * this.value + this.tabWidthPx / 2; // 当前tab中心点到左边的距离
@@ -129,22 +127,9 @@
 				// #ifdef MP-TOUTIAO
 				this.scrollTimer && clearTimeout(this.scrollTimer)
 				this.scrollTimer = setTimeout(() => { // 字节跳动小程序,需延时再次设置scrollLeft,否则tab切换跨度较大时不生效
-					this.scrollLeft = Math.ceil(diff)
+					this.scrollLeft = Math.ceil(diff);
 				}, 400)
 				// #endif
-			},
-			initWarpRect() {
-				return new Promise(resolve => {
-					setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-						let query = uni.createSelectorQuery();
-						// #ifndef MP-ALIPAY
-						query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-						// #endif
-						query.select('#' + this.viewId).boundingClientRect(data => {
-							resolve(data)
-						}).exec();
-					}, 20)
-				})
 			}
 		}
 	}

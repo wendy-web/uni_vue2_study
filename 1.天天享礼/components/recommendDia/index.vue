@@ -70,19 +70,6 @@
                     结束
                 </view>
             </view>
-            <!-- 悬浮的倒计时 -->
-            <!-- <view class="timer_fixed fl_ard" v-if="isShowRemainTime">
-                <view class="timer_fixed-left">{{ max_coupon_money }}</view>
-                <view class="timer_fixed-right">
-                    <view>
-                        <text class="item_num">{{ timeData.hours }}</text>:
-                        <text class="item_num">{{ timeData.minutes }}</text>:
-                        <text class="item_num">{{ timeData.seconds }}</text>.
-                        <text class="item">{{ timeData.milliseconds }}</text>
-                    </view>
-                    <view>后结束</view>
-                </view>
-            </view> -->
             <view class="dia_cont">
                 <view class="good-list" v-if="goods.length">
                     <view :class="['good-list-item', (item.is_expand == 1) ? 'active' : '']"
@@ -98,10 +85,13 @@
                             <view class="good_name_lab" v-if="parseInt(item.face_value)">
                                 抵¥{{ ((item.face_value <= max_coupon_money) || item.is_expand) ? parseInt(item.face_value) : max_coupon_money }}券
                             </view>
+                            <view class="show_type" v-if="userInfo.show_shopType && (item.lx_type > 1)">
+                                {{ (item.lx_type == 2) ? '京东' : '拼多多' }}
+                            </view>
                             {{item.title}}
                         </view>
                         <view class="total_cont box_fl">
-                            <view class="use_cont-left" v-if="item.after_pay">先用后付</view>
+                            <view class="use_cont-left" v-if="item.after_pay"></view>
                             <text class="item_total" v-if="item.inOrderCount30Days">月售{{ item.inOrderCount30Days }}</text>
                             <text class="item_total" v-if="item.sales_tip">已售{{ item.sales_tip }}</text>
 
@@ -149,16 +139,17 @@
 </template>
 <script>
 import {
-bysubunionid,
-goodsQuery,
-goodsRecommended,
-jingfen,
-material,
+    bysubunionid,
+    goodsQuery,
+    goodsRecommended,
+    guessList,
+    jingfen,
+    material
 } from '@/api/modules/jsShop.js';
 import {
-goodsPromotion,
-goodsRecommend,
-goodsSearch
+    goodsPromotion,
+    goodsRecommend,
+    goodsSearch
 } from '@/api/modules/pddShop.js';
 import { getImgUrl } from '@/utils/auth.js';
 import { parseTime } from '@/utils/index.js';
@@ -207,7 +198,18 @@ export default {
             is_advertise: 0,
             max_coupon_money: 0,
             stickyTop: uni.upx2px(294),
-            isShowSticky: false
+            isShowSticky: false,
+            guessListParams: {
+                index: 1,
+                pageNum: 1,
+                sizeNum: 10,
+                empty_num: 0,
+                is_first: 0,
+                ticket_id: 0,
+				is_home: 6
+            },
+            isRequestGuessListFun: true, // 请求猜你喜欢
+            isRequestEmptyNum: 0,
         }
     },
     mounted() {
@@ -330,7 +332,7 @@ export default {
             countDown && countDown.start();
         },
         async initShow(jdDate = null){
-            this.isClickList = false;
+            this.resetVariableName();
             if(jdDate) {
                 this.jdDate = jdDate;
                 this.isShowRemainTime = false;
@@ -350,10 +352,8 @@ export default {
                 this.remainTime = over_time - cur_date;
                 this.jdDate = group;
             }
-            this.goods = [];
-            this.pageNum = 1;
-            this.isCodeErrorShow = false;
-            const { coupon, max_coupon_money, is_advertise } = this.jdDate;
+            const { id, coupon, max_coupon_money, is_advertise } = this.jdDate;
+            this.guessListParams.ticket_id = id;
             this.couponPrice = coupon && coupon[0];
             this.max_coupon_money = max_coupon_money;
             // this.max_coupon_money = 11;
@@ -364,9 +364,9 @@ export default {
         goProductListHandle() {
             this.popupClose();
             this.$switchTab(`pages/tabBar/shopMall/index`);
-            // this.$go(`/pages/userModule/productList/index`);
         },
         scrollToLowerHandle(event) {
+            // 滑动到底部 - 加载下一页
             if(!this.isScroll || this.goods.length < 5) return;
             this.requestRem();
         },
@@ -374,9 +374,26 @@ export default {
             const { scrollTop } = event.detail;
             this.isShowSticky = scrollTop > this.stickyTop;
         },
+        resetVariableName() {
+            this.isClickList = false;
+            this.goods = [];
+            this.pageNum = 1;
+            this.isCodeErrorShow = false;
+            this.guessListParams ={
+                index: 1,
+                pageNum: 1,
+                sizeNum: 10,
+                empty_num: 0,
+                is_first: 0,
+                ticket_id: 0,
+				is_home: 6
+            };
+            this.isRequestGuessListFun = true, // 请求猜你喜欢
+            this.isRequestEmptyNum = 0;
+        },
         // 弹窗进入 初始化
         initGtData(data) {
-            this.isClickList = false;
+            this.resetVariableName();
             this.pageNum = 1;
             this.goods = [];
             this.isCodeErrorShow = false;
@@ -429,10 +446,47 @@ export default {
                 lx_type: goods_lx_type,
                 positionId
             };
+            this.guessListParams.ticket_id = group_id;
             this.popupShow();
             this.requestRem();
         },
+        async guessListFun() {
+            if(this.isLoading) return;
+            this.isLoading = true;
+            const res = await guessList(this.guessListParams);
+            this.isLoading = false;
+            if(res.code != 1 || (res.data && res.data.stop)) {
+                this.isRequestGuessListFun = false;
+                this.requestRem();
+                return;
+            }
+            const { index, list, pageNum, is_first, empty_num, active_id, tag } = res.data;
+            this.guessListParams = {
+                ...this.guessListParams,
+                index,
+                pageNum,
+                empty_num,
+                is_first,
+                active_id,
+                tag
+            }
+            this.goods = this.goods.concat(list); // 追加新数据
+            // 连续三次请求为空时 - 结束个人性推荐的请求
+            if(!list.length) {
+                this.isRequestEmptyNum += 1;
+                if(this.isRequestEmptyNum >= 3) {
+                    this.isRequestGuessListFun = false;
+                }
+                this.requestRem();
+                return;
+            }
+            this.isRequestEmptyNum = 0;
+        },
         async requestRem() {
+            // 请求猜你喜欢的类目 - tab的第一项进行首部的插入
+            if(this.isRequestGuessListFun) {
+                return this.guessListFun();
+            }
             if(this.isLoading) return;
             this.isLoading = true;
             const {
@@ -856,55 +910,6 @@ export default {
 
     }
 }
-.timer_fixed {
-    position: fixed;
-    bottom: 146rpx;
-    left: 32rpx;
-    padding: 4rpx 0;
-    z-index: 1;
-    border-radius: 20rpx;
-    height: 94rpx;
-    overflow: hidden;
-    .timer_fixed-left {
-        font-size: 36rpx;
-        font-weight: 600;
-        color: #fff;
-        padding: 0 12rpx;
-        text-align: center;
-        height: 100%;
-        line-height: 94rpx;
-        background: #FFA244;
-        box-sizing: border-box;
-        margin-right: 20rpx;
-        position: relative;
-        &::before {
-            content: '￥';
-            font-size: 24rpx;
-        }
-        &::after {
-            content: '\3000';
-            background: url("https://test-file.y1b.cn/store/1-0/2424/65bf2fbb64d36.png") 0 0 / 100% 100%;
-            width: 21rpx;
-            height: 94rpx;
-            position: absolute;
-            top:0;
-            right: -20rpx;
-        }
-    }
-    .timer_fixed-right {
-        height: 100%;
-        background: #fff;
-        font-size: 22rpx;
-        color: #666;
-        min-width: 112rpx;
-        padding: 0 24rpx 0 12rpx;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-    }
-}
 .good_name_lab {
   padding: 0 10rpx 0 20rpx;
   font-size: 24rpx;
@@ -915,10 +920,10 @@ export default {
   z-index: 0;
   margin-right: 8rpx;
   white-space: nowrap;
-  display: inline-block;
+  display: inline;
   &::before {
     content: "\3000";
-    background: url("https://file.y1b.cn/store/1-0/23810/64d44dc19f327.png") 0 0 / 100% 100% no-repeat;
+    background: url("https://file.y1b.cn/store/1-0/24621/6675210e27253.png") 0 0 / 100% 100% no-repeat;
     position: absolute;
     left: 0;
     top: 0;
@@ -927,22 +932,28 @@ export default {
     z-index: -1;
   }
 }
+.show_type {
+  padding: 0 4rpx;
+  height: 34rpx;
+  background: #f8cc82;
+  border-radius: 6rpx;
+  font-size: 24rpx;
+  color: #7f4715;
+  line-height: 34rpx;
+  font-weight: bold;
+  display: inline;
+  margin-right: 8rpx;
+}
 .total_cont {
     margin: 10rpx 16rpx 28rpx;
     white-space: nowrap;
     font-size: 26rpx;
     height: 34rpx;
     .use_cont-left {
-        color: #32a666;
-        display: flex;
-        align-items: center;
-        &::before {
-        content: "\3000";
-        width: 30rpx;
-        height: 30rpx;
-        background: url("https://test-file.y1b.cn/store/1-0/24312/65f023e89516c.png")  0 0 / 100% 100% no-repeat;
-        margin-right: 5rpx;
-        }
+        height: 34rpx;
+        width: 143rpx;
+        background: url("https://file.y1b.cn/store/1-0/24629/667f84504856c.png")  0 0 / 100% 100% no-repeat;
+        position: relative;
     }
     .item_total {
         margin-left: 10rpx;

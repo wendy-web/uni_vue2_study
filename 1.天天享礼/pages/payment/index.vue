@@ -44,11 +44,11 @@ export default {
           const link = encodeURIComponent(params.redirectUrl);
           this.$redirectTo(`/pages/webview/webview?link=${link}`);
         },
-        fail: (err) => this.$back(),
+        fail: (err) => this.$leftBack(),
         complete: (res) => {
           if(res.errMsg=='requestPayment:fail cancel') {
               // 用户取消返回上一页
-              this.$back();
+              this.$leftBack();
           }
         }
       })

@@ -1,18 +1,14 @@
 <template>
-<view class="me-tabs" :class="{'tabs-fixed': fixed}"
-	:style="{height: tabHeightVal, top:topFixed, 'margin-top':topMargin}">
+<view :class="['me-tabs', fixed && 'tabs-fixed']"
+	:style="{height: tabHeightVal, top:topFixed, marginTop:topMargin}">
 	<scroll-view v-if="tabs.length" :id="viewId" :scroll-left="scrollLeft" scroll-x scroll-with-animation
 		:scroll-animation-duration="300">
-		<view class="tabs-item" :class="{'tabs-flex':!isScroll, 'tabs-scroll':isScroll}">
-			<!-- tab -->
-			<view class="tab-item"
-				:style="{ height: tabHeightVal, 'line-height':tabHeightVal}"
-				v-for="(tab, i) in tabs"  :key="i"
-				:class="{'active': value===i}"  @click="tabClick(i)"
-				:id="'tabItemId'+i"
-			>
-				{{getTabName(tab)}}
-			</view>
+		<view :class="['tabs-item', isScroll ? 'tabs-scroll' : 'tabs-flex']">
+			<view :style="{ height: tabHeightVal, lineHeight:tabHeightVal}"
+				v-for="(tab, i) in tabs" :key="i"
+				:class="['tab-item', value===i && 'active']"
+				@click="tabClick(i)" :id="'tabItemId'+i"
+			>{{getTabName(tab)}}</view>
 			<!-- 下划线 -->
 			<view class="tabs-line" :style="{left:lineLeft || firstLineLeft}"></view>
 		</view>
@@ -21,6 +17,7 @@
 </template>
 
 <script>
+import { warpRectDom } from '@/utils/auth.js';
 	export default {
 		props: {
 			tabs: {
@@ -114,13 +111,14 @@
 			})
 		},
 		methods: {
+			warpRectDom,
 			getTabName(tab) {
 				return typeof tab === "object" ? tab[this.nameKey] : tab
 			},
 			tabClick(i) {
 				if(!this.tabs[i].left) {
 					const tabItemId = `tabItemId${i}`;
-					this.initWarpRect(tabItemId).then(result => {
+					this.warpRectDom(tabItemId).then(result => {
 						this.firstLineLeft = result.left + (result.width) / 2 + 'px';
 					});
 				} else {
@@ -134,7 +132,7 @@
 			itemDomFun(){
 				this.tabs.forEach((res, index) => {
 					const tabItemId = `tabItemId${index}`;
-					this.initWarpRect(tabItemId).then(result => {
+					this.warpRectDom(tabItemId).then(result => {
 						if(!result) return
 						if((index == this.value) && !this.firstLineLeft){
 							this.firstLineLeft =  result.left + result.width / 2 + 'px';
@@ -150,7 +148,7 @@
 			async scrollCenter() {
 				if (!this.isScroll) return;
 				if (!this.warpWidth) { // tabs容器的宽度
-					let rect = await this.initWarpRect();
+					let rect = await this.warpRectDom();
 					this.warpWidth = rect ? rect.width : this.windowWidth; // 某些情况下取不到宽度,暂时取屏幕宽度
 				}
 				// let tabLeft1 = this.tabWidthPx * this.value + this.tabWidthPx / 2; // 当前tab中心点到左边的距离
@@ -164,19 +162,6 @@
 					this.scrollLeft = Math.ceil(diff)
 				}, 400)
 				// #endif
-			},
-			initWarpRect(id) {
-				return new Promise(resolve => {
-					setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-						let query = uni.createSelectorQuery();
-						// #ifndef MP-ALIPAY
-						query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-						// #endif
-						query.select('#' + (id || this.viewId)).boundingClientRect(data => {
-							resolve(data)
-						}).exec();
-					}, 20)
-				})
 			}
 		}
 	}

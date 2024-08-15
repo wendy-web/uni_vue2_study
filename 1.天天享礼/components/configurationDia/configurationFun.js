@@ -16,16 +16,6 @@ const serviceCredits = {
                     text: '首页'
                 },
                 {
-                    route: 'pages/tabBar/discounts/index',
-                    pageNum: 2,
-                    text: '惠生活'
-                },
-                {
-                    route: 'pages/discounts/discounts/index',
-                    pageNum: 2,
-                    text: '惠生活'
-                },
-                {
                     route: 'pages/tabBar/task/index',
                     pageNum: 3,
                     text: '福利中心'
@@ -89,9 +79,14 @@ const serviceCredits = {
         diaList: {
             handler(newValue, oldValue) {
                 if (newValue.length && newValue[0] == "config") {
-                    this.isShowConfig = true;
+                    // 抓娃娃的直接打开 - 不打开弹窗执行事件
+                    if (this.config.type == 15 && this.config.open_type) {
+                        this.requestPopoverRember(this.config);
+                    } else {
+                        this.isShowConfig = true;
+                        this.openMiniTypeHandle(); // 半屏时直接跳出
+                    }
                     this.delCurrentDiaList('config');
-                    this.openMiniTypeHandle(); // 半屏时直接跳出
                 }
             },
             immediate: true
@@ -102,11 +97,6 @@ const serviceCredits = {
                 this.psite = null;
                 this.configurationInit();
             }
-        },
-        isShowConfig(newValue, oldValue) {
-            // if (!newValue && oldValue) {
-            //     this.delCurrentDiaList('config');
-            // }
         }
     },
     onLoad(options) {
@@ -146,6 +136,10 @@ const serviceCredits = {
         },
         showConfigHandle() {
             if (this.diaList.length) return this.setDiaList('config');
+            // 抓娃娃系列 - 直接调整而不打开弹窗
+            if (this.config.type == 15 && this.config.open_type) {
+                return this.requestPopoverRember(this.config);
+            }
             this.isShowConfig = true;
             this.openMiniTypeHandle(); // 半屏时直接跳出
         },
@@ -164,7 +158,6 @@ const serviceCredits = {
             // people_type 1 是新用户 2 是老用户
             // this.gift
             let pageNum = this.currentPageNum;
-            if (pageNum == 6 && this.searchValue) return;
             if (pageNum == 1 && isBesidesPage) {
                 if (this.$refs.cashBackDiaRef) this.$refs.cashBackDiaRef.init(); // 领红包的监听 - 结束后访问当前
                 return;

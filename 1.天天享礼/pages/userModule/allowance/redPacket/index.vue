@@ -1,5 +1,5 @@
 <template>
-<view class="recharge" :style="{'--bg': subjectColor}">
+<view class="recharge" :style="{ '--bg' : subjectColor }">
 <mescroll-body
   :sticky="true"
   ref="mescrollRef"
@@ -10,8 +10,8 @@
   :down="downOption"
 >
 <xh-navbar
-  :leftImage="imgUrl+'/static/images/left_back.png'"
-  @leftCallBack="$topCallBack"
+  leftImage="https://file.y1b.cn/store/1-0/24629/667f888cec84d.png"
+  @leftCallBack="$leftBack"
   :fixed="true"
   :navberColor="isShowNavBerColor ? subjectColor: ''"
 ></xh-navbar>
@@ -47,7 +47,7 @@
             </view>
             <view class="fl_bet">
               <view class="vip_box box_fl" v-if="item.zero_credits">
-                0豆特权
+                免豆特权
                 <!-- <image class="vip_img" :src="cardImgUrl + 'vip_box.png'" mode="scaleToFill"></image> -->
               </view>
               <view class="item_price fl_center" v-else>
@@ -81,9 +81,9 @@
 
 <script>
 import {
-takeCoupon,
-takeList,
-takePower
+  takeCoupon,
+  takeList,
+  takePower
 } from '@/api/modules/allowance.js';
 import { wxmsgid } from '@/api/modules/index.js';
 import configurationFun from '@/components/configurationDia/configurationFun.js';

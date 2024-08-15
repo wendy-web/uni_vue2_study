@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { getImgUrl } from '@/utils/auth.js';
+import { getImgUrl, warpRectDom } from '@/utils/auth.js';
 import listItem from './listItem.vue';
 export default {
 	props: {
@@ -107,20 +107,11 @@ export default {
 	created() {
 	},
 	methods: {
+		warpRectDom,
 		scrollHandle(event){
 			const { scrollTop } = event.detail;
 			this.scrollTopHeight = scrollTop;
 			if(!this.isScroll) return;
-			// let currentIndex = this.tabs.findIndex(event => {
-			// 	if(scrollTop < (event.top - this.topValue)){
-			// 		return true;
-			// 	}
-			// });
-			// const tabsLength = this.tabs.length;
-			// const tabsLengthDom = this.tabs[tabsLength-1];
-			// if(currentIndex == -1 && scrollTop < ((tabsLengthDom.top + tabsLengthDom.height) - this.topValue)) {
-			// 	currentIndex = tabsLength;
-			// }
 			let currentIndex = this.tabs.findIndex(event => scrollTop < event._top);
 			let opacityIndex = this.tabs.findIndex(event => scrollTop <= event._top && (scrollTop > (event._top - this.itemHeight)));
 			this.opacityIndex = opacityIndex;
@@ -136,10 +127,10 @@ export default {
 			this.$emit('selSubCom', item, tabIndex, index);
 		},
 		itemDomFun(){
-			this.initWarpRect('contBox').then(res =>  this.topValue = res.top );
+			this.warpRectDom('contBox').then(res =>  this.topValue = res.top );
 			this.tabs.forEach((res, index) => {
 				const tabItemId = `tabItemId${index}`;
-				this.initWarpRect(tabItemId).then(result => {
+				this.warpRectDom(tabItemId).then(result => {
 					res.top = result.top + this.scrollTopHeight;
 					res.height = result.height;
 					if(index == 0) {
@@ -150,19 +141,6 @@ export default {
 					}
 				});
 			});
-		},
-		initWarpRect(id) {
-			return new Promise(resolve => {
-				setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-					let query = uni.createSelectorQuery();
-					// #ifndef MP-ALIPAY
-					query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-					// #endif
-					query.select('#' + (id || this.viewId)).boundingClientRect(data => {
-						resolve(data)
-					}).exec();
-				}, 20)
-			})
 		}
 	}
 }

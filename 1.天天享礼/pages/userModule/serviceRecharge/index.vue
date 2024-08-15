@@ -4,7 +4,7 @@
 		<xh-navbar
 			title="使用优惠券"
 			titleColor="#333"
-			:leftImage="imgUrl+'/static/images/left_back.png'"
+			leftImage="https://file.y1b.cn/store/1-0/24629/667f888cec84d.png"
 			@leftCallBack="leftCallBack"
 			navberColor="#F7F7F7"
 		></xh-navbar>
@@ -89,7 +89,7 @@
 			confirmText="再考虑下"
 			:faceValue="couponInfo.coupon_face_value"
 			:creditsValue="couponInfo.credits"
-			@close ="confirmBackHandle"
+			@close ="$leftBack"
 			@confirm="closeDiaHandle"
 		></continueDia>
 		<!-- 确认手机号 -->
@@ -107,8 +107,8 @@
 import { applyCoupon, buy } from '@/api/modules/user.js';
 import { getImgUrl } from '@/utils/auth.js';
 import {
-checkRichText,
-escape2Html
+	checkRichText,
+	escape2Html
 } from '@/utils/index.js';
 import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 import continueDia from './continueDia.vue';
@@ -317,10 +317,8 @@ import continueDia from './continueDia.vue';
 									status
 								} = data;
 								pay_amount = (pay_amount / 100).toFixed(2);
-								uni.redirectTo({
-									url: `/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`
-								})
-								return
+								this.$redirectTo(`/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`);
+								return;
 							}
 							uni.showModal({
 								title: '温馨提示',
@@ -335,20 +333,8 @@ import continueDia from './continueDia.vue';
 						_request = false;
 						if (err.errMsg == 'requestPayment:fail cancel') {
 							this.$wxReportEvent('refusetobuy', {source: this.source});
-							// return Toast({
-							// 	message: "您已取消支付操作",
-							// 	position: 'bottom',
-							// 	onClose: () => {
-							// 		uni.redirectTo({
-							// 			url: `/pages/userModule/order/detail?id=${this.order_id}&isPay=1`
-							// 		})
-							// 	},
-							// })
-							uni.navigateTo({
-								url: `/pages/userModule/order/detail?id=${this.order_id}&isPay=1&source=${this.source}`
-							});
+							this.$go(`/pages/userModule/order/detail?id=${this.order_id}&isPay=1&source=${this.source}`);
 							return
-
 						}
 						Toast({
 							message: err.errMsg,
@@ -377,7 +363,7 @@ import continueDia from './continueDia.vue';
 			leftCallBack() {
 				this.isShowNumDia = false;
 				if(this.isDirectBack) {
-					return this.confirmBackHandle();
+					return this.$leftBack();
 				};
 				this.isShowBackDia = true;
 				this.diaType = 'back';
@@ -386,17 +372,7 @@ import continueDia from './continueDia.vue';
 			closeDiaHandle() {
 				this.isShowBackDia = false;
 				this.isShowNumDia = false;
-			},
-			confirmBackHandle() {
-				uni.navigateBack({
-					fail(e) {
-						uni.switchTab({
-							url:'/pages/tabBar/shopMall/index'
-						});
-					}
-				});
-			},
-
+			}
 		}
 	}
 </script>

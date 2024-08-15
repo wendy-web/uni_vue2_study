@@ -36,7 +36,6 @@
 		}
 	}
 </script>
-
 <style lang="scss">
 	.cowpea-anim {
 		position: fixed;

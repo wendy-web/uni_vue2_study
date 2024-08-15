@@ -12,9 +12,8 @@
         <image class="pay_dia-light" :src="cardImgUrl + 'pay_dia-light.png'" mode="aspectFill"></image>
         <image class="pay_dia" :src="cardImgUrl + 'pay_dia.png'" mode="aspectFill"></image>
         <view class="cont_title">{{title}}</view>
-        <view class="cont_cont" v-if="isNewPay">省钱卡红包已发放到账</view>
-        <view class="cont_cont" v-else>
-            <view>会员红包将在{{config.day}}天后发放</view>
+        <view class="cont_cont">
+            <!-- <view>会员红包将在{{config.day}}天后发放</view> -->
             <view>
                 有效期为
                 <text style="color: #FE9433;">{{config.start_time}}</text>

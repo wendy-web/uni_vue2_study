@@ -1,10 +1,8 @@
 <template>
-<view class="order" :style="{
-  '--padding': isShowPay ? '174rpx' : '0rpx'
-}">
+<view class="order" :style="{ '--padding': isShowPay ? '174rpx' : '0rpx'}">
 <xh-navbar
   :leftImage="imgUrl+'/static/images/left_back.png'"
-	@leftCallBack="$topCallBack"
+	@leftCallBack="$leftBack"
   navberColor="#F5F5F5"
 	titleColor="#333"
   :title="navbarTitle"
@@ -60,7 +58,7 @@
       <view class="refund_time box_fl" v-if="config.refund_time">
         <text style="margin-right: 4rpx">退款时间：</text>{{config.refund_time}}</view>
     </view>
-    <view class="order_box order_add" v-if="userInfo.buy_vip">
+    <view class="order_box order_add">
         <view class="add_shop fl_bet" @click="openGpsHandle">
           {{config.restaurant_name}}
           <view style="color:#0022AB"> 导航 <van-icon name="arrow" color="#0022AB" size="28rpx"/> </view>
@@ -167,8 +165,6 @@
         联系客服
       </view>
     </view>
-    <!-- 红包待领取 -->
-    <returnCash :isGoToWithdraw="true"></returnCash>
     <view class="toPay_btn" v-if="isShowPay" @click="orderPayHandle">
       <view class="btn">放心付</view>
     </view>
@@ -178,18 +174,15 @@
 <script>
 import { orderDetail } from '@/api/modules/order.js';
 import {
-orderAgain,
-orderPay
+  orderPay
 } from '@/api/modules/takeawayMenu/luckin.js';
 import uQrcode from '@/components/uQrcode/index.vue';
 import { getImgUrl } from '@/utils/auth.js';
 import { mapGetters } from 'vuex';
-import returnCash from '../../component/returnCash/index.vue';
 import { statusTitle } from '../../static/config';
 export default {
     components: {
-      uQrcode,
-      returnCash
+      uQrcode
     },
     computed: {
       ...mapGetters(['brand_id', 'userInfo']),
@@ -258,10 +251,7 @@ export default {
         })
       },
       againHandle() {
-        orderAgain({ oid: this.oid }).then(res => {
-          if(res.code != 1) this.$toast(res.msg);
-          this.$go(`/pages/userModule/takeawayMenu/luckin/index?brand_id=13&rote=1&again=true&isBack=1`)
-        })
+			  this.$goToDiscountsMini();
       },
       countFinished() {
         // 倒计时结束 - 展示已取消

@@ -1,57 +1,70 @@
 <template>
-<view class="coupon-details">
-  <view class="icon_box" @click="$leftBack"
-    :style="{ height: navBarHeight + 'px', top: topHeight + 'px' }">
-    <image class="icon_box-icon" mode="aspectFill"
-      :src="imgUrl + 'static/images/icon_close.png'"></image>
-  </view>
-  <view class="notice_box" >
-    <anNoticeBarShow ref="anNoticeBarShow" />
-  </view>
-  <view class="content_box">
-    <view :class="['swiper_box', !banner_image.length ? 'loading_circle1' : '']" :style="{ height: screenWidth + 'px'}">
-      <swiper class="good-img"
-        :autoplay="false" :interval="2000"
-        :duration="500" :circular="true"
-        :current="myIndex"
-        @change="bannerSwiperChange"
-        :style="{ height: screenWidth + 'px'}"
-      >
-        <swiper-item class="good-img" v-for="(item, idx) in banner_image" :key="idx">
-          <van-image
-            :width="screenWidth + 'px'"
-            :height="screenWidth + 'px'"
-            :src="item"
-            use-loading-slot
-            class="banner_img"
+<view class="coupon_details" :style="{ '--padding': packet ? '68rpx' : '0rpx' }">
+  <scroll-view scroll-y="true" class="scroll_y" @scrolltolower="lowerHandle">
+    <view class="icon_box" @click="backHandle"
+      :style="{ height: navBarHeight + 'px', top: topHeight + 'px' }">
+      <image class="icon_box-icon" mode="aspectFill"
+        :src="imgUrl + 'static/images/icon_close.png'"></image>
+    </view>
+    <view class="notice_box">
+      <anNoticeBarShow ref="anNoticeBarShow" />
+    </view>
+    <view class="content_box">
+      <view :class="['swiper_box', !banner_image.length ? 'loading_circle1' : '']" :style="{ height: screenWidth + 'px'}">
+        <swiper class="good-img"
+          :autoplay="false" :interval="2000"
+          :duration="500" :circular="true"
+          :current="myIndex"
+          @change="bannerSwiperChange"
+          :style="{ height: screenWidth + 'px'}"
+        >
+          <swiper-item class="good-img" v-for="(item, idx) in banner_image" :key="idx">
+            <van-image
+              :width="screenWidth + 'px'"
+              :height="screenWidth + 'px'"
+              :src="item"
+              use-loading-slot
+              class="banner_img"
+            ><van-loading slot="loading" type="spinner" size="20" vertical />
+            </van-image>
+          </swiper-item>
+        </swiper>
+        <view class="dot_lab" v-if="banner_image.length">{{ myIndex + 1 }} / {{ banner_image.length }}</view>
+      </view>
+      <!-- 商品主要信息 -->
+      <view :class="['cont_box', !config ? 'loading_circle3' : '']" :style="{ '--padding': packet ? '68rpx' : '0rpx' }">
+        <productCont
+          :config="config"
+          @confirm="confirmHandle"
+          v-if="config"
+        ></productCont>
+        <view class="pro_detail" v-if="attsList && attsList.length">
+          <view class="pro_detail-title">商品详情</view>
+          <view class="pro_detail-item" v-for="(item, idx) in attsList" :key="idx">
+            <view class="detail_item-lab">{{ item.attName }}</view>
+            <view class="detail_item-txt">{{ item.vals }}</view>
+          </view>
+        </view>
+        <view class="detail_img" v-if="detail_image && detail_image.length">
+          <van-image width="100%"
+            v-for="(item, idx) in detail_image" :key="idx"
+            :src="item" use-loading-slot fit="widthFix"
           ><van-loading slot="loading" type="spinner" size="20" vertical />
           </van-image>
-        </swiper-item>
-      </swiper>
-      <view class="dot_lab" v-if="banner_image.length">{{ myIndex + 1 }} / {{ banner_image.length }}</view>
-    </view>
-    <!-- 商品主要信息 -->
-    <view :class="['cont_box', !config ? 'loading_circle3' : '']" :style="{ '--padding': packet ? '68rpx' : '0rpx' }">
-      <productCont
-        :config="config"
-        @confirm="confirmHandle"
-        v-if="config"
-      ></productCont>
-      <view class="pro_detail" v-if="attsList && attsList.length">
-        <view class="pro_detail-title">商品详情</view>
-        <view class="pro_detail-item" v-for="(item, idx) in attsList" :key="idx">
-          <view class="detail_item-lab">{{ item.attName }}</view>
-          <view class="detail_item-txt">{{ item.vals }}</view>
         </view>
       </view>
-      <view class="detail_img" v-if="detail_image && detail_image.length">
-        <van-image width="100%"
-          v-for="(item, idx) in detail_image" :key="idx"
-          :src="item" use-loading-slot fit="widthFix"
-        ><van-loading slot="loading" type="spinner" size="20" vertical />
-        </van-image>
+      <view class="cont_bottom" v-if="goods.length">
+        <view class="list_title">相似商品</view>
+        <good-list :list="goods" :isShowProfit="true"></good-list>
+      </view>
+      <view class="cont_load" v-if="isScroll">
+        <van-loading size="16px" color="#666" class="cont_load">加载中...</van-loading>
+      </view>
+      <view class="cont_load" v-if="!isScroll && goods.length" >
+        <view>----- 没有更多了 -----</view>
       </view>
     </view>
+  </scroll-view>
     <!-- 底部操作按钮 -->
     <view :class="['bottom-tools-box', !config ? 'loading_circle2' : '']">
       <view class="remind_box" @click="goMyCouponHandle" v-if="packet">
@@ -62,7 +75,7 @@
             src="https://test-file.y1b.cn/store/1-0/24330/66078e0856ee8.png"></image>
             先领超级红包，再享优惠叠加
         </view>
-        <view class="remind_right">推荐<van-icon name="arrow" color="#F84842" size="26rpx" /></view>
+        <view class="remind_right">强烈推荐<van-icon name="arrow" color="#F84842" size="26rpx" /></view>
       </view>
       <view class="bottom-tools">
         <view class="bottom-tools-left">
@@ -80,49 +93,63 @@
         </view>
         <!-- 立即兑换 -->
         <view :class="['redeem-now', showInitBuy ? '' : 'active']">
-            <block v-if="showInitBuy">
-              <view class="redeem-now-left" @click="confirmHandle(false)">
-                <view class="rnl-value">{{ (config.face_value + config.price).toFixed(2) }}</view>
-                <view class="rnl-label">原价购买</view>
-              </view>
-              <!-- <view class="icon_middle" @click="confirmHandle"></view> -->
-            </block>
-            <view class="redeem-now-right" @click="confirmHandle">
-                <liu-customize-swiper :swiperList="headImgArr"
-                  ref="headImgArrRef" class="customize_box"
-                ></liu-customize-swiper>
-              <view class="fl_col_cen">
-                <view class="rnl-value-box fl_center">
-                  {{ showPriceLab ? '活动价' : '' }}
-                  <view class="rnl-value">{{ config.price }}</view>
-                </view>
-                <view class="rnl-label">{{ shoBtnLabText }}</view>
-              </view>
+          <view class="vip_progress" v-if="config.vip_profit > 0">
+            会员再返<text style="color: #F84842;">¥{{config.vip_profit}}</text>
+          </view>
+          <block v-if="showInitBuy">
+            <view class="redeem-now-left" @click="confirmHandle(false)">
+              <view class="rnl-value">{{ config.market_price }}</view>
+              <view class="rnl-label">原价购买</view>
             </view>
+          </block>
+          <view class="redeem-now-right" @click="confirmHandle">
+            <liu-customize-swiper :swiperList="headImgArr"
+              ref="headImgArrRef" class="customize_box"
+            ></liu-customize-swiper>
+            <view class="fl_col_cen">
+              <view class="rnl-value-box fl_center">
+                {{ showPriceLab ? '活动价' : '' }}
+                <view class="rnl-value">{{ config.price }}</view>
+              </view>
+              <view class="rnl-label">{{ shoBtnLabText }}</view>
+            </view>
+          </view>
         </view>
       </view>
       <view class="van-submit-bar__safe"></view>
     </view>
-  </view>
+<!-- 生成分享图 -->
+<painter
+  customStyle="width:904px;height:732px;position:fixed;bottom: -10000px;z-index :-10000"
+  @imgOK="onImgOk"
+  @imgErr="imgErr"
+  :palette="templateShareAppUrl"
+  :dirty="true"
+/>
 </view>
 </template>
 <script>
-import { toggleCollect } from "@/api/modules/jsShop.js";
-import { toggleCollect as pddToggleCollect } from '@/api/modules/pddShop.js';
+import { userPosition } from "@/api/modules/index.js";
+import { goodsQuery, toggleCollect } from "@/api/modules/jsShop.js";
+import { goodsSearch, toggleCollect as pddToggleCollect } from '@/api/modules/pddShop.js';
 import { goodsDetails } from "@/api/modules/shopMall.js";
+import goodList from "@/components/goodList.vue";
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
 import { getImgUrl, getUrlKey } from "@/utils/auth.js";
 import { getViewPort } from "@/utils/index.js";
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import anNoticeBarShow from "./anNoticeBarShow.vue";
 import liuCustomizeSwiper from './components/liu-customize-swiper/liu-customize-swiper';
 import productCont from "./productCont.vue";
+import paletteUrl from './static/paletteUrl.js';
+
 export default {
   components: {
     productCont,
     anNoticeBarShow,
-    liuCustomizeSwiper
+    liuCustomizeSwiper,
+    goodList
   },
   mixins: [shareMixin], // 采用混合的模式添加
   data() {
@@ -143,7 +170,17 @@ export default {
       currentIndex: 0,
       headImgArr: [],
       queryId: '',
-      lx_type: ''
+      lx_type: '',
+      template: null,
+      showShareImage: '',
+      templateShareAppUrl: null,
+      initParams: null,
+      requestApi: '', // 京东-拼多多的请求api
+      listParams: null,
+      goods: [],
+      isRequestNum: 0,
+      isScroll: false,
+      isLoading: false
     };
   },
   computed: {
@@ -175,14 +212,17 @@ export default {
     }
   },
   onLoad(options) {
-    let queryId, lx_type, positionId, active_id, tag = 0;
-    if(options.q) {
+    let queryId, lx_type, positionId, active_id, tag, mlocid, plocid= 0;
+    if(options.q ) {
       const codeUrl = decodeURIComponent(options.q);
-      console.log('codeUrl', codeUrl)
+      console.log('codeUrl', codeUrl);
       queryId = getUrlKey(codeUrl, 'queryId');
       lx_type = getUrlKey(codeUrl, 'lx_type');
       active_id = getUrlKey(codeUrl, 'active_id');
       tag = getUrlKey(codeUrl, 'tag');
+      mlocid = getUrlKey(codeUrl, 'mlocid');
+      plocid = getUrlKey(codeUrl, 'plocid');
+      if(mlocid || plocid) userPosition({ mlocid, plocid});
     } else {
       queryId = options.queryId;
       lx_type = options.lx_type;
@@ -199,6 +239,7 @@ export default {
       active_id,
       tag
     }
+    this.initParams = params;
     this.initQuery(params);
     // 获取屏幕宽度
     let system = uni.getSystemInfoSync();
@@ -212,17 +253,74 @@ export default {
     });
   },
   methods: {
+		...mapMutations({
+      setMiniProgram: "user/setMiniProgram",
+    }),
     ...mapActions({
       getUserTotal: "user/getUserTotal",
       updateUserNew: "user/updateUserNew",
     }),
+    backHandle() {
+      const pageList = getCurrentPages();
+      const currentPageObj = pageList[pageList.length - 1];
+      const firstRouter = pageList[0].route;
+      const currentPage = currentPageObj.route;
+      const pageFindIndex = pageList.findIndex((item) => item.route == currentPage);
+      let leftBackDelta = pageList.length - pageFindIndex;
+      (firstRouter != currentPage) && (leftBackDelta -= 1);
+      this.$leftBack(leftBackDelta);
+    },
+    onImgOk (event) {
+      const { path } = event.mp.detail || event.target;
+      this.showShareImage = path;
+    },
+    imgErr(err){
+      console.log('图片合成失败', err);
+    },
     bannerSwiperChange(event) {
       this.myIndex = event.detail.current;
+    },
+    lowerHandle() {
+      console.log('lowerHandle', );
+      if(!this.isScroll) return;
+      this.requestListFun();
+    },
+    async requestListFun() {
+      this.isLoading = true;
+      const res = await this.requestApi(this.listParams).catch(() => {
+        this.isLoading = false;
+        this.isScroll = false;
+      });
+      if (!res.code || !res.data) {
+        this.isScroll = false;
+        this.isLoading = false;
+        return
+      }
+      let { list, total_count } = res.data;
+      // total_count = 30;
+      this.goods = this.goods.concat(list);
+      this.listParams.page += 1;
+      let isNextPage = (this.listParams.page * this.listParams.size) < total_count;
+      // this.mescroll.endSuccess(list.length || total_count, isNextPage);
+      setTimeout(() => {
+        this.isLoading = false;
+        this.isScroll = isNextPage;
+      }, 10);
+
+      if (list.length <= 0 && isNextPage && this.isRequestNum < 2) {
+        this.isRequestNum += 1;
+        // this.mescroll.triggerUpScroll();
+        this.requestListFun();
+        return;
+      }
+      this.isRequestNum = 0;
     },
     // 去使用
     goMyCouponHandle() {
       if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
       const {type_id, type_sid } = this.packet;
+      console.log('this.config.lx_type', this.config.lx_type)
+      this.setMiniProgram(this.config.lx_type);
       this.$openEmbeddedMiniProgram({
         appId: type_id,
         path: type_sid
@@ -236,18 +334,44 @@ export default {
           content: res.msg,
           showCancel: false,
           confirm: () => {
-            this.$back();
+            this.$leftBack();
           }
         });
         return;
       };
       let { detail, buy_log, packet } = res.data;
       this.config = detail;
+      const { cid3, positionId, lx_type, cat_id } = this.config;
+      this.goodsList = [];
+      this.listParams = {
+        positionId,
+        size: 10,
+        page: 1
+      }
+      this.isScroll = true;
+      // 京东
+      if(lx_type == 2) {
+        this.listParams.cid3 = cid3;
+        this.requestApi = goodsQuery;
+      } else {
+        // 拼多多
+        this.listParams.cat_id = cat_id;
+        this.requestApi = goodsSearch;
+      }
+
       if(this.config){
-        const { banner_image, atts, detail_image } = this.config;
-        this.banner_image = banner_image;
+        const { banner_image, atts, detail_image, face_value, price } = this.config;
+        this.banner_image = banner_image || [];
+        const [ firstImg ] = banner_image;
+        this.templateShareAppUrl = paletteUrl({
+          firstImg,
+          face_value,
+          price
+        });
         this.attsList = atts;
-        this.detail_image = detail_image;
+        this.detail_image = detail_image || [];
+        // 无商品详情图时 - 主动触发底部的列表加载
+        if(!this.detail_image.length) this.requestListFun();
       }
       this.headImgArr = this.config.headImgArr;
       if(this.headImgArr && this.headImgArr.length) this.$refs.headImgArrRef.init(this.headImgArr);
@@ -283,8 +407,11 @@ export default {
       this.$toast(res.msg);
     },
     async confirmHandle(isGet = true) {
+      // 调整推广位的访问 -
       if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
-      const { appid, path, pathXq } = this.config;
+      const { appid, path, pathXq, lx_type } = this.config;
+      this.setMiniProgram(lx_type);
+      console.log('lx_type', lx_type)
       this.$openEmbeddedMiniProgram({
         appId: appid,
         // envVersion:'trial',
@@ -302,6 +429,25 @@ export default {
 page {
   background-color: #f7f7f7;
   overflow: hidden;
+}
+.coupon_details {
+  position: relative;
+  padding-bottom: 140rpx;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  // overflow-y: scroll;
+  box-sizing: border-box;
+  padding-bottom: calc(140rpx + var(--padding) +  constant(safe-area-inset-bottom));
+  /* 兼容 IOS<11.2 */
+  padding-bottom: calc(140rpx + var(--padding) + env(safe-area-inset-bottom));
+  /* 兼容 IOS>11.2 */
+}
+.scroll_y {
+  height: 100%;
 }
 .notice_box {
   position: fixed;
@@ -369,15 +515,10 @@ page {
     bottom: 23rpx;
   }
 }
-.coupon-details {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  padding-bottom: 196rpx;
-}
+
 .content_box {
-  height: 100%;
-  overflow: scroll;
+  // height: 100%;
+  // overflow: scroll;
   background: #f7f7f7;
 }
 
@@ -407,11 +548,13 @@ page {
   color: #333333;
   margin-left: 12rpx;
 }
+
 .bottom-tools-box {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100vw;
+  z-index: 9;
   .bottom-tools-left {
     display: flex;
     // flex: 1;
@@ -448,12 +591,6 @@ page {
 .cont_box {
   position: relative;
   z-index: 0;
-  margin-bottom: calc(
-    140rpx + var(--padding) + constant(safe-area-inset-bottom)
-  ); /* 兼容 IOS<11.2 */
-  margin-bottom: calc(
-    140rpx + var(--padding) + env(safe-area-inset-bottom)
-  ); /* 兼容 IOS>11.2 */
   &.loading_circle3::before{
     content: '\3000';
     // margin: 0 24rpx;
@@ -518,11 +655,28 @@ page {
   color: #ffffff;
   font-weight: bold;
   text-align: center;
-  overflow: hidden;
+  // overflow: hidden;
   background: linear-gradient(173deg,#f84842 41%, #fe8f72 100%);
+  .vip_progress {
+    position: absolute;
+    right: 10rpx;
+    top: -30rpx;
+    padding: 0 28rpx 0 16rpx;
+    height: 48rpx;
+    background: url('https://file.y1b.cn/store/1-0/2472/668396e22d2a7.png') 0 0 / 100% 100%;
+    font-size: 24rpx;
+    font-weight: bold;
+    color: #b75a30;
+    line-height: 34rpx;
+    text-align: center;
+
+  }
   &.active {
     .customize_box {
       margin-right: 30rpx;
+    }
+    .redeem-now-right {
+      border-radius: 48rpx;
     }
   }
   .redeem-now-txt {
@@ -547,6 +701,7 @@ page {
   padding: 0 38rpx 0 38rpx;
   position: relative;
   color: #A86E2E;
+  border-radius: 48rpx 0 0 48rpx;
   &::after {
     content: '\3000';
     position: absolute;
@@ -580,6 +735,7 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 0 48rpx 48rpx 0;
   // margin-left: -28rpx;
 }
 
@@ -661,5 +817,38 @@ page {
       padding: 10rpx 20rpx;
     }
   }
+}
+.cont_bottom {
+  .list_title {
+    font-size: 32rpx;
+    color: #333;
+    line-height: 44rpx;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 48rpx auto 16rpx;
+    &::before,
+    &::after {
+      content: '\3000';
+      display: block;
+      background: url("https://file.y1b.cn/store/1-0/24727/66a46da915032.png") 0 0 / cover;
+      width: 28rpx;
+      height: 28rpx;
+      margin: 0 10rpx;
+    }
+    &::before {
+      transform: scaleX(-1);
+    }
+
+  }
+}
+.cont_load {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10rpx auto;
+  font-size: 26rpx;
+  color: #aaa;
 }
 </style>

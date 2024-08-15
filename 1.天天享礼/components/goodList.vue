@@ -2,9 +2,7 @@
 <view class="good-list">
     <!-- loading模块 -->
     <block v-if="!list.length">
-      <view
-        :style="{ '--height': '576rpx'}"
-        class="loading_item"
+      <view class="loading_item" :style="{ '--height': '576rpx'}"
         v-for="(item, idx) in loadingLength" :key="idx"
       >
         <view class="loading_img"></view>
@@ -15,8 +13,7 @@
         </view>
       </view>
     </block>
-    <view
-      :style="{ '--height': '576rpx'}"
+    <view :style="{ '--height': (!isShowProfitBtn) ? '576rpx' : '656rpx'}"
       v-for="(good, index) in list" :key="index"
       :class="[
         (isSearchJdModel || isJdCenter) ? 'autoHeight' : '',
@@ -42,10 +39,9 @@
         <channelVideo :good="good" v-if="good.type == 7" class="item_cont"></channelVideo>
         <!-- 内容重新 -->
         <view class="item_cont" v-else
-          @click.native.stop="goDetails(good, { listIndex: index })"
-        >
+          @click.native.stop="goDetails(good, { listIndex: index })">
           <!-- 是否展示广告位 - 直接覆盖到整个 -->
-          <image class="is_banner_img" v-if="isShowBanner && good.is_banner" :src="good.image"></image>
+          <image class="is_banner_img" v-if="isShowBanner && good.is_banner" :src="bannerImg(good)"></image>
           <block v-if="(isSearchJdModel || isJdCenter) || !(isShowBanner && good.is_banner)">
           <showImg :good="good" :isSwiper="isSwiper" :index="index"></showImg>
           <slot name="cont" v-if="isSlot"></slot>
@@ -56,11 +52,14 @@
                 <view class="jd_icon_box" v-else-if="good.lx_type != 1 && parseInt(good.face_value)">
                   抵¥{{ parseInt(good.face_value) || 0 }}券
                 </view>
+                <view class="show_type" v-if="userInfo.show_shopType && (good.lx_type > 1)">
+                  {{ (good.lx_type == 2) ? '京东' : '拼多多' }}
+                </view>
                 {{ good.title }}
               </view>
               <view class="use_cont">
-                <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
-                <view class="use_cont-right" v-if="good.zero_credits">0豆特权</view>
+                <view class="use_cont-left" v-if="good.after_pay"></view>
+                <view class="use_cont-right" v-if="good.zero_credits">免豆特权</view>
                 <view v-else-if="good.lx_type != 1" class="js_search_credits">
                   {{ good.credits || 0 }}牛金豆
                 </view>
@@ -90,11 +89,15 @@
             <view class="good_name_box txt_ov_ell2">
               <view class="jd_icon_box" v-if="parseInt(good.face_value)">
                 抵¥{{ parseInt(good.face_value) || 0 }}券
-              </view>{{ good.title }}
+              </view>
+              <view class="show_type" v-if="userInfo.show_shopType && (good.lx_type > 1)">
+                {{ (good.lx_type == 2) ? '京东' : '拼多多' }}
+              </view>
+              {{ good.title }}
             </view>
             <view class="use_cont">
-              <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
-              <view class="use_cont-right" v-if="good.zero_credits">0豆特权</view>
+              <view class="use_cont-left" v-if="good.after_pay"></view>
+              <view class="use_cont-right" v-if="good.zero_credits">免豆特权</view>
             </view>
             <view class="good_remind txt_ov_ell1">
               <text :class="['good_remind-left', good.zero_credits ? 'vip_line' : '']"
@@ -113,14 +116,17 @@
                 <view class="jd_icon_box" v-else-if="good.lx_type != 1 && parseInt(good.face_value)">
                   抵¥{{ parseInt(good.face_value) || 0 }}券
                 </view>
+                <view class="show_type" v-if="userInfo.show_shopType && (good.lx_type > 1)">
+                  {{ (good.lx_type == 2) ? '京东' : '拼多多' }}
+                </view>
                 {{ good.title }}
               </view>
               <view class="use_cont">
-                <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
+                <view class="use_cont-left" v-if="good.after_pay"></view>
                 <view v-if="show_lowestCouponPrice && good.credits && good.lowestCouponPrice" class="js_search_credits">
                   {{ good.credits || 0 }}牛金豆
                 </view>
-                <view class="use_cont-right" v-else-if="good.zero_credits">0豆特权</view>
+                <view class="use_cont-right" v-else-if="good.zero_credits">免豆特权</view>
               </view>
               <view class="good_remind txt_ov_ell1">
                 <block v-if="show_lowestCouponPrice && good.lowestCouponPrice">
@@ -137,7 +143,7 @@
                 <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
                 <text class="good_total2" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
               </view>
-              <view class="jd_face_value" v-if="parseInt(good.face_value)">
+              <view class="jd_face_value" v-if="parseInt(good.face_value) && !isShowProfitBtn">
                 使用{{parseInt(good.face_value) || 0}}元券购买
               </view>
           </view>
@@ -148,11 +154,27 @@
               <view class="jd_icon_box" v-else-if="good.lx_type != 1 && parseInt(good.face_value)">
                 抵¥{{ parseInt(good.face_value) || 0 }}券
               </view>
+              <view class="show_type" v-if="userInfo.show_shopType&& (good.lx_type > 1)">
+              {{ (good.lx_type == 2) ? '京东' : '拼多多' }}
+              </view>
               {{ good.title }}
             </view>
-            <view class="use_cont">
-              <view class="use_cont-left" v-if="good.after_pay">先用后付</view>
-              <view class="use_cont-right" v-if="good.zero_credits">0豆特权</view>
+            <view class="use_cont hide_time" v-if="good.hide_time">
+              <!-- <view >{{ good.diffTime }}</view> -->
+              <view class="hide_text" v-if="good.isFinishDiffTime"> 活动已结束 </view>
+              <van-count-down use-slot millisecond :time="good.diffTime" @change="onChangeHandle($event, index)" @finish="finishHandle(index)" class="hide_text" v-else>
+                <!-- <text class="item" style="margin-right: 4rpx;">{{ good.timeData.days }}天</text> -->
+                 <view class="item_box">
+                    <text class="item">{{ good.timeData.hours }}</text>:
+                    <text class="item">{{ good.timeData.minutes }}</text>:
+                    <text class="item">{{ good.timeData.seconds }}</text>.
+                    <text class="item">{{ good.timeData.milliseconds }}</text>
+                 </view>
+              </van-count-down>
+            </view>
+            <view class="use_cont" v-else>
+              <view class="use_cont-left" v-if="good.after_pay"></view>
+              <view class="use_cont-right" v-if="good.zero_credits">免豆特权</view>
             </view>
             <view class="good_remind txt_ov_ell1">
               <text class="good_remind-left" v-if="good.credits || ( good.lx_type == 1 && !good.credits)">
@@ -166,6 +188,15 @@
                 <text class="good_total" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
               </block>
             </view>
+          </view>
+          <view class="vip_btn fl_center" v-if="isShowProfitBtn">
+            <block v-if="good.vip_profit || showProfitBtnTxt">
+              会员再返<text class="vip_btn-price">{{ showProfitBtnTxt || good.vip_profit }}</text>
+            </block>
+            <block v-else>
+              立即查看
+              <van-icon name="arrow" color="#fff" size="26rpx" custom-style=""/>
+            </block>
           </view>
           </block>
         </view>
@@ -246,6 +277,15 @@ export default {
     isHome: {
       type: Boolean,
       default:false
+    },
+    // vip展示返现的使用
+    isShowProfit: {
+      type: Boolean,
+      default: false
+    },
+    showProfitBtnTxt: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -256,8 +296,44 @@ export default {
   },
   computed: {
     ...mapGetters([ "userInfo", 'isAlreadyShowLight', 'show_lowestCouponPrice']),
+    isShowProfitBtn () {
+      return (this.isShowProfit && this.userInfo.is_vip) || this.showProfitBtnTxt;
+    }
   },
   methods: {
+    bannerImg(item) {
+      const { image, image2 } = item;
+      let banner_image = image;
+      if(this.userInfo.is_vip && image2) banner_image = image2;
+      return banner_image;
+    },
+    onChangeHandle(event, index) {
+      // this.list[index].isFinishDiffTime = true;
+      // return;
+      let {
+        hours,
+        minutes,
+        seconds,
+        milliseconds,
+        days
+      } = event.detail;
+      hours = hours < 10 ? '0' + hours : hours;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+      milliseconds = Math.floor(milliseconds / 100);
+      this.list[index].timeData = {
+        hours,
+        minutes,
+        seconds,
+        milliseconds,
+        days
+      }
+      // console.log('this.list', this.list)
+      // console.log('this.list[index].timeData', this.list[index].timeData)
+    },
+    finishHandle(index) {
+      this.list[index].isFinishDiffTime = true;
+    },
     openSph(video_account_id, video_id) {
       if (video_account_id && wx.openChannelsActivity) {
         wx.openChannelsActivity({
@@ -268,6 +344,9 @@ export default {
       }
     },
     async goDetails(item, { listIndex }) {
+      if(this.showProfitBtnTxt) {
+        return this.$toast('开通会员，立享返现');
+      }
       // 彬纷进入时 - 高亮商品的呈现样式
       if(item.is_light && !this.isAlreadyShowLight) this.$emit('setShowLight');
       const eventId = `coupongrouping_${this.categoryIndex + 1}_${listIndex + 1}`;
@@ -321,8 +400,6 @@ export default {
   margin-bottom: 16rpx;
   background: #fff;
   overflow: hidden;
-  // background: linear-gradient(270deg,#f6f8fb 80%, #eaeef6);
-  // animation: backAni 1s infinite;
   .loading_img {
     width: 352rpx;
     height: 352rpx;
@@ -413,9 +490,6 @@ export default {
         margin-right: 4rpx;
         font-weight: bold;
         position: relative;
-        // &.active {
-        //   text-decoration: line-through solid currentColor 4rpx;
-        // }
         &.active::before {
           content: '\3000';
           position: absolute;
@@ -425,11 +499,9 @@ export default {
           left: 50%;
           top: 50%;
           transform: translate(-50%, -50%) rotate(0deg);
-          // text-decoration: line-through;
         }
       }
       .vip_line{
-        // text-decoration: line-through solid currentColor 4rpx;
         text-decoration:  line-through;
         font-weight: bold;
         .good_credits {
@@ -458,7 +530,7 @@ export default {
   font-weight: 600;
   text-align: center;
   color: #e7331b;
-  line-height: 48rpx;
+  // line-height: 48rpx;
   margin-right: 13rpx;
   &::before {
     content: '￥';
@@ -475,10 +547,10 @@ export default {
   z-index: 0;
   margin-right: 8rpx;
   white-space: nowrap;
-  display: inline-block;
+  display: inline;
   &::before {
     content: "\3000";
-    background: url("https://file.y1b.cn/store/1-0/23810/64d44dc19f327.png") 0 0 / 100% 100% no-repeat;
+    background: url("https://file.y1b.cn/store/1-0/24621/6675210e27253.png") 0 0 / 100% 100% no-repeat;
     position: absolute;
     left: 0;
     top: 0;
@@ -487,6 +559,19 @@ export default {
     z-index: -1;
   }
 }
+.show_type {
+  padding: 0 4rpx;
+  height: 34rpx;
+  background: #f8cc82;
+  border-radius: 6rpx;
+  font-size: 24rpx;
+  color: #7f4715;
+  line-height: 34rpx;
+  font-weight: bold;
+  display: inline;
+  margin-right: 8rpx;
+}
+
 .ty_store {
   width: 118rpx;
   height: 34rpx;
@@ -654,34 +739,62 @@ export default {
 }
 .use_cont {
   display: flex;
+  align-items: center;
   font-size: 24rpx;
-  line-height: 34rpx;
   height: 34rpx;
   margin-top: 10rpx;
-  .use_cont-left {
-    color: #32a666;
-    margin-right: 18rpx;
-    display: flex;
-    align-items: center;
+  vertical-align: middle;
+  &.hide_time {
+    position: relative;
+    font-size: 24rpx;
+    text-align: right;
+    justify-content: flex-end;
+    .hide_text {
+      min-width: 160rpx;
+      text-align: center;
+      display: inline-block;
+      text-align: center;
+    }
+    .item_box {
+      font-size: 24rpx;
+      color: #F84842;
+    }
+    .item {
+      display: inline-block;
+      min-width: 34rpx;
+      text-align: center
+    }
     &::before {
       content: "\3000";
-      width: 30rpx;
-      height: 30rpx;
-      background: url("https://test-file.y1b.cn/store/1-0/24312/65f023e89516c.png")  0 0 / 100% 100% no-repeat;
-      margin-right: 5rpx;
+      z-index: -1;
+      position: absolute;
+      top: -2rpx;
+      left: 0;
+      width: 100%;
+      height: 36rpx;
+      background: url("https://file.y1b.cn/store/1-0/24712/6690fe445802d.png")  0 0 / 100% 100% no-repeat;
     }
   }
-  .use_cont-right{
-    color: #c16e15;
-    display: flex;
-    align-items: center;
-    &::before {
-      content: "\3000";
-      width: 24rpx;
-      height: 24rpx;
-      background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
-      margin-right: 5rpx;
-    }
+  .use_cont-left {
+    height: 34rpx;
+    width: 143rpx;
+    background: url("https://file.y1b.cn/store/1-0/24629/667f84504856c.png")  0 0 / 100% 100% no-repeat;
+    margin-right: 18rpx;
+    position: relative;
+  }
+  .use_cont-right {
+    color: #999;
+    position: relative;
+    // padding-left: 32rpx;
+    // &::before {
+    //   content: "\3000";
+    //   position: absolute;
+    //   top: 4rpx;
+    //   left: 0;
+    //   width: 26rpx;
+    //   height: 26rpx;
+    //   background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
+    // }
   }
 }
 @keyframes backAni {
@@ -693,6 +806,33 @@ export default {
   }
   100% {
     background: linear-gradient(270deg,#f6f8fb 30%, #eaeef6);
+  }
+}
+.vip_btn {
+  margin: 0 16rpx 16rpx;
+  text-align: center;
+  height: 64rpx;
+  position: relative;
+  z-index: 0;
+  font-size: 28rpx;
+  color: #fff;
+  &::before {
+    content: "\3000";
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("https://file.y1b.cn/store/1-0/24629/667fc7806131f.png")  0 0 / 100% 100% no-repeat;
+  }
+  &-price {
+    font-size: 30rpx;
+    margin-left: 8rpx;
+    &::before {
+      content: '¥';
+      font-size: 22rpx;
+    }
   }
 }
 </style>

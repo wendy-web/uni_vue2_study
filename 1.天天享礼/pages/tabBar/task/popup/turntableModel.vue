@@ -74,9 +74,7 @@
 			},
 			popupConfirm() {
 				if (this.config.type == 2) {
-					uni.navigateTo({
-						url: `/pages/userModule/myCoupon/index?applyCouponId=${this.config.coupon_log_id}`
-					});
+					this.$go(`/pages/userModule/myCoupon/index?applyCouponId=${this.config.coupon_log_id}`);
 				}
 				if (this.config.btnText === '继续抽奖') {
 					this.$emit('again', 'BIG_WHEEL')

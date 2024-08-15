@@ -115,10 +115,8 @@ export default {
 								status
 							} = data;
 							pay_amount = (pay_amount / 100).toFixed(2);
-							uni.redirectTo({
-								url: `/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`
-							})
-							return
+							this.$redirectTo(`/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`);
+							return;
 						}
 						uni.showModal({
 							title: '温馨提示',

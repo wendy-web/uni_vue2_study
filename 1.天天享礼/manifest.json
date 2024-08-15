@@ -60,6 +60,14 @@
         },
         "usingComponents" : true,
         "plugins" : {},
+        // "jtkMovie" : {
+        //     "version" : "1.1.6",
+        //     "provider" : "wx89752980e795bfde"
+        // },
+        // "meishi" : {
+        //     "version" : "1.2.1",
+        //     "provider" : "wx5c787b48e6a02a51"
+        // }
         // "express-plugin" : {
         //     "version" : "1.0.0",
         //     "provider" : "wx1b1f66316b427c74"
@@ -93,6 +101,7 @@
 			口碑小程序ID:wx7d26a9e29d2a69c7
             彬纷享礼：wxbb29c5aec6891525
             点亮城市攒能量：wx98a1cc9f6a76fdf3
+            天天惠吃喝的配置： wx4c6b177c1b506b06
             半屏幕小程序的添加配置
         */
         "embeddedAppIdList" : [
@@ -100,12 +109,12 @@
             "wx91d27dbf599dff74",
             "wxa918198f16869201",
             "wx8820200042415db1",
-            "wx53b04dc636c231e2",
             "wx8820200042415db1",
             "wxece3a9a4c82f58c9",
             "wx7d26a9e29d2a69c7",
             "wxbb29c5aec6891525",
-            "wx98a1cc9f6a76fdf3"
+            "wx98a1cc9f6a76fdf3",
+            "wx4c6b177c1b506b06"
         ]
     },
     "mp-alipay" : {

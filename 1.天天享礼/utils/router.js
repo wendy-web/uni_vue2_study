@@ -1,16 +1,13 @@
 import { getAutoLogin } from './auth.js';
-//路由白名单
-const whiteList = ['/pages/tabBar/user/index', '/pages/tabBar/home/index', '/pages/user/rankingList/index', '/pages/user/strategy/index', '/pages/user/medal/index'];
+// 路由白名单
+const whiteList = ['/pages/tabBar/user/index', '/pages/tabBar/home/index', '/pages/user/strategy/index', '/pages/user/medal/index'];
 
 //路由函数
 export let router = {
     navigateTo(config) {
-
         routeDetection(config).then(e => {
-
             uni.navigateTo(config);
         });
-
     },
     redirectTo(config) {
         routeDetection(config).then(e => {

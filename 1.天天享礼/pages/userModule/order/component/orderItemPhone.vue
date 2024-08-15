@@ -2,7 +2,7 @@
 <view class="item">
 	<view class="type_top">
 		<view class="type_lft">
-			<image class="type_top-icon" mode="scaleToFill" :src="item.goodsTypeIcon" v-if="isPayWayHf"></image>
+			<image class="type_top-icon" mode="scaleToFill" :src="item.goodsTypeIcon"></image>
 			<text>{{ item.restaurant_name || item.goodsTypeTxt }} </text>
 		</view>
 		<view class="type_rit" :class="'order-status-'+ item.status">
@@ -10,7 +10,6 @@
 		</view>
 	</view>
 	<view class="order" @click="goToUse">
-		<view class="order_tag" v-if="!isPayWayHf">自提带走</view>
 		<view class="order_cont">
 			<van-image
 				height="160rpx" width="160rpx" radius="16rpx"
@@ -20,36 +19,26 @@
 				<van-loading slot="loading" type="spinner" size="24" vertical />
 				<van-icon slot="error" color="#edeef1" size="120" name="photo-fail" />
 			</van-image>
-			<view :class="['phone_cont', !isPayWayHf ? 'fl_bet' : '']">
+			<view class="phone_cont">
 				{{item.goods_sku_name || productName}}
-				<block v-if="isPayWayHf">
-					<view class="phone_cont-lab">充值账号：{{item.cz_number}}</view>
-					<view class="phone_cont-lab">充值面额：¥{{item.amount / 100}}</view>
-				</block>
-				<view v-html="formatPrice(item.amount, 1)" v-else ></view>
+				<view class="phone_cont-lab">充值账号：{{item.cz_number}}</view>
+				<view class="phone_cont-lab">充值面额：¥{{item.amount / 100}}</view>
 			</view>
 		</view>
 	</view>
 	<!-- 支付金额 -->
 	<view class="pay-info">
-		<block v-if="isPayWayHf">
-			<view class="pay-info-num">总价¥{{item.amount / 100}}</view>
-			<view class="pay-info-num">优惠¥{{item.coupon_amount}}</view>
-		</block>
+		<view class="pay-info-num">总价¥{{item.amount / 100}}</view>
+		<view class="pay-info-num">优惠¥{{item.coupon_amount}}</view>
 		<text class="pay-info_label">{{ [2,3,4,5].includes(Number(item.status)) ? '实付' : '应付' }}</text>
 		<view v-html="formatPrice(item.pay_amount)"></view>
 	</view>
-	<view class="take" @click="goToUse" v-if="!isPayWayHf && userInfo.buy_vip">
-		<view class="take_btn">{{ Number(item.status) ? '再来一单' : '去支付' }}</view>
+	<view class="take" @click="goToUse(item)" v-if="!Number(item.status)">
+		<view class="take_btn">'去支付</view>
 	</view>
-	<block v-else>
-		<view class="take" @click="goToUse(item)" v-if="!Number(item.status)">
-			<view class="take_btn">'去支付</view>
-		</view>
-		<view class="take" @click="againHandle" v-else-if="item.again_jdShareLink&&isPayWayHf">
-			<view class="take_btn">再来一单</view>
-		</view>
-	</block>
+	<view class="take" @click="againHandle" v-else-if="item.again_jdShareLink">
+		<view class="take_btn">再来一单</view>
+	</view>
 </view>
 </template>
 <script>
@@ -74,9 +63,6 @@ export default {
 			const pay_way = this.item.pay_way;
 			return haiWeiObj[pay_way].product_name;
 		},
-		isPayWayHf() {
-			return this.item.pay_way == 'xl_hf';
-		}
 	},
 	methods: {
 		formatPrice(price = 0, type) {
@@ -94,10 +80,6 @@ export default {
 			return dom;
 		},
 		goToUse(item, again = false) {
-			if(!this.isPayWayHf) {
-				this.$go(`plugin://jtkDc/kudiindex?pub_id=27729&sid=ttxl&channel=${this.userInfo.id}`);
-				return;
-			}
 			if(item.status) return this.againHandle();
 			const {
 				again_jdShareLink,

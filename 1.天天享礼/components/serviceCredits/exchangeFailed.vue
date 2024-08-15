@@ -1,7 +1,7 @@
 <template>
 <van-popup
 	:show="isShow"
-	position="bottom"
+	position="center"
 	custom-style="background: transparent;overflow: inherit;"
 	round
 	z-index="100"
@@ -12,19 +12,17 @@
 <!-- :catchtouchmove="true" // 可解决背景的滚动事件  -->
 <!-- @close="popupClose" -->
 	<view class="exchange-failed">
-		<image class="close_icon" :src="imgUrl+'static/component/close_back.png'" mode="aspectFill" @click="popupClose"></image>
 		<image class="failed-icon" src="https://file.y1b.cn/store/1-0/2369/6482d21a3091c.png" mode="aspectFill"></image>
 		<view class="efi-tips">牛金豆不足</view>
-		<view class="efi-surplus">
-			剩余：<text class="efi-num">{{userInfo.credits}}</text>
-		</view>
+		<view class="efi-surplus">剩余：{{userInfo.credits}}</view>
 		<view class="earn-cowpeas" @click="goTask">
-			赚牛金豆
+			<view class="gesture_icon-box">
+				<image src="https://file.y1b.cn/store/1-0/24124/65b0b0bca7769.png"
+				mode="widthFix" class="gesture_icon"
+				></image>
+			</view>
 		</view>
-		<!-- <view class="look-others" @click="goHome" style="opacity: 0"> -->
-		<view class="look-others" style="opacity: 0">
-			看看其他 <van-icon name="arrow" color="#999999" size="12" />
-		</view>
+		<image class="close_icon" :src="imgUrl+'static/component/close_back.png'" mode="aspectFill" @click="popupClose"></image>
 	</view>
 </van-popup>
 </template>
@@ -54,12 +52,10 @@ import { mapGetters } from 'vuex';
 			}
 		},
 		methods:{
-			goHome(){
-				uni.reLaunch({
-					url:'/pages/tabBar/shopMall/index'
-				})
+			goHome() {
+				this.$reLaunch('/pages/tabBar/shopMall/index');
 			},
-			goTask(){
+			goTask() {
 				this.$emit('goTask');
 			},
 			popupClose() {
@@ -71,9 +67,10 @@ import { mapGetters } from 'vuex';
 
 <style lang="scss">
 .exchange-failed{
+	width: 670rpx;
 	background: #fff;
 	margin: 16rpx;
-	border-radius: 48rpx;
+	border-radius: 40rpx;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -82,52 +79,44 @@ import { mapGetters } from 'vuex';
 		position: absolute;
 		width: 48rpx;
 		height: 48rpx;
-		top: -48rpx;
-		right: 20rpx;
+		bottom: -58rpx;
 	}
 	.failed-icon {
 		width: 334rpx;
 		height: 346rpx;
-		margin-top: 24rpx;
-		margin-left: 58rpx;;
+		margin-top: 28rpx;
+		margin: 28rpx 140rpx 0 auto;
+		display: block;
 	}
 	.efi-tips {
 		font-size: 36rpx;
-		font-family: PingFang SC, PingFang SC-Semibold;
-		font-weight: 600;
+		font-weight: bold;
 		text-align: center;
-		color: #333333;
+		color: #333;
 		line-height: 50rpx;
 	}
-	.efi-surplus{
+	.efi-surplus {
 		font-size: 26rpx;
-		font-weight: 400;
-		height: 52rpx;
-		background: #f7f8f9;
-		border: 2rpx solid #eaecf0;
-		border-radius: 8rpx;
+		line-height: 56rpx;
 		font-size: 26rpx;
-		font-family: PingFang SC, PingFang SC-Regular;
-		color: #9295a0;
-		line-height: 52rpx;
+		line-height: 56rpx;
 		padding: 0 24rpx;
 		margin-top: 12rpx;
-		.efi-num{
-			color: #666666;
-	   	}
+		background: rgba(255,143,42,0.10);
+		border: 2rpx solid rgba(255,143,42,0.30);
+		border-radius: 8rpx;
+		color: #61341d;
+		font-weight: bold;
 	}
-	.earn-cowpeas{
-		width: 328rpx;
-		text-align: center;
+	.earn-cowpeas {
+		width: 606rpx;
 		line-height: 88rpx;
-		color: #ffffff;
-		width: 670rpx;
-		height: 88rpx;
+		height: 104rpx;
 		background: linear-gradient(135deg,#f2554d, #f04037);
 		border-radius: 16rpx;
-		font-size: 28rpx;
-		font-weight: 600;
-		margin-top: 64rpx;
+		margin: 52rpx 32rpx 32rpx;
+		position: relative;
+		background: url("https://file.y1b.cn/store/1-0/24713/669224f38cc47.png") 0 0 / 100% 100%;
 	}
 	  .exchange-failed-title{
 		  font-size: 30rpx;

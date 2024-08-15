@@ -1,23 +1,15 @@
 <template>
 <view class="notion_Img-box" v-if="isShow" id="notionImgDom">
-    <van-image
-        width="100%"
-        height="40px"
-        fit="widthFix"
-        :src="config.image"
-        use-loading-slot
-        use-error-slot
-        @click="notionImgHandle"
-    >
+    <van-image width="100%" height="40px"
+        fit="widthFix" :src="config.image"
+        use-loading-slot use-error-slot
+        @click="notionImgHandle">
         <van-loading slot="loading" type="spinner" size="24" vertical />
         <van-icon slot="error" color="#edeef1" size="120" name="photo-fail" />
     </van-image>
-    <image
-        class="close_icon"
+    <image class="close_icon" mode="scaleToFill"
         src="https://file.y1b.cn/store/1-0/23118/654b2a62cefd7.png"
-        mode="scaleToFill"
-        @click.stop="popupClose(true)"
-    ></image>
+        @click.stop="popupClose(true)"></image>
 </view>
 </template>
 <script>
@@ -165,21 +157,7 @@ export default {
             if (res.code != 1 && res.data.list.length) return;
             this.config = res.data.list[0];
             this.list = res.data.list;
-        },
-        warpRectDom(idName) {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                // 延时确保dom已渲染, 不使用$nextclick
-                let query = uni.createSelectorQuery();
-                // #ifndef MP-ALIPAY
-                query = query.in(this); // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-                // #endif
-                query.select("#" + idName).boundingClientRect((data) => {
-                    resolve(data);
-                    }).exec();
-                }, 20);
-            });
-        },
+        }
     },
     beforeDestroy() {
         this.timer = null;

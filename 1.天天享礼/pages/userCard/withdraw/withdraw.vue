@@ -4,7 +4,7 @@
     title="提现"
     titleColor="#333"
     :leftImage="imgUrl+'/static/images/left_back.png'"
-    @leftCallBack="$topCallBack"
+    @leftCallBack="$leftBack"
   ></xh-navbar>
     <!-- 可提现 -->
     <view class="withdraw_top fl_bet">
@@ -85,7 +85,7 @@ export default {
       this.profitInfoRequest();
       this.isFocus = true;
       this.isShowWithdrawDia = false;
-      this.$topCallBack();
+      this.$leftBack();
     },
     async confirmHandle() {
       this.isFocus = false;

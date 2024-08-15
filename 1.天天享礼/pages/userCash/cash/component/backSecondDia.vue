@@ -4,7 +4,7 @@
     custom-style="background-color: transparent;overflow:visible;"
     :z-index="100"
     :catchtouchmove="true"
-    @close="closeHandle"
+    @close="$leftBack"
   >
     <view class="dia_cont ani_active">
       <!-- 现金翻倍 -->
@@ -38,18 +38,8 @@ export default {
     return {
     };
   },
-  mounted() {
-  },
+  mounted() { },
   methods: {
-    closeHandle() {
-      uni.navigateBack({
-        fail() {
-          uni.switchTab({
-              url: '/pages/tabBar/shopMall/index'
-          });
-        }
-      });
-    },
     buyOpenHandle() {
       this.$emit('buyOpen');
     }

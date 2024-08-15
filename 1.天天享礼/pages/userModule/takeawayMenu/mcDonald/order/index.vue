@@ -4,7 +4,7 @@
 }">
 <xh-navbar
   :leftImage="imgUrl+'/static/images/left_back.png'"
-	@leftCallBack="$topCallBack"
+	@leftCallBack="$leftBack"
   navberColor="#F5F5F5"
 	titleColor="#333"
   :title="navbarTitle"
@@ -80,7 +80,7 @@
       </block>
 
     </view>
-    <view class="order_box order_add" v-if="userInfo.buy_vip">
+    <view class="order_box order_add">
         <view class="add_shop fl_bet" @click="openGpsHandle">
           {{config.restaurant_name}}
           <view> 导航 <van-icon name="arrow" color="#333" size="28rpx"/> </view>
@@ -212,8 +212,7 @@
 <script>
 import { orderDetail } from '@/api/modules/order.js';
 import {
-orderAgain,
-orderPay
+  orderPay
 } from '@/api/modules/takeawayMenu/luckin.js';
 import uQrcode from '@/components/uQrcode/index.vue';
 import { getImgUrl } from '@/utils/auth.js';
@@ -294,9 +293,7 @@ export default {
 				this.$go('/pages/userModule/myCoupon/index');
       },
       async againHandle() {
-        const res = await orderAgain({ oid: this.oid });
-        if(res.code != 1) this.$toast(res.msg);
-        this.$go(`/pages/userModule/takeawayMenu/mcDonald/index?brand_id=5&rote=1&again=true&isBack=1`);
+			  this.$goToDiscountsMini();
       },
       countFinished() {
         // 倒计时结束 - 展示已取消

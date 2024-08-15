@@ -11,18 +11,18 @@
 	<orderListItem
 		ref="orderListItem"
 		:list="list"
-		@updateOrderInfo="downCallback"
+		@profitMoney="profitMoneyHandle"
+		@updateOrderInfo="updateOrderInfoHandle"
 		@showTakeCode="(item) => this.$emit('showTakeCode', item)"
 		@againPhone="() => this.$emit('againPhone')"
-	>
-	</orderListItem>
+	></orderListItem>
 	<!-- 列表为空时呈现 -->
 	<view class="empty_box fl_col_cen" v-if="isEmpty">
 		<image class="empty_box_img" :src="empty.icon" mode="widthFix"></image>
 		<view>{{ empty.tip }}</view>
 	</view>
 	<view class="you_like-title" v-if="goods.length">
-		<image class="left-icon" :src="imgUrl +'static/shopMall/love_left_icon.png'" mode="aspectFill"></image>
+		<image class="left-icon" src="https://file.y1b.cn/store/1-0/24718/6698cd1ab8927.png" mode="aspectFill"></image>
 		猜你喜欢
 		<image class="right-icon" :src="imgUrl + 'static/shopMall/love_right_icon.png'" mode="aspectFill"></image>
 	</view>
@@ -31,6 +31,7 @@
 		:list="goods"
 		:isBolCredits="true"
 		:isJdLink="true"
+		:isShowProfit="true"
 		@notEnoughCredits="notEnoughCreditsHandle"
 	></good-list>
 </mescroll-uni>
@@ -43,6 +44,7 @@ import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/me
 import MescrollMoreItemMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mixins/mescroll-more-item.js";
 import { getImgUrl } from '@/utils/auth.js';
 import groupRecommendMixin from '@/utils/mixin/groupRecommendMixin.js'; // 混入推荐商品列表的方法
+import { mapActions } from "vuex";
 import { orderStatus } from '../static/config';
 import orderListItem from './orderListItem.vue';
 	let _times = {}
@@ -97,9 +99,19 @@ import orderListItem from './orderListItem.vue';
 		mounted() {
 		},
 		methods: {
+			...mapActions({
+				profitInfoRequest: 'user/profitInfoRequest'
+			}),
+			profitMoneyHandle(index) {
+				setTimeout(() => this.list[index].profit_money = 0, 1000);
+			},
 			// 牛金豆不足的情况
 			notEnoughCreditsHandle() {
 				this.$emit('notEnoughCredits');
+			},
+			updateOrderInfoHandle(){
+				this.downCallback();
+				this.$emit('swiperUpdate');
 			},
 			/*下拉刷新的回调 */
 			downCallback() {
@@ -108,6 +120,7 @@ import orderListItem from './orderListItem.vue';
 				this.goods = [];
 				this.pageNum = 1;
 				this.groupId_index = 0;
+				this.profitInfoRequest();
 				this.mescroll.resetUpScroll();
 			},
 			/*上拉加载的回调: 其中page.num:当前页 从1开始, page.size:每页数据条数,默认10 */

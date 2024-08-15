@@ -4,7 +4,7 @@
   custom-style="background-color: transparent;overflow:visible;"
   :z-index="100"
   :catchtouchmove="true"
-  @close="closeHandle"
+  @close="$leftBack"
 >
   <view class="dia_cont">
     <!-- 单个红包open -->
@@ -40,15 +40,6 @@ export default {
   mounted() {
   },
   methods: {
-    closeHandle() {
-      uni.navigateBack({
-        fail() {
-          uni.switchTab({
-              url: '/pages/tabBar/shopMall/index'
-          });
-        }
-      });
-    },
     buyOpenHandle() {
       this.$emit('buyOpen');
     }

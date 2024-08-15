@@ -19,8 +19,8 @@
 				<view class="ac_bri_top"></view>
 			</view>
 			<view class="tab-item fl_col_cen"
-				v-for="(tab, i) in tabs"
-				:class="{'active': value===i, 'pre_active': (value - 1) === i}" :key="i" @click="tabClick(i)"
+				v-for="(tab, i) in tabs" :key="i"
+				:class="[(value===i) && 'active', (value - 1) === i && 'pre_active']" @click="tabClick(i)"
 				:id="'tabItemId'+i"
 			>
 				<view class="tab_img-box fl_center">
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { warpRectDom } from '@/utils/auth.js';
 	export default {
 		props: {
 			tabs: {
@@ -89,6 +90,7 @@
 			this.windowTop = sys.windowTop;
 		},
 		methods: {
+			warpRectDom,
 			setLineTop() {
 				const currentDom = this.tabs[this.value];
 				let topStep = 0;
@@ -107,10 +109,10 @@
 				}
 			},
 			async itemDomFun(){
-				this.initWarpRect('tabBox').then(res =>  this.topValue = res.top );
+				this.warpRectDom('tabBox').then(res =>  this.topValue = res.top );
 				this.tabs.forEach((res, index) => {
 					const tabItemId = `tabItemId${index}`;
-					this.initWarpRect(tabItemId).then(result => {
+					this.warpRectDom(tabItemId).then(result => {
 						res.top = result.top;
 						res.height = result.height;
 						if(index == 0) {
@@ -123,7 +125,7 @@
 			},
 			async scrollCenter() {
 				if (!this.warpWidth) { // tabs容器的宽度
-					let rect = await this.initWarpRect();
+					let rect = await this.warpRectDom();
 					this.warpWidth = rect ? rect.width : this.windowWidth; // 某些情况下取不到宽度,暂时取屏幕宽度
 				}
 				const currentDom = this.tabs[this.value];
@@ -138,19 +140,6 @@
 					this.scrollTop = Math.ceil(diff)
 				}, 400)
 				// #endif
-			},
-			initWarpRect(id) {
-				return new Promise(resolve => {
-					setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-						let query = uni.createSelectorQuery();
-						// #ifndef MP-ALIPAY
-						query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-						// #endif
-						query.select('#' + (id || this.viewId)).boundingClientRect(data => {
-							resolve(data)
-						}).exec();
-					}, 20)
-				})
 			}
 		}
 	}

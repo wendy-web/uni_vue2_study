@@ -2,7 +2,7 @@
 <view class="item">
 	<view class="type_top">
 		<view class="type_lft">
-			<!-- <image class="type_top-icon" mode="scaleToFill" src="https://file.y1b.cn/store/1-0/24424/6628c97ae962e.png"></image> -->
+			<image class="type_top-icon" mode="scaleToFill" src="https://file.y1b.cn/store/1-0/24424/6628c97ae962e.png"></image>
 			<text class="type_lft-label">{{ item.starbucks.goods_sku_name }} </text>
 		</view>
 		<view class="type_rit" :class="'order-status-'+item.status">
@@ -47,8 +47,7 @@
 		<view class="btn">去支付</view>
 	</view>
 	<view class="take_box fl_end">
-		<view class="take_btn" v-if="Number(item.status) && userInfo.buy_vip"
-			@click="againHandle(item.id)">再来一单</view>
+		<view class="take_btn" v-if="Number(item.status)" @click="againHandle(item.id)">再来一单</view>
 		<view class="take_btn" v-if="[3].includes(Number(item.status))"
 			@click="jumpLinkHandle(item)"
 		>取单口令</view>
@@ -57,8 +56,6 @@
 </template>
 
 <script>
-import { jumpLink } from '@/api/modules/discounts.js';
-import { orderAgain } from '@/api/modules/takeawayMenu/kfc.js';
 import { parseTime } from '@/utils/index.js';
 import { mapGetters } from 'vuex';
 export default {
@@ -106,25 +103,9 @@ export default {
 		},
 		jumpLinkHandle(item) {
 			this.$go(`/pages/userModule/takeawayMenu/starbucks/order/index?oid=${item.id || 0}`);
-            return;
-			// 1-电影票 2-肯德基 3-星巴克
-			const params = {
-				type: 3,
-				page: 'order',
-				orderNo: item.third_order_id,
-				status: item.starbucks.takeout
-			}
-			jumpLink(params).then(res => {
-				const link = res.data.url;
-				uni.navigateTo({
-					url: `/pages/webview/webview?link=${encodeURIComponent(link)}&bgColor=${this.bgColor}`
-				});
-			});
 		},
-        async againHandle(oid) {
-			const res = await orderAgain({ oid });
-			if(res.code != 1) return;
-            this.$go(`/pages/userModule/takeawayMenu/starbucks/index?brand_id=99&rote=1&again=true&isBack=1`);
+        async againHandle() {
+            this.$goToDiscountsMini();
 		}
 	}
 }

@@ -11,7 +11,7 @@
 >
 <xh-navbar
   :leftImage="imgUrl+'/static/images/left_back.png'"
-  @leftCallBack="$topCallBack"
+  @leftCallBack="$leftBack"
   :fixed="true"
   :fixedNum="9"
 >
@@ -73,21 +73,7 @@ export default {
 		onPageScroll(event) {
       const scrollTop = Math.ceil(event.scrollTop);
       this.scrollTop = scrollTop;
-    },
-    warpRectDom(idName) {
-			return new Promise(resolve => {
-				setTimeout(() => {
-          // 延时确保dom已渲染, 不使用$nextclick
-					let query = uni.createSelectorQuery();
-					// #ifndef MP-ALIPAY
-					query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-					// #endif
-					query.select('#'+ idName).boundingClientRect(data => {
-						resolve(data)
-					}).exec();
-				}, 20)
-			})
-		},
+    }
   }
 }
 </script>

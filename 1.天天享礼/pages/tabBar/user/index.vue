@@ -8,18 +8,7 @@
     :navberColor="showTitleBgColor"
   >
     <view slot="title" class="nav-custom">
-      <image
-        :class="['title_icon ani_head', (!isShowAvaTitle || !textList.length) ? 'ani_head-in' : 'ani_head-out']"
-        src="https://file.y1b.cn/store/1-0/2368/648173c3f15cf.png"
-        mode="aspectFill"
-      ></image>
-      <!-- v-if="!isShowAvaTitle || !textList.length -->
-      <!-- 关闭用户信息的展示 -->
-      <!-- <view :class="['my_user ani_head', isShowAvaTitle ? 'ani_head-in' : 'ani_head-out']">
-        <image class="my_user-avatar" mode="aspectFill"
-        :src="userInfo.avatar_url"></image>
-        <view :class="['my_user-nickName', userInfo.is_vip ? 'active' : '']"> {{ userInfo.nick_name }}</view>
-      </view> -->
+      <view :class="['title_icon ani_head', (!isShowAvaTitle || !textList.length) ? 'ani_head-in' : 'ani_head-out']"></view>
       <swiperSearch
         :textList="textList"
         :isSwiperTxt="isShowAvaTitle"
@@ -55,7 +44,7 @@
           {{ userInfo.nick_name || "未登录" }}
         </view>
         <view class="user-id"> ID：{{ userInfo.id || 0 }} </view>
-        </view>
+      </view>
       <view v-else class="not_login"> Hi~请登录<van-icon custom-style="font-weight: 600;" name="arrow"/></view>
       <!-- 领取返现的入口 -->
       <view class="use_right fl_col_cen" @click.stop="goToCashHandle" v-if="isAutoLogin">
@@ -66,15 +55,21 @@
     </view>
     <!-- 省钱卡会员 -->
     <view class="card_vip_box" v-if="userInfo.is_vip"
-      @click="goPages('/pages/userCard/card/cardVip/index')">
+      @click="showToastVipHandle">
       <view class="card_title fl_start">
-        <van-icon name="arrow" color="#B75A30" size="28rpx" custom-style="font-weight: 600;"/>
+        <van-icon name="arrow" color="#B75A30" size="26rpx" custom-style="font-weight: 600;"/>
       </view>
       <view class="card_lab" v-if="vipObject.saving_money">
-        已为您省下<text style="color: #f84842; margin: 0 5rpx">{{vipObject.saving_money || 0}}</text>元
+        已为您省了
+        <text style="color: #f84842; margin: 0 5rpx">{{vipObject.saving_money || 0}}</text>元
+      </view>
+      <view class="car_open-lab" v-else-if="vipObject.money">
+        预计可省
+        <text class="top_cont-num">{{vipObject.money || 0}}</text>元+
       </view>
       <view class="card_open-lab" v-else>
-        预计月省<text style="font-weight: 600; font-size: 48rpx; margin: 0 5rpx">{{vipObject.money || 0}}</text>元+
+        预计年省
+        <text class="top_cont-num">1980</text>元+
       </view>
       <view class="card_bottom fl_bet">
         <view class="card_rem">{{ vipObject.over_time || todayTime }} 到期</view>
@@ -83,11 +78,10 @@
       </view>
     </view>
     <!-- 省钱卡 - 未开通 -->
-    <view class="card_box fl_bet" v-else
-      @click="goPages('/pages/userCard/card/cardVip/openIndex')">
+    <view class="card_box fl_bet" v-else @click="showToastVipHandle">
       <view class="fl_start">
         <view class="card_noVip_title fl_start"></view>
-        <view class="card_lab">月省<text style="color: #f84842">30</text>元起</view>
+        <view class="card_lab">年省<text style="color: #f84842">1980</text>元起</view>
       </view>
     </view>
     <!-- 我的订单 -->
@@ -96,7 +90,8 @@
         <view class="order-item" @click="goPages(item.path)"
           v-for="item in orders" :key="item.id">
           <view class="order-item-top">
-            <image class="oii-icon" mode="aspectFill" :src="item.icon"></image>
+            <view :class="['oii-icon', item.iconClass]"></view>
+            <!-- <image class="oii-icon" mode="aspectFill" :src="item.icon"></image> -->
             <view class="oit-num" v-show='shotOitNum(item)'>{{ userTotal[item.key] }}</view>
           </view>
           <view class="order-item-name">{{ item.name }}</view>
@@ -120,7 +115,7 @@
           <view :class="['uab_item-cont', userTotal.coupon_read ? 'card-new-show' : '']">
             {{ userTotal.coupon || 0 }}<text class="uab_item-lab">张</text>
           </view>
-          <view class="uab_item-lab">卡券</view>
+          <view class="uab_item-lab">优惠券</view>
         </view>
         <view class="uab_item" @click="goWithdrawHandle">
           <view :class="['uab_item-cont', profitInfo.total_num ? 'card-new-show' : '']">
@@ -140,22 +135,19 @@
       >
         <view class="swiper-item box_fl">
           <block v-for="item in menus" :key="item.id">
-            <view v-if="item.path != 'share'"
-              class="user-menus-item fl_col_cen" @click="goPages(item.path)">
-              <image class="umi-icon" :src="item.icon" mode="aspectFill"></image>
-              <view class="umi-name">{{ item.name }}</view>
-            </view>
-            <view v-else-if="!isAutoLogin" class="user-menus-item" @click="goPages(item.path)">
-              <view class="menus-item-share-btn fl_col_cen">
-                <image class="umi-icon" :src="item.icon" mode="aspectFill"></image>
-                <view class="umi-name">{{ item.name }}</view>
-              </view>
-            </view>
-            <view v-else class="user-menus-item">
+            <view v-if="isAutoLogin && (item.path == 'share')" class="user-menus-item">
               <button open-type="share" class="menus-item-share-btn fl_col_cen">
                 <image class="umi-icon" :src="item.icon" mode="aspectFill"></image>
                 <view class="umi-name">{{ item.name }}</view>
               </button>
+            </view>
+            <view v-else class="user-menus-item fl_col_cen" @click="goToMenusHandle(item.path)">
+              <view class="umi-icon">
+                <view class="oit-num" v-if="item.path == 'code' && !isShowCodeNum">1</view>
+                <view :class="['umi-icon-mixin', item.iconClass]" v-if="item.iconClass"></view>
+                <image class="umi-icon-img" :src="item.icon" mode="aspectFill" v-else></image>
+              </view>
+              <view class="umi-name">{{ item.name }}</view>
             </view>
           </block>
         </view>
@@ -169,12 +161,13 @@
       :list="goods"
       :isBolCredits="true"
       :isJdLink="true"
+      :isShowProfit="true"
       @notEnoughCredits="notEnoughCreditsHandle"
       id="stickyListId"
     ></good-list>
   </mescroll-body>
   <custom-tab-bar
-    currentIndex="2"
+  currentID="3"
     @domObjHeight="domObjHeightHandle"
     @recommend="recommendUpdate"
   />
@@ -219,6 +212,11 @@
 		@close="isShowReturnCashDia = false"
     @getDraw="getDrawHandle"
 	></returnCashDia>
+  <!-- 优惠雷达二维码弹窗 -->
+  <codeDia
+    :isShow="isShowCodeDia"
+    @close="isShowCodeDia = false"
+  ></codeDia>
 </view>
 </template>
 <script>
@@ -236,14 +234,14 @@ import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js"
 import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
 import swiperSearch from '@/components/swiperSearch.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { getBaseUrl, getDrawShowDiaStorage, getImgUrl, getStorage, setStorage } from "@/utils/auth.js";
+import { getBaseUrl, getDrawShowDiaStorage, getImgUrl, getShowCodeNum, getStorage, setShowCodeNum, setStorage, warpRectDom } from "@/utils/auth.js";
 import getViewPort from "@/utils/getViewPort.js";
 import { parseTime } from '@/utils/index.js';
 import groupRecommendMixin from '@/utils/mixin/groupRecommendMixin.js'; // 混入推荐商品列表的方法
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的方法
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import codeDia from './codeDia.vue';
 import config from "./config.js";
-
 export default {
   mixins: [MescrollMixin, configurationFun, serviceCreditsFun, shareMixin, groupRecommendMixin], // 使用mixin
   components: {
@@ -254,7 +252,8 @@ export default {
     goodList,
     returnCashDia,
     swiperSearch,
-    specialLisMiniPage
+    specialLisMiniPage,
+    codeDia
   },
   data() {
     return {
@@ -304,7 +303,10 @@ export default {
         'https://file.y1b.cn/store/1-0/24116/65a5e6bf21e01.png'
       ],
       cashStorageKey: `${getBaseUrl()}_useRedDot_cashDay`,
-      isShowRed: true
+      isShowRed: true,
+      isShowCodeDia: false,
+      isShowCodeNum: getShowCodeNum() || 0,
+      vipNumberUserCurrent: -1
     };
   },
   watch: {
@@ -316,15 +318,15 @@ export default {
       }
       this.isStickyActiveScroll = false;
     },
-    'userInfo.is_vip': {
+    'userInfo.vip_number': {
 			handler:async function (newValue, oldValue) {
-				if(!newValue) return;
-				const res = await savingInfo();
-				if(res.code != 1 || !res.data) return;
-				this.vipObject = res.data;
-			},
-			deep: true
-		},
+        if(newValue != this.vipNumberUserCurrent && [0, 3].includes(newValue)) {
+          this.mescroll.resetUpScroll();
+        }
+      },
+			deep: true,
+      // immediate: true
+    },
     'profitInfo.packet_amount': {
       handler:async function (newValue, oldValue) {
         this.gradualAnimation(newValue);
@@ -382,15 +384,27 @@ export default {
   onShow() {
     this.downCallback();
     this.profitInfoRequest();
+    this.getUserInfo();
   },
   methods: {
     ...mapActions({
       getUserTotal: "user/getUserTotal",
-      profitInfoRequest: 'user/profitInfoRequest'
+      profitInfoRequest: 'user/profitInfoRequest',
+      getUserInfo: "user/getUserInfo",
     }),
     ...mapMutations({
       setCardNewShow: "user/setCardNewShow",
     }),
+    warpRectDom,
+    async initVipObject() {
+      const res = await savingInfo();
+      if(res.code != 1 || !res.data) return;
+      this.vipObject = res.data;
+    },
+    showToastVipHandle() {
+      if (!this.isAutoLogin) return this.$go("/pages/tabAbout/login/index");
+      this.$switchTab('/pages/tabBar/card/index');
+    },
     async initTextList () {
       const res = await keywordList();
       if (res.code == 1 && res.data) {
@@ -449,20 +463,6 @@ export default {
         });
       }
     },
-    warpRectDom(idName) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          // 延时确保dom已渲染, 不使用$nextclick
-          let query = uni.createSelectorQuery();
-          // #ifndef MP-ALIPAY
-          query = query.in(this); // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-          // #endif
-          query.select("#" + idName).boundingClientRect((data) => {
-            resolve(data);
-          }).exec();
-        }, 20);
-      });
-    },
     formatPrice(price) {
       price = Number(price).toFixed(2);
       if (!price) return;
@@ -496,6 +496,21 @@ export default {
       if (isCean) this.setCardNewShow(false);
       this.$go(path);
     },
+    goToMenusHandle(path) {
+      if (!this.isAutoLogin) return this.$go("/pages/tabAbout/login/index");
+      if (path === "share") return;
+      if (path === 'code') {
+        if(!this.isShowCodeNum) {
+          setShowCodeNum(1);
+          this.isShowCodeNum = 1;
+        }
+        return this.isShowCodeDia = true;
+      };
+      this.$go(path);
+    },
+    showToastVipHandel() {
+      this.$toast('会员权益升级中，敬请期待');
+    },
     goToCashHandle() {
       if(this.showCashRed) {
         let cur_date = parseTime(new Date(), "{y}/{m}/{d}");
@@ -506,6 +521,8 @@ export default {
     },
     /*上拉加载的回调: 其中page.num:当前页 从1开始, page.size:每页数据条数,默认10 */
     downCallback() {
+      // 从续费的页面返回时 - 更新用户信息
+      if(this.userInfo.is_vip) this.initVipObject();
       /*刷新统计*/
       this.getUserTotal();
       /*延时回调*/
@@ -514,6 +531,7 @@ export default {
       }, 300);
     },
     async upCallback(page) {
+      this.vipNumberUserCurrent = this.userInfo.vip_number;
       this.requestGoodList(page); // 调用推荐的猜你喜欢的
     },
     // 页面的滚动事件
@@ -578,6 +596,9 @@ export default {
 page {
   background-color: #f7f7f7;
 }
+@mixin spritesMixin {
+  background: url('https://file.y1b.cn/store/1-0/24722/669e1335b40d8.png') 0 0 / 2521rpx 1522rpx;
+}
 .swiper_search{
   flex: 1;
   transition: all .5s;
@@ -628,6 +649,8 @@ button::after {
     margin-right: 20rpx;
     position: absolute;
     left: 20rpx;
+    @include spritesMixin;
+    background-position: -2151rpx -728rpx;
   }
 }
 .my_user {
@@ -654,11 +677,13 @@ button::after {
     line-height: 1;
     &.active::after {
       content: '\3000';
-      background: url("https://file.y1b.cn/public/img/ttxl/static/card/card_icon.png") 0 0 / 100% 100%;
+      // background: url("https://file.y1b.cn/public/img/ttxl/static/card/card_icon.png") 0 0 / 100% 100%;
       width: 28rpx;
       height: 26rpx;
       margin-left: 10rpx;
       display: inline-block;
+      @include spritesMixin;
+      background-position: -2377rpx -617rpx;
     }
   }
 }
@@ -688,13 +713,15 @@ button::after {
   z-index: 0;
   &::before {
     content: '\3000';
-    background: url("https://file.y1b.cn/public/img/ttxl//static/user/user_border.png") 0 0 / 100% 100%;
+    // background: url("https://file.y1b.cn/public/img/ttxl//static/user/user_border.png") 0 0 / 100% 100%;
     position: absolute;
     left: 0;
     top: 0;
     width: 136rpx;
     height: 136rpx;
     z-index: -1;
+    @include spritesMixin;
+    background-position: -1767rpx -728rpx;
   }
 }
 .not_login {
@@ -714,11 +741,12 @@ button::after {
     color: #b75a30;
     &::after{
       content: '\3000';
-      background: url("https://file.y1b.cn/public/img/ttxl/static/card/card_icon.png") 0 0 / 100% 100%;
       width: 28rpx;
       height: 26rpx;
       margin-left: 10rpx;
       display: inline-block;
+      @include spritesMixin;
+      background-position: -2377rpx -617rpx;
     }
   }
 }
@@ -874,6 +902,19 @@ button::after {
     .oii-icon {
       width: 48rpx;
       height: 48rpx;
+      @include spritesMixin;
+      &.icon1 {
+        background-position: -1911rpx -808rpx;
+      }
+      &.icon2 {
+        background-position: -1967rpx -808rpx;
+      }
+      &.icon3 {
+        background-position: -2079rpx -808rpx;
+      }
+      &.icon4 {
+        background-position: -2023rpx -808rpx;
+      }
     }
 
     .order-item-name {
@@ -894,23 +935,25 @@ button::after {
       color: #666;
       &::before {
         content: '\3000';
-        background: url("https://file.y1b.cn/store/1-0/2463/665d2bd5c3134.png") 0 0 / cover;
         display: block;
         width: 38rpx;
         height: 36rpx;
         z-index: 0;
         margin-right: 12rpx;
+        @include spritesMixin;
+        background-position: -2243rpx -728rpx;
       }
     }
     .rc_right {
       width: 120rpx;
       height: 56rpx;
-      background:#58BF6A url("https://file.y1b.cn/store/1-0/2463/665d2e531c989.png")  0 0 / cover;
       border-radius: 16rpx;
       font-size: 26rpx;
       color: #fff;
       line-height: 56rpx;
       text-align: center;
+      @include spritesMixin;
+      background-position: -1991rpx -660rpx;
     }
   }
 }
@@ -962,10 +1005,37 @@ button::after {
   background-color: #ffffff;
   padding: 0;
 }
-
+.umi-icon-mixin {
+  width: 72rpx;
+  height: 72rpx;
+  position: relative;
+  @include spritesMixin;
+  &.icon1 {
+    background-position: -2425rpx -504rpx;
+  }
+  &.icon2 {
+    background-position: -1911rpx -728rpx;
+  }
+  &.icon4 {
+    background-position: -2071rpx -728rpx;
+  }
+}
 .umi-icon {
   width: 72rpx;
   height: 72rpx;
+  position: relative;
+  .oit-num {
+    right: 6rpx;
+    top: 16rpx;
+    width: 28rpx;
+    height: 28rpx;
+    padding: 0;
+    text-align: center;
+  }
+  &-img {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .umi-name {
@@ -986,10 +1056,11 @@ button::after {
   right: 24rpx;
   &::before{
     content: '\3000';
-    background: url("https://file.y1b.cn/store/1-0/23118/654b57a2ba1a8.png") 0 0 / 100% 100%;
     width: 28rpx;
     height: 16rpx;
     display: block;
+    @include spritesMixin;
+    background-position: -2425rpx -584rpx;
   }
   .scroll_top-icon {
     width: 28rpx;
@@ -998,40 +1069,43 @@ button::after {
 }
 .card_vip_box{
   box-sizing: border-box;
-  margin: 20rpx 24rpx 0;
+  margin: 20rpx 28rpx 0;
   position: relative;
   z-index: 0;
-  padding: 25rpx 32rpx 8rpx;
+  padding: 32rpx 32rpx 16rpx;
   &::before {
     content: '\3000';
-    background: url("https://file.y1b.cn/store/1-0/24116/65a5e868ae121.png") 0 0 / 100% 100%;
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     z-index: -1;
+    @include spritesMixin;
+    background-size: 1000rpx 609rpx;
+    background-position: -4rpx -4rpx;
   }
   &::after{
     content: '\3000';
-    background: url("https://file.y1b.cn/store/1-0/23113/6544a769f2b89.png") 0 0 / 100% 100%;
-    width: 288rpx;
-    height: 216rpx;
+    width: 194rpx;
+    height: 148rpx;
     position: absolute;
-    right: -24rpx;
-    top: -87rpx;
+    right: 24rpx;
+    top: -20rpx;
+    @include spritesMixin;
+    background-position: -1991rpx -504rpx;
   }
   .card_open-lab {
     font-size: 26rpx;
     color: #333;
-    margin-top: 6rpx;
+    margin: 6rpx 0 22rpx;
     position: relative;
     z-index: 0;
     display: inline-block;
     &::before {
       content: "\3000";
       position: absolute;
-      width: 228rpx;
+      width: 100%;
       height: 16rpx;
       background: rgba(255, 255, 255, 0.4);
       bottom: 0;
@@ -1041,7 +1115,6 @@ button::after {
     }
   }
   .card_bottom {
-    margin-top: 21rpx;
     font-size: 0;
   }
   .card_rem {
@@ -1056,10 +1129,12 @@ button::after {
   .card_title {
     &::before {
       content: '\3000';
-      background: url("https://file.y1b.cn/store/1-0/23113/6544a6d73e3d0.png") 0 0 / 100% 100%;
-      width: 174rpx;
-      height: 32rpx;
+      width: 176rpx;
+      height: 34rpx;
       display: inline-block;
+      margin-right: 10rpx;
+      @include spritesMixin;
+      background-position:  -2193rpx -617rpx;
     }
   }
 }
@@ -1068,7 +1143,7 @@ button::after {
   text-align: left;
   color: #666;
   line-height: 40rpx;
-  margin-top: 16rpx;
+  margin: 16rpx 0 32rpx;
 }
 .card_box {
   box-sizing: border-box;
@@ -1093,25 +1168,27 @@ button::after {
       height: 60rpx;
       display: inline-block;
   }
-  .card_lab{
+  .card_lab {
     margin: 0;
   }
   .card_noVip_title {
     margin-right: 16rpx;
     &::before {
       content: '\3000';
-      background: url("https://file.y1b.cn/public/img/ttxl/static/card/card_icon.png") 0 0 / 100% 100%;
       width: 28rpx;
       height: 26rpx;
       margin-right: 10rpx;
       display: inline-block;
+      @include spritesMixin;
+      background-position: -2377rpx -617rpx;
     }
     &::after {
       content: '\3000';
-      background: url("https://file.y1b.cn/public/img/ttxl/static/card/card_title.png") 0 0 / 100% 100%;
       width: 174rpx;
       height: 32rpx;
       display: inline-block;
+      @include spritesMixin;
+      background-position:  -2119rpx -660rpx;
     }
   }
 }
@@ -1161,5 +1238,11 @@ button::after {
     top: 6rpx;
     right: 35rpx;
   }
+}
+.top_cont-num {
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #F84842;
+  margin: 0 5rpx;
 }
 </style>

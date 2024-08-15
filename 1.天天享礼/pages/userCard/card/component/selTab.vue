@@ -1,13 +1,17 @@
 
 <template>
-<view class="me-tabs" :style="{height: tabHeightVal, top:topFixed, 'margin-top':topMargin}">
-    <scroll-view v-if="tabs.length" :id="viewId" :scroll-left="scrollLeft" scroll-x scroll-with-animation :scroll-animation-duration="300">
-        <view class="tabs-item" :class="{'tabs-flex':!isScroll, 'tabs-scroll':isScroll}">
+<view class="me-tabs" :style="{height: tabHeightVal, top:topFixed, marginTop:topMargin}">
+    <scroll-view v-if="tabs.length"
+        :scroll-left="scrollLeft" scroll-x scroll-with-animation
+        :scroll-animation-duration="300" :id="viewId"
+    >
+        <view :class="['tabs-item', isScroll ? 'tabs-scroll' : 'tabs-flex']">
             <!-- tab -->
-            <view class="tab-item" :style="{width: tabWidthVal, height: tabHeightVal, 'line-height':tabHeightVal}"
-                v-for="(tab, i) in tabs" :class="{'active': value===i}" :key="i" @click="tabClick(i)">
-                {{ tab.name }}
-            </view>
+            <view :style="{width: tabWidthVal, height: tabHeightVal, lineHeight:tabHeightVal}"
+                v-for="(tab, i) in tabs" :key="i"
+                :class="['tab-item', value===i && 'active']"
+                @click="tabClick(i)"
+            >{{ tab.name }}</view>
             <!-- 下划线 -->
             <view class="tabs-line" :style="{left:lineLeft}">
             </view>
@@ -17,6 +21,7 @@
 </template>
 
 <script>
+import { warpRectDom } from '@/utils/auth.js';
     export default {
         props:{
             tabs: {
@@ -93,6 +98,7 @@
             this.scrollCenter() // 滚动到当前下标
         },
         methods: {
+            warpRectDom,
             tabClick(i){
                 if(this.value!=i){
                     this.$emit("input",i);
@@ -102,7 +108,7 @@
             async scrollCenter(){
                 if(!this.isScroll) return;
                 if(!this.warpWidth){ // tabs容器的宽度
-                    let rect = await this.initWarpRect()
+                    let rect = await this.warpRectDom();
                     this.warpWidth = rect ? rect.width : this.windowWidth; // 某些情况下取不到宽度,暂时取屏幕宽度
                 }
                 let tabLeft = this.tabWidthPx * this.value + this.tabWidthPx/2; // 当前tab中心点到左边的距离
@@ -114,19 +120,6 @@
                     this.scrollLeft = Math.ceil(diff)
                 },400)
                 // #endif
-            },
-            initWarpRect(){
-                return new Promise(resolve=>{
-                    setTimeout(()=>{ // 延时确保dom已渲染, 不使用$nextclick
-                        let query = uni.createSelectorQuery();
-                        // #ifndef MP-ALIPAY
-                        query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-                        // #endif
-                        query.select('#'+this.viewId).boundingClientRect(data => {
-                            resolve(data)
-                        }).exec();
-                    },20)
-                })
             }
         }
     }

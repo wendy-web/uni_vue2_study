@@ -2,7 +2,7 @@
 <view class="item">
 	<view class="type_top">
 		<view class="type_lft">
-			<!-- <image class="type_top-icon" mode="scaleToFill" :src="currentHaiwei.icon"></image> -->
+			<image class="type_top-icon" mode="scaleToFill" :src="currentHaiwei.icon"></image>
 			<text class="type_lft-label">{{ item.restaurant_name }} </text>
 		</view>
 		<view class="type_rit" :class="'order-status-'+ item.status">{{ status_title }}</view>
@@ -44,19 +44,16 @@
 			<view class="btn">去支付</view>
 		</view>
 		<view class="take_box fl_end">
-			<view class="take_btn" v-if="Number(item.status) && userInfo.buy_vip"
-				@click="againHandle(item.id)">再来一单</view>
+			<view class="take_btn" v-if="Number(item.status)" @click="againHandle(item.id)">再来一单</view>
 			<view class="take_btn" v-if="[3].includes(Number(item.status))"
 				@click="takeCodeHandle">取餐码</view>
 		</view>
-
 	</block>
 </view>
 </template>
 
 <script>
-import { hwHome } from '@/api/modules/discounts.js';
-import { orderAgain, orderPay } from '@/api/modules/takeawayMenu/luckin.js';
+import { orderPay } from '@/api/modules/takeawayMenu/luckin.js';
 import { parseTime } from '@/utils/index.js';
 import { mapGetters } from 'vuex';
 import { haiWeiObj, haiWeiStatus } from '../static/config';
@@ -146,16 +143,14 @@ export default {
 				this.$go(`${this.currentHaiwei.path}/order/index?oid=${id}`);
 				return;
 			}
-			const res = await hwHome({brand_id});
-			if(res.code != 1) return this.$toast(res.msg);
-			const link = encodeURIComponent(res.data);
-			this.$go(`/pages/webview/webview?link=${link}&bgColor=#fff`);
+			this.$goToDiscountsMini();
+			// const res = await hwHome({brand_id});
+			// if(res.code != 1) return this.$toast(res.msg);
+			// const link = encodeURIComponent(res.data);
+			// this.$go(`/pages/webview/webview?link=${link}&bgColor=#fff`);
 		},
-		async againHandle(oid) {
-			const res = await orderAgain({ oid });
-			if(res.code != 1) return;
-			const { brand_id } = res.data;
-			this.$go(`${this.currentHaiwei.path}/index?brand_id=${brand_id}&rote=1&again=true&isBack=1`);
+		async againHandle() {
+			this.$goToDiscountsMini();
 		}
 	},
 }

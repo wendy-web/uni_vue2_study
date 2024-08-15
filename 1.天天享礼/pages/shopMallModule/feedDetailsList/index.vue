@@ -14,63 +14,28 @@
       @touchstart="startHandle"
       @touchend="endHandle"
     >
-      <swiper-item
-        class="item_list"
-        v-for="(item, index) in feedList"
-        :key="index"
-      >
+      <swiper-item class="item_list" v-for="(item, index) in feedList" :key="index">
         <view class="coupon-details" :id="'item_list' + index">
-          <view
-            class="icon_box"
-            :style="{ height: navBarHeight + 'px', top: topHeight + 'px' }"
-            @click="navBack"
-          >
-            <image
-              class="icon_box-icon"
+          <view class="icon_box" @click="navBack"
+            :style="{ height: navBarHeight + 'px', top: topHeight + 'px' }">
+            <image class="icon_box-icon"
               :src="imgUrl + 'static/images/icon_close.png'"
-              mode="aspectFill"
-              v-if="index == current"
-            >
-            </image>
+              mode="aspectFill" v-if="index == current"></image>
           </view>
-
           <view class="content_box">
-            <view
-              class="sph-box"
-              :style="{
-                height: item.contHeight + 'px',
-                minHeight: screenWidth + 'px',
-              }"
-            >
-              <swiper
-                class="swiper_banner"
-                @change="bannerSwiperChange"
-                :autoplay="current == index"
-                :interval="3000"
-                :duration="500"
-                :circular="true"
-              >
-                <swiper-item class="swiper_item"
-                  v-for="(item33, idx) in item.imageList" :key="idx"
-                >
-                  <image class="banner_img-bg"
-                    :src="item33.url" mode="aspectFill"
-                  ></image>
-                  <van-image
-                    :width="screenWidth + 'px'"
-                    :height="screenWidth + 'px'"
-                    :src="item33.url"
-                    use-loading-slot
-                    class="banner_img"
-                    radius="32rpx 32rpx 0 0"
-                    @click="getBtnHandle(item)"
-                  >
-                    <van-loading
-                      slot="loading"
-                      type="spinner"
-                      size="20"
-                      vertical
-                    />
+            <view class="sph-box" :style="{
+              height: item.contHeight + 'px',
+              minHeight: screenWidth + 'px',
+            }">
+              <swiper class="swiper_banner" @change="bannerSwiperChange"
+                :autoplay="current == index" :circular="true"
+                :interval="3000" :duration="500">
+                <swiper-item class="swiper_item" v-for="(item33, idx) in item.imageList" :key="idx">
+                  <image class="banner_img-bg" :src="item33.url" mode="aspectFill"></image>
+                  <van-image :width="screenWidth + 'px'" :height="screenWidth + 'px'"
+                    :src="item33.url" use-loading-slot radius="32rpx 32rpx 0 0"
+                    class="banner_img" @click="getBtnHandle(item)"
+                  ><van-loading slot="loading" type="spinner" size="20" vertical/>
                   </van-image>
                 </swiper-item>
               </swiper>
@@ -124,36 +89,23 @@
               <view class="bottom-tools">
                 <view class="bottom-tools-left">
                   <view class="collection-btn">
-                    <button
-                      open-type="share"
-                      class="share_btn"
-                      :data-item="item"
-                    ></button>
-                    <image
-                      class="collection-btn-icon"
-                      :src="subImgUrl + '/002.png'"
-                      mode="widthFix"
-                    ></image>
+                    <button open-type="share" class="share_btn" :data-item="item" ></button>
+                    <image class="collection-btn-icon" :src="subImgUrl + '/002.png'" mode="widthFix"></image>
                     <text>分享</text>
                   </view>
                   <!-- 收藏按钮 -->
                   <view  class="collection-btn" @click="collectHandle(item, index)" >
-                    <image
-                      class="collection-btn-icon"
-                      :src=" item.collect ? `${subImgUrl}/002_active.jpg` : `${subImgUrl}/001.png` "
-                      mode="widthFix"
-                    ></image>
+                    <image class="collection-btn-icon" mode="widthFix"
+                      :src=" item.collect ? `${subImgUrl}/002_active.jpg` : `${subImgUrl}/001.png`"></image>
                     <text>{{ item.collect ? "已收藏" : "收藏" }}</text>
                   </view>
                 </view>
                 <view class="bottom_btn fl_col_cen" @click="getBtnHandle(item)">
-                  <block v-if="!item.credits">
-                    立即购买
-                  </block>
+                  <block v-if="!item.credits">立即购买</block>
                   <block v-else>
                     去领取
                     <view class="bottom_btn-price" v-if="!index">
-                        券后¥{{ item.lowestCouponPrice || item.price }}
+                      券后¥{{ item.lowestCouponPrice || item.price }}
                     </view>
                   </block>
                 </view>
@@ -167,15 +119,15 @@
 </template>
 <script>
 import {
-bysubunionid,
-goodsQuery,
-toggleCollect,
+  bysubunionid,
+  goodsQuery,
+  toggleCollect,
 } from "@/api/modules/jsShop.js";
 import {
-goodsDetail,
-goodsPromotion,
-goodsSearch,
-toggleCollect as pddToggleCollect
+  goodsDetail,
+  goodsPromotion,
+  goodsSearch,
+  toggleCollect as pddToggleCollect
 } from '@/api/modules/pddShop.js';
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
 import { getImgUrl } from "@/utils/auth.js";
@@ -293,10 +245,7 @@ export default {
           return;
         }
         // 拼多多列表
-        if(this.shop_type == 3) {
-            this.requestPddFun();
-            return;
-        }
+        if(this.shop_type == 3)  return this.requestPddFun();
         this.requestJdFun();
     },
     async requestPddFun() {
@@ -306,11 +255,11 @@ export default {
         // 排除首个相同的数据
         list = list.filter((res) =>  res.goods_id != this.goods_id);
         this.feedList = this.feedList.concat(list).map((res) => {
-            return {
-                ...res,
-                contHeight: this.screenWidth,
-                bannerCurrIndex: 0,
-            };
+          return {
+            ...res,
+            contHeight: this.screenWidth,
+            bannerCurrIndex: 0,
+          };
         });
         this.total_count = total_count;
         this.feedList[this.current].contHeight = 504; // 盒子的高度
@@ -428,13 +377,7 @@ export default {
     },
     navBack() {
       const sourceUrl = this.sourceUrl;
-      uni.navigateBack({
-        fail() {
-          uni.reLaunch({
-            url: sourceUrl || "/pages/tabBar/shopMall/index",
-          });
-        },
-      });
+      this.$leftBack( 1, sourceUrl || "/pages/tabBar/shopMall/index");
     },
   },
 };

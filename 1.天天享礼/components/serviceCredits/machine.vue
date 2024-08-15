@@ -3,18 +3,12 @@
 		<view class="machine-box">
 			<view class="machine-box-title">{{todayEarned}}牛金豆</view>
 			<view class="machine-body">
-				<view
-					v-for="item in machines" :key="item.id"
-					class="machine-block" :class="'mbi-position'+item.id">
+				<view v-for="item in machines" :key="item.id"
+					:class="['machine-block', `mbi-position${item.id}`]">
 					<view class="machine-block-item" v-if="item.id!==0">
 						<image class="mbi-bg" :src="item.bg" mode="aspectFill"></image>
-						<van-image
-							class="mbi-icon"
-							height="66rpx"
-							width="66rpx"
-							:src="item.icon"
-							use-loading-slot
-							fit="cover"
+						<van-image class="mbi-icon" height="66rpx" width="66rpx"
+							:src="item.icon" use-loading-slot fit="cover"
 						><van-loading slot="loading" type="spinner" size="20" vertical />
 						</van-image>
 						<view class="mni-name">{{item.text}}</view>
@@ -23,7 +17,7 @@
 					</view>
 					<image v-else @click="game" class="luck-draw" :src="item.bg" mode="aspectFill"></image>
 				</view>
-				<image class="stamp-icon" @click="game" :class="{'open':!isLoading&&!isNoCount}"
+				<image :class="['stamp-icon', !isLoading && !isNoCount && 'open']" @click="game"
 				:src="imgUrl + 'static/network/stamp_icon.png'" mode="aspectFill"></image>
 			</view>
 			<view class="win-list">
@@ -33,15 +27,8 @@
 	</view>
 </template>
 <script>
-	import {
-lottery,
-lotteryOption,
-lotteryToday,
-showWinningInfo
-} from '@/api/modules/index.js';
-import {
-getImgUrl
-} from '@/utils/auth.js';
+import { lottery, lotteryOption, lotteryToday, showWinningInfo } from '@/api/modules/index.js';
+import { getImgUrl } from '@/utils/auth.js';
 import anNoticeBar from './an-notice-bar.vue';
 	let speed = 100;
 	let myset = null;
@@ -270,7 +257,6 @@ import anNoticeBar from './an-notice-bar.vue';
 				// 	reward:reward.credits,
 				// 	failMsg:'哎呀，就差那么一点点~'
 				// })
-
 			},
 			/*跑马灯*/
 			getPath(curr, circle = 4) {

@@ -10,9 +10,9 @@
 </template>
 
 <script>
+import swiperListCom from '@/components/cardOpen/swiperListCom.vue';
 import { getImgUrl } from '@/utils/auth.js';
 import redPackList from './redPackList.vue';
-import swiperListCom from './swiperListCom.vue';
 export default {
     components: {
         swiperListCom,

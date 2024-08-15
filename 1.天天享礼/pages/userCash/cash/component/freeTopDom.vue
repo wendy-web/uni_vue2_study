@@ -35,7 +35,7 @@
           <text v-else-if="freeEnterArr.delivery_time">待发货</text>
           <text v-else>待领取</text>
         </view>
-        <view class="progress_num" :style="{'--width': progressNum}"></view>
+        <view class="progress_num" :style="{'--width': progressNum + '' }"></view>
       </view>
       <van-image
         width="172rpx" height="172rpx"
@@ -90,6 +90,7 @@
 </view>
 </template>
 <script>
+import { warpRectDom } from '@/utils/auth.js';
 import { mapActions, mapGetters } from "vuex";
 export default {
   props: {
@@ -132,6 +133,7 @@ export default {
     },
   },
   mounted() {
+    warpRectDom,
     this.$nextTick(()=>{
       setTimeout(() => this.domFun(), 1000);
     });
@@ -180,22 +182,9 @@ export default {
       this.$emit('showGiftImg');
     },
     domFun(){
-      this.initWarpRect('freeTopDom').then(res=> {
+      this.warpRectDom('freeTopDom').then(res=> {
         this.$emit('freeTopDomRef', res);
       });
-    },
-    initWarpRect(id) {
-      return new Promise(resolve => {
-        setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-          let query = uni.createSelectorQuery();
-          // #ifndef MP-ALIPAY
-          query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-          // #endif
-          query.select('#' + (id || this.viewId)).boundingClientRect(data => {
-            resolve(data)
-          }).exec();
-        }, 20)
-      })
     }
   },
 };

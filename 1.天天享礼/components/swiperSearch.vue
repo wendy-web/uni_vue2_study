@@ -5,7 +5,7 @@
         class="search_txt"
         style="height: 100%"
         :autoplay="true"
-        interval="3000"
+        interval="10000"
         :duration="300"
         :circular="true"
         :vertical="true"
@@ -13,11 +13,8 @@
         :disable-touch="false"
         @animationfinish="animationfinishHandle"
     >
-        <swiper-item
-            v-for="(item, index) in textList"
-            :key="index"
-            class="swiper_item txt_ov_ell1"
-            catchtouchmove="onTouchMove"
+        <swiper-item v-for="(item, index) in textList" :key="index"
+            class="swiper_item txt_ov_ell1" catchtouchmove="onTouchMove"
         >{{ item }}</swiper-item>
     </swiper>
 </view>
@@ -99,6 +96,8 @@ export default {
     }
     .swiper_item {
         height: 64rpx;
+        padding-right: 18rpx;
+        box-sizing: border-box;
     }
 }
 </style>

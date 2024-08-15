@@ -1,4 +1,6 @@
+import store from '@/store';
 import { getAutoLogin } from '../auth.js';
+import { go as $go } from './navigation';
 const authorization = Number(Boolean(getAutoLogin()));
 const platform = wx.getSystemInfoSync().platform;
 let devices = '';
@@ -37,16 +39,6 @@ export function openEmbeddedMiniProgram(data) {
     openMiniProgram(data);
 }
 
-export function top_callBack() {
-    uni.navigateBack({
-        fail() {
-            uni.switchTab({
-                url: '/pages/tabBar/shopMall/index'
-            });
-        }
-    });
-}
-
 // 消息订阅
 export function subscribeMessageHandle(tmplIds = []) {
     return new Promise((resolve, reject) => {
@@ -56,4 +48,29 @@ export function subscribeMessageHandle(tmplIds = []) {
         });
 
     })
+}
+// 跳入到小店有惠进行点单的测验
+export function goToDiscountsMini(path = '/pages/tabBar/discounts/index', envVersion = 'trial') {
+    let pathUrl = path || '/pages/tabBar/discounts/index';
+    const userInfo = store.getters.userInfo;
+    if (userInfo) pathUrl += `?tt_uid=${userInfo.id}`;
+    openEmbeddedMiniProgram({
+        appId: 'wx4c6b177c1b506b06',
+        path: pathUrl,
+        envVersion,
+    })
+}
+// 聚推客 - 电影
+export function goToMoviePlugin() {
+    let url = 'plugin-private://wx89752980e795bfde/pages/index/index?pub_id=27729&sid=ttxl';
+    const userInfo = store.getters.userInfo;
+    if (userInfo) url += `${userInfo.id}`;
+    $go.call(this, url);
+}
+// 聚推客 - 打车出行
+export function goToCarPlugin() {
+    let url = 'plugin://meishi/shop?type=didi&pub_id=27729&sid=ttxl';
+    const userInfo = store.getters.userInfo;
+    if (userInfo) url += `${userInfo.id}`;
+    $go.call(this, url);
 }

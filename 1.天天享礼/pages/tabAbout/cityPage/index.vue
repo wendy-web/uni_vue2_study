@@ -93,7 +93,7 @@ import SwitchCityList from './SwitchCityList.vue';
         this.setProvinceName(this.provinceName);
         this.setCityLat(this.lat);
         this.setCityLon(this.lng);
-        this.$back();
+        this.$leftBack();
       },
       async initialLocations() {
         const res = await getUserLocation();
@@ -134,7 +134,7 @@ import SwitchCityList from './SwitchCityList.vue';
             this.setCityLon(lon);
         }
         this.cityName = city;
-        this.$back();
+        this.$leftBack();
       },
     }
   }

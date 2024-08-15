@@ -1,10 +1,8 @@
 <template>
-<view class="order" :style="{
-  '--padding': isShowPay ? '174rpx' : '0rpx'
-}">
+<view class="order" :style="{ '--padding': isShowPay ? '174rpx' : '0rpx' }">
 <xh-navbar
   :leftImage="imgUrl+'/static/images/left_back.png'"
-	@leftCallBack="$topCallBack"
+	@leftCallBack="$leftBack"
   navberColor="#F5F5F5"
 	titleColor="#333"
   :title="navbarTitle"
@@ -189,7 +187,6 @@
 </template>
 <script>
 import { orderDetail } from '@/api/modules/order.js';
-import { orderAgain } from '@/api/modules/takeawayMenu/kfc.js';
 import { getImgUrl } from '@/utils/auth.js';
 import { mapGetters } from 'vuex';
 import returnCash from '../../component/returnCash/index.vue';
@@ -207,7 +204,7 @@ export default {
         return [0].includes(Number(this.currentStatus)) && (this.remainTime > 0);
       },
       showAgainBtn() {
-        return [4, 5].includes(Number(this.currentStatus)) && this.userInfo.buy_vip;
+        return [4, 5].includes(Number(this.currentStatus));
       },
       detailsList() {
         return (this.config && this.config.details) || [];
@@ -262,9 +259,7 @@ export default {
             })
         },
       async againHandle() {
-            const res = await orderAgain({ oid: this.oid });
-            if(res.code != 1) this.$toast(res.msg);
-            this.$go(`/pages/userModule/takeawayMenu/starbucks/index?brand_id=99&rote=1&again=true&isBack=1`);
+			  this.$goToDiscountsMini();
       },
       countFinished() {
         // 倒计时结束 - 展示已取消

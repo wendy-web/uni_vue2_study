@@ -9,53 +9,31 @@
     >
       <!-- 新人专享大礼包 -->
       <view class="upgrade_box ani_active" v-if="shoType == 'gift'">
-        <image
-          class="new_light"
-          src="https://file.y1b.cn/store/1-0/23415/643a628847111.png"
-        />
+        <image class="new_light" src="https://file.y1b.cn/store/1-0/23415/643a628847111.png" />
         <!-- 背景 -->
-        <van-image
-          width="750rpx"
-          height="1088rpx"
+        <van-image width="750rpx" height="1088rpx"
           src="https://file.y1b.cn/store/1-0/2418/659ba113a1bff.png"
-          fit="cover"
-          use-loading-slot
-        >
-          <van-loading slot="loading" type="spinner" size="20" vertical />
+          fit="cover" use-loading-slot
+        ><van-loading slot="loading" type="spinner" size="20" vertical />
         </van-image>
         <view class="get_btn" @click="close">开心收下</view>
       </view>
-
       <!-- 积分已成功升级为牛金豆 -->
       <view class="point-upgrade-box ani_active" v-else-if="shoType == 'point'">
         <!-- 关闭按钮 -->
-        <van-icon
-          class="point-u-close"
-          name="cross"
-          color="#AAAAAA"
-          size="50rpx"
-          @click="close"
-        />
+        <van-icon class="point-u-close" name="cross"
+          color="#AAAAAA" size="50rpx" @click="close"/>
         <!-- 背景 -->
-        <van-image
-          width="718rpx"
-          height="592rpx"
+        <van-image width="718rpx" height="592rpx"
           src="https://file.y1b.cn/store/1-0/23714/64b0a0b40804f.png"
-          fit="cover"
-          use-loading-slot
-        >
-          <van-loading slot="loading" type="spinner" size="20" vertical />
+          fit="cover" use-loading-slot
+        ><van-loading slot="loading" type="spinner" size="20" vertical />
         </van-image>
         <!-- icon -->
-        <van-image
-          class="point-u-icon"
-          width="362rpx"
-          height="220rpx"
+        <van-image class="point-u-icon" width="362rpx"  height="220rpx"
           :src="imgUrl + '/point_uicon.png'"
-          fit="cover"
-          use-loading-slot
-        >
-          <van-loading slot="loading" type="spinner" size="20" vertical />
+          fit="cover" use-loading-slot
+        ><van-loading slot="loading" type="spinner" size="20" vertical />
         </van-image>
         <!-- title -->
         <view class="point-u-title"> 积分已成功升级为牛金豆 </view>
@@ -66,29 +44,16 @@
       </view>
       <!-- 升级专享大礼包 -->
       <view class="upgrade_box ani_active" v-else-if="shoType == 'upgrade'">
-        <image
-          class="new_light"
-          src="https://file.y1b.cn/store/1-0/23415/643a628847111.png"
-        />
-        <image
-          class="new_icon up_icon"
-          :src="imgUrl + '/new_Upicon.png'"
-        />
+        <image class="new_light" src="https://file.y1b.cn/store/1-0/23415/643a628847111.png" />
+        <image class="new_icon up_icon" :src="imgUrl + '/new_Upicon.png'" />
         <!-- 背景 -->
-        <van-image
-          width="750rpx"
-          height="1088rpx"
+        <van-image width="750rpx" height="1088rpx"
           src="https://file.y1b.cn/store/1-0/23415/643a6236c10ca.png"
-          fit="cover"
-          use-loading-slot
-        >
-          <van-loading slot="loading" type="spinner" size="20" vertical />
+          fit="cover" use-loading-slot
+        ><van-loading slot="loading" type="spinner" size="20" vertical />
         </van-image>
         <view class="new_num-box">
-          <image
-            class="new_numBg"
-            src="https://file.y1b.cn/store/1-0/23714/64b0a0e6d40b1.png"
-          />
+          <image class="new_numBg" src="https://file.y1b.cn/store/1-0/23714/64b0a0e6d40b1.png"/>
           <view class="new_num-left">
             <view class="num_left">{{ num }}</view>
             <view>积分</view>
@@ -123,7 +88,7 @@ export default {
       titleIcon: "/static/network/new_icon.png",
       shoType: "",
       currentPage: '',
-      noShowList: ['pages/tabBar/discounts/index', 'pages/discounts/discounts/index'], // 不展示弹窗的类别
+      noShowList: ['pages/tabBar/discounts/index'], // 不展示弹窗的类别
 			imgUrl: getImgUrl() + 'static/network',
     };
   },
@@ -159,7 +124,7 @@ export default {
       this.setGiftInfo(0); // 弹窗过 即不是新人的信息存储
       this.delCurrentDiaList();
       this.$emit("happyGet");
-      if(this.currentPage !='pages/tabBar/shopMall/index') {
+      if(this.currentPage != 'pages/tabBar/shopMall/index') {
         this.getUserInfo(); // 获取用户信息
       }
     },
@@ -202,11 +167,11 @@ export default {
           return;
         }
         if(diaType != 'gift') {
-            if(this.diaList.length) {
-              this.setDiaList(this.shoType);
-            } else {
-                this.showGift();
-            }
+          if(this.diaList.length) {
+            this.setDiaList(this.shoType);
+          } else {
+            this.showGift();
+          }
         }
       }
     },

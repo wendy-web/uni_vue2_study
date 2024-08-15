@@ -1,49 +1,6 @@
 import { getBaseUrl } from '@/utils/auth';
 const Mock = require('../module/WxMock');
 const BASEURL = getBaseUrl();
-// 首页排行榜
-Mock.mock(`${BASEURL}/api/index/ranking`, {
-    statusCode: 200,
-    'data|1': [{
-        code: 1,
-        data: {
-            exchangeRankList: [{
-                    image: '',
-                    title: '11',
-                    coupon_id: 1
-                },
-                {
-                    image: '',
-                    title: '12221',
-                    coupon_id: 2
-                },
-                {
-                    image: '',
-                    title: '11',
-                    coupon_id: 3
-                }
-            ],
-            bestValueList: [{
-                    image: '',
-                    title: '11',
-                    coupon_id: 1
-                },
-                {
-                    image: '',
-                    title: '12221',
-                    coupon_id: 2
-                },
-                {
-                    image: '',
-                    title: '11',
-                    coupon_id: 3
-                }
-            ]
-        },
-        msg: "",
-        time: 0.012407064437866211
-    }, ],
-});
 // 更新的
 Mock.mock(`${BASEURL}/api/user/getCredits`, {
     statusCode: 200,

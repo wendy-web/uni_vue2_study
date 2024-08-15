@@ -1,13 +1,5 @@
 import API from '../xhHttp.js';
 
-//限时活动
-export function limitActivity(data) {
-    return API.request({
-        url: '/api/index/limitActivity',
-        method: 'post',
-        data
-    });
-}
 // 限时活动-抢购和领券
 export function seckill(data) {
     return API.request({
@@ -22,13 +14,6 @@ export function exchange(data) {
         url: '/api/shop/exchange',
         method: 'post',
         data
-    });
-}
-//排行榜
-export function ranking() {
-    return API.request({
-        url: '/api/index/ranking',
-        method: 'post'
     });
 }
 //兑换公告
@@ -105,9 +90,9 @@ export function bfxlPopup(data) {
     });
 }
 // 乐维娃娃机
-export function fromUrl() {
+export function houseUrl() {
     return API.request({
-        url: '/api/Lw/fromUrl',
+        url: '/api/Lw/houseUrl',
         method: 'post'
     });
 }

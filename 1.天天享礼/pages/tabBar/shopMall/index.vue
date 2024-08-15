@@ -1,28 +1,7 @@
 <template>
 <view class="home nav_cont">
-  <!-- <view class="video_cont" v-if="isShowAddel">
-    <view class="video_btn"
-      v-if="isShowAd" @click="isShowAddel = false"
-      :style="{
-        top: navHeightTop + 'px'
-      }"
-    >({{ isShowAdNum }}秒) | 跳过</view>
-    <coral-adv
-      :appid="appid"
-      :type="type"
-      :target="target"
-      :isshow="isShowAd"
-      @errorCb="errorCbHandle"
-      @loadCb="loadCbHandle"
-      @finishedCb="finishedCb"
-      @quitCb="quitCb"
-      @showAdv="showAdv"
-    >
-    </coral-adv>
-    <ad adpid="121294" type="1"  isshow  bind:finishedCb="finishedCb" bind:quitCb="quitCb"></ad>
-  </view> -->
   <xh-navbar
-    :navbarImage="isShowCowpeaNav ? '' : 'https://file.y1b.cn/store/1-0/24515/664462046066a.png'"
+    :navbarImage="isShowCowpeaNav ? '' : 'https://file.y1b.cn/store/1-0/24724/66a07570b2875.png'"
     :navberColor="isShowCowpeaNav ? '#fff' : ''"
     navbarImageMode="widthFix"
     :paddingBottomHeight="paddingBottomHeight"
@@ -33,16 +12,8 @@
     <view slot="title" class="nav_cont_box fl_bet">
       <!-- 展示牛金豆/天天享礼的标识-->
       <myBeans :isShowCowpeaNav="isShowCowpeaNav" @goTask="goTaskHandle"></myBeans>
-      <!-- 搜索的swiper的文本 -->
-      <!-- <swiperSearch
-        :textList="textList"
-        source="home"
-        :class="['swiper_search', textList.length ? 'ani_flex-in' : 'ani_flex-out',]"
-      ></swiperSearch> -->
     </view>
-    <view class="search_box"
-      slot="title_cont"
-      id="titleContBox"
+    <view class="search_box" slot="title_cont" id="titleContBox"
       :style="{ top: searchTop +'px', width: searchWidth + 'px', left: searchLeft + 'px'}"
     >
       <image class="search_icon" src="https://file.y1b.cn/store/1-0/24514/6642bf0c83c51.png" mode="aspectFill"></image>
@@ -53,7 +24,7 @@
           class="swiper"
           style="height: 100%;"
           :autoplay="true"
-          interval="3000"
+          interval="10000"
           :duration="300"
           :circular="true"
           :vertical="true"
@@ -62,12 +33,10 @@
         >
           <swiper-item
             v-for="(item, index) in textList" :key="index"
-            class="swiper_item" catchtouchmove='onTouchMove'
-          >
-            {{ item }}
-          </swiper-item>
+            class="swiper_item txt_ov_ell1" catchtouchmove='onTouchMove'
+          > {{ item }} </swiper-item>
         </swiper>
-        <view v-else>请搜索喜欢的商品</view>
+        <view v-else>搜优惠 更便宜</view>
         </view>
       <view class="search_btn" v-if="!searchValue" @click="searchRequireHandle">搜索</view>
     </view>
@@ -102,11 +71,8 @@
         v-if="isShowStatus"
       >
         <!-- 当设置tab-width,指定每个tab宽度时,则不使用flex布局,改用水平滑动 -->
-        <me-tabs
-          v-model="tabIndex"
-          :tabs="tabs"
-          :height="tabHeight"
-          v-if="isShowStatus"
+        <me-tabs v-model="tabIndex" :tabs="tabs"
+          :height="tabHeight" v-if="isShowStatus"
           @change="changeTabIndexHandle"
         ></me-tabs>
       </view>
@@ -119,8 +85,7 @@
         <anNoticeBarShow ref="anNoticeBarShow" />
       </view>
       <!-- 数据列表 -->
-      <view id="goodListDom"
-        :style="{ minHeight: swiperHeight }"
+      <view id="goodListDom" :style="{ minHeight: swiperHeight }"
         :class="[
           'goodList_item', !isShowStatus ? 'active' : '',
           skuId && !isAlreadyShowLight ? 'zindex_99' : ''
@@ -134,6 +99,7 @@
           :isShowBanner="true"
           :isHome="true"
           :isSwiper="true"
+          :isShowProfit="true"
           @notEnoughCredits="notEnoughCreditsHandle"
           @deleteBysubunionid="deleteBysubunionidHandle"
           @openSpecialListMini="openSpecialListMiniHandle"
@@ -144,8 +110,7 @@
       </view>
     </mescroll-body>
     <!-- 未登录模块引导 -->
-    <view class="login_box fl_bet" :style="{ '--padding': tabHeightValue + 'px' }"
-      v-if="!isAutoLogin">
+    <view class="login_box fl_bet" :style="{ '--padding': tabHeightValue + 'px' }" v-if="!isAutoLogin">
       <view class="lg_left box_fl">登录享更多精彩内容</view>
       <view class="lg_btn" @click="toLoginHandle">登录</view>
     </view>
@@ -155,7 +120,7 @@
     <cowpea-anim ref="cowpeaAnim" @animEnd="updateData" />
     <!-- 导航栏 -->
     <custom-tab-bar
-      currentIndex="0"
+      currentID="0"
       :isScrollTop="isShowSticky"
       @domObjHeight="domObjHeightHandle"
       @currentPage="currentPageHandle"
@@ -212,7 +177,6 @@
     <cashBackDia ref="cashBackDiaRef" @close="closeCashBackDiaHandle"></cashBackDia>
     <!-- 赠送牛金豆 -->
 		<task-complete ref="taskComplete" :countDownNum="countDownNum" @startAnim="showCowpeaAnim" />
-
     <!-- 动画抽奖的弹窗-->
     <van-popup
       :show="isShowDrawPopoverDia"
@@ -226,8 +190,7 @@
           src="https://test-file.y1b.cn/store/1-0/24314/65f2ac09a0204.png"
           @click="drawPopoverCloseHandle"
         ></image>
-        <van-image
-          width="262rpx" height="304rpx"
+        <van-image width="262rpx" height="304rpx"
           fit="widthFix" use-loading-slot class="draw_image"
           :src="drawPopoverData.image"
         ><van-loading slot="loading" type="spinner" size="20" vertical />
@@ -239,15 +202,8 @@
 </view>
 </template>
 <script>
-import {
-  goodsQuery,
-  guessList,
-  jingfen,
-  keywordList,
-  material,
-  overDo
-} from "@/api/modules/jsShop.js";
-import { advertisementConfig, bfxlPopup, couponGroup, couponList, drawPopover, giftCreate } from "@/api/modules/shopMall.js";
+import { guessList, keywordList, overDo } from "@/api/modules/jsShop.js";
+import { bfxlPopup, couponGroup, couponList, drawPopover, giftCreate } from "@/api/modules/shopMall.js";
 import awardDia from "@/components/configurationDia/awardDia.vue";
 import configurationFun from "@/components/configurationDia/configurationFun.js";
 import configurationDia from "@/components/configurationDia/index.vue";
@@ -271,10 +227,7 @@ import myBeans from "./content/myBeans.vue";
 import repairGetMiniPage from "./content/repairGetMiniPage.vue";
 // 拼多多的列表
 import { groupRecommend } from "@/api/modules/index.js";
-import {
-  goodsRecommend,
-  goodsSearch,
-} from '@/api/modules/pddShop.js';
+import { getApiParams } from '@/api/modules/requestConfiguration/lxType.js';
 import { taskNum } from "@/api/modules/task.js";
 import returnCashDia from '@/components/returnCashDia.vue';
 import { getDiaType, getDrawShowDiaStorage, getImgUrl, getPlatform, getUrlKey, setDiaType, setStorage } from "@/utils/auth.js";
@@ -371,13 +324,28 @@ export default {
       videoRet: null,
       isShowAd: false,
       isShowAdNum: 5,
-      isShowAddel: false,
       scroll_top: 0,
       currentIndex: 0,
-      isLoadRequestList: false
+      isLoadRequestList: false,
+      vipNumberShopCurrent: -1
     };
   },
   watch: {
+    'userInfo.vip_number': {
+			handler:async function (newValue, oldValue) {
+        if(newValue != this.vipNumberShopCurrent && [0, 3].includes(newValue)) {
+            this.vipNumberShopCurrent = newValue;
+            this.tabs = [];
+            this._index = 0;
+            this.pageNem = 1;
+            this.pageNum = 1;
+            this.groupId_index = 0;
+            this.tabIndex = 0;
+            this.mescroll.resetUpScroll();
+        }
+      },
+			deep: true
+    },
     userTotal(n, o) {
       if (o && o.coupon < n.coupon) this.showDotal();
     },
@@ -416,10 +384,26 @@ export default {
       if (this.tabs.length > 0 ) {
         let item = this.tabs[this.tabIndex];
         if (item.goods) {
+          const currentTime = new Date().getTime();
           let list = item.goods;
           let isType9 = 0;
           // 列表对单列呈现进行后排数组的操作
           list.length && list.forEach((nowItem, index) => {
+            if(nowItem.hide_time) {
+              const hideTime = new Date(nowItem.hide_time).getTime();
+              let diffTime = hideTime - currentTime;
+              // const oneTime = 60 * 60 * 1000;
+              // diffTime = (diffTime > oneTime) ? nextHourTime : diffTime;
+              nowItem.diffTime = diffTime;
+              nowItem.timeData = {
+                hours: 0,
+                minutes: 0,
+                seconds: 0,
+                milliseconds: 0,
+                days: 0
+              };
+              nowItem.isFinishDiffTime = false;
+            }
             if(nowItem.type != 9 ) return;
             if(index%2 && (isType9%2) == 0) {
               list[index] = item.goods[index-1];
@@ -489,11 +473,11 @@ export default {
     },
     searchTop() {
       let initSearchTop = uni.upx2px(92);
-      let differentValue = uni.upx2px(92) - uni.upx2px(6);
+      let differentValue = uni.upx2px(92) - uni.upx2px(4);
       let scrollValue = (differentValue / this.fixationValue) * this.scroll_top;
       const searchTopValue = uni.upx2px(92) - scrollValue;
       if(searchTopValue < 0) {
-          initSearchTop = uni.upx2px(6);
+          initSearchTop = uni.upx2px(4);
       } else if(searchTopValue > uni.upx2px(92)) {
           initSearchTop = uni.upx2px(92);
       } else {
@@ -535,9 +519,6 @@ export default {
   async onLoad(options) {
     // 初始化话窗口参数
     this.handleOptions(options);
-    // wx.nextTick(() => {
-      // this.initAdvertisementConfig();
-    // });
     /* 初始化激励视频 */
     this.initRewardedVideoAd();
     const res = await keywordList();
@@ -546,6 +527,7 @@ export default {
     }
   },
   onShow() {
+    this.getUserInfo();
     // 是否更新
     let couponDetails_update = uni.getStorageSync("couponDetails_update") || "";
     if (couponDetails_update) {
@@ -587,52 +569,7 @@ export default {
       if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
       const recommendTxt = this.textList.length ? this.textList[this.currentIndex] : '';
       if(!recommendTxt) return this.$go('/pages/userModule/productList/search');
-      this.$go(`/pages/userModule/productList/index?searchValue=${encodeURIComponent(recommendTxt)}&is_search=1`);
-    },
-    async initAdvertisementConfig() {
-      const res = await advertisementConfig();
-      console.log('res', res);
-      if(res.code != 1 || !res.data) return;
-      this.isShowAddel = res.data.status;
-      if(!this.isShowAddel) return this.delCurrentDiaList();
-      this.clearInterLoadCb();
-      this.adInterVal = setInterval(() => {
-        this.isShowAdNum--;
-        if(!this.isShowAdNum) {
-          this.clearInterLoadCb();
-          this.isShowAddel = false;
-          this.delCurrentDiaList();
-        }
-      }, 1000)
-    },
-    showAdv(res) {
-      console.log('showAdv', res)
-      this.isShowAd = true;
-    },
-    finishedCb(e) {
-      console.log('finishedCb', e)
-      this.isShowAd= false
-    },
-    quitCb (e) {
-      console.log('quitCb', e)
-      this.isShowAd = false;
-    },
-    errorCbHandle(error) {
-      console.log('error: errorCbHandle', error)
-      this.isShowAddel = false;
-    },
-    loadCbHandle(res) {
-      this.isShowAd = true;
-      this.clearInterLoadCb();
-      console.log('res: loadCbHandle', res);
-      this.adInterVal = setInterval(() => {
-        this.isShowAdNum--;
-        if(!this.isShowAdNum) {
-          this.clearInterLoadCb();
-          this.isShowAddel = false;
-          this.delCurrentDiaList();
-        }
-      }, 1000);
+      this.$go(`/pages/userModule/productList/searchResult?searchValue=${encodeURIComponent(recommendTxt)}&is_search=1`);
     },
     clearInterLoadCb() {
       clearInterval(this.adInterVal);
@@ -776,6 +713,7 @@ export default {
       this.mescroll.endSuccess();
     },
     async upCallback(page) {
+      this.vipNumberShopCurrent = this.userInfo.vip_number;
       if(!this.isConnected) return this.inNotConnected();
       // if(this.isLoadRequestList) return;
       // this.isLoadRequestList = true;
@@ -904,58 +842,15 @@ export default {
         this.groupRecommendData = recRes.data;
         this.pageNum = 1;
       }
-      const { id, cid, cid2, cid3, eliteId, groupId, type, lx_type, positionId } = this.groupRecommendData;
-      let pageNum = this.pageNum;
-      let params = {
-        id,
-        page: pageNum,
-        size: 10,
-      };
-      let queryApi = goodsQuery;
-      // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-      switch (type) {
-        case 1:
-          // 拼多多接口的访问
-          if (lx_type == 2) {
-            queryApi = goodsRecommend;
-            params.positionId = positionId;
-          } else {
-            queryApi = material;
-            params.eliteId = eliteId;
-            params.groupId = groupId;
-            params.size = 10;
-          }
-          break;
-        case 2:
-          if (lx_type == 2) {
-            queryApi = goodsSearch;
-            params.positionId = positionId;
-          } else {
-            queryApi = jingfen;
-            params.eliteId = eliteId;
-            params.groupId = groupId;
-            params.size = 20;
-          }
-          break;
-        case 3:
-          queryApi = goodsQuery;
-          params.cid1 = cid;
-          params.cid2 = cid2;
-          params.cid3 = cid3;
-          break;
-        case 4:
-          queryApi = jingfen;
-          const groupId_index = this.groupId_index;
-          params.eliteId = eliteId;
-          params.groupId = groupId[groupId_index];
-          params.size = 20;
-          break;
-      }
+      // 获取配置的京东/拼多多的请求类型及参数
+      const { queryApi, params, groupId, type } = getApiParams(
+        this.groupRecommendData, { pageNum: this.pageNum, groupId_index: this.groupId_index }
+      );
       queryApi(params).then((res) => {
         const { list, total_count } = res.data;
         // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-        let isNextPage = pageNum * params.size < total_count;
-        if (!isNextPage && type == 4 && (this.groupId_index < groupId.length - 1)) {
+        let isNextPage = this.pageNum * params.size < total_count;
+        if (!isNextPage && (type == 4) && (this.groupId_index < groupId.length - 1)) {
           // 无下一页
           this.groupId_index += 1;
           this.mescroll.endSuccess(total_count, true);
@@ -1024,9 +919,6 @@ export default {
       const scrollTopNum = Math.ceil(event.scrollTop);
       const scrollHeight = this.mescroll.getScrollHeight();
       const scrollBody = this.mescroll.getBodyHeight();
-      // console.log('event', event);
-      // console.log('-------scrollHeight', scrollHeight);
-      // console.log('-------scrollBody', scrollBody);
       this.scroll_top = scrollTopNum;
       this.showTitleBg = (scrollTopNum > 0);
       this.isShowCowpeaNav = (scrollTopNum >= this.stickyTop);
@@ -1039,9 +931,6 @@ export default {
         return;
       }
       this.$refs.anNoticeImgShow.popupClose();
-    },
-    onReachBottom(event) {
-      // console.log('onReachBottom::::event-------------------------------------', )
     },
     refreshGoods(data) {
       if (this.goods.length == 0) return;
@@ -1093,7 +982,8 @@ export default {
       this.awardId = awardId; // 彬纷进入 - 抽奖
       this.recommendId = recommendId; // 彬纷进入 - 半屏推券
       this.codeErrorId = codeErrorId; // 彬纷进入 - 扫码异常
-      this.tradeIn = tradeIn; // 彬纷进入 - 换购详情配置图片弹窗
+      this.tradeIn = tradeIn; // 彬纷进入 - 换购详情配置图片弹窗 -----
+      // /pages/tabBar/shopMall/index?tradeIn=1
       this.losingNew = losingNew; // 彬纷进入 - 新人扫码未中奖
       this.skuId = skuId;
       this.skuId && this.setAlreadyShowLight(false);
@@ -1532,47 +1422,21 @@ page {
     }
   }
 }
-.video_cont{
-  width: 100%;
-  height: 500rpx;
-  // background: gray;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 99;
-  .video_btn{
-    position: absolute;
-    z-index: 999;
-    background: rgba($color: #fff, $alpha: .6);
-    line-height: 64rpx;
-    left: 30rpx;
-    text-align: center;
-    padding: 0 20rpx;
-    border-radius: 30rpx;
-    font-size: 26rpx;
-    border: 2rpx solid #fff;
-  }
-}
-
-.search_box{
+.search_box {
   font-size: 26rpx;
   color: #444;
-  height: 68rpx;
+  height: 72rpx;
   background: #ffffff;
-  border-radius: 38rpx;
+  border-radius: 16rpx;
   box-sizing: border-box;
-  padding: 0 2rpx 0 32rpx;
+  padding: 0 2rpx 0 24rpx;
   display: flex;
   align-items: center;
   border: 2rpx solid #F84842;
   box-sizing: border-box;
   line-height: 36rpx;
   position: absolute;
-  top: 92rpx; // 68 + 24
-  // left: 50%;
-  // transform: translateX(-50%);
+  top: 92rpx;
   width: 702rpx;
   .search_icon{
     width: 32rpx;
@@ -1594,15 +1458,15 @@ page {
       height: 100%;
     }
   }
-  .search_btn{
-    width: 124rpx;
-    line-height: 60rpx;
-    background: linear-gradient(172deg,#f6b761 0%, #f84842 46%);
-    border-radius: 32rpx;
+  .search_btn {
+    width: 136rpx;
+    line-height: 56rpx;
+    background: #F84842;
+    border-radius: 12rpx;
     font-size: 28rpx;
     text-align: center;
     color: #ffffff;
-    margin-right: 2rpx;
+    margin-right: 4rpx;
   }
 }
 </style>

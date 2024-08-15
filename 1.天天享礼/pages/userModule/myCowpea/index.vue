@@ -37,23 +37,6 @@
 		</view>
 		<!-- 签到 -->
 		<sign-module @showAwardModel="startAnim" ref="signModule" />
-		<!-- 玩转牛金豆 -->
-		<!-- <view class="play-cowpeas">
-			<view class="play-cowpeas-title">
-				玩转牛金豆<view @click="testAdd">addtest</view>
-			</view>
-			<view class="play-cowpeas-box">
-				<view class="play-cowpea-item" v-for="item in tools" :key="item.id" @click="toolsChange(item.id)">
-					<image class="pci-icon" :src="item.icon" mode="aspectFill"></image>
-					<view class="pci-title">
-						{{item.name}}
-					</view>
-					<view class="pci-info">
-						{{item.info}}
-					</view>
-				</view>
-			</view>
-		</view> -->
 		<!-- 优惠推荐 -->
 		<view class="discount-put-box" id="discountId">
 			<text class="discount-put-title">优惠兑换</text>
@@ -66,6 +49,7 @@
 			:list="goods"
 			:isBolCredits="true"
 			:isJdLink="true"
+			:isShowProfit="true"
 			@notEnoughCredits="notEnoughCreditsHandle"
 		></good-list>
 	</mescroll-body>
@@ -98,7 +82,7 @@ import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js'
 import swiperSearch from '@/components/swiperSearch.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import WxCountUp from '@/utils/WxCountUp.js';
-import { getImgUrl } from '@/utils/auth.js';
+import { getImgUrl, warpRectDom } from '@/utils/auth.js';
 import getViewPort from '@/utils/getViewPort.js';
 import groupRecommendMixin from '@/utils/mixin/groupRecommendMixin.js'; // 混入推荐商品列表的方法
 import { mapActions, mapGetters } from 'vuex';
@@ -209,6 +193,7 @@ import taskComplete from './taskComplete.vue';
 			...mapActions({
 				getUserTotal: 'user/getUserTotal'
 			}),
+			warpRectDom,
 			async initTextList () {
 				const discountIdRes = await this.warpRectDom('discountId');
           		this.discount_Top = discountIdRes.height;
@@ -232,19 +217,6 @@ import taskComplete from './taskComplete.vue';
 			},
 			upCallback(page) {
 				this.requestGoodList(page);
-			},
-			warpRectDom(idName) {
-				return new Promise(resolve => {
-					setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-						let query = uni.createSelectorQuery();
-						// #ifndef MP-ALIPAY
-						query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-							// #endif
-						query.select('#'+idName).boundingClientRect(data => {
-							resolve(data)
-						}).exec();
-					}, 20)
-				})
 			},
 			// 牛金豆不足的情况
 			notEnoughCreditsHandle() {

@@ -11,7 +11,7 @@
 >
 <xh-navbar
   :leftImage="imgUrl+'/static/images/left_back.png'"
-  @leftCallBack="$topCallBack"
+  @leftCallBack="$leftBack"
   :fixed="true"
   title="省钱明细"
   titleColor="#333"

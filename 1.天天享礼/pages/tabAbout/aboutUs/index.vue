@@ -7,7 +7,8 @@
 			<view class="about_txt">生活省钱小帮手</view>
 		</view>
 		<van-cell title="服务协议" @click="agreementLook('/agreement/service-agreement.html')" is-link />
-		<van-cell title="隐私协议" @click="agreementLook('/agreement/privacy-agreement.html')" is-link />
+		<van-cell title="隐私政策" @click="agreementLook('/agreement/privacy-agreement.html')" is-link />
+		<van-cell v-if="userInfo.is_vip" title="会员协议" @click="agreementLook('/agreement/savings-server.html')" is-link />
 		<van-cell title="服务热线" @click="hotLine" :value="phoneNumber" is-link />
 		<van-cell title="服务时间" value="工作日 8:30 - 17:30" value-class="right_txt"/>
 	</view>
@@ -19,31 +20,35 @@
 </template>
 
 <script>
-	import { getBaseUrl, getImgUrl } from '@/utils/auth.js';
-	export default {
-		onLoad() {
-			let version = wx.getAccountInfoSync().miniProgram.version;
-			this.version = version ? `v${version}` : 'v1.0.0';
-		},
-		data(){
-		   return {
+import { getBaseUrl, getImgUrl } from '@/utils/auth.js';
+import { mapGetters } from 'vuex';
+export default {
+	onLoad() {
+		let version = wx.getAccountInfoSync().miniProgram.version;
+		this.version = version ? `v${version}` : 'v1.0.0';
+	},
+	data(){
+		return {
 			imgUrl: getImgUrl(),
 			version: '',
 			phoneNumber: '400-870-7076'
-		   }
-		},
-		methods: {
-			agreementLook(link) {
-				link = getBaseUrl() + link;
-				this.$go(`/pages/webview/webview?link=${encodeURIComponent(link)}`);
-			},
-			hotLine() {
-				wx.makePhoneCall({
-					phoneNumber: this.phoneNumber
-				});
-			}
 		}
-	};
+	},
+	computed: {
+		...mapGetters(["userInfo"]),
+	},
+	methods: {
+		agreementLook(link) {
+			link = getBaseUrl() + link;
+			this.$go(`/pages/webview/webview?link=${encodeURIComponent(link)}`);
+		},
+		hotLine() {
+			wx.makePhoneCall({
+				phoneNumber: this.phoneNumber
+			});
+		}
+	}
+};
 </script>
 
 <style lang="scss">

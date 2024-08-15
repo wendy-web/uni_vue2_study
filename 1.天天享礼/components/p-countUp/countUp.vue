@@ -13,7 +13,7 @@
 	:style="{fontWeight:fontWeight}"
 	>
 		<block v-for="(myIndex, index) in indexArr" :key="index">
-			<swiper class="swiper" vertical="true" :current="myIndex" circular="true" v-bind:style="{color:color,width:myIndex == 10 ? '7px' : width+'px',height:height+'px',lineHeight:fontSize+'px',fontSize:fontSize+'px'}">
+			<swiper class="swiper" vertical="true" :current="myIndex" circular="true" v-bind:style="{color:color,width:myIndex == 10 ? '7px' : width+'px',height:height+'px',lineHeight:fontSize+'px',fontSize:fontSize+'px', textAlign: 'center'}">
 				<swiper-item>
 					<view class="swiper-item">0</view>
 				</swiper-item>

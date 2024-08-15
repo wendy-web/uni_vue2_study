@@ -42,8 +42,8 @@ const closeOtherPagePopUp = (closePopUp) => {
   })
 }
 import {
-mapGetters,
-mapMutations
+  mapGetters,
+  mapMutations
 } from 'vuex';
 export default {
   data() {
@@ -51,16 +51,7 @@ export default {
       innerShow: false,
       privacyContractName: '《天天享礼小程序隐私保护指引》',
       currentPage: '', // 当前页面地址
-      disagreePrivacyPageList: [
-        'pages/tabBar/discounts/index',
-        'pages/discounts/discounts/index',
-        'pages/userModule/takeawayMenu/mcDonald/index',
-        'pages/userModule/takeawayMenu/luckin/index',
-        'pages/userModule/takeawayMenu/kfc/index',
-        'pages/userModule/takeawayMenu/mcDonald/selectShop/index',
-        'pages/userModule/takeawayMenu/luckin/selectShop/index',
-        'pages/userModule/takeawayMenu/kfc/selectShop/index'
-      ], // 不同意授权页面的判断
+      disagreePrivacyPageList: [], // 不同意授权页面的判断
     }
   },
   computed: {

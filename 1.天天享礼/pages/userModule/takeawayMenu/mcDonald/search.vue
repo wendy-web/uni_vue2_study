@@ -6,7 +6,7 @@
     :leftImage="imgUrl+'/static/images/left_back.png'"
     titleAlign="titleRight"
     navbarImageMode="widthFix"
-	@leftCallBack="$topCallBack"
+	@leftCallBack="$leftBack"
     navberColor="#fff"
 >
     <view class="search_box" slot="title">
@@ -25,8 +25,7 @@
     </view>
 </xh-navbar>
 <!-- 搜索出的商品列表 -->
-<view class="search_list_box"
-    :style="{'minHeight': searchBoxHeight}"
+<view class="search_list_box" :style="{minHeight: searchBoxHeight}"
     v-if="isShowSearchResult"
 >
     <listItem
@@ -85,20 +84,20 @@
 </view>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import meTabs from './content/me-tabs.vue';
+import {
+    delHistory,
+    hwHistory,
+    menuQuery
+} from '@/api/modules/takeawayMenu/luckin.js';
 import goodList from '@/components/goodList.vue';
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { getImgUrl } from '@/utils/auth.js';
+import getViewPort from '@/utils/getViewPort.js';
+import { mapGetters } from 'vuex';
+import commodityDetails from './content/commodityDetails.vue';
 import confirmDia from './content/confirmDia.vue';
 import listItem from './content/listItem.vue';
-import commodityDetails from './content/commodityDetails.vue';
-import {
-    hwHistory,
-    menuQuery,
-    delHistory
-} from '@/api/modules/takeawayMenu/luckin.js';
-import getViewPort from '@/utils/getViewPort.js';
-import { getImgUrl } from '@/utils/auth.js';
-import { mapGetters } from 'vuex';
+import meTabs from './content/me-tabs.vue';
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {

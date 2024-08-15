@@ -161,7 +161,7 @@
 		<!-- 用户引导 -->
 		<userGuidance ref="userGuidance"></userGuidance>
 		<!-- 导航栏 -->
-		<custom-tab-bar currentIndex="1"/>
+		<custom-tab-bar currentID="2"/>
 		<!-- 配置的弹窗管理 -->
 		<configurationDia
 			ref="configurationDia"
@@ -218,11 +218,11 @@ import turntableModel from './popup/turntableModel.vue';
 /* 积分升级成功 */
 import { popover } from '@/api/modules/configuration.js';
 import {
-articleList,
-lightTask,
-taskReward,
-totalToady,
-videoAward
+	articleList,
+	lightTask,
+	taskReward,
+	totalToady,
+	videoAward
 } from '@/api/modules/task.js';
 
 import configurationFun from '@/components/configurationDia/configurationFun.js';
@@ -239,8 +239,8 @@ import goDetailsFun from '@/utils/goDetailsFun.js';
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
 import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 import {
-mapActions,
-mapGetters
+	mapActions,
+	mapGetters
 } from 'vuex';
 import pointUpgrade from './popup/pointUpgrade.vue';
 import userGuidance from './popup/userGuidance.vue';
@@ -388,9 +388,7 @@ import userGuidance from './popup/userGuidance.vue';
 				let articleInfo = this.articleInfo
 				let item = articleInfo;
 				let link = encodeURIComponent(item.link);
-				uni.navigateTo({
-					url: `/pages/webview/webview?title=${item.title}&link=${link}&isButton=true`
-				});
+				this.$go(`/pages/webview/webview?title=${item.title}&link=${link}&isButton=true`);
 
 			},
 			async articleInit() {

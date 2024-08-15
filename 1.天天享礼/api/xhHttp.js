@@ -33,9 +33,7 @@ export const baseUrl = envVersion == 'release' ? "https://ttxl.y1b.cn" : getBase
 export default new XhHttp({
     baseUrl,
     whiteURL: ['/api/index/banner',
-        '/api/index/ranking',
         '/api/index/exchangeNotice',
-        '/api/index/limitActivity',
         '/api/index/sale',
         '/api/index/couponGroup',
         '/api/index/couponList',

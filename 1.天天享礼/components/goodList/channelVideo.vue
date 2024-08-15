@@ -10,15 +10,11 @@
     :finder-user-name="good.video_id"
     @error="sphError"
   >
-    <!-- 商品图片 -->
     <van-image
       @click="openSph(good.video_account_id, good.video_id)"
-      width="100%"
-      height="100%"
-      :src="good.image"
-      use-loading-slot
-    >
-      <van-loading slot="loading" type="spinner" size="20" vertical />
+      width="100%" height="100%"
+      :src="good.image" use-loading-slot
+    ><van-loading slot="loading" type="spinner" size="20" vertical />
     </van-image>
   </channel-video>
 </template>

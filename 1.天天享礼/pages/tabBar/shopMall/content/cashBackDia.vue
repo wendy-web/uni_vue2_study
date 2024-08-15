@@ -1,21 +1,21 @@
 <template>
-  <van-popup
-    :show="isShow"
-    @close="closeHandle"
-    custom-style="background-color: transparent;overflow:visible;"
-    :z-index="100"
-    :catchtouchmove="true"
-  >
-    <view class="cont_box ani_active" @click="goToCashHandle">
-      <view class="cont_title" v-if="cashStatus == 3">
-        <image :src="cashInfo.goods_image" mode="widthFix" class="cont_img" v-if="cashInfo.goods_image"></image>
-        <!-- 恭喜你成为今日幸运用户 -->
-        <view class="txt_ov_ell1">{{ cashInfo.goods_name }}</view>
-      </view>
-      <image :src="cashBgImg" mode="widthFix" class="cash_bg"></image>
-      <image :src="cashBtnImg" mode="widthFix" class="cash_ban"></image>
+<van-popup
+  :show="isShow"
+  @close="closeHandle"
+  custom-style="background-color: transparent;overflow:visible;"
+  :z-index="100"
+  :catchtouchmove="true"
+>
+  <view class="cont_box ani_active" @click="goToCashHandle">
+    <view class="cont_title" v-if="cashStatus == 3">
+      <image :src="cashInfo.goods_image" mode="widthFix" class="cont_img" v-if="cashInfo.goods_image"></image>
+      <!-- 恭喜你成为今日幸运用户 -->
+      <view class="txt_ov_ell1">{{ cashInfo.goods_name }}</view>
     </view>
-  </van-popup>
+    <image :src="cashBgImg" mode="widthFix" class="cash_bg"></image>
+    <image :src="cashBtnImg" mode="widthFix" class="cash_ban"></image>
+  </view>
+</van-popup>
 </template>
 
 <script>

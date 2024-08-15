@@ -1,8 +1,8 @@
 <template>
 <view class="box">
 <xh-navbar
-	:leftImage="imgUrl+'/static/images/left_back.png'"
-	@leftCallBack="$topCallBack"
+	leftImage="https://file.y1b.cn/store/1-0/24629/667f888cec84d.png"
+	@leftCallBack="$leftBack"
 	navberColor="#fff"
 	:fixedNum="9"
 	titleColor="#333"
@@ -26,6 +26,7 @@
 				@showTakeCode="showTakeCodeHandle"
 				@notEnoughCredits="notEnoughCreditsHandle"
 				@againPhone="againPhoneHandle"
+				@swiperUpdate="swiperUpdateHandle"
 			></orderSwiperItem>
 		</swiper-item>
 	</swiper>
@@ -62,17 +63,17 @@
 		:z-index="100"
 		:safe-area-inset-bottom="false"
 		@close="isWexinShowDia= false"
-		>
-			<view class="cont_box">
-    <van-image
-      width="750rpx" height="700rpx" fit="widthFix"
-      src="https://file.y1b.cn/store/1-0/24419/6622052537a0d.png"
-      use-loading-slot class="banner_img"
-      :show-menu-by-longpress="true"
-    ><van-loading slot="loading" type="spinner" size="20" vertical />
-    </van-image>
-	</view>
-</van-popup>
+	>
+		<view class="cont_box">
+			<van-image
+				width="750rpx" height="700rpx" fit="widthFix"
+				src="https://file.y1b.cn/store/1-0/24419/6622052537a0d.png"
+				use-loading-slot class="banner_img"
+				:show-menu-by-longpress="true"
+				><van-loading slot="loading" type="spinner" size="20" vertical />
+			</van-image>
+		</view>
+	</van-popup>
 </view>
 </template>
 <script>
@@ -144,7 +145,7 @@ import { mapGetters } from "vuex";
 		onShow() {
 			if (_onShowCount > 0) {
 				let active_swiper_item = this.$refs.orderSwiperItem[this.tabIndex];
-				const goodsLen = active_swiper_item.goods.length;
+				const goodsLen = active_swiper_item.list.length;
 				if (active_swiper_item && !goodsLen) {
 					active_swiper_item.downCallback();
 				}
@@ -175,11 +176,18 @@ import { mapGetters } from "vuex";
 			notEnoughCreditsHandle() {
 				this.exchangeFailedShow = true;
 			},
+			swiperUpdateHandle() {
+				this.$refs.orderSwiperItem.forEach((element, index) => {
+					if(!element || index == this.tabIndex) return;
+					element.downCallback();
+				});
+			},
 			// 轮播菜单
-			swiperChange(e) {
-				this.tabIndex = e.detail.current;
+			swiperChange(event) {
+				this.tabIndex = event.detail.current;
 				let active_swiper_item = this.$refs.orderSwiperItem[this.tabIndex];
-				if (active_swiper_item) {
+				const goodsLen = active_swiper_item.list.length;
+				if (active_swiper_item && !goodsLen ) {
 					active_swiper_item.downCallback();
 				}
 			},

@@ -8,7 +8,7 @@
     title="选择门店"
   >
   </xh-navbar>
-  <view class="top_input box_fl" :style="{'--top': fixedTop}">
+  <view class="top_input box_fl" :style="{ '--top': fixedTop + '' }">
     <view class="add_txt box_fl" @click="toCityPageHandle">
       <view class="city_name txt_ov_ell1">{{ city_name }}</view>
       <image class="triangle_icon" :src="takeImgUrl + '/triangle_icon.png'" mode="aspectFill"></image>
@@ -83,9 +83,9 @@
 </template>
 <script>
 import {
-location,
-restaurantCar,
-restaurantQuery
+  location,
+  restaurantCar,
+  restaurantQuery
 } from '@/api/modules/takeawayMenu/luckin.js';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getImgUrl } from '@/utils/auth.js';
@@ -238,7 +238,7 @@ export default {
         if(this.restaurant_id == restaurant_id) {
           this.$hideLoading();
           this.isShowLoading = false;
-          this.$back();
+          this.$leftBack();
           return;
         }
         const car_id = this.cartComList.map(res => res.id);
@@ -271,7 +271,7 @@ export default {
           this.$redirectTo(`/pages/userModule/takeawayMenu/mcDonald/index?brand_id=5&rote=1&isBack=1&product_id=${this.product_id}&ticket_id=${this.ticket_id}`);
           return;
         }
-        this.$back();
+        this.$leftBack();
       },
       // 选择城市
       toCityPageHandle(){
@@ -287,7 +287,6 @@ export default {
           });
           return;
         }
-        if(this.pathSource == 'discounts') return this.$reLaunch('/pages/discounts/discounts/index');
         this.$switchTab(`/pages/tabBar/shopMall/index`);
       }
     },

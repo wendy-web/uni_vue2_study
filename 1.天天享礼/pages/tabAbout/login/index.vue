@@ -89,7 +89,7 @@ export default {
         confirmExitLoginHandle() {
             this.isShowConfirmDia = false;
             this.setAutoLogin(true);
-            this.$back();
+            this.$leftBack();
         }
     }
 };

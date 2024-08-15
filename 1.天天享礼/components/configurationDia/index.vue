@@ -1,11 +1,11 @@
 <template>
 <view class="dia_box">
 <van-popup
-    :show="isShow"
-    custom-style="background-color: transparent;overflow:visible;"
-    :z-index="100"
-    :catchtouchmove="true"
-    :overlay-style="overlayStyle"
+  :show="isShow"
+  custom-style="background-color: transparent;overflow:visible;"
+  :z-index="100"
+  :catchtouchmove="true"
+  :overlay-style="overlayStyle"
 >
     <view class="dia_cont ani_active">
         <image :class="config && [[3, 4].includes(config.show_type) ? 'close_icon-top' : 'close_icon-bottom']" mode="scaleToFill"

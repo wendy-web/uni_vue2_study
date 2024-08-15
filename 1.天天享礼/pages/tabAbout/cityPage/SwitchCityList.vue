@@ -14,25 +14,15 @@
 
     <view class="container-inner">
       <view class="searchLetter touchClass">
-        <view
-          v-for="(item, idx) in searchLetter"
-          :key="idx"
-          style="color:#666;font-size:20rpx;"
-          :data-letter="item.name"
+        <view v-for="(item, idx) in searchLetter" :key="idx"
+          style="color:#666;font-size:20rpx;" :data-letter="item.name"
           @click="clickLetterHandle"
-          :class="{'active1': item.name == scrollTopId}"
-        >
-          {{ item.name }}
-        </view>
+          :class="[(item.name == scrollTopId) && 'active1']"
+        >{{ item.name }}</view>
       </view>
       <view class="container">
         <!-- 展示字母的形式 -->
-        <block v-if="isShowLetter">
-          <view class="showSlectedLetter">
-            {{ toastShowLetter }}
-          </view>
-        </block>
-
+        <view class="showSlectedLetter" v-if="isShowLetter">{{ toastShowLetter }}</view>
         <scroll-view
           scroll-y="true"
           :scroll-into-view="scrollTopId"

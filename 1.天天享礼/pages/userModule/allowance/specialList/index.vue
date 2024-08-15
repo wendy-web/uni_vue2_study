@@ -1,5 +1,5 @@
 <template>
-<view class="recharge" :style="{'--bg': subjectColor}">
+<view class="recharge" :style="{'--bg': subjectColor + '' }">
 <mescroll-body
   :sticky="true"
   ref="mescrollRef"
@@ -12,13 +12,11 @@
   <xh-navbar
     :fixed="true"
     titleAlign="titleRight"
-    :navberColor="isShowNavBerColor ? subjectColor: ''"
+    :navberColor="isShowNavBerColor ? subjectColor : ''"
   >
     <view slot="title" class="nav-custom fl_bet">
-      <image
-        class="custom_left_icon"
-        :src="imgUrl+'static/images/icon_close.png'"
-        mode="aspectFill"
+      <image class="custom_left_icon" mode="aspectFill"
+        :src="imgUrl + 'static/images/icon_close.png'"
         @click="$leftBack"
       ></image>
       <swiperSearch
@@ -31,7 +29,7 @@
     <image :src="bg_img" mode="widthFix" class="nav_bg" id="navBgId" :style="{'--margin': navHeight + 'px' }">
     </image>
     <good-list
-      :list="goods"
+      :list="showGoods"
       :isBolCredits="true"
       :isShowBanner="true"
       @notEnoughCredits="notEnoughCreditsHandle"
@@ -54,18 +52,17 @@
 ></serviceCredits>
 </view>
 </template>
-
 <script>
 import { goodsTheme } from '@/api/modules/allowance.js';
-import { goodsQuery, jingfen, keywordList, material } from '@/api/modules/jsShop.js';
-import { goodsRecommend, goodsSearch } from '@/api/modules/pddShop.js';
+import { keywordList } from '@/api/modules/jsShop.js';
+import { getApiParams } from '@/api/modules/requestConfiguration/lxType.js';
 import goodList from '@/components/goodList.vue';
 import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
 import serviceCredits from '@/components/serviceCredits/index.vue';
 import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
 import swiperSearch from '@/components/swiperSearch.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { getImgUrl } from '@/utils/auth.js';
+import { getImgUrl, warpRectDom } from '@/utils/auth.js';
 import getViewPort from '@/utils/getViewPort.js';
 import goDetailsFun from '@/utils/goDetailsFun';
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
@@ -93,7 +90,7 @@ export default {
         },
         id: 0,
         pageNum: 1,
-        groupIdIndex: 0,
+        groupId_index: 0,
         goods: [],
         goods_lx_type: 1,
         textList: []
@@ -110,6 +107,25 @@ export default {
     navHeight() {
       let viewPort = getViewPort();
       return viewPort.navHeight;
+    },
+    // 列表数据
+    showGoods() {
+      let list = this.goods;
+      let isType9 = 0;
+      // 列表对单列呈现进行后排数组的操作
+      list.length && list.forEach((nowItem, index) => {
+        if(nowItem.type != 9 ) return;
+        if(index%2 && (isType9%2) == 0) {
+          list[index] = list[index-1];
+          list[index - 1] = nowItem;
+        }
+        if((index%2) == 0 && isType9%2) {
+          list[index] = list[index-1];
+          list[index - 1] = nowItem;
+        }
+        isType9 += 1;
+      });
+      return list;
     }
   },
   watch: {
@@ -133,6 +149,7 @@ export default {
     ...mapActions({
       getUserInfo: 'user/getUserInfo',
     }),
+    warpRectDom,
     isBannerClickHandle(item) {
       this.$refs.recommendDia.initGtData({
         ...item,
@@ -146,124 +163,69 @@ export default {
       }
     },
     async upCallback(page) {
-        const params = {
-            id: this.id,
-            page: page.num,
-            size: 10
-        }
+      const params = {
+        id: this.id,
+        page: page.num,
+        size: 10
+      }
         if(!this.configData || this.goods_lx_type == 1) {
-            const res = await goodsTheme(params);
-            if(res.code != 1) return this.mescroll.endSuccess(0);
-            if(page.num == 1) this.goods = [];
-            this.configData = res.data;
-            const { bg_color, bg_img, share_word, share_img } = res.data;
-            bg_color && (this.subjectColor = bg_color);
-            this.bg_img = bg_img;
-            // 混合方法中得对象键值的赋值
-            this.getShareCont.share_title = share_word;
-            this.getShareCont.share_img = share_img;
-            this.getShareCont.id = this.id;
+          const res = await goodsTheme(params);
+          if(res.code != 1) return this.mescroll.endSuccess(0);
+          if(page.num == 1) this.goods = [];
+          this.configData = res.data;
+          const { bg_color, bg_img, share_word, share_img } = res.data;
+          bg_color && (this.subjectColor = bg_color);
+          this.bg_img = bg_img;
+          // 混合方法中得对象键值的赋值
+          this.getShareCont.share_title = share_word;
+          this.getShareCont.share_img = share_img;
+          this.getShareCont.id = this.id;
         }
         const { goods_lx_type, list, total_count } = this.configData;
         this.goods_lx_type = goods_lx_type;
         switch(goods_lx_type) {
-            case 1:
-                // 自选
-                this.mescroll.setPageSize(3);
-                this.goods = this.goods.concat(list); // 追加新数据
-                this.mescroll.endSuccess(list.length);
-                break;
-            case 2:
-            case 3:
-                // 拼多多 - 京东
-                this.mescroll.setPageSize(1)
-                this.requestList(page);
-                break;
+          case 1:
+            // 自选
+            this.mescroll.setPageSize(3);
+            this.goods = this.goods.concat(list); // 追加新数据
+            this.mescroll.endSuccess(list.length);
+            break;
+          case 2:
+          case 3:
+            // 拼多多 - 京东
+            this.mescroll.setPageSize(1)
+            this.requestList(page);
+            break;
         }
     },
     async requestList(page) {
-        // 拼多多列表
-        const {
-            id,
-            cid,
-            cid2,
-            cid3,
-            eliteId,
-            groupId,
-            type,
-            goods_lx_type
-        } = this.configData;
         // 设置列表数据
         if( page.num == 1 ) {
             this.goods = [];
-            this.groupIdIndex = 0;
+            this.groupId_index = 0;
             this.pageNum = 1;
         };
-        let pageNum = this.pageNum;
-        let params = {
-            id,
-            page: pageNum,
-            size: 10,
-        }
-        let queryApi = goodsQuery;
-        // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-        switch(type) {
-            case 1:
-                if(goods_lx_type == 3) {
-                    queryApi = goodsRecommend;
-                } else {
-                    queryApi = material;
-                    params.eliteId = eliteId;
-                    params.groupId = groupId;
-                }
-                break;
-            case 2:
-                if(goods_lx_type == 3) {
-                    queryApi = goodsSearch;
-                } else {
-                    queryApi = jingfen;
-                    params.eliteId = eliteId;
-                    params.groupId = groupId;
-                    params.size = 20;
-                }
-                break;
-            case 3:
-                queryApi = goodsQuery;
-                params.cid1 = cid;
-                params.cid2 = cid2;
-                params.cid3 = cid3;
-                break;
-            case 4:
-                queryApi = jingfen;
-                params.eliteId = eliteId;
-                params.groupId = groupId[this.groupIdIndex];
-                params.size = 20;
-                break;
-        };
+        const { queryApi, params, groupId, type } = getApiParams(
+          this.configData, { pageNum: this.pageNum, groupId_index: this.groupId_index }, false
+        );
         queryApi(params).then(res=>{
-            const {
-                list,
-                total_count
-            } = res.data;
+            const { list, total_count } = res.data;
             // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-            let isNextPage = (pageNum * params.size) < total_count;
-            if(!isNextPage && type == 4 && this.groupIdIndex < (groupId.length - 1)) {
+            let isNextPage = (this.pageNum * params.size) < total_count;
+            if(!isNextPage && type == 4 && this.groupId_index < (groupId.length - 1)) {
                 // 无下一页 - 京东
-                this.groupIdIndex += 1;
+                this.groupId_index += 1;
                 this.pageNum = 1;
                 this.mescroll.endSuccess(total_count, true);
             } else {
                 this.mescroll.endSuccess(list.length || total_count, isNextPage);
             }
-            if(list.length == 0 && (pageNum * params.size) < total_count){
+            if(list.length == 0 && (this.pageNum * params.size) < total_count){
                 this.mescroll.triggerUpScroll();
             }
             this.pageNum += 1;
             this.goods = this.goods.concat(list); // 追加新数据
-        }).catch(()=>{
-            //联网失败, 结束加载
-            this.mescroll.endErr();
-        });
+        }).catch(() => this.mescroll.endErr());
     },
     // 牛金豆不足的情况
     notEnoughCreditsHandle() {
@@ -273,20 +235,7 @@ export default {
         const scrollTop = Math.ceil(event.scrollTop);
         if(scrollTop >= this.nav_bgTop) return this.isShowNavBerColor = true;
         this.isShowNavBerColor = false;
-    },
-    warpRectDom(idName) {
-      return new Promise(resolve => {
-          setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-              let query = uni.createSelectorQuery();
-              // #ifndef MP-ALIPAY
-              query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-                  // #endif
-              query.select('#'+idName).boundingClientRect(data => {
-                  resolve(data)
-              }).exec();
-          }, 20)
-      })
-    },
+    }
   }
 }
 </script>

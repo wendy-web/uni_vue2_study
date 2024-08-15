@@ -13,7 +13,7 @@
   titleAlign="titleRight"
   :navberColor="isShowNavBerColor ? '#FAF1EC': ''"
   :leftImage="imgUrl+'/static/images/left_back.png'"
-  @leftCallBack="$topCallBack"
+  @leftCallBack="$leftBack"
 ></xh-navbar>
 <image src="https://file.y1b.cn/store/1-0/231213/65791e113aa09.png" :style="{'--margin': navHeight + 'px' }" mode="widthFix" class="nav_bg"></image>
     <view class="draw_cont">
@@ -49,11 +49,9 @@
         </view>
         <view class="record_box" v-if="goods.length">
             <view class="record_title">返现记录</view>
-            <view class="record_item fl_bet"
-                v-for="(item, index) in goods"
-                :key="index"
+            <view v-for="(item, index) in goods" :key="index"
                 @click="profitGetItemHandle(item, index)"
-                :class="{ 'active' : (item.profit_status == 0) && (index < goods.length - 1) && (goods[index+1].profit_status != 0) }"
+                :class="['record_item fl_bet', recordClass(item, index) && 'active']"
             >
                 <view class="record_left">
                     <view class="record_txt">{{ item.title }}</view>
@@ -116,7 +114,8 @@ export default {
             },
             goods: [],
             ishShowHelpDia: false,
-            showExpandNum: 0
+            showExpandNum: 0,
+            profitId: 0
         }
     },
     computed: {
@@ -138,9 +137,9 @@ export default {
     async onLoad(option) {
         this.profitInfoRequest();
         this.showExpandNum = this.profitInfo.packet_amount;
+        if(option.profitId) this.profitId = option.profitId;
     },
-    async onShow() {
-    },
+    async onShow() { },
     methods: {
         ...mapMutations({
             setAutoLogin: 'user/setAutoLogin',
@@ -150,6 +149,9 @@ export default {
             getUserInfo: "user/getUserInfo",
             profitInfoRequest: 'user/profitInfoRequest'
         }),
+        recordClass(item, index) {
+            return (item.profit_status == 0) && (index < this.goods.length - 1) && (this.goods[index+1].profit_status != 0)
+        },
         autoHandle() {
             this.setProfitInfo({
                 ...this.profitInfo,
@@ -187,11 +189,12 @@ export default {
                 this.profitGetRequest(id, index);
             });
         },
-        profitGetRequest(id, index) {
+        profitGetRequest(id, index = -1) {
             profitGet({ id, type: 0 }).then(res => {
                 if(res.code != 1) return this.$toast(res.msg, 6000);
-                this.goods[index].profit_status = 1;
                 this.profitInfoRequest();
+                if(index >= 0) return this.goods[index].profit_status = 1;
+                this.mescroll.resetUpScroll();
             });
         },
         goToWithdraw() {
@@ -209,13 +212,19 @@ export default {
                 size: 10,
                 page: page.num,
             }
-            profitList(params).then((res) => {
-                if(res.code != 1) return this.mescroll.endSuccess(0);
-                const { list, total_count } = res.data;
-                // if(page.num == 1) this.goods = [];
-                this.goods = this.goods.concat(list); // 追加新数据
-                this.mescroll.endBySize(list.length, total_count);
-            }).catch((err) => this.mescroll.endErr());
+            const res = await profitList(params).catch((err) => this.mescroll.endErr());
+            if(res.code != 1) return this.mescroll.endSuccess(0);
+            const { list, total_count } = res.data;
+            // if(page.num == 1) this.goods = [];
+            this.goods = this.goods.concat(list); // 追加新数据
+            this.mescroll.endBySize(list.length, total_count);
+            // 从订单列表中过来
+            if(!this.profitId) return;
+            setTimeout(() => {
+                const goodIndex = this.goods.findIndex((item) => item.id == this.profitId);
+                this.profitGetRequest(this.profitId, goodIndex);
+                this.profitId = null;
+            }, 1000);
         },
         onPageScroll(event) {
             const scrollTop = Math.ceil(event.scrollTop);

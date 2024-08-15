@@ -10,7 +10,7 @@
 >
     <image id="nav_bg" class="nav_bg" src="https://file.y1b.cn/store/1-0/2361/64784f6016d2d.png" mode="aspectFill"></image>
     <xh-navbar
-        :leftImage="imgUrl+'/static/images/left_back.png'"
+        leftImage="https://file.y1b.cn/store/1-0/24629/667f888cec84d.png"
   	    navbarImage="https://file.y1b.cn/store/1-0/2361/64784f6016d2d.png"
         titleAlign="titleRight"
         navbarImageMode="widthFix"
@@ -20,29 +20,24 @@
         @leftCallBack="$leftBack"
 		:fixedNum="9"
     >
-        <view class="title_box" slot="title" id="titleBox">
+        <view :class="['title_box', searchTop <= 10 ? 'opacity0' : '']" slot="title" id="titleBox">
             <view class="title_left">
                 <image class="title_img" src="https://file.y1b.cn/store/1-0/2387/64d0c73fc4c67.png" mode="aspectFill"></image>
             </view>
             领券下单更便宜
         </view>
-        <view class="search_box"
-            slot="title_cont"
-            id="titleContBox"
+        <view class="search_box" slot="title_cont" id="titleContBox"
             :style="{ top: searchTop +'px', width: searchWidth + 'px', left: searchLeft + 'px' }"
         >
-            <block v-if="!searchValue">
-                <image class="search_icon" src="../static/productList/search_icon01.png" mode="aspectFill"></image>
-                <view class="line"></view>
-            </block>
+            <image class="search_icon" src="../static/productList/search_icon01.png" mode="aspectFill"></image>
+            <view class="line"></view>
             <view class="swiper_box" @click="toSearchHandle">
-                <view v-if="searchValue" style="color: #333" class="txt_ov_ell1">{{ searchValue }}</view>
                 <!-- 无搜索的推荐文本轮播 -->
-                <swiper v-else-if="textList.length"
+                <swiper v-if="textList.length"
                     class="swiper"
                     style="height: 100%;"
                     :autoplay="true"
-                    interval="3000"
+                    interval="10000"
                     :duration="300"
                     :circular="true"
                     :vertical="true"
@@ -51,28 +46,18 @@
                 >
                     <swiper-item
                         v-for="(item, index) in textList" :key="index"
-                        class="swiper_item"
-                        catchtouchmove='onTouchMove'
-                    >
-                    {{ item }}
+                        class="swiper_item txt_ov_ell1" catchtouchmove='onTouchMove'
+                    >{{ item }}
                     </swiper-item>
                 </swiper>
-                <view v-else>请搜索喜欢的商品</view>
+                <view v-else>搜优惠 更便宜</view>
             </view>
-            <view class="search_btn" v-if="!searchValue" @click="searchRequireHandle">搜索</view>
+            <view class="search_btn" @click="searchRequireHandle">搜索</view>
         </view>
     </xh-navbar>
-    <!-- <view class="search_box"  @click="toSearchHandle">
-        <image class="search_icon" src="../static/productList/search_icon01.png" mode="aspectFill"></image>
-        <view class="line"></view>
-        {{ searchValue ||'请搜索喜欢的商品'}}
-    </view> -->
     <!-- tab的切换 -->
-    <view
-        class="tabs_box sticky-tabs"
-        v-if="!searchValue"
-        :style="{top:stickyTop +'px'}"
-    >
+    <view class="tabs_box sticky-tabs"
+        :style="{top:stickyTop +'px'}">
         <me-tabs
             v-model="tabIndex"
             :tabs="tabs"
@@ -80,7 +65,7 @@
             :height="tabHeight"
         ></me-tabs>
     </view>
-    <view class="good_list-box" v-if="!searchValue">
+    <view class="good_list-box">
         <swiper
             :style="{height: mescrollHeight}"
             :current="tabIndex"
@@ -98,58 +83,6 @@
                 ></mescroll-item>
             </swiper-item>
         </swiper>
-    </view>
-    <view class="mescroll_box" v-else>
-        <mescroll-uni
-            ref="mescrollRef"
-            @init="mescrollInit"
-            :height="mescrollHeight"
-            :down="downOption"
-            @down="downCallback"
-            :up="upOption"
-            @up="upCallbackSearch"
-            @emptyclick="emptyClick"
-        >
-            <good-list
-                :list="goods"
-                :isSearchJdModel="true"
-                :isBolCredits="true"
-                :isJdLink="true"
-                :isShowBanner="true"
-                @notEnoughCredits="notEnoughCreditsHandle"
-                v-if="goods.length"
-            ></good-list>
-            <block v-if="pddGoods.length">
-                <view class="list_lab" >以下优惠商品由拼多多提供</view>
-                <good-list
-                    :list="pddGoods"
-                    :isSearchJdModel="true"
-                    :isBolCredits="true"
-                    :isJdLink="true"
-                    @notEnoughCredits="notEnoughCreditsHandle"
-                >
-                </good-list>
-            </block>
-
-            <!-- 列表为空时呈现 -->
-            <view class="empty_box fl_col_cen" v-if="isEmpty">
-                <image class="empty_box_img" :src="empty.icon" mode="widthFix"></image>
-                <view>{{ empty.tip }}</view>
-            </view>
-            <view class="you_like-title" id="stickyTitleId" v-if="recommendGoods.length">
-                <image class="left-icon" :src="imgUrl +'static/shopMall/love_left_icon.png'" mode="aspectFill"></image>
-                为你推荐
-                <image class="right-icon" :src="imgUrl + 'static/shopMall/love_right_icon.png'" mode="aspectFill"></image>
-            </view>
-            <good-list
-                v-if="recommendGoods.length"
-                :list="recommendGoods"
-                :isJdModel="true"
-                :isBolCredits="true"
-                :isJdLink="true"
-                @notEnoughCredits="notEnoughCreditsHandle"
-            ></good-list>
-        </mescroll-uni>
     </view>
     <pointUpgradeDia ref='pointUpgradeDia' @happyGet='getHandle'/>
     <!-- 配置的弹窗管理 -->
@@ -187,15 +120,11 @@
 </view>
 </template>
 <script>
-import { groupRecommend } from '@/api/modules/index.js';
 import {
-    goodsQuery,
     jdGroup,
     jingfen,
-    keywordList,
-    material
+    keywordList
 } from '@/api/modules/jsShop.js';
-import { groupSearch } from '@/api/modules/pddShop.js';
 import { taskNum } from '@/api/modules/task.js';
 import configurationFun from '@/components/configurationDia/configurationFun.js';
 import configurationDia from '@/components/configurationDia/index.vue';
@@ -204,7 +133,7 @@ import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
 import serviceCredits from '@/components/serviceCredits/index.vue';
 import specialLisMiniPage from "@/components/specialLisMiniPage.vue";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { getImgUrl } from '@/utils/auth.js';
+import { getImgUrl, warpRectDom } from '@/utils/auth.js';
 import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
 import getViewPort from '@/utils/getViewPort.js';
 import goDetailsFun from '@/utils/goDetailsFun';
@@ -212,6 +141,7 @@ import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合�
 import { mapActions, mapGetters } from 'vuex';
 import meTabs from './content/me-tabs.vue';
 import MescrollItem from "./content/mescroll-swiper-item.vue";
+import selTabs from './content/selTabs.vue';
 export default {
     mixins: [MescrollMixin, goDetailsFun, configurationFun, shareMixin], // 使用mixin
     components: {
@@ -221,13 +151,12 @@ export default {
         exchangeFailed,
         serviceCredits,
         configurationDia,
-        specialLisMiniPage
+        specialLisMiniPage,
+        selTabs
     },
     data() {
         return {
 			imgUrl: getImgUrl(),
-            goods:[],
-            pddGoods: [],
             upBodyOption: {
                 use: false, // 主体框架只启用下拉刷新
             },
@@ -248,7 +177,6 @@ export default {
             },
             groupRecommendData: null,
             isRecommendRequest: false,
-            recommendGoods: [],
             pageNum: 1,
             groupId_index: 0,
             tabs:[],
@@ -256,7 +184,6 @@ export default {
             downOption:{
                 native: true // 必须配置此项，且需在pages.json配置"enablePullDownRefresh" : true
             },
-            searchValue: '',
             is_search: 0,
             exchangeFailedShow: false, // 牛金豆不足的弹窗
             serviceCreditsShow: false, // 赚取牛金豆的弹窗
@@ -274,8 +201,6 @@ export default {
             currentIndex: 0,
             lastOddItem: null,
             source: '',
-            is_pdd: 0, // 0： 乐刷 1：京东 2：拼多多；查找京东商品后传入
-            searchPageNum: 1
         };
     },
     computed:{
@@ -283,9 +208,7 @@ export default {
         mescrollHeight(){
             let viewPort = getViewPort();
             let mescrollHeight =  viewPort.windowHeight - viewPort.navHeight;
-            if(!this.searchValue) {
-                mescrollHeight = mescrollHeight - uni.upx2px(this.tabHeight);
-            }
+            mescrollHeight = mescrollHeight - uni.upx2px(this.tabHeight);
             return mescrollHeight + 'px';
         },
         stickyTop(){
@@ -338,17 +261,6 @@ export default {
         }
     },
     watch: {
-        goods(newValue, oldValue) {
-            if(oldValue.length == newValue.length) return;
-            if(newValue.length <=6) {
-                this.mescroll.triggerUpScroll();
-            }
-        },
-        recommendGoods(newValue, oldValue) {
-            if(newValue.length <= 6) {
-                this.mescroll.triggerUpScroll();
-            }
-        },
         tabIndex(i) {
             if(this.disableScroll) {
 				this.disableScroll = false // 当disableScroll=true时,scroll-view的scrollTo会失效,需先开启,再置顶
@@ -362,15 +274,7 @@ export default {
     },
     onLoad(option) {
         this.getUserInfo();
-        if(option.searchValue){
-            this.searchValue = decodeURIComponent(option.searchValue);
-            this.is_search = option.is_search;
-            this.paddingBottomHeight = 0;
-            this.scroll_top = 80; // 模拟滚动的内容
-        }
-        if(option.typeIndex) {
-            this.tabIndex = Number(option.typeIndex);
-        }
+        if(option.typeIndex)  this.tabIndex = Number(option.typeIndex) || 0;
         if(option.source) this.source = option.source;
         /*初始化激励视频*/
 		this.initRewardedVideoAd();
@@ -385,6 +289,7 @@ export default {
         ...mapActions({
             getUserInfo: 'user/getUserInfo',
         }),
+        warpRectDom,
         // 分享的文案获取
         specialLisShareHandle({ share_word, share_img }) {
             this.currentSharePageObj.btnShareObj = {
@@ -403,25 +308,11 @@ export default {
             this.currentIndex = event.detail.current;
         },
         async initDom() {
-            this.titleBoxDom = await this.initWarpRect('titleBox');
-            this.titleContBoxDom = await this.initWarpRect('titleContBox');
-        },
-        initWarpRect(id) {
-            return new Promise(resolve => {
-                setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-                    let query = uni.createSelectorQuery();
-                    // #ifndef MP-ALIPAY
-                    query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-                    // #endif
-                    query.select('#' + id).boundingClientRect(data => {
-                        resolve(data)
-                    }).exec();
-                }, 20)
-            })
+            this.titleBoxDom = await this.warpRectDom('titleBox');
+            this.titleContBoxDom = await this.warpRectDom('titleContBox');
         },
         // 页面的滚动事件
         onPageScroll(event) {
-            if(this.searchValue) return;
             const scroll_top = Math.ceil(event.scrollTop);
             this.scroll_top = scroll_top;
             this.disableScroll = scroll_top <= this.fixationValue;
@@ -473,184 +364,27 @@ export default {
             return null;
         },
         async initTabs() {
-            if (!this.searchValue) {
-                let res = await jdGroup();
-                let _tab = res.data.map(item => {
-                    return {
-                        ...item,
-                        query: jingfen
-                    }
-                })
-                this.tabs = _tab;
-            }
+            let res = await jdGroup();
+            let _tab = res.data.map(item => {
+                return {
+                    ...item,
+                    query: jingfen,
+                    groupId_index: 0
+                }
+            })
+            this.tabs = _tab;
         },
         async downCallbackInit(page) {
-            if(!this.searchValue) {
-                await this.initTabs();
-                if(page.isDownScrolling) {
-                    const currentIndex = this.tabIndex < (this.tabs.length - 1) ? this.tabIndex : (this.tabs.length - 1);
-                    let mescroll = this.getMescroll(currentIndex);
-                    let compoMescroll = this.getMescroll(currentIndex, true);
-                    compoMescroll.init_groupIdIndex();
-                    mescroll.resetUpScroll();
-                }
-                // return;
+            await this.initTabs();
+            if(page.isDownScrolling) {
+                const currentIndex = this.tabIndex < (this.tabs.length - 1) ? this.tabIndex : (this.tabs.length - 1);
+                let mescroll = this.getMescroll(currentIndex);
+                let compoMescroll = this.getMescroll(currentIndex, true);
+                compoMescroll.init_groupIdIndex();
+                mescroll.resetUpScroll();
             }
             this.$refs.mescrollRefInit.mescroll.endSuccess();
-            if(this.goods.length){
-                this.is_pdd = 0;
-                this.searchPageNum = 1;
-                this.mescroll.resetUpScroll();
-            }
         },
-        downCallback() {
-            this.is_pdd = 0;
-            this.searchPageNum = 1;
-            this.mescroll.resetUpScroll();
-        },
-        async upCallbackSearch(page) {
-            // 搜索无结果 请求推荐列表的内容
-			if(this.isRecommendRequest) return this.requestRem(page);
-            const params = {
-                page: this.searchPageNum,
-                size: 20,
-                keyword: this.searchValue,
-                is_pdd: this.is_pdd
-            }
-            // 搜索请求
-            if(this.is_pdd > 1) {
-               return this.searchPddList(params, page)
-            }
-            this.searchJdList(params, page);
-        },
-        async searchJdList(params, page) {
-            const res = await groupSearch(params).catch(()=>{ this.mescroll.endErr() });
-            let { list, total_count } = res.data;
-            if(page.num == 1) {
-                this.goods = [];
-                this.pddGoods = [];
-            };
-            this.goods = this.goods.concat(list);
-            this.searchPageNum += 1;
-            this.mescroll.endBySize(list.length, total_count);
-            if(this.searchPageNum * params.size >= total_count) {
-                this.is_pdd += 1;
-                this.searchPageNum = 1;
-                this.mescroll.triggerUpScroll();
-            }
-        },
-        async searchPddList(params, page) {
-            const res = await groupSearch(params).catch(()=>{ this.mescroll.endErr() });
-            let { list, total_count } = res.data;
-            this.searchPageNum += 1;
-            this.pddGoods = this.pddGoods.concat(list);
-            // this.mescroll.endBySize(list.length, total_count);
-            if(list.length) {
-                return this.mescroll.endSuccess(10, true);
-            }
-            // this.mescroll.endUpScroll(true);
-            // if(!list.length) this.mescroll.showEmpty();
-            // 搜索无结果
-            if(!this.goods.length && !this.pddGoods.length && this.is_pdd == 3) {
-                this.isEmpty = true;
-                this.isRecommendRequest = true;
-                this.requestRem(page);
-            }
-            if(this.is_pdd == 2) {
-                this.is_pdd = 3;
-                this.searchPageNum = 1;
-                this.mescroll.endSuccess(10, true);
-                this.mescroll.triggerUpScroll();
-            }
-            this.mescroll.endSuccess(0);
-        },
-        async requestRem(page) {
-            if(!this.groupRecommendData) {
-                const recRes = await groupRecommend({ page: 8 });
-                if(recRes.code != 1 || !recRes.data) return this.mescroll.endSuccess(0);
-                this.groupRecommendData = recRes.data;
-            }
-            const {
-                id,
-                cid,
-                cid2,
-                cid3,
-                eliteId,
-                groupId,
-                type
-            } = this.groupRecommendData;
-            let pageNum = this.pageNum;
-            let params = {
-                id,
-                page: pageNum,
-                size: 10,
-            }
-            let queryApi = goodsQuery;
-            // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-            switch(type) {
-                case 1:
-                    queryApi = material;
-                    params.eliteId = eliteId;
-                    params.groupId = groupId;
-                    params.size = 10;
-                    break;
-                case 2:
-                    queryApi = jingfen;
-                    params.eliteId = eliteId;
-                    params.groupId = groupId;
-                    params.size = 20;
-                    break;
-                case 3:
-                    queryApi = goodsQuery;
-                    params.cid1 = cid;
-                    params.cid2 = cid2;
-                    params.cid3 = cid3;
-                    break;
-                case 4:
-                    queryApi = jingfen;
-                    const groupId_index = this.groupId_index;
-                    params.eliteId = eliteId;
-                    params.groupId = groupId[groupId_index];
-                    params.size = 20;
-                    break;
-            };
-            queryApi(params).then(res => {
-                const {
-                    list,
-                    total_count
-                } = res.data;
-                // 设置列表数据
-                if( page.num == 1 ) {
-                    this.recommendGoods = [];
-                    this.pageNum = 1;
-                    this.lastOddItem = null;
-                }; //如果是第一页需手动制空列表
-                // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-                let isNextPage = (pageNum * params.size) < total_count;
-                if(!isNextPage && type == 4 && this.groupId_index < (groupId.length - 1)) {
-                    // 无下一页
-                    this.groupId_index += 1;
-                    this.mescroll.endSuccess(total_count, true);
-                    this.pageNum = 0;
-                } else {
-                    this.mescroll.endSuccess(list.length || total_count, isNextPage);
-                }
-                if(list.length == 0 && (pageNum * params.size) < total_count){
-                    this.mescroll.triggerUpScroll();
-                }
-                if(this.lastOddItem) {
-                    this.recommendGoods.push(this.lastOddItem);
-                    this.lastOddItem = null;
-                }
-                this.pageNum += 1;
-                this.recommendGoods = this.recommendGoods.concat(list); // 追加新数据
-                const goodLength = this.recommendGoods.length;
-                if(goodLength % 2 && goodLength > 6) {
-                    this.lastOddItem = this.recommendGoods.pop();
-                }
-            }).catch(() => this.mescroll.endErr());
-        },
-        // 轮播菜单
         swiperChange(e){
             this.tabIndex = e.detail.current;
         },
@@ -660,10 +394,9 @@ export default {
         },
         toSearchHandle() {
             if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
-            if(this.source == 'home')return this.$leftBack();
+            if(this.source == 'home') return this.$leftBack();
             const pathUrl = '/pages/userModule/productList/search';
             const placeholderValue = this.textList.length ? this.textList[this.currentIndex] : '';
-            if(this.searchValue) return this.$redirectTo(`${pathUrl}?inputValue=${encodeURIComponent(this.searchValue)}`);
             this.$go(`${pathUrl}?placeholderValue=${placeholderValue}`);
         },
         // 搜索按钮
@@ -671,7 +404,7 @@ export default {
             if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
             const recommendTxt = this.textList.length ? this.textList[this.currentIndex] : '';
             if(!recommendTxt) return this.$go('/pages/userModule/productList/search');
-            this.$go(`/pages/userModule/productList/index?searchValue=${encodeURIComponent(recommendTxt)}&is_search=1`);
+            this.$go(`/pages/userModule/productList/searchResult?searchValue=${encodeURIComponent(recommendTxt)}&is_search=1`);
         }
     },
     onUnload() {
@@ -684,23 +417,12 @@ export default {
 page {
     background: rgba($color: #f7f7f7, $alpha: .8);
 }
-.sticky-tabs{
+.sticky-tabs {
     z-index: 99;
     position: sticky;
     top: var(--window-top);
-    // background-color: #fff;
 }
-.mescroll_box{
-    margin-top: 14rpx;
-    height: 100%;
-    // background-color: #fff;
-    background: rgba($color: #f7f7f7, $alpha: .8);
-    border-radius: 32rpx 32rpx 0rpx 0rpx;
-    overflow: hidden;
-    padding-bottom: constant(safe-area-inset-bottom); /* 兼容 IOS<11.2 */
-    padding-bottom: env(safe-area-inset-bottom); /* 兼容 IOS>11.2 */
-}
-.title_box{
+.title_box {
     height: 100%;
     display: flex;
     align-items: center;
@@ -708,13 +430,17 @@ page {
     flex: 1;
     color: #666666;
     line-height: 26rpx;
+    transition: all .3s;
+    &.opacity0 {
+        opacity: 0;
+    }
 }
 .title_left {
     width: 172rpx;
     height: 48rpx;
     position: relative;
     margin: 8rpx 15rpx 0;
-    .title_img{
+    .title_img {
         width: 100%;
         height: 100%;
     }
@@ -727,25 +453,21 @@ page {
         right: -6rpx;
     }
 }
-.search_box{
+.search_box {
     font-size: 26rpx;
     color: #999;
     height: 68rpx;
-    background: #ffffff;
-    border-radius: 38rpx;
     box-sizing: border-box;
-    padding: 0 2rpx 0 32rpx;
+    padding: 0 2rpx 0 20rpx;
     display: flex;
     align-items: center;
-    border: 3rpx solid #f04138;
     box-sizing: border-box;
     line-height: 36rpx;
     position: absolute;
-    // top: 92rpx; // 68 + 24
-    // left: 50%;
-    // transform: translateX(-50%);
-    // width: 702rpx;
-    .search_icon{
+    background: #fff;
+    border: 2rpx solid #f04138;
+    border-radius: 16rpx;
+    .search_icon {
         width: 28rpx;
         height: 28rpx;
     }
@@ -756,24 +478,36 @@ page {
         border-radius: 200rpx;
         margin: 0 20rpx 0 16rpx;
     }
-    .swiper_box{
+    .swiper_box {
         height: 100%;
         flex: 1;
         line-height: 68rpx;
         width: 0;
-        .swiper_item{
+        .txt_ov_ell1 {
+            padding-right: 72rpx;
+        }
+        .sel_del {
+            background: url("https://file.y1b.cn/store/1-0/24628/667e8cb8f273b.png") 0 0 / 100% 100%;
+            width: 36rpx;
+            height: 36rpx;
+            position: absolute;
+            right: 16rpx;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .swiper_item {
             height: 100%;
         }
     }
-    .search_btn{
-        width: 120rpx;
+    .search_btn {
+        width: 128rpx;
         line-height: 56rpx;
-        background: linear-gradient(135deg,#f9675f, #f84842);
-        border-radius: 32rpx;
         font-size: 28rpx;
         text-align: center;
         color: #ffffff;
-        margin-right: 4rpx;
+        margin-right: 2rpx;
+        background: linear-gradient(135deg,#f9675f, #f84842);
+        border-radius: 12rpx;
     }
 }
 .nav_bg {
@@ -799,5 +533,10 @@ page {
     margin: 28rpx 0;
     color: #999;
     text-align: center;
+}
+.selTab_sticky {
+    position: sticky;
+    z-index: 1;
+    top: 0;
 }
 </style>

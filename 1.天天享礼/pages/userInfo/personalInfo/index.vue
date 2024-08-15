@@ -235,7 +235,7 @@ export default{
     },
     animationHandle2() {
       // this.$go(`plugin://jtkDc/kudiindex?pub_id=27729&sid=ttxl&channel=${this.userInfo.id}`);
-      this.$go(`plugin://jtkDc/index?pub_id=27729&sid=ttxl&channel=${this.userInfo.id}`);
+      this.$go(`plugin://jtkDc/index?pub_id=27729&sid=ttxl${this.userInfo.id}`);
       // plugin://jtkDc/index?pub_id=26&sid=123456
     },
     async uploadImg(imgPath) {
@@ -376,7 +376,7 @@ export default{
     async confirmExitLoginHandle() {
         this.isShowConfirmDia = false;
         this.setAutoLogin(false)
-        this.$back();
+        this.$leftBack();
     }
 	}
 }

@@ -1,38 +1,56 @@
 export function go(url) {
+    if (this.$isClick) return;
+    this.$isClick = true;
     uni.navigateTo({
         url: url,
+        complete: () => {
+            this.$isClick = false;
+        }
     });
 }
-
-export function back(delta = 1) {
+export function leftBack(delta = 1, failUrl = '/pages/tabBar/shopMall/index') {
+    if (this.$isClick) return;
+    this.$isClick = true;
     uni.navigateBack({
         delta: delta,
-    });
-}
-export function leftBack(delta = 1) {
-    uni.navigateBack({
-        delta: delta,
-        fail() {
-            uni.switchTab({
-                url: '/pages/tabBar/shopMall/index'
-            });
+        fail: () => {
+            this.$isClick = false;
+            switchTab.call(this, failUrl);
+        },
+        complete: () => {
+            this.$isClick = false;
         }
     });
 }
 export function redirectTo(url) {
+    if (this.$isClick) return;
+    this.$isClick = true;
     uni.redirectTo({
-        url: url,
+        url,
+        complete: () => {
+            this.$isClick = false;
+        }
     });
 }
 
 export function reLaunch(url) {
+    if (this.$isClick) return;
+    this.$isClick = true;
     uni.reLaunch({
-        url: url,
+        url,
+        complete: () => {
+            this.$isClick = false;
+        }
     });
 }
 
 export function switchTab(url) {
+    if (this.$isClick) return;
+    this.$isClick = true;
     uni.switchTab({
-        url: url,
+        url,
+        complete: () => {
+            this.$isClick = false;
+        }
     });
 }

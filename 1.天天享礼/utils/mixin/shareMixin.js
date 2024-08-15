@@ -17,26 +17,6 @@ const shareMixin = {
                     btnShareObj: null
                 },
                 {
-                    route: 'pages/tabBar/discounts/index',
-                    pageNum: 2,
-                    text: '惠生活',
-                    defaultTitle: '肯德基点餐5折起，天天疯狂星期四',
-                    defaultImg: 'https://file.y1b.cn/store/1-0/23527/64719ea4deed0.png',
-                    isBtnShare: 'specialMini',
-                    shareRoute: 'pages/tabBar/discounts/index?show_kudi=1', // 分享进入的路径
-                    btnShareObj: null
-                },
-                {
-                    route: 'pages/discounts/discounts/index',
-                    pageNum: 2,
-                    text: '惠生活',
-                    defaultTitle: '肯德基点餐5折起，天天疯狂星期四',
-                    defaultImg: 'https://file.y1b.cn/store/1-0/23527/64719ea4deed0.png',
-                    isBtnShare: 'specialMini',
-                    shareRoute: 'pages/discounts/discounts/index?show_kudi=1', // 分享进入的路径
-                    btnShareObj: null
-                },
-                {
                     route: 'pages/tabBar/task/index',
                     pageNum: 3,
                     text: '福利中心',
@@ -56,14 +36,6 @@ const shareMixin = {
                     btnShareObj: null
                 },
                 {
-                    route: 'pages/userModule/takeawayMenu/luckin/index',
-                    pageNum: 5,
-                    text: '瑞幸点单',
-                    defaultTitle: '来杯瑞幸咖啡,开启一天好运',
-                    defaultImg: '',
-                    shareRoute: 'pages/userModule/takeawayMenu/luckin/index?brand_id=13&rote=1&pathSource=discounts', // 分享进入的路径
-                },
-                {
                     route: 'pages/userModule/allowance/redPacket/index',
                     pageNum: 6,
                     text: '外卖红包'
@@ -74,29 +46,9 @@ const shareMixin = {
                     text: '大牌直充'
                 },
                 {
-                    route: 'pages/userModule/takeawayMenu/mcDonald/index',
-                    pageNum: 8,
-                    text: '麦当劳',
-                    defaultTitle: '麦当劳，欢迎您来',
-                    defaultImg: '',
-                    shareRoute: 'pages/userModule/takeawayMenu/mcDonald/index?brand_id=5&rote=1&pathSource=discounts'
-                },
-                {
                     route: 'pages/userModule/allowance/repairGet/index',
                     pageNum: 9,
                     text: '限时捡漏'
-                },
-                {
-                    route: 'pages/userModule/takeawayMenu/kfc/index',
-                    pageNum: 10,
-                    text: '肯德基',
-                    shareRoute: 'pages/userModule/takeawayMenu/kfc/index?brand_id=97&rote=1&pathSource=discounts'
-                },
-                {
-                    route: 'pages/userModule/takeawayMenu/starbucks/index',
-                    pageNum: 11,
-                    text: '星巴克点餐',
-                    shareRoute: 'pages/userModule/takeawayMenu/starbucks/index?brand_id=99&rote=1&pathSource=discounts'
                 },
                 {
                     route: 'pages/userCash/cash/index',
@@ -184,10 +136,10 @@ const shareMixin = {
                 if (data.target.dataset) {
                     let shareItem = data.target.dataset.item;
                     // 进入分享页后返回上一页的页面路径 - 目前取消，默认跳转首页
-                    // const sourceUrl = "/pages/userModule/productList/index";
-                    const sourceUrl = "";
                     let queryId = '';
-                    const { title, image, skuId, cid1, cid3, lx_type, coupon_id, goods_sign, positionId, } = shareItem;
+                    const { image, skuId, lx_type, coupon_id, goods_sign, positionId, face_value } = shareItem;
+                    let title = shareItem.title;
+                    face_value && (title = `【${face_value}元券】${title}`);
                     share.title = title;
                     share.imageUrl = image;
                     if ([2, 3].includes(lx_type)) {
@@ -228,20 +180,16 @@ const shareMixin = {
                 shareItem = this.feedList[current];
             }
             const {
-                title,
                 image,
-                cid1,
                 skuId,
-                cid3,
                 goods_sign,
-                positionId,
-                lx_type
+                lx_type,
+                face_value
             } = shareItem;
-            // let shareUrl = `cid1=${cid1}&skuId=${skuId}&cid3=${cid3}`;
-            // if (this.shop_type == 3) shareUrl = `goods_sign=${goods_sign}&positionId=${positionId || 0}`
-
+            let title = shareItem.title;
             let queryId = skuId;
             if (this.shop_type == 3) queryId = goods_sign;
+            face_value && (title = `【${face_value}元券】${title}`);
             share.title = title || "领券啦！领了优惠券再下单，又省了一笔钱";
             share.imageUrl = image;
             share.path = `/pages/shopMallModule/productDetails/index?lx_type=${lx_type}&queryId=${queryId}${pathData}`;
@@ -255,8 +203,8 @@ const shareMixin = {
                 if (data.target.dataset) {
                     shareId = data.target.dataset.id;
                     const btnShareObj = this.currentSharePageObj.btnShareObj;
-                    const specialUrl = `/pages/userModule/allowance/specialList/index?id=${shareId}`
-                    const { share_title, share_img } = btnShareObj || {};
+                    const specialUrl = `/pages/userModule/allowance/specialList/index?id=${shareId}`;
+                    const { share_title, share_img, } = btnShareObj || {};
                     share = {
                         path: `/pages/tabBar/shopMall/index?specialUrl=${encodeURIComponent(specialUrl)}${pathData}`
                     }
@@ -289,11 +237,14 @@ const shareMixin = {
         }
         // 中转详情页的配置
         if (isBtnShare == 'productDetails') {
-            const { goods_name, banner_image } = this.config;
+            const { goods_name, banner_image, face_value } = this.config;
             const proData = `&lx_type=${this.lx_type}&queryId=${this.queryId}`
+            let title = share_title || goods_name;
+            face_value && (title = `【${face_value}元券】${title}`);
+            const [firstBannerImage] = banner_image;
             share = {
-                title: share_title || goods_name,
-                imageUrl: share_img || (banner_image.length && banner_image[0]),
+                title,
+                imageUrl: share_img || this.showShareImage || firstBannerImage,
                 path: `${share.path}${proData}`
             };
         }

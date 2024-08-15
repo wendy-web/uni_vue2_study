@@ -12,85 +12,16 @@
 <view class="cont_box">
 	<view class="cont_top" @click="popupClose">
 		<xh-navbar :fixed="false"></xh-navbar>
-		<block v-if="!isMcDonaldType">
-			<view class="service_title">
-				<image class="service_title-icon" :src="subImgUrl + (couponInfo.goods_type ? '/ser_box_icon1.png' : '/ser_box_icon0.png')"
-					mode="aspectFit"></image>
-				{{ couponInfo.goods_type ? '下单即用 放心购' : '下单充值 秒到账' }}
-			</view>
-			<view class="close_box">
-				<image class="close_box-icon" :src="subImgUrl +'/close.png'" mode="aspectFit" @click="popupClose"></image>
-			</view>
-		</block>
-		<image class="close_icon" mode="aspectFit" v-else
-			src="https://file.y1b.cn/store/1-0/23118/654b29f0188a0.png" @click="popupClose"></image>
-	</view>
-	<view class="service mcdonald" v-if="isMcDonaldType">
-		<view class="mc_top box_fl">
-			<view class="mc_top-left box_fl">
-				<image class="mc_top-img" :src="couponInfo.image" mode="aspectFit"></image>
-			</view>
-			<view class="mc_top-right">
-				<view class="box_fl_end">
-					<view v-html="formatPrice(couponInfo.goods_market_price, 3)" style="color: #F84842;"></view>
-					<view class="old_price">￥{{ couponInfo.goods_line_price && couponInfo.goods_line_price.toFixed(2) }}</view>
-				</view>
-				<view class="exclusive_price">专属优惠
-					<text class="exclusive_price-value">{{ couponInfo.coupon_face_value }}</text>
-				</view>
-			</view>
+		<view class="service_title">
+			<image class="service_title-icon" :src="subImgUrl + (couponInfo.goods_type ? '/ser_box_icon1.png' : '/ser_box_icon0.png')"
+				mode="aspectFit"></image>
+			{{ couponInfo.goods_type ? '下单即用 放心购' : '下单充值 秒到账' }}
 		</view>
-		<view class="mc_cont">
-			<view class="mc_cont-title">{{ couponInfo.coupon_title }}</view>
-			<view class="mc_dot"></view>
-			<view class="mc_line fl_bet">
-				<view class="mc_line-item">
-					<image class="line_item-con" src="https://test-file.y1b.cn/store/1-0/2447/661218d652750.png" mode="aspectFill"></image>
-					<view>线上购买</view>
-				</view>
-				<image class="line_item-lab" src="https://file.y1b.cn/store/1-0/24415/661c8cc139e2b.png" mode="aspectFill"></image>
-				<view class="mc_line-item">
-					<image class="line_item-con" src="https://test-file.y1b.cn/store/1-0/2447/661231666e8ca.png" mode="aspectFill"></image>
-					<view>用券点餐</view>
-				</view>
-				<image class="line_item-lab" src="https://file.y1b.cn/store/1-0/24415/661c8cc139e2b.png" mode="aspectFill"></image>
-				<view class="mc_line-item">
-					<image class="line_item-con" src="https://test-file.y1b.cn/store/1-0/2447/6612319b74ac3.png" mode="aspectFill"></image>
-					<view>门店取餐</view>
-				</view>
-			</view>
-			<view class="mc_lab fl_bet" @click="isShowServiceInformDia = true">
-				先囤后用 · 随时退 · 过期自动退
-				<van-icon name="arrow" custom-style="font-weight: 600;" size="26rpx"/>
-			</view>
-		</view>
-		<view class="mc_cont-box" @click="goSelectShopHandle">
-			<view class="intro-title fl_bet" v-if="!restaurantStore">
-				当前城市未找到门店
-				<view style="color: #666">切换
-					<van-icon name="arrow" custom-style="font-weight: 600;" size="26rpx" color='#666'/>
-				</view>
-			</view>
-			<block v-else>
-				<view class="mc_store-title fl_bet">
-					全城适用门店
-					<van-icon name="arrow" custom-style="font-weight: 600;" size="26rpx" color='#666'/>
-				</view>
-				<view class="store_add fl_bet">
-					<view class="store_add-left txt_ov_ell1">{{ restaurantStore.restaurant_name }}</view>
-					<view class="store_add-right box_fl">距您{{ restaurantStore.distance }}</view>
-				</view>
-				<view class="store_add-txt">
-					{{ restaurantStore.restaurant_address }}
-				</view>
-			</block>
-		</view>
-		<view class="mc_cont-box explain" v-if="goodsIntro">
-			<u-parse :content="goodsIntro"></u-parse>
+		<view class="close_box">
+			<image class="close_box-icon" :src="subImgUrl +'/close.png'" mode="aspectFit" @click="popupClose"></image>
 		</view>
 	</view>
-
-	<view class="service"  v-else>
+	<view class="service">
 		<view class="ser_box ser_box_top">
 			<image class="shop_bg" :src="subImgUrl +'/shop_bg.png'" mode="aspectFit"></image>
 			<image class="shop_img" :src="couponInfo.image" mode="aspectFit"></image>
@@ -120,43 +51,47 @@
 						/>
 					</view>
 				</block>
-                <!-- <view class="discount_item fl_bet" v-if="couponInfo.zero_credits">
-                    <view class="fl_center">
-                        <image class="dis_icon" :src="cardImgUrl +'/card_icon5.png'" mode="aspectFill"></image>
-                        <view>0豆特权</view>
-                    </view>
-                    <view class="dis_noPrice">免{{couponInfo.credits}}牛金豆</view>
-                </view> -->
                 <view class="discount_item fl_bet">
                     <view class="fl_center">
                         <image class="dis_icon" :src="cardImgUrl +'/card_icon6.png'" mode="aspectFill"></image>
                         <view>专属优惠</view>
                     </view>
                     <view class="dis_price">
-                        <text style="font-size: 24rpx">- ¥</text> {{couponInfo.coupon_face_value}}
+                        - <text style="font-size: 24rpx;margin-left: 8rpx;">¥</text> {{couponInfo.coupon_face_value}}
                     </view>
                 </view>
-                <block v-if="isSelNewPacket && !userInfo.is_vip ">
-                    <view class="discount_item fl_bet">
+                <block v-if="!userInfo.is_vip">
+                    <view class="discount_item fl_bet" @click="openVipHandle">
                         <view class="fl_center">
-                            <image class="dis_icon" :src="cardImgUrl +'/card_icon1.png'" mode="aspectFill"></image>
-                            <view>开通省钱卡</view>
+                            <image class="dis_icon" src="https://file.y1b.cn/store/1-0/2471/6682110e24584.png" mode="aspectFill"></image>
+							<view>开通会员</view>
+							<image class="vip_icon" src="https://file.y1b.cn/store/1-0/2471/6682218539eb2.png" mode="aspectFill"></image>
                         </view>
-                        <view class="dis_price" style="color: #333;">
-                            <text style="font-size: 24rpx">¥</text> 3.90
-                        </view>
+                        <view class="dis_price" style="color: #333; ">
+							<block v-if="isSelOpenVip">
+								<text style="font-size: 24rpx">¥</text>{{ cardPrice  }}
+							</block>
+							<block v-else>
+								<text style="font-size: 26rpx;">下单再省</text>
+								<text style="margin-left: 8rpx;">
+									<text style="font-size: 24rpx">¥</text>
+									3.3</text>
+							</block>
+							<van-icon custom-style="font-weight: 600;margin-left: 10rpx" size="26rpx" name="arrow" color="#999"/>
+						</view>
                     </view>
-                    <view class="discount_item new_item fl_bet">
-                        <view class="fl_center">
-                            <image class="dis_icon" :src="cardImgUrl +'/card_icon2.png'" mode="aspectFill"></image>
-                            <view>新人开卡立减</view>
-                        </view>
-                        <view class="dis_price">
-                            <text style="font-size: 24rpx">-¥</text> 3
-                        </view>
-                    </view>
+					<view class="discount_item fl_bet" v-if="isOpenNotCredits" @click="openVipHandle">
+						<view class="fl_center">
+							<image class="dis_icon" :src="cardImgUrl +'/card_icon5.png'" mode="aspectFill"></image>
+							<view>免豆特权1年</view>
+						</view>
+						<view class="dis_price" style="color: #333;">
+							<text style="font-size: 24rpx">¥</text>{{ not_creditsPrice }}
+							<van-icon custom-style="font-weight: 600;margin-left: 10rpx" size="26rpx" name="arrow" color="#999"/>
+						</view>
+					</view>
                 </block>
-                <view class="discount_item fl_bet" @click="goredPayIndexHandle(false)" v-if="couponInfo.saving_money">
+                <view class="discount_item fl_bet" @click="goredPayIndexHandle(false)" v-if="couponInfo.saving_money && (userInfo.is_vip == 1)">
                     <view class="fl_center">
                         <image class="dis_icon" :src="cardImgUrl +'/card_icon3.png'" mode="aspectFill"></image>
                         <view>省钱卡红包</view>
@@ -174,8 +109,8 @@
                     </view>
                 </view>
 				<view class="buy-price">
-					<text>已优惠¥</text>
-					<text class="icon-star">{{couponFaceValue}}</text>元
+					<text>已优惠</text>
+					<text class="icon-star">¥{{couponFaceValue}}</text>
 					<text class="price_txt">应付</text>
 					<view v-html="formatPrice(showAllPrice, 3)"></view>
 				</view>
@@ -193,16 +128,22 @@
 	</view>
 	<view class="buy_btn-box">
 		<view class="discount_rem" @click="goredPayIndexHandle(true)">
-			<image class="discount_rem-icon" :src="subImgUrl +'/zs_plan.png'" mode="aspectFit"></image>
+			<image class="discount_rem-icon" :src="subImgUrl +'/zs_plan.png'" mode="aspectFit" v-if="!userInfo.is_vip && !isSelOpenVip"></image>
 			<image class="discount_rem_bg" :src="subImgUrl + '/discount_rem_bg.png'" mode="aspectFit"></image>
-			<text v-if="isMcDonaldType">
-                共优惠¥{{couponInfo.coupon_face_value}}
-            </text>
-            <block v-else-if="!userInfo.is_vip && !isSelNewPacket && couponInfo.saving_money">
-                <text>开通省钱卡更划算</text>
+			<block v-if="!userInfo.is_vip && !isSelOpenVip">
+                <text >开通省钱卡会员更划算</text>
                 <van-icon custom-style="font-weight: 600;margin-left: 10rpx" size="20rpx" name="arrow" color="#F97F02"/>
             </block>
-            <block v-else-if="!isSelRedPacket && couponInfo.saving_money">
+			<block v-else-if="isSelOpenVip || (userInfo.is_vip == 2)">
+				<view class="open_rem fl_bet">
+					<view class="open_rem-left box_fl">
+						<image class="dis_icon" src="https://file.y1b.cn/store/1-0/2471/6682110e24584.png" mode="aspectFill"></image>
+						<text>省钱卡会员</text>
+					</view>
+					<view class="open_rem-right">付款后本单立返<text style="color: #F84842;font-size: 26rpx;">¥{{ couponInfo.vip_profit || 3.3 }}</text>至零钱</view>
+				</view>
+            </block>
+            <block v-else-if="(userInfo.is_vip == 1) && !isSelRedPacket && couponInfo.saving_money">
                 <text>用省钱卡红包再省￥{{ couponInfo.saving_money }}</text>
                 <van-icon custom-style="font-weight: 600;margin-left: 10rpx" size="20rpx" name="arrow" color="#F97F02"/>
             </block>
@@ -210,13 +151,9 @@
                 已享最大优惠¥{{couponFaceValue}}
             </text>
 		</view>
-		<view class="buy_mc-btn fl_center" v-if="isMcDonaldType" @click="mcCheckHandle">
-			立即支付 <view class="price" v-html="formatPrice(couponInfo.goods_market_price, 3)"></view>
-		</view>
-		<view class="buy_btn-cont" v-else>
+		<view class="buy_btn-cont">
             <view>
                 <view class="box_fl">应付：<view class="price" v-html="formatPrice(showAllPrice, 3)"></view></view>
-                <view class="buy_btn-lab" v-if="isSelNewPacket && !userInfo.is_vip">含开卡折扣¥0.90</view>
             </view>
 			<view class="buy_btn" @click="checkHandle">去支付</view>
 		</view>
@@ -263,15 +200,22 @@
 	:isShow="isShowServiceInformDia"
 	@close="isShowServiceInformDia = false"
 ></serviceInformDia>
+
+<!-- 开通vip的插件 -->
+<openVipPopup ref="openVipPopup"
+	:isShow="isShowOpenVipPopup"
+	@close="isShowOpenVipPopup = false"
+	@cancel="cancelHandle"
+	@confirm="confirmHandle"
+></openVipPopup>
 </view>
 </template>
 
 <script>
 import { pay, query } from '@/api/modules/order.js';
-import { location, restaurantQuery } from '@/api/modules/takeawayMenu/luckin.js';
 import { applyCoupon, buy } from '@/api/modules/user.js';
+import openVipPopup from "@/components/cardOpen/openVipPopup.vue";
 import { formatPrice, getImgUrl } from '@/utils/auth.js';
-import { getUserLocation } from '@/utils/getUserLocation.js';
 import { checkRichText, escape2Html } from '@/utils/index.js';
 import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 import { mapGetters, mapMutations } from "vuex";
@@ -287,7 +231,8 @@ let _request = false;
 			continuePay,
 			continuePhoneRegDia,
 			noProductDia,
-			serviceInformDia
+			serviceInformDia,
+			openVipPopup
 		},
 		data(){
 			return {
@@ -313,90 +258,88 @@ let _request = false;
 				alertUsed: 0,
 				subImgUrl: `${getImgUrl()}static/subPackages/shopMallModule`,
                 cardImgUrl:`${getImgUrl()}static/card/`,
-				isMcDonaldType: false,
 				isShowServiceInformDia: false,
 				lng: 0,
 				lat: 0,
 				location_province: '',
 				location_city: '',
-				restaurantStore: null
-			}
-		},
-		watch: {
-			restaurant_id(newValue, oldValue) {
-				if(!this.isMcDonaldType || !newValue || !oldValue) return;
-				this.initLocation(12, newValue);
+				restaurantStore: null,
+				isShowOpenVipPopup: false,
+				isSelOpenVip: false,
+				isOpenNotCredits: false,
+				paramsIsOrder: ''
 			}
 		},
 		computed: {
-            ...mapGetters(["userInfo", "isSelRedPacket", 'isSelNewPacket',  'province_name', 'city_name', 'restaurant_id']),
+            ...mapGetters(["userInfo", "isSelRedPacket", 'isSelNewPacket', 'cardPrice', 'not_creditsPrice']),
 			goodsIntro() {
-				if (!this.couponInfo) return
-				let {
-					goods_instruction
-				} = this.couponInfo
-
+				if (!this.couponInfo) return;
+				let { goods_instruction } = this.couponInfo;
 				if (goods_instruction) {
-					let html = escape2Html(goods_instruction || '')
-					let result = checkRichText(html)
-					if (result) {
-						return html
-					} else {
-						return ''
-					}
+					let html = escape2Html(goods_instruction || '');
+					let result = checkRichText(html);
+					if (result) return html;
+					return '';
 				}
-				return ''
+				return '';
 			},
 			exchangeRule() {
-				if (!this.couponInfo) return
-				let {
-					goods_details
-				} = this.couponInfo
+				if (!this.couponInfo) return;
+				let { goods_details } = this.couponInfo;
 				if (goods_details) {
-					// return escape2Html(goods_details||'')
-					let html = escape2Html(goods_details || '')
-					let result = checkRichText(html)
-					if (result) {
-						return html
-					} else {
-						return ''
-					}
+					let html = escape2Html(goods_details || '');
+					let result = checkRichText(html);
+					if (result) return html;
+					return '';
 				}
-				return ''
+				return '';
 			},
             showAllPrice() {
                 const { goods_market_price, coupon_face_value, saving_money } = this.couponInfo;
                 let allPrice = Number(goods_market_price) - Number(coupon_face_value);
-                // 新开通省钱卡 - 金额加上0.9
-                if(this.isSelNewPacket && !this.userInfo.is_vip) {
-                    allPrice = allPrice + 0.9;
+                // 新开通省钱卡 - 金额加上this.cardPrice
+                if(this.isSelOpenVip && !this.userInfo.is_vip) {
+                    allPrice += Number(this.cardPrice);
+					if(this.isOpenNotCredits) allPrice += Number(this.not_creditsPrice);
                 }
                 // 选中红包的金额 进行减去
-                if(this.isSelRedPacket) {
-                    allPrice = allPrice - Number(saving_money);
-                }
-                return allPrice.toFixed(2)
+                if(this.isSelRedPacket) allPrice = allPrice - Number(saving_money);
+                return allPrice.toFixed(2);
             },
             couponFaceValue() {
                 const { coupon_face_value, saving_money } = this.couponInfo;
                 let value =  Number(coupon_face_value);
                 if(this.isSelRedPacket) value = value + Number(saving_money);
-                if(!this.userInfo.is_vip && this.isSelNewPacket) value = value - 0.9;
                 return value.toFixed(2);
             }
 		},
 		methods:{
             ...mapMutations({
                 setSelRedPacket: 'user/setSelRedPacket',
-                setSelNewPacket: 'user/setSelNewPacket',
-				setBrandId: 'cart/setBrandId',
-				setRestaurantId: 'cart/setRestaurantId',
-				setCityName: 'cart/setCityName'
+                setSelNewPacket: 'user/setSelNewPacket'
             }),
             formatPrice,
+			openVipHandle() {
+				this.isShowOpenVipPopup = true;
+			},
+			cancelHandle() {
+				this.isShowOpenVipPopup = false;
+				this.isSelOpenVip = false;
+				this.isOpenNotCredits = false;
+			},
+			confirmHandle(isNotCredits) {
+				this.isShowOpenVipPopup = false;
+				this.isSelOpenVip = true;
+				this.isOpenNotCredits = isNotCredits;
+			},
             goredPayIndexHandle(isLab = false){
+				if(this.userInfo.is_vip == 2) return;
                 const { saving_money } = this.couponInfo;
-                if(isLab && this.isSelRedPacket && this.userInfo.is_vip) return;
+				if(!this.userInfo.is_vip) {
+					if(!this.isSelOpenVip) return this.openVipHandle();
+					return;
+				}
+                if(isLab && this.isSelRedPacket) return;
                 this.$go(`/pages/userCard/card/cardVip/redPayIndex?saving_money=${saving_money}&ly_type=0`);
             },
 			popupClose(){
@@ -413,60 +356,18 @@ let _request = false;
 			confirmBackHandle() {
 				this.isShowBackDia = false;
 				this.show = false;
-				uni.navigateBack({
-					fail() {
-						uni.switchTab({
-							url:'/pages/tabBar/shopMall/index'
-						})
-					}
-				});
+				this.$leftBack();
 			},
 			popupShow(id, alertUsed, type){
 				this.alertUsed = alertUsed;
                 this.paymentParams = null;
+				this.isShowOpenVipPopup = false;
+				this.isSelOpenVip = false;
+				this.isOpenNotCredits = false;
+				this.paramsIsOrder = '';
                 this.setSelRedPacket(false);
                 this.setSelNewPacket(false);
 				this.init(id);
-				this.initLocation(type);
-			},
-			goSelectShopHandle() {
-				this.$go(`/pages/userModule/takeawayMenu/mcDonald/selectShop/index?pathSource=back`);
-			},
-			async initLocation(type, restaurant_id) {
-				if(type != 12) return this.isMcDonaldType = false;
-				this.setBrandId(5);
-				this.isMcDonaldType = true;
-				const locRes = await getUserLocation(false, false);
-				if(!locRes) return;
-				this.lng = locRes.data.longitude;
-				this.lat = locRes.data.latitude;
-				let lng = this.lng;
-				let lat = this.lat;
-				if(!this.location_province || !this.location_city) {
-					const resInfo = await location({ lng, lat });
-					if(resInfo.code != 1) return;
-					const { cityInfo } = resInfo.data;
-					this.location_city = cityInfo.city;
-					this.location_province = cityInfo.province;
-				}
-				this.setCityName(this.location_city);
-				const params = {
-					brand_id: 5,
-					lng,
-					lat,
-					restaurant_id: this.restaurant_id || restaurant_id,
-					province_name: this.province_name || this.location_province,
-					city_name: this.city_name || this.location_city,
-					rote: 1,
-					location_city: this.location_city,
-				};
-				const res = await restaurantQuery(params);
-				if(res.code != 1 || res.data.upgrade) return;
-				this.restaurantStore = res.data;
-				const restaurantIdRes = res.data.restaurant_id;
-				if(!this.restaurant_id) {
-					this.setRestaurantId(restaurantIdRes); // 门店id
-				}
 			},
 			closePayHandle() {
             	this.show = false;
@@ -488,13 +389,7 @@ let _request = false;
 			closeNoProductHandle() {
 				// 手慢无 - 返回首页
 				this.closeDiaHandle();
-				uni.navigateBack({
-					fail() {
-						uni.switchTab({
-							url:'/pages/tabBar/shopMall/index'
-						})
-					}
-				});
+				this.$leftBack();
 			},
 			async init(id) {
 				const navbarSystem =  uni.getStorageSync('xh-navbar-system');
@@ -549,24 +444,25 @@ let _request = false;
 			},
 			async checkBuy(expired_power = 0, refund_power = 0) {
 				if (_request) return _request = true;
+				const is_order = Number(this.isOpenNotCredits);
+				if (this.paymentParams && (this.paramsIsOrder == is_order)) return this.createPayment(this.paymentParams);
 				let params = {
 					id: this.couponInfo.goods_id, //商品id
 					coupon_id: this.couponInfo.coupon_id, //优惠券id
 					charge_account: this.account, //充值账号
 					goods_market_price: this.couponInfo.goods_market_price * 100, //商品价格
                     use_saving: Number(this.isSelRedPacket),
-                    get_saving: Number(this.isSelNewPacket),
-					is_order: Number(this.isMcDonaldType),
+                    get_saving: Number(this.isSelOpenVip),
+					is_order,
 					expired_power,
 					refund_power
 				}
-				if (this.paymentParams) return this.createPayment(this.paymentParams);
+				this.paramsIsOrder = is_order;
 				const res = await buy(params);
 				let { code, data, msg } = res;
 				_request = false;
 				if (code == 1) {
 					this.order_id = data.order_id;
-					if(this.isMcDonaldType) return this.payOrderRequest();
 					this.paymentParams = JSON.parse(data.jspay_info);
 					this.createPayment(this.paymentParams)
 					return;
@@ -615,16 +511,12 @@ let _request = false;
 								let { pay_amount, status } = data;
 								pay_amount = (pay_amount / 100).toFixed(2);
 								// 卡券类跳转详情
-								if(this.couponInfo.goods_type || this.isMcDonaldType) {
-									uni.reLaunch({
-										url: `/pages/userModule/order/detail?id=${this.order_id}&payment=${pay_amount}`
-									});
+								if(this.couponInfo.goods_type) {
+									this.$reLaunch(`/pages/userModule/order/detail?id=${this.order_id}&payment=${pay_amount}`);
 									return;
 								}
-								uni.redirectTo({
-									url: `/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`
-								})
-								return
+								this.$redirectTo(`/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`);
+								return;
 							}
 							uni.showModal({
 								title: '温馨提示',
@@ -663,11 +555,16 @@ let _request = false;
     &.new_item{
         background: linear-gradient(270deg,rgba(248,72,66,0.00) 0%, rgba(248,72,66,0.06) 75%, rgba(248,72,66,0.00));
     }
-  .dis_icon {
-    width: 32rpx;
-    height: 32rpx;
-    margin-right: 12rpx;
-  }
+	.dis_icon {
+		width: 32rpx;
+		height: 32rpx;
+		margin-right: 12rpx;
+	}
+	.vip_icon {
+		width: 80rpx;
+		height: 28rpx;
+		margin-left: 8rpx;
+	}
     .dis_price{
         font-size: 32rpx;
         font-weight: 600;
@@ -701,21 +598,6 @@ let _request = false;
 	position: relative;
 	border-radius: 32rpx 32rpx 0rpx 0rpx;
 	margin-top: -80rpx;
-	&.mcdonald {
-		z-index: 0;
-		padding-top: 0;
-		margin: 0;
-		&::before {
-			content: '\3000';
-			position: absolute;
-			width: 100%;
-			min-height: 546rpx;
-			top: 0;
-			left: 0;
-			z-index: -1;
-			background: url("https://test-file.y1b.cn/store/1-0/2447/661204293bbcc.png") 0 0 / 100% auto;
-		}
-	}
 }
 .service_scroll {
 	height: 100%;
@@ -737,13 +619,6 @@ let _request = false;
 		padding: 16rpx;
 	}
 }
-.close_icon {
-	width: 48rpx;
-	height: 48rpx;
-	padding: 24rpx;
-	display: block;
-	margin: 0 0 0 auto;
-}
 .cont_box {
 	width: 100%;
 	height: 100%;
@@ -758,9 +633,6 @@ let _request = false;
 	color: #ffffff;
 	line-height: 40rpx;
 	margin-bottom: 24rpx;
-	// position: absolute;
-	// left: 50%;
-	// transform: translateX(-50%);
 	.service_title-icon {
 		width: 28rpx;
 		height: 36rpx;
@@ -1034,253 +906,27 @@ let _request = false;
         line-height: 26rpx;
     }
 }
-.mc_top {
-	margin: 28rpx 24rpx 30rpx;
-	.mc_top-left {
-		width: 128rpx;
-		height: 128rpx;
-		border-radius: 12rpx;
-		margin-right: 20rpx;
-		background: #FFBA00;
-		overflow: hidden;
-		.mc_top-img {
-			width: 100%;
-			height: 100%;
-		}
-	}
-	.mc_top-right {
-		.old_price {
-			font-size: 28rpx;
-			text-decoration:  line-through;
-			color: rgba(51,51,51,0.65);
-			line-height: 40rpx;
-			margin-left: 8rpx;
-		}
-		.exclusive_price {
-			font-size: 24rpx;
-			text-align: left;
-			color: #ffffff;
-			line-height: 34rpx;
-			position: relative;
-			z-index: 0;
-			padding: 20rpx 34rpx 0rpx 16rpx;
-			display: inline-block;
-			&::before {
-				position: absolute;
-				content: '\3000';
-				width: 100%;
-				height: 100%;
-				left: 0;
-				bottom: 0;
-				background: url("https://test-file.y1b.cn/store/1-0/2447/66120c5c2d1ac.png") no-repeat 0 0 / 100% auto;
-				z-index: -1;
-			}
-			.exclusive_price-value {
-				&::before {
-					content: ' - ¥';
-					font-size: 20rpx;
-					font-weight: bold;
-				}
-				font-size: 26rpx;
 
-			}
-		}
-
-	}
-}
-.mc_cont-box {
-	margin: 20rpx 16rpx 0;
-	position: relative;
-	z-index: 0;
-	background: #fff;
-	border-radius: 24rpx;
-	padding: 32rpx 24rpx;
-	&.explain{
-		padding: 0rpx 24rpx;
-		overflow: hidden;
-	}
-}
-.mc_cont {
-	margin: 20rpx 16rpx 0;
-	position: relative;
-	z-index: 0;
-	background: #fff;
-	border-radius: 24rpx;
-	padding-bottom: 32rpx;
-	// &::before {
-	// 	content: '\3000';
-	// 	position: absolute;
-	// 	width: 100%;
-	// 	min-height: 100%;
-	// 	top: 0;
-	// 	left: 0;
-	// 	z-index: -1;
-	// 	background: url("https://test-file.y1b.cn/store/1-0/2447/661204293bbcc.png") 0 0 / 100% auto;
-	// }
-	.mc_cont-title {
-		padding: 40rpx 154rpx 40rpx 24rpx;
-		font-size: 36rpx;
-		color: #333;
-		line-height: 50rpx;
-		font-weight: bold;
-		position: relative;
-		&::after {
-			content: '\3000';
-			position: absolute;
-			width: 144rpx;
-			height: 34rpx;
-			top: 50%;
-			right: 0;
-			transform: translateY(-50%);
-			background: url("https://test-file.y1b.cn/store/1-0/2447/66121106a6595.png") 0 0 / 100% 100%;
-		}
-	}
-	.mc_dot {
-		// width: 100%;
-		height: 2rpx;
-		margin: 0 40rpx;
-		border-top: 10rpx dotted #F9EAC2;
-		position: relative;
-		z-index: 0;
-		&::before {
-			content: '\3000';
-			position: absolute;
-			width: 32rpx;
-			height: 32rpx;
-			background: #F8ECC9;
-			border-radius: 50%;
-			top: -21rpx;
-			left: -56rpx;
-		}
-		&::after {
-			content: '\3000';
-			position: absolute;
-			width: 32rpx;
-			height: 32rpx;
-			background: #F8ECC9;
-			border-radius: 50%;
-			top: -21rpx;
-			right: -56rpx;
-		}
-	}
-	.mc_line{
-		margin: 24rpx 24rpx 0;
-		background: #f7f8fa;
-		border-radius: 12rpx;
-		padding: 32rpx 54rpx;
-		.mc_line-item {
-			font-size: 24rpx;
-			color: #333;
-			line-height: 34rpx;
-			text-align: center;
-			.line_item-con {
-				width: 36rpx;
-				height: 36rpx;
-				display: block;
-				margin: 0 auto 8rpx;
-			}
-		}
-		.line_item-lab{
-			width: 30rpx;
-			height: 15rpx;
-		}
-	}
-}
-.mc_lab {
-	font-size: 26rpx;
-	color: #666;
-	margin: 32rpx 24rpx 0;
-	position: relative;
-	padding-left: 32rpx;
-	&::before {
-		content: '\3000';
-		width: 26rpx;
-		height: 26rpx;
-		position: absolute;
-		left: 0;
-		background: url("https://test-file.y1b.cn/store/1-0/2447/6612354259744.png") 0 0 / cover;
-	}
-}
-.mc_store-title {
-	font-size: 30rpx;
-	font-weight: bold;
-	color: #333;
-	position: relative;
-	z-index: 0;
-	&::before {
-		content: '\3000';
-		width: 208rpx;
-		height: 62rpx;
-		position: absolute;
-		left: 44rpx;
-		top: 50%;
-		transform: translateY(-50%);
-		background: url("https://test-file.y1b.cn/store/1-0/2447/661239e6e705c.png") 0 0 / cover;
-
-	}
-}
-.store_add {
-	margin-top: 20rpx;
-	font-size: 28rpx;
-	line-height: 40rpx;
-	.store_add-left {
-		position: relative;
-		padding-right: 56rpx;
-		margin-right: 10rpx;
-		&::after {
-			content: '最近';
-			position: absolute;
-			right: 0;
-			font-size: 24rpx;
-			color: #f97f02;
-		}
-	}
-	.store_add-right {
-		font-size: 24rpx;
-		color: #999;
-		white-space: nowrap;
-		&::before {
-			content: '\3000';
-			width: 26rpx;
-			height: 26rpx;
-			background: url("https://test-file.y1b.cn/store/1-0/2447/66123c68ccd59.png") 0 0 / cover;
-			margin-right: 8rpx;
-		}
-	}
-}
-.store_add-txt {
-	font-size: 26rpx;
-	color: #999;
-	line-height: 36rpx;
-	margin-top: 10rpx;
-}
-.ul_list {
-	margin-top: 24rpx;
-	flex-wrap: wrap;
-	.ul_list-item {
-		width: 50%;
-		margin-top: 16rpx;
-		&::before {
-			content: '· ';
-		}
-	}
-}
-.buy_mc-btn {
-	margin: 16rpx 24rpx;
-	height: 80rpx;
-	background: #ffba00;
-	border-radius: 40rpx;
-	line-height: 80rpx;
-	font-size: 28rpx;
-	color: #333;
-	text-align: center;
-	font-weight: bold;
-	.price {
-		margin-right: 12rpx;
-	}
-}
 .cont_top {
 	width: 100%;
 	position: relative;
+}
+.open_rem {
+	flex: 1;
+	padding: 0 32rpx;
+	font-size: 26rpx;
+	font-weight: bold;
+	line-height: 1;
+	&-left {
+		color: #A5512B;
+	}
+	&-right {
+		color: #333;
+	}
+	.dis_icon {
+		width: 38rpx;
+		height: 38rpx;
+		margin-right: 8rpx;
+	}
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-<view class="recharge" :style="{'--bg': subjectColor}">
+<view class="recharge" :style="{'--bg' : subjectColor + '' }">
 <mescroll-body
   :sticky="true"
   ref="mescrollRef"
@@ -10,8 +10,8 @@
   :down="downOption"
 >
 <xh-navbar
-  :leftImage="imgUrl+'/static/images/left_back.png'"
-  @leftCallBack="$topCallBack"
+  leftImage="https://file.y1b.cn/store/1-0/24629/667f888cec84d.png"
+  @leftCallBack="$leftBack"
   :navberColor="subjectColor"
   :fixed="true"
   :fixedNum="9"
@@ -20,8 +20,7 @@
   <image class="title_icon" src="https://file.y1b.cn/store/1-0/23817/64dde71999d9c.png" mode="aspectFill"></image>
 </view>
 </xh-navbar>
-  <view class="banner_box fl_col_cen"
-    :style="{top: navHeight + 'px', '--bg': subjectColor}"
+  <view class="banner_box fl_col_cen" :style="{top: navHeight + 'px', '--bg': subjectColor}"
     id="bannerId"
   >
   <banner-tabs

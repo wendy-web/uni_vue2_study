@@ -13,7 +13,7 @@
     title="提现记录"
     titleColor="#333"
     :leftImage="imgUrl+'/static/images/left_back.png'"
-    @leftCallBack="$topCallBack"
+    @leftCallBack="$leftBack"
   ></xh-navbar>
   <view class="cont_list">
     <view class="list_item fl_bet"
@@ -30,9 +30,9 @@
 </mescroll-body>
 </template>
 <script>
+import { withdrawLog } from '@/api/modules/user.js';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getImgUrl } from '@/utils/auth.js';
-import { withdrawLog } from '@/api/modules/user.js';
 export default {
     mixins: [MescrollMixin],
     data() {

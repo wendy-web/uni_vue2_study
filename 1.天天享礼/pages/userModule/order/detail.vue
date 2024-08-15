@@ -1,6 +1,6 @@
 <template>
 	<view :class="['box', showPayment ? 'payment_bottom' : '']">
-		<xh-navbar :title="navbarTitle" titleColor="#333" :leftImage="imgUrl+'/static/images/left_back.png'"
+		<xh-navbar :title="navbarTitle" titleColor="#333" leftImage="https://file.y1b.cn/store/1-0/24629/667f888cec84d.png"
 			@leftCallBack="leftCallBack" navberColor="#F7F7F7"></xh-navbar>
 		<view class="pd24" v-if="orderInfo">
 			<!-- 待支付 -->
@@ -53,7 +53,8 @@
 
 			<!-- 商品信息 -->
 			<goodInfo :orderInfo="orderInfo"
-				:isShowUse="isShowUse" :is_pay_way="is_pay_way"
+				:isShowUse="isShowUse"
+				:is_pay_way="is_pay_way"
 				@refund="refundHandle"
 			></goodInfo>
 			<!-- 退款信息 -->
@@ -210,7 +211,7 @@ let _payFunc = null
 				}
 			},
 			useMcHandle() {
-				this.$go(`/pages/userModule/takeawayMenu/mcDonald/index?brand_id=5&rote=1&product_id=${this.orderInfo.goods_id || 0}&ticket_id=${this.orderInfo.id}`);
+				this.$goToDiscountsMini();
 			},
 			async closeHandleDia() {
 				this.isShowPaySucDia = false;
@@ -228,19 +229,10 @@ let _payFunc = null
 					return;
 				}
 				if (this.alertUsed) {
-					uni.switchTab({
-						url: '/pages/tabBar/shopMall/index'
-					});
+					this.$switchTab('/pages/tabBar/shopMall/index');
 					return;
 				}
-				uni.navigateBack({
-					delta: this.backPath,
-					fail(e) {
-						uni.switchTab({
-							url: '/pages/tabBar/shopMall/index'
-						})
-					}
-				});
+				this.$leftBack(this.backPath, '/pages/tabBar/shopMall/index');
 			},
 			playBtnHandle() {
 				this.$refs.paymentRef.toPay();

@@ -149,6 +149,12 @@
     align-items: flex-start;
 }
 
+.fl_evenly {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
 .fl_col_sp_bt {
     display: flex;
     flex-direction: column;
@@ -221,4 +227,116 @@
 
 .txf84842 {
     color: #f84842;
+}
+
+// 手势的动画按钮
+.gesture_icon-box {
+    position: absolute;
+    z-index: 0;
+    right: -16rpx;
+    bottom: -36rpx;
+    width: 102rpx;
+    height: 100rpx;
+    &::before {
+        content: "\3000";
+        position: absolute;
+        z-index: -1;
+        width: 40rpx;
+        height: 40rpx;
+        top: 0;
+        left: 0;
+        border-radius: 50%;
+        opacity: 0;
+        animation: rippleAnimation 1s linear infinite;
+        box-shadow: 0 0 8px rgba(255, 255, 255, 1) inset;
+    }
+    &::after {
+        content: "\3000";
+        position: absolute;
+        z-index: -1;
+        width: 30rpx;
+        height: 30rpx;
+        top: 5rpx;
+        left: 5rpx;
+        border-radius: 50%;
+        opacity: 0;
+        animation: rippleCenterAnimation 1s linear infinite;
+        box-shadow: 0 0 8px rgba(255, 255, 255, 1) inset;
+    }
+    .gesture_icon {
+        width: 70rpx;
+        height: 70rpx;
+        position: relative;
+        transform: translate(16rpx, 16rpx);
+        animation: gestureAnimation 1s linear infinite;
+    }
+}
+
+@keyframes rippleAnimation {
+    0% {
+        transform: scale(1);
+        opacity: 0;
+    }
+    30% {
+        transform: scale(1);
+        opacity: 0;
+    }
+    35% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    60% {
+        transform: scale(2);
+        opacity: 0.5;
+    }
+    80% {
+        transform: scale(2);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+@keyframes rippleCenterAnimation {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    30% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    35% {
+        transform: scale();
+        opacity: 1;
+    }
+    60% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    80% {
+        transform: scale(1);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+@keyframes gestureAnimation {
+    0% {
+        transform: translate(40rpx, 30rpx);
+    }
+    30% {
+        transform: translate(16rpx, 16rpx);
+    }
+    80% {
+        transform: translate(16rpx, 16rpx);
+    }
+    100% {
+        transform: translate(40rpx, 30rpx);
+    }
 }

@@ -5,23 +5,16 @@
 >
     <view class="my-beans" @click="goToTask">
         <text v-if="isShowCredits >= 1000000">1百万+</text>
-        <p-countup
-            :num="isShowCredits"
-            width="8"
-            height="14"
-            color="#804815"
-            fontSize="14"
-            fontWeight="600"
-            v-else
+        <p-countup v-else
+            :num="isShowCredits" width="8" height="14"
+            color="#804815" fontSize="14" fontWeight="600"
         ></p-countup>
         <image class="login_right" mode="widthFix"
             src="https://file.y1b.cn/store/1-0/24513/6641dbdf4f586.png"
         ></image>
     </view>
     <view class="bg-loveRecord ">
-        <image class="login_bg" mode="widthFix"
-            src="https://file.y1b.cn/store/1-0/24513/6641d6de2ef32.png"
-        ></image>
+        <image class="login_bg" mode="widthFix" src="https://file.y1b.cn/store/1-0/24724/66a075cb245f1.png"></image>
     </view>
 </view>
 

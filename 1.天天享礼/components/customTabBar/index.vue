@@ -1,9 +1,8 @@
 <template>
 <view class="nav" id="nav">
   <view class="nav_cont">
-    <view
-      v-for="(item, index) in navBarList" :key="item.id"
-      :class="['nav_item', (currentIndex === index) && 'active']"
+    <view v-for="(item, index) in navBarList" :key="item.id"
+      :class="['nav_item', (currentID === item.id) && 'active']"
       @click="navbarHandle(item)"
     >
       <!-- 置顶的图标 -->
@@ -14,7 +13,7 @@
       <view :class="['tabItem_box', isScrollTop && item.scrollIcon ? 'active' : '']">
         <image
           class="nav_icon"
-          :src="currentIndex == index ? item.icon_active : item.icon" mode="aspectFill">
+          :src="currentID == item.id ? item.icon_active : item.icon" mode="aspectFill">
         </image>
         <view class="nav_icon-point" v-if="(unRead && index == (navBarList.length - 1))"></view>
         <view class="nav_text">{{item.title}}</view>
@@ -32,7 +31,7 @@ export default {
     ...mapGetters(['userInfo', 'isAutoLogin'])
   },
   props: {
-    currentIndex: {
+    currentID: {
       type: Number,
       default: 0
     },
@@ -60,14 +59,14 @@ export default {
           icon_active: `/static/tabsImg/home-select-icon.png`,
           title: "首页"
         },
-        // {
-        //   id: 1,
-        //   pagePath: "/pages/tabBar/discounts/index",
-        //   scrollIcon: ``,
-        //   icon: `https://file.y1b.cn/store/1-0/24511/663ed801e1c5e.png`,
-        //   icon_active: `https://file.y1b.cn/store/1-0/24511/663ed818d30dc.png`,
-        //   title: "惠吃喝"
-        // },
+        {
+          id: 1,
+          pagePath: "/pages/tabBar/card/index",
+          scrollIcon: ``,
+          icon: `/static/tabsImg/vip.png`,
+          icon_active: `/static/tabsImg/vip_select.png`,
+          title: "会员"
+        },
         {
           id: 2,
           pagePath: "/pages/tabBar/task/index",
@@ -92,9 +91,10 @@ export default {
         const { pagePath, id } = item;
         const isCurrent = pagePath == `/${this.currentPage}`; // 点击的icon是否处于当前页面
         if(this.isScrollTop && isCurrent) {
-            this.$emit('currentPage'); // 当前页and是否可滚动的回馈事件触发
-            return;
+          this.$emit('currentPage'); // 当前页and是否可滚动的回馈事件触发
+          return;
         }
+        if(id == 1 && !this.isAutoLogin) return this.$go("/pages/tabAbout/login/index");
         this.$switchTab(pagePath);
         if(id != 2 || !this.isAutoLogin) return;
         const res = await msgTemplete();

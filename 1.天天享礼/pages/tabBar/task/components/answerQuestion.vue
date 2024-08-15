@@ -18,12 +18,9 @@
 </template>
 
 <script>
-	import {
-		canQuizAnswer,
-		quiz
-	} from '@/api/modules/index.js'
-	import { getImgUrl } from '@/utils/auth.js';
-    import { mapGetters } from 'vuex';
+import { canQuizAnswer, quiz } from '@/api/modules/index.js';
+import { getImgUrl } from '@/utils/auth.js';
+import { mapGetters } from 'vuex';
 	let _isLoading = false;
 	export default {
 		props: {
@@ -82,9 +79,7 @@
 								duration: 3000
 							})
 						}
-						uni.navigateTo({
-							url: '/pages/taskModule/queAnswers/index?answered=' + answered
-						})
+						this.$go(`/pages/taskModule/queAnswers/index?answered=${answered}`);
 					} else {
 						uni.showToast({
 							icon: 'none',

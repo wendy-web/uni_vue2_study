@@ -24,6 +24,7 @@
 <script>
 import { getImgUrl } from '@/utils/auth.js';
 import lxTypeJdFunMixin from '@/utils/mixin/lxTypeJdFunMixin.js'; // 混入京东/拼多多方法
+import { mapGetters } from "vuex";
 	let _time = null;
 	export default {
 		mixins: [lxTypeJdFunMixin],
@@ -35,6 +36,9 @@ import lxTypeJdFunMixin from '@/utils/mixin/lxTypeJdFunMixin.js'; // 混入京�
 				},
 				imgUrl: `${getImgUrl()}static/subPackages/shopMallModule`,
 			}
+		},
+		computed: {
+			...mapGetters(["userInfo"]),
 		},
 		methods: {
 			popupShow(config) {
@@ -51,15 +55,6 @@ import lxTypeJdFunMixin from '@/utils/mixin/lxTypeJdFunMixin.js'; // 混入京�
 			popupClose() {
 				this.show = false
 			},
-			goHome() {
-				uni.navigateBack({
-					fail() {
-						uni.reLaunch({
-							url: '/pages/tabBar/shopMall/index'
-						})
-					}
-				})
-			},
 			toUse() {
 				let {
 					id,
@@ -72,22 +67,19 @@ import lxTypeJdFunMixin from '@/utils/mixin/lxTypeJdFunMixin.js'; // 混入京�
 					type_id,
 					type_sid,
 					open_mini_type,
-					qz_url,
 				} = this.config;
 				this.show = false;
 				this.$emit('exchangeEnd');
-				// 商品与惠才喝商品
-				if (!voucherType || [1, 12].includes(voucherType)) {
+				// 商品与惠吃喝商品
+				if (!voucherType || [1, 12, 14].includes(voucherType)) {
 					this.$emit('openServiceRecharge', id);
 					return;
 				}
 				switch (voucherType) {
-					//公众号
+					// 公众号
 					case 2:
 						let link = is_main === 1 ? article_url : main_url;
-						uni.redirectTo({
-							url: `/pages/webview/webview?link=${encodeURIComponent(link)}`
-						});
+						this.$redirectTo(`/pages/webview/webview?link=${encodeURIComponent(link)}`);
 						break;
 						//视频号
 					case 3:
@@ -121,11 +113,7 @@ import lxTypeJdFunMixin from '@/utils/mixin/lxTypeJdFunMixin.js'; // 混入京�
 						break;
 					case 5:
 						// 千猪外链
-						if (qz_url) {
-							uni.redirectTo({
-								url: `/pages/webview/webview?link=${encodeURIComponent(qz_url)}`
-							});
-						}
+						this.$go(`plugin-private://wx89752980e795bfde/pages/index/index?pub_id=27729&sid=ttxl&channel=${this.userInfo.id}`);
 						break;
 					case 13:
 						// 调用京东/拼多多的混入事件

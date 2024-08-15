@@ -7,10 +7,7 @@
 				></image>
 				<view :class="['right-block', is_pay_way ? 'active' : '']">
 					<view class="good-name">
-						<view :class="{
-                            'maxOneLine': isShowArrowDown,
-                            'maxTwoLine': !isShowArrowDown && !is_pay_way
-                        }"
+						<view :class="[isShowArrowDown && 'maxOneLine', (!isShowArrowDown && !is_pay_way) && 'maxTwoLine']"
                             @click="goCouponDetailsHandle">
 							{{ orderInfo.goods_sku_name }}
 						</view>
@@ -22,7 +19,7 @@
 				</view>
 				<view class="good-price">￥{{orderInfo.goods_market_price}}</view>
 			</view>
-			<view class="fold-box" :class="{'fold-box-open': isfold}">
+			<view :class="['fold-box', isfold && 'fold-box-open' ]">
 				<!-- 优惠券信息 -->
 				<!-- <view class="coupon-info">
 					<view class="title">
@@ -50,6 +47,30 @@
                         <text style="font-size: 24rpx">- ¥</text> {{ xsAmount }}
                     </view>
                 </view>
+                <block v-if="orderInfo.vip_type == 2">
+					<view class="discount_item fl_bet" @click="openVipHandle">
+						<view class="fl_center">
+							<image class="dis_icon" src="https://file.y1b.cn/store/1-0/2471/6682110e24584.png" mode="aspectFill"></image>
+							<view>开通会员</view>
+							<image class="vip_icon" src="https://file.y1b.cn/store/1-0/2471/6682218539eb2.png" mode="aspectFill"></image>
+						</view>
+						<view class="dis_price" style="color: #333;">
+							¥{{ cardPrice }}
+							<!-- <van-icon custom-style="font-weight: 600;margin-left: 10rpx" size="26rpx" name="arrow" color="#999"/> -->
+						</view>
+					</view>
+					<view class="discount_item fl_bet" v-if="orderInfo.zero_credits" @click="openVipHandle">
+						<view class="fl_center">
+							<image class="dis_icon" :src="cardImgUrl +'/card_icon5.png'" mode="aspectFill"></image>
+							<view>免豆特权1年</view>
+						</view>
+						<view class="dis_price" style="color: #333;">
+							¥{{not_creditsPrice}}
+							<!-- <van-icon custom-style="font-weight: 600;margin-left: 10rpx" size="26rpx" name="arrow" color="#999"/> -->
+						</view>
+					</view>
+				</block>
+                <block v-else>
                 <block v-if="savings.get_saving">
                     <view class="discount_item fl_bet">
                         <view class="fl_center">
@@ -80,6 +101,7 @@
                         <text style="font-size: 24rpx;line-height: 34rpx;">-¥</text> {{ savings.saving_money }}
                     </view>
                 </view>
+                </block>
                 <!-- 行间距 -->
                 <view class="line_dashed"></view>
 				<!-- 付款信息：应付，实付 -->
@@ -99,6 +121,7 @@
 
 <script>
 import { getImgUrl } from '@/utils/auth.js';
+import { mapGetters } from "vuex";
 	export default {
 		props: {
 			orderInfo: {
@@ -129,6 +152,7 @@ import { getImgUrl } from '@/utils/auth.js';
 			}
 		},
 		computed: {
+            ...mapGetters(['cardPrice', 'not_creditsPrice']),
 			isShowArrowDown() {
 				let { status, goods_type } = this.orderInfo;
 				if ([3, 4].includes(Number(status)) && (goods_type == 1) && !this.is_pay_way) {
@@ -144,20 +168,22 @@ import { getImgUrl } from '@/utils/auth.js';
                 if(!this.orderInfo) return 0;
                 const { coupon_amount, savings } = this.orderInfo;
                 let amount = coupon_amount;
-                if(savings) {
-                    amount = savings.time_amount
-                }
+                if(savings) amount = savings.time_amount;
                 return amount;
             },
             orderPrice() {
                 if(!this.orderInfo) return 0;
-                const { order_price, savings, pay_amount } = this.orderInfo;
+                const { order_price, savings, pay_amount, vip_type, zero_credits} = this.orderInfo;
                 let price = Number(order_price);
                 if(savings) {
                     price = Number(order_price) - Number(savings.saving_money);
-                    if(savings.get_saving) price = price + 0.9;
+                    if(savings.get_saving && (vip_type == 1)) price = price + 0.9;
                 }
                 if(this.is_pay_way) price = Number(pay_amount);
+                if(vip_type == 2) {
+                    price += Number(this.cardPrice);
+                    zero_credits && (price += Number(this.not_creditsPrice));
+                }
                 return price.toFixed(2);
             }
 		},
@@ -208,6 +234,11 @@ import { getImgUrl } from '@/utils/auth.js';
         height: 36rpx;
         margin-right: 8rpx;
     }
+    .vip_icon {
+		width: 80rpx;
+		height: 28rpx;
+		margin-left: 8rpx;
+	}
     .dis_price{
         font-size: 32rpx;
         font-weight: 600;

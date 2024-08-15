@@ -40,7 +40,7 @@
 		</view>
 		<view class="btn">去支付</view>
 	</view>
-	<view class="take" @click="jumpLinkHandle(item, 'home')" v-if="Number(item.status) && userInfo.buy_vip">
+	<view class="take" @click="jumpLinkHandle(item, 'home')" v-if="Number(item.status)">
 		<view class="take_btn">再来一单</view>
 	</view>
 </view>
@@ -89,6 +89,7 @@ export default {
 			return dom;
 		},
 		jumpLinkHandle(item, page = 'order') {
+			if(page == 'home') return this.$goToMoviePlugin();
 			// 1-电影票 2-肯德基 3-星巴克
 			const params = {
 				type: 1,
@@ -98,9 +99,7 @@ export default {
 			}
 			jumpLink(params).then(res => {
 				const link = res.data.url;
-				uni.navigateTo({
-					url: `/pages/webview/webview?link=${encodeURIComponent(link)}&bgColor=${this.bgColor}`
-				});
+				this.$go(`/pages/webview/webview?link=${encodeURIComponent(link)}&bgColor=${this.bgColor}`);
 			})
 		}
 	}

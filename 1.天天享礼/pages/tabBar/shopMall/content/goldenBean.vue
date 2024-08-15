@@ -1,18 +1,14 @@
 <template>
-<view id="beanDomBox" :class="[
-	'bean',
-	(iconFindLightIndex >= 0) ? 'list_light-box' : ''
-]">
+<view id="beanDomBox" :class="['bean', (iconFindLightIndex >= 0) ? 'list_light-box' : '']">
 	<view class="bean_list-box">
 		<view :class="['bean_list', (iconFindLightIndex >= 0) ? 'list_light-box' : '']">
 			<view v-for="(item,index) in list" :key="index"
 				:class="['bean_list-item', (iconFindLightIndex == index) ? 'lightShowIcon' : '']"
 				@click="navHandle(item)">
 				<view v-if="iconFindLightIndex == index" class="lightShowIcon_box">
-					<view
-						:class="['light_txt', (iconFindLightIndex%5 < 3) ? 'light_txt-left' : 'light_txt-right']"
-						v-if="lightArr.jd_word"
-					>
+					<view v-if="lightArr.jd_word"
+						:class="['light_txt', lightClassLocation, (iconFindLightIndex%5 < 3) ? 'light_txt-left' : 'light_txt-right']">
+						<view class="circle_box"></view>
 						<image src="https://file.y1b.cn/store/1-0/2419/659cb25974d53.png"
 							class="light_img-left" mode="widthFix"
 						></image>
@@ -23,13 +19,9 @@
 					</view>
 				</view>
                 <view class="list_img">
-				    <image class="bean_small_icon" :src="item.tag" mode="aspectFill"></image>
-                    <van-image
-                        height="88rpx"
-                        width="88rpx"
-                        :src="item.image"
-                        use-loading-slot
-                        fit="contain"
+				    <image class="bean_small_icon" :src="item.tag" mode="aspectFit"></image>
+                    <van-image height="88rpx" width="88rpx"
+                        :src="item.image" use-loading-slot fit="contain"
                     ><van-loading slot="loading" type="spinner" size="12" vertical />
                     </van-image>
                 </view>
@@ -44,7 +36,7 @@
 import { savingInfo } from "@/api/modules/packet.js";
 import { textNav } from '@/api/modules/shopMall.js';
 import pCountup from '@/components/p-countUp/countUp.vue';
-import { getImgUrl } from '@/utils/auth.js';
+import { getImgUrl, warpRectDom } from '@/utils/auth.js';
 import goDetailsFun from '@/utils/goDetailsFun';
 import { mapGetters, mapMutations } from 'vuex';
 export default {
@@ -118,7 +110,13 @@ export default {
         }
 	},
 	computed: {
-		...mapGetters(['userInfo', 'isAutoLogin', 'lightArr', 'iconFindLightIndex', 'diaList'])
+		...mapGetters(['userInfo', 'isAutoLogin', 'lightArr', 'iconFindLightIndex', 'diaList']),
+		lightClassLocation() {
+			let locationName = '';
+			((((this.iconFindLightIndex + 1) % 6) == 0) || (this.iconFindLightIndex == 0)) && (locationName = 'Location_left');
+			(((this.iconFindLightIndex + 1) % 5) == 0) && (locationName = 'Location_right');
+			return locationName;
+		}
 	},
 	methods:{
 		...mapMutations({
@@ -126,6 +124,7 @@ export default {
             delCurrentDiaList: "user/delCurrentDiaList",
             setLightArr: "user/setLightArr"
 		}),
+		warpRectDom,
 		async init() {
 			let query = uni.createSelectorQuery().in(this)
 			query.select('#credits').boundingClientRect()
@@ -148,29 +147,12 @@ export default {
 			const findLightIndex = this.list.findIndex(res => res.id == id);
 			this.setIconFindLightIndex(findLightIndex);
 		},
-		warpRectDom(idName) {
-			return new Promise(resolve => {
-				setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-					let query = uni.createSelectorQuery();
-					// #ifndef MP-ALIPAY
-					query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-						// #endif
-					query.select('#'+idName).boundingClientRect(data => {
-						resolve(data)
-					}).exec();
-				}, 20)
-			})
-		},
 		getCreditsDom() {
 			return this.creditsDom;
 		},
 		goToTask() {
             if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
 			this.$emit('goTask');
-		},
-		gotoVipHandle() {
-            if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
-			this.$go('/pages/userCard/card/cardVip/index');
 		},
 		navHandle(item){
 			if(this.iconFindLightIndex >= 0) {
@@ -298,9 +280,9 @@ export default {
 			white-space: nowrap;
 			z-index: 0;
 			top: 252rpx;
-			&::before{
+			&::before {
 				content: '\3000';
-				background: url("https://file.y1b.cn/store/1-0/2419/659cb751dfad6.png") 0 0 / 100% 100% no-repeat;
+				background: url("https://file.y1b.cn/store/1-0/24719/6699bdffe3362.png") 0 0 / 100% 100% no-repeat;
 				position: absolute;
 				bottom: 0;
 				left: 0;
@@ -308,13 +290,43 @@ export default {
 				height: 184rpx;
 				z-index: -1;
 			}
+			.circle_box {
+				position: absolute;
+				top: -106rpx;
+				left: 70rpx;
+				width: 20rpx;
+				height: 20rpx;
+				background: #FDE5E5;
+				border-radius: 50%;
+				&::before {
+					content: '\3000';
+					position: absolute;
+					width: 12rpx;
+					height: 12rpx;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					border-radius: 50%;
+					background: #F84842;
+				}
+			}
 			&.light_txt-left{
-				left: 28rpx;
+				left: 0;
 				&::before {
 					transform: scaleX(-1);
 				}
 			}
+			&.Location_left {
+				left: 28rpx;
+			}
 			&.light_txt-right {
+				right: 0rpx;
+				.circle_box {
+					left: auto;
+					right: 70rpx;
+				}
+			}
+			&.Location_right {
 				right: 26rpx;
 			}
 			.light_img-left {

@@ -22,6 +22,12 @@
 			}
 		},
 		{
+			"path": "pages/tabBar/card/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/tabBar/task/index",
 			"style": {
 				"navigationStyle": "custom"
@@ -56,12 +62,6 @@
 			}
 		},
 		{
-			"path": "pages/qianZhuPay/qianZhuPay",
-			"style": {
-				"navigationBarTitleText": "支付"
-			}
-		},
-		{
 			"path": "pages/payment/index",
 			"style": {
 				"navigationBarTitleText": "支付"
@@ -69,18 +69,6 @@
 		}
 	],
 	"subPackages": [
-		{
-			"root": "pages/discounts",
-			"name": "discounts",
-			"pages": [
-				{
-					"path": "discounts/index",
-					"style": {
-						"navigationStyle": "custom"
-					}
-				}
-			]
-		},
 		{
 			"root": "pages/tabAbout/",
 			"name": "tabAbout",
@@ -144,6 +132,12 @@
 				},
 				{
 					"path": "productDetails/index",
+					"style": {
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "middleCont/index",
 					"style": {
 						"navigationStyle": "custom"
 					}
@@ -215,13 +209,7 @@
 						"navigationBarBackgroundColor": "#F7F7F7"
 					}
 				}
-			],
-            "plugins" : {
-                "jtkDc" : {
-                    "version" : "1.3.7",
-                    "provider" : "wx6c999744b6d125ef"
-                }
-            }
+			]
 		},
 		{
 			"root": "pages/userModule/",
@@ -274,22 +262,15 @@
 					}
 				},
 				{
+					"path": "productList/searchResult",
+					"style": {
+						"navigationStyle": "custom",
+						"navigationBarTitleText": "搜索结果"
+					}
+				},
+				{
 					"path": "productList/search",
 					"style": {
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "takeawayMenu/luckin/index",
-					"style": {
-						"navigationBarTitleText": "luckin",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "takeawayMenu/luckin/search",
-					"style": {
-						"navigationBarTitleText": "luckinSearch",
 						"navigationStyle": "custom"
 					}
 				},
@@ -297,13 +278,6 @@
 					"path": "takeawayMenu/luckin/order/index",
 					"style": {
 						"navigationBarTitleText": "order",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "takeawayMenu/luckin/selectShop/index",
-					"style": {
-						"navigationBarTitleText": "selectShop",
 						"navigationStyle": "custom"
 					}
 				},
@@ -336,20 +310,6 @@
 					}
 				},
 				{
-					"path": "takeawayMenu/kfc/index",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "takeawayMenu/kfc/search",
-					"style": {
-						"navigationBarTitleText": "kfcSearch",
-						"navigationStyle": "custom"
-					}
-				},
-				{
 					"path": "takeawayMenu/kfc/order/index",
 					"style": {
 						"navigationBarTitleText": "kfcOrder",
@@ -357,37 +317,9 @@
 					}
 				},
 				{
-					"path": "takeawayMenu/kfc/selectShop/index",
-					"style": {
-						"navigationBarTitleText": "kfcSelectShop",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "takeawayMenu/starbucks/index",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "takeawayMenu/starbucks/search",
-					"style": {
-						"navigationBarTitleText": "starbucksSearch",
-						"navigationStyle": "custom"
-					}
-				},
-				{
 					"path": "takeawayMenu/starbucks/order/index",
 					"style": {
-						"navigationBarTitleText": "kfcOrder",
-						"navigationStyle": "custom"
-					}
-				},
-				{
-					"path": "takeawayMenu/starbucks/selectShop/index",
-					"style": {
-						"navigationBarTitleText": "starbucksSelectShop",
+						"navigationBarTitleText": "",
 						"navigationStyle": "custom"
 					}
 				},
@@ -436,37 +368,29 @@
 				{
 					"path": "card/cardVip/redPayIndex",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "省钱卡红包",
 						"navigationStyle": "custom",
 						"backgroundColor": "#fff"
-					}
-				},
-				{
-					"path": "card/cardVip/index",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom",
-						"backgroundColor": "#F5F6FA"
 					}
 				},
 				{
 					"path": "card/cardVip/payIndex",
 					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "custom",
-						"backgroundColor": "#fff"
-					}
-				},
-				{
-					"path": "card/cardVip/openIndex",
-					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "会员续费",
 						"navigationStyle": "custom",
 						"backgroundColor": "#fff"
 					}
 				},
 				{
 					"path": "card/cardVip/recordIndex",
+					"style": {
+						"navigationBarTitleText": "购买记录",
+						"backgroundColor": "#fff",
+						"navigationBarBackgroundColor": "#fff"
+					}
+				},
+				{
+					"path": "card/cardVip/recordCard",
 					"style": {
 						"navigationBarTitleText": "购买记录",
 						"backgroundColor": "#fff",
@@ -590,7 +514,17 @@
 						"navigationStyle": "custom"
 					}
 				}
-			]
+			],
+			"plugins": {
+				"jtkMovie": {
+					"version": "1.1.7",
+					"provider": "wx89752980e795bfde"
+				},
+				"meishi": {
+					"version": "1.2.3",
+					"provider": "wx5c787b48e6a02a51"
+				}
+			}
 		}
 	],
 	"preloadRule": {},
@@ -604,10 +538,10 @@
 				"pagePath": "pages/tabBar/shopMall/index",
 				"text": "首页"
 			},
-			// {
-			//     "pagePath": "pages/tabBar/discounts/index",
-			//     "text": "惠生活"
-			// },
+			{
+				"pagePath": "pages/tabBar/card/index",
+				"text": "会员"
+			},
 			{
 				"pagePath": "pages/tabBar/task/index",
 				"text": "福利中心"
@@ -644,7 +578,8 @@
 			"van-datetime-picker": "/wxcomponents/vant_update/datetime-picker/index",
 			"van-radio-group": "/wxcomponents/vant_update/radio-group/index",
 			"van-radio": "/wxcomponents/vant_update/radio/index",
-			"van-area": "/wxcomponents/vant_update/area/index"
+			"van-area": "/wxcomponents/vant_update/area/index",
+			"painter": "/wxcomponents/Kujiale-Mobile-painter/painter"
 		}
 	},
 	"easycom": {

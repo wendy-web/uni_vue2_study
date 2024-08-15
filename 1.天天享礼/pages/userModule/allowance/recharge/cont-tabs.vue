@@ -39,7 +39,8 @@
 					{{ item.title }}
 				</view>
 				<view class="cont_txt-lab">
-					<view class="use_cont-right" v-if="item.zero_credits">0豆特权</view>
+					<view class="vip_profit" v-if="item.vip_profit > 0">会员再返 ¥{{ item.vip_profit }}</view>
+					<view class="use_cont-right" v-if="item.zero_credits">免豆特权</view>
 					<view class="item_remind box_fl">
 						<view class="vip_credits" v-if="Number(item.credits)">
 							<text :class="['item_credits', item.zero_credits ? 'active' : '']">{{ item.credits || 0 }}</text>牛金豆
@@ -56,7 +57,7 @@
 </template>
 
 <script>
-import { getImgUrl } from "@/utils/auth.js";
+import { getImgUrl, warpRectDom } from "@/utils/auth.js";
 import goDetailsFun from '@/utils/goDetailsFun';
 import { mapGetters } from 'vuex';
 export default {
@@ -120,27 +121,11 @@ export default {
 	created() {
 	},
 	methods: {
+		warpRectDom,
 		// 列表的上下滚动
 		async listScrollHandle(event) {
 			let { scrollTop } = event.detail;
 			scrollTop = Math.ceil(scrollTop);
-			// const tabItemId = `tabItemId${this.tabIndex}`;
-			// const res = await this.initWarpRect(tabItemId);
-			// let currentIndex = this.tabList.findIndex(event => {
-			// 	if(scrollTop <= event.top){
-			// 		return true;
-			// 	}
-			// });
-			// const tabsLength = this.tabList.length;
-			// const tabsLengthDom = this.tabList[tabsLength-1];
-			// if(currentIndex == -1 && scrollTop < (tabsLengthDom.top + tabsLengthDom.height)) {
-			// 	currentIndex = tabsLength;
-			// }
-			// if(!this.isScroll) return;
-			// currentIndex = currentIndex -1;
-			// if(scrollTop <= 5) {
-			// 	currentIndex = 0
-			// }
 			let currentIndex = this.tabList.findIndex(event => {
 				if(scrollTop < event._top){
 					return true;
@@ -150,10 +135,10 @@ export default {
 			this.$emit('scroll', currentIndex, scrollTop);
 		},
 		itemDomFun(){
-			this.initWarpRect('contBox').then(res =>  this.topValue = res.top );
+			this.warpRectDom('contBox').then(res =>  this.topValue = res.top );
 			this.tabList.forEach((res, index) => {
 				const tabItemId = `tabItemId${index}`;
-				this.initWarpRect(tabItemId).then(result => {
+				this.warpRectDom(tabItemId).then(result => {
 					res.top = result.top - this.topValue;
 					res.height = result.height;
 					if(index == 0) {
@@ -166,19 +151,6 @@ export default {
 		},
 		couponDetailHandle(item) {
 			this.detailsFun_mixins(item, {})
-		},
-		initWarpRect(id) {
-			return new Promise(resolve => {
-				setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-					let query = uni.createSelectorQuery();
-					// #ifndef MP-ALIPAY
-					query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-					// #endif
-					query.select('#' + (id || this.viewId)).boundingClientRect(data => {
-						resolve(data)
-					}).exec();
-				}, 20)
-			})
 		}
 	}
 }
@@ -280,19 +252,18 @@ export default {
     line-height: 44rpx;
 	margin-top: 10rpx;
 }
-.use_cont-right{
-    color: #c16e15;
-    display: flex;
-    align-items: center;
+.use_cont-right {
+    color: #999;
+    // display: flex;
+    // align-items: center;
 	font-size: 22rpx;
-
-    &::before {
-      content: "\3000";
-      width: 24rpx;
-      height: 24rpx;
-      background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
-      margin-right: 5rpx;
-    }
+    // &::before {
+    //   content: "\3000";
+    //   width: 24rpx;
+    //   height: 24rpx;
+    //   background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
+    //   margin-right: 5rpx;
+    // }
 }
 .item_remind {
 	font-size: 26rpx;
@@ -300,7 +271,7 @@ export default {
 	line-height: 36rpx;
 	white-space: nowrap;
 	width: 100%;
-	margin-top: 20rpx;
+	margin-top: 12rpx;
 	.vip_credits {
 		margin-right: 10rpx;
 	}
@@ -320,5 +291,11 @@ export default {
   margin-right: 8rpx;
   transform: translateY(8rpx);
   display: inline-block;
+}
+.vip_profit {
+  font-size: 24rpx;
+  color: #f0423a;
+  line-height: 34rpx;
+  margin-bottom: 12rpx;
 }
 </style>

@@ -8,11 +8,7 @@
   >
 	<view class="cont_box">
       <view class="cont_text">
-        <view class="cont_title">
-			特价商品须在
-            <text style="color:#EF2B20">24小时</text>
-			内使用
-		</view>
+        <view class="cont_title"> 特价商品须在 <text style="color:#EF2B20">24小时</text>内使用</view>
         <view class="cont_remind">不支持退换服务</view>
       </view>
       <view class="btns_box">
@@ -24,11 +20,6 @@
 </template>
 
 <script>
-	import {
-		pay,
-		query
-	} from '@/api/modules/order.js';
-	import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 	export default {
     props: {
       isShow: {
@@ -45,8 +36,7 @@
       }
     },
 	data() {
-		return {
-		}
+		return { }
 	},
 	methods: {
 		onConfirm() {

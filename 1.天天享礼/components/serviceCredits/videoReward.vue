@@ -1,14 +1,13 @@
 <template>
 <view class="box" @click="showAd">
-	<van-image class="bg-video-reward" use-loading-slot lazy-load width="700rpx" height="400rpx"
-		:src="taskReward.image">
-		<van-loading slot="loading" type="spinner" size="20" vertical />
+	<van-image class="bg-video-reward" width="700rpx" height="400rpx"
+		:src="taskReward.image" use-loading-slot lazy-load
+	><van-loading slot="loading" type="spinner" size="20" vertical />
 	</van-image>
 </view>
 </template>
-
 <script>
-import { canVideo } from '@/api/modules/task.js'
+import { canVideo } from '@/api/modules/task.js';
 export default {
 	props: {
 		taskReward: {
@@ -17,8 +16,7 @@ export default {
 		}
 	},
 	data() {
-		return {
-		}
+		return { }
 	},
 	methods: {
 		showAd() {
@@ -35,11 +33,9 @@ export default {
 
 			})
 		}
-	},
-
+	}
 }
 </script>
-
 <style lang="scss">
 .box {
 	width: 100%;

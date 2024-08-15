@@ -34,24 +34,27 @@
               <view class="list-item-title txt_ov_ell2">
                 <view class="ty_store" v-if="item.type == 12"></view><!-- 到店吃 -->
                 <view class="jd_icon_box" v-else-if="item.lx_type != 1 && Number(item.face_value)">
-                  <image class="bg_img" mode="scaleToFill"
-                    :src="imgUrl + 'static/shopMall/jd_icon_bg.png'"></image>
-                  抵¥{{parseInt(item.face_value)}}券
-                </view>{{ item.title }}
+                  抵¥{{item.face_value}}券
+                </view>
+                <view class="show_type" v-if="userInfo.show_shopType && (item.lx_type > 1)">
+                  {{ (item.lx_type == 2) ? '京东' : '拼多多' }}
+                </view>
+                {{ item.title }}
               </view>
               <view class="list_cont">
                 <view class="use_cont">
-                  <view class="use_cont-left" v-if="item.after_pay">先用后付</view>
-                  <view class="use_cont-right" v-if="item.zero_credits">0豆特权</view>
+                  <view class="use_cont-left" v-if="item.after_pay"></view>
+                  <view class="use_cont-right" v-if="item.zero_credits">免豆特权</view>
                   <view v-else-if="show_lowestCouponPrice && item.credits && item.lowestCouponPrice" class="js_search_credits">
                     {{ item.credits || 0 }}牛金豆
                   </view>
                 </view>
+              <view class="vip_profit" v-if="item.vip_profit > 0">会员再返 ¥{{ item.vip_profit }}</view>
                 <view class="list_cont-bottom fl_bet">
                   <view class="list_cont-left box_fl">
                     <view class="cowpea-num">
                       <block v-if="show_lowestCouponPrice && item.lowestCouponPrice">
-                        <text v-if="parseInt(item.face_value)">券后</text>
+                        <text v-if="Number(item.face_value)">券后</text>
                         <text class="good_credits">
                             <text style="font-size: 24rpx">￥</text>
                             {{ item.lowestCouponPrice || 0 }}
@@ -65,7 +68,6 @@
                     <view class="exchange-num" v-if="item.lx_type == 1">{{ item.exch_user_num + Number(item.user_num)}}人兑换</view>
                     <view class="exchange-num" v-else-if="item.inOrderCount30Days">月售{{ item.inOrderCount30Days }}</view>
                     <view class="exchange-num" v-else-if="item.sales_tip">已售{{ item.sales_tip }}</view>
-
                   </view>
                   <view v-if="!item.isOpenCell" :class="['bottom-tools', item.isOpenCell ? 'active' : '']" >
                     <view :class="['collection-btn', item.is_collect ? 'active' : '']"
@@ -317,16 +319,38 @@ page {
     z-index: 0;
     margin-right: 8rpx;
     white-space: nowrap;
-    display: inline-block;
+    display: inline;
+    &::before {
+      content: "\3000";
+      background: url("https://file.y1b.cn/store/1-0/24621/6675210e27253.png") 0 0 / 100% 100% no-repeat;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+  }
+  .show_type {
+    padding: 0 4rpx;
+    height: 34rpx;
+    background: #f8cc82;
+    border-radius: 6rpx;
+    font-size: 24rpx;
+    color: #7f4715;
+    line-height: 34rpx;
+    font-weight: bold;
+    display: inline;
+    margin-right: 8rpx;
   }
   .ty_store {
-  width: 118rpx;
-  height: 34rpx;
-  background: url("https://test-file.y1b.cn/store/1-0/24412/6619090ba6bf5.png") 0 0 / 100% 100% no-repeat;
-  margin-right: 8rpx;
-  transform: translateY(8rpx);
-  display: inline-block;
-}
+    width: 118rpx;
+    height: 34rpx;
+    background: url("https://test-file.y1b.cn/store/1-0/24412/6619090ba6bf5.png") 0 0 / 100% 100% no-repeat;
+    margin-right: 8rpx;
+    transform: translateY(8rpx);
+    display: inline-block;
+  }
 
   .exchange-num {
     font-size: 24rpx;
@@ -409,7 +433,7 @@ page {
   color: #f84842;
   line-height: 44rpx;
   white-space: nowrap;
-  .vip_img{
+  .vip_img {
     width: 126rpx;
     height: 38rpx;
     margin-left: 4rpx;
@@ -417,33 +441,29 @@ page {
 }
 .use_cont {
   display: flex;
+  align-items: center;
   font-size: 24rpx;
-  line-height: 34rpx;
   height: 34rpx;
   .use_cont-left {
-    color: #32a666;
+    height: 34rpx;
+    width: 143rpx;
+    background: url("https://file.y1b.cn/store/1-0/24629/667f84504856c.png")  0 0 / 100% 100% no-repeat;
     margin-right: 18rpx;
-    display: flex;
-    align-items: center;
-    &::before {
-      content: "\3000";
-      width: 30rpx;
-      height: 30rpx;
-      background: url("https://test-file.y1b.cn/store/1-0/24312/65f023e89516c.png")  0 0 / 100% 100% no-repeat;
-      margin-right: 5rpx;
-    }
+    position: relative;
   }
-  .use_cont-right{
-    color: #c16e15;
-    display: flex;
-    align-items: center;
-    &::before {
-      content: "\3000";
-      width: 24rpx;
-      height: 24rpx;
-      background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
-      margin-right: 5rpx;
-    }
+  .use_cont-right {
+    color: #999;
+    position: relative;
+    // padding-left: 32rpx;
+    // &::before {
+    //   content: "\3000";
+    //   position: absolute;
+    //   top: 4rpx;
+    //   left: 0;
+    //   width: 26rpx;
+    //   height: 26rpx;
+    //   background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
+    // }
   }
 }
 .js_search_credits {
@@ -467,5 +487,11 @@ page {
   margin-right: 4rpx;
   font-weight: bold;
   position: relative;
+}
+.vip_profit {
+  font-size: 24rpx;
+  color: #f0423a;
+  line-height: 34rpx;
+  margin-top: 12rpx;
 }
 </style>

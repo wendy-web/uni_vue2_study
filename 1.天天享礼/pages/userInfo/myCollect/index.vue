@@ -33,26 +33,28 @@
             <view class="list-item-title txt_ov_ell2">
               <view class="ty_store" v-if="item.type == 12"></view><!-- 到店吃 -->
               <view class="jd_icon_box" v-else-if="item.lx_type != 1 && Number(item.face_value)">
-                <image class="bg_img" mode="scaleToFill"
-                  :src="imgUrl + 'static/shopMall/jd_icon_bg.png'"
-                ></image>抵¥{{parseInt(item.face_value)}}券
+                抵¥{{item.face_value}}券
+              </view>
+              <view class="show_type" v-if="userInfo.show_shopType && (item.lx_type > 1)">
+                {{ (item.lx_type == 2) ? '京东' : '拼多多' }}
               </view>
               {{ item.title }}
             </view>
             <view class="list_cont">
               <view class="use_cont">
-                <view class="use_cont-left" v-if="item.after_pay">先用后付</view>
-                <view class="use_cont-right" v-if="item.zero_credits">0豆特权</view>
+                <view class="use_cont-left" v-if="item.after_pay"></view>
+                <view class="use_cont-right" v-if="item.zero_credits">免豆特权</view>
                   <view v-else-if="show_lowestCouponPrice && item.credits && item.lowestCouponPrice"
                     class="js_search_credits">
                     {{ item.credits || 0 }}牛金豆
                   </view>
               </view>
+              <view class="vip_profit" v-if="item.vip_profit > 0">会员再返 ¥{{ item.vip_profit }}</view>
               <view class="list_cont-bottom fl_bet">
                 <view class="list_cont-left box_fl">
                   <view class="cowpea-num">
                     <block v-if="show_lowestCouponPrice && item.lowestCouponPrice">
-                      <text v-if="parseInt(item.face_value)">券后</text>
+                      <text v-if="Number(item.face_value)">券后</text>
                       <text class="good_credits">
                           <text style="font-size: 24rpx">￥</text>
                           {{ item.lowestCouponPrice || 0 }}
@@ -92,7 +94,7 @@
     </view>
     <view class="you_like-title" v-if="goods.length">
       <image class="left-icon" mode="aspectFill"
-        :src="imgUrl + 'static/shopMall/love_left_icon.png'"></image>
+        src="https://file.y1b.cn/store/1-0/24718/6698cd1ab8927.png"></image>
         猜你喜欢
       <image class="right-icon" mode="aspectFill"
         :src="imgUrl + 'static/shopMall/love_right_icon.png'"></image>
@@ -102,6 +104,7 @@
       :list="goods"
       :isBolCredits="true"
       :isJdLink="true"
+      :isShowProfit="true"
       @notEnoughCredits="notEnoughCreditsHandle"
     ></good-list>
   </mescroll-body>
@@ -126,8 +129,7 @@
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import goDetailsFun from "@/utils/goDetailsFun";
 // 牛金豆不足混入的组件与方法
-import { groupRecommend } from "@/api/modules/index.js";
-import { goodsQuery, toggleCollect as jdToggleCollect, jingfen, material } from "@/api/modules/jsShop.js";
+import { toggleCollect as jdToggleCollect } from "@/api/modules/jsShop.js";
 import { toggleCollect as pddToggleCollect } from "@/api/modules/pddShop.js";
 import { couponCollect, toggleCollect } from "@/api/modules/user.js";
 import goodList from "@/components/goodList.vue";
@@ -136,10 +138,11 @@ import serviceCredits from "@/components/serviceCredits/index.vue";
 import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
 import { getImgUrl } from "@/utils/auth.js";
 import getViewPort from "@/utils/getViewPort.js";
+import groupRecommendMixin from '@/utils/mixin/groupRecommendMixin.js'; // 混入推荐商品列表的方法
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
 import { mapActions, mapGetters } from 'vuex';
 export default {
-  mixins: [MescrollMixin, goDetailsFun, serviceCreditsFun, shareMixin],
+  mixins: [MescrollMixin, goDetailsFun, serviceCreditsFun, shareMixin, groupRecommendMixin],
   components: {
     exchangeFailed,
     serviceCredits,
@@ -170,16 +173,12 @@ export default {
         auto: false, // 不自动加载 (mixin已处理第一个tab触发downCallback)
       },
       imgUrl: getImgUrl(),
-      groupRecommendData: null,
       isRecommendRequest: false,
-      goods: [],
-      pageNum: 1,
-      groupId_index: 0,
-      lastOddItem: null,
     };
   },
   watch: {
-    goods(newValue) {
+    goods(newValue, oldValue) {
+      if (oldValue.length == newValue.length) return;
       if (newValue.length <= 4) {
         this.mescroll.triggerUpScroll();
       }
@@ -211,23 +210,6 @@ export default {
       this.list[index].isOpenCell = false;
     },
     shareHandle() {
-    },
-    warpRectDom(idName) {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          // 延时确保dom已渲染, 不使用$nextclick
-          let query = uni.createSelectorQuery();
-          // #ifndef MP-ALIPAY
-          query = query.in(this); // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-          // #endif
-          query
-            .select("#" + idName)
-            .boundingClientRect((data) => {
-              resolve(data);
-            })
-            .exec();
-        }, 20);
-      });
     },
     // 牛金豆不足的情况
     notEnoughCreditsHandle() {
@@ -262,93 +244,6 @@ export default {
           return;
         }
       }).catch((err) => this.mescroll.endErr());
-    },
-    async requestRem(page) {
-      if (!this.groupRecommendData) {
-        const recRes = await groupRecommend({ page: 3 });
-        if (recRes.code != 1 || !recRes.data)
-          return this.mescroll.endSuccess(0);
-        this.groupRecommendData = recRes.data;
-      }
-      const { id, cid, cid2, cid3, eliteId, groupId, type } =
-        this.groupRecommendData;
-      let pageNum = this.pageNum;
-      // const pageNum = page.num;
-      let params = {
-        id,
-        page: pageNum,
-        size: 10,
-      };
-      let queryApi = goodsQuery;
-      // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-      switch (type) {
-        case 1:
-          queryApi = material;
-          params.eliteId = eliteId;
-          params.groupId = groupId;
-          params.size = 10;
-          break;
-        case 2:
-          queryApi = jingfen;
-          params.eliteId = eliteId;
-          params.groupId = groupId;
-          params.size = 20;
-          break;
-        case 3:
-          queryApi = goodsQuery;
-          params.cid1 = cid;
-          params.cid2 = cid2;
-          params.cid3 = cid3;
-          break;
-        case 4:
-          queryApi = jingfen;
-          const groupId_index = this.groupId_index;
-          params.eliteId = eliteId;
-          params.groupId = groupId[groupId_index];
-          params.size = 20;
-          break;
-      }
-      queryApi(params)
-        .then((res) => {
-          const { list, total_count } = res.data;
-          // 设置列表数据
-          if (page.num == 1) {
-            this.goods = [];
-            this.pageNum = 1;
-            this.lastOddItem = null;
-          } //如果是第一页需手动制空列表
-          // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-          let isNextPage = pageNum * params.size < total_count;
-          if (
-            !isNextPage &&
-            type == 4 &&
-            this.groupId_index < groupId.length - 1
-          ) {
-            // 无下一页
-            this.groupId_index += 1;
-            this.mescroll.endSuccess(total_count, true);
-            this.pageNum = 0;
-          } else {
-            this.mescroll.endSuccess(list.length || total_count, isNextPage);
-          }
-          if (list.length == 0 && pageNum * params.size < total_count) {
-            this.mescroll.triggerUpScroll();
-          }
-          if (this.lastOddItem) {
-            this.goods.push(this.lastOddItem);
-            this.lastOddItem = null;
-          }
-          this.pageNum += 1;
-          this.goods = this.goods.concat(list); // 追加新数据
-          const goodLength = this.goods.length;
-          if (goodLength % 2 && goodLength > 6) {
-            this.lastOddItem = this.goods.pop();
-          }
-        })
-        .catch(() => {
-          //联网失败, 结束加载
-          // this.mescroll.endErr();
-        });
     },
     goDetails(event, item, { listIndex }) {
       let { detail } = event;
@@ -452,7 +347,29 @@ page {
     z-index: 0;
     margin-right: 8rpx;
     white-space: nowrap;
-    display: inline-block;
+    display: inline;
+    &::before {
+      content: "\3000";
+      background: url("https://file.y1b.cn/store/1-0/24621/6675210e27253.png") 0 0 / 100% 100% no-repeat;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+  }
+  .show_type {
+    padding: 0 4rpx;
+    height: 34rpx;
+    background: #f8cc82;
+    border-radius: 6rpx;
+    font-size: 24rpx;
+    color: #7f4715;
+    line-height: 34rpx;
+    font-weight: bold;
+    display: inline;
+    margin-right: 8rpx;
   }
   .ty_store {
     width: 118rpx;
@@ -542,33 +459,29 @@ page {
 }
 .use_cont {
   display: flex;
+  align-items: center;
   font-size: 24rpx;
-  line-height: 34rpx;
   height: 34rpx;
   .use_cont-left {
-    color: #32a666;
+    height: 34rpx;
+    width: 143rpx;
+    background: url("https://file.y1b.cn/store/1-0/24629/667f84504856c.png")  0 0 / 100% 100% no-repeat;
     margin-right: 18rpx;
-    display: flex;
-    align-items: center;
-    &::before {
-      content: "\3000";
-      width: 30rpx;
-      height: 30rpx;
-      background: url("https://test-file.y1b.cn/store/1-0/24312/65f023e89516c.png")  0 0 / 100% 100% no-repeat;
-      margin-right: 5rpx;
-    }
+    position: relative;
   }
-  .use_cont-right{
-    color: #c16e15;
-    display: flex;
-    align-items: center;
-    &::before {
-      content: "\3000";
-      width: 24rpx;
-      height: 24rpx;
-      background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
-      margin-right: 5rpx;
-    }
+  .use_cont-right {
+    color: #999;
+    position: relative;
+    // padding-left: 32rpx;
+    // &::before {
+    //   content: "\3000";
+    //   position: absolute;
+    //   top: 4rpx;
+    //   left: 0;
+    //   width: 26rpx;
+    //   height: 26rpx;
+    //   background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
+    // }
   }
 }
 .js_search_credits {
@@ -592,5 +505,11 @@ page {
   margin-right: 4rpx;
   font-weight: bold;
   position: relative;
+}
+.vip_profit {
+  font-size: 24rpx;
+  color: #f0423a;
+  line-height: 34rpx;
+  margin-top: 12rpx;
 }
 </style>

@@ -93,6 +93,34 @@ export function parseTime(time, cFormat) {
     return time_str;
 }
 
+export function getTimeInterval(timestamp1, timestamp2) {
+    // 将时间戳转换为毫秒值
+    const time1 = timestamp1;
+    const time2 = timestamp2;
+    // 计算时间差（以毫秒为单位）
+    const differenceInMilliseconds = Math.abs(time2 - time1);
+    // 将毫秒转换为更易读的时间单位
+    const seconds = Math.floor(differenceInMilliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    // 构建返回的时间间隔字符串
+    let result = '';
+    if (days > 0) {
+        result += `${days} 天 `;
+    }
+    if (hours % 24 > 0) {
+        result += `${hours % 24} 小时 `;
+    }
+    if (minutes % 60 > 0) {
+        result += `${minutes % 60} 分钟 `;
+    }
+    if (seconds % 60 > 0) {
+        result += `${seconds % 60} 秒`;
+    }
+    return result;
+}
+
 
 export function compareVersion(v1, v2) {
     v1 = v1.split('.');
@@ -201,20 +229,6 @@ export function getViewPort() {
         windowHeight: res.windowHeight,
         screenWidth: res.screenWidth || 375
     }
-}
-
-export function initWarpRectDom(idName) {
-    return new Promise(resolve => {
-        setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-            let query = uni.createSelectorQuery();
-            // #ifndef MP-ALIPAY
-            query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-                // #endif
-            query.select('#beanDomBox').boundingClientRect(data => {
-                resolve(data)
-            }).exec();
-        }, 20)
-    })
 }
 
 // 格式化距离

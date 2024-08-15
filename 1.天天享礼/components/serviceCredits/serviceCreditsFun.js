@@ -1,6 +1,6 @@
-import { mapGetters, mapActions } from 'vuex';
-import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
 import { taskNum } from '@/api/modules/task.js';
+import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
+import { mapActions, mapGetters } from 'vuex';
 const serviceCredits = {
     data() {
         return {
@@ -54,9 +54,7 @@ const serviceCredits = {
                     }
                 }
                 // 跳转到福利中心
-                uni.reLaunch({
-                    url: '/pages/tabBar/task/index'
-                })
+                this.$reLaunch('/pages/tabBar/task/index');
             });
         },
         // 关闭赚取牛金豆 并更新用户信息

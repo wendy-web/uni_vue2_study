@@ -39,6 +39,7 @@
 </view>
 </template>
 <script>
+import { warpRectDom } from '@/utils/auth.js';
 import cashMixin from '../static/cashMixin.js'; // 混入分享的混合方法
 import anNoticeBar from './an-notice-bar.vue';
 export default {
@@ -70,26 +71,14 @@ export default {
     });
   },
   methods: {
+    warpRectDom,
     goToBuyHandle() {
       this.$emit('goToBuy');
     },
     domFun(){
-      this.initWarpRect('openFirstRed').then(res=> {
+      this.warpRectDom('openFirstRed').then(res=> {
         this.$emit('openFirstRef', res);
       });
-    },
-    initWarpRect(id) {
-      return new Promise(resolve => {
-        setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-          let query = uni.createSelectorQuery();
-          // #ifndef MP-ALIPAY
-          query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-          // #endif
-          query.select('#' + (id || this.viewId)).boundingClientRect(data => {
-            resolve(data)
-          }).exec();
-        }, 20)
-      })
     }
   },
 };
@@ -161,7 +150,6 @@ export default {
         transform: translate(16rpx, 16rpx);
         animation: gestureAnimation 1s linear infinite;
       }
-
     }
   }
   .cash_right {

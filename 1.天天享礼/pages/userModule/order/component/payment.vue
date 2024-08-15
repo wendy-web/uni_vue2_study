@@ -28,13 +28,13 @@
 	</view>
 </template>
 <script>
-	import {
-cancelOrder,
-pay,
-query
+import {
+	cancelOrder,
+	pay,
+	query
 } from '@/api/modules/order.js';
 import {
-getImgUrl
+	getImgUrl
 } from '@/utils/auth.js';
 import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 	export default {
@@ -154,10 +154,8 @@ import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 									status
 								} = data;
 								pay_amount = (pay_amount / 100).toFixed(2);
-								uni.redirectTo({
-									url: `/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`
-								})
-								return
+								this.$redirectTo(`/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`);
+								return;
 							}
 							uni.showModal({
 								title: '温馨提示',

@@ -10,8 +10,8 @@
   :down="downOption"
 >
 <xh-navbar
-  :leftImage="imgUrl+'static/images/arrow_left.png'"
-  @leftCallBack="$topCallBack"
+  leftImage="https://file.y1b.cn/store/1-0/24629/667f888cec84d.png"
+  @leftCallBack="$leftBack"
   :fixed="true"
   :navberColor="isShowNavBerColor ? subjectColor: ''"
   :fixedNum="9"

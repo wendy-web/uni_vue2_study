@@ -220,13 +220,7 @@ export default {
     navBackHandle() {
       this.isShowNoProduct = false
       // 手慢无 - 返回首页
-      uni.navigateBack({
-        fail() {
-          uni.switchTab({
-            url:'/pages/tabBar/shopMall/index'
-          })
-        }
-      })
+      this.$leftBack();
     },
     payHandle() {
       if(this.config.type) {

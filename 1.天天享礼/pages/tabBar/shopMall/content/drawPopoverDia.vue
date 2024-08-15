@@ -9,15 +9,9 @@
     <view class="dia_cont ani_active">
         <image class="close_icon" mode="scaleToFill"
             src="https://test-file.y1b.cn/store/1-0/24314/65f2ac09a0204.png"
-            @click="popupClose"
-        ></image>
-        <van-image
-            width="262rpx"
-            height="304rpx"
-            :src="config.image"
-            fit="widthFix"
-            use-loading-slot
-            class="dia_image"
+            @click="popupClose"></image>
+        <van-image width="262rpx" height="304rpx" class="dia_image"
+            :src="config.image" fit="widthFix" use-loading-slot
         ><van-loading slot="loading" type="spinner" size="20" vertical />
         </van-image>
         <view class="cont_title">{{ config.name }}</view>

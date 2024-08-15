@@ -124,6 +124,47 @@ export const haiWeiObj = {
         product_name: '话费充值'
     }
 }
+
+export const jtkDcObj = {
+    'rx': {
+        product_img: '../../static/order/rx.png',
+        product_name: '瑞幸咖啡'
+    },
+    'mcd': {
+        product_img: '../../static/order/mcd.png',
+        product_name: '麦当劳'
+    },
+    'bsk': {
+        product_img: '../../static/order/bsk.png',
+        product_name: '必胜客'
+    },
+    'nx': {
+        product_img: '../../static/order/nx.png',
+        product_name: '奈雪的茶'
+    },
+    'kudi': {
+        product_img: '../../static/order/kudi.png',
+        product_name: '库迪咖啡'
+    },
+    'xbk': {
+        product_img: '../../static/order/xbk.png',
+        product_name: '星巴克'
+    },
+    'kfc': {
+        product_img: '../../static/order/kfc.png',
+        product_name: '肯德基'
+    },
+    'movie': {
+        product_img: '../../static/order/movie.png',
+        product_icon: '../../static/order/icon_02.png',
+        product_name: '电影'
+    },
+    'car': {
+        product_img: '../../static/order/car.png',
+        product_icon: '../../static/order/car_icon.png',
+        product_name: '打车出行'
+    },
+}
 export const haiWeiStatus = {
     0: {
         title: '待付款',

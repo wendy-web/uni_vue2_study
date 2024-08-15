@@ -4,88 +4,6 @@ import './mode/task.js'; // 首页的mock数据
 const Mock = require('./module/WxMock');
 const BASEURL = getBaseUrl();
 
-
-// 商品详情
-// Mock.mock(`${BASEURL}/api/index/couponDetails---`, {
-//     statusCode: 200,
-//     'data|1': [{
-//         "code": "1",
-//         "data": {
-//             "id": 122,
-//             "title": "跳转点亮中国小程序",
-//             "face_value": "100.00",
-//             "credits": 1,
-//             "image": "https:\/\/test-file.y1b.cn\/store\/1-0\/23323\/641c04a021611.jpg",
-//             "expiry_date": 60,
-//             "stock_num": 87,
-//             "used_num": 0,
-//             "user_num": 100,
-//             "exch_user_num": 13,
-//             "explain": "&lt;p&gt;65463447437&lt;\/p&gt;",
-//             "status": 1,
-//             "create_time": "2023-03-23 15:50:23",
-//             "update_time": "2023-04-06 17:52:44",
-//             "device_type": 2,
-//             "cz_type": 1,
-//             "cz_type_intro": "请输入手机号码",
-//             "act": 1,
-//             "type": 4,
-//             "is_main": 1,
-//             "article_url": "",
-//             "main_url": "",
-//             "type_id": "wx98a1cc9f6a76fdf3",
-//             "type_sid": "pages\/tabBar\/home\/index",
-//             "video_id": "",
-//             "video_account_id": "",
-//             "activity_id": null,
-//             "start_time": '2023-03-23 15:50:23',
-//             "end_time": '2033-03-23 15:50:23',
-//             "seckill_credits": null,
-//             "activity_num": null,
-//             "activity_enter_num": null,
-//             "activity_type": null,
-//             "collect": 0
-//         },
-//         "msg": "",
-//         "time": 0.007740020751953125
-//     }],
-// });
-
-
-
-// Mock.mock(`${BASEURL}/api/shop/buy`, {
-//     statusCode: 200,
-//     'data|1': [{
-//         code: "3",
-//         data: jspay_info: '{"appId":"wx6deb62d876c03d85","timeStamp":"1681538142","nonceStr":"71352c95a9be4087a94ab563668e04f6","package":"prepay_id=wx15135542273247c7fa6d55d831f5a30000","signType":"RSA","paySign":"Imo5UvROFq1dlVAk1HvJrYISc/C1pFpifDDZiG5zVgZNLTBSggEtA809WjnNbzFaJazdPedvyiml4sjsnS5RbSFbZzhVysX+N8clwB/uqGIL9jWQE7Y4Ksz1MRJ/HGohMoJHzU+5I8oGkSOblue22sH7y59wB02SO2YFSrxeWG98zdP79/+a7CK25XTEJOyCWbiP0cglC/V9Pk7ep3YQNXgaOTK1KYaVyInTA1ZzJFqr7gMQVmfXihE5wrPoAfU2SszbA+O24WlrsUXwLg+MERm+7W1Iz3Dr/SL2QI9OWuJRTfJ1dOX0+UGEHf8a1QfS+0QS3Qtuto6R+Q1XsoiPMA=="}'
-//         order_id: "223"
-//         msg: '855457578'
-//         time: 0.5481669902801514
-//     }],
-// });
-
-// 秒杀活动
-Mock.mock(`${BASEURL}/api/index/limitActivity`, {
-    statusCode: 200,
-    'data|1': [{
-        code: 1,
-        data: {
-            credits: 1,
-            end_time: 0,
-            face_value: 1,
-            image: 2,
-            start_time: 255,
-            coupon_id: 5,
-            num: 6,
-            enter_num: 5,
-            id: 5,
-            title: 11455
-        },
-        msg: "",
-        time: 0.012407064437866211
-    }, ],
-});
-
 // 领红包任务
 Mock.mock(`${BASEURL}/api/task/scheduleActivity`, {
     statusCode: 200,
@@ -178,81 +96,224 @@ Mock.mock(`${BASEURL}/api/profile/myCoupon`, {
         "time": 0.012170076370239258
     }],
 });
+
+// 订单支付
+Mock.mock(`${BASEURL}/api/shop/pay`, {
+    statusCode: 200,
+    'data|1': [{
+        "code": "0",
+        "data": '',
+        "msg": "订单已取消",
+        "time": 0.012170076370239258
+    }],
+});
 // 订单列表
 Mock.mock(`${BASEURL}/api/profile/myOrder`, {
     statusCode: 200,
     'data|1': [{
         "code": "1",
-        "data": {
+        data: {
             "total": 5,
             "per_page": 15,
             "current_page": 1,
             "last_page": 1,
             "data": [{
-                    "id": 162,
-                    "goods_sku_name": "瑞幸咖啡29元饮品券",
-                    "goods_imgs": "https://file.y1b.cn/store/1-0/23216/63edd19d6792e.jpg",
+                    "amount": 5000,
+                    "card_deadline": null,
+                    "card_status": null,
+                    "channel_flag": "OFFLINE",
+                    "cid1": null,
+                    "cid3": null,
+                    "codes": null,
+                    "complete_time": null,
+                    "coupon_amount": 600,
+                    "coupon_id": 99,
+                    "create_time": "2024-07-13 10:07:43",
+                    "expire_time": "2024-07-13 10:17:43",
+                    "goods_id": 126,
+                    "goods_imgs": "https://file.y1b.cn/store/1-0/23217/63ef187ae7242.jpg",
+                    "goods_sign": null,
+                    "goods_sku_name": "e袋洗充值卡50元",
                     "goods_type": 0,
-                    "create_time": "2023-03-28 14:32:56",
+                    "id": 24770,
+                    "leshua_order_code": null,
+                    "off_time": null,
+                    "pay_amount": 4400,
+                    "pay_way": "WXZF",
+                    "qr_codes": null,
+                    "restaurant_name": null,
+                    "result_code": "0",
+                    "send_time": null,
+                    "skuId": null,
                     "status": 0,
-                    "pay_amount": 1650,
-                    "card_deadline": null,
-                    "card_status": null
+                    "third_order_id": "20240713100743231167",
+                    "ticket_id": 3210
                 },
                 {
-                    "id": 161,
-                    "goods_sku_name": "瑞幸咖啡29元饮品券",
-                    "goods_imgs": "https://file.y1b.cn/store/1-0/23216/63edd19d6792e.jpg",
-                    "goods_type": 0,
-                    "create_time": "2023-03-28 14:25:04",
-                    "status": 1,
-                    "pay_amount": 1650,
+                    "amount": 3980,
                     "card_deadline": null,
-                    "card_status": null
-                },
-                {
-                    "id": 160,
-                    "goods_sku_name": "瑞幸咖啡29元饮品券",
-                    "goods_imgs": "https://file.y1b.cn/store/1-0/23216/63edd19d6792e.jpg",
-                    "goods_type": 0,
-                    "create_time": "2023-03-28 14:23:56",
+                    "card_status": null,
+                    "channel_flag": 29,
+                    "cid1": 15901,
+                    "cid3": 15908,
+                    "codes": null,
+                    "complete_time": null,
+                    "coupon_amount": 0,
+                    "coupon_id": null,
+                    "create_time": "2024-07-08 18:40:35",
+                    "expire_time": "2024-07-08 18:40:35",
+                    "goods_id": null,
+                    "goods_imgs": "https://img14.360buyimg.com/pop/jfs/t1/243261/10/6571/46932/660a5958F202641c5/4daba2234e33a193.jpg",
+                    "goods_sign": null,
+                    "goods_sku_name": "植护悦色蓝色压花纸面巾 140*175/4层 320张 3包/袋",
+                    "goods_type": 5,
+                    "id": 24434,
+                    "jdShareLink": "/pages/order/detail/detail?id=294861247387",
+                    "leshua_order_code": "3100984667",
+                    "lx_type": 2,
+                    "off_time": null,
+                    "orderNo": "294861247387",
+                    "pay_amount": 980,
+                    "pay_way": "jd",
+                    "qr_codes": null,
+                    "queryId": "3as8Hwr7dPloUqg3xa",
+                    "restaurant_name": null,
+                    "result_code": null,
+                    "send_time": null,
+                    "skuId": "3as8Hwr7dPloUqg3xa",
                     "status": 2,
-                    "pay_amount": 1650,
-                    "card_deadline": null,
-                    "card_status": null
+                    "third_order_id": "1013518480128466944",
+                    "ticket_id": null,
+                    "type_id": "wx91d27dbf599dff74",
+                    "profit_money": 1.5
                 },
                 {
-                    "id": 159,
-                    "goods_sku_name": "瑞幸咖啡29元饮品券",
-                    "goods_imgs": "https://file.y1b.cn/store/1-0/23216/63edd19d6792e.jpg",
-                    "goods_type": 0,
-                    "create_time": "2023-03-28 14:08:05",
-                    "status": 3,
-                    "pay_amount": 1650,
+                    "amount": 1500,
                     "card_deadline": null,
-                    "card_status": null
-                },
-                {
-                    "id": 158,
-                    "goods_sku_name": "周黑鸭10元代金券",
-                    "goods_imgs": "https://file.y1b.cn/store/1-0/23210/63e5ebe9ced63.jpg",
+                    "card_status": null,
+                    "channel_flag": "OFFLINE",
+                    "cid1": null,
+                    "cid3": null,
+                    "codes": null,
+                    "complete_time": null,
+                    "coupon_amount": 500,
+                    "coupon_id": 3,
+                    "create_time": "2024-07-08 13:57:08",
+                    "expire_time": "2024-07-08 14:07:08",
+                    "goods_id": 346,
+                    "goods_imgs": "https://file.y1b.cn/store/1-0/23120/63c9ebaf14c27.png",
+                    "goods_sign": null,
+                    "goods_sku_name": "饿了么超级会员月卡",
                     "goods_type": 1,
-                    "create_time": "2023-03-25 16:25:07",
-                    "status": 4,
-                    "pay_amount": 300,
-                    "card_deadline": null,
-                    "card_status": null
+                    "id": 24249,
+                    "leshua_order_code": null,
+                    "off_time": null,
+                    "pay_amount": 1000,
+                    "pay_way": "WXZF",
+                    "qr_codes": null,
+                    "restaurant_name": null,
+                    "result_code": "0",
+                    "send_time": null,
+                    "skuId": null,
+                    "status": 1,
+                    "third_order_id": "20240708135708556954",
+                    "ticket_id": 3207
                 },
                 {
-                    "id": 158,
-                    "goods_sku_name": "周黑鸭10元代金券",
-                    "goods_imgs": "https://file.y1b.cn/store/1-0/23210/63e5ebe9ced63.jpg",
-                    "goods_type": 1,
-                    "create_time": "2023-03-25 16:25:07",
-                    "status": 5,
-                    "pay_amount": 300,
+                    "amount": 1500,
                     "card_deadline": null,
-                    "card_status": null
+                    "card_status": null,
+                    "channel_flag": "OFFLINE",
+                    "cid1": null,
+                    "cid3": null,
+                    "codes": null,
+                    "complete_time": null,
+                    "coupon_amount": 500,
+                    "coupon_id": 3,
+                    "create_time": "2024-07-08 13:57:08",
+                    "expire_time": "2024-07-08 14:07:08",
+                    "goods_id": 346,
+                    "goods_imgs": "https://file.y1b.cn/store/1-0/23120/63c9ebaf14c27.png",
+                    "goods_sign": null,
+                    "goods_sku_name": "饿了么超级会员月卡",
+                    "goods_type": 1,
+                    "id": 24249,
+                    "leshua_order_code": null,
+                    "off_time": null,
+                    "pay_amount": 1000,
+                    "pay_way": "WXZF",
+                    "qr_codes": null,
+                    "restaurant_name": null,
+                    "result_code": "0",
+                    "send_time": null,
+                    "skuId": null,
+                    "status": 0,
+                    "third_order_id": "20240708135708556954",
+                    "ticket_id": 3207
+                },
+                {
+                    "amount": 1500,
+                    "card_deadline": null,
+                    "card_status": null,
+                    "channel_flag": "OFFLINE",
+                    "cid1": null,
+                    "cid3": null,
+                    "codes": null,
+                    "complete_time": null,
+                    "coupon_amount": 500,
+                    "coupon_id": 3,
+                    "create_time": "2024-07-08 13:57:08",
+                    "expire_time": "2024-07-08 14:07:08",
+                    "goods_id": 346,
+                    "goods_imgs": "https://file.y1b.cn/store/1-0/23120/63c9ebaf14c27.png",
+                    "goods_sign": null,
+                    "goods_sku_name": "饿了么超级会员月卡",
+                    "goods_type": 1,
+                    "id": 24249,
+                    "leshua_order_code": null,
+                    "off_time": null,
+                    "pay_amount": 1000,
+                    "pay_way": "WXZF",
+                    "qr_codes": null,
+                    "restaurant_name": null,
+                    "result_code": "0",
+                    "send_time": null,
+                    "skuId": null,
+                    "status": 1,
+                    "third_order_id": "20240708135708556954",
+                    "ticket_id": 3207
+                },
+                {
+                    "amount": 1500,
+                    "card_deadline": null,
+                    "card_status": null,
+                    "channel_flag": "OFFLINE",
+                    "cid1": null,
+                    "cid3": null,
+                    "codes": null,
+                    "complete_time": null,
+                    "coupon_amount": 500,
+                    "coupon_id": 3,
+                    "create_time": "2024-07-08 13:57:08",
+                    "expire_time": "2024-07-08 14:07:08",
+                    "goods_id": 346,
+                    "goods_imgs": "https://file.y1b.cn/store/1-0/23120/63c9ebaf14c27.png",
+                    "goods_sign": null,
+                    "goods_sku_name": "饿了么超级会员月卡",
+                    "goods_type": 1,
+                    "id": 24249,
+                    "leshua_order_code": null,
+                    "off_time": null,
+                    "pay_amount": 1000,
+                    "pay_way": "WXZF",
+                    "qr_codes": null,
+                    "restaurant_name": null,
+                    "result_code": "0",
+                    "send_time": null,
+                    "skuId": null,
+                    "status": 1,
+                    "third_order_id": "20240708135708556954",
+                    "ticket_id": 3207
                 }
             ]
         },
@@ -326,5 +387,61 @@ Mock.mock(`${BASEURL}/api/index/banner`, {
         }],
         "msg": "success",
         "time": 0.0035109519958496094
+    }],
+});
+
+
+// 收益列表
+Mock.mock(`${BASEURL}/api/profit/profitList`, {
+    statusCode: 200,
+    'data|1': [{
+        "code": "1",
+        data: {
+            "total": 5,
+            "per_page": 15,
+            "current_page": 1,
+            "last_page": 1,
+            "list": [{
+                    "create_time": "2024-07-08 18:40:35",
+                    "id": 127,
+                    "note": "",
+                    "profit": 3.3,
+                    "profit_status": 1,
+                    "third_order_id": "1013518480128466944",
+                    "title": "会员笔笔返",
+                    "vip_order": 1
+                },
+                {
+                    "create_time": "2024-07-08 18:40:35",
+                    "id": 1297,
+                    "note": "",
+                    "profit": 3.3,
+                    "profit_status": 0,
+                    "third_order_id": "1013518480128466944",
+                    "title": "会员笔笔返",
+                    "vip_order": 1
+                }
+            ]
+        },
+        "msg": "success",
+        "time": 0.0072901248931884766
+    }],
+});
+
+
+// 领取收益
+Mock.mock(`${BASEURL}/api/profit/profitGet`, {
+    statusCode: 200,
+    'data|1': [{
+        "code": "1",
+        data: {
+            "total": 5,
+            "per_page": 15,
+            "current_page": 1,
+            "last_page": 1,
+            "list": []
+        },
+        "msg": "success",
+        "time": 0.0072901248931884766
     }],
 });

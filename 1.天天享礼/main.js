@@ -14,7 +14,6 @@ Vue.component('xhNavbar', xhNavbar);
 import pointUpgradeDia from '@/components/pointUpgradeDia.vue';
 Vue.component('pointUpgradeDia', pointUpgradeDia);
 
-
 // 用户隐私权限的嵌入
 import privacyOpen from '@/components/privacy/indexOpen.vue';
 Vue.component('privacyOpen', privacyOpen);
@@ -25,9 +24,9 @@ Vue.component('recommendDia', recommendDia);
 
 Vue.config.productionTip = false;
 App.mpType = 'app';
-
 Vue.prototype.$store = store;
 Vue.prototype.$router = router;
+Vue.prototype.$isClick = false;
 Vue.prototype.getHandle = function() {}
 
 const app = new Vue({

@@ -1,15 +1,21 @@
 const baseUrl = getBaseUrl();
+export function getShowCodeNum() {
+    return getStorage(`${baseUrl}_isShowCodeNum`);
+}
+export function setShowCodeNum(data) {
+    setStorage(`${baseUrl}_isShowCodeNum`, data);
+}
 export function setGift(data) {
-    setStorage('gift', data);
+    setStorage(`${baseUrl}_gift`, data);
 }
 export function getGift() {
-    return getStorage('gift');
+    return getStorage(`${baseUrl}_gift`);
 }
 export function getAutoPrivacy() {
-    return getStorage('isAutoPrivacy');
+    return getStorage(`${baseUrl}_isAutoPrivacy`);
 }
 export function setAutoPrivacy(data) {
-    setStorage('isAutoPrivacy', data);
+    setStorage(`${baseUrl}_isAutoPrivacy`, data);
 }
 export function setAutoLogin(data) {
     setStorage(`${baseUrl}_isAutoLogin`, data);
@@ -179,4 +185,19 @@ export function toAgreeLook(link) {
 
 export function getUrlKey(pageUrl, name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(pageUrl) || [, ""])[1].replace(/\+/g, '%20')) || null;
+}
+
+export function warpRectDom(idName) {
+    return new Promise(resolve => {
+        setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
+            let query = uni.createSelectorQuery();
+            // #ifndef MP-ALIPAY
+            query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
+                // #endif
+                // console.log('query', query)
+            query.select('#' + idName).boundingClientRect(data => {
+                resolve(data)
+            }).exec();
+        }, 20)
+    })
 }

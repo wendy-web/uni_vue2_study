@@ -173,9 +173,9 @@
 
 <script>
 import {
-location,
-menuQuery,
-restaurantQuery,
+  location,
+  menuQuery,
+  restaurantQuery,
 } from '@/api/modules/takeawayMenu/luckin.js';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getImgUrl } from '@/utils/auth.js';
@@ -576,19 +576,6 @@ export default {
       this.mescroll.resetUpScroll(); // 对页面数据进行刷新
       this.$go( `/pages/userModule/takeawayMenu/mcDonald/order/index?oid=${oid}`);
     },
-    warpRectDom(idName) {
-        return new Promise(resolve => {
-            setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-                let query = uni.createSelectorQuery();
-                // #ifndef MP-ALIPAY
-                query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-                    // #endif
-                query.select('#'+idName).boundingClientRect(data => {
-                    resolve(data)
-                }).exec();
-            }, 20)
-        })
-    },
     imBuyHandle(products, ticket_id = 0) {
         if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
         this.$refs.commodityOrder.popupShow({
@@ -655,7 +642,6 @@ export default {
     // 直接退回首页
     topCallBack() {
       if(this.isBack) return this.$leftBack();
-      if(this.pathSource == 'discounts') return this.$reLaunch('/pages/discounts/discounts/index');
       this.$switchTab(`/pages/tabBar/shopMall/index`);
     },
     displaceHandle(){

@@ -1,15 +1,8 @@
 <template>
   <view class="coupon-details">
-    <view
-      class="icon_box"
+    <view class="icon_box" @click="$leftBack"
       :style="{ height: navBarHeight + 'px', top: topHeight + 'px' }"
-      @click="$leftBack"
-    >
-      <image
-        class="icon_box-icon"
-        :src="imgUrl + 'static/images/icon_close.png'"
-        mode="aspectFill"
-      ></image>
+    ><image class="icon_box-icon" :src="imgUrl + 'static/images/icon_close.png'" mode="aspectFill"></image>
     </view>
     <view class="content_box">
       <!-- 测试视频号 channel-video-->
@@ -25,22 +18,17 @@
           v-if="config.video_account_id"
         >
           <!-- 商品图片 -->
-          <van-image
-            @click="openSph()"
-            :width="screenWidth + 'px'"
-            :height="screenWidth + 'px'"
-            :src="config.image"
-            use-loading-slot
+          <van-image @click="openSph()"
+            :width="screenWidth + 'px'" :height="screenWidth + 'px'"
+            :src="config.image" use-loading-slot
           ><van-loading slot="loading" type="spinner" size="20" vertical />
           </van-image>
         </channel-video>
         <!-- 商品图片 -->
         <van-image
           v-else
-          :width="screenWidth + 'px'"
-          :height="screenWidth + 'px'"
-          :src="config.image"
-          use-loading-slot
+          :width="screenWidth + 'px'" :height="screenWidth + 'px'"
+          :src="config.image" use-loading-slot
         ><van-loading slot="loading" type="spinner" size="20" vertical />
         </van-image>
       </view>
@@ -63,35 +51,20 @@
         :samePlatform="samePlatform"
       /> -->
       <!-- 正常 -->
-      <normal-card
-        v-if="cardType === 1"
-        :config="config"
-        :samePlatform="samePlatform"
-      />
+      <normal-card v-if="cardType === 1"
+        :config="config" :samePlatform="samePlatform"/>
       <!-- 秒杀 -->
-      <seckill-card
-        v-else-if="cardType === 2"
-        :config="config"
-        @finish="init"
-        :samePlatform="samePlatform"
-      />
+      <seckill-card v-else-if="cardType === 2"
+        :config="config" @finish="init" :samePlatform="samePlatform"/>
       <!-- 秒杀预告 -->
-      <preview-seckill-card
-        v-else
-        :config="config"
-        @finish="init"
-        :samePlatform="samePlatform"
-      />
+      <preview-seckill-card v-else
+        :config="config" @finish="init" :samePlatform="samePlatform"/>
       <!-- 富文本详情 -->
       <view class="u-parse-box">
         <view class="u-parse_title">
-          <image class="remind_icon" mode="aspectFill"
-            :src="subImgUrl + '/remind_icon.png'"
-          ></image>
+          <image class="remind_icon" mode="aspectFill" :src="subImgUrl + '/remind_icon.png'"></image>
           需要注意
-          <image class="remind_qa" mode="aspectFill"
-            :src="subImgUrl + '/qa.png'"
-          ></image>
+          <image class="remind_qa" mode="aspectFill" :src="subImgUrl + '/qa.png'"></image>
         </view>
         <view class="u-parse_cont">
           <u-parse
@@ -103,9 +76,7 @@
       </view>
       <!-- 价格说明 -->
       <view class="price-desc"
-        :style="{
-          '--padding': stockType === 1 && exchangeCk_id ? '68rpx' : '0rpx',
-        }">
+        :style="{ '--padding': stockType === 1 && exchangeCk_id ? '68rpx' : '0rpx' }">
         <view class="price-desc-title"> 价格说明 </view>
         <view class="price-desc-info">
           基础价或划线价，指商品的专柜价、吊牌价、正品零售价、厂商指导价或该商品的曾经展示过的销售价等，并非原价，仅供参考
@@ -119,9 +90,7 @@
         <view class="remind_box" v-if="exchangeCk_id" @click="goMyCouponHandle">
           <image class="bg_img" :src="subImgUrl + '/remind_box-bg.png'" mode="scaleToFill"></image>
           <view class="remind_left">
-            <image  class="left_icon" mode="aspectFill"
-              :src="subImgUrl + '/remind_left-icon.png'"
-            ></image>
+            <image class="left_icon" mode="aspectFill" :src="subImgUrl + '/remind_left-icon.png'"></image>
             你有该优惠券未使用
           </view>
           <view class="remind_right">去使用<van-icon name="arrow" color="#F84842" size="26rpx" /></view>
@@ -241,10 +210,10 @@ import serviceRecharge from "./serviceRecharge.vue";
 // import otherExchangeSuccess from './otherExchangeSuccess.vue'
 import { wxmsgid } from "@/api/modules/index.js";
 import {
-couponDetails,
-exchange,
-exchangeCk,
-seckill,
+  couponDetails,
+  exchange,
+  exchangeCk,
+  seckill,
 } from "@/api/modules/shopMall.js";
 import { toggleCollect } from "@/api/modules/user.js";
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
@@ -322,13 +291,7 @@ export default {
     this.$refs.privacyOpen.LifetimesShow();
     // 打开半屏成功 —— 且退出时返回上一页
     if (this.isShowOpenEmbedded) {
-      uni.navigateBack({
-        fail: (err) => {
-          uni.switchTab({
-            url: "/pages/tabBar/shopMall/index",
-          });
-        },
-      });
+			this.$leftBack();
     }
     this.init();
     this.searchExchangeCk();
@@ -463,18 +426,18 @@ export default {
     navigate(href, e) {},
     async exchange() {
       /*牛金豆不足*/
-      let ConfigCredits = this.config.seckill_credits || this.config.credits;
-      if (this.cardType === 3) {
-        ConfigCredits = this.config.credits;
-      }
-      if (this.userInfo.credits < ConfigCredits && !this.is_popover && !this.userInfo.is_vip) {
+      const { seckill_credits, credits, zero_credits, id, activity_id } = this.config;
+      let ConfigCredits = seckill_credits || credits;
+      (this.cardType === 3) && (ConfigCredits = credits);
+      if (this.userInfo.credits < ConfigCredits && !this.is_popover && !zero_credits) {
         this.exchangeFailedShow = true;
         this.redeemClickLoading = false;
         return;
       }
+      // 正常兑换流程
       let API = exchange;
       let params = {
-        id: this.config.id,
+        id,
         is_power: this.isPowerStatus,
         is_popover: this.is_popover,
       };
@@ -482,7 +445,7 @@ export default {
       if (this.cardType === 2) {
         API = seckill;
         params = {
-          id: this.config.activity_id,
+          id: activity_id,
           is_power: this.isPowerStatus,
           is_popover: this.is_popover,
         };
@@ -505,7 +468,6 @@ export default {
         type_sid,
         open_mini_type,
         qz_url,
-        credits,
       } = this.config;
       face_value = Number(face_value).toFixed(1);
       this.exchangeId = res.data;
@@ -517,7 +479,6 @@ export default {
         this.$refs.exchangeSuccess.popupShow({
           ...this.config,
           id: res.data,
-          title: this.config.title,
           face_value,
           voucherType,
           is_main,
@@ -556,9 +517,8 @@ export default {
     },
     // 获取模板id
     async getWxMsgId() {
-      const { voucherType, qz_url, open_mini_type } = this.config;
-      // 移动积分 - 类型type == 11;
-      // if(voucherType == 11) return this.$go(`/pages/webview/webview?link=${encodeURIComponent(qz_url)}`);
+      const { open_mini_type, type} = this.config;
+      if(type == 12) return this.$toast('优惠券已下架');
       if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
       this.$wxReportEvent("immediateexchange");
       // 半屏的模式不做授权及验证

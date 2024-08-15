@@ -67,7 +67,6 @@
 					@scanResult="scanResultHandle"
 				></cashFinishDom7>
 			</keep-alive>
-
 			<!-- 上拉的浮动定位显示 -->
 			<view :class="['active_top', showActivityStatusDom ? 'active' : '']"
 				:style="{ top: stickyTabTop, '--top': navHeight + 'px' }"
@@ -133,10 +132,10 @@
 </template>
 <script>
 import { activeCk, freeGoodsList, freeGroupList, goodsList, groupList, speedGroup } from '@/api/modules/cash.js';
-import { goodsQuery, jingfen, material } from '@/api/modules/jsShop.js';
+import { goodsQuery, guessList, jingfen, material } from '@/api/modules/jsShop.js';
 import { goodsRecommend, goodsSearch } from '@/api/modules/pddShop.js';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { getBaseUrl, getImgUrl, getStorage, setStorage } from '@/utils/auth.js';
+import { getBaseUrl, getImgUrl, getStorage, setStorage, warpRectDom } from '@/utils/auth.js';
 import getViewPort from '@/utils/getViewPort.js';
 import { parseTime } from '@/utils/index.js';
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
@@ -218,9 +217,6 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 				freeTopDomRefHeight: 0, // 免单头部的dom的高度
 				freeAccelerateDomRefHeight: 0, //
 				freeFinishDom45RefHeight: 0,
-
-
-
 				tabHeight: 94,
 				openFirstRefHeight: 0, // 开始状态的页面头部显示内容
 				cashFinishDom45RefHeight: 0, // 翻倍状态的头部显示内容
@@ -251,7 +247,17 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 				is_close: 0,
 				isShowSelAddDia: false,
 				selItem: {},
-				isShowScrollTitle: false
+				isShowScrollTitle: false,
+				guessListParams: {
+					index: 1,
+					pageNum: 1,
+					sizeNum: 10,
+					empty_num: 0,
+					is_first: 0,
+					is_home: 5
+				},
+				isRequestGuessListFun: true, // 请求猜你喜欢
+				isRequestEmptyNum: 0,
 			}
 		},
 		computed: {
@@ -375,7 +381,6 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 			}
 		},
 		async onShow() {
-			// this.subIndex && this.setTimeInit();
 			let cur_date = parseTime(new Date(), "{y}/{m}/{d}");
 			const showRemindDay = getStorage(this.remindStorageKey);
 			if(showRemindDay) return false;
@@ -399,45 +404,33 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 				initFreeEnterPage: 'cash/initFreeEnterPage',
 				requestGetLog: 'cash/requestGetLog',
 			}),
+			warpRectDom,
 			orderTitleDom(){
-				this.initWarpRect('orderTitle').then(res=> {
+				this.warpRectDom('orderTitle').then(res=> {
 					if(!res) return;
 					this.freeOrderTitleRefHeight = res.height;
 				});
-			},
-			initWarpRect(id) {
-				return new Promise(resolve => {
-				setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-					let query = uni.createSelectorQuery();
-					// #ifndef MP-ALIPAY
-					query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-					// #endif
-					query.select('#' + (id || this.viewId)).boundingClientRect(data => {
-					resolve(data)
-					}).exec();
-				}, 20)
-				})
 			},
 			async initActiveCk() {
 				this.subList = [];
 				const res = await activeCk();
 				if(res.code != 1 || !res.data) return;
 				const { have_profit, have_free } = res.data;
-				if(have_profit) {
-					this.subList.unshift({
-						text: '领现金',
-						icon: 'https://test-file.y1b.cn/store/1-0/2432/65e2d705a307b.png',
-						icon_active: 'https://test-file.y1b.cn/store/1-0/2432/65e2d6f2a23ce.png',
-					});
-					this.subIndex = 1;
-				}
 				if(have_free) {
-					this.subList.unshift({
+					this.subList.push({
 						text: '免单特权',
 						icon: 'https://test-file.y1b.cn/store/1-0/2432/65e2d4b7b0afc.png',
 						icon_active: 'https://test-file.y1b.cn/store/1-0/2432/65e2d4a002f54.png',
 					});
 					this.subIndex = 0;
+				}
+				if(have_profit) {
+					this.subList.push({
+						text: '领现金',
+						icon: 'https://test-file.y1b.cn/store/1-0/2432/65e2d705a307b.png',
+						icon_active: 'https://test-file.y1b.cn/store/1-0/2432/65e2d6f2a23ce.png',
+					});
+					this.subIndex = 1;
 				}
 			},
 			subTabHandle(index) {
@@ -454,6 +447,19 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 				this.showTabsList = [];
 				(this.subIndex < 0) && await this.initActiveCk();
 				(this.subIndex < 0) && (this.subIndex = 1);
+				// 个性化推荐 - 重置请求内容
+				this.isRequestGuessListFun = true;
+				this.guessListParams = {
+					index: 1,
+					pageNum: 1,
+					sizeNum: 10,
+					empty_num: 0,
+					is_first: 0,
+					is_profit: 1,
+					active_id: 0,
+					tag: 0,
+					is_home: 5
+				}
 				// 标题头部的呈现
 				this.title_img = !this.subIndex ? 'https://test-file.y1b.cn/store/1-0/24312/65f0171b9d916.png': 'https://file.y1b.cn/store/1-0/24123/65af146cd8811.png';
 				if(!this.subIndex) {
@@ -492,6 +498,44 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 				this.is_close = 0;
 				this.downCallback();
 			},
+			async guessListFun(page) {
+				let currentItem = this.tabsList[this.tabIndex];
+				let { goods } = currentItem;
+				const res = await guessList(this.guessListParams);
+				if(res.code != 1 || (res.data && res.data.stop)) {
+					this.isRequestGuessListFun = false;
+					this.mescroll.endSuccess(10, true);
+					this.mescroll.triggerUpScroll();
+					return;
+				}
+				const { index, list, pageNum, is_first, empty_num, active_id, tag } = res.data;
+				if( page.num == 1 ) goods = [];
+				this.guessListParams = {
+					...this.guessListParams,
+					index,
+					pageNum,
+					empty_num,
+					is_first,
+					active_id,
+					tag
+				}
+				goods = goods.concat(list); // 追加新数据
+				this.tabsList[this.tabIndex] = {
+					...currentItem,
+					goods
+				};
+				this.mescroll.endSuccess(10, true);
+				// 连续三次请求为空时 - 结束个人性推荐的请求
+				if(!list.length) {
+					this.isRequestEmptyNum += 1;
+					if(this.isRequestEmptyNum >= 3) {
+						this.isRequestGuessListFun = false;
+					}
+					this.mescroll.triggerUpScroll();
+					return;
+				}
+				this.isRequestEmptyNum = 0;
+			},
 			async upCallback(page) {
 				// 获取tab的列表
 				if (!this.tabsList.length) {
@@ -504,7 +548,7 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 						return {
 							...item,
 							goods: [],
-							shopGroupIndex: -1, // >0;请求京东拼多多的列表
+							shopGroupIndex: -1, // >0; 请求京东拼多多的列表
 							pageNum: 1,
 							first_tag: 0,
 							isSecondLastPage: false,
@@ -524,6 +568,10 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 					first_tag,
 					isSecondLastPage
 				} = currentItem;
+				// 请求猜你喜欢的类目 - tab的第一项进行首部的插入
+				if(index == 1 && this.isRequestGuessListFun) {
+					return this.guessListFun(page);
+				}
 				if (page.num == 1) {
 					goods = [];
 					pageNum = 1;
@@ -698,9 +746,10 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 				}).catch(() => this.mescroll.endErr());
 			},
 			setTimeInit() {
-				this.clearTimeInit()
+				this.clearTimeInit();
 				if (this.enterPageStatus >= 6) return;
 				this.initTimer = setInterval(async () => {
+					if (this.enterPageStatus >= 6) return this.clearTimeInit();
 					await this.initEnterPage(this.is_close);
 				}, 1000 * 30);
 			},
@@ -788,13 +837,7 @@ import cashMixin from './static/cashMixin.js'; // 混入分享的混合方法
 						return;
 					}
 				}
-				uni.navigateBack({
-					fail() {
-						uni.switchTab({
-							url: '/pages/tabBar/shopMall/index'
-						});
-					}
-				});
+				this.$leftBack();
 			},
 			buyOpenHandle() {
 				this.isShowBackFirstDia = false;

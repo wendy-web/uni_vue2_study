@@ -2,8 +2,9 @@
 <view class="pro_cont">
 	<view class="vip_card">
 		<view class="cowpea_box">
-			<view class="box_fl_end search" :class="{'faveValueTxt' :config.face_value}">
+			<view :class="['search', config.face_value ? 'faveValueTxt' : '']">
 				<text class="cowpea-num">{{ config.price }}</text>
+				<text class="cowpea_lab" v-if="config.face_value > 0">¥{{ config.market_price }}</text>
 			</view>
 			<view class="cowpea_order-value" v-if="config.sale_num">
 				{{ (config.lx_type == 2) ? '月售' : '已售' }}{{ config.sale_num }}
@@ -28,7 +29,7 @@
 				<view class="cowpea_txt fl_bet">
 					<view>
 						<view>优惠券
-							<text>（{{config.zero_credits ? '0豆特权' : `${config.credits}牛金豆兑`}}）</text>
+							<text>（{{config.zero_credits ? '免豆特权' : `${config.credits}牛金豆兑`}}）</text>
 						</view>
 						<view class="cowpea_txt-lab">使用期限：{{ config.coupon_start_time }} ~ {{ config.coupon_end_time }}</view>
 					</view>
@@ -54,14 +55,12 @@ export default {
 		config: {
 			type: Object,
 			default () {
-				return {
-				}
+				return {}
 			}
 		}
 	},
 	data() {
-		return {
-		}
+		return {}
 	},
 	computed: {
 		...mapGetters(["userInfo", 'isAutoLogin']),
@@ -98,10 +97,10 @@ export default {
 	font-size: 26rpx;
 	line-height: 1;
 	.search {
+		line-height: 40rpx;
 		&.faveValueTxt::before{
 			content: '券后';
 			font-size: 28rpx;
-			line-height: 40rpx;
 			margin-right: 8rpx;
 		}
 		.cowpea-num {
@@ -112,6 +111,13 @@ export default {
 				font-size: 26rpx;
 				line-height: 36rpx;
 			}
+		}
+		.cowpea_lab {
+			font-size: 28rpx;
+			text-decoration:  line-through;
+			color: #aaa;
+			line-height: 40rpx;
+			margin: 0 0 4rpx 8rpx;
 		}
 	}
 	.cowpea_order-value {

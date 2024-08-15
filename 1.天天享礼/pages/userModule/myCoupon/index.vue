@@ -1,7 +1,7 @@
 <template>
 <view class="my-coupon">
 	<xh-navbar
-		title="专属卡券" titleColor="#333"
+		title="专属优惠券" titleColor="#333"
 		:leftImage="imgUrl+'/static/images/left_back.png'"
 		navberColor="#F7F7F7" :fixedNum="9"
 		@leftCallBack="$leftBack"
@@ -86,7 +86,7 @@
 				<view>{{ empty.tip }}</view>
 			</view>
 			<view class="you_like-title" id="stickyTitleId" v-if="goods.length">
-				<image class="left-icon" :src="imgUrl +'static/shopMall/love_left_icon.png'" mode="aspectFill"></image>
+				<image class="left-icon" src="https://file.y1b.cn/store/1-0/24718/6698cd1ab8927.png" mode="aspectFill"></image>
 				猜你喜欢
 				<image class="right-icon" :src="imgUrl + 'static/shopMall/love_right_icon.png'" mode="aspectFill"></image>
 			</view>
@@ -95,6 +95,7 @@
 				:list="goods"
 				:isBolCredits="true"
 				:isJdLink="true"
+				:isShowProfit="true"
 				@goodListClick="goodListClickHandle"
 				@notEnoughCredits="notEnoughCreditsHandle"
 			></good-list>
@@ -131,18 +132,17 @@ import { getImgUrl } from '@/utils/auth.js';
 import { parseTime } from '@/utils/index.js';
 import serviceRecharge from './serviceRecharge.vue';
 // 牛金豆不足混入的组件与方法
-import { groupRecommend } from '@/api/modules/index.js';
-import { goodsQuery, jingfen, material } from '@/api/modules/jsShop.js';
 import { location, restaurantQuery } from '@/api/modules/takeawayMenu/luckin.js';
 import exchangeFailed from '@/components/serviceCredits/exchangeFailed.vue';
 import serviceCredits from '@/components/serviceCredits/index.vue';
 import serviceCreditsFun from '@/components/serviceCredits/serviceCreditsFun.js';
 import { getUserLocation } from '@/utils/getUserLocation.js';
 import getViewPort from "@/utils/getViewPort.js";
+import groupRecommendMixin from '@/utils/mixin/groupRecommendMixin.js'; // 混入推荐商品列表的方法
 import lxTypeJdFunMixin from '@/utils/mixin/lxTypeJdFunMixin.js'; // 混入京东/拼多多方法
 import { mapGetters, mapMutations } from "vuex";
 	export default {
-		mixins: [MescrollMixin, serviceCreditsFun, lxTypeJdFunMixin],
+		mixins: [MescrollMixin, serviceCreditsFun, lxTypeJdFunMixin, groupRecommendMixin],
 		components: {
 			serviceRecharge,
 			exchangeFailed,
@@ -171,11 +171,7 @@ import { mapGetters, mapMutations } from "vuex";
 				},
 				applyCouponId: 0,
 				alertUsed: 0,
-				groupRecommendData: null,
 				isRecommendRequest: false,
-				goods: [],
-				pageNum: 1,
-				groupId_index: 0,
 				isGoodListTo: false,
 				lastOddItem: null,
                 navHeight: 0,
@@ -238,7 +234,7 @@ import { mapGetters, mapMutations } from "vuex";
 			},
 			useMcHandle(item) {
 				const { goods_id, ticket_id } = item;
-				this.$go(`/pages/userModule/takeawayMenu/mcDonald/index?brand_id=5&rote=1&isBack=1&product_id=${goods_id || 0}&ticket_id=${ticket_id}`);
+				this.$goToDiscountsMini();
 			},
 			goSelectShopHandle(item) {
 				const { goods_id, ticket_id } = item;
@@ -343,92 +339,6 @@ import { mapGetters, mapMutations } from "vuex";
 				if(res.code != 1 || res.data.upgrade) return;
 				this.restaurantStore = res.data;
 			},
-			async requestRem(page) {
-				if(!this.groupRecommendData) {
-					const recRes = await groupRecommend({ page: 6 });
-					if(recRes.code != 1 || !recRes.data) return this.mescroll.endSuccess(0);
-					this.groupRecommendData = recRes.data;
-				}
-				const {
-					id,
-					cid,
-					cid2,
-					cid3,
-					eliteId,
-					groupId,
-					type
-				} = this.groupRecommendData;
-				let pageNum = this.pageNum;
-				let params = {
-					id,
-					page: pageNum,
-					size: 10,
-				}
-				let queryApi = goodsQuery;
-				// type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-				switch(type) {
-					case 1:
-						queryApi = material;
-						params.eliteId = eliteId;
-						params.groupId = groupId;
-						params.size = 10;
-						break;
-					case 2:
-						queryApi = jingfen;
-						params.eliteId = eliteId;
-						params.groupId = groupId;
-						params.size = 20;
-						break;
-					case 3:
-						queryApi = goodsQuery;
-						params.cid1 = cid;
-						params.cid2 = cid2;
-						params.cid3 = cid3;
-						break;
-					case 4:
-						queryApi = jingfen;
-						const groupId_index = this.groupId_index;
-						params.eliteId = eliteId;
-						params.groupId = groupId[groupId_index];
-						params.size = 20;
-						break;
-				};
-				queryApi(params).then(res=>{
-					const {
-						list,
-						total_count
-					} = res.data;
-					// 设置列表数据
-					if( page.num == 1 ) {
-						this.goods = [];
-						this.pageNum = 1;
-						this.lastOddItem = null;
-					}; //如果是第一页需手动制空列表
-					// 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-					let isNextPage = (pageNum * params.size) < total_count;
-					if(!isNextPage && type == 4 && this.groupId_index < (groupId.length - 1)) {
-						// 无下一页
-						this.groupId_index += 1;
-						this.mescroll.endSuccess(total_count, true);
-						this.pageNum = 0;
-					} else {
-						this.mescroll.endSuccess(list.length || total_count, isNextPage);
-					}
-					if(list.length == 0 && (pageNum * params.size) < total_count){
-						this.mescroll.triggerUpScroll();
-					}
-					if(this.lastOddItem) {
-						this.goods.push(this.lastOddItem);
-						this.lastOddItem = null;
-					}
-					this.pageNum += 1;
-					this.goods = this.goods.concat(list); // 追加新数据
-					const goodLength = this.goods.length;
-					if(goodLength % 2 && goodLength > 6) {
-						this.lastOddItem = this.goods.pop();
-					}
-				}).catch(()=>this.mescroll.endErr());
-			},
 			// 牛金豆不足的情况
 			notEnoughCreditsHandle() {
 				this.exchangeFailedShow = true;
@@ -456,10 +366,13 @@ import { mapGetters, mapMutations } from "vuex";
 				} = data;
 				switch (type) {
 					case 1:
-					case 12:
+					case 14:
 						// 商品券
 						if(is_order && order_id) return this.$go(`/pages/userModule/order/detail?id=${order_id}&alertUsed=${this.alertUsed}`);
 						this.$refs.serviceRecharge.popupShow(id, this.alertUsed, type);
+						break;
+					case 12:
+						this.$toast('优惠券不存在');
 						break;
 					case 2:
 						// 公众号

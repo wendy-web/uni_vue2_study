@@ -1,5 +1,7 @@
 const getters = {
-    //登录相关
+    cardPrice: () => '9.9',
+    not_creditsPrice: () => '8.9',
+    car_initPrice: () => '50',
     token: state => state.user.token,
     isAutoLogin: state => state.user.isAutoLogin,
     isAutoPrivacy: state => state.user.isAutoPrivacy,
@@ -39,7 +41,11 @@ const getters = {
     },
     userInfo: (state, getters) => {
         const isAutoLogin = getters.isAutoLogin;
-        return isAutoLogin ? state.user.userInfo : {
+        return isAutoLogin ? {
+            ...state.user.userInfo,
+            // is_vip: 0,
+            // credits: 10
+        } : {
             credits: 0
         }
     },

@@ -18,7 +18,7 @@
 	>
 		<view slot="title" class="nav-custom">
 			<image  mode="widthFix" class="custom_left" src="https://file.y1b.cn/store/1-0/24123/65af12e4a98e3.png"
-				@click="$topCallBack"></image>
+				@click="$leftBack"></image>
 			{{ isShowTitle ? orderTitle : '' }}
 		</view>
 	</xh-navbar>
@@ -36,6 +36,7 @@ import { speedGoods, speedXq } from '@/api/modules/cash.js';
 import { goodsQuery, jingfen, material } from '@/api/modules/jsShop.js';
 import { goodsRecommend, goodsSearch } from '@/api/modules/pddShop.js';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { warpRectDom } from '@/utils/auth.js';
 import getViewPort from '@/utils/getViewPort.js';
 import goodList from './component/goodList.vue';
 	export default {
@@ -101,6 +102,7 @@ import goodList from './component/goodList.vue';
 			}
 		},
 		methods: {
+			warpRectDom,
 			async downCallback() {
 				const res = await speedXq({
 					speed_id: this.speed_id,
@@ -237,20 +239,6 @@ import goodList from './component/goodList.vue';
 						this.mescroll.triggerUpScroll();
 					}
 				}).catch(() => this.mescroll.endErr());
-
-			},
-			warpRectDom(idName) {
-				return new Promise(resolve => {
-					setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
-						let query = uni.createSelectorQuery();
-						// #ifndef MP-ALIPAY
-						query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
-							// #endif
-						query.select('#'+idName).boundingClientRect(data => {
-							resolve(data)
-						}).exec();
-					}, 20)
-				})
 			},
 			onPageScroll(event) {
 				const scrollTop = Math.ceil(event.scrollTop);

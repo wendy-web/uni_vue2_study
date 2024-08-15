@@ -1,8 +1,7 @@
 <template>
   <view class="xh-navber-box">
     <!-- 具体导航 -->
-    <view
-      class="xh-navber"
+    <view class="xh-navber"
       :class="{ fixed: fixed, fixedNum: fixedNum, overFlow: overFlow }"
       :style="{
         height: statusBarHeight + navBarHeight + paddingBottomHeight + 'px',
@@ -15,21 +14,14 @@
         :style="{ height: statusBarHeight + 'px' }"
       ></view>
       <!-- 导航背景图片 -->
-      <image
-        v-if="navbarImage"
+      <image v-if="navbarImage"
         class="navbar-image"
         :src="navbarImage"
         :mode="navbarImageMode"
       ></image>
       <!-- 导航栏 -->
-      <view
-        class="xh-navber-nav"
-        :class="titleAlign"
-        :style="{
-          height: navBarHeight + 'px',
-          color: titleColor,
-          paddingLeft: !leftImage && titleAlign !== 'titleCenter' ? '10px' : 0,
-        }"
+      <view :class="[ titleAlign, 'xh-navber-nav']"
+        :style="{ height: navBarHeight + 'px', color: titleColor, paddingLeft: paddingLeftNum }"
       >
         <!-- 右边留白 -->
         <view
@@ -54,14 +46,14 @@
           v-if="leftImage"
           @click="leftClick"
           class="left-tools"
+          mode="heightFix"
           :src="leftImage"
           :style="{
             height: (leftImageSize || navBarHeight / 2) + 'px',
             width: (leftImageSize || navBarHeight / 2) + 'px',
           }"
         />
-        <view
-          v-if="isHome"
+        <view v-if="isHome"
           class="left-tools left-tools-home"
           @click="leftClick"
         >
@@ -138,6 +130,15 @@ export default {
       type: Number,
       default: 0,
     },
+  },
+  computed: {
+    paddingLeftNum() {
+      let paLeft = 0;
+      if(!this.leftImage) {
+        paLeft = (this.titleAlign !== 'titleCenter') ? '10px' : 0;
+      }
+      return paLeft
+    }
   },
   created() {
     getNavbarData().then((data) => {

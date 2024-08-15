@@ -48,7 +48,6 @@
 		}
  	}
  </script>
-
  <style lang="scss" scoped>
 .normal-card {
 	position: relative;

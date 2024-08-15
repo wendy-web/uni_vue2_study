@@ -1,49 +1,44 @@
 import Vue from 'vue';
 import {
     go,
-    back,
     leftBack,
-    redirectTo,
     reLaunch,
+    redirectTo,
     switchTab
 } from "./navigation";
 
 import {
-    showToast,
+    hideLoading,
+    hideNavigationBarLoading,
     hideToast,
     showLoading,
-    hideLoading,
-    showNavigationBarLoading,
-    hideNavigationBarLoading,
     showModal,
+    showNavigationBarLoading,
+    showToast,
 } from "./toast";
 
 import {
-    storageRead,
-    storageSave,
-    storageRemove,
-    storageClear,
+    makePhoneCall,
     setNavigationBarTitle,
     stopPullDownRefresh,
-    makePhoneCall,
-    jsonToUrl,
+    storageClear,
+    storageRead,
+    storageRemove,
+    storageSave
 } from "./util";
 
 import {
-    wxReportEvent,
-    openEmbeddedMiniProgram,
+    goToCarPlugin,
+    goToDiscountsMini,
+    goToMoviePlugin,
     navigateToMiniProgram,
-    top_callBack,
-    subscribeMessageHandle
-} from './method.js'
-
-// import dayjs from "dayjs";
-// // 时间操作
-// Vue.prototype.$day = dayjs;
+    openEmbeddedMiniProgram,
+    subscribeMessageHandle,
+    wxReportEvent
+} from './method.js';
 
 // 路由跳转
 Vue.prototype.$go = go;
-Vue.prototype.$back = back;
 Vue.prototype.$leftBack = leftBack;
 Vue.prototype.$redirectTo = redirectTo;
 Vue.prototype.$reLaunch = reLaunch;
@@ -75,8 +70,10 @@ Vue.prototype.$makePhoneCall = makePhoneCall;
 
 // 页面事件
 Vue.prototype.$wxReportEvent = wxReportEvent;
-Vue.prototype.$topCallBack = top_callBack;
 Vue.prototype.$subscribeMessageHandle = subscribeMessageHandle;
 
 Vue.prototype.$openEmbeddedMiniProgram = openEmbeddedMiniProgram;
 Vue.prototype.$navigateToMiniProgram = navigateToMiniProgram;
+Vue.prototype.$goToDiscountsMini = goToDiscountsMini;
+Vue.prototype.$goToMoviePlugin = goToMoviePlugin;
+Vue.prototype.$goToCarPlugin = goToCarPlugin;

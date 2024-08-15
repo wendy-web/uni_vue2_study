@@ -15,12 +15,7 @@
 			确定要离开吗?
 		</view>
 		<view class="image_list">
-			<image
-				class="image_item"
-				v-for="(item, index) in imgArr"
-				:key="index"
-				:src="item"
-			></image>
+			<image class="image_item" v-for="(item, index) in imgArr" :key="index" :src="item"></image>
 		</view>
         <view class="cont_remind">{{remindText}}</view>
       </view>
@@ -33,10 +28,7 @@
 </template>
 
 <script>
-	import {
-pay,
-query
-} from '@/api/modules/order.js';
+import { pay, query } from '@/api/modules/order.js';
 import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 	export default {
     props: {
@@ -125,14 +117,10 @@ import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 							} = data;
 							pay_amount = (pay_amount / 100).toFixed(2);
 							if(this.goodsType) {
-								uni.reLaunch({
-									url: `/pages/userModule/order/detail?id=${this.orderId}&payment=${pay_amount}`
-								});
+								this.$reLaunch(`/pages/userModule/order/detail?id=${this.orderId}&payment=${pay_amount}`);
 								return;
 							}
-							uni.redirectTo({
-								url: `/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`
-							})
+							this.$redirectTo(`/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`);
 							return
 						}
 						uni.showModal({

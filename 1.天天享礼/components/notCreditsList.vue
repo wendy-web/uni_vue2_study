@@ -1,25 +1,15 @@
 <template>
 <view class="not_credit-box" id="notCreditsDomBox">
-	<view class="not_title fl_bet-al_end">
+	<view class="not_title">
 		{{title}}
-		<!-- <view class="not_title-lab">
-			更多<van-icon custom-style="font-weight: 600;margin-left: 10rpx" size="28rpx" name="arrow"/>
-		</view> -->
 	</view>
 	<scroll-view class="no_credits" scroll-x="true">
 		<vew class="no_credits-list">
 			<view class="no_credits-item"
-				v-for="(item, index) in jdList"
-				:key="index"
-				@click="jdHandle(item)"
-			>
-				<van-image
-					class="item_image"
-					height="144rpx"
-					width="144rpx"
-					fit="contain"  use-loading-slot
-					:src="item.jdImage"
-					radius="16rpx"
+				v-for="(item, index) in jdList" :key="index"
+				@click="jdHandle(item)">
+				<van-image class="item_image" height="144rpx" width="144rpx"
+					fit="contain"  use-loading-slot :src="item.jdImage" radius="16rpx"
 				><van-loading slot="loading" type="spinner" size="20" vertical />
 				</van-image>
 				<view class="item_price">{{item.price}}</view>
@@ -94,15 +84,15 @@ export default{
 </script>
 <style lang="scss">
 .not_credit-box{
-	height: 312rpx;
-	background: #f2f2f5;
+	// height: 312rpx;
 	border-radius: 16rpx;
 	position: relative;
 	z-index: 0;
 	margin-bottom: 16rpx;
+	padding: 8rpx;
 	&::before {
 		content: '\3000';
-		background: url("https://file.y1b.cn/store/1-0/23118/654af5401a686.png") 0 0 / cover no-repeat;
+		background: url("https://file.y1b.cn/store/1-0/2482/66ac7c7d4749d.png") 0 0 / 100% 100% no-repeat;
 		position: absolute;
 		left: 0;
 		top: 0;
@@ -110,42 +100,44 @@ export default{
 		height: 100%;
 		z-index: -1;
 	}
-	&::after {
-		content: '\3000';
-		background: url("https://file.y1b.cn/store/1-0/23118/654af58745a76.png") 0 0 / cover no-repeat;
-		position: absolute;
-		right: 0;
-		top: 0;
-		width: 385rpx;
-		height: 97rpx;
-		z-index: -1;
-	}
+	// &::after {
+	// 	content: '\3000';
+	// 	background: url("https://file.y1b.cn/store/1-0/2482/66ac8403c4117.png") 0 0 / cover no-repeat;
+	// 	position: absolute;
+	// 	right: 0;
+	// 	top: 0;
+	// 	width: 385rpx;
+	// 	height: 97rpx;
+	// 	z-index: -1;
+	// }
 }
 .not_title{
 	position: relative;
-	padding: 32rpx 24rpx 24rpx;
-	font-size: 28rpx;
-	font-weight: 600;
-	color: #333;
-	line-height: 40rpx;
+	padding: 16rpx 27rpx 16rpx;
+	font-size: 36rpx;
+	font-weight: bold;
+	color: #fff;
+	line-height: 50rpx;
 	z-index: 0;
-	&::before {
-		content: '\3000';
-		background: url("https://file.y1b.cn/store/1-0/23118/654af6d2a0a73.png") 0 0 / cover no-repeat;
-		position: absolute;
-		width: 54rpx;
-		height: 54rpx;
-		top: 17rpx;
-		left: 12rpx;
-	}
+	display: inline-block;
+	// &::before {
+	// 	content: '\3000';
+	// 	background: url("https://file.y1b.cn/store/1-0/23118/654af6d2a0a73.png") 0 0 / 100% 100% no-repeat;
+	// 	position: absolute;
+	// 	width: 54rpx;
+	// 	height: 54rpx;
+	// 	top: 17rpx;
+	// 	left: 12rpx;
+	// 	z-index: -1;
+	// }
 	&::after {
 		content: '\3000';
-		background: url("https://file.y1b.cn/store/1-0/23118/654af85935d71.png") 0 0 / cover no-repeat;
+		background: url("https://file.y1b.cn/store/1-0/2482/66ac7f45a856a.png") 0 0 / 100% 100% no-repeat;
 		position: absolute;
 		width: 132rpx;
 		height: 60rpx;
 		top: 9rpx;
-		left: 24rpx;
+		right: -16rpx;
 	}
 	.not_title-lab{
 		font-size: 26rpx;
@@ -156,11 +148,25 @@ export default{
 }
 .no_credits {
 	position: relative;
+	background: #fff;
+	border-radius: 12rpx;
+	padding: 20rpx 0 10rpx 0;
+	box-sizing: border-box;
+	&::after {
+		content: '\3000';
+		background: url("https://file.y1b.cn/store/1-0/2482/66ac8403c4117.png") 0 0 / 100% 100% no-repeat;
+		position: absolute;
+		right: 15rpx;
+		top: -98rpx;
+		width: 114rpx;
+		height: 98rpx;
+		z-index: -1;
+	}
 	.no_credits-list {
 		display: flex;
 		flex-wrap: nowrap;
 		align-items: center;
-		padding: 0 24rpx;
+		padding: 0 16rpx;
 		font-size: 28rpx;
 		font-weight: 600;
 		text-align: center;

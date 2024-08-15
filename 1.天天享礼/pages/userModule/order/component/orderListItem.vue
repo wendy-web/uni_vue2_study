@@ -9,22 +9,24 @@
 	<orderItemStarbucks ref="orderItemStarbucks" :item="item" v-else-if="item.goods_type == 4">
 	</orderItemStarbucks>
 	<!-- 海威的订单 -->
-	<orderItemHaiwei ref="orderItemHaiwei"
-		:item="item"
+	<orderItemHaiwei ref="orderItemHaiwei" :item="item"
 		v-else-if="[6].includes(item.goods_type)"
 		@showTakeCode="(item) => this.$emit('showTakeCode', item)"
 	>
 	</orderItemHaiwei>
-	<orderItemPhone
-		ref="orderItemPhone"
-		:item="item"
-		v-else-if="[9, 11].includes(item.goods_type)"
+	<orderItemPhone ref="orderItemPhone" :item="item"
+		v-else-if="[9].includes(item.goods_type)"
 		@again="() => this.$emit('againPhone')"
 	></orderItemPhone>
+	<!-- 聚推客订单 -->
+	<orderItemPlugin
+		ref="orderItemPlugin" :item="item"
+		v-else-if="[11].includes(item.goods_type)"
+	></orderItemPlugin>
 	<view class="item" v-else>
 		<view class="type_top">
 			<view class="type_lft">
-				<image class="type_top-icon" mode="scaleToFill" :src="item.goodsTypeIcon" v-if="item.goods_type !=10"></image>
+				<image class="type_top-icon" mode="scaleToFill" :src="item.goodsTypeIcon"></image>
 				<text>{{ item.goodsTypeTxt }} </text>
 			</view>
 			<view class="type_rit" :class="'order-status-'+ item.status">
@@ -53,12 +55,14 @@
 				<view v-html="formatPrice(item.userFee, 1)"></view>
 			</view>
 			<!-- 牛金豆呈现 - 已付款的状态&京东&拼多多-->
-			<view class="channel_flag" v-if="item.channel_flag && Number(item.status) && [5, 7].includes(item.goods_type)">{{ item.channel_flag }}</view>
+			<view class="channel_flag" v-if="item.channel_flag && [5, 7].includes(item.goods_type)">
+				-{{ item.channel_flag }}
+			</view>
 			<text class="pay-info_label">{{[2,3,4,5].includes(Number(item.status)) ? '实付' : '应付'}}</text>
 			<view v-html="formatPrice(item.pay_amount)"></view>
 		</view>
 		<!-- 待支付||去使用 - 京东/深爱购模式不呈现-->
-		<view class="order-operate" v-if="item.status==0 && ![5, 8].includes(item.goods_type)" @click="toPay(item)">
+		<view class="order-operate" v-if="item.status==0 && ![5, 8].includes(item.goods_type)" @click="toPayHandle(item)">
 			<view class="order-remain-time">
 				<block v-if="item.remainTime">
 					<view>剩余时间：</view>
@@ -82,8 +86,9 @@
 			<view class="btn btn_status3">去使用</view>
 		</view>
 		<!-- 所有状态都打开 -->
-		<view class="order-operate" v-if="![12].includes(item.goods_type)">
+		<view class="order_btns" v-if="![12].includes(item.goods_type)">
             <view class="expire-time"></view>
+			<view class="btn btn_status3" v-if="item.profit_money" @click="goToWithdrawHandle(item.profit_id, index)">领￥{{ item.profit_money }}返现</view>
 			<view class="btn btn_status3"  @click="useMcHandle(item)" v-if="item.status == 2 && [10].includes(item.goods_type)">去用券</view>
 			<view class="btn btn_status3" @click="goCouponDetailsHandle(item)" v-else-if="showAgain(item)">再来一单</view>
 			<view class="btn btn_status3" v-else-if="[5, 7].includes(Number(item.goods_type))" @click="goToUse(item)">去支付</view>
@@ -104,6 +109,7 @@ import orderItemHaiwei from './orderItemHaiwei.vue';
 import orderItemKfc from './orderItemKfc.vue';
 import orderItemMovie from './orderItemMovie.vue';
 import orderItemPhone from './orderItemPhone.vue';
+import orderItemPlugin from './orderItemPlugin.vue';
 import orderItemStarbucks from './orderItemStarbucks.vue';
 	// 当前操作的item数据
 	export default {
@@ -113,6 +119,7 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 			orderItemStarbucks,
 			orderItemHaiwei,
 			orderItemPhone,
+			orderItemPlugin
 		},
 		props: {
 			list: {
@@ -168,7 +175,7 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 		},
 		methods: {
 			showAgain(item) {
-				return (Number(item.status) && ![10].includes(item.goods_type)) || (this.userInfo.buy_vip && [10].includes(item.goods_type))
+				return (Number(item.status) && ![10].includes(item.goods_type)) || [10].includes(item.goods_type)
 			},
 			countFinished(e) {
 				timerEnd = true;
@@ -206,8 +213,12 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
                 this.$go(`/pages/userModule/order/detail?id=${item.id}`);
 			},
 			useMcHandle(item) {
-				const { goods_id, ticket_id } = item;
-				this.$go(`/pages/userModule/takeawayMenu/mcDonald/index?brand_id=5&rote=1&isBack=1&product_id=${goods_id || 0}&ticket_id=${ticket_id}`);
+				this.$goToDiscountsMini();
+			},
+			goToWithdrawHandle(profit_id, index) {
+				this.$emit('profitMoney', index);
+				// console.log('this.newList[index]', this.newList[index].profit_money)
+				this.$go(`/pages/userCard/withdraw/index?profitId=${profit_id}`);
 			},
 			async goCouponDetailsHandle(item) {
 				const {
@@ -248,24 +259,21 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 			checkOrderClass(val) {
 				return orderClass[val];
 			},
-			toPay(item) {
+			async toPayHandle(item) {
 				this.isDisabled = true;
 				let params = { id: item.id };
-				if (!this.paymentParams) {
-					pay(params).then(res => {
-						let { code, data, msg } = res;
-						if (code == 1) {
-							this.paymentParams = JSON.parse(data.jspay_info);
-							this.pay_order_id = data.order_id;
-							this.createPayment(this.paymentParams)
-							return;
-						}
-						this.isDisabled = false;
-						this.$toast(msg);
-					});
+				// if (this.paymentParams) return this.createPayment(this.paymentParams);
+				const res = await pay(params);
+				let { code, data, msg } = res;
+				if (code == 1) {
+					this.paymentParams = JSON.parse(data.jspay_info);
+					this.pay_order_id = data.order_id;
+					this.createPayment(this.paymentParams)
 					return;
 				}
-				this.createPayment(this.paymentParams)
+				this.isDisabled = false;
+				this.$toast(msg);
+				setTimeout(() => this.$emit("updateOrderInfo"), 2000);
 			},
 			// 发起支付
 			createPayment(obj) {
@@ -286,7 +294,7 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 								this.$emit('updateOrderInfo');
 								let { pay_amount, status } = data;
 								pay_amount = (pay_amount / 100).toFixed(2);
-								this.$$redirectTo(`/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`);
+								this.$redirectTo(`/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`);
 								return;
 							}
 							uni.showModal({
@@ -317,10 +325,6 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 </script>
 <style lang="scss">
 .box {
-	// box-sizing: border-box;
-	// display: flex;
-	// flex-direction: column;
-	// align-items: center;
 	padding: 0 16rpx;
 }
 .item {
@@ -425,17 +429,15 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 		font-size: 28rpx;
 		padding-right: 24rpx;
 		font-size: 28rpx;
-		font-weight: bold;
-		color: #ff8f2a;
+		color: #333;
 		// border-right: 2rpx solid #C9C9C9;
 		position: relative;
-		&::before {
-			content: '牛金豆:';
-			font-size: 26rpx;
-			color: #333;
-			margin-right: 8rpx;
-		}
 		&::after {
+			content: '牛金豆';
+			font-size: 26rpx;
+			margin-left: 8rpx;
+		}
+		&::before {
 			content: '\3000';
 			position: absolute;
 			width: 2rpx;
@@ -485,6 +487,17 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 	margin-top: 24rpx;
 	padding: 21rpx 24rpx 0;
 }
+.order_btns {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	box-sizing: border-box;
+	margin-top: 24rpx;
+	padding: 21rpx 24rpx 0;
+	.btn:not(:last-child) {
+		margin-right: 26rpx;
+	}
+}
 .order-remain-time {
 	line-height: 34rpx;
 	display: flex;
@@ -508,13 +521,14 @@ import orderItemStarbucks from './orderItemStarbucks.vue';
 .btn {
 	padding: 0 30rpx;
 	height: 56rpx;
-	line-height: 56rpx;
+	line-height: 52rpx;
 	box-sizing: border-box;
 	text-align: center;
 	border: 2rpx solid #f84842;
 	border-radius: 32rpx;
 	font-size: 28rpx;
 	color: #f84842;
+	vertical-align: middle;
 	&.btn_status3{
 		border-color: #CCCCCC;
 		color: #333333;

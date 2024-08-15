@@ -24,7 +24,6 @@ export default {
 		};
 	},
 	onLoad(option) {
-		console.log('option', option)
 		this.link = decodeURIComponent(option.link);
 		option.xdyh_teamId && teamBind({xdyh_teamId: option.xdyh_teamId});
 		// 看文有奖传参

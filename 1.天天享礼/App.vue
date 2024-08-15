@@ -114,6 +114,7 @@ export default {
 			this.setAutoLogin(false)
 		}
 		if(!autoLoginStorage) {
+			if(event.query.lsite) return this.setAutoLogin(true);
 			const sourceData = uni.getLaunchOptionsSync();
 			const { scene, referrerInfo } = sourceData;
 			if (!referrerInfo || !referrerInfo.appId) return;
@@ -123,7 +124,7 @@ export default {
 		}
 	},
 	onShow: function(event) {
-		console.log('event.query:options:', event.query);
+		console.log('event.query:options:', event.query, this.isMiniProgram);
 		if (!this.isMiniProgram || (this.isMiniProgram && event.query.mlocid)) {
 			const { mlocid, plocid } = event.query;
 			if(!event.query.key) {

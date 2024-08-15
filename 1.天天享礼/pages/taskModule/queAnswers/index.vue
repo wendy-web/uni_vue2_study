@@ -2,7 +2,7 @@
 	<view class="que-answers">
 		<!-- 背景与导航栏 -->
 		<xh-navbar>
-			<view slot="title" class="nav-left" @click="navBack">
+			<view slot="title" class="nav-left" @click="$leftBack">
 				<van-icon name="arrow-left" color="#ffffff" size="24" />
 			</view>
 		</xh-navbar>
@@ -135,11 +135,11 @@
 </template>
 
 <script>
-	import {
-quiz,
-quizAnswer,
-quizReveal,
-revealTimes
+import {
+	quiz,
+	quizAnswer,
+	quizReveal,
+	revealTimes
 } from '@/api/modules/index.js';
 import { getImgUrl } from '@/utils/auth.js';
 import RewardedVideoAd from '@/utils/rewardVideoAd.js';
@@ -314,19 +314,8 @@ import RewardedVideoAd from '@/utils/rewardVideoAd.js';
 					errMsg: '视频跑丢了，请稍后再试~'
 				})
 			},
-			navBack() {
-				uni.navigateBack({
-					fail() {
-						uni.switchTab({
-							url: '/pages/tabBar/shopMall/index'
-						})
-					}
-				})
-			},
 			goTask() {
-				uni.reLaunch({
-					url: '/pages/tabBar/task/index'
-				})
+				this.$reLaunch('/pages/tabBar/task/index');
 			}
 		}
 	}

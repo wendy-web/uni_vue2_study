@@ -34,8 +34,8 @@
 
 <script>
 import {
-pay,
-query
+	pay,
+	query
 } from '@/api/modules/order.js';
 import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 	export default {
@@ -133,9 +133,7 @@ import Toast from '@/wxcomponents/vant_update/toast/toast.js';
 								status
 							} = data;
 							pay_amount = (pay_amount / 100).toFixed(2);
-							uni.redirectTo({
-								url: `/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`
-							})
+							this.$redirectTo(`/pages/tabAbout/paySuccess/index?payment=${pay_amount}&status=${status}`);
 							return
 						}
 						uni.showModal({
