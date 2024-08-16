@@ -19,27 +19,6 @@ export default {
         })
     },
     watch: {
-        // gift(newVal, oldValue) {
-        //     if(!newVal) return;
-        //     const sourceData = uni.getLaunchOptionsSync();
-        //     const { scene, referrerInfo} = sourceData;
-        //     if(!referrerInfo || !referrerInfo.appId) return
-        //     if( referrerInfo.appId == bfAppid()) {
-        //         this.setDiaList('update');
-        //         this.$showModal({
-        //             title: '温馨提示',
-		// 			content: '您需要授权小店有惠使用您的微信头像和昵称？',
-        //             confirm:async () => {
-        //                 await updateInfo({type: 2});
-        //                 this.delCurrentDiaList();
-        //             },
-        //             cancel:async () => {
-        //                 await updateInfo({type: 1});
-        //                 this.delCurrentDiaList();
-        //             }
-        //         })
-        //     }
-        // },
         'vipObject.card_num': {
             handler:async function (newValue, oldValue) {
                 if(newValue) return;
@@ -118,14 +97,7 @@ export default {
         }
     },
     onShow: function (event) {
-        // if(!this.isAutoLogin) {
-        //     const sourceData = uni.getLaunchOptionsSync();
-        //     const { scene, referrerInfo } = sourceData;
-        //     if (!referrerInfo || !referrerInfo.appId) return;
-        //     if (referrerInfo.appId == bfAppid()) {
-        //         this.setAutoLogin(true);
-        //     }
-        // }
+        console.log('App.vue:event.query:', event.query);
         // &mlocid=4103942876&plocid=3108034994
 		if (!this.isMiniProgram || (this.isMiniProgram && event.query.mlocid)) {
 			const { mlocid, plocid } = event.query;
@@ -141,7 +113,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="scss">
 /*每个页面公共css */
 @import url("@/components/u-parse/u-parse.css");
+
 </style>

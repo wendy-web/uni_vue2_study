@@ -267,7 +267,7 @@ page {
     overflow: hidden;
     margin-bottom: 20rpx;
     .name_icon{
-      display: inline-block;
+      display: inline;
       line-height: 40rpx;
       position: relative;
       z-index: 0;

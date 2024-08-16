@@ -78,9 +78,7 @@ export default {
         });
         return;
       }
-      uni.navigateTo({
-        url: "/pages/mineModule/orderDetail/index?id=" + this.config.id,
-      });
+      this.$go(`/pages/mineModule/orderDetail/index?id=${this.config.id}`);
     },
   },
 };

@@ -2,7 +2,7 @@
 <view class="pro_cont">
 	<view class="vip_card active">
 		<view class="cowpea_box">
-			<view class="search" :class="{'faveValueTxt' :config.face_value}">
+			<view :class="['search', config.face_value ? 'faveValueTxt' : '']">
 				<text class="cowpea-num">{{ config.price }}</text>
 				<text class="cowpea_num_lab" v-if="config.face_value">￥{{ config.sale_price }}</text>
 			</view>
@@ -15,9 +15,7 @@
 			<image class="cont_top-icon" src="https://test-file.y1b.cn/store/1-0/24329/660682c53facd.png" mode="scaleToFill"></image>
 			先用后付 | 支持0元下单，确认收货后再付款
 		</view> -->
-		<scroll-view
-			scroll-x scroll-with-animation :scroll-animation-duration="300"
-			class="scroll_box">
+		<scroll-view scroll-x scroll-with-animation :scroll-animation-duration="300" class="scroll_box">
 			<view class="lab_box">
 				<view class="lab_txt lx_type">{{ config.lx_type == 2 ? '京东' : '拼多多' }}</view>
 				<view class="lab_txt face_value" v-if=" config.face_value">{{ config.face_value }}元券</view>

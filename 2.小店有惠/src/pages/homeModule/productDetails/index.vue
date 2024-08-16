@@ -2,7 +2,7 @@
   <view class="product-details">
     <view class="product-details-top">
       <!-- 导航 -->
-      <view class="nav-back" @click="navBack"
+      <view class="nav-back" @click="$leftBack"
         :style="{ height: navBarHeight + 'px', top: topHeight + 'px' }"
       >
         <image class="nav-back-icon" mode="aspectFill"
@@ -259,7 +259,7 @@ export default {
     let system = uni.getSystemInfoSync()
 		this.screenWidth = system.screenWidth || 375;
 
-    //获取商品详情
+    // 获取商品详情
     this.init();
   },
   onShareAppMessage(data) {
@@ -372,20 +372,11 @@ export default {
             timeStamp: jspay_info.timeStamp,
             success: (res) => {
               // 支付成功 —— 在详情页打开支付成功的模态窗口
-              uni.redirectTo({
-                url: `/pages/mineModule/orderDetail/index?id=${order_id}&payStatus=true`,
-              });
-              // 跳转支付详情 - 成功
-              // uni.navigateTo({
-              //   url: "/pages/payStatus/index?order_id=" + order_id,
-              // });
+              this.$redirectTo(`/pages/mineModule/orderDetail/index?id=${order_id}&payStatus=true`);
             },
             fail: (err) => {
               if (/cancel/g.test("requestPayment:fail cancel")) {
-                //跳转订单列表
-                uni.redirectTo({
-                  url: "/pages/mineModule/order/index?activeTab=0",
-                });
+                this.$redirectTo("/pages/mineModule/order/index?activeTab=0");
                 return uni.showToast({
                   title: "您取消了支付操作",
                   icon: "none",
@@ -425,13 +416,6 @@ export default {
             uni.showToast({ title: res.msg, icon: "none" });
         });
     },
-    navBack() {
-      uni.navigateBack({
-        fail() {
-          uni.reLaunch({ url: "/pages/home/index" });
-        },
-      });
-    },
     // 立即兑换
     productHandle() {
         if(!this.isAutoLogin) return this.$go('/pages/login/index');
@@ -458,9 +442,7 @@ export default {
         //公众号
         case 1:
             let link = is_main === 1 ? article_url : main_url;
-            uni.navigateTo({
-                url: `/pages/webview/index?link=${encodeURIComponent(link)}`
-            });
+            this.$go(`/pages/webview/index?link=${encodeURIComponent(link)}`);
             break;
         case 2:
             //视频号
@@ -499,9 +481,7 @@ export default {
         case 5:
             // 千猪外链 _暂无
             if (qz_url) {
-                uni.navigateTo({
-                    url: `/pages/webview/index?link=${encodeURIComponent(qz_url)}`
-                });
+              this.$go(`/pages/webview/index?link=${encodeURIComponent(qz_url)}`);
             }
             break;
         default:
@@ -513,9 +493,7 @@ export default {
     },
     confirmHandle() {
       this.confirmDiaShow = false;
-      uni.navigateTo({
-        url: "/pages/mineModule/myCredit/index",
-      });
+      this.$go("/pages/mineModule/myCredit/index");
     }
   },
 };

@@ -19,7 +19,7 @@ export function showLoading(title = '加载中...', mask = true) {
 }
 
 export function hideLoading() {
-    uni.hideLoading();
+    uni.hideLoading({ fail() {} });
 }
 
 export function showNavigationBarLoading() {

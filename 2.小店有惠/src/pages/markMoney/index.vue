@@ -19,28 +19,19 @@
         :fixed="true"
         :navbarColor="showTitleBg ? '#fff' : ''"
         :title="showTitleBg ? '我的' : ''"
-      >
-      </xhNavbar>
+      ></xhNavbar>
       <!-- 头像昵称 -->
-      <view
-        class="userinfo-box pd_w32 bd_bm"
-        :class="{ 'userinfo-box-bottom-line': !userInfo }"
+      <view :class="['userinfo-box pd_w32 bd_bm', !userInfo && 'userinfo-box-bottom-line']"
         @click="personalInfo"
       >
-        <image
-            class="img-avatar"
-            :src="userInfo.avatar_url || default_url"
-            mode="aspectFill"
-            lazy-load
-        >
-        </image>
+        <image class="img-avatar"
+          :src="userInfo.avatar_url || default_url"
+          mode="aspectFill" lazy-load
+        ></image>
         <view class="name-box">
         <view v-if="userInfo && isAutoLogin">
             <view class="name">
             <text class="">{{ userInfo.nick_name || "" }}</text>
-            <!-- 团长角标 -->
-            <!-- <image class="icon-captain" src="/static/images/mine/icon_captain.png" mode="aspectFit"
-                                lazy-load></image> -->
             </view>
             <view class="user-id">ID: {{ userInfo.id || 0 }}</view>
         </view>
@@ -101,22 +92,15 @@
           </view>
         </view>
         <view class="order-tab-box">
-          <view
-            class="order-item"
-            v-for="(item, index) in order"
-            :key="index"
+          <view class="order-item"
+            v-for="(item, index) in order" :key="index"
             @click="goPages(item.path)"
           >
             <view class="order-item-head">
-              <image
-                class="order-item-icon"
-                :src="item.icon"
-                mode="aspectFit"
-                lazy-load
-              ></image>
+              <image class="order-item-icon" :src="item.icon"
+                mode="aspectFit" lazy-load></image>
               <!-- 徽标:已完成不显示，数值大于0才显示 -->
-              <view
-                class="order-item-dot"
+              <view class="order-item-dot"
                 v-if="index < 2 && userInfo[item.key] > 0"
               >
                 <block v-if="userInfo[item.key] > 99">99+</block>
@@ -169,19 +153,13 @@
       </view>
       <!-- 其它菜单 -->
       <view class="menu-list pd_w32">
-        <view
-          class="menu-item"
-          v-for="(item, index) in menu"
-          :key="index"
+        <view class="menu-item"
+          v-for="(item, index) in menu" :key="index"
           @click="goPages(item.path)"
         >
           <view class="mi-left">
-            <image
-              class="mil-icon"
-              :src="item.icon"
-              mode="aspectFit"
-              lazy-load
-            ></image>
+            <image class="mil-icon" mode="aspectFit"
+              :src="item.icon" lazy-load></image>
             <view class="mil-name">{{ item.name }}</view>
           </view>
           <van-icon name="arrow" color="#333333" size="12" />
@@ -194,11 +172,8 @@
           :style="{ top: stickyTop + 'px' }"
           :class="{ sticky_active: isStickyActiveScroll }"
         >
-          <image
-            class="sticky_title-icon"
-            src="/static/images/mine/rem_icon.png"
-            mode="aspectFill"
-          ></image>
+          <image class="sticky_title-icon" mode="aspectFill"
+            src="/static/images/mine/rem_icon.png"></image>
           专属推荐
         </view>
         <good-list :list="goods"></good-list>
@@ -209,19 +184,19 @@
 </template>
 
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import { mapGetters, mapActions } from "vuex";
-import config from "./config.js";
-import goodList from "@/components/goodList.vue";
-import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
-import { formatAmount } from "@/utils/index.js";
-import { expireOrder, orderPay } from "@/api/modules/order.js";
 import {
-  material,
-  jingfen,
   goodsQuery,
   groupRecommend,
+  jingfen,
+  material,
 } from "@/api/modules/jsShop.js";
+import { expireOrder, orderPay } from "@/api/modules/order.js";
+import goodList from "@/components/goodList.vue";
+import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
+import { formatAmount } from "@/utils/index.js";
+import { mapActions, mapGetters } from "vuex";
+import config from "./config.js";
 export default {
     name: "mine",
     mixins: [MescrollMixin], // 使用mixin
@@ -469,10 +444,8 @@ export default {
         signType: obj.signType,
         timeStamp: obj.timeStamp,
         success: (res) => {
-          //跳转支付详情
-          uni.navigateTo({
-            url: "/pages/payStatus/index?order_id=" + this.pay_order_id,
-          });
+          // 跳转支付详情
+          this.$go(`/pages/payStatus/index?order_id=${this.pay_order_id}`);
         },
         fail: (err) => {
           if (err.errMsg == "requestPayment:fail cancel") {

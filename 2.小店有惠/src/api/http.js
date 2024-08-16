@@ -240,7 +240,7 @@ function _closeLoading() {
     if (_loadingNum >= 1) {
         //延时调用
         _loadingNum--;
-        if (_loadingNum == 0) uni.hideLoading(); //隐藏
+        if (_loadingNum == 0) uni.hideLoading({ fail() {} }); //隐藏
     }
 }
 

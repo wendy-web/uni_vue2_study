@@ -68,12 +68,10 @@ export default {
       });
     },
     goOrderdetails() {
-      uni.redirectTo({
-        url: "/pages/mineModule/orderDetail/index?id=" + this.order_id,
-      });
+      this.$redirectTo(`/pages/mineModule/orderDetail/index?id=${this.order_id}`);
     },
     goHome() {
-      uni.switchTab({ url: "/pages/home/index" });
+      this.$switchTab("/pages/home/index");
     },
   },
 };

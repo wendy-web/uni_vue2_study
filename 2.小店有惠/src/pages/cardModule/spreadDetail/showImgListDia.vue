@@ -16,7 +16,7 @@
       :duration="300" :circular="true"
       :current="bannerIndex"
       @change="bannerSwiperChange"
-      :style="{ height: 560 + 'px', width: screenWidth + 'px'}"
+      :style="{ height: screenWidth + 'px', width: screenWidth + 'px'}"
       @click="closeHandle"
     >
       <swiper-item class="item_box" v-for="(item, idx) in showImgList" :key="idx">
@@ -82,7 +82,9 @@ export default {
     bannerSwiperChange(event) {
       this.bannerIndex = event.detail.current;
     },
-    saveHandle() {
+    async saveHandle() {
+      // const setWritePhotosResult = await this.$setWritePhotosAlbum();
+      // if(!setWritePhotosResult) return;
       const showUrl = this.showImgList[this.bannerIndex].url;
       if(!this.bannerIndex) {
         this.$saveImageToPhotosAlbum(showUrl);
@@ -91,7 +93,6 @@ export default {
       uni.downloadFile({
         url: showUrl,
         complete: (res) => {
-          console.log('res', res)
           if (res.statusCode !== 200) return;
           this.$saveImageToPhotosAlbum(res.tempFilePath);
         }

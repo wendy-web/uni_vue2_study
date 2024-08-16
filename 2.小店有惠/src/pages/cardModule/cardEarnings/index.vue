@@ -14,13 +14,16 @@
     :title="title"
     :titleColor="titleColor"
     :leftImage="leftImage"
-    @leftCallBack="$back"
+    @leftCallBack="$leftBack"
     titleAlign="titleLeft"
   ></xhNavbar>
   <!-- 可提现 -->
   <view class="available-withdrawal-box">
     <view class="aw-left">
-      <view class="aw-title">可提现(元)</view>
+      <view class="aw-title" @click.stop="ishShowHelpDia = true">
+        可提现(元)
+        <image class="ib_title-help" src="https://file.y1b.cn/store/1-0/24131/65ba37f81a4f3.png" mode="aspectFit"></image>
+      </view>
       <view class="aw-amount" v-html="formatPrice(vipObject.balance || 0)"></view>
     </view>
     <view class="btn-withdrawal" @click="goPage('/pages/cardModule/withdrawal/index')">提现</view>
@@ -54,9 +57,7 @@
     <view class="income-title">
       <view class="it-pseudo-line">收益走势</view>
       <view class="week-month-tab">
-        <view
-          class="wm-item"
-          :class="{'wm-active': wmIndex == index}"
+        <view :class="['wm-item', wmIndex == index ? 'wm-active' : '']"
           v-for="(item, index) in weekMonthTab" :key="index"
           @click="profitChartRequest(index)"
         >{{ item.name }}
@@ -85,18 +86,12 @@
           <text class="ci-money">¥{{total_profit}}</text>
         </view>
         <view class="ci-right">
-          <image
-            class="icon-date"
+          <image class="icon-date" mode="aspectFit" lazy-load
             src="/static/images/mine/icon_date.png"
-            mode="aspectFit"
-            lazy-load
           ></image>
           <text class="ci-date">{{ selectDate }}</text>
-          <image
-            class="icon-delta"
+          <image class="icon-delta" mode="aspectFit" lazy-load
             src="/static/images/mine/icon_delta.png"
-            mode="aspectFit"
-            lazy-load
           ></image>
         </view>
       </view>
@@ -104,6 +99,9 @@
     <!-- 收益列表 -->
     <view class="income-list-box">
       <view class="income-list-item" v-for="(item, index) in list" :key="index">
+        <image class="icon_vip_order" mode="aspectFit" lazy-load
+            src="/static/images/mine/vip_order01.png" v-if="item.order_info.vip_order"
+          ></image>
         <view class="order_top fl_bet">
           <view class="order_left">
             <view class="order_copy" @click="copyHandle(item.third_order_id)">订单号：{{item.third_order_id}}</view>
@@ -116,11 +114,9 @@
             :src="productImg(item)"
             use-loading-slot
             width="172rpx" height="172rpx"
-            radius="8px"
-            use-error-slot
+            radius="8px" use-error-slot
             :show-menu-by-longpress="true"
-            fit="aspectFit"
-            class="order_cont-img"
+            fit="aspectFit" class="order_cont-img"
           >
             <van-loading slot="loading" type="spinner" size="20" vertical />
             <van-icon slot="error" color="#edeef1" size="20" name="photo-fail" />
@@ -145,13 +141,19 @@
   <!-- 日期弹窗 -->
   <datetimePopup
     :isShow="showDatePicker"
+    :currentDate="currentDate"
     @close="showDatePicker = false"
     @confirm="confirmDate"
   ></datetimePopup>
+  <helpConfirmDia
+    :isShow="ishShowHelpDia"
+    @close="ishShowHelpDia = false"
+  ></helpConfirmDia>
 </mescroll-body>
 </template>
 <script>
 import { profitChart, profitDetail } from "@/api/modules/card.js";
+import helpConfirmDia from '@/components/helpConfirmDia.vue';
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { formatAmount } from "@/utils/index";
@@ -166,7 +168,8 @@ export default {
   mixins: [MescrollMixin],
   components: {
     uniEcCanvas,
-    datetimePopup
+    datetimePopup,
+    helpConfirmDia
   },
   data() {
     return {
@@ -180,7 +183,6 @@ export default {
       navbarColor: "linear-gradient(45deg,#f04037,#f05b37)",
       titleColor: "#FFFFFF",
       title: "团长收益",
-
       weekMonthTab: [
         {
           name: "近7天",
@@ -201,10 +203,11 @@ export default {
       },
       selectDate: "",
       showDatePicker: false, // 日期组件弹窗
-      timestamp: 0, // 选中的日期时间戳
       list: [], // 收益列表
       topHeight: "", // 自定义导航栏高度
       total_profit: 0, // 本月收益
+      ishShowHelpDia: false,
+      currentDate: Date.now(), // 选中的日期时间戳
     };
   },
   computed: {
@@ -215,7 +218,7 @@ export default {
   },
   methods: {
     ...mapActions({
-        getVipObject: "user/getVipObject",
+      getVipObject: "user/getVipObject",
     }),
     productImg(item) {
       const { goods_imgs, pay_way } = item.order_info;
@@ -246,7 +249,7 @@ export default {
     },
     confirmDate(event) {
       const { detail, date } = event;
-      this.timestamp = detail;
+      this.currentDate = detail;
       this.selectDate = date;
       this.showDatePicker = false;
       this.mescroll.resetUpScroll();
@@ -257,6 +260,7 @@ export default {
     /*下拉刷新的回调 */
     downCallback() {
       this.selectDate = this.getCurrentDay();
+      this.currentDate = Date.now();
       this.profitChartRequest();
       this.mescroll.resetUpScroll();
     },
@@ -321,9 +325,18 @@ export default {
     justify-content: space-between;
     padding: 0 32rpx;
     .aw-left {
-      color: #ffffff;
+      color: #fff;
       .aw-title {
         font-size: 28rpx;
+        .ib_title-help{
+          // position: absolute;
+          // top: 50%;
+          // right: -40rpx;
+          // transform: translateY(-50%);
+          width: 30rpx;
+          height: 30rpx;
+          margin: 0 16rpx -4rpx;
+        }
       }
       .aw-amount {
         margin-top: 8rpx;
@@ -495,6 +508,14 @@ export default {
       background: #fff;
       border-radius: 16rpx;
       margin-bottom: 20rpx;
+      position: relative;
+      .icon_vip_order{
+        position: absolute;
+        width: 110rpx;
+        height: 34rpx;
+        top: 0;
+        right: 0;
+      }
       .order_top {
         font-size: 26rpx;
         color: #999;

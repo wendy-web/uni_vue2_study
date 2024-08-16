@@ -46,7 +46,7 @@
     <view class="vip_cont" v-if="singletonImg" @click="vipHandle">
         <van-image width="100%" height="100%"
             :src="singletonImg" use-loading-slot
-        ><van-loading slot="loading" type="spinner" size="20" vertical />
+            ><van-loading slot="loading" type="spinner" size="20" vertical />
         </van-image>
     </view>
     <!-- sticky吸顶悬浮的菜单, 父元素必须是 mescroll -->
@@ -77,6 +77,7 @@
   <popoverDia
     :diaId="diaId"
     :diaImage="diaImage"
+    :config="popoverConfig"
     :isShow="isShowPopoverDia"
     @close="closePopoverDiaHandle"
     @openLink="openLinkHandle"
@@ -114,13 +115,13 @@ import configurationFun from '@/components/configurationDia/configurationFun.js'
 import configurationDia from '@/components/configurationDia/index.vue';
 import goodList from "@/components/goodList.vue";
 import popoverDia from "@/components/popoverDia.vue";
+import tabs from "@/components/tabs/index.vue";
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import WxCountUp from "@/utils/WxCountUp.js";
 import { getPlatform } from "@/utils/auth.js";
 import getViewPort from '@/utils/getViewPort.js';
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import tabs from "./component/tabs.vue";
 let _options = {
     separator: "",
     duration: 1,
@@ -160,7 +161,9 @@ export default {
             appid: 121295,
             type: 9,
             target: 4,
-            resGetAdNum: 0
+            resGetAdNum: 0,
+            initBtnPlocidList: ['3109728916', '3107158515'],
+            popoverConfig: {}
 		}
 	},
     computed: {
@@ -220,13 +223,15 @@ export default {
         if(options.phoneId) {
             this.diaId = options.diaId;
             const platform = getPlatform();
+            const type = this.initBtnPlocidList.includes(options.plocid) ? 'xdyh2' :'xdyh';
             const res = await popover({
-                type: 'xdyh',
+                type,
                 platform,
                 unionid: this.unionid
-            })
-            if(res.code == 1 && res.data && res.data.goods_id) {
-                const { goods_id, image2 } = res.data;
+            });
+            if(res.code == 1) {
+                const { goods_id, image2, appid, lx_type, path } = res.data;
+                this.popoverConfig = res.data;
                 this.diaId = goods_id;
                 this.diaImage = image2;
                 if(this.diaList.length) {
@@ -290,7 +295,7 @@ export default {
         },
         /*下拉刷新的回调 */
         downCallback() {
-            this.getUserInfo(); //获取用户信息
+            this.getUserInfo(); // 获取用户信息
             this.singletonInit();
             if(this.tabs[this.tabIndex]) this.tabs[this.tabIndex].pageNum = 1;
             this.mescroll.resetUpScroll();
@@ -298,22 +303,19 @@ export default {
 		async upCallback(page) {
             if (!this.tabs.length) {
                 let res = await goodsGroup();
-                this.tabs = res.data.map((item) => {
-                item.name = item.title;
-                return {
-                    ...item,
-                    goods: null,
-                    num: 1,
-                    y: 0,
-                    curPagelen: 0,
-                    hasNext: true,
-                    pageNum:1
-                };
-                });
+                this.tabs = res.data.map((item) => ({
+                        ...item,
+                        name: item.title,
+                        goods: null,
+                        num: 1,
+                        y: 0,
+                        curPagelen: 0,
+                        hasNext: true,
+                        pageNum:1
+                    })
+                );
             }
-            if(!this.tabs.length){
-                return this.mescroll.endSuccess(0);
-            };
+            if(!this.tabs.length) return this.mescroll.endSuccess(0);
             const itemTab = this.tabs[this.tabIndex];
             // 京东/拼多多列表
             if([2, 3].includes(Number(itemTab.lx_type))) return this.requestRem(page);
@@ -425,7 +427,7 @@ export default {
                 if( page.num == 1 ) {
                     curTab.goods = [];
                     curTab.pageNum = 1;
-                }; //如果是第一页需手动制空列表
+                }; // 如果是第一页需手动制空列表
                 // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
                 let isNextPage = (pageNum * params.size) < total_count;
                 if(!isNextPage && type == 4 && groupId_index < (groupId.length - 1)) {
@@ -457,7 +459,7 @@ export default {
                 curTab.groupId_index = 0;
                 // 没有初始化,则初始化
                 this.mescroll.resetUpScroll();
-            } else{
+            } else {
                 // 初始化过,则恢复之前的列表数据
                 this.mescroll.setPageNum(curTab.num + 1); // 恢复当前页码
                 this.mescroll.endSuccess(curTab.curPageLen, curTab.hasNext); // 恢复是否有下一页或显示空布局
@@ -553,7 +555,7 @@ page {
 		position: sticky;
 		top: var(--window-top);
 		background-color: #fff;
-    margin-bottom: 16rpx;
+        margin-bottom: 16rpx;
 	}
 	// 使用mescroll-uni,则top为0
 .mescroll-uni{

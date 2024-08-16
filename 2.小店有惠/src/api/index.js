@@ -98,7 +98,7 @@ export class XhHttp {
             this.loadingNum--;
             if (this.loadingNum == 0) {
                 clearTimeout(this.loadingTime);
-                if (this.hasPageLoading) uni.hideLoading();
+                if (this.hasPageLoading) uni.hideLoading({ fail() {} });
                 if (this.hasNavigationBarLoading) uni.hideNavigationBarLoading();
                 this.loadingStatus = false;
             }

@@ -13,7 +13,7 @@ Vue.component('privacy', privacy);
 
 Vue.config.productionTip = false;
 Vue.prototype.$store = store;
-
+Vue.prototype.$isClick = false;
 App.mpType = 'app'
 
 function isPromise(obj) {

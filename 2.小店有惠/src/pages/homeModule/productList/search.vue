@@ -4,39 +4,12 @@
     :fixed="true"
     leftImage="/static/images/left_back.png"
 	navberColor="#fff"
-    titleAlign="titleRight"
     navbarImageMode="widthFix"
 	@leftCallBack="leftCallBack"
     :overFlow="true"
->
-    <view class="search_box" slot="title">
-        <image class="search_icon" src="../static/search_icon.png" mode="aspectFill"></image>
-        <van-field
-            :value="inputValue"
-            :placeholder="placeholderValue || (is_rebate ? '搜你想推广的商品' : '请搜索喜欢的商品')"
-            :border="false"
-            @confirm="confirmHandle"
-            @change="inputValueChange"
-            :focus="isFocus"
-            @blur="blurHandle"
-            @focus="focusHandle"
-            custom-style="font-size:26rpx;--field-input-text-color:#333333;background-color: transparent;"
-        />
-        <view class="search_btn" @click="searchBtnHandle()">搜索</view>
-    </view>
-</xh-navbar>
-<scroll-view
-    :style="{height: mescrollHeight}"
-    scroll-y="true"class="keyword_box"
-    v-if="keywordList.length"
->
-    <view class="keyword_item"
-        v-for="(item, index) in keywordList" :key="index"
-    >
-        <view v-html="brightenKeyword(item.key)" @click="searchBtnHandle(item.key)"></view>
-    </view>
-</scroll-view>
-<view class="cont_box" :style="{'--top': navHeight}">
+    :title="is_rebate ? '搜商品 赚佣金' : '搜商品 更便宜'"
+></xh-navbar>
+<view class="cont_box" :style="{ '--top' : navHeight + 'px' }">
 <mescroll-uni
     :fixed="false"
     ref="mescrollRef"
@@ -45,13 +18,46 @@
     @up="upCallback"
     :up="upOption"
 >
-    <view class="search_lab">{{ is_rebate ? '搜商品，赚佣金' : '搜拼多多商品，比官方更便宜' }} </view>
+    <view class="search_box">
+        <view class="search_box-left">
+            <image class="search_icon" src="/static/images/home/search_icon.png" mode="aspectFill"></image>
+            <van-field
+                :value="inputValue"
+                :placeholder="placeholderValue || (is_rebate ? '搜你想推广的商品' : '请搜索喜欢的商品')"
+                :border="false"
+                @confirm="confirmHandle"
+                @change="inputValueChange"
+                :focus="isFocus"
+                @blur="blurHandle"
+                @focus="focusHandle"
+                custom-style="font-size:26rpx;--field-input-text-color:#333333;background-color: transparent;padding: 0;"
+                clearable
+                class="field_box"
+            />
+        </view>
+        <view class="search_btn" @click="searchBtnHandle()">搜索</view>
+    </view>
+    <scroll-view :style="{height: mescrollHeight}"
+        scroll-y="true" class="keyword_box"
+        v-if="keywordList.length"
+    >
+        <view class="keyword_item" v-for="(item, index) in keywordList" :key="index">
+            <view v-html="brightenKeyword(item.key)" @click="searchBtnHandle(item.key)"></view>
+        </view>
+    </scroll-view>
     <!-- search的关键字 -->
     <view class="search_cont" v-if="searList.length">
-        <view class="sear_his">搜索历史</view>
+        <view class="sear_his">
+            <image class="del_icon"
+                src="../static/history.png"
+                mode="widthFix"
+                @click="delListHandle"
+            ></image>
+            搜索历史
+        </view>
         <image class="del_icon"
-            src="../static/del_icon.png"
-            mode="aspectFill"
+            src="../static/del_icon1.png"
+            mode="widthFix"
             @click="delListHandle"
         ></image>
     </view>
@@ -60,8 +66,7 @@
             v-for="(item,index) in isShowSearList"
             :key="index"
             @click="searchBtnHandle(item)"
-        >
-            {{item}}
+        >{{item}}
         </view>
         <view class="search_list-item" v-if="isShowNext" @click="isShowNext = false">
             <van-icon name="arrow-down" color="#999" />
@@ -74,9 +79,9 @@
 </template>
 <script>
 import {
-delHistory,
-jdHistory,
-keyword
+    delHistory,
+    jdHistory,
+    keyword
 } from '@/api/modules/jsShop.js';
 import goodList from '@/components/goodList.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
@@ -94,7 +99,7 @@ export default {
         },
         navHeight() {
             let viewPort = getViewPort();
-            return viewPort.navHeight  + 'px';
+            return viewPort.navHeight;
         },
     },
     watch: {
@@ -131,10 +136,12 @@ export default {
             },
             isFocus: false,
 			groupRecommendData: null,
-            is_rebate: ''
+            is_rebate: '',
+            backDelta: 1,
         };
     },
     async onLoad(option) {
+        if(option.backDelta) this.backDelta = Number(option.backDelta);
         if(option.inputValue) {
             this.inputValue = option.inputValue;
         }
@@ -198,12 +205,18 @@ export default {
             this.inputValue = detail;
             this.searchBtnHandle();
         },
-        async delListHandle(){
-            const res = await delHistory();
-            if(res.code != 1) return;
-            this.searList = [];
-            this.isShowSearList = [];
-            this.isShowNext = false;
+        async delListHandle() {
+            this.$showModal({
+                content: '确认删除搜索历史？',
+                confirmText: '删除',
+                confirm: async () => {
+                    const res = await delHistory();
+                    if(res.code != 1) return;
+                    this.searList = [];
+                    this.isShowSearList = [];
+                    this.isShowNext = false;
+                }
+            });
         },
         searchBtnHandle(item) {
             const inputValue = item || this.inputValue.trim() || this.placeholderValue;
@@ -211,7 +224,7 @@ export default {
             this.$go(`/pages/homeModule/productList/index?searchValue=${inputValue}&is_rebate=${this.is_rebate}`);
         },
         leftCallBack(){
-            if(this.is_rebate) return this.$back();
+            if(this.is_rebate) return this.$leftBack(this.backDelta);
             this.$switchTab('/pages/home/index');
         }
     },
@@ -233,37 +246,38 @@ page {
 }
 .search_box{
     font-size: 26rpx;
-    color: #999;
-    width: 454rpx;
-    height: 68rpx;
+    height: 64rpx;
     background: #fff;
-    border-radius: 38rpx;
-    padding: 0 2rpx 0 45rpx;
     display: flex;
     align-items: center;
-    font-size: 26rpx;
-    color: #999999;
     position: relative;
-    border: 3rpx solid #f04138;
     box-sizing: border-box;
-    line-height: 36rpx;
+    margin: 0 24rpx;
+    &-left {
+        padding: 0 16rpx 0 32rpx;
+        height: 64rpx;
+        display: flex;
+        align-items: center;
+        color: #999;
+        border-radius: 38rpx;
+        background: #f1f1f1;
+        border-radius: 12rpx;
+        flex: 1;
+
+    }
+    .field_box {
+        flex: 1;
+    }
     .search_icon{
         width: 28rpx;
         height: 28rpx;
         flex: 0 0 28rpx;
-        position: absolute;
-        left: 32rpx;
+        margin-right: 8rpx;
     }
-    .search_btn{
-        width: 120rpx;
-        line-height: 56rpx;
-        background: linear-gradient(135deg,#f9675f, #f84842);
-        border-radius: 32rpx;
-        font-size: 28rpx;
-        text-align: center;
-        color: #ffffff;
-        margin-right: 4rpx;
-        flex: 0 0 120rpx;
+    .search_btn {
+        margin-left: 24rpx;
+        font-size: 32rpx;
+        color: #ef2b20;
     }
 }
 .search_lab {
@@ -279,16 +293,28 @@ page {
     align-items: center;
     justify-content: space-between;
     margin-top: 42rpx;
-    .sear_his{
-        font-size: 32rpx;
+    .sear_his {
+        font-size: 30rpx;
         font-weight: 600;
-        color: #333333;
+        color: #aaa;
         line-height: 44rpx;
+        display: flex;
+        align-items: center;
+        .del_icon {
+            margin-right: 8rpx;
+        }
     }
     .del_icon{
-        width: 48rpx;
-        height: 48rpx;
+        width: 30rpx;
+        height: 30rpx;
+        flex: 0 0 30rpx;
     }
+}
+/* 文本超出隐藏 */
+@mixin text-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .search_list{
     padding: 0 28rpx 0 26rpx;
@@ -298,11 +324,12 @@ page {
         line-height: 60rpx;
         background: #f1f1f1;
         border-radius: 30rpx;
-        padding: 0 20rpx;
+        padding: 0 24rpx;
         font-size: 26rpx;
         color: #666666;
         margin-top: 24rpx;
         margin-right: 16rpx;
+        @include text-ellipsis;
     }
 }
 .nav_bg {
@@ -334,6 +361,7 @@ page {
     background: #fff;
     box-sizing: border-box;
     z-index: 1;
+    height: calc(100% - 126rpx);
     .keyword_item{
         line-height: 90rpx;
         font-size: 32rpx;

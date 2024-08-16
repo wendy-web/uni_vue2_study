@@ -14,7 +14,7 @@
     titleColor="#333"
     navbarColor="#fff"
     leftImage="/static/images/back_02.png"
-    @leftCallBack="$back"
+    @leftCallBack="$leftBack"
   ></xhNavbar>
   <view class="card_list">
       <view class="card_list-item" v-for="(item, index) in list" :key="index">
@@ -34,8 +34,8 @@
 </mescroll-body>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { cardGrant } from "@/api/modules/card.js";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 export default {
   mixins: [MescrollMixin], // 使用mixin
   data() {

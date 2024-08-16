@@ -10,7 +10,7 @@ export function payHooks(api, params) {
                 signType: jspay_info.signType,
                 timeStamp: jspay_info.timeStamp,
                 success: () => {
-                    //跳转支付详情
+                    // 跳转支付详情
                     uni.redirectTo({
                         url: "/pages/payStatus/index?order_id=" + order_id,
                     });

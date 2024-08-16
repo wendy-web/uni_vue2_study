@@ -47,7 +47,6 @@ const serviceCredits = {
     watch: {
         diaList: {
             handler(newValue, oldValue) {
-                console.log('newValue', newValue)
                 if (newValue.length && newValue[0] == "config") {
                     this.isShowConfig = true;
                     this.delCurrentDiaList('config');
@@ -67,7 +66,6 @@ const serviceCredits = {
         const currentPageObj = pageList[pageList.length - 1];
         this.currentPage = currentPageObj.route;
         this.currentPageNum = this.pageObj.find(res => res.route == this.currentPage).pageNum;
-        console.log('currentPageNum', this.currentPageNum)
         this.configurationInit();
     },
     onShow() {
@@ -190,8 +188,8 @@ const serviceCredits = {
         },
         requestPopoverRember(item) {
             const id = (item && item.id) || this.currentId;
-            this.configurationDiaHandle(item);
             this.closeShowConfig(id || this.currentId, false);
+            this.configurationDiaHandle(item);
         },
         async closeShowConfig(id, nextDia = true, isCloseClick = false) {
             const currentId = id || this.currentId;

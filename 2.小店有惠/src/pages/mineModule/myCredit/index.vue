@@ -18,7 +18,7 @@
 		leftImage="/static/images/back_01.png"
 		fixedNum="true"
 		title="赚积分"
-		@leftCallBack="$back"
+		@leftCallBack="$leftBack"
 	></xh-navbar>
 	<!-- 顶部背景 -->
 	<image class="my_credit_nav" src="https://file.y1b.cn/store/1-0/231116/6555c5f2c8874.png" mode="aspectFill">

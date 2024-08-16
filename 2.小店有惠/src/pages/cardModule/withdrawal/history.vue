@@ -14,7 +14,7 @@
     title="提现记录"
     titleColor="#333"
     leftImage="/static/images/back_02.png"
-    @leftCallBack="$back"
+    @leftCallBack="$leftBack"
     titleAlign="titleLeft"
   ></xhNavbar>
   <view class="cont_list">
@@ -32,8 +32,8 @@
 </mescroll-body>
 </template>
 <script>
-import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { withdrawLog } from "@/api/modules/card.js";
+import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 
 export default {
     mixins: [MescrollMixin],

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import {
-    back,
     go,
+    leftBack,
     reLaunch,
     redirectTo,
     switchTab
@@ -29,16 +29,18 @@ import {
 import {
     agreementLookHandle,
     downloadFile,
+    getWritePhotosAlbum,
     navigateToMiniProgram,
     openEmbeddedMiniProgram,
     saveImageToPhotosAlbum,
+    setWritePhotosAlbum,
     subscribeMessageHandle,
     wxReportEvent
 } from './method.js';
 
 // 路由跳转
 Vue.prototype.$go = go;
-Vue.prototype.$back = back;
+Vue.prototype.$leftBack = leftBack;
 Vue.prototype.$redirectTo = redirectTo;
 Vue.prototype.$reLaunch = reLaunch;
 Vue.prototype.$switchTab = switchTab;
@@ -74,4 +76,6 @@ Vue.prototype.$navigateToMiniProgram = navigateToMiniProgram;
 Vue.prototype.$agreementLookHandle = agreementLookHandle;
 Vue.prototype.$subscribeMessageHandle = subscribeMessageHandle;
 Vue.prototype.$saveImageToPhotosAlbum = saveImageToPhotosAlbum;
+Vue.prototype.$getWritePhotosAlbum = getWritePhotosAlbum;
+Vue.prototype.$setWritePhotosAlbum = setWritePhotosAlbum;
 Vue.prototype.$downloadFile = downloadFile;

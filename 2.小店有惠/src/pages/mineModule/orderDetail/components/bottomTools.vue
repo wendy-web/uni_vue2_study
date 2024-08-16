@@ -40,9 +40,7 @@ export default {
   props: ["config"],
   methods: {
     goHome() {
-      uni.reLaunch({
-        url: "/pages/home/index",
-      });
+      this.$reLaunch("/pages/home/index");
     },
     buyConfirm() {
       payHooks(orderPay, { id: this.config.id });

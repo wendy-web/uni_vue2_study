@@ -26,12 +26,14 @@ export default {
       type: Boolean,
       default: false
     },
+    currentDate: {
+      type: [String, Number],
+      default: ''
+    }
   },
   data() {
     return {
-      currentDate: Date.now(),
       minDate: new Date("2023/01/01").getTime(),
-      timestamp: 0, //选中的日期时间戳
     };
   },
   methods: {

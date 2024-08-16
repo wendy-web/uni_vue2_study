@@ -87,9 +87,7 @@ export default {
       setMiniProgram: "user/setMiniProgram",
     }),
     againHandle(id){
-      uni.navigateTo({
-        url: "/pages/homeModule/productDetails/index?id=" + id,
-      });
+      this.$go(`/pages/homeModule/productDetails/index?id=${id}`);
     },
     goOrderDetail() {
       const {
@@ -106,15 +104,8 @@ export default {
         });
         return;
       }
-      uni.navigateTo({
-        url: "/pages/mineModule/orderDetail/index?id=" + this.config.id,
-      });
-    },
-    goHome() {
-      uni.reLaunch({
-        url: "/pages/home/index",
-      });
-    },
+      this.$go(`/pages/mineModule/orderDetail/index?id=${this.config.id}`);
+    }
   },
 };
 </script>

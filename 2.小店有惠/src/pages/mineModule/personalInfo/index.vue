@@ -351,7 +351,7 @@ export default {
     async confirmExitLoginHandle() {
         this.confirmExitLoginHandle = false;
         this.setAutoLogin(0);
-        this.$back();
+        this.$leftBack();
     }
   },
   onLoad() {

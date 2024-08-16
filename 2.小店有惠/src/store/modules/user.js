@@ -186,13 +186,15 @@ const actions = {
             });
         }).catch((e) => {});
     },
-    //获取用户信息
+    // 获取用户信息
     getUserInfo({ commit }) {
-        getUser().then((res) => {
+        new Promise(async(resolve, reject) => {
+            const res = await getUser();
             if (res.code != 1) return;
             const { data } = res;
             commit("setUserInfo", data);
             commit("setAuthorization", Boolean(data.avatar_url));
+            resolve(data);
         });
     },
     async getVipObject({ commit }, type = 0) {

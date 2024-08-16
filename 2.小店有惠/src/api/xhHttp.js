@@ -44,7 +44,7 @@ export default new XhHttp({
                 context.config.header['authorization'] = token;
             }
             if (platform) {
-                context.config.header['device'] = platform;
+                context.config.header['platform'] = platform;
             }
             if (!config.isNoLoading) context.startLoading();
             //缓存类型接口先查询是否有缓存

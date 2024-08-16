@@ -4,7 +4,9 @@ export default function({
     price,
     goods_name,
     after_pay,
-    painterHeight
+    painterHeight,
+    sale_num,
+    lx_type,
 }) {
 
     // 拼接上 - 拼多多的先用后付的标识
@@ -58,7 +60,7 @@ export default function({
             },
             {
                 "type": "text",
-                "text": price,
+                "text": `${price}`,
                 "css": {
                     "color": "#EF2B20",
                     "background": "rgba(0,0,0,0)",
@@ -166,6 +168,24 @@ export default function({
                 "borderColor": "#000000",
                 "shadow": "",
                 "mode": "scaleToFill"
+            }
+        })
+    }
+    if (sale_num) {
+        createObj.views.push({
+            "type": "text",
+            "text": `${(lx_type == 2) ? '月售' : '已售'}${sale_num}`,
+            "css": {
+                "color": "#aaa",
+                "width": "180px",
+                "height": "22.599999999999998px",
+                "top": "678px",
+                "left": '440px',
+                "fontSize": "24px",
+                "fontWeight": "normal",
+                "maxLines": "1",
+                "lineHeight": "22.200000000000003px",
+                "textAlign": "right"
             }
         })
     }

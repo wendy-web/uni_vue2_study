@@ -1,8 +1,8 @@
 <template>
 <view class="spread_type">
   <view class="spread_title">推广文案</view>
-  <view class="copy_box">
-    <view class="copy_cont" v-if="config">
+  <view :class="['copy_box', !config ? 'active' : '']">
+    <view class="copy_cont">
       <view class="copy_cont-title">{{ config.goods_name }}</view>
       <block v-if="config.face_value">
         原价：￥{{ config.sale_price || 0 }}<br>
@@ -13,14 +13,8 @@
       </block>
       商品链接：{{ config.short_link ||0 }}
     </view>
-    <!-- <view class="copy_lab">商品链接有效期30天，过期需重新复制</view> -->
     <view class="btn_active_btn" @click="copHandle">复制文案去推广</view>
   </view>
-  <!-- <view class="spread_title list_title">商品素材
-    <view class="sel_num">
-      <text style="font-size: 32rpx;color: #EF2B20;">{{ resultList.length }}</text>
-      /{{ checkList.length }}</view>
-  </view> -->
   <view class="all_check">
     <van-checkbox
       :value="allChecked"
@@ -31,7 +25,7 @@
     全选</van-checkbox>
   </view>
   <view class="sel_lab">以下商品素材可保存到相册</view>
-  <view class="list_cont">
+  <view :class="['list_cont', !config ? 'active' : '']">
     <van-checkbox-group :value="resultList" @change="changeHandle($event, value, type)" class="fl">
       <van-checkbox
         checked-color="#EF2B20"
@@ -51,10 +45,16 @@
     </van-checkbox-group>
   </view>
   <!-- 底部操作按钮 -->
-  <view class="btn_list-box">
+  <view :class="['btn_list-box', !config ? 'active' : '']">
     <view class="btn_list">
       <view :class="['btn_item', resultList.length ? 'active' : '']" @click="saveHandle">保存素材</view>
-      <view class="btn_item active_btn" @click="shareImgHandle">推广海报</view>
+      <view class="btn_item active_btn" @click="shareImgHandle">
+        <view>推广海报</view>
+        <view class="spread_line"></view>
+        <view class="spread_btn-left">
+          <view v-html="formatItemPrice(config && config.rebateMoney, 1)"></view>
+        </view>
+      </view>
     </view>
     <view class="van-submit-bar__safe"></view>
   </view>
@@ -95,7 +95,8 @@ export default {
       showImage: '',
       code_url: '',
       allChecked: true,
-      painterHeight: 1080
+      painterHeight: 1080,
+      saleNum: '',
     };
   },
   computed: {
@@ -113,11 +114,17 @@ export default {
     const params = {
       rebate: options.rebate,
       skuId: options.skuId || 0,
-      goods_sign: options.goods_sign || 0
+      goods_sign: options.goods_sign || 0,
+      is_popover: options.is_popover || 0
     };
+    if(options.saleNum) this.saleNum = options.saleNum;
     this.initGoodsExtend(params);
   },
   methods: {
+    formatItemPrice(price = 0, type) {
+      let dom=  `<span style="font-weight:600;font-size: 13px;">¥<span style="font-size: 20px;">${price}</span></span>`;
+      return dom;
+    },
     onChangeAllCheckedHandle(event) {
       this.allChecked = event.detail.value;
       if(!this.allChecked) return this.resultList = [];
@@ -127,31 +134,35 @@ export default {
       const res = await goodsExtend(params);
       if(res.code != 1) return;
       this.config = res.data;
-      const { banner_image, code_url, price, face_value, coupon_end_time,coupon_start_time, goods_name, sale_price, after_pay } = res.data;
+      const { banner_image } = res.data;
       this.checkList = banner_image.map((res,index) => ({
         url: res,
         id: index + 1
       }));
-      const [ firstImg ] = banner_image;
-      this.checkList.unshift({
-        id: 0,
-        url: firstImg
-      });
       this.resultList = this.checkList.map(res => res.id + '');
-      console.log('face_value', face_value)
+    },
+    createShowShareImg() {
+      uni.showLoading({
+        title: '正在生成推广图'
+      });
+      const { banner_image, code_url, price, face_value, coupon_end_time,coupon_start_time,
+        goods_name, sale_price, after_pay, lx_type } = this.config;
+      const [ firstImg ] = banner_image;
       if(face_value) {
         this.painterHeight = 1080;
         this.template = paletteFaceValue({
           productImg: firstImg,
           codeUrl: code_url,
-          price: price + '',
-          originalPrice: sale_price + '',
-          face_value: face_value + '',
+          price,
+          originalPrice: sale_price,
+          face_value,
           coupon_start_time,
           coupon_end_time,
           goods_name,
           after_pay,
-          painterHeight: this.painterHeight
+          painterHeight: this.painterHeight,
+          sale_num: this.saleNum,
+          lx_type
         });
         return;
       }
@@ -159,7 +170,7 @@ export default {
       this.template = palette({
         productImg: firstImg,
         codeUrl: code_url,
-        price: price + '',
+        price,
         goods_name,
         after_pay,
         painterHeight: this.painterHeight
@@ -167,10 +178,13 @@ export default {
     },
     onImgOk (event) {
       this.showImage = event.mp.detail.path || event.target.path;
-      this.checkList[0].url = this.showImage;
+      console.log('图片合成成功', this.showImage);
+      uni.hideLoading();
+      this.showShareImg();
     },
     imgErr(err){
-      console.log(err)
+      console.log('图片合成失败', err);
+      uni.hideLoading();
     },
     copHandle() {
       uni.setClipboardData({
@@ -178,15 +192,20 @@ export default {
         success: () => {
           this.$toast('复制成功，请前往微信推广');
         },
-        fail: () => {
+        fail: (error) => {
+          console.log('setClipboardData：error', error);
           this.$toast('复制失败');
         }
       });
     },
-    saveHandle() {
+    async saveHandle() {
       if(!this.resultList.length) return;
+      const index0Id = this.resultList[0];
+      const index1Obj =  this.checkList[index0Id];
+      const saveRes = await this.saveImgToPhone(index1Obj.url, index1Obj.id);
+      if(!saveRes) return;
       this.resultList.map(async (res, index) => {
-        const currentObj = this.checkList.find(findRes => findRes.id == res);
+        const currentObj = this.checkList.find(findRes => findRes.id == res && index);
         if(!currentObj) return;
         const { id, url } = currentObj;
         const saveRes = await this.saveImgToPhone(url, id);
@@ -218,14 +237,22 @@ export default {
     },
     // 展示推广的海报展示
     shareImgHandle() {
+      if(!this.showImage) return this.createShowShareImg();
+      this.showShareImg();
+    },
+    showShareImg() {
       wx.showShareImageMenu({
-        path: this.checkList[0].url,
+        path: this.showImage,
         style: 'v2',
-        complete: (res) => {
-          console.log('res', res)
+        complete: async (res) => {
+          let pattern = /fail auth deny/;
+          if (pattern.test(res.errMsg)) {
+            const setWritePhotosResult = await this.$setWritePhotosAlbum();
+            if(setWritePhotosResult) this.saveImgToPhone(this.showImage);
+          }
         }
       });
-    },
+    }
   },
 }
 </script>
@@ -270,6 +297,24 @@ page {
   overflow: hidden;
   padding: 16rpx;
   margin-top: 16rpx;
+  &.active {
+    min-height: 320rpx;
+    position: relative;
+    &::before{
+      content: '\3000';
+      // margin: 0 24rpx;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 1;
+      background: linear-gradient(270deg,#f6f8fb 80%, #d3d3d3);
+      animation: backAni 1.5s infinite;
+      border-radius: 16rpx;
+    }
+  }
   .copy_cont {
     padding: 16rpx;
     background: #f7f7f7;
@@ -283,11 +328,6 @@ page {
       font-size: 30rpx;
       margin-bottom: 16rpx;
     }
-  }
-  .copy_lab {
-    margin-top: 20rpx;
-    font-size: 28rpx;
-    color: #aaa;
   }
 }
 .content_box {
@@ -307,6 +347,24 @@ page {
   padding: 16rpx 0 0 16rpx;
   display: flex;
   flex-wrap: wrap;
+  &.active {
+    min-height: 452rpx;
+    position: relative;
+    &::before{
+      content: '\3000';
+      // margin: 0 24rpx;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 1;
+      background: linear-gradient(270deg,#f6f8fb 80%, #d3d3d3);
+      animation: backAni 1.5s infinite;
+      border-radius: 16rpx;
+    }
+  }
 }
 .list_item {
   width: 206rpx;
@@ -332,6 +390,23 @@ page {
   left: 0;
   width: 100vw;
   z-index: 9;
+  &.active {
+    // position: relative;
+    &::before{
+      content: '\3000';
+      // margin: 0 24rpx;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 1;
+      background: linear-gradient(270deg,#f6f8fb 80%, #d3d3d3);
+      animation: backAni 1.5s infinite;
+      border-radius: 16rpx;
+    }
+  }
   .btn_list{
     padding: 6rpx 32rpx;
     display: flex;
@@ -356,6 +431,23 @@ page {
     flex: 0 0 424rpx;
     color: #fff;
     margin-left: 16rpx;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  .spread_btn-left {
+    display: flex;
+    align-items: center;
+    &::before {
+      content: '立赚';
+      font-size: 26rpx;
+      margin-right: 8rpx;
+    }
+  }
+  .spread_line{
+    width: 2rpx;
+    height: 28rpx;
+    background: #fff;
   }
 }
 .btn_active_btn {
@@ -396,5 +488,16 @@ page {
 .all_label {
   // color: #999 !important;
   // font-size: 28rpx;
+}
+@keyframes backAni {
+  0% {
+    background: linear-gradient(270deg,#f6f8fb 80%, #d3d3d3);
+  }
+  50% {
+    background: linear-gradient(270deg,#f6f8fb 60%, #d3d3d3);
+  }
+  100% {
+    background: linear-gradient(270deg,#f6f8fb 30%, #d3d3d3);
+  }
 }
 </style>

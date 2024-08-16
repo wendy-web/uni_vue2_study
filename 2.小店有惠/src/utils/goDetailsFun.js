@@ -75,6 +75,7 @@ const goDetailsFun = {
             }
         },
         async rebateDetail(item, is_popover = 0) {
+            // is_popover 是否是弹窗进入
             // 检测商品是否存在进入
             const res = await lxTypeStatusCheckout(item);
             if (res.code != 1) return;
@@ -177,9 +178,7 @@ const goDetailsFun = {
                 //公众号
                 case 1:
                     let link = is_main === 1 ? article_url : main_url;
-                    uni.navigateTo({
-                        url: `/pages/webview/index?link=${encodeURIComponent(link)}`
-                    });
+                    this.$go(`/pages/webview/index?link=${encodeURIComponent(link)}`);
                     break;
                 case 2:
                     //视频号

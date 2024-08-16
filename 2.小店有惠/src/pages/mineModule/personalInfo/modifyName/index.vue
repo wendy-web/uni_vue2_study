@@ -87,7 +87,7 @@ export default {
     },
     editUserInfo(params) {
       this.updateUserNew(params).then((res) => {
-        uni.navigateBack();
+        this.$leftBack();
       });
     },
   },

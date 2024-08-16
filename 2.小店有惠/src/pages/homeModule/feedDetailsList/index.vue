@@ -14,9 +14,8 @@
 	>
 		<swiper-item class="item_list" v-for="(item,index) in feedList" :key="index">
 			<view class="coupon-details" :id="'item_list'+index">
-				<view class="icon_box" @click="navBack"
-					:style="{ height: navBarHeight + 'px', top: topHeight + 'px'}"
-				>
+				<view class="icon_box" @click="$leftBack"
+					:style="{ height: navBarHeight + 'px', top: topHeight + 'px'}">
 					<image class="icon_box-icon" mode="aspectFill"
 					src="../static/left_icon.png" v-if="index == current"></image>
 				</view>
@@ -71,7 +70,7 @@
 							<!-- 关闭标签的展示 -->
 							<view class="cont_remind txt_ov_ell1" v-if="item.labelName && false">
 								<block v-for="(labelItem, idx) in item.labelName" :key="idx" >
-									<text :class="{'reactive': !idx}">{{labelItem}}</text>
+									<text :class="[!idx && 'reactive']">{{labelItem}}</text>
 									<text class="label_point" v-if="idx < (item.labelName.length - 1)">·</text>
 								</block>
 							</view>
@@ -106,10 +105,10 @@
 <script>
 import { bysubunionid, goodsQuery, toggleCollect } from '@/api/modules/jsShop.js';
 import {
-goodsDetail,
-goodsPromotion,
-goodsSearch,
-toggleCollect as pddToggleCollect
+	goodsDetail,
+	goodsPromotion,
+	goodsSearch,
+	toggleCollect as pddToggleCollect
 } from '@/api/modules/pddShop.js';
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
 import { mapMutations } from 'vuex';
@@ -230,7 +229,7 @@ let timer = null;
 						content: detRes.msg,
 						showCancel: false,
 						confirm: () => {
-							this.$back();
+							this.$leftBack();
 						}
 					});
 					return;
@@ -383,13 +382,7 @@ let timer = null;
 					appId: type_id,
 					path: jdShareLink || mobile_url,
 				});
-			},
-			navBack() {
-				const sourceUrl = this.sourceUrl;
-				uni.navigateBack({
-					fail: () => this.$switchTab('/pages/home/index')
-				})
-			},
+			}
 		}
 	}
 </script>

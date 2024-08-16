@@ -4,7 +4,7 @@
     navbarColor="#fff"
     titleColor="#333"
     leftImage="/static/images/back_02.png"
-    @leftCallBack="$back(2)"
+    @leftCallBack="$leftBack(2)"
     titleAlign="titleLeft"
   ></xhNavbar>
   <view class="cont_box">

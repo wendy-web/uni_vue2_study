@@ -36,3 +36,7 @@ npm run dev:mp-weixin
 
 - 首页： pages/home/index?phoneId=1
     phoneId=是进入的弹窗配置；(入口是彬纷有礼带参过来)
+
+## 提交记录
+- 
+- 2024/07/09 提交海报及分享图合成的修改

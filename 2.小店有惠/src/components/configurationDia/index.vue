@@ -13,7 +13,7 @@
           @click="popupClose"
         ></image>
         <!-- 抽奖福利 -->
-        <view v-if="config.show_type == 4" class="order_cont gift_cont" @click="popoverRember">
+        <view v-if="config && config.show_type == 4" class="order_cont gift_cont" @click="popoverRember">
           <image class="order_gift-bg" src="https://file.y1b.cn/store/1-0/24514/664305e808e33.png" ></image>
           <view class="image_list">
             <image class="image_item"
@@ -40,7 +40,7 @@
             </van-count-down>
           </view>
         </view>
-        <view v-else-if="config.show_type == 3" class="order_cont" @click="popoverRember">
+        <view v-else-if="config && config.show_type == 3" class="order_cont" @click="popoverRember">
           <view class="image_list">
             <image class="image_item" v-for="(item, index) in config.headImgArr" :key="index" :src="item"
             ></image>
@@ -74,7 +74,7 @@
           </view>
         </view>
         <!-- 赚钱中心的固定样式 -->
-        <view class="dia_com" v-else-if="currentPageNum == 4 && !config.image">
+        <view class="dia_com" v-else-if="config && (currentPageNum == 4 && !config.image)">
           <view class="cont_title">{{ config.jd_word || '今日必推' }}</view>
           <view class="card_cont" @click="popoverRember">
             <view class="card_lab-top">
@@ -99,7 +99,7 @@
           </view>
         </view>
         <!-- 京东商品 - 无图片的状态 -->
-        <view class="dia_com" v-else-if="config.show_type == 2 || !config.image">
+        <view class="dia_com" v-else-if="config && (config.show_type == 2 || !config.image)">
             <view class="cont_title">
               {{ config.jd_word || '天降神券' }}
             </view>
@@ -172,7 +172,6 @@
 </view>
 </template>
 <script>
-import { formatAmount } from '@/utils/index.js';
 import { mapActions, mapGetters } from "vuex";
 import vastwuBarrage from './vastwu-barrage/vastwu-barrage.vue';
 export default {
@@ -223,18 +222,14 @@ export default {
       isFinShed: false,
     };
   },
-  onLoad(options) {
-  },
+  onLoad(options) { },
   methods: {
     ...mapActions({
       getUserInfo: 'user/getUserInfo',
     }),
 
     formatPrice(price) {
-      price = Number(price).toFixed(2);
-      let splitPrice = price.split(".");
-      let amount = formatAmount(splitPrice[0]);
-      return `<span style="font-weight:600;font-size: 20px"><span style="font-size: 14px;">¥</span>${amount}.<span style="font-size: 14px;">${splitPrice[1]}</span></span>`;
+      return `<span style="font-weight:600;font-size: 20px"><span style="font-size: 14px;">¥</span>${price}</span>`;
     },
     resetTime() {
       // 时间重置

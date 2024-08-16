@@ -86,7 +86,8 @@ Component({
             this.downloadImages().then((palette) => {
                 const {
                     width,
-                    height
+                    height,
+                    type
                 } = palette;
 
                 if (!width || !height) {
@@ -107,7 +108,7 @@ Component({
                 const ctx = wx.createCanvasContext('k-canvas', this);
                 const pen = new Pen(ctx, palette);
                 pen.paint(() => {
-                    this.saveImgToLocal();
+                    this.saveImgToLocal(type);
                 });
             });
         },
@@ -173,7 +174,7 @@ Component({
             }).catch((e) => {});
         },
 
-        saveImgToLocal() {
+        saveImgToLocal(type = 'img') {
             const that = this;
             setTimeout(() => {
                 wx.canvasToTempFilePath({
@@ -181,7 +182,7 @@ Component({
                     destWidth: that.canvasWidthInPx,
                     destHeight: that.canvasHeightInPx,
                     success: function(res) {
-                        that.getImageInfo(res.tempFilePath);
+                        that.getImageInfo(res.tempFilePath, type);
                     },
                     fail: function(error) {
                         console.error(`canvasToTempFilePath failed, ${JSON.stringify(error)}`);
@@ -193,7 +194,7 @@ Component({
             }, 300);
         },
 
-        getImageInfo(filePath) {
+        getImageInfo(filePath, type) {
             const that = this;
             wx.getImageInfo({
                 src: filePath,
@@ -209,7 +210,8 @@ Component({
                     // 比例相符时才证明绘制成功，否则进行强制重绘制
                     if (Math.abs((infoRes.width * that.canvasHeightInPx - that.canvasWidthInPx * infoRes.height) / (infoRes.height * that.canvasHeightInPx)) < 0.01) {
                         that.triggerEvent('imgOK', {
-                            path: filePath
+                            path: filePath,
+                            type
                         });
                     } else {
                         that.startPaint();

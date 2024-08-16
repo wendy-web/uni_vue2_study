@@ -21,6 +21,21 @@
     }
 }
 
+.txt_ov_ell1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.txt_ov_ell2 {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
 // 弹窗
 .dia {
     position: fixed;

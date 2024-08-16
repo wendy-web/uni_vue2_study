@@ -8,13 +8,16 @@ export default function({
     coupon_end_time,
     goods_name,
     after_pay,
-    painterHeight
+    painterHeight,
+    sale_num,
+    lx_type
 }) {
     let goodsTitle = after_pay ? `                  ${goods_name}` : goods_name;
     const createObj = {
         width: "640px",
         height: `${painterHeight}px`, // 1080px
         background: "#fff",
+        type: 'faceValueImg',
         views: [{
                 "type": "image",
                 "url": productImg,
@@ -85,11 +88,11 @@ export default function({
             },
             {
                 "type": "text",
-                "text": price,
+                "text": `${price}`,
                 "css": {
                     "color": "#EF2B20",
                     "background": "rgba(0,0,0,0)",
-                    "width": "116.00003051757814px",
+                    "width": `${price.toString().length * 24}px`,
                     "height": "45.199999999999996px",
                     "top": "664px",
                     "left": "88px",
@@ -118,7 +121,7 @@ export default function({
                     "width": "106.00003051757814px",
                     "height": "22.599999999999998px",
                     "top": "678px",
-                    "left": "190px",
+                    "left": `${(price.toString().length * 24 ) + 92 }px`,
                     "rotate": "0",
                     "borderRadius": "",
                     "borderWidth": "",
@@ -179,7 +182,7 @@ export default function({
             },
             {
                 "type": "text",
-                "text": face_value,
+                "text": `${face_value}`,
                 "css": {
                     "color": "#fff",
                     "background": "rgba(0,0,0,0)",
@@ -338,6 +341,25 @@ export default function({
                 "borderColor": "#000000",
                 "shadow": "",
                 "mode": "scaleToFill"
+            }
+        })
+    }
+    // 销量的呈现
+    if (sale_num) {
+        createObj.views.push({
+            "type": "text",
+            "text": `${(lx_type == 2) ? '月售' : '已售'}${sale_num}`,
+            "css": {
+                "color": "#aaa",
+                "width": "180px",
+                "height": "22.599999999999998px",
+                "top": "678px",
+                "left": '440px',
+                "fontSize": "24px",
+                "fontWeight": "normal",
+                "maxLines": "1",
+                "lineHeight": "22.200000000000003px",
+                "textAlign": "right"
             }
         })
     }

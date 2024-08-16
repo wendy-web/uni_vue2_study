@@ -1,6 +1,6 @@
 <template>
 <view class="spread_details">
-  <view class="icon_box" @click="$back"
+  <view class="icon_box" @click="$leftBack"
     :style="{ height: navBarHeight + 'px', top: topHeight + 'px' }"
   >
     <image class="icon_box-icon" mode="aspectFill"
@@ -84,7 +84,23 @@
   <showImg-dia
     :isShow="isShowImg"
     @close="isShowImg = false"
-></showImg-dia>
+  ></showImg-dia>
+  <!-- 生成推广海报 -->
+  <painter
+    customStyle="width:640px;position:fixed;bottom: -10000px;z-index :-10000"
+    @imgOK="onImgOk"
+    @imgErr="imgErr"
+    :palette="template"
+    :dirty="true"
+  />
+  <!-- 生成分享图 -->
+  <painter
+    customStyle="width:904px;height:732px;position:fixed;bottom: -10000px;z-index :-10000"
+    @imgOK="onImgOk"
+    @imgErr="imgErr"
+    :palette="templateShareAppUrl"
+    :dirty="true"
+  />
 </view>
 </template>
 <script>
@@ -94,13 +110,15 @@ import { toggleCollect as pddToggleCollect } from '@/api/modules/pddShop.js';
 import showImgDia from '@/components/showImgDia.vue';
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar";
 import { mapGetters } from "vuex";
+import palette from './palette.js';
+import paletteFaceValue from './paletteFaceValue.js';
+import paletteShare from './paletteShare.js';
 import productCont from "./productCont.vue";
 
 export default {
   components: {
     productCont,
     showImgDia
-
   },
   data() {
     return {
@@ -117,20 +135,42 @@ export default {
       skuId: '',
       rebate: '',
       lx_type: '',
-      isShowImg: false
+      isShowImg: false,
+      is_popover: 0,
+      optionsParams: {},
+      template: null,
+      templateShareAppUrl: null,
+      shareImgUrl: '',
+      showShareImage: '',
+      painterHeight: 1080
     };
   },
+  watch: {
+  },
   computed: {
-    ...mapGetters(['vipObject']),
+    ...mapGetters(['vipObject', 'isAutoLogin', 'userInfo']),
+  },
+  onShareAppMessage() {
+    const { queryId, lx_type, positionId, rebate, is_popover } = this.optionsParams;
+    let title = `${this.userInfo.nick_name}邀请你卖货，每件赚${this.config.rebateMoney}元`;
+    let share = {
+      title,
+      imageUrl: this.shareImgUrl,
+      path: `pages/cardModule/spreadDetail/index?lx_type=${lx_type}&queryId=${queryId}&positionId=${positionId}&rebate=${rebate}&is_popover=${is_popover}`
+    }
+    return share;
   },
   onLoad(options) {
-    const params = {
+    if(options.is_popover) this.is_popover = options.is_popover;
+    const optionsParams = {
       queryId: options.queryId,
       lx_type: options.lx_type,
       positionId: options.positionId || 0,
-      rebate: options.rebate || 0
+      rebate: options.rebate || 0,
+      is_popover: options.is_popover || 0
     }
-    this.initGoodsDetails(params);
+    this.optionsParams = optionsParams;
+    this.initGoodsDetails(optionsParams);
     getNavbarData().then((res) => {
       let { navBarHeight, statusBarHeight } = res;
       this.topHeight = statusBarHeight;
@@ -142,9 +182,26 @@ export default {
     this.balanceValue = this.vipObject.balance;
   },
   methods: {
+    onImgOk (event) {
+      const { path, type } = event.mp.detail || event.target;
+      if(type == 'shareImg') return this.shareImgUrl = path;
+      this.showShareImage = path;
+      uni.hideLoading();
+      this.showShareImg();
+    },
+    imgErr(err){
+      uni.hideLoading();
+    },
     async initGoodsDetails(params) {
       const res = await goodsDetails(params);
-      if(res.code != 1 || !res.data) return this.$toast(res.msg);
+      if(res.code != 1 || !res.data) {
+        return this.$showModal({
+          title: '温馨提示',
+          showCancel: false,
+          content: res.msg,
+          confirm: () => this.$reLaunch(`/pages/card/index`)
+        })
+      }
       let { detail } = res.data;
       this.config = detail;
       if(this.config){
@@ -156,9 +213,61 @@ export default {
         this.goods_sign = goods_sign;
         this.skuId = skuId;
         this.rebate = rebate;
+        this.createShareAppUrl();
       }
     },
+    createShowShareImg() {
+      uni.showLoading({
+        title: '正在生成推广图'
+      });
+      const { banner_image, price, face_value, coupon_start_time, coupon_end_time,
+        goods_name, after_pay, sale_price, code_url, sale_num, lx_type
+      } = this.config;
+      const [ firstImg ] = banner_image;
+      // 生成推广海报
+      if(face_value) {
+        this.painterHeight = 1080;
+        this.template = paletteFaceValue({
+          productImg: firstImg,
+          codeUrl: code_url || '',
+          price,
+          originalPrice: sale_price,
+          face_value,
+          coupon_start_time,
+          coupon_end_time,
+          goods_name,
+          after_pay,
+          painterHeight: this.painterHeight,
+          sale_num,
+          lx_type
+        });
+        return;
+      }
+      this.painterHeight = 950;
+      this.template = palette({
+        productImg: firstImg,
+        codeUrl: code_url || '',
+        price,
+        goods_name,
+        after_pay,
+        painterHeight: this.painterHeight,
+        sale_num,
+        lx_type
+      });
+    },
+    // 生成分享图
+    createShareAppUrl() {
+      const { banner_image, rebateMoney, price} = this.config;
+      const [ firstImg ] = banner_image;
+      this.templateShareAppUrl = paletteShare({
+        discountImg: firstImg,
+        rebateMoney,
+        price
+      });
+    },
     async collectHandle() {
+      if(!this.isAutoLogin) return this.$go('/pages/login/index');
+      if(!this.userInfo.is_team) return this.$reLaunch(`/pages/card/index?optionsParams=${JSON.stringify(this.optionsParams)}`);
       const { skuId, goods_sign, goods_id, lx_type } = this.config;
       let params = { skuId, is_rebate: 1 };
 			let apiCollect = toggleCollect;
@@ -171,7 +280,41 @@ export default {
       if(res.code ==1) this.isCollect = !this.isCollect;
     },
     spreadHandle() {
-      this.$go(`/pages/cardModule/spreadDetail/saveType?goods_sign=${this.goods_sign || 0}&skuId=${this.skuId || 0}&rebate=${this.rebate || 0}`);
+      if(!this.isAutoLogin) return this.$go('/pages/login/index');
+      if(!this.userInfo.is_team) return this.$reLaunch(`/pages/card/index?optionsParams=${JSON.stringify(this.optionsParams)}`);
+
+      if(!this.showShareImage) return this.createShowShareImg();
+      this.showShareImg();
+      return;
+      this.$go(`/pages/cardModule/spreadDetail/saveType?goods_sign=${this.goods_sign || 0}&skuId=${this.skuId || 0}&rebate=${this.rebate || 0}&is_popover=${this.is_popover}`);
+    },
+    // 展示推广图
+    showShareImg() {
+      // 展示推广的海报展示
+      wx.showShareImageMenu({
+        path: this.showShareImage,
+        style: 'v2',
+        complete: async (res) => {
+          let pattern = /fail auth deny/;
+          if (pattern.test(res.errMsg)) {
+            const setWritePhotosResult = await this.$setWritePhotosAlbum();
+            if(setWritePhotosResult) this.saveImgToPhone(this.showShareImage);
+          }
+        }
+      });
+    },
+    async saveImgToPhone(filePath, isDown = 0) {
+      return new Promise(async (resolve, reject) => {
+        let saveRes = {};
+        let saveImage = filePath;
+        if(isDown > 0) {
+          saveRes = await this.$downloadFile(filePath);
+          if (saveRes.statusCode !== 200) return resolve(saveRes);
+        }
+        if(saveRes.tempFilePath) saveImage = saveRes.tempFilePath;
+        const res = await this.$saveImageToPhotosAlbum(saveImage);
+        resolve(res);
+      }).catch((e) => {});
     },
     bannerSwiperChange(event) {
       this.bannerIndex = event.detail.current;
@@ -187,7 +330,7 @@ export default {
           break;
       }
       return dom;
-    },
+    }
   },
 }
 </script>
@@ -380,19 +523,19 @@ page {
   height: 98rpx;
   background: #ef2b20;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   position: relative;
   color: #fff;
   font-weight: bold;
   text-align: center;
-  padding: 0 32rpx;
   line-height: 44rpx;
+  width: 60%;
   .spread_btn-left {
     display: flex;
     align-items: center;
     &::before {
-      content: '赚';
+      content: '每件赚';
       font-size: 32rpx;
       margin-right: 4rpx;
     }
@@ -401,7 +544,6 @@ page {
     width: 2rpx;
     height: 28rpx;
     background: #fff;
-    margin: 0 32rpx;
   }
 }
 .rnl-label {

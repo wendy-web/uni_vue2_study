@@ -5,7 +5,7 @@
         titleAlign="titleRight"
         :fixed="true"
         :overFlow="true"
-        @leftCallBack="$back"
+        @leftCallBack="$leftBack"
     >
     </xh-navbar>
     <image class="login_bg" mode="widthFix" src="https://file.y1b.cn/store/1-0/231116/6555c62663786.png"></image>
@@ -95,12 +95,12 @@ export default {
             if(this.isNeedAuthorization) return this.$refs.privacy.LoginShowPopUp();
             if(!this.isAgreement) return this.isShowConfirmDia = true;
             this.setAutoLogin(true);
-            this.$back();
+            this.$leftBack();
         },
         confirmExitLoginHandle() {
             this.isShowConfirmDia = false;
             this.setAutoLogin(true);
-            this.$back();
+            this.$leftBack();
         }
     },
 };

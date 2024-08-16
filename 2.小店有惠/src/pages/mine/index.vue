@@ -169,15 +169,16 @@ import {
   material,
 } from "@/api/modules/jsShop.js";
 import { expireOrder, orderPay } from "@/api/modules/order.js";
+import { goodsRecommend, goodsSearch } from '@/api/modules/pddShop.js';
 import configurationFun from '@/components/configurationDia/configurationFun.js';
 import configurationDia from '@/components/configurationDia/index.vue';
 import goodList from "@/components/goodList.vue";
+import helpConfirmDia from '@/components/helpConfirmDia.vue';
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { formatAmount } from "@/utils/index.js";
 import { mapActions, mapGetters } from "vuex";
 import config from "./config.js";
-import helpConfirmDia from './helpConfirmDia.vue';
 export default {
     name: "mine",
     mixins: [MescrollMixin, configurationFun], // 使用mixin
@@ -270,8 +271,7 @@ export default {
           return this.mescroll.endSuccess(0);
         this.groupRecommendData = recRes.data;
       }
-      const { id, cid, cid2, cid3, eliteId, groupId, type } =
-        this.groupRecommendData;
+      const { id, cid, cid2, cid3, eliteId, groupId, type, positionId, lx_type } = this.groupRecommendData;
       let pageNum = this.pageNum;
       // const pageNum = page.num;
       let params = {
@@ -283,16 +283,26 @@ export default {
       // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
       switch (type) {
         case 1:
-          queryApi = material;
-          params.eliteId = eliteId;
-          params.groupId = groupId;
-          params.size = 10;
+          if (lx_type == 3) {
+            queryApi = goodsRecommend;
+            params.positionId = positionId;
+          } else {
+            queryApi = material;
+            params.eliteId = eliteId;
+            params.groupId = groupId;
+            params.size = 10;
+          }
           break;
         case 2:
-          queryApi = jingfen;
-          params.eliteId = eliteId;
-          params.groupId = groupId;
-          params.size = 20;
+          if (lx_type == 3) {
+            queryApi = goodsSearch;
+            params.positionId = positionId;
+          } else {
+            queryApi = jingfen;
+            params.eliteId = eliteId;
+            params.groupId = groupId;
+            params.size = 20;
+          }
           break;
         case 3:
           queryApi = goodsQuery;
@@ -363,20 +373,24 @@ export default {
       if(!this.isAutoLogin) return this.$go('/pages/login/index');
       const msgRes = await msgTemplate();
       if(msgRes.code == 1 && msgRes.data) {
-        const { settle, events } = msgRes.data;
+        const { settle, events, withdraw } = msgRes.data;
         let tmplIds = [];
         (!this.vipObject.is_send && settle) && tmplIds.push(settle);
         (!this.vipObject.is_events && events) && tmplIds.push(events);
+        (!this.vipObject.is_withdraw && withdraw) && tmplIds.push(withdraw);
         tmplIds = tmplIds.filter(item => !!item);
         const subRes = await this.$subscribeMessageHandle(tmplIds);
         const settleResult = subRes[settle];
         const eventsResult = subRes[events];
+        const withdrawResult = subRes[withdraw];
         const params = {
           is_send: 0,
           is_events: 0,
+          is_withdraw: 0
         }
         if(settleResult == 'accept') params.is_send = 1;
         if(eventsResult == 'accept') params.is_events = 1;
+        if(withdrawResult == 'accept') params.is_withdraw = 1;
         isSend(params);
       }
       this.$go("/pages/cardModule/cardEarnings/index");
@@ -441,10 +455,8 @@ export default {
         signType: obj.signType,
         timeStamp: obj.timeStamp,
         success: (res) => {
-          //跳转支付详情
-          uni.navigateTo({
-            url: "/pages/payStatus/index?order_id=" + this.pay_order_id,
-          });
+          // 跳转支付详情
+          this.$go(`/pages/payStatus/index?order_id=${this.pay_order_id}`);
         },
         fail: (err) => {
           if (err.errMsg == "requestPayment:fail cancel") {
@@ -824,13 +836,16 @@ export default {
         font-size: 28rpx;
         position: relative;
         display: inline-block;
+        // display: flex;
+        // align-items: center;
         .ib_title-help{
-          position: absolute;
-          top: 50%;
-          right: -40rpx;
-          transform: translateY(-50%);
+          // position: absolute;
+          // top: 50%;
+          // right: -40rpx;
+          // transform: translateY(-50%);
           width: 30rpx;
           height: 30rpx;
+          margin: 0 16rpx -4rpx;
         }
       }
 

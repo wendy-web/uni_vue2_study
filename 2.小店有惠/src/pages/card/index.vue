@@ -16,18 +16,19 @@
         :title="showNavTitle"
         :titleAlign="isTeam ? 'titleRight' : 'titleCenter'"
         :overFlow="!isTeam"
-        :paddingBottomHeight="paddingBottomHeight"
     >
     <block v-if="isTeam">
-        <view slot="title" class="nav_title fl_start">
+        <view slot="title" class="nav_title fl_start" :style="{ '--opacity': (searchTop - 3) * (1/43) + '' }">
             <image class="img-avatar" mode="aspectFill" lazy-load
                 :src="userInfo.avatar_url || default_url"></image>
             <text class="nick_name">{{ userInfo.nick_name || "" }}</text>
             <!-- 团长角标 -->
             <image class="icon-captain" src="/static/images/mine/icon_captain.png" mode="aspectFit" lazy-load
-                v-if="userInfo.is_team"></image>
+                v-if="isTeam"></image>
         </view>
-        <view slot="title_cont" class="search_box fl_bet">
+        <view slot="title_cont" class="search_box fl_bet"
+            :style="{ top: searchTop +'px', width: searchWidth + 'px', left: searchLeft + 'px'}"
+        >
             <view class="nav_search fl_center" @click="toSearchHandle">
                 <image class="search_icon" mode="aspectFit" src="@/static/images/home/search_icon.png"></image>
                 <view class="search_txt">搜你想推广的商品 </view>
@@ -37,7 +38,7 @@
     </block>
     </xhNavbar>
     <!-- 非团长信息 -->
-    <view class="content_card" v-if="!userInfo.is_team">
+    <view class="content_card" v-if="!isTeam">
         <view class="entry_btn-box heartBeat">
             <view class="entry_btn" @click="applyRequest">
                 {{ !isApplyStatus ? '立即报名成为团长' : '审核中' }}
@@ -51,7 +52,7 @@
                 class="btn_phone" block
                 color="transparent"
                 custom-style="height:134rpx;opacity:0"
-                v-if="!isApplyStatus&&isAgreement"
+                v-if="!isApplyStatus&&isAgreement&&!userInfo.mobile"
             ></van-button>
         </view>
         <view class="agree_text fl_center">
@@ -65,10 +66,8 @@
         <!-- 关于团长 -->
         <view class="about">
             <view class="about_title">
-                <image
-                    class="about_title-bg"
+                <image class="about_title-bg" mode="aspectFill"
                     src="https://file.y1b.cn/store/1-0/24131/65ba37b77b9ad.png"
-                    mode="aspectFill"
                 ></image>
                 <text>关于团长</text>
             </view>
@@ -83,11 +82,8 @@
             <view class="cont_title">成为团长的{{reasonList.length}}大理由</view>
             <view class="about_reason">
                 <view class="about_reason-item" v-for="item in reasonList" :key="item.id">
-                    <image
-                        class="about_reason-icon"
-                        :src="item.icon"
-                        mode="aspectFill"
-                    ></image>
+                    <image class="about_reason-icon" mode="aspectFill"
+                        :src="item.icon"></image>
                     <text>{{item.text}}</text>
                 </view>
             </view>
@@ -98,9 +94,7 @@
             <view class="cont_txtList">
                 <view class="cont_txtList-item"
                     v-for="(item, index) in textList[1].content" :key="index"
-                >
-                {{item}}
-                </view>
+                >{{item}}</view>
             </view>
             <view class="leader_title">
                 <text class="headline_text">想赚的更多，你能做</text>
@@ -127,27 +121,30 @@
         </view>
     </view>
     <!-- 团长 - 商品列表 -->
-    <view class="content_team"  :style="{ marginTop: paddingBottomHeight + 'px' }" v-else>
-        <view class="income-box" @click="goToCardEarnings">
-            <view class="ib-head">
-            <view class="ib-title">
-                累计收益(元)
-            <!-- <image class="ib_title-help" src="https://file.y1b.cn/store/1-0/24131/65ba37f81a4f3.png" mode="aspectFit"></image> -->
-            </view>
-            <view class="ib-content">
-                <view v-html="formatPrice(vipObject.total_profit || 0)"></view>
-                <view class="ib-tips" v-if="vipObject.read">你有{{vipObject.read}}笔收益到账</view>
-            </view>
-            </view>
-            <view class="ib-bottom">
-            <view>今日预估：¥{{ vipObject.day_profit || 0 }}</view>
-            <view class="withdrawn">已提现：¥{{vipObject.tx_amount || 0}}</view>
+    <view class="content_team" :style="{ marginTop: paddingBottomHeight + 'px' }" v-else>
+        <view class="income_box">
+            <view class="income_cont" id="incomeDomBox" @click="goToCardEarnings">
+                <view class="ib-head">
+                    <view class="ib-title">累计收益(元)</view>
+                    <view class="ib-content">
+                        <view v-html="formatPrice(vipObject.total_profit || 0)"></view>
+                        <view class="ib-tips" v-if="vipObject.read">你有{{vipObject.read}}笔收益到账</view>
+                    </view>
+                    </view>
+                    <view class="ib-bottom">
+                    <view>今日预估：¥{{ vipObject.day_profit || 0 }}</view>
+                    <view class="withdrawn">已提现：¥{{vipObject.tx_amount || 0}}</view>
+                </view>
             </view>
         </view>
-        <view class="list_box">
+        <!-- sticky吸顶悬浮的菜单, 父元素必须是 mescroll -->
+        <view class="sticky-tabs" :style="{ top: stickyTop +'px'}" v-if="tabs.length > 1">
+            <tabs v-model="tabIndex" :height="tabsHeight" :tabs="tabs" @change="tabChange"></tabs>
+        </view>
+        <view class="list_box" :style="{ minHeight: isShowMinHight && swiperHeight }">
             <view class="list_item fl_center"
-                v-for="(item, index) in tabGoodList" :key="index"
-                @click="couponDetailHandle(item)"
+                v-for="(item, index) in currentShowList" :key="index"
+                @click="couponDetailHandle(item, index)"
             >
             <image :src="item.imgs[0] || item.picList[0] || item.image" mode="scaleToFill" class="item_left"></image>
             <view class="item_right fl_col_sp_bt">
@@ -161,7 +158,7 @@
                     <view class="item_lab-box">
                         <view class="face_value" v-if="item.face_value">{{item.face_value}}元券</view>
                         <view class="item_lab" v-if="(item.lx_type == 2) && item.inOrderCount30Days">
-                        月售{{item.inOrderCount30Days}}
+                            月售{{item.inOrderCount30Days}}
                         </view>
                         <view class="item_lab" v-if="(item.lx_type == 3) && item.sales_tip">
                             已售{{item.sales_tip}}
@@ -173,7 +170,7 @@
                         <view v-html="formatItemPrice(item.price, 1)"></view>
                         <view class="item_price-lab" v-if="item.face_value">¥{{item.sale_price}}</view>
                     </view>
-                    <view class="item_btn fl_center" @click.stop="spreadHandle(item)">
+                    <view class="item_btn fl_center" @click.stop="spreadHandle(item, index)">
                         <view v-html="formatItemPrice(item.rebateMoney, 2)"></view>
                     </view>
                 </view>
@@ -228,6 +225,8 @@ import configurationFun from '@/components/configurationDia/configurationFun.js'
 import configurationDia from '@/components/configurationDia/index.vue';
 import reportSuccessDia from '@/components/reportSuccessDia.vue';
 import showImgDia from '@/components/showImgDia.vue';
+import tabs from "@/components/tabs/index.vue";
+import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getBaseUrl } from "@/utils/auth.js";
 import { lxTypeStatusCheckout } from "@/utils/goDetailCommonFun.js";
@@ -238,7 +237,8 @@ export default {
     components: {
         reportSuccessDia,
         showImgDia,
-        configurationDia
+        configurationDia,
+        tabs
     },
     data() {
         return {
@@ -249,11 +249,12 @@ export default {
                 auto: false, // 不自动加载
                 page: {
                     num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
-                    size: 1
+                    size: 2
                 }
             },
-            tabHeightValue: 0,
             currIndex: 0,
+            stickyTop: 0,
+            tabsHeight: 88,
             reasonList:[
                 {
                     id: 0,
@@ -285,8 +286,13 @@ export default {
             tabIndex: 0,
             tabGoodList: [],
             goodPageNum: 1,
-            groupId_index: 0,
-            isAgreement: false
+            isAgreement: false,
+            optionsParams: null,
+            scroll_top: 0,
+            fixationValue: uni.upx2px(96),
+            domBoxResHeight: 0,
+            tabHeightValue: 0, // 底部导航栏的高度
+            isShowMinHight: true,
         }
     },
     watch: {
@@ -294,6 +300,9 @@ export default {
             if(newValue == 1 && !this.userInfo.is_team) {
                 this.setTimeApplyInfo();
             }
+        },
+        isAutoLogin(newValue, oldValue) {
+            if(newValue) this.downCallback();
         }
     },
     computed: {
@@ -301,14 +310,91 @@ export default {
         showNavTitle() {
             return this.userInfo.is_team ? '' : '报名团长';
         },
+        topBoxHeight() {
+            return uni.upx2px(96) + this.domBoxResHeight;
+        },
+        swiperHeight() {
+            let minHeight = (uni.getSystemInfoSync().windowHeight - uni.upx2px(64) - this.tabHeightValue - this.stickyTop) + 'px';
+            if(!this.isShowMinHight)  minHeight = '0px';
+            return minHeight;
+        },
+        // 单个列表对应的分组请求
+        shopGroup() {
+            let shopGroup = this.tabs[this.tabIndex]?.shopGroup;
+            shopGroup && (shopGroup = shopGroup.map((item) => {
+                return {
+                    ...item,
+                    pageNum: 1,
+                    groupId_index: 0
+                };
+            }));
+            return shopGroup;
+        },
         paddingBottomHeight() {
-            return this.isTeam ? uni.upx2px(112) : 0;
+            return this.userInfo.is_team ? uni.upx2px(96) : 0;
         },
         isTeam() {
             return this.userInfo.is_team;
         },
+        currentShowList() {
+            return this.tabs[this.tabIndex]?.goods;
+        },
+        searchTop() {
+            let initSearchTop = uni.upx2px(92);
+            let differentValue = uni.upx2px(92) - uni.upx2px(6);
+            let scrollValue = (differentValue / this.fixationValue) * this.scroll_top;
+            const searchTopValue = uni.upx2px(92) - scrollValue;
+            if(searchTopValue < 0) {
+                initSearchTop = uni.upx2px(6);
+            } else if(searchTopValue > uni.upx2px(92)) {
+                initSearchTop = uni.upx2px(92);
+            } else {
+                initSearchTop = searchTopValue
+            }
+            return initSearchTop;
+        },
+        searchWidth() {
+            const titleBoxWidth = uni.upx2px(502);
+            let differentValue = uni.upx2px(702) - uni.upx2px(502);
+            let scrollValue = (differentValue / this.fixationValue) * this.scroll_top;
+            const searchWidthValue = uni.upx2px(702) - scrollValue;
+            let value = 0;
+            if(searchWidthValue < titleBoxWidth) {
+                value = titleBoxWidth
+            } else if(searchWidthValue > uni.upx2px(702)) {
+                value = uni.upx2px(702)
+            } else {
+                value = searchWidthValue
+            }
+            return value;
+        },
+        searchLeft() {
+            const titleBoxLeft = uni.upx2px(24);
+            let differentValue = uni.upx2px(24  ) - uni.upx2px(24);
+            let scrollValue = (differentValue / this.fixationValue) * this.scroll_top;
+            const searchLeftValue =  uni.upx2px(24) + scrollValue;
+            let value = 0;
+            if(searchLeftValue > titleBoxLeft) {
+                value = titleBoxLeft;
+            } else if(searchLeftValue < uni.upx2px(24)) {
+                value = uni.upx2px(24);
+            } else {
+                value = searchLeftValue;
+            }
+            return value;
+        }
     },
-    async onLoad() {
+    async onLoad(options) {
+        if(options.optionsParams) {
+            this.optionsParams = JSON.parse(options.optionsParams);
+        }
+        setTimeout(async () => {
+            const domBoxRes = await this.warpRectDom('incomeDomBox');
+            if(domBoxRes) this.domBoxResHeight = domBoxRes.height + uni.upx2px(42);
+        }, 2000);
+        const res = await getNavbarData();
+        let { navBarHeight, statusBarHeight } = res;
+        this.stickyTop = navBarHeight + statusBarHeight;
     },
     async onShow() {
         const res = await inviteXq();
@@ -318,11 +404,11 @@ export default {
 
     },
     // 页面的滚动事件
-    onPageScroll(e) {
-      if (Math.ceil(e.scrollTop) > 0) {
-        return this.showTitleBg = true;
-      }
-      this.showTitleBg = false;
+    onPageScroll(event) {
+        const scroll_top = Math.ceil(event.scrollTop);
+        this.scroll_top = scroll_top;
+        this.showTitleBg = (scroll_top > 0);
+
     },
     methods: {
         ...mapActions({
@@ -334,15 +420,44 @@ export default {
             setDiaList: "user/setDiaList",
             delCurrentDiaList: "user/delCurrentDiaList",
         }),
+        warpRectDom(idName) {
+			return new Promise(resolve => {
+				setTimeout(() => { // 延时确保dom已渲染, 不使用$nextclick
+					let query = uni.createSelectorQuery();
+					// #ifndef MP-ALIPAY
+					query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
+						// #endif
+					query.select('#'+idName).boundingClientRect(data => {
+						resolve(data)
+					}).exec();
+				}, 20)
+			})
+		},
         changeHandle(event) {
             this.isAgreement = event.detail.value;
         },
+        // 切换菜单
+        tabChange (index, item) {
+            this.isShowMinHight = true;
+            this.tabIndex = index;
+            // 当前菜单的数据
+            let curTab = this.tabs[index];
+            curTab.pageNum = 1;
+            curTab.groupId_index = 0;
+            curTab.isRequestShopGroup = false;
+            curTab.shopGroup_index = -1;
+            // 没有初始化,则初始化
+            this.mescroll.resetUpScroll();
+            this.$nextTick(() => {
+                this.mescroll.scrollTo(this.topBoxHeight, 0); // 恢复滚动条的位置
+            });
+		},
         downCallback(page) {
             this.tabIndex = 0;
-            this.goodPageNum = 1;
             this.tabs = [];
             this.getUserInfo();
             // if(!this.isAutoLogin) return;
+            if(!this.isAutoLogin) return; // 未登录禁止加载使用
             if(!this.isTeam) {
                 this.applyInfoRequest();
                 this.wordConfigInit();
@@ -357,41 +472,112 @@ export default {
                 this.tabs = res.data.map((item) => {
                     return {
                         ...item,
-                        goods: []
+                        goods: null,
+                        pageNum: 1,
+                        shopGroup_index: -1,
+                        isRequestShopGroup: false
                     };
                 });
             }
-            if(!this.tabs.length) return this.mescroll.endSuccess(0);
-            const itemTab = this.tabs[this.tabIndex];
-            if([2, 3].includes(Number(itemTab.lx_type))) return this.requestRem(page);
+            if(!this.tabs.length) {
+                this.isShowMinHight = false;
+                return this.mescroll.endSuccess(0);
+            };
+            const currentTabItem = this.tabs[this.tabIndex];
+            let { id, pageNum, goods, shopGroup_index, shopGroup, isRequestShopGroup } = currentTabItem;
+            if(isRequestShopGroup) return this.requestShopGroup(page);
+            if([2, 3].includes(Number(currentTabItem.lx_type))) return this.requestRem(page);
             const params = {
-                page: this.goodPageNum,
+                page: pageNum,
                 size: 10,
-                id: this.tabs[this.tabIndex].id,
-                is_rebate: 1
+                id,
+                is_rebate: 1,
+                groupId_index: 0
             }
-            goodsList(params).then((res) => {
-                const {list, total_count} = res.data;
-                if(page.num == 1) this.tabGoodList = []; // 如果是第一页需手动制空列表
-                this.tabGoodList = this.tabGoodList.concat(list);
-                // 更改商品列表的下拉触底的加载
-                this.mescroll.endBySize(list.length, total_count);
-                const isNextPage = (this.goodPageNum * params.size) < total_count;
-                this.goodPageNum += 1;
-                // 没有下一页
-                if(!isNextPage && (this.tabIndex < this.tabs.length - 1)) {
-                    this.tabIndex += 1;
-                    this.goodPageNum = 1;
+            const res = await goodsList(params).catch(() => this.mescroll.endErr());
+            if(page.num == 1 || pageNum == 1) goods = [];
+            if(res.code != 1 || !res.data) {
+                this.mescroll.endSuccess(goods?.length || 0);
+                if(shopGroup.length) {
+                    this.tabs[this.tabIndex].shopGroup_index = 0;
+                    this.tabs[this.tabIndex].isRequestShopGroup = true;
+                    // this.requestShopGroup(page);
                     this.mescroll.triggerUpScroll();
+                    return;
                 }
-                if(isNextPage && !list.length) {
-                    this.mescroll.triggerUpScroll();
-                }
-            }).catch(() =>  this.mescroll.endErr());
+                this.isShowMinHight = false;
+                return;
+            };
+            const { list, total_count } = res.data;
+            const isNextPage = (pageNum * params.size) < total_count;
+            currentTabItem.goods = goods.concat(list);
+            // pageNum += 1;
+            currentTabItem.pageNum = pageNum + 1;
+            this.tabs[this.tabIndex] =  currentTabItem;
+            // 更改商品列表的下拉触底的加载
+            this.mescroll.endSuccess(list.length, isNextPage);
+            // 请
+            if(!isNextPage && shopGroup.length) {
+                this.tabs[this.tabIndex].shopGroup_index = 0;
+                this.tabs[this.tabIndex].isRequestShopGroup = true;
+                // this.requestShopGroup(page);
+                this.mescroll.triggerUpScroll();
+                return;
+            }
+            if(isNextPage && !list.length) {
+                this.mescroll.triggerUpScroll();
+            }
         },
-        async requestRem(page) {
-            const curTab = this.tabs[this.tabIndex];
-            const {
+        async requestShopGroup(page) {
+            const currentTabItem = this.tabs[this.tabIndex];
+            let { shopGroup_index, goods  } = currentTabItem;
+            if(shopGroup_index > this.shopGroup.length - 1) return this.mescroll.endSuccess(0);
+            const currentShopGroup = this.shopGroup[shopGroup_index];
+            let {
+                groupId,
+                type,
+                pageNum,
+                groupId_index
+            } = currentShopGroup;
+            const { params, queryApi } = this.getRequestCont(currentShopGroup);
+            const res = await queryApi({ ...params, level: 1 }).catch(() => this.mescroll.endErr());
+            if(res.code != 1 || !res.data) {
+                this.mescroll.endSuccess(goods?.length || 0);
+                shopGroup_index += 1;
+                currentTabItem.shopGroup_index = shopGroup_index;
+                this.mescroll.triggerUpScroll();
+                this.isShowMinHight = false;
+                return;
+            };
+            const { list, total_count } = res.data;
+            if(page.num == 1) goods = [];
+            // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+            let isNextPage = (pageNum * params.size) < total_count;
+            pageNum += 1;
+            currentTabItem.goods = goods.concat(list); // 追加新数据
+            if(!isNextPage && type == 4 && groupId_index < (groupId.length - 1)) {
+                // 无下一页
+                groupId_index += 1;
+                this.mescroll.endSuccess(total_count, true);
+                pageNum = 1;
+            } else {
+                this.mescroll.endSuccess(list.length || total_count, isNextPage);
+            }
+            // this.shopGroup.pageNum = pageNum;
+            this.shopGroup[shopGroup_index].pageNum = pageNum;
+            this.shopGroup.groupId_index = groupId_index;
+            this.tabs[this.tabIndex] = currentTabItem;
+            if(list.length && isNextPage) return;
+            // 没有下一页 - 加载列表的另一项
+            if(!isNextPage) {
+                shopGroup_index += 1;
+                currentTabItem.shopGroup_index = shopGroup_index;
+            }
+            this.mescroll.triggerUpScroll();
+
+        },
+        getRequestCont(currentTabItem) {
+            let {
                 id,
                 cid,
                 cid2,
@@ -400,12 +586,14 @@ export default {
                 groupId,
                 type,
                 positionId,
-                lx_type
-            } = curTab;
+                lx_type,
+                pageNum,
+                groupId_index
+            } = currentTabItem;
             let params = {
                 id,
                 positionId,
-                page: this.goodPageNum,
+                page: pageNum,
                 size: 10,
                 is_rebate: 1
             }
@@ -444,48 +632,86 @@ export default {
                 case 4:
                     queryApi = jingfen;
                     params.eliteId = eliteId;
-                    params.groupId = groupId[this.groupId_index];
+                    params.groupId = groupId[groupId_index];
                     params.size = 20;
                     break;
             };
-            queryApi(params).then(res=>{
-                const { list, total_count } = res.data;
-                if( page.num == 1 ) this.tabGoodList = [];
-                // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-                let isNextPage = (this.goodPageNum * params.size) < total_count;
-                this.goodPageNum += 1;
-                this.tabGoodList = this.tabGoodList.concat(list); // 追加新数据
-                if(!isNextPage && type == 4 && this.groupId_index < (groupId.length - 1)) {
-                    // 无下一页
-                    this.groupId_index += 1;
-                    this.mescroll.endSuccess(total_count, true);
-                    this.goodPageNum = 1;
-                } else {
-                    this.mescroll.endSuccess(list.length || total_count, isNextPage);
-                }
-                if((list.length == 0) && isNextPage){
+            return {
+                queryApi,
+                params
+            }
+        },
+        async requestRem(page) {
+            const currentTabItem = this.tabs[this.tabIndex];
+            let {
+                groupId,
+                type,
+                pageNum,
+                goods,
+                groupId_index,
+                shopGroup_index,
+                shopGroup
+            } = currentTabItem;
+            // 返回请求的参数
+            const { params, queryApi } = this.getRequestCont(currentTabItem);
+            const res = await queryApi(params).catch(() => this.mescroll.endErr());
+            // this.isShowMinHight = false;
+            // this.mescroll.endSuccess(goods?.length || 0);
+            // return;
+            if(res.code != 1 || !res.data) {
+                this.mescroll.endSuccess(goods?.length || 0);
+                if(shopGroup.length) {
+                    this.tabs[this.tabIndex].shopGroup_index = 0;
+                    this.tabs[this.tabIndex].isRequestShopGroup = true;
+                    // this.requestShopGroup(page);
                     this.mescroll.triggerUpScroll();
+                    return;
                 }
-                if(!isNextPage && (this.tabIndex < this.tabs.length - 1)) {
-                    this.tabIndex += 1;
-                    this.goodPageNum = 1;
-                    this.groupId_index = 0;
-                    this.mescroll.triggerUpScroll();
-                }
-            }).catch(() => this.mescroll.endErr());
+                this.isShowMinHight = false;
+                return;
+            };
+            const { list, total_count } = res.data;
+            if(page.num == 1 || pageNum == 1) goods = [];
+            // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+            let isNextPage = (pageNum * params.size) < total_count;
+            pageNum += 1;
+            currentTabItem.goods = goods.concat(list); // 追加新数据
+            if(!isNextPage && type == 4 && groupId_index < (groupId.length - 1)) {
+                // 无下一页
+                groupId_index += 1;
+                this.mescroll.endSuccess(total_count, true);
+                pageNum = 1;
+            } else if(!isNextPage && shopGroup.length) {
+                this.tabs[this.tabIndex].shopGroup_index = 0;
+                this.tabs[this.tabIndex].isRequestShopGroup = true;
+                // this.requestShopGroup(page);
+                this.mescroll.endSuccess(total_count, true);
+                this.mescroll.triggerUpScroll();
+            } else {
+                this.mescroll.endSuccess(list.length || total_count, isNextPage);
+            }
+            currentTabItem.pageNum = pageNum;
+            currentTabItem.groupId_index = groupId_index;
+            this.tabs[this.tabIndex] = currentTabItem;
+            if(list.length && isNextPage) return;
+            if(!isNextPage) {
+                this.mescroll.triggerUpScroll();
+            }
 		},
-        async couponDetailHandle(item) {
+        async couponDetailHandle(item, index) {
             const res = await lxTypeStatusCheckout(item);
-            if (res.code != 1) return;
+            if (res.code != 1) return this.tabGoodList.splice(index, 1);
             const { lx_type, goods_sign, skuId, positionId, rebate } = item;
-
             this.$go(`/pages/cardModule/spreadDetail/index?lx_type=${lx_type}&goods_sign=${goods_sign || 0}&skuId=${skuId ||0}&queryId=${goods_sign || skuId}&positionId=${positionId}&rebate=${rebate}`)
         },
         async spreadHandle(item) {
             const res = await lxTypeStatusCheckout(item);
-            if (res.code != 1) return;
-            const {goods_sign, rebate, skuId } = item;
-            this.$go(`/pages/cardModule/spreadDetail/saveType?goods_sign=${goods_sign || 0}&skuId=${skuId || 0}&rebate=${rebate}`);
+            if (res.code != 1) return this.tabGoodList.splice(index, 1);
+            const { goods_sign, rebate, skuId, inOrderCount30Days, sales_tip, lx_type } = item;
+            const saleNum = (lx_type == 2) ? inOrderCount30Days : sales_tip;
+            let pathUrl =`/pages/cardModule/spreadDetail/saveType?goods_sign=${goods_sign || 0}&skuId=${skuId || 0}&rebate=${rebate}`;
+            saleNum && (pathUrl += `&saleNum=${saleNum}`);
+            this.$go(pathUrl);
         },
         // 进入商品的搜索
         toSearchHandle() {
@@ -557,20 +783,24 @@ export default {
             if(!this.isAutoLogin) return this.$go('/pages/login/index');
             const msgRes = await msgTemplate();
             if(msgRes.code == 1 && msgRes.data) {
-                const { settle, events } = msgRes.data;
+                const { settle, events, withdraw} = msgRes.data;
                 let tmplIds = [];
                 (!this.vipObject.is_send && settle) && tmplIds.push(settle);
                 (!this.vipObject.is_events && events) && tmplIds.push(events);
+                (!this.vipObject.is_withdraw && withdraw) && tmplIds.push(withdraw);
                 tmplIds = tmplIds.filter(item => !!item);
                 const subRes = await this.$subscribeMessageHandle(tmplIds);
                 const settleResult = subRes[settle];
                 const eventsResult = subRes[events];
+                const withdrawResult = subRes[withdraw];
                 const params = {
                     is_send: 0,
                     is_events: 0,
+                    is_withdraw: 0
                 }
                 if(settleResult == 'accept') params.is_send = 1;
                 if(eventsResult == 'accept') params.is_events = 1;
+                if(withdrawResult == 'accept') params.is_withdraw = 1;
                 isSend(params);
             }
             this.$go("/pages/cardModule/cardEarnings/index");
@@ -599,6 +829,7 @@ export default {
             // this.$toast('报名团长需要你授权手机号');
         },
         async applyRequest() {
+            if(!this.isAutoLogin) return this.$go('/pages/login/index');
             if(!this.isAgreement) return this.$toast('请勾选团长服务协议');
             // 已提交审核 - 审核中
             if(this.isApplyStatus) return this.applyInfoRequest(true);
@@ -607,12 +838,16 @@ export default {
             this.isShowSuccess = true;
             this.isApplyStatus = 1;
         },
-        closeDia() {
-            this.getUserInfo();
+        async closeDia() {
             this.getVipObject();
             this.isShowSuccess = false;
             this.isShowResult = false;
+            await this.getUserInfo();
             this.downCallback();
+            if(this.isTeam && this.optionsParams) {
+                const { lx_type, queryId, positionId, rebate, is_popover  } = this.optionsParams;
+                this.$go(`/pages/cardModule/spreadDetail/index?lx_type=${lx_type}&queryId=${queryId}&positionId=${positionId}&rebate=${rebate}&is_popover=${is_popover}`);
+            }
         },
         async closeSuccessHandle(){
             const msgRes = await msgTemplate();
@@ -873,7 +1108,7 @@ $bgColor: #FDF7DA;
     text-align: center;
 }
 .content_team {
-    overflow: hidden;
+    // overflow: hidden;
     // padding-bottom: calc(125rpx + constant(safe-area-inset-bottom));
     // padding-bottom: calc(125rpx + env(safe-area-inset-bottom));
 }
@@ -982,6 +1217,7 @@ $bgColor: #FDF7DA;
     font-weight: 600;
     font-size: 38rpx;
     color: #272e40;
+    opacity: var(--opacity);
     .img-avatar {
         width: 56rpx;
         height: 56rpx;
@@ -1016,7 +1252,7 @@ $bgColor: #FDF7DA;
     position: absolute;
     left: 16rpx;
     right: 16rpx;
-    bottom: -84rpx;
+    // bottom: -84rpx;
     .nav_search{
         flex: 1;
         height: 64rpx;
@@ -1031,8 +1267,10 @@ $bgColor: #FDF7DA;
         color: #333;
     }
 }
-
-.income-box {
+.income_box {
+    border-bottom: 10rpx solid #f5f6fa;
+}
+.income_cont {
     position: relative;
     height: 224rpx;
     box-sizing: border-box;
@@ -1047,7 +1285,7 @@ $bgColor: #FDF7DA;
     color: #fff;
     &::before {
       content: '\3000';
-      background: url("https://file.y1b.cn/store/1-0/24528/6655459fbcf23.png") 0 0 / cover;
+      background: url("https://file.y1b.cn/store/1-0/2479/668cb030d41b1.png") 0 0 / 100% 100%;
       position: absolute;
       left: 0;
       top: 0;
@@ -1090,14 +1328,7 @@ $bgColor: #FDF7DA;
         font-size: 28rpx;
         position: relative;
         display: inline-block;
-        .ib_title-help{
-          position: absolute;
-          top: 50%;
-          right: -40rpx;
-          transform: translateY(-50%);
-          width: 30rpx;
-          height: 30rpx;
-        }
+        opacity: 0.6;
       }
 
       .ib-content {
@@ -1150,9 +1381,9 @@ $bgColor: #FDF7DA;
     }
 }
 .list_box {
-    margin-top: 24rpx;
     border-top: 10rpx solid #f5f6fa;
     padding-bottom: 46rpx;
+    overflow: hidden;
     .list_item {
         width: 100%;
         border-radius: 40rpx;
@@ -1291,5 +1522,12 @@ $bgColor: #FDF7DA;
     bottom: 344rpx;
     left: 0;
     background: url("https://file.y1b.cn/store/1-0/2465/66600817cbed7.png") 0 0 / cover;
+}
+.sticky-tabs{
+    z-index: 99;
+    position: sticky;
+    top: var(--window-top);
+    background-color: #fff;
+    // border-top: 10rpx solid #f5f6fa;
 }
 </style>

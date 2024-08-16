@@ -5,7 +5,7 @@
     title="提现"
     titleColor="#333"
     leftImage="/static/images/back_02.png"
-    @leftCallBack="$back"
+    @leftCallBack="$leftBack"
     titleAlign="titleLeft"
   ></xhNavbar>
     <!-- 可提现 -->

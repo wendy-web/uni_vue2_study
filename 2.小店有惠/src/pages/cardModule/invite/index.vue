@@ -4,7 +4,7 @@
         :fixedNum="true"
         :isFloat="true"
         leftImage="/static/images/back_01.png"
-        @leftCallBack="$back"
+        @leftCallBack="$leftBack"
     ></xhNavbar>
     <view class="cont_top">
         <view :class="['invite_notice', isShowPeopleNum ? 'active' : '']"
