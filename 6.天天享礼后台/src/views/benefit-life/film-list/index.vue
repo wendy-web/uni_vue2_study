@@ -19,16 +19,12 @@
             v-model:value="queryItems.title"
             type="text"
             placeholder="请输影片名称"
-            @keydown.enter="$table?.handleSearch"
             clearable
+            @keydown.enter="$table?.handleSearch"
           />
         </QueryBarItem>
         <QueryBarItem label="上映状态" :label-width="65">
-          <n-select
-            v-model:value="queryItems.status"
-            :options="options"
-            clearable
-          />
+          <n-select v-model:value="queryItems.status" :options="options" clearable />
         </QueryBarItem>
         <QueryBarItem label="上映时间" :label-width="65" :content-width="340">
           <n-date-picker
@@ -47,11 +43,10 @@
 </template>
 
 <script setup>
-import { NButton, NSwitch } from 'naive-ui';
 import { renderIcon } from '@/utils';
-import { useMessage } from 'naive-ui';
-import operatTlc from './operatTlc.vue';
+import { NButton, NSwitch, useMessage } from 'naive-ui';
 import http from './api';
+import operatTlc from './operatTlc.vue';
 defineOptions({ name: 'TimeLimitSeckillList' })
 //表格操作
 const $table = ref(null)
@@ -83,7 +78,7 @@ const columns = [
   {
     title: '影片ID',
     key: 'id',
-    align: 'center'
+    align: 'center',
   },
   {
     title: '活动模式',

@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { useMessage } from 'naive-ui'
+import { useMessage } from 'naive-ui';
 const emit = defineEmits(['search', 'reset', 'export', 'finishImport'])
 defineProps({
   isExport: {

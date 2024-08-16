@@ -23,7 +23,7 @@ import operateGroup from './components/operateGroup.vue';
 import MenuCollapse from './components/MenuCollapse.vue';
 import ThemeMode from './components/ThemeMode.vue';
 import UserAvatar from './components/UserAvatar.vue';
-//优惠券操作
+// 优惠券操作
 const operateGroupRef = ref(null)
 const messageIconRef = ref(null)
 function openMsgHandle() {

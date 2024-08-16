@@ -31,20 +31,20 @@
             @keydown.enter="$table?.handleSearch"
           />
         </QueryBarItem>
-        <QueryBarItem v-if="queryItems.d_type === 1" label="商品上架状态" :label-width="100">
-          <n-select v-model:value="queryItems.goods_ls_status" :options="options" />
-        </QueryBarItem>
-        <QueryBarItem v-if="queryItems.d_type === 1" label="商品启用状态" :label-width="100">
-          <n-select v-model:value="queryItems.goods_status" :options="lsOptions" />
-        </QueryBarItem>
         <QueryBarItem label="状态" :label-width="40">
-          <n-select v-model:value="queryItems.status" :options="options" />
+          <n-select v-model:value="queryItems.status" clearable :options="options" />
         </QueryBarItem>
         <QueryBarItem label="券类型" :label-width="60">
-          <n-select v-model:value="queryItems.d_type" :options="dtOptions" @update:value="dtChange" />
+          <n-select v-model:value="queryItems.d_type" clearable :options="dtOptions" @update:value="dtChange" />
         </QueryBarItem>
         <QueryBarItem label="系统" :label-width="80">
-          <n-select v-model:value="queryItems.device_type" :options="deviceOptions" />
+          <n-select v-model:value="queryItems.device_type" clearable :options="deviceOptions" />
+        </QueryBarItem>
+        <QueryBarItem v-if="queryItems.d_type === 1" label="商品上架状态" :label-width="100">
+          <n-select v-model:value="queryItems.goods_ls_status" clearable :options="options" />
+        </QueryBarItem>
+        <QueryBarItem v-if="queryItems.d_type === 1" label="商品启用状态" :label-width="100">
+          <n-select v-model:value="queryItems.goods_status" clearable :options="lsOptions" />
         </QueryBarItem>
       </template>
     </CrudTable>
@@ -105,6 +105,9 @@ const columns = [
         '多商品滑动',
         '广告推券',
         '小程序h5',
+        '惠吃喝囤券',
+        '高返现商品',
+        '橙券商品',
       ][row.d_type - 1]
     },
   },

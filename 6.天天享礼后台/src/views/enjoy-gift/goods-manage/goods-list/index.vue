@@ -1,5 +1,5 @@
 <template>
-  <CommonPage show-footer title="商品管理">
+  <CommonPage show-footer title="乐刷商品">
     <template #action>
       <n-button v-has="'sync'" type="primary" @click="synchronization"> 同步 </n-button>
     </template>
@@ -54,13 +54,12 @@
 </template>
 
 <script setup>
-import { NButton, NSwitch } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage } from 'naive-ui'
-import http from './api'
-import operatGoods from './operatGoods/index.vue'
-import axios from 'axios'
-defineOptions({ name: 'GoodsList' })
+import { renderIcon } from '@/utils';
+import axios from 'axios';
+import { NButton, NSwitch, useMessage } from 'naive-ui';
+import http from './api';
+import operatGoods from './operatGoods/index.vue';
+defineOptions({ name: 'GoodsManageList' })
 //表格操作
 const $table = ref(null)
 /** QueryBar筛选参数（可选） */

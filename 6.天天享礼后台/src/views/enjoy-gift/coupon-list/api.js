@@ -11,4 +11,8 @@ export default {
   getAll: (data) => request.post('/apios/Zero_credits/getLists'),
   getGroup: (data) => request.post('/apios/Popover/getLists', data),
   goodsList: (data) => request.post('/apios/Hw/goodsList', data),
+  goodsSearch: (data) => request.post('/api/Pinduoduo/goodsSearch', data),
+  goodsQueryList: (data) => request.post('/api/Get/goodsQuery', data),
+  typeList: (data) => request.post('/api/Cheng_quan/typeList', data),
+  goodsCqList: (data) => request.post('/apios/Goods/goodsList', data),
 }

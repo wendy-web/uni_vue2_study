@@ -35,6 +35,10 @@ export const userOptions = [
     label: '彬纷享礼',
     value: 1,
   },
+  {
+    label: '省钱卡专享',
+    value: 2,
+  },
 ]
 /**系统下拉 */
 export const typeOptions = [
@@ -71,7 +75,16 @@ export const typeStatus = [
     value: 0,
   },
 ]
-
+export const typeAdd = [
+  {
+    label: '手动配置',
+    value: 0,
+  },
+  {
+    label: '系统配置',
+    value: 1,
+  },
+]
 export const tyOptionsUpdate = [
   {
     label: '京东半屏',

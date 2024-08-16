@@ -101,11 +101,11 @@
   <operat-group-detail ref="operatGroupDetailRef" @addList="addListHandle" />
 </template>
 <script setup>
-import operatGroupDetail from './operatGroupDetail.vue'
-import { ref } from 'vue'
-import { useMessage, NInput, NInputNumber, NButton, NSwitch, NDatePicker } from 'naive-ui'
-import { renderIcon, formatDateTime } from '@/utils'
-import http from './api'
+import { formatDateTime, renderIcon } from '@/utils';
+import { NButton, NDatePicker, NInput, NInputNumber, useMessage } from 'naive-ui';
+import { ref } from 'vue';
+import http from './api';
+import operatGroupDetail from './operatGroupDetail.vue';
 const typeClass = ref(1)
 //券类型
 const classType = [
@@ -378,8 +378,10 @@ const columns = [
             if (currInputIndex === inputValue) return
             const currData = tableData.value[currInputIndex]
             const targetIndex = tableData.value[inputValue]
-            tableData.value[inputValue] = currData
-            tableData.value[currInputIndex] = targetIndex
+            tableData.value.splice(currInputIndex, 1)
+            tableData.value.splice(inputValue, 0, currData)
+            // tableData.value[inputValue] = currData
+            // tableData.value[currInputIndex] = targetIndex
             resetIndex()
           },
         }),

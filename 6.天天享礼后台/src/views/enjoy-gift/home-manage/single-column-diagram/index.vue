@@ -35,11 +35,10 @@
 </template>
 
 <script setup>
-import { NButton, NImage } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage, useDialog, NSwitch } from 'naive-ui'
-import operatSingle from './operatSingle.vue'
-import http from './api'
+import { renderIcon } from '@/utils';
+import { NButton, NImage, NSwitch, useDialog, useMessage } from 'naive-ui';
+import http from './api';
+import operatSingle from './operatSingle.vue';
 defineOptions({ name: 'SingleColumnDiagram' })
 //表格操作
 const $table = ref(null)

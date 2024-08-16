@@ -1,4 +1,4 @@
-import { getProxyConfig } from '../../settings'
+import { getProxyConfig } from '../../settings';
 
 export function createViteProxy(isUseProxy = true, proxyType) {
   if (!isUseProxy) return undefined

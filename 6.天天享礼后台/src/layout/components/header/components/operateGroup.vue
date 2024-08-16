@@ -1,26 +1,27 @@
 <template>
-  <n-drawer v-model:show="showModal" :width="drawerWidth" :placement="placement">
+  <n-drawer v-model:show="showModal" :width="drawerWidth">
     <n-drawer-content title="下架商品" closable>
-      <n-form
-        ref="formRef"
-        :model="model"
-        :rules="rules"
-        label-placement="left"
-        label-width="140px"
-        require-mark-placement="right-hanging"
+      <CrudTable
+        ref="$table"
+        v-model:query-items="queryItems"
+        :max-height="1000"
+        :scroll-x="1200"
+        row-key="old_skuId"
+        :columns="columns"
+        :get-data="http.delistLog"
       >
-        <n-form-item label="商品列表" path="group">
-          <CrudTable
-            ref="$table"
-            :max-height="1000"
-            :scroll-x="1200"
-            row-key="old_skuId"
-            :columns="columns"
-            :get-data="http.delistLog"
-          >
-          </CrudTable>
-        </n-form-item>
-      </n-form>
+        <template #queryBar>
+          <QueryBarItem label="查找时间" :label-width="80" :content-width="340">
+            <n-date-picker
+              v-model:formatted-value="queryItems.create_time"
+              value-format="yyyy-MM-dd"
+              format="yyyy-MM-dd"
+              type="datetimerange"
+              clearable
+            />
+          </QueryBarItem>
+        </template>
+      </CrudTable>
     </n-drawer-content>
   </n-drawer>
 </template>
@@ -36,6 +37,7 @@ const showModal = ref(false)
 const formRef = ref(null)
 //表单数据
 const model = ref({})
+const queryItems = ref({})
 //优惠券列表选择相关
 const columns = [
   {
@@ -47,12 +49,35 @@ const columns = [
     size: 'large',
   },
   {
+    title: '商品名称',
+    key: 'goods_name',
+    align: 'center',
+    fixed: 'left',
+    size: 'large',
+  },
+  {
+    title: '品牌供应商',
+    key: 'goods_type',
+    align: 'center',
+    width: 200,
+    fixed: 'left',
+    size: 'large',
+  },
+  {
+    title: '商品分组名称',
+    key: 'name',
+    align: 'center',
+    width: 200,
+    fixed: 'left',
+    size: 'large',
+  },
+  {
     title: '下架时间',
     key: 'create_time',
     align: 'center',
     fixed: 'left',
     size: 'large',
-    width: 322,
+    width: 180,
   },
   {
     title: '下架原因',

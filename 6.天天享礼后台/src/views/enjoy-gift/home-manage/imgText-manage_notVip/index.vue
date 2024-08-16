@@ -43,7 +43,7 @@ import http from './api';
 import operatSingle from './operatSingle.vue';
 const has = resolveDirective('has')
 const permissionStore = usePermissionStore()
-defineOptions({ name: 'SingleColumnDiagram' })
+defineOptions({ name: 'imgTextManageNotVip' })
 //表格操作
 const $table = ref(null)
 /** QueryBar筛选参数（可选） */
@@ -134,6 +134,7 @@ const operateList = {
   },
 }
 const columns = [
+  { title: 'ID', key: 'id', align: 'center' },
   { title: '导航名称', key: 'title', align: 'center' },
   {
     title: '系统',

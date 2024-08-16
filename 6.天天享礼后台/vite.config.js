@@ -1,9 +1,9 @@
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv } from 'vite';
 
-import { convertEnv, getSrcPath, getRootPath } from './build/utils'
-import { createViteProxy, viteDefine } from './build/config'
-import { createVitePlugins } from './build/plugin'
-import { OUTPUT_DIR } from './build/constant'
+import { createViteProxy, viteDefine } from './build/config';
+import { OUTPUT_DIR } from './build/constant';
+import { createVitePlugins } from './build/plugin';
+import { convertEnv, getRootPath, getSrcPath } from './build/utils';
 
 export default defineConfig(({ command, mode }) => {
   const srcPath = getSrcPath()

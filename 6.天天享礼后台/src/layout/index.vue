@@ -26,12 +26,12 @@
 </template>
 
 <script setup>
-import AppHeader from './components/header/index.vue'
-import SideBar from './components/sidebar/index.vue'
-import AppMain from './components/AppMain.vue'
-import AppTags from './components/tags/index.vue'
-import { useAppStore } from '@/store'
-import { header, tags } from '~/settings'
+import { useAppStore } from '@/store';
+import { header, tags } from '~/settings';
+import AppMain from './components/AppMain.vue';
+import AppHeader from './components/header/index.vue';
+import SideBar from './components/sidebar/index.vue';
+import AppTags from './components/tags/index.vue';
 
 const appStore = useAppStore()
 </script>

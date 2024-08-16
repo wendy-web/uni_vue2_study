@@ -54,12 +54,11 @@
 </template>
 
 <script setup>
-import { NButton, NSwitch } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage } from 'naive-ui'
-import http from './api'
-import operatGoods from './operatGoods/index.vue'
-import axios from 'axios'
+import { renderIcon } from '@/utils';
+import axios from 'axios';
+import { NButton, NSwitch, useMessage } from 'naive-ui';
+import http from './api';
+import operatGoods from './operatGoods/index.vue';
 defineOptions({ name: 'GoodsList' })
 //表格操作
 const $table = ref(null)

@@ -43,7 +43,7 @@ export const dtOptions = [
     value: 4,
   },
   {
-    label: '千猪外链',
+    label: '聚推客电影',
     value: 5,
   },
   {
@@ -70,9 +70,17 @@ export const dtOptions = [
     value: 11,
     label: '小程序h5',
   },
+  /*{
+          value: 12,
+          label: '惠吃喝囤券',
+        },*/
   {
-    value: 12,
-    label: '惠吃喝商品',
+    value: 13,
+    label: '高返现商品',
+  },
+  {
+    value: 14,
+    label: '橙券商品',
   },
 ]
 
@@ -260,7 +268,17 @@ export const isMainOptions = [
     value: 2,
   },
 ]
-
+// 跳转方式
+export const isMainOptions2 = [
+  {
+    label: '直接跳转',
+    value: 1,
+  },
+  {
+    label: '中转跳转',
+    value: 2,
+  },
+]
 export const xcxType = [
   {
     label: '请选择',
@@ -359,6 +377,17 @@ export const openMiniType = ref([
     value: 2,
   },
 ])
+// 返佣商品的打开方式
+export const openMiniType2 = ref([
+  {
+    label: '直接打开',
+    value: 1,
+  },
+  {
+    label: '详情打开',
+    value: 2,
+  },
+])
 // 充值的类型
 export const rechargeOptions = ref([
   {
@@ -370,5 +399,28 @@ export const rechargeOptions = ref([
     label: '其他账号充值',
     value: 2,
     placeholder: '请输入手机号码或QQ账号',
+  },
+])
+//拼多多频道来源
+export const resourceOptions = ref([
+  {
+    label: '限时秒杀',
+    value: 4,
+  },
+  {
+    label: '活动转链',
+    value: 39998,
+  },
+  {
+    label: '百亿补贴',
+    value: 39996,
+  },
+  {
+    label: '领券中心',
+    value: 40000,
+  },
+  {
+    label: '火车票',
+    value: 50005,
   },
 ])

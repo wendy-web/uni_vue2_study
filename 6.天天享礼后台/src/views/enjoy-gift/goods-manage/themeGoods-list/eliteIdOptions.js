@@ -325,7 +325,7 @@ export default {
       value: 20800,
     },
     {
-      label: '-男装',
+      label: '男装',
       value: 20900,
     },
     {

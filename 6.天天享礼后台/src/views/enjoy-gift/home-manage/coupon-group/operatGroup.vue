@@ -13,7 +13,7 @@
           <n-form-item label="分组名称" path="name" w-300>
             <n-input v-model:value="model.name" :disabled="modalType === 1" />
           </n-form-item>
-          <n-form-item label="系统类型" path="type" w-300 ml-50>
+          <n-form-item v-if="model.user_group != 2" label="系统类型" path="type" w-300 ml-50>
             <n-select
               v-model:value="model.type"
               :options="typeOptions"
@@ -25,18 +25,13 @@
             <n-input-number v-model:value="model.sort" :disabled="modalType === 1" />
           </n-form-item>
           <n-form-item label="京东推广位ID" path="positionId" w-300 ml-50>
-            <n-input
-              v-model:value="model.positionId"
-              :show-button="false"
-              placeholder="京东推广位ID"
-              clearable
-            />
+            <n-input v-model:value="model.positionId" :show-button="false" placeholder="京东推广位ID" clearable />
           </n-form-item>
           <n-form-item label="拼多多推广位ID" path="pdd_positionId" w-340 ml-50>
             <n-input v-model:value="model.pdd_positionId" :show-button="false" placeholder="拼多多推广位ID" clearable />
           </n-form-item>
         </div>
-        <div flex>
+        <div v-if="model.user_group != 2" flex>
           <n-form-item label="订单权重(%)" path="amount_power" w-300>
             <n-input-number
               v-model:value="model.amount_power"
@@ -78,7 +73,7 @@
             />
           </n-form-item>
         </div>
-        <div flex>
+        <div v-if="model.user_group != 2" flex>
           <n-form-item label="复购量统计周期(d)" path="again_time" w-300>
             <n-input-number
               v-model:value="model.again_time"
@@ -99,10 +94,10 @@
           </n-form-item>
         </div>
         <div flex>
-          <n-form-item label="佣金降幅(%)" path="commission_num" w-300>
+          <n-form-item v-if="model.user_group != 2" label="佣金降幅(%)" path="commission_num" w-300>
             <n-input v-model:value="model.commission_num" :show-button="false" placeholder="" clearable />
           </n-form-item>
-          <n-form-item label="最终佣金(%)" path="commission" w-300 ml-50>
+          <n-form-item v-if="model.user_group != 2" label="最终佣金(%)" path="commission" w-300 ml-50>
             <n-input v-model:value="model.commission" :show-button="false" placeholder="" clearable />
           </n-form-item>
           <n-form-item label="所属小程序" path="is_bfxl" w-300>
@@ -143,6 +138,15 @@
           </n-form-item>
           <n-form-item label="搜索商品" path="defaultCouponFilter" w-400 ml-50>
             <n-input v-model:value="defaultCouponFilter" clearable @input="handleUpdateFilter" />
+          </n-form-item>
+          <n-form-item v-if="model.user_group != 2" label="配置状态" path="defaultAddFilter" w-300 ml-50>
+            <n-select
+              v-model:value="defaultAddFilter"
+              :options="typeAdd"
+              :disabled="modalType === 1"
+              clearable
+              @update:value="handleUpdateFilter"
+            />
           </n-form-item>
         </div>
         <div flex ml-140>
@@ -189,13 +193,14 @@ import { NButton, NDatePicker, NInput, NInputNumber, NSelect, NSwitch, useMessag
 import { ref } from 'vue';
 import http from './api';
 import {
-initPageOptions,
-pathOptions,
-tyOptionsUpdate,
-typeOptions,
-typeStatus,
-userOptions,
-yyOptions,
+  initPageOptions,
+  pathOptions,
+  tyOptionsUpdate,
+  typeAdd,
+  typeOptions,
+  typeStatus,
+  userOptions,
+  yyOptions,
 } from './configOptions.js';
 import operatGroupDetail from './operatGroupDetail.vue';
 /**抽屉宽度 */
@@ -222,18 +227,23 @@ function addListHandle(addList) {
   addList &&
     addList.forEach((item) => {
       shopOptions.value = shopOptions.value.filter((optionItem) => optionItem.coupon_id != item.coupon_id)
-      model.value.group.push(item.coupon_id)
-      tableData.value.push({
+      model.value.group.unshift(item.coupon_id)
+      tableData.value.unshift({
         ...item,
-        _index: tableData.value.length + 1,
-        current_index: tableData.value.length,
       })
     })
+  tableData.value = tableData.value.map((item, index) => {
+    return {
+      ...item,
+      _index: index + 1,
+      current_index: index,
+    }
+  })
   // 滑动到底部
   setTimeout(() => {
     tableRef.value.scrollTo({
       left: 0,
-      top: 10000,
+      top: 0,
     })
   }, 100)
   defaultCouponFilter.value = ''
@@ -252,8 +262,10 @@ const pageOptions = ref([])
 watch(
   () => model.value.is_bfxl,
   (newValue, oldValue) => {
-    pageOptions.value = newValue ? initPageOptions.slice(0, 3) : initPageOptions
-    shopOptions.value = newValue ? shopOptions.value.filter((optionItem) => optionItem.type == 11) : shopOptions.value
+    //pageOptions.value = newValue ? initPageOptions.slice(0, 3) : initPageOptions
+    pageOptions.value = initPageOptions
+    //shopOptions.value = newValue ? shopOptions.value.filter((optionItem) => optionItem.type == 11) : shopOptions.value
+    shopOptions.value = shopOptions.value
   },
   {
     deep: true,
@@ -371,7 +383,6 @@ const columns = [
     },
   },
   { title: '兑换牛金豆', key: 'credits', align: 'center', width: 100 },
-  { title: '实际兑换', key: 'exch_user_num', align: 'center', width: 100 },
   {
     title: '上架状态',
     key: 'status',
@@ -421,12 +432,47 @@ const columns = [
     },
   },
   {
+    title: '零豆特权',
+    key: 'zero_credits',
+    width: 80,
+    align: 'center',
+    filterMode: 'and',
+    filter(value, row) {
+      if (value === null) return true
+      return ~[row.zero_credits].indexOf(value)
+    },
+    render(row) {
+      return h(NSwitch, {
+        size: 'small',
+        value: Boolean(row.zero_credits),
+        onUpdateValue: (updateValue) => {
+          const currentIndex = row.current_index
+          tableData.value[currentIndex].zero_credits = updateValue
+        },
+      })
+    },
+  },
+  {
     title: '来源',
     key: 'lx_type',
-    width: 60,
+    width: 70,
     align: 'center',
     render(row, index) {
-      return ['自建', '京东'][row.lx_type - 1]
+      return ['自建', '京东', '拼多多'][row.lx_type - 1]
+    },
+  },
+  {
+    title: '配置',
+    key: 'is_add_to',
+    width: 100,
+    align: 'center',
+    filterMode: 'and',
+    filter(value, row) {
+      if (value === null) return true
+      return ~[row.is_add_to].indexOf(value)
+    },
+    render(row, index) {
+      return ['', '系统上架'][row.is_add_to]
     },
   },
   {
@@ -454,41 +500,6 @@ const columns = [
         onUpdateValue: (updateValue) => {
           const currentIndex = row.current_index
           tableData.value[currentIndex].is_flow = updateValue
-        },
-      })
-    },
-  },
-  {
-    title: '显示时间',
-    key: 'date',
-    align: 'center',
-    width: 210,
-    render(row) {
-      return h(NDatePicker, {
-        type: 'datetime',
-        placeholder: '请选择时间',
-        value: initProcessTime(row.show_time),
-        onUpdateValue: (updateValue) => {
-          const currentIndex = row.current_index
-          tableData.value[currentIndex].show_time = updateValue ? formatDateTime(updateValue) : updateValue
-        },
-      })
-    },
-  },
-  {
-    title: '隐藏时间',
-    key: 'date',
-    align: 'center',
-    width: 210,
-    render(row) {
-      return h(NDatePicker, {
-        type: 'datetime',
-        clearable: true,
-        placeholder: '请选择时间',
-        value: initProcessTime(row.hide_time),
-        onUpdateValue: (updateValue) => {
-          const currentIndex = row.current_index
-          tableData.value[currentIndex].hide_time = updateValue ? formatDateTime(updateValue) : updateValue
         },
       })
     },
@@ -541,11 +552,48 @@ const columns = [
       })
     },
   },
-  { title: '订单量', key: 'amount', align: 'center', width: 80 },
-  { title: '佣金(元)', key: 'commission', align: 'center', width: 80 },
-  { title: '复购量', key: 'again', align: 'center', width: 80 },
-  { title: '转化率(%)', key: 'promotion', align: 'center', width: 100 },
+  { title: '购买人数', key: 'amount', align: 'center', width: 100 },
+  { title: '佣金(元)', key: 'commission', align: 'center', width: 100 },
+  { title: '复购人数', key: 'again', align: 'center', width: 100 },
   { title: '排序权值', key: 'sort_num', align: 'center', width: 100 },
+  { title: '累计订单', key: 'orderNum', align: 'center', width: 100 },
+  { title: '点击次数', key: 'clickNum', align: 'center', width: 100 },
+  { title: '转化率(%)', key: 'promotion', align: 'center', width: 100 },
+  {
+    title: '显示时间',
+    key: 'date',
+    align: 'center',
+    width: 210,
+    render(row) {
+      return h(NDatePicker, {
+        type: 'datetime',
+        placeholder: '请选择时间',
+        value: initProcessTime(row.show_time),
+        onUpdateValue: (updateValue) => {
+          const currentIndex = row.current_index
+          tableData.value[currentIndex].show_time = updateValue ? formatDateTime(updateValue) : updateValue
+        },
+      })
+    },
+  },
+  {
+    title: '隐藏时间',
+    key: 'date',
+    align: 'center',
+    width: 210,
+    render(row) {
+      return h(NDatePicker, {
+        type: 'datetime',
+        clearable: true,
+        placeholder: '请选择时间',
+        value: initProcessTime(row.hide_time),
+        onUpdateValue: (updateValue) => {
+          const currentIndex = row.current_index
+          tableData.value[currentIndex].hide_time = updateValue ? formatDateTime(updateValue) : updateValue
+        },
+      })
+    },
+  },
   { title: '上轮位置系数', key: 'prev_position_num', align: 'center', width: 110 },
   {
     title: '位置系数',
@@ -701,8 +749,11 @@ const columns = [
             if (currInputIndex === inputValue) return
             const currData = tableData.value[currInputIndex]
             const targetIndex = tableData.value[inputValue]
-            tableData.value[inputValue] = currData
-            tableData.value[currInputIndex] = targetIndex
+            tableData.value.splice(currInputIndex, 1)
+            tableData.value.splice(inputValue, 0, currData)
+
+            // tableData.value[inputValue] = currData;
+            // tableData.value[currInputIndex] = targetIndex
             resetIndex()
           },
         }),
@@ -747,15 +798,19 @@ function resetIndex() {
 /**回调父组件函数注册 */
 const emit = defineEmits(['refresh'])
 const defaultStatusFilter = ref(null)
+const defaultAddFilter = ref(null)
 /** 表单过滤 */
 const handleUpdateFilter = () => {
   let arr = []
   let statusArr = []
+  let addArr = []
   arr.push(defaultCouponFilter.value)
   statusArr.push(defaultStatusFilter.value)
+  addArr.push(defaultAddFilter.value)
   tableRef.value.filter({
     title: arr,
     status: statusArr,
+    is_add_to: addArr,
   })
 }
 // 过滤优惠券
@@ -788,6 +843,7 @@ function handleValidateButtonClick() {
           itemId: item.itemId || '',
           delayed_period: item.delayed_period || 0,
           show_tj: Number(item.show_tj),
+          zero_credits: Number(item.zero_credits),
         }))
       http
         .operatGroup({
@@ -946,8 +1002,8 @@ function getGroupDetails(type) {
         if (length < length2) {
           for (var i = length; i < length + 10; i++) {
             if (!lists.value[i] || i >= length2) {
-                clearInterval(load.value)
-                break
+              clearInterval(load.value)
+              break
             }
             tableData.value.push(lists.value[i])
           }

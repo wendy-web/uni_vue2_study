@@ -105,9 +105,6 @@ const columns = ref([
   { title: '面值(元)', key: 'face_value', align: 'center' },
   { title: '价格(元)', key: 'price', align: 'center' },
   { title: '兑换价格(牛金豆)', key: 'credits', align: 'center' },
-  { title: '发放数量', key: 'used_num', align: 'center' },
-  { title: '剩余数量', key: 'stock_num', align: 'center' },
-  { title: '有效期(天)', key: 'expiry_date', align: 'center' },
   { title: 'feed流类目ID', key: 'feedId', align: 'center' },
   {
     title: '创建时间',

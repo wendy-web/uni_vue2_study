@@ -35,11 +35,10 @@
 </template>
 
 <script setup>
-import { NButton } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage, useDialog } from 'naive-ui'
-import operatGroup from './operatGroup.vue'
-import http from './api'
+import { renderIcon } from '@/utils';
+import { NButton, useDialog, useMessage } from 'naive-ui';
+import http from './api';
+import operatGroup from './operatGroup.vue';
 defineOptions({ name: 'CouponGroup' })
 //表格操作
 const $table = ref(null)

@@ -672,8 +672,10 @@ const columns = [
             if (currInputIndex === inputValue) return
             const currData = tableData.value[currInputIndex]
             const targetIndex = tableData.value[inputValue]
-            tableData.value[inputValue] = currData
-            tableData.value[currInputIndex] = targetIndex
+            tableData.value.splice(currInputIndex, 1)
+            tableData.value.splice(inputValue, 0, currData)
+            // tableData.value[inputValue] = currData
+            // tableData.value[currInputIndex] = targetIndex
             resetIndex()
           },
         }),
@@ -737,6 +739,7 @@ function handleValidateButtonClick() {
           coupon_id: item.coupon_id,
           is_flow: item.is_flow,
           goods_sign: item.goods_sign || '',
+          itemId: item.itemId || '',
         }))
       // 拼多多的类目选择
       if (goods_lx_type == 3) {

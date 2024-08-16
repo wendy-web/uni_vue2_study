@@ -21,25 +21,25 @@
             :show-button="false"
             placeholder="京东推广位ID"
             clearable
-            @input="handleUpdateFilter"
             :disabled="modalType === 1"
+            @input="handleUpdateFilter"
           />
         </n-form-item>
         <n-form-item label="拼多多推广位ID" path="pdd_positionId" w-300>
-          <n-input-number
-                  v-model:value="model.pdd_positionId"
-                  :show-button="false"
-                  placeholder="拼多多推广位ID"
-                  clearable
-                  @input="handleUpdateFilter"
-                  :disabled="modalType === 1"
+          <n-input
+            v-model:value="model.pdd_positionId"
+            :show-button="false"
+            placeholder="拼多多推广位ID"
+            clearable
+            :disabled="modalType === 1"
+            @input="handleUpdateFilter"
           />
         </n-form-item>
         <n-form-item label="更多按钮" path="has_btn" w-400>
-          <n-switch v-model:value="model.has_btn" :disabled="modalType === 1"  />
+          <n-switch v-model:value="model.has_btn" :disabled="modalType === 1" />
         </n-form-item>
         <n-form-item label="跳转半屏" path="is_half" w-400>
-          <n-switch v-model:value="model.is_half" :disabled="modalType === 1"  />
+          <n-switch v-model:value="model.is_half" :disabled="modalType === 1" />
         </n-form-item>
         <n-form-item label="跳转页面路径" path="path" w-500>
           <n-input v-model:value="model.path" :disabled="modalType === 1" />
@@ -76,12 +76,11 @@
   <operat-group-detail ref="operatGroupDetailRef" :ck-ids="ckIds" @addList="addListHandle" />
 </template>
 <script setup>
-import operatGroupDetail from './operatGroupDetail.vue'
-import { ref } from 'vue'
-import { useMessage, NInput, NInputNumber, NButton, NSwitch, NDatePicker } from 'naive-ui'
-import { renderIcon, formatDateTime } from '@/utils'
-import http from './api'
-import eliteIdOptions from './eliteIdOptions.js'
+import { renderIcon } from '@/utils';
+import { NButton, NInput, NInputNumber, NSwitch, useMessage } from 'naive-ui';
+import { ref } from 'vue';
+import http from './api';
+import operatGroupDetail from './operatGroupDetail.vue';
 /**抽屉宽度 */
 const drawerWidth = window.innerWidth - 220 + 'px'
 /**弹窗显示控制 */
@@ -272,8 +271,10 @@ const columns = [
             if (currInputIndex === inputValue) return
             const currData = tableData.value[currInputIndex]
             const targetIndex = tableData.value[inputValue]
-            tableData.value[inputValue] = currData
-            tableData.value[currInputIndex] = targetIndex
+            // tableData.value[inputValue] = currData
+            // tableData.value[currInputIndex] = targetIndex
+            tableData.value.splice(currInputIndex, 1)
+            tableData.value.splice(inputValue, 0, currData)
             resetIndex()
           },
         }),
@@ -375,7 +376,7 @@ async function show(operatType, data) {
     pdd_positionId: null, //拼多多推广位ID
     has_btn: 1,
     is_half: 0,
-    path: ''
+    path: '',
   }
   model.value.has_btn = Boolean(model.value.has_btn)
   model.value.is_half = Boolean(model.value.is_half)
@@ -397,16 +398,7 @@ function getGroupDetails(type) {
       id: showData.value.id,
     })
     .then(async (res) => {
-      let {
-        id,
-        title,
-        positionId,
-        pdd_positionId,
-        has_btn,
-        is_half,
-        path,
-        list
-      } = res.data
+      let { id, title, positionId, pdd_positionId, has_btn, is_half, path, list } = res.data
       let _list = list.filter((item, index) => {
         if (item.coupon_id) {
           item._index = index + 1
@@ -424,7 +416,7 @@ function getGroupDetails(type) {
         pdd_positionId,
         has_btn,
         is_half,
-        path
+        path,
       }
       tableData.value = _list
       showModal.value = true

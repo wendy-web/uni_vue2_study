@@ -14,13 +14,13 @@
 </template>
 
 <script setup>
-import { defineComponent, h } from 'vue'
-import { zhCN, dateZhCN, useLoadingBar, useDialog, useMessage, useNotification } from 'naive-ui'
-import { useCssVar } from '@vueuse/core'
-import { kebabCase } from 'lodash-es'
-import { setupMessage, setupDialog } from '@/utils'
-import { naiveThemeOverrides } from '~/settings'
-import { useAppStore } from '@/store'
+import { useAppStore } from '@/store';
+import { setupDialog, setupMessage } from '@/utils';
+import { useCssVar } from '@vueuse/core';
+import { kebabCase } from 'lodash-es';
+import { dateZhCN, useDialog, useLoadingBar, useMessage, useNotification, zhCN } from 'naive-ui';
+import { defineComponent, h } from 'vue';
+import { naiveThemeOverrides } from '~/settings';
 
 const appStore = useAppStore()
 

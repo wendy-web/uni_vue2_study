@@ -19,7 +19,7 @@
     :remote="remote"
     :loading="loading"
     :scroll-x="scrollX"
-    :columns="columns"
+    :columns="columnsRef"
     :data="tableData"
     :children-key="childrenKey"
     :checked-row-keys="checkedRowKeys"
@@ -29,6 +29,7 @@
     @update:checked-row-keys="onChecked"
     @update:page="onPageChange"
     @click="itemClick"
+    @update:sorter="sorterHandle"
   />
 </template>
 
@@ -113,6 +114,10 @@ const props = defineProps({
     type: String,
     default: 'child',
   },
+  editKeyValue: {
+    type: Object,
+    default: null,
+  },
 })
 
 const emit = defineEmits([
@@ -128,8 +133,20 @@ const loading = ref(false)
 const initQuery = { ...props.queryItems }
 const tableData = ref([])
 const pagination = reactive({ page: 1, pageSize: 10 })
-
-async function handleQuery() {
+// apios/Group/queueEdit
+watch(
+  () => props.editKeyValue,
+  async (newValue, oldValue) => {
+    if (!newValue) return
+    const { index, key, value } = newValue
+    tableData.value[index][key] = value
+  },
+  {
+    deep: true,
+    // immediate: true,
+  }
+)
+async function handleQuery(params = null) {
   try {
     loading.value = true
     let paginationParams = {}
@@ -138,7 +155,7 @@ async function handleQuery() {
     if (props.isPagination && props.remote) {
       paginationParams = { page: pagination.page, size: pagination.pageSize }
     }
-    const { data } = await props.getData({ ...props.queryItems, ...props.extraParams, ...paginationParams })
+    const { data } = await props.getData({ ...props.queryItems, ...props.extraParams, ...paginationParams, ...params })
     tableData.value = data?.list || data
     // 添加一个键值对的默认类型
     if (props.addKey) {
@@ -166,9 +183,9 @@ async function handleQuery() {
   }
 }
 // 根据参数搜索 - 重新访问列表
-function handleSearch() {
+function handleSearch(params = null) {
   pagination.page = 1
-  handleQuery()
+  handleQuery(params)
 }
 const isShowListPagination = ref(true)
 function showGetList(filterList) {
@@ -179,6 +196,28 @@ function showGetList(filterList) {
 
 function handleRefreshCurr() {
   handleQuery()
+}
+const columnsRef = ref(props.columns)
+function sorterHandle(sorter) {
+  columnsRef.value.forEach((column) => {
+    /** column.sortOrder !== undefined means it is uncontrolled */
+    if (column.sortOrder === undefined) return
+    if (!sorter) return (column.sortOrder = false)
+    if (column.key === sorter.columnKey) {
+      const params = { level: 2 }
+      column.sortOrder = sorter.order
+      if (!column.pid) return
+      params.pid = column.pid
+      if (sorter.order == 'descend') {
+        params.level = 1
+      }
+      handleQuery(params)
+      // return
+    } else {
+      column.sortOrder = false
+    }
+  })
+  // console.log('columnsRef.value', columnsRef.value)
 }
 function finishImportHandle() {
   emit('finishImport')
@@ -199,9 +238,18 @@ async function handleReset() {
 }
 function onPageChange(currentPage) {
   pagination.page = currentPage
-  if (props.remote) {
-    handleQuery()
-  }
+  const params = {}
+  const sortFindIndex = columnsRef.value.findIndex((column) => {
+    if (!['descend', 'ascend'].includes(column.sortOrder)) return false
+    params.level = 2
+    params.pid = column.pid
+    if (column.sortOrder == 'descend') {
+      params.level = 1
+    }
+    return true
+  })
+  if (!props.remote) return
+  handleQuery(params)
 }
 let addKeyList = []
 function onChecked(rowKeys, rows) {

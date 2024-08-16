@@ -104,10 +104,10 @@
             <n-radio :key="2" :value="2"> 公众号 </n-radio>
             <n-radio :key="3" :value="3"> 视频号 </n-radio>
             <n-radio :key="4" :value="4"> 小程序 </n-radio>
-            <n-radio :key="5" :value="5"> 千猪页面 </n-radio>
+            <n-radio :key="5" :value="5"> 聚推客电影 </n-radio>
             <n-radio :key="6" :value="6"> 领券中心 </n-radio>
             <n-radio :key="7" :value="7"> 惠吃喝 </n-radio>
-            <n-radio :key="8" :value="8"> 海威瑞幸 </n-radio>
+            <n-radio :key="8" :value="8"> 聚推客打车 </n-radio>
             <n-radio :key="8" :value="9"> 小程序内页 </n-radio>
             <n-radio :key="10" :value="10"> 乐唯娃娃机 </n-radio>
           </n-space>
@@ -166,6 +166,7 @@
             <n-space>
               <n-radio :key="1" :value="1"> 默认 </n-radio>
               <n-radio :key="2" :value="2"> 拼多多营销工具 </n-radio>
+              <n-radio :key="3" :value="3"> 拼多多频道推广 </n-radio>
             </n-space>
           </n-radio-group>
         </n-form-item>
@@ -340,6 +341,33 @@
             </n-form-item>
           </div>
         </div>
+        <template v-if="model.is_main == 3">
+          <n-form-item label="拼多多推广位" path="type_id" w-400>
+            <n-input v-model:value="model.type_id" :disabled="modalType === 1" />
+          </n-form-item>
+          <n-form-item label="频道来源" path="diy_red_packet_param.resource_type">
+            <n-select
+              v-model:value="model.diy_red_packet_param.resource_type"
+              :options="resourceOptions"
+              :disabled="modalType === 1"
+              style="width: 200px"
+            />
+          </n-form-item>
+          <n-form-item
+            v-if="model.diy_red_packet_param.resource_type == 39998"
+            label="原活动链接（短链）"
+            path="diy_red_packet_param.url"
+          >
+            <n-input
+              v-model:value="model.diy_red_packet_param.url"
+              type="textarea"
+              :style="{
+                maxWidth: '400px',
+              }"
+              :disabled="modalType === 1"
+            />
+          </n-form-item>
+        </template>
       </div>
       <!--  视频号-->
       <div v-if="model.type == 3">
@@ -358,7 +386,7 @@
         </n-form-item>
       </div>
       <!-- 千猪-->
-      <div v-if="model.type == 5 || model.type == 9">
+      <div v-if="model.type == 9">
         <n-form-item v-if="model.type == 9" label="跳转类型" path="is_main">
           <n-radio-group
             v-model:value="model.is_main"
@@ -421,6 +449,32 @@
             :disabled="modalType === 1"
             style="width: 400px"
             clearable
+          />
+        </n-form-item>
+      </div>
+      <!--乐唯娃娃机-->
+      <div v-if="model.type == 10">
+        <n-form-item label="跳转类型" path="is_main">
+          <n-radio-group
+            v-model:value="model.is_main"
+            :disabled="modalType === 1"
+            name="radiogroup"
+            @update:value="checkedRadioHandle"
+          >
+            <n-space>
+              <n-radio :key="1" :value="1"> 直接跳转 </n-radio>
+              <n-radio :key="2" :value="2"> 中转页跳转 </n-radio>
+            </n-space>
+          </n-radio-group>
+        </n-form-item>
+        <n-form-item label="房间地址" path="qz_url">
+          <n-input
+            v-model:value="model.qz_url"
+            type="textarea"
+            :style="{
+              maxWidth: '400px',
+            }"
+            :disabled="modalType === 1"
           />
         </n-form-item>
       </div>
@@ -627,6 +681,29 @@ const pddOptions = [
     value: 37,
   },
 ]
+//拼多多频道来源
+const resourceOptions = [
+  {
+    label: '限时秒杀',
+    value: 4,
+  },
+  {
+    label: '活动转链',
+    value: 39998,
+  },
+  {
+    label: '百亿补贴',
+    value: 39996,
+  },
+  {
+    label: '领券中心',
+    value: 40000,
+  },
+  {
+    label: '火车票',
+    value: 50005,
+  },
+]
 function checkedRadioHandle2() {
   model.value.type_id = ''
   model.value.type_sid = ''
@@ -784,6 +861,8 @@ function show(operatType, data) {
           not_show_background: 0,
           scratch_card_amount_type: 0,
           scratch_card_amount: 2,
+          resource_type: '',
+          url: '',
         },
         color: color || '#666',
         bold: Boolean(bold),
@@ -867,6 +946,8 @@ function show(operatType, data) {
         not_show_background: 0,
         scratch_card_amount_type: 0,
         scratch_card_amount: 2,
+        resource_type: '',
+        url: '',
       },
       color: '#666',
       bold: false,

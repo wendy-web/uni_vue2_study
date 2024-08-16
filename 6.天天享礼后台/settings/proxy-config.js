@@ -2,7 +2,7 @@ const proxyConfigMappings = {
   dev: {
     prefix: '/api',
     target: 'https://ttxl-test.y1b.cn',
-  },
+    },
   location: {
     prefix: '/api',
     target: 'http://192.168.1.68:82',
