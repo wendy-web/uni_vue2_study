@@ -11,4 +11,5 @@ export default {
   goodsCats: (data) => request.post('/api/Pinduoduo/goodsCats', data),
   goodsOpt: (data) => request.post('/api/Pinduoduo/goodsOpt', data),
   goodsSearch: (data) => request.post('/api/Pinduoduo/goodsSearch', data),
+  shopGroup: (data) => request.post('/xdyhos/goods_group/shopGroup', data),
 }

@@ -24,7 +24,7 @@
             </n-space>
           </n-radio-group>
         </n-form-item>
-        <n-form-item v-if="model.items.type != 4" label="广告位" path="items.is_banner" w-400>
+        <n-form-item v-if="model.items.type != 4 && model.items.type > 0" label="广告位" path="items.is_banner" w-400>
           <n-switch v-model:value="model.items.is_banner" />
         </n-form-item>
         <template v-if="model.items.type === 5">
@@ -38,7 +38,7 @@
             />
           </n-form-item>
         </template>
-        <n-form-item v-if="model.items.type !== 4" label="跳转方式" path="items.is_jump">
+        <n-form-item v-if="model.items.type !== 4 && model.items.type > 0" label="跳转方式" path="items.is_jump">
           <n-select
             v-model:value="model.items.is_jump"
             :options="isJumpOptions"
@@ -159,6 +159,7 @@
               <n-space>
                 <n-radio :key="1" :value="1"> 默认 </n-radio>
                 <n-radio :key="2" :value="2"> 拼多多营销工具 </n-radio>
+                <n-radio :key="3" :value="3"> 拼多多频道推广 </n-radio>
               </n-space>
             </n-radio-group>
           </n-form-item>
@@ -313,7 +314,7 @@
                 <n-input-number
                         v-model:value="model.items.diy_red_packet_param.scratch_card_amount"
                         :min="2"
-                        :max="10"
+                        :max="100"
                         :precision="0"
                         :style="{ width: '120px' }"
                         :disabled="modalType === 1"
@@ -346,6 +347,29 @@
               </n-form-item>
             </div>
           </div>
+          <template v-if="model.items.is_main == 3">
+            <n-form-item label="拼多多推广位" path="detail.main_url" w-400>
+              <n-input v-model:value="model.items.main_url" :disabled="modalType === 1" />
+            </n-form-item>
+            <n-form-item label="频道来源" path="items.diy_red_packet_param.resource_type">
+              <n-select
+                      v-model:value="model.items.diy_red_packet_param.resource_type"
+                      :options="resourceOptions"
+                      :disabled="modalType === 1"
+                      style="width: 200px"
+              />
+            </n-form-item>
+            <n-form-item label="原活动链接（短链）" path="items.diy_red_packet_param.url" v-if="model.items.diy_red_packet_param.resource_type == 39998">
+              <n-input
+                      v-model:value="model.items.diy_red_packet_param.url"
+                      type="textarea"
+                      :style="{
+                        maxWidth: '400px',
+                      }"
+                      :disabled="modalType === 1"
+              />
+            </n-form-item>
+          </template>
         </template>
         <!-- 总统的内容 -->
         <template v-if="model.items.type !== 4">
@@ -622,7 +646,8 @@ import {
   pddOptions,
   amounttypeOptions,
   amountOptions,
-  amount2Options
+  amount2Options,
+  resourceOptions
 } from '../options';
 /**弹窗显示控制 */
 const showModal = ref(false)
@@ -1005,7 +1030,7 @@ function init(id) {
         xcxs = 2
         xcx.value = 2
       }
-      if (items.type == 3 && ((type_id && type_id == 'wxa918198f16869201') || items.is_main == 2)) {
+      if (items.type == 3 && ((type_id && type_id == 'wxa918198f16869201') || items.is_main == 2 || items.is_main == 3)) {
         xcxs = 3
         xcx.value = 3
       }
@@ -1068,6 +1093,8 @@ function init(id) {
           not_show_background: 0,
           scratch_card_amount_type: 0,
           scratch_card_amount: 2,
+          resource_type: '',
+          url: ''
         },
       },
     }

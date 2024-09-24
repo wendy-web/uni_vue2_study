@@ -28,10 +28,10 @@
             @keydown.enter="handleLogin"
           />
         </div>
-        <div mt-30 flex justify-between items-center>
+        <!-- <div mt-30 flex justify-between items-center>
           <n-image height="35" preview-disabled :src="codeURL" @click="getCaptcha" />
           <div w-100><n-input v-model:value="loginInfo.code" type="text" placeholder="验证码" /></div>
-        </div>
+        </div> -->
 
         <div mt-20>
           <n-checkbox :checked="isRemember" label="记住我" :on-update:checked="(val) => (isRemember = val)" />
@@ -48,12 +48,12 @@
 </template>
 
 <script setup>
-import { lStorage, setToken } from '@/utils'
-import { useStorage } from '@vueuse/core'
-import bgImg from '@/assets/images/login_bg.webp'
-import api from './api'
-import { addDynamicRoutes } from '@/router'
-import { useUserStore } from '@/store'
+import bgImg from '@/assets/images/login_bg.webp';
+import { addDynamicRoutes } from '@/router';
+import { useUserStore } from '@/store';
+import { lStorage, setToken } from '@/utils';
+import { useStorage } from '@vueuse/core';
+import api from './api';
 
 const title = import.meta.env.VITE_TITLE
 
@@ -85,14 +85,14 @@ async function handleLogin() {
     $message.warning('请输入用户名和密码')
     return
   }
-  if (!code) {
-    $message.warning('验证码不能为空')
-    return
-  }
+  // if (!code) {
+  //   $message.warning('验证码不能为空')
+  //   return
+  // }
   try {
     loading.value = true
     $message.loading('正在验证...')
-    const res = await api.login({ username, password: password.toString(), code })
+    const res = await api.login({ username, password: password.toString(), code: 1 })
     $message.success('登录成功')
     setToken('FICTITIOUS ORDERS')
     userStore.setUserInfo(res.data)
@@ -117,10 +117,10 @@ async function handleLogin() {
 }
 
 //获取验证码
-const codeURL = ref('')
-//默认执行一次
-getCaptcha()
-function getCaptcha() {
-  codeURL.value = 'https://ttxl-test.y1b.cn/apios/index/captcha?' + Date.now()
-}
+// const codeURL = ref('')
+// //默认执行一次
+// getCaptcha()
+// function getCaptcha() {
+//   codeURL.value = 'https://ttxl-test.y1b.cn/apios/index/captcha?' + Date.now()
+// }
 </script>

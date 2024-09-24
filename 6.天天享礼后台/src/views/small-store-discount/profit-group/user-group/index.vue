@@ -18,22 +18,18 @@
             v-model:value="queryItems.nick_name"
             type="text"
             placeholder="昵称"
+            clearable
             @keydown.enter="$table?.handleSearch"
           />
         </QueryBarItem>
         <QueryBarItem label="电话" :label-width="80">
           <n-input
-                  v-model:value="queryItems.mobile"
-                  type="text"
-                  placeholder="电话"
-                  @keydown.enter="$table?.handleSearch"
+            v-model:value="queryItems.mobile"
+            type="text"
+            placeholder="电话"
+            clearable
+            @keydown.enter="$table?.handleSearch"
           />
-        </QueryBarItem>
-        <QueryBarItem label="等级" :label-width="65">
-          <n-select v-model:value="queryItems.level" :options="levelOptions" />
-        </QueryBarItem>
-        <QueryBarItem label="归属上级" :label-width="65">
-          <n-select v-model:value="queryItems.pid" :options="parentOptions" />
         </QueryBarItem>
       </template>
     </CrudTable>
@@ -42,61 +38,89 @@
 </template>
 
 <script setup>
-import { NButton, NImage } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage, useDialog, NSwitch } from 'naive-ui'
-import operatSingle from './operatSingle.vue'
-import http from './api'
-defineOptions({ name: 'SingleColumnDiagram' })
+import { renderIcon } from '@/utils';
+import { NButton, useDialog, useMessage } from 'naive-ui';
+import http from './api';
+import operatSingle from './operatSingle.vue';
+defineOptions({ name: 'userStore' })
 //表格操作
 const $table = ref(null)
 /** QueryBar筛选参数（可选） */
-const queryItems = ref({
-})
+const queryItems = ref({})
 const active = ref(false)
 const active2 = ref(false)
-const levelOptions = [
-  {
-    label: '业务员',
-    value: 0,
-  },
-  {
-    label: '团长',
-    value: 1,
-  },
-]
-const parentOptions = ref({})
 onMounted(() => {
-  http.getParent({}).then((res) => {
-    if(res.code == 1){
-      parentOptions.value = res.data
-    }
-  })
   refresh()
 })
 
 function refresh() {
   $table.value?.handleSearch()
 }
-
 const columns = [
-  { title: 'ID', key: 'id', align: 'center' },
   { title: '昵称', key: 'nick_name', align: 'center' },
   { title: '手机号', key: 'mobile', align: 'center' },
-  { title: '等级', key: 'level', align: 'center',
+  {
+    title: '等级',
+    key: 'level',
+    align: 'center',
     render(row) {
       return ['业务员', '团长'][row.level]
     },
   },
-  { title: '团长开通时间', key: 'audit_date', align: 'center' },
-  { title: '当前绑定用户', key: 'send_card', align: 'center' },
-  { title: '累计绑定用户', key: 'send_cards', align: 'center' },
-  { title: '7天临时绑定', key: 'seven_cards', align: 'center' },
-  { title: '订单数', key: 'card_order', align: 'center' },
-  { title: '累计收益', key: 'card_profit', align: 'center' },
-  { title: '可提现', key: 'amount_money', align: 'center' },
-  { title: '已提现', key: 'withdraw_money', align: 'center' },
-  { title: '归属上级', key: 'pid', align: 'center' },
+  {
+    title: '团长开通时间',
+    key: 'audit_date',
+    align: 'center',
+  },
+  {
+    title: '当前绑定用户',
+    key: 'send_card',
+    align: 'center',
+    pid: 1,
+    sortOrder: false,
+    sorter: 'default',
+  },
+  {
+    title: '累计绑定用户',
+    key: 'send_cards',
+    align: 'center',
+    pid: 2,
+    sortOrder: false,
+    sorter: 'default',
+  },
+  {
+    title: '订单数',
+    key: 'card_order',
+    align: 'center',
+    pid: 3,
+    sortOrder: false,
+    sorter: 'default',
+  },
+  {
+    title: '累计收益',
+    key: 'card_profit',
+    align: 'center',
+    pid: 4,
+    sortOrder: false,
+    sorter: 'default',
+  },
+  {
+    title: '可提现',
+    key: 'amount_money',
+    align: 'center',
+    pid: 5,
+    sortOrder: false,
+    sorter: 'default',
+  },
+  {
+    title: '已提现',
+    key: 'withdraw_money',
+    align: 'center',
+    pid: 6,
+    sortOrder: false,
+    sorter: 'default',
+  },
+  // { title: '归属上级', key: 'pid', align: 'center' },
   {
     title: '操作',
     key: 'actions',

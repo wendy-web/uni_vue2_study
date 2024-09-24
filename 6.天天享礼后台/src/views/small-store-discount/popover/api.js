@@ -9,4 +9,7 @@ export default {
     getCouponList: (data) => request.post('/xdyhos/Goods/list', data),
     popoverSite: (data) => request.post('/xdyhos/popover/doSite', data),
     siteList: (data) => request.post('/xdyhos/popover/siteList', data),
+    goodsQueryList: (data) => request.post('/api/Get/goodsQuery', data),
+    goodsSearch: (data) => request.post('/api/Pinduoduo/goodsSearch', data),
+    getGoods: (data) => request.post('/xdyhos/goods/index', data),
 }

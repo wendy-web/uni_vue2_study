@@ -53,6 +53,15 @@
             @keydown.enter="$table?.handleSearch"
           />
         </QueryBarItem>
+        <QueryBarItem label="用户ID" :label-width="80">
+          <n-input-number
+            v-model:value="queryItems.uid"
+            type="text"
+            clearable
+            min="1"
+            @keydown.enter="$table?.handleSearch"
+          />
+        </QueryBarItem>
         <QueryBarItem label="收货人" :label-width="80">
           <n-input
             v-model:value="queryItems.charge_account"
@@ -247,6 +256,46 @@ const typeOptions = [
     label: '惠吃喝券',
     value: 20,
   },
+  {
+    label: '聚推客-库迪咖啡',
+    value: 21,
+  },
+  {
+    label: '1分购',
+    value: 22,
+  },
+  {
+    label: '聚推客-奈雪的茶',
+    value: 23,
+  },
+  {
+    label: '聚推客-瑞幸咖啡',
+    value: 24,
+  },
+  {
+    label: '聚推客-必胜客',
+    value: 25,
+  },
+  {
+    label: '聚推客-麦当劳',
+    value: 26,
+  },
+  {
+    label: '聚推客-星巴克',
+    value: 27,
+  },
+  {
+    label: '聚推客-肯德基',
+    value: 28,
+  },
+  {
+    label: '聚推客-电影',
+    value: 29,
+  },
+  {
+    label: '聚推客-打车出行',
+    value: 30,
+  },
 ]
 const ptOptions = [
   {
@@ -288,6 +337,14 @@ const ptOptions = [
   {
     label: '惠吃喝券',
     value: 9,
+  },
+  {
+    label: '聚推客联盟',
+    value: 10,
+  },
+  {
+    label: '1分购',
+    value: 11,
   },
 ]
 //推广位
@@ -409,6 +466,8 @@ const columns = ref([
   },
   { title: '支付时间', key: 'pay_time', align: 'center' },
   { title: '退款时间', key: 'refund_time', align: 'center' },
+  { title: '昵称', key: 'nick_name', align: 'center' },
+  { title: '用户ID', key: 'uid', align: 'center' },
   { title: '收货人', key: 'charge_account', align: 'center' },
   { title: '完成时间', key: 'complete_time', align: 'center' },
   { title: '商品编号', key: 'goods_skuCode', align: 'center' },

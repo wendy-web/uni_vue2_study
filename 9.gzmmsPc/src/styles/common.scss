@@ -1,0 +1,21 @@
+:deep(.el-table__header-wrapper .el-checkbox__inner) {
+  width: 20px;
+  height: 20px;
+}
+
+/* 如果需要调整选中后勾选框里的对勾大小 */
+:deep(.el-table__header-wrapper .el-checkbox__input.is-checked .el-checkbox__inner::after) {
+  left: 7px;
+  top: 4px;
+}
+
+:deep(.el-table__body .el-checkbox__inner) {
+  width: 20px;
+  height: 20px;
+}
+
+/* 如果需要调整选中后勾选框里的对勾大小 */
+:deep(.el-table__body .el-checkbox__input.is-checked .el-checkbox__inner::after) {
+  left: 7px;
+  top: 4px;
+}

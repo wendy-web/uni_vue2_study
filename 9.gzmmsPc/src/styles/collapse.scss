@@ -1,0 +1,23 @@
+/* 折叠面板的样式 */
+.el-collapse {
+  --el-collapse-border-color: var(--el-fill-color-blank);
+  padding-bottom: 40px;
+}
+/* 折叠面板collapse-item的标题的样式 */
+:deep(.el-collapse > .el-collapse-item) {
+ background-color: var(--el-bg-color)
+}
+/* 折叠面板collapse-item的标题的样式 */
+:deep(.el-collapse > .el-collapse-item > .el-collapse-item__header) {
+  padding-left: 10px;
+  width: auto;
+}
+/* 折叠面板collapse-item的图标的样式 */
+:deep(.el-collapse > .el-collapse-item > .el-collapse-item__header > .el-collapse-item__arrow) {
+  margin-left: 0;
+  order: -1;
+}
+/* 折叠面板el-collapse-item__content的样式 */
+:deep(.el-collapse > .el-collapse-item > .el-collapse-item__wrap > .el-collapse-item__content) {
+  padding-bottom: 10px;
+}

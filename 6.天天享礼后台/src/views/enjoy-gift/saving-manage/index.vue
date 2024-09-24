@@ -14,6 +14,9 @@
         <QueryBarItem label="订单号" :label-width="80">
           <n-input v-model:value="queryItems.trade_no" type="text" clearable @keydown.enter="$table?.handleSearch" />
         </QueryBarItem>
+        <QueryBarItem label="用户ID" :label-width="80">
+          <n-input-number v-model:value="queryItems.uid" type="text" min="1" clearable @keydown.enter="$table?.handleSearch" />
+        </QueryBarItem>
         <QueryBarItem label="下单时间" :label-width="80" :content-width="340">
           <n-date-picker
             v-model:formatted-value="queryItems.create_time"
@@ -101,6 +104,15 @@ const columns = ref([
   { title: '红包抵扣订单数', key: 'packet_order', align: 'center', width: 100 },
   { title: '用户ID', key: 'uid', align: 'center', width: 100 },
   { title: '关联商品订单号', key: 'third_order_id', align: 'center', width: 220 },
+  {
+    title: '免豆特权',
+    key: 'is_add_to',
+    align: 'center',
+    width: 100,
+    render(row, index) {
+      return row.is_add_to == 10 ? '已开通' : '未开通'
+    },
+  },
   {
     title: '订单状态',
     key: 'status',

@@ -18,8 +18,8 @@
             v-model:value="queryItems.goods_number"
             type="text"
             placeholder="请输入分组名称"
-            @keydown.enter="$table?.handleSearch"
             clearable
+            @keydown.enter="$table?.handleSearch"
           />
         </QueryBarItem>
         <QueryBarItem label="系统类型" :label-width="80">
@@ -32,17 +32,16 @@
 </template>
 
 <script setup>
-import { NButton } from 'naive-ui'
-import opreatGroup from './opreatGroup/index.vue'
-import { renderIcon } from '@/utils'
-import { useMessage, useDialog } from 'naive-ui'
-import { systemOptions } from './options'
-import http from './api'
+import { renderIcon } from '@/utils';
+import { NButton, useDialog, useMessage } from 'naive-ui';
+import http from './api';
+import opreatGroup from './opreatGroup/index.vue';
+import { systemOptions } from './options';
 defineOptions({ name: 'storeGoodsList' })
 //表格操作
 const $table = ref(null)
 /** QueryBar筛选参数（可选） */
-const queryItems = ref({ })
+const queryItems = ref({})
 
 onMounted(() => {
   refresh()

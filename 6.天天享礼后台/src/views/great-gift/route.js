@@ -7,8 +7,9 @@ export default {
   meta: {
     title: '天天兑大礼',
     icon: 'icon-park-outline:shop',
-    requireAuth: false,
     order: 7,
+    requireAuth: true,
+    role: ['interior'],
   },
   children: [
     {

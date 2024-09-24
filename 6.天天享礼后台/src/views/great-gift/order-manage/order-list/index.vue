@@ -56,8 +56,8 @@
 </template>
 
 <script setup>
-import axios from 'axios'
-import http from './api'
+import axios from 'axios';
+import http from './api';
 //表格操作
 const $table = ref(null)
 /** QueryBar筛选参数（可选） */
@@ -102,6 +102,10 @@ const typeOptions = [
   {
     label: '卡密',
     value: 1,
+  },
+  {
+    label: '自营',
+    value: 2,
   },
 ]
 
@@ -164,7 +168,7 @@ const columns = ref([
     key: 'goods_type',
     align: 'center',
     render(row, index) {
-      return row.goods_type === 1 ? '卡密' : '直充'
+      return ['直充', '卡密', '自营'][row.goods_type]
     },
   },
   {

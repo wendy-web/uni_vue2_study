@@ -44,10 +44,9 @@
 </template>
 
 <script setup>
-import http from './api'
-import { useMessage } from 'naive-ui'
-import { values } from 'lodash-es'
-defineOptions({ name: 'SingleColumnDiagram' })
+import { useMessage } from 'naive-ui';
+import http from './api';
+defineOptions({ name: 'eventNotice' })
 const contModel = ref({
   title: '',
   temp_id: '',

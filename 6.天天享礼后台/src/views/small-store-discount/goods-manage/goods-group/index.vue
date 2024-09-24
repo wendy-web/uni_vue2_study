@@ -23,6 +23,9 @@
             @keydown.enter="$table?.handleSearch"
           />
         </QueryBarItem>
+        <QueryBarItem label="分组类型" :label-width="80">
+          <n-select v-model:value="queryItems.is_rebate" :options="rebateOptions" clearable />
+        </QueryBarItem>
         <QueryBarItem label="系统类型" :label-width="80">
           <n-select v-model:value="queryItems.system" :options="systemOptions" clearable />
         </QueryBarItem>
@@ -42,7 +45,7 @@ import { resolveDirective, withDirectives } from 'vue';
 import http from './api';
 import eliteIdOptions from './opreatGroup/eliteIdOptions.js';
 import opreatGroup from './opreatGroup/index.vue';
-import { systemOptions } from './options';
+import { rebateOptions, systemOptions } from './options';
 defineOptions({ name: 'storeGoodsList' })
 //表格操作
 const $table = ref(null)
@@ -59,6 +62,14 @@ function refresh() {
 const has = resolveDirective('has')
 const columns = [
   { title: '分组名称', key: 'title', align: 'center' },
+  {
+    title: '分组类型',
+    key: 'is_rebate',
+    align: 'center',
+    render(row) {
+      return ['默认', '推广返现', '赚积分页面'][row.is_rebate]
+    },
+  },
   {
     title: '系统类型',
     key: 'system',

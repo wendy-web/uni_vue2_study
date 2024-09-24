@@ -38,7 +38,7 @@ import { renderIcon } from '@/utils';
 import { NButton, NImage, NSwitch, useDialog, useMessage } from 'naive-ui';
 import http from './api';
 import operatSingle from './operatSingle.vue';
-defineOptions({ name: 'SingleColumnDiagram' })
+defineOptions({ name: 'PopoverList' })
 //表格操作
 const $table = ref(null)
 /** QueryBar筛选参数（可选） */
@@ -109,7 +109,6 @@ const statusOptions = [
     value: 0,
   },
 ]
-
 onActivated(() => {
   refresh()
 })

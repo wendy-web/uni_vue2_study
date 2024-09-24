@@ -13,16 +13,16 @@
     >
       <n-form-item label="标题" path="contents">
         <n-input
-            v-model:value="model.contents"
-            :style="{
+          v-model:value="model.contents"
+          :style="{
             maxWidth: '400px',
           }"
         />
       </n-form-item>
       <n-form-item label="推广位ID" path="content">
         <n-input
-                v-model:value="model.content"
-                :style="{
+          v-model:value="model.content"
+          :style="{
             maxWidth: '400px',
           }"
         />
@@ -54,15 +54,15 @@
       </div>
     </n-form>
   </CommonPage>
-  <operat-group-detail ref="operatGroupDetailRef" :ck-ids="ckIds"  @addList="addListHandle" />
+  <operat-group-detail ref="operatGroupDetailRef" :ck-ids="ckIds" @addList="addListHandle" />
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
-import { NButton, useMessage, NInput, NInputNumber, NSwitch, NDatePicker } from 'naive-ui'
-import { renderIcon, formatDateTime } from '@/utils'
-import http from './api'
-import operatGroupDetail from './operatGroupDetail.vue'
+import { renderIcon } from '@/utils';
+import { NButton, NInput, NInputNumber, useMessage } from 'naive-ui';
+import { onMounted, ref } from 'vue';
+import http from './api';
+import operatGroupDetail from './operatGroupDetail.vue';
 //表单数据
 const model = ref({
   id: '',
@@ -72,19 +72,19 @@ const model = ref({
 })
 //校验数据
 const rules = ref({
-    contents: {
-        required: true,
-        trigger: ['blur', 'input'],
-        message: '标题不能为空',
+  contents: {
+    required: true,
+    trigger: ['blur', 'input'],
+    message: '标题不能为空',
+  },
+  group: {
+    required: true,
+    validator: function (rule, value) {
+      return value.length > 0
     },
-    group: {
-        required: true,
-        validator: function (rule, value) {
-            return value.length > 0
-        },
-        trigger: ['blur', 'input'],
-        message: '请勾选该分组下的优惠券',
-    },
+    trigger: ['blur', 'input'],
+    message: '请勾选该分组下的优惠券',
+  },
 })
 /**表单 */
 const formRef = ref(null)
@@ -209,23 +209,23 @@ const columns = [
     render(row, index) {
       return [
         h(
-                NButton,
-                {
-                  size: 'tiny',
-                  type: 'primary',
-                  style: {
-                    'margin-right': '10px',
-                  },
-                  secondary: true,
-                  onClick: () => {
-                    const currentIndex = row.current_index
-                    const currData = tableData.value[currentIndex]
-                    tableData.value.splice(currentIndex, 1)
-                    tableData.value.unshift(currData)
-                    resetIndex()
-                  },
-                },
-                { default: () => '置顶', icon: renderIcon('typcn:arrow-up-thick', { size: 14 }) }
+          NButton,
+          {
+            size: 'tiny',
+            type: 'primary',
+            style: {
+              'margin-right': '10px',
+            },
+            secondary: true,
+            onClick: () => {
+              const currentIndex = row.current_index
+              const currData = tableData.value[currentIndex]
+              tableData.value.splice(currentIndex, 1)
+              tableData.value.unshift(currData)
+              resetIndex()
+            },
+          },
+          { default: () => '置顶', icon: renderIcon('typcn:arrow-up-thick', { size: 14 }) }
         ),
         h(NInputNumber, {
           value: row._index,
@@ -247,29 +247,31 @@ const columns = [
             if (currInputIndex === inputValue) return
             const currData = tableData.value[currInputIndex]
             const targetIndex = tableData.value[inputValue]
-            tableData.value[inputValue] = currData
-            tableData.value[currInputIndex] = targetIndex
+            // tableData.value[inputValue] = currData
+            // tableData.value[currInputIndex] = targetIndex
+            tableData.value.splice(currInputIndex, 1)
+            tableData.value.splice(inputValue, 0, currData)
             resetIndex()
           },
         }),
         h(
-                NButton,
-                {
-                  size: 'tiny',
-                  type: 'primary',
-                  style: {
-                    'margin-right': '10px',
-                  },
-                  secondary: true,
-                  onClick: () => {
-                    const currentIndex = row.current_index
-                    const currData = tableData.value[currentIndex]
-                    tableData.value.splice(currentIndex, 1)
-                    tableData.value.push(currData)
-                    resetIndex()
-                  },
-                },
-                { default: () => '置底', icon: renderIcon('typcn:arrow-down-thick', { size: 14 }) }
+          NButton,
+          {
+            size: 'tiny',
+            type: 'primary',
+            style: {
+              'margin-right': '10px',
+            },
+            secondary: true,
+            onClick: () => {
+              const currentIndex = row.current_index
+              const currData = tableData.value[currentIndex]
+              tableData.value.splice(currentIndex, 1)
+              tableData.value.push(currData)
+              resetIndex()
+            },
+          },
+          { default: () => '置底', icon: renderIcon('typcn:arrow-down-thick', { size: 14 }) }
         ),
       ]
     },
@@ -329,21 +331,16 @@ const rightFileList = ref([])
 function init() {
   http.getXq().then(async (res) => {
     if (res.code != 1) return
-    const {
-      id,
-      contents,
-      content,
-      list,
-    } = res.data
-      ckIds.value = res.data.ckIds ? res.data.ckIds : []
-      let _list = list.filter((item, index) => {
-          if (item.coupon_id) {
-              item._index = index + 1
-              item.current_index = index
-              return true
-          }
-          return false
-      })
+    const { id, contents, content, list } = res.data
+    ckIds.value = res.data.ckIds ? res.data.ckIds : []
+    let _list = list.filter((item, index) => {
+      if (item.coupon_id) {
+        item._index = index + 1
+        item.current_index = index
+        return true
+      }
+      return false
+    })
     const group = _list.map((item) => item.coupon_id)
     model.value = {
       id,

@@ -1,0 +1,12 @@
+@keyframes rotate-animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
+  }
+}
+
+.step-icon {
+  animation: rotate-animate 1s;
+}

@@ -1,0 +1,270 @@
+@import "src/styles/variables.module";
+@import "src/styles/element-plus";
+@import "./sidebar.scss";
+@import "./tailwind.scss";
+@import "./device.scss";
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+// main-container global css
+.app-container {
+  // padding: 20px;
+  padding: 0 20px;
+  padding-top: 10px;
+}
+
+.mh-card {
+  padding: 14px 20px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  // box-shadow: 6px 2px 6px #ccc;
+  box-shadow: var(--el-box-shadow-light);
+  background-color: var(--el-bg-color);
+  min-height: 500px;
+}
+
+// 修改el-button在表格中的间距问题
+.el-table__cell > .cell > .el-button + .el-button {
+  /* margin-left: 12px; */
+  margin-left: 0 !important;
+  margin-right: 10px;
+}
+.el-table__cell > .cell > .el-button {
+  &:first-child {
+    margin-right: 10px;
+  }
+}
+
+// 主要内容样式
+.app-card {
+  padding: 14px 20px;
+  margin-bottom: 6px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  // box-shadow: 6px 2px 6px #ccc;
+  box-shadow: var(--el-box-shadow-light);
+  background-color: var(--el-bg-color);
+  font-size: 14px;
+  color: var(--el-text-color-regular);
+}
+// vxe-表格内,仿input框的box样式
+.ownInput {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #e5e7eb;
+  border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+  width: 100%;
+  padding: 0 8px;
+  box-sizing: border-box;
+
+  &::before {
+    content: attr(default-placeholder);
+    color: var(--el-input-text-color, var(--el-text-color-placeholder));
+
+    cursor: pointer;
+  }
+}
+
+// el-table表格内span样式 增加下边距与 form-item的单元格持平
+.table-span {
+  display: inline-block;
+  padding-bottom: 14px;
+}
+
+// 页面标题样式
+.header-title {
+  font-weight: bold;
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
+// 搜索框样式
+.search-card {
+  padding: 14px 0 0 20px;
+  margin-bottom: 6px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  // box-shadow: 6px 2px 6px #ccc;
+  box-shadow: var(--el-box-shadow-light);
+  background-color: var(--el-bg-color);
+}
+
+.table-row-header {
+  background-color: var(--el-color-primary-light-9) !important;
+  color: var(--el-text-color-regular);
+}
+
+.table-row-header-ectype {
+  background-color: var(--el-color-info-light-9) !important;
+  // background-color: var(--el-fill-color-light) !important;
+}
+
+/* 
+  手撸表格样式  
+  手撸表格是为了配合打印
+  elementPlus的表格在打印有样式问题
+*/
+.table-container {
+  table {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    border-collapse: collapse;
+    color: #454545;
+    table-layout: auto;
+    width: 100%;
+    text-align: center;
+    border: 0.5px solid #dadcde;
+
+    thead {
+      border-top-width: 0.5px;
+      border-top-style: solid;
+      border-top-color: #dadcde;
+      line-height: 40px;
+      font-weight: bold;
+      color: #909399;
+    }
+    tr {
+      border-top-width: 0.5px;
+      border-top-style: solid;
+      border-top-color: #dadcde;
+      line-height: 23px;
+    }
+    td {
+      padding: 5px 10px;
+      font-size: 14px;
+      font-family: Verdana;
+      width: 100px;
+      word-break: break-all; // 元素换行
+      border-right: 0.5px solid #dadcde;
+    }
+    tbody {
+      color: #606266;
+    }
+    // 斑马纹效果stripe
+    tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+    tbody tr:nth-child(odd) {
+      background: #fff;
+    }
+  }
+  // 手撸表格内容为空时的样式
+  .table-empty {
+    min-height: 60px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #ebeef5;
+    border-left: 1px solid #ebeef5;
+    border-right: 1px solid #ebeef5;
+    .table-empty-text {
+      line-height: 60px;
+      width: 50%;
+      color: #909399;
+    }
+  }
+}
+
+.app-content {
+  padding: 20px;
+  background-color: var(--el-bg-color);
+  box-sizing: border-box;
+}
+
+.search-warpper {
+  padding: 18px 0 0 10px;
+  margin-bottom: 10px;
+}
+.card-auto {
+  position: absolute;
+  inset: 10px 20px 100px;
+}
+
+svg {
+  display: inline-block;
+}
+
+// 过渡样式
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all 0.2s;
+}
+
+/* 可能为enter失效，拆分为 enter-from和enter-to */
+.fade-transform-enter-from {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+.fade-transform-enter-to {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.text-primary {
+  color: var(--el-text-color-primary);
+  font-size: 14px;
+}
+
+/* 设置plus-search搜索表单搜索在前,重置在后开始 */
+.plus-search__button__wrapper .el-button {
+  order: 2;
+}
+
+.plus-search__button__wrapper .el-button--primary {
+  order: 1;
+  margin-left: 0;
+  margin-right: 20px;
+}
+
+.plus-search__button__wrapper .el-link {
+  order: 3;
+}
+/* 设置plus-search搜索表单搜索在前,重置在后结束 */
+
+/* 段落标题样式 */
+.paragraph-content {
+  position: relative;
+  .paragraph-title {
+    font-size: 14px;
+    display: inline-block;
+    width: max-content;
+    padding: 4px 20px;
+    // background-color: var(--el-color-primary-light-8);
+    background-color: var(--el-color-info-light-8);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      background-color: #e5e5e5;
+      height: 1px;
+    }
+  }
+}
+
+div,
+span {
+  font-family:
+    PingFang SC,
+    PingFang SC-Regular;
+}

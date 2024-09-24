@@ -16,10 +16,10 @@
 </template>
 
 <script setup>
-import API from './api'
-import { h, onMounted } from 'vue'
-import { NButton, useDialog, useMessage } from 'naive-ui'
-import operatAccount from './operatAccount.vue'
+import { NButton, useDialog, useMessage } from 'naive-ui';
+import { h, onMounted } from 'vue';
+import API from './api';
+import operatAccount from './operatAccount.vue';
 
 /**搜索 */
 const username = ref('')

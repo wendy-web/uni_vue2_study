@@ -8,8 +8,9 @@ export default {
   meta: {
     title: '点亮中国',
     icon: 'material-symbols:light-mode-outline-sharp',
-    requireAuth: false,
     order: 4,
+    requireAuth: true,
+    role: ['interior'],
   },
   children: [
     {

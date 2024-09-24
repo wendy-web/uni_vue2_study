@@ -1,0 +1,19 @@
+@import "@/styles/collapse.scss";
+@import "@/styles/common.scss";
+:deep(.el-tabs__header) {
+  margin-bottom: 0;
+  margin-top: 10px;
+  padding-left: 10px;
+  background-color: #fff;
+}
+:deep(.el-table .el-table__cell) {
+  padding: 4px 0;
+}
+// 检验信息输入框异常标红样式
+:deep(.warn-text .el-input__inner) {
+  color: var(--el-color-danger);
+}
+:deep(.warn-text .el-input__wrapper) {
+  font-weight: bold;
+  box-shadow: 0 0 0 1px var(--el-color-danger) inset;
+}

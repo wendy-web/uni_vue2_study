@@ -8,8 +8,9 @@ export default {
   meta: {
     title: '小店有惠',
     icon: 'icon-park-outline:shop',
-    requireAuth: false,
     order: 5,
+    requireAuth: true,
+    role: ['interior'],
   },
   children: [
     // {
@@ -105,6 +106,17 @@ export default {
             role: ['goodsgroup_index_2'],
           },
         },
+        {
+          name: 'shopGroup',
+          path: 'shop-group',
+          component: () => import('@/views/small-store-discount/goods-manage/shop-group/index.vue'),
+          meta: {
+            title: '电商分组',
+            icon: 'fluent-mdl2:hard-drive-group',
+            requireAuth: true,
+            role: ['goodsgroup_shoplist_2'],
+          },
+        },
       ],
     },
     {
@@ -145,6 +157,19 @@ export default {
       },
     },
     {
+      name: 'smallPagePopover',
+      path: 'small-page-popover/list',
+      component: () => import('@/views/small-store-discount/page-popover/index.vue'),
+      meta: {
+        title: '页面弹窗',
+        icon: 'fa6-regular:window-restore',
+        order: 16,
+        keepAlive: true,
+        requireAuth: true,
+        role: ['popover_pagelist_2'],
+      },
+    },
+    {
       name: 'siteManageStore',
       path: 'site-manage-store',
       component: () => import('@/views/small-store-discount/site-group/index.vue'),
@@ -173,8 +198,8 @@ export default {
           path: 'home-image/list',
           component: () => import('@/views/small-store-discount/home-image/index.vue'),
           meta: {
-            title: '首页单例图',
-            icon: 'fa6-regular:image',
+            title: '小店有惠配置',
+            icon: 'majesticons:home-line',
             order: 2,
             keepAlive: true,
             requireAuth: true,
@@ -231,6 +256,17 @@ export default {
             keepAlive: true,
             requireAuth: true,
             role: ['team_withdrawlist_2'],
+          },
+        },
+        {
+          name: 'teamOrder',
+          path: 'team-order',
+          component: () => import('@/views/small-store-discount/profit-group/team-order/index.vue'),
+          meta: {
+            title: '团长收益订单',
+            icon: 'mdi:order-alphabetical-descending',
+            requireAuth: true,
+            role: ['team_orderlist_2'],
           },
         },
       ],

@@ -102,7 +102,7 @@ const columns = [
             secondary: true,
             onClick: () => removeCoupon(row),
           },
-          { default: () => '删除', icon: renderIcon('material-symbols:cancel-outline-rounded', { size: 14 }) }
+          { default: () => '删除', icon: renderIcon('fa6-regular:trash-can', { size: 14 }) }
         ),
       ]
     },

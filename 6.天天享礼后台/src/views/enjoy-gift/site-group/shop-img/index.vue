@@ -51,35 +51,51 @@
           label-width="130px"
           require-mark-placement="right-hanging"
         >
-          <n-form-item label="新人未中奖版块" path="is_advertisement">
+          <n-form-item label="扫码未中奖页面" path="is_advertisement">
             <n-switch v-model:value="isNewLosing" @update:value="newLosingHandle" />
           </n-form-item>
-          <div style="font-size: 12px; color: #999; margin-top: -20px">开启表示看视频积分翻倍，关闭则显示新人版块</div>
+          <div style="font-size: 12px; color: #999; margin-top: -20px">开启：使用原始送积分页面；关闭：使用扫码未中奖新页面（新用户）</div>
         </n-form>
-        <div style="font-size: 16px; padding: 10px 0">未中奖版块场景配置</div>
-        <div>
-          <n-form
-            ref="formContRef"
-            mt-10
-            mr-100
-            label-placement="left"
-            label-width="130px"
-            require-mark-placement="right-hanging"
-            :model="pathModel"
-          >
-            <n-form-item label="场景一：领券" path="contents">
-              <n-switch v-model:value="pathModel.contents" />
-            </n-form-item>
-            <n-form-item label="场景二：抽奖" path="content">
-              <n-switch v-model:value="pathModel.content" />
-            </n-form-item>
-            <div style="font-size: 12px; color: #999; margin-top: -20px">
-              至少要开启一个场景，当两个场景都开启时将随机展示
-            </div>
-            <div mt-10 flex justify-center w-380>
-              <n-button type="primary" @click="newpathHandle">确认并提交</n-button>
-            </div>
-          </n-form>
+        <n-form
+                ref="formContRef"
+                mt-30
+                mr-100
+                label-placement="left"
+                label-width="130px"
+                require-mark-placement="right-hanging"
+                v-if="isNewLosing"
+        >
+          <n-form-item label="原始送积分页面" path="is_advertisement2">
+            <n-switch v-model:value="isNewLosing2" @update:value="newLosingHandle2" />
+          </n-form-item>
+          <div style="font-size: 12px; color: #999; margin-top: -20px">开启：无看视频积分翻倍按钮（只针对新用户生效）</div>
+        </n-form>
+        <div v-if="!isNewLosing">
+          <div style="font-size: 16px; padding: 10px 0">扫码未中奖新页面（新用户）</div>
+          <div>
+            <n-form
+              ref="formContRef"
+              mt-10
+              mr-100
+              label-placement="left"
+              label-width="140px"
+              require-mark-placement="right-hanging"
+              :model="pathModel"
+            >
+              <n-form-item label="场景一：翻牌动画" path="contents">
+                <n-switch v-model:value="pathModel.contents" />
+              </n-form-item>
+              <n-form-item label="场景二：旋转木马" path="content">
+                <n-switch v-model:value="pathModel.content" />
+              </n-form-item>
+              <div style="font-size: 12px; color: #999; margin-top: -20px">
+                至少要开启一个场景，当两个场景都开启时将随机展示
+              </div>
+              <div mt-10 flex justify-center w-380>
+                <n-button type="primary" @click="newpathHandle">确认并提交</n-button>
+              </div>
+            </n-form>
+          </div>
         </div>
       </div>
       <n-form
@@ -411,15 +427,27 @@ function zmXq() {
   })
 }
 const isNewLosing = ref(false)
+const isNewLosing2 = ref(false)
 function newXq() {
   http.newXq().then((res) => {
     if (res.code != 1 && !res.data) return
     isNewLosing.value = Boolean(res.data.contents)
+    isNewLosing2.value = Boolean(res.data.content)
   })
 }
 function newLosingHandle(value) {
   console.log('value', value)
   http.newLosing({ contents: Number(value) }).then((res) => {
+    if (res.code == 1) {
+      message.success(res.msg)
+    } else {
+      message.error(res.msg)
+    }
+  })
+}
+function newLosingHandle2(value) {
+  console.log('value', value)
+  http.newLosing({ content: Number(value) }).then((res) => {
     if (res.code == 1) {
       message.success(res.msg)
     } else {

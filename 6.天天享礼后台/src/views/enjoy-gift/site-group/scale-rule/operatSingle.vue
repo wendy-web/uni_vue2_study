@@ -24,7 +24,7 @@
       }"
     >
       <n-form-item label="品牌" path="tag">
-        <n-select v-model:value="model.tag" :options="pageOptions" :disabled="modalType === 1" style="width: 200px" />
+        <n-select v-model:value="model.tag" :options="statusOptions" :disabled="modalType === 1" style="width: 200px" />
       </n-form-item>
       <n-form-item label="小店一级分佣" path="one_scale" w-400>
         <n-input-number v-model:value="model.one_scale" :disabled="modalType === 1" /> %
@@ -32,16 +32,20 @@
       <n-form-item label="小店团长分佣" path="two_scale" w-400>
         <n-input-number v-model:value="model.two_scale" :disabled="modalType === 1" /> %
       </n-form-item>
-      <n-form-item label="天天返利分佣" path="user_scale" w-400>
+      <n-form-item label="天天返利分佣(非省钱卡)" path="user_scale" w-400>
         <n-input-number v-model:value="model.user_scale" :disabled="modalType === 1" /> %
+      </n-form-item>
+      <n-form-item label="天天返利分佣(省钱卡)" path="vip_scale" w-400>
+        <n-input-number v-model:value="model.vip_scale" :disabled="modalType === 1" /> %
       </n-form-item>
     </n-form>
   </n-modal>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useMessage } from 'naive-ui'
-import http from './api'
+import { useMessage } from 'naive-ui';
+import { ref } from 'vue';
+import http from './api';
+import { statusOptions } from './options';
 
 /**弹窗显示控制 */
 const showModal = ref(false)
@@ -56,7 +60,6 @@ const formRef = ref(null)
 const message = useMessage()
 //表单数据
 const model = ref({})
-//校验数据
 //校验数据
 const rules = ref({
   tag: {
@@ -73,36 +76,13 @@ const rules = ref({
   },
   user_scale: {
     required: true,
-    message: '天天返利分佣不能为空',
+    message: '天天返利分佣(非省钱卡)不能为空',
+  },
+  vip_scale: {
+    required: true,
+    message: '天天返利分佣(省钱卡)不能为空',
   },
 })
-//品牌
-const pageOptions = [
-  {
-    label: '乐刷',
-    value: 1,
-  },
-  {
-    label: '京东',
-    value: 2,
-  },
-  {
-    label: '海威',
-    value: 3,
-  },
-  {
-    label: '千猪',
-    value: 4,
-  },
-  {
-    label: '拼多多',
-    value: 5,
-  },
-  {
-    label: '心链',
-    value: 6,
-  },
-]
 /**表单验证 */
 function handleValidateButtonClick() {
   formRef.value?.validate((errors) => {
@@ -128,8 +108,8 @@ function show(operatType, data) {
 
   if (operatType !== 3) {
     http.getSingleImage({ id: data.id }).then((res) => {
-      let { id, tag, one_scale, two_scale, user_scale } = res.data
-      model.value = { id, tag, one_scale, two_scale, user_scale }
+      let { id, tag, one_scale, two_scale, user_scale, vip_scale } = res.data
+      model.value = { id, tag, one_scale, two_scale, user_scale, vip_scale }
       showModal.value = true
     })
   } else {
@@ -138,6 +118,7 @@ function show(operatType, data) {
       one_scale: 0,
       two_scale: 0,
       user_scale: 0,
+      vip_scale: 0,
     }
     setTimeout(() => {
       showModal.value = true

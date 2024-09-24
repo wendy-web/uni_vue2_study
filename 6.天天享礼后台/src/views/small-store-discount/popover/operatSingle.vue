@@ -38,7 +38,7 @@
       <n-form-item label="排序" path="sort" w-400>
         <n-input v-model:value="model.sort" :disabled="modalType === 1" />
       </n-form-item>
-      <n-form-item label="商品" path="goods_id" w-700>
+      <!--<n-form-item label="商品" path="goods_id" w-700>
         <n-select
           v-model:value="model.goods_id"
           :options="couponOptions"
@@ -48,7 +48,14 @@
           remote
           @search="handleSearch"
         />
+      </n-form-item>-->
+      <n-form-item label="选择商品" path="goods_id" w-800 mb-10>
+        <n-button ml-10 @click="selectJdListHandle"> 选择商品 </n-button>
       </n-form-item>
+      <div style="padding-left: 120px;margin-top:-30px;">
+        <p>{{model.skuName}}</p>
+        <p>{{model.type_id}}</p>
+      </div>
       <n-form-item label="彬纷图片" path="image">
         <n-upload
           v-if="showModal"
@@ -99,17 +106,32 @@
       </n-form-item>
     </n-form>
   </n-modal>
+  <!-- 商品 -->
+  <sel-operat-jd-list ref="selOperatJdListRef" @selectList="selectListHandle" :ck-system="ckSystem" />
 </template>
 <script setup>
 import { ref } from 'vue';
 import { useMessage } from 'naive-ui';
 import http from './api';
-
+import selOperatJdList from './selOperatJdList.vue';
 /**弹窗显示控制 */
 const showModal = ref(false)
 /**弹窗类型 1.查看 2.修改,3.新增*/
 const modalType = ref(3)
 const modalTitle = ref('新增')
+const selOperatJdListRef = ref(null)
+const ckSystem = ref(0)
+// 打开京东可选
+function selectJdListHandle() {
+    selOperatJdListRef.value.show()
+}
+// 京东商品的选择
+function selectListHandle(selectList) {
+  model.value.skuName = selectList.title
+  model.value.type_id = selectList.coupon_id
+  model.value.itemId = selectList.itemId
+  model.value.goods_sign = selectList.goods_sign
+}
 /**弹窗取消 */
 function onNegativeClick() {}
 /**表单 */
@@ -232,6 +254,8 @@ function show(operatType, data) {
         id,
         title,
         goods_id,
+        type_id,
+        skuName,
         image,
         image2,
         image3,
@@ -242,6 +266,8 @@ function show(operatType, data) {
         id,
         title,
         goods_id: goods_id || null,
+        type_id: type_id || null,
+        skuName: skuName || null,
         image,
         image2,
         image3,
@@ -299,17 +325,18 @@ function show(operatType, data) {
   }
 }
 
-const couponOptions = ref([])
+//const couponOptions = ref([])
 const loading = ref([false])
 function handleSearch(goods_name = '') {
   loading.value = true;
   const goods_id = model.value.goods_id;
   const system = model.value.device_type;
+  ckSystem.value = system;
   const params = {
     goods_name,
     system,
   };
-  http.getCouponList(params).then((res) => {
+  /*http.getCouponList(params).then((res) => {
     loading.value = false
     let list = res.data.list.filter(function (item) {
       return item.status == 1 || item.id == goods_id;
@@ -321,7 +348,7 @@ function handleSearch(goods_name = '') {
         disabled: item.status == 0,
       }
     })
-  })
+  })*/
 }
 /**暴露给父组件使用 */
 defineExpose({

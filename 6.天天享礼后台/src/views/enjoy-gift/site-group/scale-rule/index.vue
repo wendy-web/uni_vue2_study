@@ -24,42 +24,16 @@
 </template>
 
 <script setup>
-import { NButton, NImage } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import { useMessage, useDialog, NSwitch } from 'naive-ui'
-import operatSingle from './operatSingle.vue'
-import http from './api'
-defineOptions({ name: 'SingleColumnDiagram' })
+import { renderIcon } from '@/utils';
+import { NButton, useDialog, useMessage } from 'naive-ui';
+import http from './api';
+import operatSingle from './operatSingle.vue';
+import { statusOptions } from './options';
+defineOptions({ name: 'SCleRule' })
 //表格操作
 const $table = ref(null)
 /** QueryBar筛选参数（可选） */
 const queryItems = ref({})
-const statusOptions = [
-  {
-    label: '乐刷',
-    value: 1,
-  },
-  {
-    label: '京东',
-    value: 2,
-  },
-  {
-    label: '海威',
-    value: 3,
-  },
-  {
-    label: '千猪',
-    value: 4,
-  },
-  {
-    label: '拼多多',
-    value: 5,
-  },
-  {
-    label: '心链',
-    value: 6,
-  },
-]
 
 onMounted(() => {
   refresh()
@@ -75,7 +49,25 @@ const columns = [
     key: 'tag',
     align: 'center',
     render(row, index) {
-      return ['乐刷', '京东', '海威', '千猪', '拼多多', '心链'][row.tag - 1]
+      return [
+        '乐刷',
+        '京东',
+        '海威',
+        '千猪',
+        '拼多多',
+        '心链',
+        '聚推客-库迪',
+        '1分购',
+        '聚推客-奈雪的茶',
+        '聚推客-瑞幸',
+        '聚推客-必胜客',
+        '聚推客-麦当劳',
+        '聚推客-星巴克',
+        '聚推客-肯德基',
+        '聚推客-电影',
+        '聚推客-打车出行',
+        '橙券',
+      ][row.tag - 1]
     },
   },
   {
@@ -95,11 +87,19 @@ const columns = [
     },
   },
   {
-    title: '天天返利分佣%',
+    title: '天天返利分佣(非省钱卡)%',
     key: 'user_scale',
     align: 'center',
     render(row, index) {
       return row.user_scale || 0
+    },
+  },
+  {
+    title: '天天返利分佣(省钱卡)%',
+    key: 'vip_scale',
+    align: 'center',
+    render(row, index) {
+      return row.vip_scale || 0
     },
   },
   {
@@ -131,6 +131,16 @@ const columns = [
           },
           { default: () => '编辑', icon: renderIcon('majesticons:eye-line', { size: 14 }) }
         ),
+        h(
+          NButton,
+          {
+            size: 'small',
+            type: 'error',
+            secondary: true,
+            onClick: () => removeCoupon(row),
+          },
+          { default: () => '删除', icon: renderIcon('material-symbols:cancel-outline-rounded', { size: 14 }) }
+        ),
       ]
     },
   },
@@ -150,5 +160,26 @@ function editCoupon(row) {
 /**新增活动 */
 function handleAdd() {
   operatSingleRef.value.show(3)
+}
+/** 自定义单元格 */
+const dialog = useDialog()
+/**删除分组 */
+function removeCoupon(row) {
+  dialog.warning({
+    title: '警告',
+    content: '确定删除？',
+    positiveText: '确定',
+    negativeText: '取消',
+    onPositiveClick: function () {
+      http.delete({ id: row.id }).then(function (res) {
+        if (res.code == 1) {
+          message.success(res.msg)
+          refresh()
+        } else {
+          message.error(res.msg)
+        }
+      })
+    },
+  })
 }
 </script>

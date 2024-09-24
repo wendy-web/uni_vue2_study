@@ -1,0 +1,160 @@
+{
+    "panels": [
+        {
+            "index": 0,
+            "name": 1,
+            "paperType": "自定义",
+            "height": 30,
+            "width": 40,
+            "paperHeader": 0,
+            "paperFooter": 82.5,
+            "printElements": [
+                {
+                    "options": {
+                        "left": 4.5,
+                        "top": 4.5,
+                        "height": 45,
+                        "width": 45,
+                        "textType": "qrcode",
+                        "title": "qrcode",
+                        "field": "qrcode",
+                        "testData": "80017222",
+                        "coordinateSync": false,
+                        "widthHeightSync": false,
+                        "qrCodeLevel": 0,
+                        "hideTitle": true
+                    },
+                    "printElementType": {
+                        "title": "qrcode",
+                        "type": "text"
+                    }
+                },
+                {
+                    "options": {
+                        "left": 52.5,
+                        "top": 6,
+                        "height": 13.5,
+                        "width": 55.5,
+                        "title": "文本",
+                        "field": "open_date",
+                        "testData": "启用日期:20240305",
+                        "coordinateSync": false,
+                        "widthHeightSync": false,
+                        "hideTitle": true,
+                        "fontSize": 6,
+                        "qrCodeLevel": 0,
+                        "lineHeight": 6
+                    },
+                    "printElementType": {
+                        "title": "文本",
+                        "type": "text"
+                    }
+                },
+                {
+                    "options": {
+                        "left": 52.5,
+                        "top": 22.5,
+                        "height": 13.5,
+                        "width": 55.5,
+                        "title": "文本",
+                        "field": "use_dept_text",
+                        "testData": "使用部门:生产部xxxx",
+                        "coordinateSync": false,
+                        "widthHeightSync": false,
+                        "hideTitle": true,
+                        "fontSize": 6,
+                        "qrCodeLevel": 0,
+                        "lineHeight": 6
+                    },
+                    "printElementType": {
+                        "title": "文本",
+                        "type": "text"
+                    }
+                },
+                {
+                    "options": {
+                        "left": 52.5,
+                        "top": 36,
+                        "height": 18,
+                        "width": 55.5,
+                        "coordinateSync": false,
+                        "widthHeightSync": false,
+                        "fontSize": 6,
+                        "qrCodeLevel": 0,
+                        "field": "use_duty_user_text",
+                        "testData": "负责人:往某某,陈某某",
+                        "hideTitle": true,
+                        "title": "文本",
+                        "lineHeight": 6.75
+                    },
+                    "printElementType": {
+                        "title": "文本",
+                        "type": "text"
+                    }
+                },
+                {
+                    "options": {
+                        "left": 5,
+                        "top": 55.5,
+                        "height": 10.5,
+                        "width": 102,
+                        "title": "文本",
+                        "field": "asset_no",
+                        "testData": "这是资产编号",
+                        "coordinateSync": false,
+                        "widthHeightSync": false,
+                        "hideTitle": true,
+                        "fontSize": 6,
+                        "qrCodeLevel": 0,
+                        "textContentWrap": "ellipsis"
+                    },
+                    "printElementType": {
+                        "title": "文本",
+                        "type": "text"
+                    }
+                },
+                {
+                    "options": {
+                        "left": 5,
+                        "top": 69,
+                        "height": 10.5,
+                        "width": 102,
+                        "title": "文本",
+                        "field": "bar_title",
+                        "testData": "这是一个资产名称",
+                        "coordinateSync": false,
+                        "widthHeightSync": false,
+                        "hideTitle": true,
+                        "fontSize": 6,
+                        "qrCodeLevel": 0,
+                        "textContentWrap": "ellipsis"
+                    },
+                    "printElementType": {
+                        "title": "文本",
+                        "type": "text"
+                    }
+                }
+            ],
+            "paperNumberLeft": 94.5,
+            "paperNumberTop": 69,
+            "paperNumberDisabled": true,
+            "paperNumberContinue": true,
+            "backgroundColor": "#ffffff",
+            "overPrintOptions": {
+                "content": "",
+                "opacity": 0.7,
+                "type": 1
+            },
+            "watermarkOptions": {
+                "content": "",
+                "fillStyle": "rgba(87, 13, 248, 0.5)",
+                "fontSize": "36px",
+                "rotate": 25,
+                "width": 413,
+                "height": 310,
+                "timestamp": false,
+                "format": "YYYY-MM-DD HH:mm"
+            }
+        }
+    ]
+}

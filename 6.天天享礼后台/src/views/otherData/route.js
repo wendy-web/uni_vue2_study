@@ -8,6 +8,8 @@ export default {
     title: '其它数据',
     icon: 'material-symbols:monitor-heart-rounded',
     order: 6,
+    requireAuth: true,
+    role: ['interior'],
   },
   children: [
     {

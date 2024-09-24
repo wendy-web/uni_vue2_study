@@ -43,10 +43,10 @@
       <n-form-item label="活动间隔时间（min）" path="interval_time">
         <n-input-number v-model:value="contModel.interval_time" :min="0" :precision="0" :style="{ width: '170px' }" />
       </n-form-item>
-      <n-form-item label="浏览商品最低佣金（元）" path="profit">
+      <n-form-item label="个性化商品最低佣金（元）" path="profit">
         <n-input v-model:value="contModel.profit" :min="0" :precision="0" :style="{ width: '170px' }" />
       </n-form-item>
-      <n-form-item label="浏览商品最低佣金率（%）" path="profit_rate">
+      <n-form-item label="个性化商品最低佣金率（%）" path="profit_rate">
         <n-input v-model:value="contModel.profit_rate" :min="0" :precision="0" :style="{ width: '170px' }" />
       </n-form-item>
       <div flex justify-center w-480>
@@ -71,7 +71,8 @@ const contModel = ref({
   active_time: 0,
   interval_time: 0,
   profit: 0,
-  profit_rate: 0
+  profit_rate: 0,
+  is_show: 0
 })
 async function initGetXq() {
   const res = await http.getXq()
@@ -103,13 +104,7 @@ const rules = ref({
     validator: (rule, value) => value > 0,
     trigger: ['blur', 'input'],
     message: '请活动间隔时间',
-  },
-  interval_time: {
-    required: true,
-    validator: (rule, value) => value > 0,
-    trigger: ['blur', 'input'],
-    message: '请输入最高分佣金额',
-  },
+  }
 })
 const message = useMessage()
 function saveContHandle() {

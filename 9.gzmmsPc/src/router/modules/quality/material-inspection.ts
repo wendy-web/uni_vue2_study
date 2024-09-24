@@ -1,0 +1,217 @@
+const Layout = () => import("@/layout/index.vue");
+export default {
+  path: "/quality/material-inspection",
+  component: Layout,
+  redirect: "noredirect",
+  meta: { title: "原材料检验", icon: "caigou" },
+  children: [
+    {
+      path: "recheck-pool",
+      component: () => import("@/views/quality/material-inspection/recheck-pool/index.vue"),
+      name: "MaterialInspectionRecheckPool",
+      meta: { title: "复检池", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "recheck-pool/add",
+      component: () => import("@/views/quality/material-inspection/recheck-pool/add.vue"),
+      name: "MaterialInspectionRecheckPoolAdd",
+      meta: { title: "编辑复检单", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "empty-cans/emptycan-info",
+      component: () => import("@/views/quality/material-inspection/empty-cans/emptycan-info/index.vue"),
+      name: "MaterialInspectionEmptycanInfo",
+      meta: { title: "红牛空罐信息确认单", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "empty-cans/emptycan-info/add",
+      component: () => import("@/views/quality/material-inspection/empty-cans/emptycan-info/add.vue"),
+      name: "MaterialInspectionEmptycanInfoAdd",
+      meta: {
+        title: "红牛空罐信息确认单详情",
+        keepAlive: true,
+        hidden: true,
+        activeMenu: "/quality/material-inspection/empty-cans/emptycan-info",
+      },
+    },
+    {
+      path: "empty-cans/cans-seam",
+      component: () => import("@/views/quality/material-inspection/empty-cans/cans-seam/index.vue"),
+      name: "MaterialInspectionCansSeam",
+      meta: { title: "空罐卷封检验报告", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "empty-cans/cans-seam/add",
+      component: () => import("@/views/quality/material-inspection/empty-cans/cans-seam/add.vue"),
+      name: "MaterialInspectionCansSeamAdd",
+      meta: {
+        title: "新建空罐卷封检验报告",
+        hidden: true,
+        activeMenu: "/quality/material-inspection/empty-cans/cans-seam",
+        keepAlive: true,
+      },
+    },
+    {
+      path: "empty-cans/inner-film",
+      component: () =>
+        import("@/views/quality/material-inspection/empty-cans/inner-film/index.vue"),
+      name: "MaterialInspectionInnerFilmm",
+      meta: { title: "内涂模检验报告", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "empty-cans/inner-film/add",
+      component: () => import("@/views/quality/material-inspection/empty-cans/inner-film/add.vue"),
+      name: "MaterialInspectionInnerFilmmAdd",
+      meta: {
+        title: "新建内涂模检验报告",
+        hidden: true,
+        activeMenu: "/quality/material-inspection/empty-cans/inner-film",
+        keepAlive: true,
+      },
+    },
+    {
+      path: "empty-cans/label",
+      component: () => import("@/views/quality/material-inspection/empty-cans/label/index.vue"),
+      name: "MaterialInspectionLabel",
+      meta: { title: "标签标识检验报告", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "empty-cans/label/add",
+      component: () => import("@/views/quality/material-inspection/empty-cans/label/add.vue"),
+      name: "MaterialInspectionLabelAdd",
+      meta: {
+        title: "新建标签标识检验报告",
+        hidden: true,
+        activeMenu: "/quality/material-inspection/empty-cans/label",
+        keepAlive: true,
+      },
+    },
+    {
+      path: "empty-cans/cans-stock",
+      component: () =>
+        import("@/views/quality/material-inspection/empty-cans/cans-stock/index.vue"),
+      name: "MaterialInspectionCansStock",
+      meta: { title: "空罐进货检验报告", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "empty-cans/cans-stock/add",
+      component: () => import("@/views/quality/material-inspection/empty-cans/cans-stock/add.vue"),
+      name: "MaterialInspectionCansStockAdd",
+      meta: {
+        title: "新建空罐进货检验报告",
+        hidden: true,
+        activeMenu: "/quality/material-inspection/empty-cans/cans-stock",
+        keepAlive: true,
+      },
+    },
+    {
+      path: "cap",
+      component: () => import("@/views/quality/material-inspection/cap/index.vue"),
+      name: "MaterialInspectionCap",
+      meta: { title: "顶盖/底盖检验报告", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "cap/add",
+      component: () => import("@/views/quality/material-inspection/cap/add.vue"),
+      name: "MaterialInspectionCapAdd",
+      meta: {
+        title: "新建顶盖/底盖检验报告",
+        hidden: true,
+        activeMenu: "/quality/material-inspection/cap",
+        keepAlive: true,
+      },
+    },
+    {
+      path: "hot-film",
+      component: () => import("@/views/quality/material-inspection/hot-film/index.vue"),
+      name: "MaterialInspectionHotFilm",
+      meta: { title: "热缩膜检验报告", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "hot-film/add",
+      component: () => import("@/views/quality/material-inspection/hot-film/add.vue"),
+      name: "MaterialInspectionHotFilmAdd",
+      meta: {
+        title: "新建热缩膜检验报告",
+        hidden: true,
+        activeMenu: "/quality/material-inspection/hot-film",
+        keepAlive: true,
+      },
+    },
+    {
+      path: "leatheroid",
+      component: () => import("@/views/quality/material-inspection/leatheroid/index.vue"),
+      name: "MaterialInspectionLeatheroid",
+      meta: { title: "纸皮进货检验报告", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "leatheroid/add",
+      component: () => import("@/views/quality/material-inspection/leatheroid/add.vue"),
+      name: "MaterialInspectionLeatheroidAdd",
+      meta: {
+        title: "新建纸皮进货检验报告",
+        hidden: true,
+        activeMenu: "/quality/material-inspection/leatheroid",
+        keepAlive: true,
+      },
+    },
+    {
+      path: "cans-quality",
+      component: () => import("@/views/quality/material-inspection/cans-quality/index.vue"),
+      name: "MaterialInspectionCansQuality",
+      meta: { title: "战马空罐质量检验报告", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "cans-quality/add",
+      component: () => import("@/views/quality/material-inspection/cans-quality/add.vue"),
+      name: "MaterialInspectionCansQualityAdd",
+      meta: {
+        title: "新建战马空罐质量检验报告",
+        hidden: true,
+        activeMenu: "/quality/material-inspection/cans-quality",
+        keepAlive: true,
+      },
+    },
+    {
+      path: "use-notice",
+      component: () => import("@/views/quality/material-inspection/use-notice/index.vue"),
+      name: "MaterialInspectionUsenotice",
+      meta: { title: "原材料使用通知单", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "use-notice/add",
+      component: () => import("@/views/quality/material-inspection/use-notice/add.vue"),
+      name: "MaterialInspectionUsenoticeAdd",
+      meta: {
+        title: "新建原材料使用通知单",
+        hidden: true,
+        activeMenu: "/quality/material-inspection/use-notice",
+        keepAlive: true,
+      },
+    },
+    {
+      path: "essence",
+      component: () => import("@/views/quality/material-inspection/essence/index.vue"),
+      name: "MaterialInspectionEssence",
+      meta: { title: "香精入厂检测记录", icon: "caigou", keepAlive: true },
+    },
+    {
+      path: "essence/add",
+      component: () => import("@/views/quality/material-inspection/essence/add.vue"),
+      name: "MaterialInspectionEssenceAdd",
+      meta: {
+        title: "新建香精入厂检测记录",
+        icon: "caigou",
+        keepAlive: true,
+        hidden: true,
+        activeMenu: "/quality/material-inspection/essence",
+      },
+    },
+    {
+      path: "essence-sample",
+      component: () => import("@/views/quality/material-inspection/essence-sample/index.vue"),
+      name: "MaterialInspectionEssenceSample",
+      meta: { title: "香精留样记录", icon: "caigou", keepAlive: true },
+    },
+  ],
+} as RouteConfigsTable;

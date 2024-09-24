@@ -52,8 +52,8 @@
 </template>
 
 <script setup>
-import axios from 'axios'
-import http from './api'
+import axios from 'axios';
+import http from './api';
 //表格操作
 const $table = ref(null)
 /** QueryBar筛选参数（可选） */
@@ -64,15 +64,15 @@ onMounted(() => {
 const ztOptions = [
   {
     label: '审核中',
-    value: 1
+    value: 1,
   },
   {
     label: '已打款',
-    value: 2
+    value: 2,
   },
   {
     label: '已驳回',
-    value: 3
+    value: 3,
   },
 ]
 //刷新表格
@@ -106,9 +106,7 @@ const columns = ref([
     key: 'status',
     align: 'center',
     render(row) {
-      return ['提现审核', '提现成功', '提现驳回'][
-        row.status
-      ]
+      return ['提现审核', '提现成功', '提现驳回'][row.status]
     },
   },
 ])

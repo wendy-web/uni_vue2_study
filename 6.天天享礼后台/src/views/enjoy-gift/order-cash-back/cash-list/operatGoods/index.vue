@@ -270,8 +270,10 @@ const columns = [
             if (currInputIndex === inputValue) return
             const currData = tableData.value[currInputIndex]
             const targetIndex = tableData.value[inputValue]
-            tableData.value[inputValue] = currData
-            tableData.value[currInputIndex] = targetIndex
+            // tableData.value[inputValue] = currData
+            // tableData.value[currInputIndex] = targetIndex
+            tableData.value.splice(currInputIndex, 1)
+            tableData.value.splice(inputValue, 0, currData)
             resetIndex()
           },
         }),

@@ -1,5 +1,5 @@
 <template>
-  <n-drawer v-model:show="showModal" :width="drawerWidth" :placement="placement">
+  <n-drawer v-model:show="showModal" :width="drawerWidth">
     <n-drawer-content :title="modalTitle" closable>
       <n-form
         ref="formRef"
@@ -190,6 +190,7 @@
           </n-form-item>
           <n-form-item v-if="model.page == 10" label="持续时长" path="end_time" w-400>
             <n-input-number v-model:value="model.end_time" :disabled="modalType === 1" placeholder="最小值" min="1" />
+            <span style="padding-left: 8px">小时</span>
           </n-form-item>
           <n-form-item label="备注说明" path="note" w-400>
             <n-input
@@ -246,6 +247,9 @@
                 placeholder="请选择频道"
                 clearable
               />
+            </n-form-item>
+            <n-form-item v-if="model.eliteId == 3" label="推荐商品goods_sign" path="groupId" w-400>
+              <n-input v-model:value="model.groupId" :disabled="modalType === 1" placeholder="" />
             </n-form-item>
             <n-form-item label="最优券面值" path="coupon" w-400>
               <n-input-number
@@ -352,7 +356,9 @@
               </n-form-item>
             </div>
           </block>
-          <div style="color: red; padding-left: 50px">注：拼多多金额单位为分；</div>
+          <div style="color: red; padding-left: 50px">
+            注：拼多多金额单位为分（如筛选金额为“1”请填写“100”）；佣金比例是千分比（如筛选佣金为“4”请填写“40”）
+          </div>
         </block>
         <n-form-item label="推券最高金额" path="max_coupon_money" mt-30 w-400>
           <n-input-number v-model:value="model.max_coupon_money" placeholder="最高金额" min="0" />

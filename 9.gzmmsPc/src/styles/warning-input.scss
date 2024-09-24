@@ -1,0 +1,14 @@
+$waringColorText: #f97316;
+// 如果输入框设置了warning-text,那么输入框的文字颜色为waringColorText
+// 设置警告文字颜色
+:deep(.warning-text .el-input__wrapper .el-input__inner) {
+  color: $waringColorText !important;
+}
+
+:deep(.el-input.is-disabled.warning-text .el-input__inner) {
+  -webkit-text-fill-color: $waringColorText !important;
+}
+
+:deep(.warning-text .el-input.is-disabled .el-input__inner) {
+  -webkit-text-fill-color: $waringColorText !important;
+}

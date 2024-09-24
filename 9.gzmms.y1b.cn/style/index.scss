@@ -1,0 +1,97 @@
+/* 自定义全局样式 */
+
+
+/* 列表头部搜索框样式 */
+
+.search-container {
+    display: flex;
+    align-items: center;
+    padding: 20rpx;
+    background: linear-gradient(to left, #dae3ff, #ecf4ff, #e1e8ff);
+}
+
+
+/* 设备列表头部搜索框样式 */
+
+.search-container-d {
+    display: flex;
+    align-items: center;
+    padding: 20rpx;
+    background: #0b63d2;
+}
+
+
+/* 通用灰色类名 */
+
+.gary-text {
+    color: #a3a2a8;
+}
+
+
+/* 审批日志弹窗底部的关闭按钮样式 */
+
+.approve-close-btn {
+    width: 314rpx;
+    height: 84rpx;
+    margin: 0 auto;
+    padding-bottom: 40rpx;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.mt-20 {
+    margin-top: 20rpx;
+}
+
+.mt-40 {
+    margin-top: 40rpx;
+}
+
+.pb-40 {
+    padding-bottom: 40rpx;
+}
+
+.flex-align {
+    display: flex;
+    align-items: center;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.green-text {
+    color: #5ac725;
+}
+
+.red-text {
+    color: #f56c6c;
+}
+
+.orange-text {
+    color: #f9ae3d;
+}
+
+.safe_btn_active {
+    padding-bottom: calc(120rpx + constant(safe-area-inset-bottom));
+    padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
+}
+
+.safe_active {
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
+}

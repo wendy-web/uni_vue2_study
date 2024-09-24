@@ -1,0 +1,10 @@
+:deep(.el-divider--horizontal) {
+  margin-bottom: 10px;
+  margin-top: 0;
+}
+
+:deep(.el-tag) {
+  border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}

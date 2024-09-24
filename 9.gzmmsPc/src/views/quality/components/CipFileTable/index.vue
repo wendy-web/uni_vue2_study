@@ -1,0 +1,129 @@
+<script setup lang="ts">
+import { useCommonHooks } from "@/hooks/quality";
+import { useSettingsStoreHook } from "@/store/modules/settings";
+import SelectFile from "@/views/quality/components/SelectFile/index.vue";
+
+const { startDirectDownload } = useCommonHooks();
+
+interface FileItemType {
+  /** row-key唯一标识 */
+  id: number;
+  file_name: string;
+  file_url: string;
+  note: string;
+}
+
+interface Props {
+  fileList: FileItemType[];
+  /** 是否禁用 */
+  disabled?: boolean;
+  /** 上传按钮的权限标识 */
+  uploadBtnPerm?: string[];
+  /** 删除按钮的权限标识 */
+  delBtnPerm?: string[];
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  fileList: () => [] as FileItemType[],
+  disabled: false,
+  uploadBtnPerm: () => [],
+  delBtnPerm: () => [],
+});
+
+const emit = defineEmits(["fileAdd", "fileDel"]);
+
+const useSetting = useSettingsStoreHook();
+
+const fileData = ref<FileItemType[]>(props.fileList);
+const multipleSelection = ref<FileItemType[]>([]);
+const selectFileRef = ref<InstanceType<typeof SelectFile>>();
+const visible = ref(false);
+const selectFileTitle = ref("新增上传文件");
+
+// 表格多选
+const handleSelectionChange = (val: FileItemType[]) => {
+  multipleSelection.value = val;
+};
+
+// 点击上传文件
+function handleUpload() {
+  selectFileTitle.value = "新增上传文件";
+  visible.value = true;
+  selectFileRef.value?.clear();
+}
+
+// 监听上传文件点击确定后的事件
+async function handleUploadConfirm(fileValues: {
+  file_url: string;
+  file_name: string;
+  note: string;
+}) {
+  emit("fileAdd", fileValues);
+}
+
+// 删除选中的表格
+const handleDelete = () => {
+  let ids = multipleSelection.value.map((item) => item.id);
+  emit("fileDel", ids);
+};
+
+watch(
+  () => props.fileList,
+  (val) => {
+    fileData.value = val;
+  },
+);
+
+const fileColumns = ref<TableColumnList>([
+  {
+    label: "勾选列",
+    type: "selection",
+    hide: () => props.disabled,
+  },
+  {
+    label: "附件名称",
+    prop: "file_name",
+  },
+  {
+    label: "备注",
+    prop: "note",
+  },
+  {
+    label: "操作",
+    slot: "operation",
+  },
+]);
+</script>
+<template>
+  <div class="px-8">
+    <div class="mb-2" v-if="!disabled">
+      <el-button type="primary" @click="handleUpload" v-hasPerm="uploadBtnPerm">上传附件</el-button>
+      <el-button @click="handleDelete" v-hasPerm="delBtnPerm">删除</el-button>
+    </div>
+    <PureTable
+      row-key="id"
+      border
+      :columns="fileColumns"
+      :data="fileData"
+      @selection-change="handleSelectionChange"
+    >
+      <template #operation="{ row }">
+        <el-button
+          v-if="row.file_url"
+          type="primary"
+          link
+          @click="startDirectDownload(row.file_url, row.file_name)"
+        >
+          下载
+        </el-button>
+      </template>
+    </PureTable>
+    <SelectFile
+      ref="selectFileRef"
+      @confirm="handleUploadConfirm"
+      v-model="visible"
+      :title="selectFileTitle"
+    ></SelectFile>
+  </div>
+</template>
+<style lang="scss" scoped></style>

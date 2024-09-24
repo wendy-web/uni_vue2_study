@@ -281,3 +281,26 @@ export const pddOptions = [
     value: 37,
   },
 ]
+//拼多多频道来源
+export const resourceOptions = ref([
+  {
+    label: '限时秒杀',
+    value: 4
+  },
+  {
+    label: '活动转链',
+    value: 39998
+  },
+  {
+    label: '百亿补贴',
+    value: 39996
+  },
+  {
+    label: '领券中心',
+    value: 40000
+  },
+  {
+    label: '火车票',
+    value: 50005
+  }
+])

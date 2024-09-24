@@ -18,17 +18,18 @@
             v-model:value="queryItems.name"
             type="text"
             placeholder="分组名称"
+            clearable
             @keydown.enter="$table?.handleSearch"
           />
         </QueryBarItem>
         <QueryBarItem label="所属页面" :label-width="80">
-          <n-select v-model:value="queryItems.page_index" :options="eliteIdOptions.pageOptions" />
+          <n-select v-model:value="queryItems.page_index" :options="eliteIdOptions.pageOptions" clearable />
         </QueryBarItem>
         <QueryBarItem label="电商类型" :label-width="80">
-          <n-select v-model:value="queryItems.lx_type" :options="storeOptions" />
+          <n-select v-model:value="queryItems.lx_type" :options="storeOptions" clearable />
         </QueryBarItem>
         <QueryBarItem label="状态" :label-width="80">
-          <n-select v-model:value="queryItems.status" :options="statusOptions" />
+          <n-select v-model:value="queryItems.status" :options="statusOptions" clearable />
         </QueryBarItem>
       </template>
     </CrudTable>

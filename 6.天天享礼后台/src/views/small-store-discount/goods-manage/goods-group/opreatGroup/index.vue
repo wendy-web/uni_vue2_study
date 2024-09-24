@@ -9,22 +9,117 @@
         label-width="120px"
         require-mark-placement="right-hanging"
       >
-        <n-form-item label="分组名称" path="title" w-300>
-          <n-input v-model:value="model.title" />
-        </n-form-item>
-        <n-form-item label="系统类型" path="system" w-400>
-          <n-select v-model:value="model.system" :options="systemOptions" />
-        </n-form-item>
-        <n-form-item label="类别" path="lx_type" w-400>
-          <n-select v-model:value="model.lx_type" :options="tyOptions" @update:value="lx_handleUpdate" />
-        </n-form-item>
-        <n-form-item label="排序" path="sort" w-300>
-          <n-input-number v-model:value="model.sort" />
-        </n-form-item>
-        <n-form-item v-if="model.lx_type == 1" label="推广位ID" path="positionId" w-400>
-          <n-input v-model:value="model.positionId" clearable />
-        </n-form-item>
+        <div flex>
+          <div>
+            <n-form-item label="分组名称" path="title" w-300>
+              <n-input v-model:value="model.title" />
+            </n-form-item>
+            <n-form-item label="分组类型" path="is_rebate" w-400>
+              <n-select v-model:value="model.is_rebate" :options="rebateOptions" @update:value="groupChange" />
+            </n-form-item>
+            <n-form-item v-if="model.is_rebate == 1" label="追加电商分组" path="circle" w-400>
+              <n-select v-model:value="model.circle" :filterable="modalType === 1" :options="channelOptions" multiple />
+            </n-form-item>
+            <n-form-item label="系统类型" path="system" w-400>
+              <n-select v-model:value="model.system" :options="systemOptions" />
+            </n-form-item>
+            <n-form-item label="类别" path="lx_type" w-400>
+              <n-select v-model:value="model.lx_type" :options="tyOptions" @update:value="lx_handleUpdate" />
+            </n-form-item>
+            <n-form-item label="排序" path="sort" w-300>
+              <n-input-number v-model:value="model.sort" />
+            </n-form-item>
+            <n-form-item v-if="model.lx_type == 1 && model.is_rebate != 1" label="京东推广位ID" path="positionId" w-400>
+              <n-input v-model:value="model.positionId" clearable />
+            </n-form-item>
+            <n-form-item
+              v-if="model.lx_type == 1 && model.is_rebate != 1"
+              label="拼多多推广位ID"
+              path="pdd_positionId"
+              w-400
+            >
+              <n-input v-model:value="model.pdd_positionId" clearable />
+            </n-form-item>
+          </div>
+          <div v-if="model.lx_type == 1 && model.is_rebate == 0" flex>
+            <div>
+              <n-form-item label="订单权重(%)" path="amount_power" w-360 ml-50>
+                <n-input-number
+                  v-model:value="model.amount_power"
+                  :show-button="false"
+                  placeholder="请输入"
+                  clearable
+                  min="0"
+                  max="100"
+                />
+              </n-form-item>
+              <n-form-item label="佣金权重(%)" path="commission_power" w-360 ml-50>
+                <n-input-number
+                  v-model:value="model.commission_power"
+                  :show-button="false"
+                  placeholder="请输入"
+                  clearable
+                  min="0"
+                  max="100"
+                />
+              </n-form-item>
+              <n-form-item label="复购权重(%)" path="again_power" w-360 ml-50>
+                <n-input-number
+                  v-model:value="model.again_power"
+                  :show-button="false"
+                  placeholder="请输入"
+                  clearable
+                  min="0"
+                  max="100"
+                />
+              </n-form-item>
+              <n-form-item label="点击转化权重(%)" path="click_power" w-360 ml-50>
+                <n-input-number
+                  v-model:value="model.click_power"
+                  :show-button="false"
+                  placeholder="请输入"
+                  clearable
+                  min="0"
+                  max="100"
+                />
+              </n-form-item>
+              <n-form-item label="复购量统计周期(d)" path="again_time" w-360 ml-50>
+                <n-input-number
+                  v-model:value="model.again_time"
+                  :show-button="false"
+                  placeholder="单位天"
+                  min="0"
+                  clearable
+                />
+              </n-form-item>
+              <n-form-item label="排序间隔时长(h)" path="keep" w-360 ml-50>
+                <n-input-number
+                  v-model:value="model.keep"
+                  :show-button="false"
+                  placeholder="请输入"
+                  clearable
+                  min="0"
+                />
+              </n-form-item>
+              <n-form-item label="排序统计周期(h)" path="circle" w-400 ml-50>
+                <n-input v-model:value="model.circle" :show-button="false" placeholder="多个周期用'-'分隔" clearable />
+              </n-form-item>
+            </div>
+          </div>
+          <div v-if="model.lx_type == 1">
+            <n-form-item label="佣金降幅(%)" path="commission_num" w-300 ml-50>
+              <n-input v-model:value="model.commission_num" :show-button="false" placeholder="" clearable />
+            </n-form-item>
+            <n-form-item label="最终佣金(%)" path="commission" w-300 ml-50>
+              <n-input v-model:value="model.commission" :show-button="false" placeholder="" clearable />
+            </n-form-item>
+          </div>
+        </div>
         <div v-if="model.lx_type == 1">
+          <div v-if="model.lx_type == 1 && model.is_rebate == 0" flex>
+            <div v-if="end_index" w-250 mb-20 style="color: #316c72ff">当前统计周期：{{ end_index }}</div>
+            <div v-if="end_index" w-280 mb-20 style="color: #316c72ff">即将排序时间：{{ end_time }}</div>
+          </div>
           <n-form-item label="分组商品" path="gids">
             <n-button type="info" absolute top-0 @click="selectGoods"> 选择商品 </n-button>
             <n-data-table
@@ -41,7 +136,7 @@
           </n-form-item>
         </div>
         <div v-else-if="model.jd">
-          <n-form-item label="所属页面" path="page" w-300>
+          <n-form-item v-if="model.is_rebate == 0" label="所属页面" path="page" w-300>
             <n-select v-model:value="model.jd.page" :options="eliteIdOptions.pageOptions" />
           </n-form-item>
           <block v-if="model.lx_type == 2">
@@ -110,7 +205,7 @@
                 clearable
               />
             </n-form-item>
-            <n-form-item label="推广位ID" path="positionId" w-400>
+            <n-form-item v-if="model.is_rebate != 1" label="推广位ID" path="positionId" w-400>
               <n-input v-model:value="model.jd.positionId" clearable />
             </n-form-item>
             <n-form-item label="最优券面值" path="coupon" w-400>
@@ -151,7 +246,7 @@
                 @update:value="pddType_handleUpdates"
               />
             </n-form-item>
-            <n-form-item label="推广位ID" path="positionId" w-400>
+            <n-form-item v-if="model.is_rebate != 1" label="推广位ID" path="positionId" w-400>
               <n-input v-model:value="model.jd.positionId" clearable />
             </n-form-item>
             <n-form-item label="活动商品类目" path="activity_tags">
@@ -266,7 +361,9 @@
                 </n-form-item>
               </div>
             </block>
-            <div style="color: red; padding-left: 50px">注：拼多多金额单位为分；</div>
+            <div style="color: red; padding-left: 50px">
+              注：拼多多金额单位为分（如筛选金额为“1”请填写“100”）；佣金比例是千分比（如筛选佣金为“4”请填写“40”）
+            </div>
           </block>
         </div>
         <div flex justify-center w-1000>
@@ -279,13 +376,13 @@
   <selecGoods ref="selecGoodsRef" @selectSave="selectSave" />
 </template>
 <script setup>
-import { ref } from 'vue'
-import { useMessage, NInput, NInputNumber, NButton, NSwitch } from 'naive-ui'
-import { renderIcon } from '@/utils'
-import eliteIdOptions from './eliteIdOptions.js'
-import selecGoods from './selecGoods.vue'
-import { systemOptions } from '../options'
-import http from '../api'
+import { renderIcon } from '@/utils';
+import { NButton, NInput, NInputNumber, NSwitch, useMessage } from 'naive-ui';
+import { ref } from 'vue';
+import http from '../api';
+import { rebateOptions, systemOptions } from '../options';
+import eliteIdOptions from './eliteIdOptions.js';
+import selecGoods from './selecGoods.vue';
 
 /**弹窗显示控制 */
 const showModal = ref(false)
@@ -297,8 +394,11 @@ const modalType = ref(1)
 const modalTitle = ref('')
 //提示展示
 const message = useMessage()
+const channelOptions = ref([])
 /**表单 */
 const formRef = ref(null)
+const end_time = ref()
+const end_index = ref()
 //表单数据
 const model = ref({
   goods_list: [],
@@ -333,227 +433,368 @@ const rules = ref({
   },
 })
 //商品cell
-const couponColumns = [
-  {
-    title: '商品编号',
-    key: 'goods_number',
-    align: 'center',
-    fixed: 'left',
-    width: 110,
-    render(row) {
-      return row.goods_number || row.coupon_id
-    },
-  },
-  {
-    title: '商品名称',
-    key: 'goods_name',
-    align: 'center',
-    width: 332,
-    render(row) {
-      return row.goods_name || row.title
-    },
-  },
-  { title: 'spuName', key: 'spuName', align: 'center', width: 100 },
-  { title: '参考名称', key: 'skuName', align: 'center', width: 100 },
-  {
-    title: '商品类型',
-    key: 'goods_type',
-    align: 'center',
-    width: 100,
-    render(row, index) {
-      if (row.lx_type == 2) return '京东'
-      return ['直充', '卡券', '公众号', '视频号', '小程序', '视频组件'][row.goods_type]
-    },
-  },
-  {
-    title: '面值(元)',
-    key: 'marketPrice',
-    align: 'center',
-    width: 100,
-    render(row, index) {
-      return row.lx_type == 1 ? Number(row.price / 100).toFixed(2) : row.face_value
-    },
-  },
-  {
-    title: '成本(元)',
-    key: 'cost',
-    align: 'center',
-    width: 100,
-    render(row, index) {
-      if (row.cost) return Number(row.cost / 100).toFixed(2)
-      return 0
-    },
-  },
-  {
-    title: '差价(元)',
-    key: 'price_difference',
-    align: 'center',
-    width: 100,
-    render(row, index) {
-      if (row.price_difference) return Number(row.price_difference / 100).toFixed(2)
-      return 0
-    },
-  },
-  {
-    title: '抵扣金额(元)',
-    key: 'deduction_price',
-    align: 'center',
-    width: 120,
-    render(row, index) {
-      if (row.deduction_price) return Number(row.deduction_price / 100).toFixed(2)
-      return 0
-    },
-  },
-  {
-    title: '抵扣积分',
-    key: 'deduction_credits',
-    align: 'center',
-    width: 100,
-    render(row, index) {
-      return row.deduction_credits || row.credits
-    },
-  },
-  {
-    title: '销售状态',
-    key: 'status',
-    align: 'center',
-    width: 100,
-    render(row, index) {
-      return row.status == 0 ? '下架' : '上架'
-    },
-  },
-  {
-    title: '启用状态',
-    key: 'status',
-    align: 'center',
-    width: 100,
-    render(row, index) {
-      if (row.lx_type == 2) return row.status == 0 ? '下架' : '上架'
-      return ['停用', '启用', '系统停用'][row.use]
-    },
-  },
-  {
-    title: '来源',
-    key: 'lx_type',
-    align: 'center',
-    width: 100,
-    render(row, index) {
-      if (row.lx_type == 2) return '京东'
-      return '自建'
-    },
-  },
-  {
-    title: 'feed流',
-    key: 'is_flow',
-    align: 'center',
-    width: 100,
-    render(row, index) {
-      return h(NSwitch, {
-        size: 'small',
-        value: Boolean(row.is_flow),
-        disabled: row.lx_type == 1,
-        onUpdateValue: (updateValue) => {
-          const currentIndex = row._index - 1
-          model.value.goods_list[currentIndex].is_flow = !!updateValue
+let couponColumns = ref([])
+const groupType = ref(0)
+watch(
+  () => groupType.value,
+  (newValue, oldValue) => {
+    couponColumns.value = [
+      {
+        title: '商品编号',
+        key: 'goods_number',
+        align: 'center',
+        fixed: 'left',
+        width: 110,
+        render(row) {
+          return row.goods_number || row.coupon_id
         },
-      })
-    },
-  },
-  {
-    title: '系统',
-    key: 'device_type',
-    align: 'center',
-    width: 100,
-    render(row, index) {
-      if (row.lx_type == 2) return '公共'
-      return ['苹果', '公共', '安卓'][row.device_type - 1]
-    },
-  },
-  {
-    title: '操作',
-    key: 'actions',
-    align: 'center',
-    fixed: 'right',
-    width: 360,
-    render(row, index) {
-      return [
-        h(
-          NButton,
-          {
-            size: 'tiny',
-            type: 'primary',
-            style: {
-              'margin-right': '10px',
-            },
-            secondary: true,
-            onClick: () => {
-              console.log('置顶 :>> ', index, 'modalType.value', modalType.value)
-              const currData = model.value.goods_list[index]
-              model.value.goods_list.splice(index, 1)
-              model.value.goods_list.unshift(currData)
-              model.value.goods_list.forEach((item, index) => (item._index = index + 1))
-            },
-          },
-          { default: () => '置顶', icon: renderIcon('typcn:arrow-up-thick', { size: 14 }) }
-        ),
-        h(NInputNumber, {
-          value: row._index,
-          min: 1,
-          size: 'tiny',
-          max: model.value.goods_list.length,
-          style: {
-            'margin-right': '10px',
-            width: '85px',
-            display: 'inline-block',
-          },
-          onUpdateValue(value) {
-            model.value.goods_list[index]._index = value
-          },
-          onBlur(value) {
-            const currInputIndex = row._index - 1
-            if (currInputIndex === index) return
-            const currData = model.value.goods_list[index]
-            const targetIndex = model.value.goods_list[currInputIndex]
-            model.value.goods_list[currInputIndex] = currData
-            model.value.goods_list[index] = {
-              ...targetIndex,
-              _index: index + 1,
-            }
-          },
-        }),
-        h(
-          NButton,
-          {
-            size: 'tiny',
-            type: 'primary',
-            style: {
-              'margin-right': '10px',
-            },
-            secondary: true,
-            onClick: () => {
-              const currData = model.value.goods_list[index]
-              model.value.goods_list.splice(index, 1)
-              model.value.goods_list.push(currData)
-              model.value.goods_list.forEach((item, index) => (item._index = index + 1))
-            },
-          },
-          { default: () => '置底', icon: renderIcon('typcn:arrow-down-thick', { size: 14 }) }
-        ),
-        h(
-          NButton,
-          {
+      },
+      {
+        title: '商品名称',
+        key: 'goods_name',
+        align: 'center',
+        width: 332,
+        render(row) {
+          return row.goods_name || row.title
+        },
+      },
+      {
+        title: '面值(元)',
+        key: 'marketPrice',
+        align: 'center',
+        width: 100,
+        render(row, index) {
+          return row.lx_type == 1 ? Number(row.price / 100).toFixed(2) : row.face_value
+        },
+      },
+      {
+        title: '佣金率',
+        width: 80,
+        key: 'commissionShare',
+        align: 'center',
+        render(row) {
+          return row.commissionShare || 0
+        },
+      },
+      {
+        title: '抵扣积分',
+        key: 'deduction_credits',
+        align: 'center',
+        width: 100,
+        render(row, index) {
+          return row.deduction_credits || row.credits
+        },
+      },
+      {
+        title: '启用状态',
+        key: 'map_status',
+        align: 'center',
+        width: 100,
+        render(row, index) {
+          if (row.lx_type != 1) {
+            return h(NSwitch, {
+              size: 'small',
+              value: Boolean(row.map_status),
+              onUpdateValue: (updateValue) => {
+                const currentIndex = row._index - 1
+                model.value.goods_list[currentIndex].map_status = updateValue
+              },
+            })
+          }
+          return ['停用', '启用', '系统停用'][row.use]
+        },
+      },
+      {
+        title: '下架原因',
+        key: 'msg',
+        align: 'center',
+        width: 100,
+        render(row, index) {
+          return row.msg || ''
+        },
+      },
+      {
+        title: '来源',
+        key: 'lx_type',
+        align: 'center',
+        width: 100,
+        render(row, index) {
+          if (row.lx_type == 2) return '京东'
+          if (row.lx_type == 3) return '拼多多'
+          return '自建'
+        },
+      },
+      {
+        title: 'feed流',
+        key: 'is_flow',
+        align: 'center',
+        width: 100,
+        render(row, index) {
+          return h(NSwitch, {
             size: 'small',
-            type: 'error',
-            style: { 'margin-right': '10px' },
-            secondary: true,
-            onClick: () => delGoods(row),
+            value: Boolean(row.is_flow),
+            disabled: row.lx_type == 1,
+            onUpdateValue: (updateValue) => {
+              const currentIndex = row._index - 1
+              model.value.goods_list[currentIndex].is_flow = !!updateValue
+            },
+          })
+        },
+      },
+      {
+        title: '推广返佣(%)',
+        key: 'rebate',
+        align: 'center',
+        size: 'large',
+        width: 150,
+        render(row, index) {
+          return h(NInputNumber, {
+            value: row.rebate || 0,
+            min: 0,
+            size: 'tiny',
+            max: 100,
+            style: {
+              'margin-right': '10px',
+              width: 100,
+              display: 'inline-block',
+            },
+            disabled: row.lx_type == 1,
+            onUpdateValue(value) {
+              const currentIndex = row._index - 1
+              model.value.goods_list[currentIndex].rebate = value
+            },
+          })
+        },
+      },
+      {
+        title: '选品库',
+        key: 'groupId',
+        align: 'center',
+        size: 'large',
+        width: 150,
+        render(row, index) {
+          return h(NInput, {
+            value: row.groupId || '',
+            size: 'tiny',
+            style: {
+              'margin-right': '10px',
+              width: 100,
+              display: 'inline-block',
+            },
+            disabled: row.lx_type != 2,
+            onUpdateValue(value) {
+              const currentIndex = row._index - 1
+              model.value.goods_list[currentIndex].groupId = value
+            },
+          })
+        },
+      },
+    ]
+    if (newValue == 0) {
+      couponColumns.value.push(
+        {
+          title: '排位保护时间(h)',
+          key: 'protect',
+          align: 'center',
+          size: 'large',
+          width: 150,
+          render(row, index) {
+            return h(NInputNumber, {
+              value: row.protect || 0,
+              min: 0,
+              size: 'tiny',
+              max: 100,
+              style: {
+                'margin-right': '10px',
+                width: '85px',
+                display: 'inline-block',
+              },
+              disabled: row.lx_type == 1,
+              onUpdateValue(value) {
+                const currentIndex = row._index - 1
+                model.value.goods_list[currentIndex].protect = value
+              },
+            })
           },
-          { default: () => '删除', icon: renderIcon('majesticons:delete-bin-line', { size: 14 }) }
-        ),
-      ]
-    },
+        },
+        { title: '购买人数', key: 'amount', align: 'center', width: 100 },
+        { title: '佣金(元)', key: 'commission', align: 'center', width: 100 },
+        { title: '复购人数', key: 'again', align: 'center', width: 100 },
+        { title: '排序权值', key: 'sort_num', align: 'center', width: 100 },
+        { title: '累计订单', key: 'orderNum', align: 'center', width: 100 },
+        { title: '点击次数', key: 'clickNum', align: 'center', width: 100 },
+        { title: '转化率(%)', key: 'promotion', align: 'center', width: 100 },
+        { title: '上轮位置系数', key: 'prev_position_num', align: 'center', width: 110 },
+        {
+          title: '位置系数',
+          key: 'position_num',
+          align: 'center',
+          size: 'large',
+          width: 160,
+          render(row, index) {
+            return h(NInputNumber, {
+              value: row.position_num || 0,
+              min: 0,
+              size: 'tiny',
+              max: 60,
+              style: {
+                'margin-right': '10px',
+                width: '85px',
+                display: 'inline-block',
+              },
+              disabled: row.lx_type == 1,
+              onUpdateValue(value) {
+                const currentIndex = row._index - 1
+                model.value.goods_list[currentIndex].position_num = value
+              },
+            })
+          },
+        }
+      )
+    }
+    couponColumns.value.push(
+      {
+        title: '佣金降幅(%)',
+        key: 'commission_num',
+        align: 'center',
+        size: 'large',
+        width: 110,
+        render(row, index) {
+          return h(NInput, {
+            value: row.commission_num || '0',
+            min: 0,
+            size: 'tiny',
+            style: {
+              'margin-right': '10px',
+              width: '85px',
+              display: 'inline-block',
+            },
+            disabled: row.lx_type != 2,
+            onUpdateValue(value) {
+              const currentIndex = row._index - 1
+              model.value.goods_list[currentIndex].commission_num = value
+            },
+          })
+        },
+      },
+      {
+        title: '最终佣金(%)',
+        key: 'commission_end',
+        align: 'center',
+        size: 'large',
+        width: 110,
+        render(row, index) {
+          return h(NInput, {
+            value: row.commission_end || '0',
+            min: 0,
+            size: 'tiny',
+            style: {
+              'margin-right': '10px',
+              width: '85px',
+              display: 'inline-block',
+            },
+            disabled: row.lx_type != 2,
+            onUpdateValue(value) {
+              const currentIndex = row._index - 1
+              model.value.goods_list[currentIndex].commission_end = value
+            },
+          })
+        },
+      },
+      {
+        title: '操作',
+        key: 'actions',
+        align: 'center',
+        fixed: 'right',
+        width: 350,
+        render(row, index) {
+          return [
+            h(
+              NButton,
+              {
+                size: 'tiny',
+                type: 'primary',
+                style: {
+                  'margin-right': '10px',
+                },
+                secondary: true,
+                onClick: () => {
+                  console.log('置顶 :>> ', index, 'modalType.value', modalType.value)
+                  const currData = model.value.goods_list[index]
+                  model.value.goods_list.splice(index, 1)
+                  model.value.goods_list.unshift(currData)
+                  model.value.goods_list.forEach((item, index) => (item._index = index + 1))
+                },
+              },
+              { default: () => '置顶', icon: renderIcon('typcn:arrow-up-thick', { size: 14 }) }
+            ),
+            h(NInputNumber, {
+              value: row._index,
+              min: 1,
+              size: 'tiny',
+              max: model.value.goods_list.length,
+              style: {
+                'margin-right': '10px',
+                width: '85px',
+                display: 'inline-block',
+              },
+              onUpdateValue(value) {
+                model.value.goods_list[index]._index = value
+              },
+              onBlur(value) {
+                const currInputIndex = row._index - 1
+                if (currInputIndex === index) return
+                const currData = model.value.goods_list[index]
+                const targetIndex = model.value.goods_list[currInputIndex]
+                // model.value.goods_list[currInputIndex] = currData
+                // model.value.goods_list[index]._index = index + 1
+                model.value.goods_list.splice(index, 1)
+                model.value.goods_list.splice(currInputIndex, 0, currData)
+                model.value.goods_list.forEach((item, index) => (item._index = index + 1))
+              },
+            }),
+            h(
+              NButton,
+              {
+                size: 'tiny',
+                type: 'primary',
+                style: {
+                  'margin-right': '10px',
+                },
+                secondary: true,
+                onClick: () => {
+                  const currData = model.value.goods_list[index]
+                  model.value.goods_list.splice(index, 1)
+                  model.value.goods_list.push(currData)
+                  model.value.goods_list.forEach((item, index) => (item._index = index + 1))
+                },
+              },
+              { default: () => '置底', icon: renderIcon('typcn:arrow-down-thick', { size: 14 }) }
+            ),
+            h(
+              NButton,
+              {
+                size: 'small',
+                type: 'error',
+                style: { 'margin-right': '10px' },
+                secondary: true,
+                onClick: () => delGoods(row),
+              },
+              { default: () => '删除', icon: renderIcon('majesticons:delete-bin-line', { size: 14 }) }
+            ),
+          ]
+        },
+      }
+    )
   },
-]
+  {
+    deep: true,
+    immediate: true,
+  }
+)
+function groupChange(value) {
+  groupType.value = value
+}
 //删除选择
 function delGoods(data) {
   let index = model.value.goods_list.findIndex((item) => item.id === data.id)
@@ -614,6 +855,14 @@ async function show(operateType, data) {
   modalTitle.value = ['编辑', '新增'][operateType - 1]
   init(data)
 }
+onMounted(() => {
+  initChannelOptions()
+})
+async function initChannelOptions() {
+  const res = await http.shopGroup()
+  if (res.code != 1 || !res.data) return
+  channelOptions.value = res.data
+}
 function lx_handleUpdate(value) {
   console.log(value)
   if (value == 2) {
@@ -653,6 +902,7 @@ async function init(data = {}) {
     title: '',
     goods_list: [],
     system: 0,
+    is_rebate: 0,
     sort: 0,
     lx_type: 1,
     group: [],
@@ -678,11 +928,45 @@ async function init(data = {}) {
       opt_id: null,
       range_list: [],
     },
+    pdd_positionId: '',
+    amount_power: '',
+    commission_power: '',
+    again_power: '',
+    click_power: '',
+    keep: '',
+    circle: '',
+    again_time: '',
+    commission_num: '',
+    commission: '',
   }
   if (modalType.value === 1) {
     const { id: reid } = data
     const res = await http.getDetails({ id: reid })
-    let { id, title, group, goods_list, system, sort, lx_type, jd, positionId } = res.data
+    let {
+      id,
+      title,
+      group,
+      goods_list,
+      system,
+      is_rebate,
+      sort,
+      lx_type,
+      jd,
+      positionId,
+      pdd_positionId,
+      amount_power,
+      commission_power,
+      again_power,
+      click_power,
+      keep,
+      circle,
+      again_time,
+      commission_num,
+      commission,
+    } = res.data
+    groupType.value = is_rebate
+    end_time.value = res.data.end_time || ''
+    end_index.value = res.data.end_index || ''
     goods_list.forEach((res, index) => (res._index = index + 1))
     if (lx_type == 2) {
       const { cid, cid2 } = jd
@@ -699,6 +983,7 @@ async function init(data = {}) {
       group,
       goods_list: goods_list || [],
       system,
+      is_rebate,
       sort,
       lx_type,
       jd: jd || {
@@ -723,6 +1008,16 @@ async function init(data = {}) {
         range_list: [],
       },
       positionId,
+      pdd_positionId,
+      amount_power,
+      commission_power,
+      again_power,
+      click_power,
+      keep,
+      circle,
+      again_time,
+      commission_num,
+      commission,
     }
     showModal.value = true
     if (model.value.lx_type == 1 || (model.value.lx_type == 2 && model.value.jd.type == 1)) return
@@ -769,9 +1064,19 @@ function handleValidate() {
             coupon_id: item.id,
             is_flow: item.is_flow,
             goods_sign: item.goods_sign,
-            itemId: item.itemId
+            itemId: item.itemId,
+            rebate: item.rebate,
+            protect: item.protect,
+            groupId: item.groupId,
+            position_num: item.position_num,
+            status: item.map_status,
+            commission_num: item.commission_num,
+            commission: item.commission_end,
           })
         })
+      }
+      if (model.value.is_rebate == 1) {
+        model.value.circle = model.value.circle.toString()
       }
       /**还原数据 */
       let params = {
@@ -796,17 +1101,31 @@ function handleValidate() {
 
 //选择商品
 const selecGoodsRef = ref()
+const tableRef = ref(null)
 function selectGoods() {
-  selecGoodsRef.value.show(model.value.goods_list, model.value.system)
+  selecGoodsRef.value.show(model.value.goods_list, model.value.system, model.value.is_rebate)
 }
-function selectSave(data) {
-  // console.log('data :>> ', data)
-  model.value.goods_list = data.map((item, index) => {
+function selectSave(addList) {
+  addList &&
+    addList.forEach((item) => {
+      model.value.goods_list.unshift({
+        ...item,
+      })
+    })
+
+  model.value.goods_list = model.value.goods_list.map((item, index) => {
     return {
       ...item,
       _index: index + 1,
     }
   })
+  // 滑动到底部
+  setTimeout(() => {
+    tableRef.value.scrollTo({
+      left: 0,
+      top: 0,
+    })
+  }, 100)
 }
 /**关闭弹窗 */
 function closeModel() {

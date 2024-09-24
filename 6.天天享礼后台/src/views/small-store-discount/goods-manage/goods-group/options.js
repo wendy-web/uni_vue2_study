@@ -12,3 +12,20 @@ export const systemOptions = [{
         value: 2,
     },
 ]
+
+/*
+* 分组类型
+* */
+export const rebateOptions = [{
+    label: '默认',
+    value: 0,
+},
+    {
+        label: '推广返现',
+        value: 1,
+    },
+    {
+        label: '赚积分页面',
+        value: 2,
+    }
+]

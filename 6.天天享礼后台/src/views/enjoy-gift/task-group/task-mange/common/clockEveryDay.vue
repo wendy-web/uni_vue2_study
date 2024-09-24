@@ -42,9 +42,9 @@
   </n-modal>
 </template>
 <script setup>
-import { ref, h } from 'vue'
-import { useMessage, NInputNumber } from 'naive-ui'
-import http from '../api'
+import { NInputNumber, useMessage } from 'naive-ui';
+import { h, ref } from 'vue';
+import http from '../api';
 
 /**弹窗显示控制 */
 const showModal = ref(false)

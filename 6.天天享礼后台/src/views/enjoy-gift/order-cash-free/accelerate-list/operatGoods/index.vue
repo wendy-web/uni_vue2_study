@@ -33,16 +33,16 @@
         </n-form-item>
         <n-form-item label="背景图" path="bg_img">
           <n-upload
-                  action="/apios/Tools/uploadImg"
-                  :disabled="modalType === 1"
-                  list-type="image-card"
-                  :default-file-list="fileList2"
-                  :max="1"
-                  :multiple="true"
-                  name="img"
-                  @finish="handleFinish2"
-                  @remove="handleRemove2"
-                  @before-upload="beforeUpload"
+            action="/apios/Tools/uploadImg"
+            :disabled="modalType === 1"
+            list-type="image-card"
+            :default-file-list="fileList2"
+            :max="1"
+            :multiple="true"
+            name="img"
+            @finish="handleFinish2"
+            @remove="handleRemove2"
+            @before-upload="beforeUpload"
           >
             <n-button quaternary>上传文件</n-button>
           </n-upload>
@@ -374,8 +374,10 @@ const columns = [
             if (currInputIndex === inputValue) return
             const currData = tableData.value[currInputIndex]
             const targetIndex = tableData.value[inputValue]
-            tableData.value[inputValue] = currData
-            tableData.value[currInputIndex] = targetIndex
+            // tableData.value[inputValue] = currData
+            // tableData.value[currInputIndex] = targetIndex
+            tableData.value.splice(currInputIndex, 1)
+            tableData.value.splice(inputValue, 0, currData)
             resetIndex()
           },
         }),

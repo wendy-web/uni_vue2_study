@@ -1,0 +1,575 @@
+{
+    "panels": [
+        {
+            "index": 0,
+            "name": 1,
+            "paperType": "自定义",
+            "height": 140,
+            "width": 240,
+            "paperHeader": 40.5,
+            "paperFooter": 360,
+            "printElements": [
+                {
+                    "options": {
+                        "left": 295.5,
+                        "top": 40.5,
+                        "height": 22.5,
+                        "width": 48,
+                        "title": "盘点单",
+                        "fontSize": 7,
+                        "fontWeight": "600",
+                        "textAlign": "center",
+                        "lineHeight": 26,
+                        "draggable": true,
+                        "coordinateSync": true,
+                        "widthHeightSync": true,
+                        "right": 371.59087787974954,
+                        "bottom": 67.90909090909089,
+                        "vCenter": 345.34087787974954,
+                        "hCenter": 54.40909090909089,
+                        "field": "table_title",
+                        "qrCodeLevel": 0,
+                        "testData": "盘点单",
+                        "hideTitle": true
+                    },
+                    "printElementType": {
+                        "title": "自定义文本",
+                        "type": "text"
+                    }
+                },
+                {
+                    "options": {
+                        "left": 73.5,
+                        "top": 49.5,
+                        "height": 27,
+                        "width": 93,
+                        "textType": "barcode",
+                        "title": "barcode",
+                        "right": 160.5,
+                        "bottom": 75.75,
+                        "vCenter": 114,
+                        "hCenter": 62.25,
+                        "field": "barcode",
+                        "testData": "PD202312070",
+                        "coordinateSync": false,
+                        "widthHeightSync": false,
+                        "qrCodeLevel": 0,
+                        "fontSize": 7,
+                        "textAlign": "center"
+                    },
+                    "printElementType": {
+                        "title": "barcode",
+                        "type": "text"
+                    }
+                },
+                {
+                    "options": {
+                        "fontSize": 7,
+                        "left": 19.5,
+                        "top": 72,
+                        "height": 18,
+                        "width": 46.5,
+                        "fontFamily": "微软雅黑",
+                        "lineHeight": 18,
+                        "field": "table_no",
+                        "coordinateSync": false,
+                        "widthHeightSync": false,
+                        "qrCodeLevel": 0,
+                        "testData": "盘点单号:",
+                        "hideTitle": true,
+                        "title": "盘点单号:",
+                        "right": 122.93181610107422,
+                        "bottom": 90.27272727272724,
+                        "vCenter": 68.18181610107422,
+                        "hCenter": 81.27272727272724
+                    },
+                    "printElementType": {
+                        "title": "盘点单号:",
+                        "type": "text"
+                    }
+                },
+                {
+                    "options": {
+                        "left": 234,
+                        "top": 72,
+                        "height": 18,
+                        "width": 162,
+                        "fontFamily": "微软雅黑",
+                        "lineHeight": 18,
+                        "field": "table_date",
+                        "coordinateSync": false,
+                        "widthHeightSync": false,
+                        "qrCodeLevel": 0,
+                        "testData": "盘点日期:2023/12/4",
+                        "hideTitle": true,
+                        "title": "盘点日期:2023/12/4",
+                        "right": 411.75,
+                        "bottom": 90,
+                        "vCenter": 330.75,
+                        "hCenter": 81,
+                        "fontSize": 7
+                    },
+                    "printElementType": {
+                        "title": "自定义文本",
+                        "type": "text"
+                    }
+                },
+                {
+                    "options": {
+                        "fontSize": 7,
+                        "left": 400.5,
+                        "top": 72,
+                        "height": 18,
+                        "width": 142.5,
+                        "fontFamily": "微软雅黑",
+                        "lineHeight": 18,
+                        "field": "table_username",
+                        "coordinateSync": false,
+                        "widthHeightSync": false,
+                        "qrCodeLevel": 0,
+                        "testData": "制单人:仓库小刘",
+                        "hideTitle": true,
+                        "right": 609,
+                        "bottom": 90,
+                        "vCenter": 546.75,
+                        "hCenter": 81,
+                        "title": "自定义文本"
+                    },
+                    "printElementType": {
+                        "title": "自定义文本",
+                        "type": "text"
+                    }
+                },
+                {
+                    "options": {
+                        "fontSize": 7,
+                        "left": 19.5,
+                        "top": 90,
+                        "height": 18,
+                        "width": 378,
+                        "fontFamily": "微软雅黑",
+                        "lineHeight": 18,
+                        "field": "order_note",
+                        "coordinateSync": false,
+                        "widthHeightSync": false,
+                        "qrCodeLevel": 0,
+                        "testData": "单据备注:123456",
+                        "hideTitle": true,
+                        "title": "盘点单号:PD202312042",
+                        "right": 573,
+                        "bottom": 108,
+                        "vCenter": 296.25,
+                        "hCenter": 99
+                    },
+                    "printElementType": {
+                        "title": "自定义文本",
+                        "type": "text"
+                    }
+                },
+                {
+                    "options": {
+                        "left": 18,
+                        "top": 108,
+                        "height": 49.5,
+                        "width": 564,
+                        "tableFooterRepeat": "page",
+                        "field": "table",
+                        "coordinateSync": false,
+                        "widthHeightSync": false,
+                        "textAlign": "center",
+                        "right": 582,
+                        "bottom": 157.5,
+                        "vCenter": 300,
+                        "hCenter": 132.75,
+                        "fontSize": 7,
+                        "styler": "function(value, options, target,templateData){}",
+                        "rowStyler": "function(value,options){ return console.log('options',options); ''}",
+                        "columns": [
+                            [
+                                {
+                                    "width": 40.52792011569434,
+                                    "title": "条码",
+                                    "field": "barcode",
+                                    "checked": true,
+                                    "columnId": "barcode",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "align": "center",
+                                    "halign": "center",
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 47.57972467377367,
+                                    "title": "名称",
+                                    "field": "title",
+                                    "checked": true,
+                                    "columnId": "title",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "align": "center",
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 47.50611744966446,
+                                    "title": "规格型号",
+                                    "titleSync": false,
+                                    "field": "spec",
+                                    "checked": true,
+                                    "columnId": "spec",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 27.276215446208987,
+                                    "title": "品牌",
+                                    "titleSync": false,
+                                    "field": "brand",
+                                    "checked": true,
+                                    "columnId": "brand",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "align": "center",
+                                    "halign": "center",
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 28.04985515878262,
+                                    "title": "分类",
+                                    "titleSync": false,
+                                    "field": "class_name",
+                                    "checked": true,
+                                    "columnId": "class_name",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 31.00604267593647,
+                                    "title": "单位",
+                                    "titleSync": false,
+                                    "field": "measure_name",
+                                    "checked": true,
+                                    "columnId": "measure_name",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 31.059455768377006,
+                                    "title": "数量",
+                                    "titleSync": false,
+                                    "field": "num",
+                                    "checked": true,
+                                    "columnId": "num",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 42.04889941220542,
+                                    "title": "单价(元)",
+                                    "titleSync": false,
+                                    "field": "price",
+                                    "checked": true,
+                                    "columnId": "price",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 29.029008394886915,
+                                    "title": "小计",
+                                    "titleSync": false,
+                                    "field": "sub_total",
+                                    "checked": true,
+                                    "columnId": "sub_total",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 37.08956241371241,
+                                    "title": "供应商",
+                                    "titleSync": false,
+                                    "field": "sup_name",
+                                    "checked": true,
+                                    "columnId": "sup_name",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 49.04167836881359,
+                                    "title": "需求部门",
+                                    "titleSync": false,
+                                    "field": "dept_name",
+                                    "checked": true,
+                                    "columnId": "dept_name",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 47.05754173848189,
+                                    "title": "提交日期",
+                                    "titleSync": false,
+                                    "field": "submit_time",
+                                    "checked": true,
+                                    "columnId": "submit_time",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 38.206579410229494,
+                                    "title": "交货期",
+                                    "titleSync": false,
+                                    "field": "delivery_time",
+                                    "checked": true,
+                                    "columnId": "delivery_time",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 39.14337561997244,
+                                    "title": "合同号",
+                                    "titleSync": false,
+                                    "field": "contract_no",
+                                    "checked": true,
+                                    "columnId": "contract_no",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 29.378023353260197,
+                                    "title": "备注",
+                                    "field": "note",
+                                    "checked": true,
+                                    "columnId": "note",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 47.10419405099147,
+                                    "title": "单位",
+                                    "checked": false,
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1
+                                },
+                                {
+                                    "width": 48.17240526355627,
+                                    "title": "采购数量",
+                                    "checked": false,
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1
+                                },
+                                {
+                                    "width": 61.95947656444637,
+                                    "title": "采购单价(元)",
+                                    "field": "",
+                                    "checked": false,
+                                    "columnId": "",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1
+                                },
+                                {
+                                    "width": 25.29184752367469,
+                                    "title": "小计",
+                                    "checked": false,
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1
+                                },
+                                {
+                                    "width": 32.76900921732734,
+                                    "title": "供应商",
+                                    "checked": false,
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1
+                                },
+                                {
+                                    "width": 29.017658347185893,
+                                    "title": "需求部门",
+                                    "checked": false,
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1
+                                },
+                                {
+                                    "width": 29.051074248466787,
+                                    "title": "提交日期",
+                                    "checked": false,
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1
+                                },
+                                {
+                                    "width": 26.29867518394377,
+                                    "title": "交货期",
+                                    "checked": false,
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1
+                                },
+                                {
+                                    "width": 25.96410309704131,
+                                    "title": "合同号",
+                                    "checked": false,
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1
+                                },
+                                {
+                                    "width": 64.05661836080793,
+                                    "title": "批次日期",
+                                    "titleSync": false,
+                                    "field": "ph_no",
+                                    "checked": false,
+                                    "columnId": "ph_no",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 39.59600746508997,
+                                    "title": "盘前数",
+                                    "titleSync": false,
+                                    "field": "in_num",
+                                    "checked": false,
+                                    "columnId": "in_num",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 43.87834828785734,
+                                    "title": "盘后数",
+                                    "titleSync": false,
+                                    "field": "inv_num",
+                                    "checked": false,
+                                    "columnId": "inv_num",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                },
+                                {
+                                    "width": 52.99961239618285,
+                                    "title": "盘盈盘亏",
+                                    "titleSync": false,
+                                    "field": "diff_num",
+                                    "checked": false,
+                                    "columnId": "diff_num",
+                                    "fixed": false,
+                                    "rowspan": 1,
+                                    "colspan": 1,
+                                    "tableQRCodeLevel": 0,
+                                    "tableSummaryTitle": true,
+                                    "tableSummary": ""
+                                }
+                            ]
+                        ]
+                    },
+                    "printElementType": {
+                        "title": "表格",
+                        "type": "table",
+                        "editable": true,
+                        "columnDisplayEditable": true,
+                        "columnDisplayIndexEditable": true,
+                        "columnTitleEditable": true,
+                        "columnResizable": true,
+                        "columnAlignEditable": true,
+                        "isEnableEditField": true,
+                        "isEnableContextMenu": true,
+                        "isEnableInsertRow": true,
+                        "isEnableDeleteRow": true,
+                        "isEnableInsertColumn": true,
+                        "isEnableDeleteColumn": true,
+                        "isEnableMergeCell": true
+                    }
+                }
+            ],
+            "paperNumberLeft": 593,
+            "paperNumberTop": 375,
+            "paperNumberDisabled": true,
+            "paperNumberContinue": true,
+            "backgroundColor": "#ffffff",
+            "overPrintOptions": {
+                "content": "",
+                "opacity": 1,
+                "type": 1
+            },
+            "watermarkOptions": {
+                "content": "",
+                "fillStyle": "rgba(87, 13, 248, 0.5)",
+                "fontSize": "10px",
+                "rotate": 25,
+                "width": 100,
+                "height": 100,
+                "timestamp": false,
+                "format": "YYYY-MM-DD HH:mm"
+            }
+        }
+    ]
+}
