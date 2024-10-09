@@ -77,6 +77,9 @@ const mutations = {
         setAutoLogin(isAuto);
         state.isAutoLogin = isAuto;
     },
+    initDiaList(state) {
+        state.diaList = ['privacy'];
+    },
     setDiaList(state, daiName) {
         const filterIndex = state.diaList.findIndex(res => res == daiName);
         if (filterIndex < 0) state.diaList.push(daiName);
@@ -86,8 +89,8 @@ const mutations = {
     },
     delCurrentDiaList(state, daiName) {
         if (daiName) {
-            const filterList = state.diaList.filter(res => res != daiName);
-            state.diaList = filterList;
+            const findDiaIndex = state.diaList.findIndex(res => res == daiName);
+            if (findDiaIndex >= 0) state.diaList.splice(findDiaIndex, 1);
             return;
         }
         state.diaList.shift();

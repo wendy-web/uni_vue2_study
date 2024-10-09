@@ -129,3 +129,11 @@ export function advertisementConfig(data) {
         data
     });
 }
+// 记录牛金豆的扣取
+export function creditsDraw(data) {
+    return API.request({
+        url: '/api/Task/creditsDraw',
+        method: 'post',
+        data
+    });
+}

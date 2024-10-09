@@ -1,10 +1,8 @@
 <template>
 <view class="repair_detail">
-  <view
-			class="icon_box"
+  <view class="icon_box"
 			:style="{ height: navBarHeight + 'px', top: topHeight + 'px'}"
-			@click="navBackHandle"
-		>
+			@click="navBackHandle">
 			<image class="icon_box-icon" :src="imgUrl+'/static/images/icon_close.png'" mode="aspectFill"></image>
 		</view>
     <view class="content_box">
@@ -14,8 +12,7 @@
 					:height="screenWidth+'px'"
 					:src="config.imgArr[0]"
 					use-loading-slot
-				>
-					<van-loading slot="loading" type="spinner" size="20" vertical />
+				><van-loading slot="loading" type="spinner" size="20" vertical />
 				</van-image>
 			</view>
     </view>

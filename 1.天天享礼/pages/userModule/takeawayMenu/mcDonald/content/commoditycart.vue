@@ -1,13 +1,12 @@
 <template>
-<view>
-  <van-popup
-    :show="isShow"
-    @close="popupClose"
-    position="bottom"
-    custom-style="overflow: inherit;background: transparent;max-height:75vh;"
-    round
-    safe-area-inset-bottom
-  >
+<van-popup
+  :show="isShow"
+  @close="popupClose"
+  position="bottom"
+  custom-style="overflow: inherit;background: transparent;max-height:75vh;"
+  round
+  safe-area-inset-bottom
+>
   <view class="cart_box" :style="{ '--padding': isMaxPadding ? '1rpx' : '0' }">
     <image class="close_icon" :src="takeImgUrl + '/close_icon.png'" mode="scaleToFill" @click="popupClose"></image>
     <view class="cart_con">
@@ -52,13 +51,12 @@
       </view>
     </view>
   </view>
-  </van-popup>
-</view>
+</van-popup>
 </template>
 
 <script>
-import { mapActions, mapMutations, mapGetters } from 'vuex';
 import { getImgUrl } from '@/utils/auth.js';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
   props: {
     comNum: {

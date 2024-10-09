@@ -46,7 +46,6 @@
 						</block>
 					</view>
 				</view>
-
 				<view class="list-item" v-else @click="toUseHandle(item)">
 					<image class="list-item-bg"
 						:src="item.status == 2 ? use_bg : useIng_bg"></image>
@@ -79,7 +78,6 @@
 					</view>
 				</view>
 			</block>
-
 			<!-- 列表为空时呈现 -->
 			<view class="empty_box fl_col_cen" v-if="isEmpty">
 				<image class="empty_box_img" :src="empty.icon" mode="widthFix"></image>
@@ -185,7 +183,7 @@ import { mapGetters, mapMutations } from "vuex";
 			}
 		},
 		computed: {
-            ...mapGetters(['province_name', 'city_name', 'restaurant_id']),
+            ...mapGetters(['province_name', 'city_name', 'restaurant_id', 'userInfo']),
 		},
 		watch: {
 			goods(newValue) {
@@ -346,6 +344,10 @@ import { mapGetters, mapMutations } from "vuex";
 			lookHistory() {
                 this.$go('/pages/userInfo/myCouponHistory/index');
 			},
+			fromUrlRequest(zww_jump, zww_url) {
+				if (zww_jump == 2) return this.$go('/pages/shopMallModule/middleCont/index');
+				this.$go(`/pages/webview/webview?link=${encodeURIComponent(zww_url)}`);
+			},
 			toUseHandle(data) {
 				this.$wxReportEvent('immediateuse');
 				let {
@@ -362,8 +364,11 @@ import { mapGetters, mapMutations } from "vuex";
 					is_order,
 					coupon_id,
 					open_mini_type,
-					qz_url
+					qz_url,
+					zww_jump,
+					zww_url
 				} = data;
+				let link = is_main === 1 ? article_url : main_url;
 				switch (type) {
 					case 1:
 					case 14:
@@ -376,7 +381,6 @@ import { mapGetters, mapMutations } from "vuex";
 						break;
 					case 2:
 						// 公众号
-						let link = is_main === 1 ? article_url : main_url;
 						this.$go(`/pages/webview/webview?link=${encodeURIComponent(link)}`)
 						break;
 					case 3:
@@ -409,9 +413,19 @@ import { mapGetters, mapMutations } from "vuex";
 							}
 						});
 						break;
+					case 5:
+						// 聚推客
+						this.$goToMoviePlugin();
+						break;
 					case 6:
 						// 小程序内页
 						this.$go(`/pages/shopMallModule/couponDetails/index?id=${coupon_id}`);
+						break;
+					case 8:
+						// tag 0： 战马、 1： 红牛 跳转至公众号
+						if (this.userInfo.tag <= 1) return this.$go(`/pages/webview/webview?link=${encodeURIComponent(link)}`);
+						// 乐维娃娃机
+						this.fromUrlRequest(zww_jump, zww_url);
 						break;
 					case 11:
 						// 移动积分商品的跳转

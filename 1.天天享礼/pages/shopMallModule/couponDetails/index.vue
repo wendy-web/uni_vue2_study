@@ -211,9 +211,10 @@ import serviceRecharge from "./serviceRecharge.vue";
 import { wxmsgid } from "@/api/modules/index.js";
 import {
   couponDetails,
+  creditsDraw,
   exchange,
   exchangeCk,
-  seckill,
+  seckill
 } from "@/api/modules/shopMall.js";
 import { toggleCollect } from "@/api/modules/user.js";
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
@@ -432,6 +433,7 @@ export default {
       if (this.userInfo.credits < ConfigCredits && !this.is_popover && !zero_credits) {
         this.exchangeFailedShow = true;
         this.redeemClickLoading = false;
+        creditsDraw();
         return;
       }
       // 正常兑换流程

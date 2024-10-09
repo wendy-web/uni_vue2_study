@@ -26,10 +26,7 @@
         </view>
     </view>
     <view class="card_cont" v-if="detailList.length">
-        <block
-            v-for="(item, index) in detailList"
-            :key="index"
-        >
+        <block v-for="(item, index) in detailList" :key="index">
             <view class="lab_title fl_bet">
                 <view class="lab_title-left">{{item.date}}</view>
                 <view class="lab_title-right">

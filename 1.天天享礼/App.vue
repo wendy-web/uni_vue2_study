@@ -123,6 +123,11 @@ export default {
 			}
 		}
 	},
+	// 带入的路径不存在 - 重定向到首页使用
+	onPageNotFound:function() {
+		console.log("App 404");
+		this.$leftBack();
+	},
 	onShow: function(event) {
 		console.log('event.query:options:', event.query, this.isMiniProgram);
 		if (!this.isMiniProgram || (this.isMiniProgram && event.query.mlocid)) {

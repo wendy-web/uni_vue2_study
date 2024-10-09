@@ -41,17 +41,17 @@
 	</mescroll-body>
 	<!-- 牛金豆不足的情况 -->
 	<exchangeFailed
-			:isShow="exchangeFailedShow"
-			@goTask="goTaskHandle"
-			@close="exchangeFailedShow=false"
-		></exchangeFailed>
-		<!-- 赚取牛金豆 -->
-		<serviceCredits
-			ref="serviceCredits"
-			:isShow="serviceCreditsShow"
-			@showAdPlay="showAdPlayHandle"
-			@close="closeHandle"
-		></serviceCredits>
+		:isShow="exchangeFailedShow"
+		@goTask="goTaskHandle"
+		@close="exchangeFailedShow=false"
+	></exchangeFailed>
+	<!-- 赚取牛金豆 -->
+	<serviceCredits
+		ref="serviceCredits"
+		:isShow="serviceCreditsShow"
+		@showAdPlay="showAdPlayHandle"
+		@close="closeHandle"
+	></serviceCredits>
 
 	<!-- 配置的弹窗管理 -->
 	<configurationDia

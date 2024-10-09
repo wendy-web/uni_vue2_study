@@ -3,7 +3,11 @@ export default function({
     face_value,
     price
 }) {
-    const shopImg = face_value ? 'https://file.y1b.cn/store/1-0/24712/6690908640b12.png' : 'https://file.y1b.cn/store/1-0/24712/6690a53a7af4a.png'
+    let shopImg = 'https://file.y1b.cn/store/1-0/24712/6690a53a7af4a.png';
+    if (face_value) {
+        shopImg = (Math.random() < 0.5) ? 'https://file.y1b.cn/store/1-0/24712/6690908640b12.png' : 'https://file.y1b.cn/store/1-0/24819/66c2e77411642.png';
+    }
+
     const createObj = {
         "width": "904px",
         "height": "732px",

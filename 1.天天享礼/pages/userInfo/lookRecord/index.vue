@@ -95,19 +95,6 @@
   </mescroll-body>
   <!-- 背景 -->
   <view class="list-bg"></view>
-  <!-- 牛金豆不足的情况 -->
-  <exchangeFailed
-    :isShow="exchangeFailedShow"
-    @goTask="goTaskHandle"
-    @close="exchangeFailedShow = false"
-  ></exchangeFailed>
-  <!-- 赚取牛金豆 -->
-  <serviceCredits
-    ref="serviceCredits"
-    :isShow="serviceCreditsShow"
-    @showAdPlay="showAdPlayHandle"
-    @close="closeHandle"
-  ></serviceCredits>
 </view>
 </template>
 <script>
@@ -116,7 +103,6 @@ import { toggleCollect as pddToggleCollect } from "@/api/modules/pddShop.js";
 import { toggleCollect, watchDel, watchLog } from "@/api/modules/user.js";
 import exchangeFailed from "@/components/serviceCredits/exchangeFailed.vue";
 import serviceCredits from "@/components/serviceCredits/index.vue";
-import serviceCreditsFun from "@/components/serviceCredits/serviceCreditsFun.js";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getImgUrl } from "@/utils/auth.js";
 import goDetailsFun from "@/utils/goDetailsFun";
@@ -124,7 +110,7 @@ import { parseTime } from "@/utils/index.js";
 import shareMixin from '@/utils/mixin/shareMixin.js'; // 混入分享的混合方法
 import { mapActions, mapGetters } from 'vuex';
 export default {
-  mixins: [MescrollMixin, goDetailsFun, serviceCreditsFun, shareMixin],
+  mixins: [MescrollMixin, goDetailsFun, shareMixin],
   components: {
     exchangeFailed,
     serviceCredits,

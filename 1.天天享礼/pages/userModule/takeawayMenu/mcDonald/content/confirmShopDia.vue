@@ -1,12 +1,12 @@
 <template>
-	<van-popup
-    :show="isShow"
-    custom-style="overflow: visible;background: transparent;"
-    round
-    :z-index="100"
-	  :safe-area-inset-bottom="false"
-	  :catchtouchmove="true"
-  >
+<van-popup
+  :show="isShow"
+  custom-style="overflow: visible;background: transparent;"
+  round
+  :z-index="100"
+  :safe-area-inset-bottom="false"
+  :catchtouchmove="true"
+>
 	<view class="cont_box">
       <image class="shop_icon" src="https://file.y1b.cn/store/1-0/23814/64d9c778e2fca.png" mode="aspectFill"></image>
       <image class="shop_close" :src="takeImgUrl + '/shop_close.png'" mode="aspectFill" @click="onClose"></image>

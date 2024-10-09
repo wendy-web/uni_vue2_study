@@ -8,13 +8,9 @@
 		@scroll="banScrollHandle"
 	>
       <view class="swiper-item box_fl">
-        <view
-          v-for="(item, index) in tabList"
-          :key="index"
+        <view v-for="(item, index) in tabList" :key="index"
           :class="['list_item', 'fl_col_cen', index == tabIndex ? 'active' :'']"
-		      :id="'tabItemId'+index"
-          @click="tabChangeHandle(index)"
-        >
+		      :id="'tabItemId'+index" @click="tabChangeHandle(index)">
           <view class="icon_box fl_center">
             <image class="bg_img" src="https://file.y1b.cn/store/1-0/23118/654b2f93be504.png" mode="widthFix"></image>
             <image class="item_icon" :src="item.img" mode="widthFix"></image>
@@ -26,13 +22,9 @@
         </view>
       </view>
     </scroll-view>
-	<view class="ban_index-box"
-      :style="{width: bannerWidth + 'px'}"
-      v-if="tabList.length > 5"
-    >
-      <view class="ban_index-active"
-        :style="{ width: bannerActiveWidth + 'px', left: banLeft + 'px'}"
-      ></view>
+	  <view class="ban_index-box" :style="{width: bannerWidth + 'px'}"
+      v-if="tabList.length > 5">
+      <view class="ban_index-active" :style="{ width: bannerActiveWidth + 'px', left: banLeft + 'px'}"></view>
     </view>
 </view>
 </template>

@@ -1,22 +1,22 @@
 <template>
-	<van-popup
-    :show="isShow"
-    custom-style="overflow: visible; background: transparent;"
-    position="bottom"
-    round
-		:safe-area-inset-bottom="false"
-  >
-		<view class="cont_box">
-      <view class="cont_text">
-        <view class="confirm_text">确定充值账号是否正确</view>
-        <view class="confirm_num">{{ formatterFun(accountNum) }}</view>
-      </view>
-      <view class="btns_box">
-        <view class="pop_btn" @click="onClose">{{cancelText}}</view>
-        <view class="pop_btn pop_btn-confirm" @click="onConfirm">{{confirmText}}</view>
-      </view>
-		</view>
-	</van-popup>
+<van-popup
+  :show="isShow"
+  custom-style="overflow: visible; background: transparent;"
+  position="bottom"
+  round
+  :safe-area-inset-bottom="false"
+>
+  <view class="cont_box">
+    <view class="cont_text">
+      <view class="confirm_text">确定充值账号是否正确</view>
+      <view class="confirm_num">{{ formatterFun(accountNum) }}</view>
+    </view>
+    <view class="btns_box">
+      <view class="pop_btn" @click="onClose">{{cancelText}}</view>
+      <view class="pop_btn pop_btn-confirm" @click="onConfirm">{{confirmText}}</view>
+    </view>
+  </view>
+</van-popup>
 </template>
 
 <script>

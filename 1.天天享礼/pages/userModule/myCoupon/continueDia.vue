@@ -1,9 +1,9 @@
 <template>
 <van-popup
-    :show="isShow"
-    custom-style="overflow: visible;background: transparent;"
-    round
-		:safe-area-inset-bottom="false"
+  :show="isShow"
+  custom-style="overflow: visible;background: transparent;"
+  round
+  :safe-area-inset-bottom="false"
 >
   <view class="cont_box">
     <image class="cont_top_icon" src="https://file.y1b.cn/store/1-0/23713/64afe852aa2a6.png" mode="aspectFit"></image>
@@ -27,7 +27,6 @@
   </view>
 </van-popup>
 </template>
-
 <script>
 	export default {
     props: {
@@ -61,8 +60,7 @@
       }
     },
 		data() {
-			return {
-			}
+			return { }
 		},
 		methods: {
 			onConfirm() {
@@ -72,10 +70,8 @@
         this.$emit("close");
 			}
 		}
-
 	}
 </script>
-
 <style lang="scss">
 .cont_box {
   background: #ffffff;

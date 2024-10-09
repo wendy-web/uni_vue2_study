@@ -43,6 +43,7 @@
       <view style="margin-top: 8rpx;">
         <good-list
           :list="homeGoods"
+          :isHome="true"
           :isShowProfit="true"
           :isShowProfitBtn="true"
           :showProfitBtnTxt= "3.3"
@@ -270,11 +271,11 @@ export default {
         }
         if(nowItem.type != 9 ) return;
         if(index%2 && (isType9%2) == 0) {
-          list[index] = item.goods[index-1];
+          list[index] = goods[index-1];
           list[index - 1] = nowItem;
         }
         if((index%2) == 0 && isType9%2) {
-          list[index] = item.goods[index-1];
+          list[index] = goods[index-1];
           list[index - 1] = nowItem;
         }
         isType9 += 1;
@@ -602,7 +603,7 @@ page {
     .top_cont-right{
       width: 104rpx;
       height: 52rpx;
-      border: 1rpx solid rgba(252,241,215,0.80);
+      border: 2rpx solid rgba(252,241,215,0.80);
       border-radius: 35rpx;
       line-height: 52rpx;
       text-align: center;

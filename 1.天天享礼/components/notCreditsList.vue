@@ -1,13 +1,10 @@
 <template>
 <view class="not_credit-box" id="notCreditsDomBox">
-	<view class="not_title">
-		{{title}}
-	</view>
+	<view class="not_title">{{ title }}</view>
 	<scroll-view class="no_credits" scroll-x="true">
 		<vew class="no_credits-list">
-			<view class="no_credits-item"
-				v-for="(item, index) in jdList" :key="index"
-				@click="jdHandle(item)">
+			<view class="no_credits-item" v-for="(item, index) in jdList" :key="index"
+			@click="jdHandle(item)">
 				<van-image class="item_image" height="144rpx" width="144rpx"
 					fit="contain"  use-loading-slot :src="item.jdImage" radius="16rpx"
 				><van-loading slot="loading" type="spinner" size="20" vertical />
@@ -100,16 +97,6 @@ export default{
 		height: 100%;
 		z-index: -1;
 	}
-	// &::after {
-	// 	content: '\3000';
-	// 	background: url("https://file.y1b.cn/store/1-0/2482/66ac8403c4117.png") 0 0 / cover no-repeat;
-	// 	position: absolute;
-	// 	right: 0;
-	// 	top: 0;
-	// 	width: 385rpx;
-	// 	height: 97rpx;
-	// 	z-index: -1;
-	// }
 }
 .not_title{
 	position: relative;
@@ -120,16 +107,6 @@ export default{
 	line-height: 50rpx;
 	z-index: 0;
 	display: inline-block;
-	// &::before {
-	// 	content: '\3000';
-	// 	background: url("https://file.y1b.cn/store/1-0/23118/654af6d2a0a73.png") 0 0 / 100% 100% no-repeat;
-	// 	position: absolute;
-	// 	width: 54rpx;
-	// 	height: 54rpx;
-	// 	top: 17rpx;
-	// 	left: 12rpx;
-	// 	z-index: -1;
-	// }
 	&::after {
 		content: '\3000';
 		background: url("https://file.y1b.cn/store/1-0/2482/66ac7f45a856a.png") 0 0 / 100% 100% no-repeat;

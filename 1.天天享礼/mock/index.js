@@ -4,6 +4,26 @@ import './mode/task.js'; // 首页的mock数据
 const Mock = require('./module/WxMock');
 const BASEURL = getBaseUrl();
 
+// 省钱卡活动
+Mock.mock(`${BASEURL}/api/Savings/getActive`, {
+    statusCode: 200,
+    'data|1': [{
+        code: 1,
+        data: {
+            active_status: 1,
+            active_type: 0,
+            is_vip: 1,
+            name: "测试活动",
+            num: 10,
+            share_img: "https://test-file.y1b.cn/store/1-0/24823/66c7ffb02d99c.jpg",
+            share_title: "",
+            start_date: "2024-09-01 20:12"
+        },
+        msg: "",
+        time: 0.012407064437866211
+    }, ],
+});
+
 // 领红包任务
 Mock.mock(`${BASEURL}/api/task/scheduleActivity`, {
     statusCode: 200,

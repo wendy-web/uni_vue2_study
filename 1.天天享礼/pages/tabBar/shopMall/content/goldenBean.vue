@@ -37,6 +37,7 @@ import { savingInfo } from "@/api/modules/packet.js";
 import { textNav } from '@/api/modules/shopMall.js';
 import pCountup from '@/components/p-countUp/countUp.vue';
 import { getImgUrl, warpRectDom } from '@/utils/auth.js';
+import { throttle } from '@/utils/directives';
 import goDetailsFun from '@/utils/goDetailsFun';
 import { mapGetters, mapMutations } from 'vuex';
 export default {
@@ -154,7 +155,7 @@ export default {
             if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
 			this.$emit('goTask');
 		},
-		navHandle(item){
+		navHandle: throttle(function(item){
 			if(this.iconFindLightIndex >= 0) {
 				this.setIconFindLightIndex(-1);
 				this.delCurrentDiaList();
@@ -164,7 +165,7 @@ export default {
 				...item,
 				isNavFromUrl: true
 			});
-		}
+		})
 	}
 }
 </script>
@@ -282,7 +283,8 @@ export default {
 			top: 252rpx;
 			&::before {
 				content: '\3000';
-				background: url("https://file.y1b.cn/store/1-0/24719/6699bdffe3362.png") 0 0 / 100% 100% no-repeat;
+				// background: url("https://file.y1b.cn/store/1-0/24719/6699bdffe3362.png") 0 0 / 100% 100% no-repeat;
+				background: url("https://file.y1b.cn/store/1-0/2419/659cb751dfad6.png") 0 0 / 100% 100% no-repeat;
 				position: absolute;
 				bottom: 0;
 				left: 0;
@@ -290,26 +292,26 @@ export default {
 				height: 184rpx;
 				z-index: -1;
 			}
-			.circle_box {
-				position: absolute;
-				top: -106rpx;
-				left: 70rpx;
-				width: 20rpx;
-				height: 20rpx;
-				background: #FDE5E5;
-				border-radius: 50%;
-				&::before {
-					content: '\3000';
-					position: absolute;
-					width: 12rpx;
-					height: 12rpx;
-					top: 50%;
-					left: 50%;
-					transform: translate(-50%, -50%);
-					border-radius: 50%;
-					background: #F84842;
-				}
-			}
+			// .circle_box {
+			// 	position: absolute;
+			// 	top: -106rpx;
+			// 	left: 70rpx;
+			// 	width: 20rpx;
+			// 	height: 20rpx;
+			// 	background: #FDE5E5;
+			// 	border-radius: 50%;
+			// 	&::before {
+			// 		content: '\3000';
+			// 		position: absolute;
+			// 		width: 12rpx;
+			// 		height: 12rpx;
+			// 		top: 50%;
+			// 		left: 50%;
+			// 		transform: translate(-50%, -50%);
+			// 		border-radius: 50%;
+			// 		background: #F84842;
+			// 	}
+			// }
 			&.light_txt-left{
 				left: 0;
 				&::before {

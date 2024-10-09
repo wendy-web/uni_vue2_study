@@ -29,22 +29,15 @@ let privacyResolves = new Set();
 let closeOtherPagePopUpHooks = new Set();
 if (wx.onNeedPrivacyAuthorization) {
   wx.onNeedPrivacyAuthorization(resolve => {
-    if (typeof privacyHandler === 'function') {
-      privacyHandler(resolve)
-    }
+    if (typeof privacyHandler === 'function') privacyHandler(resolve);
   });
 }
 const closeOtherPagePopUp = (closePopUp) => {
   closeOtherPagePopUpHooks.forEach(hook => {
-    if (closePopUp !== hook) {
-      hook()
-    }
+    if (closePopUp !== hook) hook();
   })
 }
-import {
-  mapGetters,
-  mapMutations
-} from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
   data() {
     return {
@@ -57,96 +50,79 @@ export default {
   computed: {
     ...mapGetters(['diaList', 'isAutoPrivacy'])
   },
-  watch: {
-    // diaList(newValue, oldValue) {
-    //   if (newValue.length && newValue[0] == "privacy") {
-    //     this.innerShow = true;
-    //   }
-    // }
-  },
   mounted() {
     const pageList = getCurrentPages();
     const currentPageObj = pageList[pageList.length - 1];
     this.currentPage = currentPageObj.route;
     const closePopUp = () => {
-      this.disPopUp()
+      this.disPopUp();
     }
     privacyHandler = resolve => {
-      privacyResolves.add(resolve)
+      privacyResolves.add(resolve);
       this.popUp();
       // 额外逻辑：当前页面的隐私弹窗弹起的时候，关掉其他页面的隐私弹窗
       closeOtherPagePopUp(closePopUp);
     }
-    closeOtherPagePopUpHooks.add(closePopUp)
+    closeOtherPagePopUpHooks.add(closePopUp);
     this.closePopUp = closePopUp;
+    // 询问隐私协议
     if (wx.getPrivacySetting && !this.isAutoPrivacy) {
-        this.setAutoPrivacy(true)
-        wx.getPrivacySetting({
+      this.setAutoPrivacy(true);
+      wx.getPrivacySetting({
         success: res => {
-            if (res.needAuthorization) {
-                return this.popUp()
-            }
-            this.delCurrentDiaList('privacy')
+          if (res.needAuthorization) return this.popUp();
+          this.delCurrentDiaList('privacy');
         },
         fail: () => { },
         complete: () => { },
-        })
-    } else {
-        this.delCurrentDiaList('privacy')
-        // 低版本基础库不支持 wx.getPrivacySetting 接口，隐私接口可以直接调用
+      });
+      return;
     }
+    this.delCurrentDiaList('privacy');
   },
   beforeDestroy() {
     closeOtherPagePopUpHooks.delete(this.closePopUp);
   },
   methods: {
     ...mapMutations({
-        setGiftInfo: 'user/setGiftInfo',
-        setDiaList: "user/setDiaList",
-        delCurrentDiaList: "user/delCurrentDiaList",
-        setAutoPrivacy: "user/setAutoPrivacy",
+      setDiaList: "user/setDiaList",
+      delCurrentDiaList: "user/delCurrentDiaList",
+      setAutoPrivacy: "user/setAutoPrivacy",
     }),
     handleAgree(e) {
-      this.disPopUp()
+      this.disPopUp();
       // 这里演示了同时调用多个wx隐私接口时要如何处理：让隐私弹窗保持单例，点击一次同意按钮即可让所有pending中的wx隐私接口继续执行 （看page/index/index中的 wx.getClipboardData 和 wx.startCompass）
       privacyResolves.forEach(resolve => {
         resolve({
           event: 'agree',
           buttonId: 'agree-btn'
-        })
-      })
-      privacyResolves.clear()
+        });
+      });
+      privacyResolves.clear();
     },
     // 不同意授权
     handleDisagree(e) {
       this.disPopUp()
       privacyResolves.forEach(resolve => {
         const isBack = this.disagreePrivacyPageList.includes(this.currentPage);
-        if(isBack)  {
-          this.$switchTab('/pages/tabBar/shopMall/index');
-        } else {
-          resolve({
-            event: 'disagree',
-          });
-        }
+        if(isBack) this.$switchTab('/pages/tabBar/shopMall/index');
+        resolve({
+          event: 'disagree',
+        });
       });
       privacyResolves.clear();
     },
     popUp() {
-        if (this.innerShow === false) {
-          this.setDiaList('privacy')
-          this.innerShow = true;
-          // if(this.diaList[0] == 'privacy') {
-          //   return  this.innerShow = true;
-          // }
-          // return this.setDiaList('privacy');
-        }
+      if (this.innerShow === false) {
+        this.setDiaList('privacy');
+        this.innerShow = true;
+      }
     },
     disPopUp() {
-        if (this.innerShow === true) {
-            this.innerShow = false;
-            this.delCurrentDiaList('privacy')
-        }
+      if (this.innerShow === true) {
+        this.innerShow = false;
+        this.delCurrentDiaList('privacy');
+      }
     },
     // 打开翻看协议
     openPrivacyContract() {
@@ -155,17 +131,16 @@ export default {
     LifetimesShow() {
       if (this.closePopUp) {
         privacyHandler = resolve => {
-          privacyResolves.add(resolve)
-          this.popUp()
+          privacyResolves.add(resolve);
+          this.popUp();
           // 额外逻辑：当前页面的隐私弹窗弹起的时候，关掉其他页面的隐私弹窗
-          closeOtherPagePopUp(this.closePopUp)
+          closeOtherPagePopUp(this.closePopUp);
         }
       }
     }
   },
 }
 </script>
-
 <style scoped lang="scss">
 .content {
     width: 648rpx;

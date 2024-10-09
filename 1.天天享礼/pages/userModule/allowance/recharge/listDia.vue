@@ -1,45 +1,36 @@
 <template>
-<view>
-  <van-popup
-    :show="isShow"
-    @close="popupClose"
-    position="bottom"
-    custom-style="overflow: inherit;background: transparent;border-radius: 40rpx;height: 85vh;"
-    round
-    safe-area-inset-bottom
-	  :catchtouchmove="true"
-  >
+<van-popup
+  :show="isShow"
+  @close="popupClose"
+  position="bottom"
+  custom-style="overflow: inherit;background: transparent;border-radius: 40rpx;height: 85vh;"
+  round
+  safe-area-inset-bottom
+  :catchtouchmove="true"
+>
   <view class="detail_box">
     <view class="det_title">
       选择品牌
       <image class="close_icon" src="https://file.y1b.cn/store/1-0/23118/654b3018c3c74.png" mode="aspectFill" @click="popupClose"></image>
     </view>
     <scroll-view :scroll-y="true" class="detail_cont">
-      <view
-        v-for="(itemL, idx) in list"
-        :key="idx"
-        class="tab_box"
-      >
+      <view class="tab_box" v-for="(itemL, idx) in list" :key="idx">
         <block v-if="itemL.child.length">
           <view class="cont_lab">{{itemL.name}}</view>
           <view class="cont_list box_fl">
-            <view class="cont_list-item fl_col_cen"
-              v-for="(item, index) in itemL.child"
-              :key="index"
-              @click="itemHandle(item.id)"
-            >
+            <view class="cont_list-item fl_col_cen" v-for="(item, index) in itemL.child" :key="index"
+              @click="itemHandle(item.id)">
               <view class="item_img-box fl_center">
                 <image class="item_img" :src="item.img" mode="widthFix"></image>
               </view>
-                <view class="item_txt">{{item.name}}</view>
+              <view class="item_txt">{{item.name}}</view>
             </view>
           </view>
         </block>
       </view>
     </scroll-view>
   </view>
-  </van-popup>
-</view>
+</van-popup>
 </template>
 
 <script>

@@ -59,5 +59,4 @@ export default {
   font-size: 0;
   position: relative;
 }
-
 </style>

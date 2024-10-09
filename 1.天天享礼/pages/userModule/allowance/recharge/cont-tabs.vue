@@ -9,10 +9,7 @@
 	:style="{maxHeight: mescrollHeight}"
 	:scroll-into-view="scrollTopId"
 >
-	<view
-		class="tabList-item"
-		v-for="(itemL, idx) in tabList"
-		:key="idx"
+	<view class="tabList-item" v-for="(itemL, idx) in tabList" :key="idx"
 		:id="'tabItemId'+idx"
 		:style="{minHeight: (tabList.length-1) == idx ? mescrollHeight : 0}"
 	>
@@ -23,13 +20,10 @@
 		<view class="cont_list" v-if="itemL.child.length">
 			<view class="cont_list-item fl_center"
 				v-for="(item, index) in itemL.child" :key="index"
-				@click="couponDetailHandle(item)"
-			>
+				@click="couponDetailHandle(item)">
             <view class="cont_img">
-                <van-image
-                    height="180rpx" width="180rpx"
-                    radius="24rpx" use-loading-slot
-                    :src="item.image"
+                <van-image height="180rpx" width="180rpx"
+                    radius="24rpx" use-loading-slot :src="item.image"
                 ><van-loading slot="loading" type="spinner" size="12" vertical />
                 </van-image>
             </view>

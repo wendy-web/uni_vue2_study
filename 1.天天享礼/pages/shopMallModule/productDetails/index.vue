@@ -319,7 +319,6 @@ export default {
     goMyCouponHandle() {
       if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
       const {type_id, type_sid } = this.packet;
-      console.log('this.config.lx_type', this.config.lx_type)
       this.setMiniProgram(this.config.lx_type);
       this.$openEmbeddedMiniProgram({
         appId: type_id,
@@ -411,7 +410,6 @@ export default {
       if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
       const { appid, path, pathXq, lx_type } = this.config;
       this.setMiniProgram(lx_type);
-      console.log('lx_type', lx_type)
       this.$openEmbeddedMiniProgram({
         appId: appid,
         // envVersion:'trial',

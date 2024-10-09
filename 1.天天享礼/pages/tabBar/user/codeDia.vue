@@ -6,7 +6,7 @@
 		:z-index="100"
 		:safe-area-inset-bottom="false"
 		@close="onClose"
-		>
+	>
 		<view class="cont_box">
 			<van-image
 				width="750rpx" height="700rpx" fit="widthFix"
@@ -32,6 +32,7 @@ export default {
       showImg() {
         const isGetPlatform = getPlatform();
         console.log('isGetPlatform', isGetPlatform);
+        // return 'https://file.y1b.cn/store/1-0/24822/66c6919137e72.png'
         return isGetPlatform == 'ios' ? 'https://file.y1b.cn/store/1-0/2485/66b033c19aae4.png' : 'https://file.y1b.cn/store/1-0/2473/66851b585493d.png';
       }
     },

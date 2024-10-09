@@ -152,7 +152,7 @@ export default {
                 this.$emit('specialLisShare', {  share_word, share_img });
             }
             const { goods_lx_type, list, total_count } = this.configData;
-            this.goods_lx_type = 2;
+            this.goods_lx_type = goods_lx_type;
             switch (goods_lx_type) {
                 case 1:
                     // 自选

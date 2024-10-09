@@ -366,6 +366,14 @@
 			"name": "userCard",
 			"pages": [
 				{
+					"path": "card/cardVip/activity",
+					"style": {
+						"navigationBarTitleText": "省钱卡活动",
+						"navigationStyle": "custom",
+						"backgroundColor": "#fff"
+					}
+				},
+				{
 					"path": "card/cardVip/redPayIndex",
 					"style": {
 						"navigationBarTitleText": "省钱卡红包",

@@ -63,6 +63,10 @@
     transform: translate(-50%, -50%);
 }
 
+.ofh {
+    overflow: hidden;
+}
+
 .txt_ov_ell1 {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -112,6 +116,10 @@
 
 .fl1 {
     flex: 1;
+}
+
+.flw {
+    flex-wrap: wrap;
 }
 
 .fl_center {

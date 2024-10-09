@@ -57,11 +57,11 @@
                     </view>
                 </view>
             </view>
-            <view :class="['scroll_top-sticky', isShowSticky ? 'active' : '']">
+            <view :class="['scroll_top-sticky', isShowSticky ? 'active' : '']" >
                 <view class="scroll_top_coupon">
                     <image class="scroll_top_icon" src="https://file.y1b.cn/store/1-0/24523/664f093341eba.png" mode="aspectFill"></image>
                     优惠券{{ max_coupon_money }}元 </view>
-                <view class="cd_txt">
+                <view class="cd_txt" v-if="remainTime">
                     还剩
                     <text class="item">{{ timeData.hours }}</text>:
                     <text class="item">{{ timeData.minutes }}</text>:

@@ -1,11 +1,11 @@
 <template>
-	<van-popup
-    :show="isShow"
-    custom-style="overflow: visible;background: transparent;"
-    position="bottom"
-    round
+<van-popup
+	:show="isShow"
+	custom-style="overflow: visible;background: transparent;"
+	position="bottom"
+	round
 	:safe-area-inset-bottom="false"
-  >
+>
 	<view class="cont_box">
       <view class="cont_text">
         <view class="cont_title">
@@ -29,7 +29,6 @@
 	</view>
 </van-popup>
 </template>
-
 <script>
 import { pay, query } from '@/api/modules/order.js';
 import Toast from '@/wxcomponents/vant_update/toast/toast.js';

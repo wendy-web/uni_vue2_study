@@ -1,8 +1,7 @@
 <template>
 <view>
 <view class="list_item fl_al_end"
-  v-for="(item, index) in list"
-  :key="index"
+  v-for="(item, index) in list" :key="index"
    @click="selComHandle(item, index)"
 >
   <view class="com_img-box fl_center">
@@ -23,7 +22,7 @@
   </view>
   <view class="list_right">
 	<block v-if="item.product_choose">
-		<view class="right_txt" >选规格</view>
+		<view class="right_txt">选规格</view>
 		<view class="num_add" v-if="item.car_num">{{ item.car_num }}</view>
 	</block>
 	<view class="num_box fl_center" v-else>

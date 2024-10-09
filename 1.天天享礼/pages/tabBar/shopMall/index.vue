@@ -578,14 +578,15 @@ export default {
     },
     ...mapActions({
       getUserInfo: "user/getUserInfo",
-      profitInfoRequest: 'user/profitInfoRequest'
+      profitInfoRequest: 'user/profitInfoRequest',
     }),
     ...mapMutations({
       setDiaList: "user/setDiaList",
       delCurrentDiaList: "user/delCurrentDiaList",
       setAlreadyShowLight: "user/setAlreadyShowLight",
 			setIconFindLightIndex: "user/setIconFindLightIndex",
-      setLightArr: "user/setLightArr"
+      setLightArr: "user/setLightArr",
+      initDiaList: "user/initDiaList"
 
     }),
     async drawHandle() {
@@ -982,15 +983,17 @@ export default {
       this.awardId = awardId; // 彬纷进入 - 抽奖
       this.recommendId = recommendId; // 彬纷进入 - 半屏推券
       this.codeErrorId = codeErrorId; // 彬纷进入 - 扫码异常
-      this.tradeIn = tradeIn; // 彬纷进入 - 换购详情配置图片弹窗 -----
+      this.tradeIn = tradeIn; // 彬纷进入 - 换购详情配置图片弹窗
       // /pages/tabBar/shopMall/index?tradeIn=1
       this.losingNew = losingNew; // 彬纷进入 - 新人扫码未中奖
       this.skuId = skuId;
       this.skuId && this.setAlreadyShowLight(false);
       this.psite = psite; // 全局配置弹窗
+      // this.lsite = 'icon_223-85';
       this.lsite = lsite;
       this.giftRewardId = giftRewardId;
       this.gameAnimationId = gameAnimationId; // 旋转木马进入
+      this.initDiaList();
       if(this.gameAnimationId) {
         this.initDrawPopover();
       }

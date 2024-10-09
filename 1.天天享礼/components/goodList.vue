@@ -3,8 +3,7 @@
     <!-- loading模块 -->
     <block v-if="!list.length">
       <view class="loading_item" :style="{ '--height': '576rpx'}"
-        v-for="(item, idx) in loadingLength" :key="idx"
-      >
+        v-for="(item, idx) in loadingLength" :key="idx">
         <view class="loading_img"></view>
         <view class="good_cont">
           <view class="good_name_box"></view>
@@ -20,8 +19,7 @@
         good.type == 9 ? 'swiper_list' : 'good-list-item',
         good.is_light && !isAlreadyShowLight ? 'lightShow' : ''
       ]"
-      :data-id="good.id || good.groupId"
-    >
+      :data-id="good.id || good.groupId">
     <!-- good.type == 9:是单横排的使用 -->
       <image class="light_head anima_head" mode="scaleToFill"
         v-if="good.is_light && !isAlreadyShowLight"
@@ -38,8 +36,7 @@
         <!-- 视频组件 -->
         <channelVideo :good="good" v-if="good.type == 7" class="item_cont"></channelVideo>
         <!-- 内容重新 -->
-        <view class="item_cont" v-else
-          @click.native.stop="goDetails(good, { listIndex: index })">
+        <view class="item_cont" v-else @click.native.stop="goDetails(good, { listIndex: index })">
           <!-- 是否展示广告位 - 直接覆盖到整个 -->
           <image class="is_banner_img" v-if="isShowBanner && good.is_banner" :src="bannerImg(good)"></image>
           <block v-if="(isSearchJdModel || isJdCenter) || !(isShowBanner && good.is_banner)">
@@ -47,63 +44,43 @@
           <slot name="cont" v-if="isSlot"></slot>
           <!-- 搜索模块 -->
           <view class="good_cont js_search_box" v-else-if="isSearchJdModel">
-              <view class="good_name_box txt_ov_ell2">
-                <view class="ty_store" v-if="good.type == 12"></view><!-- 到店吃 -->
-                <view class="jd_icon_box" v-else-if="good.lx_type != 1 && parseInt(good.face_value)">
-                  抵¥{{ parseInt(good.face_value) || 0 }}券
-                </view>
-                <view class="show_type" v-if="userInfo.show_shopType && (good.lx_type > 1)">
-                  {{ (good.lx_type == 2) ? '京东' : '拼多多' }}
-                </view>
-                {{ good.title }}
-              </view>
-              <view class="use_cont">
-                <view class="use_cont-left" v-if="good.after_pay"></view>
-                <view class="use_cont-right" v-if="good.zero_credits">免豆特权</view>
-                <view v-else-if="good.lx_type != 1" class="js_search_credits">
-                  {{ good.credits || 0 }}牛金豆
-                </view>
-              </view>
-              <!-- 乐刷的商品 -->
-              <view class="good_remind txt_ov_ell1" v-if="good.lx_type == 1">
-                  <text :class="['good_remind-left', good.zero_credits ? 'vip_line' : '' ]"
-                    v-if="good.credits"
-                  >
-                    <text class="good_credits">{{ good.credits || 0 }}</text>
-                    <text>牛金豆</text>
-                  </text>
-                  <text class="good_total2">{{ Number(good.exch_user_num) + Number(good.user_num) }}人兑换</text>
-              </view>
-              <view class="good_remind txt_ov_ell1" v-else>
-                <text v-if="parseInt(good.face_value)">券后</text>
-                <text class="good_credits">
-                    <text style="font-size: 24rpx">￥</text>
-                    {{ good.lowestCouponPrice || 0 }}
-                </text>
-                <text class="good_total" v-if="good.inOrderCount30Days" >月售{{ good.inOrderCount30Days }}</text>
-                <text class="good_total" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
-              </view>
-          </view>
-          <!-- 其他猜你喜欢模块 -->
-          <view class="good_cont js_box" v-else-if="isJdModel">
-            <view class="good_name_box txt_ov_ell2">
-              <view class="jd_icon_box" v-if="parseInt(good.face_value)">
-                抵¥{{ parseInt(good.face_value) || 0 }}券
-              </view>
-              <view class="show_type" v-if="userInfo.show_shopType && (good.lx_type > 1)">
-                {{ (good.lx_type == 2) ? '京东' : '拼多多' }}
-              </view>
-              {{ good.title }}
-            </view>
+            <showTitleCont :good="good"></showTitleCont>
             <view class="use_cont">
               <view class="use_cont-left" v-if="good.after_pay"></view>
               <view class="use_cont-right" v-if="good.zero_credits">免豆特权</view>
+              <view v-else-if="good.lx_type != 1" class="js_search_credits">
+                {{ good.credits || 0 }}牛金豆
+              </view>
             </view>
+            <!-- 乐刷的商品 -->
+            <view class="good_remind txt_ov_ell1" v-if="good.lx_type == 1">
+              <text :class="['good_remind-left', good.zero_credits ? 'vip_line' : '' ]"
+                v-if="good.credits">
+                <text class="good_credits">{{ good.credits || 0 }}</text>
+                <text>牛金豆</text>
+              </text>
+              <text class="good_total2">{{ Number(good.exch_user_num) + Number(good.user_num) }}人兑换</text>
+            </view>
+            <view class="good_remind txt_ov_ell1" v-else>
+              <text style="color: #e7331b;" v-if="parseInt(good.face_value)">券后</text>
+              <text class="good_credits">
+                <text style="font-size: 24rpx">￥</text>
+                {{ good.lowestCouponPrice || 0 }}
+              </text>
+              <text class="good_total" v-if="good.inOrderCount30Days" >月售{{ good.inOrderCount30Days }}</text>
+              <text class="good_total" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
+            </view>
+          </view>
+          <!-- 其他猜你喜欢模块 -->
+          <view class="good_cont js_box" v-else-if="isJdModel">
+            <showTitleCont :good="good"></showTitleCont>
+            <!-- 标签 -->
+            <showTagCont :good="good"></showTagCont>
             <view class="good_remind txt_ov_ell1">
               <text :class="['good_remind-left', good.zero_credits ? 'vip_line' : '']"
                 v-if="good.credits">
-                  <text class="good_credits">{{ good.credits || 0 }}</text>
-                  <text>牛金豆</text>
+                <text class="good_credits">{{ good.credits || 0 }}</text>
+                <text>牛金豆</text>
               </text>
               <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
               <text class="good_total2" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
@@ -111,71 +88,54 @@
           </view>
           <!-- 专属中心的模块 -->
           <view class="good_cont js_center" v-else-if="isJdCenter">
-              <view class="good_name_box txt_ov_ell2">
-                <view class="ty_store" v-if="good.type == 12"></view><!-- 到店吃 -->
-                <view class="jd_icon_box" v-else-if="good.lx_type != 1 && parseInt(good.face_value)">
-                  抵¥{{ parseInt(good.face_value) || 0 }}券
-                </view>
-                <view class="show_type" v-if="userInfo.show_shopType && (good.lx_type > 1)">
-                  {{ (good.lx_type == 2) ? '京东' : '拼多多' }}
-                </view>
-                {{ good.title }}
+            <showTitleCont :good="good"></showTitleCont>
+            <view class="use_cont">
+              <view class="use_cont-left" v-if="good.after_pay"></view>
+              <view v-if="show_lowestCouponPrice && good.credits && good.lowestCouponPrice" class="js_search_credits">
+                {{ good.credits || 0 }}牛金豆
               </view>
-              <view class="use_cont">
-                <view class="use_cont-left" v-if="good.after_pay"></view>
-                <view v-if="show_lowestCouponPrice && good.credits && good.lowestCouponPrice" class="js_search_credits">
-                  {{ good.credits || 0 }}牛金豆
-                </view>
-                <view class="use_cont-right" v-else-if="good.zero_credits">免豆特权</view>
-              </view>
-              <view class="good_remind txt_ov_ell1">
-                <block v-if="show_lowestCouponPrice && good.lowestCouponPrice">
-                  <text v-if="parseInt(good.face_value)">券后</text>
-                  <text class="good_credits" style="margin-right: 8rpx;">
-                      <text style="font-size: 24rpx">￥</text>
-                      {{ good.lowestCouponPrice || 0 }}
-                  </text>
-                </block>
-                <text class="good_remind-left" v-else-if="good.credits">
-                  <text :class="['good_credits', good.zero_credits ? 'active' : '']">{{ good.credits || 0 }}</text>
-                  <text>牛金豆</text>
+              <view class="use_cont-right" v-else-if="good.zero_credits">免豆特权</view>
+            </view>
+            <view class="good_remind txt_ov_ell1">
+              <block v-if="show_lowestCouponPrice && good.lowestCouponPrice">
+                <text style="color: #e7331b;" v-if="parseInt(good.face_value)">券后</text>
+                <text class="good_credits" style="margin-right: 8rpx;">
+                  <text style="font-size: 24rpx">￥</text>
+                  {{ good.lowestCouponPrice || 0 }}
                 </text>
-                <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
-                <text class="good_total2" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
-              </view>
-              <view class="jd_face_value" v-if="parseInt(good.face_value) && !isShowProfitBtn">
-                使用{{parseInt(good.face_value) || 0}}元券购买
-              </view>
+              </block>
+              <text class="good_remind-left" v-else-if="good.credits">
+                <text :class="['good_credits', good.zero_credits ? 'active' : '']">{{ good.credits || 0 }}</text>
+                <text>牛金豆</text>
+              </text>
+              <text class="good_total2" v-if="good.inOrderCount30Days">月售{{ good.inOrderCount30Days }}</text>
+              <text class="good_total2" v-if="good.sales_tip">已售{{ good.sales_tip }}</text>
+            </view>
+            <view class="jd_face_value" v-if="parseInt(good.face_value) && !isShowProfitBtn">
+              使用{{parseInt(good.face_value) || 0}}元券购买
+            </view>
           </view>
           <!-- 首页呈现 -->
           <view class="good_cont home_cont" v-else>
-            <view class="good-name txt_ov_ell2">
-              <view class="ty_store" v-if="good.type == 12"></view><!-- 到店吃 -->
-              <view class="jd_icon_box" v-else-if="good.lx_type != 1 && parseInt(good.face_value)">
-                抵¥{{ parseInt(good.face_value) || 0 }}券
-              </view>
-              <view class="show_type" v-if="userInfo.show_shopType&& (good.lx_type > 1)">
-              {{ (good.lx_type == 2) ? '京东' : '拼多多' }}
-              </view>
-              {{ good.title }}
-            </view>
+            <!-- 标题内容的组件 -->
+            <showTitleCont :good="good"></showTitleCont>
             <view class="use_cont hide_time" v-if="good.hide_time">
-              <!-- <view >{{ good.diffTime }}</view> -->
-              <view class="hide_text" v-if="good.isFinishDiffTime"> 活动已结束 </view>
-              <van-count-down use-slot millisecond :time="good.diffTime" @change="onChangeHandle($event, index)" @finish="finishHandle(index)" class="hide_text" v-else>
-                <!-- <text class="item" style="margin-right: 4rpx;">{{ good.timeData.days }}天</text> -->
-                 <view class="item_box">
-                    <text class="item">{{ good.timeData.hours }}</text>:
-                    <text class="item">{{ good.timeData.minutes }}</text>:
-                    <text class="item">{{ good.timeData.seconds }}</text>.
-                    <text class="item">{{ good.timeData.milliseconds }}</text>
-                 </view>
+              <view class="hide_text" v-if="good.isFinishDiffTime">活动已结束 </view>
+              <van-count-down
+                use-slot millisecond :time="good.diffTime"
+                @change="onChangeHandle($event, index)" @finish="finishHandle(index)"
+                class="hide_text" v-else
+              >
+                <view class="item_box">
+                  <text class="item">{{ good.timeData.hours }}</text>:
+                  <text class="item">{{ good.timeData.minutes }}</text>:
+                  <text class="item">{{ good.timeData.seconds }}</text>.
+                  <text class="item">{{ good.timeData.milliseconds }}</text>
+                </view>
               </van-count-down>
             </view>
-            <view class="use_cont" v-else>
-              <view class="use_cont-left" v-if="good.after_pay"></view>
-              <view class="use_cont-right" v-if="good.zero_credits">免豆特权</view>
-            </view>
+            <!-- 标签 -->
+            <showTagCont :good="good" v-else></showTagCont>
             <view class="good_remind txt_ov_ell1">
               <text class="good_remind-left" v-if="good.credits || ( good.lx_type == 1 && !good.credits)">
                 <text :class="['good_credits', good.zero_credits ? 'active' : '']">{{ good.credits || 0 }}</text>牛金豆
@@ -205,10 +165,12 @@
 </view>
 </template>
 <script>
-import { toggleCollect } from "@/api/modules/jsShop.js";
 import channelVideo from '@/components/goodList/channelVideo.vue';
 import showImg from '@/components/goodList/showImg.vue';
+import showTagCont from '@/components/goodList/showTagCont.vue';
+import showTitleCont from '@/components/goodList/showTitleCont.vue';
 import { getImgUrl } from "@/utils/auth.js";
+import { throttle } from '@/utils/directives';
 import goDetailsFun from "@/utils/goDetailsFun";
 import { mapGetters } from "vuex";
 import notCreditsList from "./notCreditsList.vue";
@@ -217,7 +179,9 @@ export default {
   components: {
     notCreditsList,
     channelVideo,
-    showImg
+    showImg,
+    showTitleCont,
+    showTagCont
   },
   props: {
     list: {
@@ -291,7 +255,7 @@ export default {
   data() {
     return {
       pageHeight: 0,
-      imgUrl: getImgUrl(),
+      imgUrl: getImgUrl()
     };
   },
   computed: {
@@ -308,8 +272,7 @@ export default {
       return banner_image;
     },
     onChangeHandle(event, index) {
-      // this.list[index].isFinishDiffTime = true;
-      // return;
+    // return
       let {
         hours,
         minutes,
@@ -328,8 +291,6 @@ export default {
         milliseconds,
         days
       }
-      // console.log('this.list', this.list)
-      // console.log('this.list[index].timeData', this.list[index].timeData)
     },
     finishHandle(index) {
       this.list[index].isFinishDiffTime = true;
@@ -343,10 +304,8 @@ export default {
         });
       }
     },
-    async goDetails(item, { listIndex }) {
-      if(this.showProfitBtnTxt) {
-        return this.$toast('开通会员，立享返现');
-      }
+    goDetails: throttle(function(item, { listIndex })  {
+      if(this.showProfitBtnTxt) return this.$toast('开通会员，立享返现');
       // 彬纷进入时 - 高亮商品的呈现样式
       if(item.is_light && !this.isAlreadyShowLight) this.$emit('setShowLight');
       const eventId = `coupongrouping_${this.categoryIndex + 1}_${listIndex + 1}`;
@@ -362,32 +321,7 @@ export default {
         this.isBolCredits,
         this.isSearchJdModel
       );
-    },
-    collectHandle(skuId, index) {
-      toggleCollect({ skuId }).then((res) => {
-        this.list[index].collect = !this.list[index].collect;
-        uni.showToast({
-          icon: "none",
-          title: res.msg,
-          duration: 3000,
-        });
-      });
-    },
-    strLength(str, num = 10) {
-      let realLength = 0,
-        len = str.length,
-        charCode = -1,
-        spliceStr = "";
-      for (let i = 0; i < len; i++) {
-        charCode = str.charCodeAt(i);
-        if (charCode >= 0 && charCode <= 128) realLength += 1;
-        else realLength += 2;
-        spliceStr += str[i];
-        if (realLength >= num) return spliceStr;
-      }
-      return spliceStr;
-    },
-    shareHandle() {},
+    })
   },
 };
 </script>
@@ -467,29 +401,18 @@ export default {
   }
   .good_cont {
     padding: 20rpx 20rpx 24rpx;
-    .good_name_box {
-      font-size: 28rpx;
-      color: #333;
-      line-height: 40rpx;
-      height: 80rpx;
-    }
-    .good-name {
-      color: #333;
-      font-size: 28rpx;
-      line-height: 40rpx;
-      height: 80rpx;
-    }
     .good_remind {
       font-size: 26rpx;
-      color: #e7331b;
       line-height: 36rpx;
       white-space: nowrap;
       width: 100%;
+      color: #aaaa;
       .good_credits {
         font-size: 36rpx;
         margin-right: 4rpx;
         font-weight: bold;
         position: relative;
+        color: #e7331b;
         &.active::before {
           content: '\3000';
           position: absolute;
@@ -516,6 +439,7 @@ export default {
       }
       .good_remind-left{
         margin-right: 13rpx;
+        color: #e7331b;
       }
     }
   }
@@ -537,28 +461,6 @@ export default {
     font-size: 24rpx;
   }
 }
-.jd_icon_box {
-  padding: 0 10rpx 0 20rpx;
-  font-size: 24rpx;
-  font-weight: 600;
-  color: #ffffff;
-  line-height: 34rpx;
-  position: relative;
-  z-index: 0;
-  margin-right: 8rpx;
-  white-space: nowrap;
-  display: inline;
-  &::before {
-    content: "\3000";
-    background: url("https://file.y1b.cn/store/1-0/24621/6675210e27253.png") 0 0 / 100% 100% no-repeat;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-  }
-}
 .show_type {
   padding: 0 4rpx;
   height: 34rpx;
@@ -570,15 +472,6 @@ export default {
   font-weight: bold;
   display: inline;
   margin-right: 8rpx;
-}
-
-.ty_store {
-  width: 118rpx;
-  height: 34rpx;
-  background: url("https://test-file.y1b.cn/store/1-0/24412/6619090ba6bf5.png") 0 0 / 100% 100% no-repeat;
-  margin-right: 8rpx;
-  transform: translateY(8rpx);
-  display: inline-block;
 }
 
 .vip_cont{
@@ -742,6 +635,7 @@ export default {
   align-items: center;
   font-size: 24rpx;
   height: 34rpx;
+  // line-height: 30rpx;
   margin-top: 10rpx;
   vertical-align: middle;
   &.hide_time {
@@ -749,15 +643,19 @@ export default {
     font-size: 24rpx;
     text-align: right;
     justify-content: flex-end;
+    // line-height: 34rpx;
     .hide_text {
       min-width: 160rpx;
+      // height: 100%;
       text-align: center;
       display: inline-block;
       text-align: center;
+      padding-top: 4rpx;
     }
     .item_box {
       font-size: 24rpx;
       color: #F84842;
+      line-height: 1;
     }
     .item {
       display: inline-block;
@@ -785,16 +683,6 @@ export default {
   .use_cont-right {
     color: #999;
     position: relative;
-    // padding-left: 32rpx;
-    // &::before {
-    //   content: "\3000";
-    //   position: absolute;
-    //   top: 4rpx;
-    //   left: 0;
-    //   width: 26rpx;
-    //   height: 26rpx;
-    //   background: url("https://test-file.y1b.cn/store/1-0/24312/65f024b3cdd36.png")  0 0 / 100% 100% no-repeat;
-    // }
   }
 }
 @keyframes backAni {

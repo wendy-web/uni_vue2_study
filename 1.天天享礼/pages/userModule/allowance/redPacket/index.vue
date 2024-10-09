@@ -1,5 +1,5 @@
 <template>
-<view class="recharge" :style="{ '--bg' : subjectColor }">
+<view class="recharge" :style="{ '--bg' : `${subjectColor}` }">
 <mescroll-body
   :sticky="true"
   ref="mescrollRef"
@@ -35,10 +35,8 @@
       </view>
       <view class="list_box" v-if="listData.length">
         <view class="list_item fl_center"
-          v-for="(item, index) in listData"
-          :key="index"
-          @click="couponDetailHandle(item)"
-        >
+          v-for="(item, index) in listData" :key="index"
+          @click="couponDetailHandle(item)">
           <image :src="item.image" mode="scaleToFill" class="item_left"></image>
           <view class="item_right fl_col_sp_bt">
             <view class="item_title-box">
@@ -59,7 +57,6 @@
               </view>
             </view>
           </view>
-
         </view>
       </view>
     </view>
@@ -310,6 +307,7 @@ page {
   font-size: 0;
   .type_img{
     width: 100%;
+    height: 144rpx;
   }
 }
 .cont_box {

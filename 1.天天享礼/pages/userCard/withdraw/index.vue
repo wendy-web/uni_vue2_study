@@ -24,9 +24,7 @@
                 <p-countup
                     :num="parseFloat(profitInfo.packet_amount).toFixed(2)"
                     width="21" height='36' dotWidth="10"
-                    color="#333"
-                    fontSize="36"
-                    fontWeight="600"
+                    color="#333" fontSize="36" fontWeight="600"
                     :isSetTimeAutoNum="1000"
                 ></p-countup>
             </view>
@@ -87,6 +85,7 @@
 import { msgTemplate, profitGet, profitList, profitMes } from '@/api/modules/user.js';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { getImgUrl } from '@/utils/auth.js';
+import { throttle } from '@/utils/directives';
 import getViewPort from '@/utils/getViewPort.js';
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import pCountup from './countUp.vue';
@@ -177,16 +176,24 @@ export default {
         async profitGetItemHandle(item, index) {
             const { id, profit_status } = item;
             if(profit_status) return;
-            const res = await msgTemplate();
-            if(res.code != 1) return this.profitGetRequest(id, index);
-            const { Rewards } = res.data;
-            const tmplIds = [Rewards];
-            this.$subscribeMessageHandle(tmplIds).then(res => {
-                const resultState = res[Rewards];
-                const params = { isRewards: 0 };
-                if (resultState == "accept") params.isRewards = 1;
-                profitMes(params);
-                this.profitGetRequest(id, index);
+            const res = await this.msgTemplateRequest();
+            this.profitGetRequest(id, index);
+        },
+        msgTemplateRequest() {
+            return new Promise(async (resolve) => {
+                const res = await msgTemplate();
+                if(res.code != 1) return resolve();
+                const { Rewards, Withdraw } = res.data;
+                const tmplIds = [];
+                Rewards && tmplIds.push(Rewards);
+                Withdraw && tmplIds.push(Withdraw);
+                this.$subscribeMessageHandle(tmplIds).then(res => {
+                    const params = {};
+                    params.isRewards = (res[Rewards] == 'accept') ? 1 : 0;
+                    params.isWithdraw = (res[Withdraw] == 'accept') ? 1 : 0;
+                    profitMes(params);
+                    resolve();
+                });
             });
         },
         profitGetRequest(id, index = -1) {
@@ -197,10 +204,11 @@ export default {
                 this.mescroll.resetUpScroll();
             });
         },
-        goToWithdraw() {
+        goToWithdraw: throttle(async function() {
             if (!this.isAutoLogin) return this.$go('/pages/tabAbout/login/index');
+            const res = await this.msgTemplateRequest();
             this.$go('/pages/userCard/withdraw/withdraw');
-        },
+        }),
         async upCallback(page) {
             if(page.num == 1) {
                 const res = await profitList({ type: 1 });
@@ -394,7 +402,7 @@ display: flex;
             color: #F85A55;
             display: inline-block;
             font-weight: 600;
-            border: 1rpx solid #f85a55;
+            border: 2rpx solid #f85a55;
         }
         .record_txt{
             font-size: 28rpx;

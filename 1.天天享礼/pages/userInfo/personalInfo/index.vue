@@ -80,6 +80,13 @@
           <van-icon name="arrow" color="#999999" size="14" />
         </view>
       </view>
+      <view class="list-item" @click="animationHandle3"  v-if="isTest">
+        <view class="li-left">测试</view>
+        <view class="li-right">
+          <view class="lir-item">省钱卡活动</view>
+          <van-icon name="arrow" color="#999999" size="14" />
+        </view>
+      </view>
     </view>
     <view class="back_login" @click="exitLoginHandle">退出登录</view>
     <!-- 性别选择 -->
@@ -236,6 +243,11 @@ export default{
     animationHandle2() {
       // this.$go(`plugin://jtkDc/kudiindex?pub_id=27729&sid=ttxl&channel=${this.userInfo.id}`);
       this.$go(`plugin://jtkDc/index?pub_id=27729&sid=ttxl${this.userInfo.id}`);
+      // plugin://jtkDc/index?pub_id=26&sid=123456
+    },
+    animationHandle3() {
+      // this.$go(`plugin://jtkDc/kudiindex?pub_id=27729&sid=ttxl&channel=${this.userInfo.id}`);
+      this.$go(`/pages/userCard/card/cardVip/activity?activeId=1`);
       // plugin://jtkDc/index?pub_id=26&sid=123456
     },
     async uploadImg(imgPath) {

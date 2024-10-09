@@ -77,7 +77,7 @@ export function getUserLocation(isFailBack = false, isOverTime = true) {
         }, 10 * 1000));
         // return reject({ errText: '定位获取异常~' });
 
-        //不在缓存有效期,直接重新获取
+        // 不在缓存有效期,直接重新获取
         wx.getLocation({
             type: 'gcj02', // wgs84
             isHighAccuracy: true,
@@ -152,11 +152,9 @@ export function getUserLocation(isFailBack = false, isOverTime = true) {
                             return
                         }
                         reject();
-
                     }
                 });
             }
         });
-
     });
 }

@@ -39,9 +39,9 @@
 </template>
 
 <script>
-	import { mapGetters } from 'vuex';
-	import { isServiceTime } from './isServiceTime.js';
 	import { getImgUrl } from '@/utils/auth.js';
+import { mapGetters } from 'vuex';
+import { isServiceTime } from './isServiceTime.js';
 	export default {
 		data() {
 			return {

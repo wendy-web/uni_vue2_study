@@ -2,6 +2,7 @@ import { bysubunionid } from '@/api/modules/jsShop.js';
 import { goodsPromotion } from '@/api/modules/pddShop.js';
 import {
     couponDetails,
+    creditsDraw,
     exchange
 } from '@/api/modules/shopMall.js';
 import {
@@ -93,7 +94,7 @@ const goDetailsFun = {
                     });
                     break;
                 case 5:
-                    // 千猪外链
+                    // 聚推客
                     this.$goToMoviePlugin();
                     break;
                 case 6:
@@ -291,7 +292,7 @@ const goDetailsFun = {
                     });
                     break;
                 case 5:
-                    // 千猪外链
+                    // 聚推客
                     this.$goToMoviePlugin();
                     break;
                 case 6:
@@ -401,7 +402,8 @@ const goDetailsFun = {
             // 牛金豆不足:进行弹窗的展示
             if (!this.userInfo.is_vip && isBolCredits && (credits > this.userInfo.credits)) {
                 this.$emit('notEnoughCredits'); // 组件抛出去的方法
-                this.exchangeFailedShow = true; // 混入方法的参数赋值
+                this.exchangeFailedShow = true; // 混入方法的参数赋值 - 打开牛金豆不足的弹窗去赚取牛金豆
+                creditsDraw();
                 return;
             }
             if (is_flow == 1 && !this.userInfo.is_vip) {
@@ -520,7 +522,7 @@ const goDetailsFun = {
                     });
                     break;
                 case 5:
-                    // 千猪外链
+                    // 聚推客
                     this.$goToMoviePlugin();
                     break;
                 case 6:

@@ -106,7 +106,6 @@ tab的切换与搜索的使用，直接通过获取appid与path地址跳转；
 添加参数：skuId=pddE9r2LP8Ekc9k2DRxwebd3ELo3mPPTv49_JQ37rHM2L7
 
 - 配置icon的高亮的使用 - 在icon的配置中添加跳转进入的事件，参数为：psite=popover_12&lsite=light_12
-- 
 
 ## 版本更新
 
@@ -116,10 +115,17 @@ tab的切换与搜索的使用，直接通过获取appid与path地址跳转；
    - 推荐商品的配置更改 - 写入混合方法中
    - 引入的查找元素的方法 - 统一更改
    - 调整抓娃娃高亮的呈现及登录的使用
-   
 
 - 2024/07/09（周二） 会员卡改版上线
    - 统一更改成年卡的开通
 
 - 2024/08/15 添加橙券的订单使用
    - 将乐刷的商品一并替换成橙券的商品
+
+- 配置icon高亮的二维码
+   - pages/tabBar/shopMall/index?lsite=
+   - icon_省钱卡id-非省钱卡id
+   - 领红包：icon_85-223
+   - 红牛： icon_83-222
+   - pages/tabBar/shopMall/index?lsite=icon_84-224
+   - pages/tabBar/shopMall/index?lsite=icon_85-223

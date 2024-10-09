@@ -131,3 +131,21 @@ export function detailDosing(data) {
         data
     });
 }
+
+// 获取活动
+export function getActive(data) {
+    return API.request({
+        url: '/api/Savings/getActive',
+        method: 'post',
+        data
+    });
+}
+
+// 领取活动奖励
+export function getSavings(data) {
+    return API.request({
+        url: '/api/Savings/getSavings',
+        method: 'post',
+        data
+    });
+}

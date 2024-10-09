@@ -97,7 +97,7 @@ export default {
     }
     .profit_cont {
       background: rgba(255,130,58,0.06);
-      border: 1rpx solid #ffeee5;
+      border: 2rpx solid #ffeee5;
       border-radius: 20rpx;
       margin: 30rpx 24rpx 0;
       padding:  26rpx 0;

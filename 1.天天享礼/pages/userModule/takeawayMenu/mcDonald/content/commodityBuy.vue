@@ -1,12 +1,11 @@
 <template>
-<view>
-  <van-popup
-    :show="isShow"
-    position="bottom"
-    custom-style="overflow: inherit;background: transparent;"
-    safe-area-inset-bottom
-    :overlay="false"
-  >
+<van-popup
+  :show="isShow"
+  position="bottom"
+  custom-style="overflow: inherit;background: transparent;"
+  safe-area-inset-bottom
+  :overlay="false"
+>
   <view class="buy_box box_fl_end" @click.stop="openCartHandle">
     <view class="buy_num">
       <image class="bg_img" :src="takeImgUrl +'/mdl_car.png'" mode="widthFix"></image>
@@ -21,14 +20,12 @@
     </view>
     <view :class="['buy_btn', cartNum ? 'active' : '']" @click.stop="toBuyHandle">去结算</view>
   </view>
-  </van-popup>
-</view>
+</van-popup>
 </template>
-
 <script>
-import { mapGetters } from 'vuex';
-import {debounce} from '@/utils/index.js';
 import { getImgUrl } from '@/utils/auth.js';
+import { debounce } from '@/utils/index.js';
+import { mapGetters } from 'vuex';
 export default {
   props: {
     isShow: {

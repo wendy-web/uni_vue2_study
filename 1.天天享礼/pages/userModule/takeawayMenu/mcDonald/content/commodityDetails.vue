@@ -1,14 +1,13 @@
 <template>
-<view>
-  <van-popup
-    :show="isShow"
-    @close="popupClose"
-    position="bottom"
-    custom-style="overflow: inherit;background: transparent;max-height:75vh;"
-    round
-    safe-area-inset-bottom
-    :catchtouchmove="config.product_choose"
-  >
+<van-popup
+  :show="isShow"
+  @close="popupClose"
+  position="bottom"
+  custom-style="overflow: inherit;background: transparent;max-height:75vh;"
+  round
+  safe-area-inset-bottom
+  :catchtouchmove="config.product_choose"
+>
   <view class="detail_box"
     :style="{
       '--height': config.product_choose ? '70vh' : 'auto',
@@ -107,14 +106,13 @@
         </view>
       </view>
   </view>
-  </van-popup>
-</view>
+</van-popup>
 </template>
 
 <script>
 import {
-menuDetails,
-orderCar
+  menuDetails,
+  orderCar
 } from '@/api/modules/takeawayMenu/luckin.js';
 import { getImgUrl } from '@/utils/auth.js';
 import { mapActions, mapGetters } from 'vuex';

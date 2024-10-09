@@ -374,8 +374,11 @@ export default {
             if(isNextPage && !list.length && this.isRequestNum < 2) {
                 this.isRequestNum += 1;
                 this.mescroll.triggerUpScroll();
+                return;
             }
+            this.is_pdd += 1;
             this.isRequestNum = 0;
+            this.mescroll.triggerUpScroll();
         },
         async searchPddList(params, page) {
             const res = await groupSearch(params).catch(()=>{ this.mescroll.endErr() });

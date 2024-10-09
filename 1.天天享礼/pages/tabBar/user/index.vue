@@ -480,12 +480,14 @@ export default {
       // 授权通知
       const res = await msgTemplate();
       if(res.code != 1) this.goPages('/pages/userCard/withdraw/index');
-      const { Rewards } = res.data;
-      const tmplIds = [Rewards];
+      const { Rewards, Withdraw } = res.data;
+      const tmplIds = [];
+      Rewards && tmplIds.push(Rewards);
+      Withdraw && tmplIds.push(Withdraw);
       this.$subscribeMessageHandle(tmplIds).then(res => {
-          const resultState = res[Rewards];
-          const params = { isRewards: 0 };
-          if (resultState == "accept") params.isRewards = 1;
+          const params = {};
+          params.isRewards = (res[Rewards] == 'accept') ? 1 : 0;
+          params.isWithdraw = (res[Withdraw] == 'accept') ? 1 : 0;
           profitMes(params);
           this.goPages('/pages/userCard/withdraw/index');
       });

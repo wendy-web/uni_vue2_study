@@ -82,7 +82,7 @@ export function getUserInfo() {
 export function removeGetUserInfo() {
     uni.removeStorageSync('/api/profile/myInfo');
 }
-/*获取经纬度*/
+/* 获取经纬度 */
 export function getLocation() {
     let cache = getStorage('getUserLocation');
     cache = cache && JSON.parse(cache);
@@ -194,7 +194,6 @@ export function warpRectDom(idName) {
             // #ifndef MP-ALIPAY
             query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
                 // #endif
-                // console.log('query', query)
             query.select('#' + idName).boundingClientRect(data => {
                 resolve(data)
             }).exec();

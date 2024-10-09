@@ -1,11 +1,11 @@
 <template>
-	<van-popup
-    :show="isShow"
-    custom-style="overflow: visible;background: transparent;"
-    position="bottom"
-    round
-	:safe-area-inset-bottom="false"
-  >
+<van-popup
+  :show="isShow"
+  custom-style="overflow: visible;background: transparent;"
+  position="bottom"
+  round
+  :safe-area-inset-bottom="false"
+>
 	<view class="cont_box">
       <view class="cont_text">
         <view class="cont_remind">{{remindText}}</view>

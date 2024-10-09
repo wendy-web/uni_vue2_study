@@ -32,13 +32,10 @@
     </view>
 </view>
 </template>
-
 <script>
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-import getViewPort from '@/utils/getViewPort.js';
-
-
 import { formatPrice, getImgUrl } from '@/utils/auth.js';
+import getViewPort from '@/utils/getViewPort.js';
 import { mapGetters } from "vuex";
 export default {
     mixins: [MescrollMixin], // 使用mixin
@@ -85,7 +82,6 @@ export default {
     }
 }
 </script>
-
 <style lang="scss">
 page {
     background: #F5F6FA;

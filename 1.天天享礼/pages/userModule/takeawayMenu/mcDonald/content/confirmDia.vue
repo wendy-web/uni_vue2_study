@@ -1,13 +1,13 @@
 <template>
-	<van-popup
-    :show="isShow"
-    custom-style="overflow: visible;background: transparent;"
-    round
-    :z-index="100"
-	  :safe-area-inset-bottom="false"
-	  :catchtouchmove="true"
-    @close="baCloseHandle"
-  >
+<van-popup
+  :show="isShow"
+  custom-style="overflow: visible;background: transparent;"
+  round
+  :z-index="100"
+  :safe-area-inset-bottom="false"
+  :catchtouchmove="true"
+  @close="baCloseHandle"
+>
 	<view class="cont_box">
       <view class="cont_text">
         <view class="cont_remind">{{remindText}}</view>

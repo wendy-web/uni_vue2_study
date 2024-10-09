@@ -98,10 +98,8 @@
                     </view>
                     <view class="dis_price box_fl">
                         <block v-if="isSelRedPacket">
-                            <image
-                                class="dis_icon" :src="cardImgUrl +'/card_icon4.png'"
-                                mode="aspectFill" style="margin-right: 8rpx;"
-                            ></image>
+                            <image class="dis_icon" :src="cardImgUrl +'/card_icon4.png'"
+                                mode="aspectFill" style="margin-right: 8rpx;"></image>
                             <text style="font-size: 24rpx; line-height: 34rpx;">-¥</text> {{ couponInfo.saving_money }}
                         </block>
                         <view class="dis_num" v-else>{{couponInfo.packet_num}}张可用</view>
@@ -134,13 +132,13 @@
                 <text >开通省钱卡会员更划算</text>
                 <van-icon custom-style="font-weight: 600;margin-left: 10rpx" size="20rpx" name="arrow" color="#F97F02"/>
             </block>
-			<block v-else-if="isSelOpenVip || (userInfo.is_vip == 2)">
+			<block v-else-if="vipProfitValue">
 				<view class="open_rem fl_bet">
 					<view class="open_rem-left box_fl">
 						<image class="dis_icon" src="https://file.y1b.cn/store/1-0/2471/6682110e24584.png" mode="aspectFill"></image>
 						<text>省钱卡会员</text>
 					</view>
-					<view class="open_rem-right">付款后本单立返<text style="color: #F84842;font-size: 26rpx;">¥{{ couponInfo.vip_profit || 3.3 }}</text>至零钱</view>
+					<view class="open_rem-right">付款后本单立返<text style="color: #F84842;font-size: 26rpx;">¥{{ vipProfitValue }}</text>至零钱</view>
 				</view>
             </block>
             <block v-else-if="(userInfo.is_vip == 1) && !isSelRedPacket && couponInfo.saving_money">
@@ -311,7 +309,13 @@ let _request = false;
                 let value =  Number(coupon_face_value);
                 if(this.isSelRedPacket) value = value + Number(saving_money);
                 return value.toFixed(2);
-            }
+            },
+			vipProfitValue() {
+				let vipProfit = 0;
+				if(this.isSelOpenVip) vipProfit = this.couponInfo.vip_profit || 3.3;
+				if(this.userInfo.is_vip == 2) vipProfit = this.couponInfo.vip_profit;
+				return vipProfit;
+			}
 		},
 		methods:{
             ...mapMutations({
