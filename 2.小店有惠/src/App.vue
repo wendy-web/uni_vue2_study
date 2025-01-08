@@ -44,6 +44,10 @@ export default {
                 },
             });
         });
+        // 监听页面不存在
+        uni.onPageNotFound((res) => {
+            this.$leftBack();
+        })
         /**
          * 初次加载判断网络情况
          * 无网络状态下根据实际情况进行调整

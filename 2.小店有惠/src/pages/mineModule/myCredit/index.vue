@@ -110,15 +110,12 @@
 </view>
 </template>
 <script>
-import { goodsGroup, goodsList } from "@/api/modules/home.js";
-import { goodsQuery, jingfen, material } from '@/api/modules/jsShop.js';
 import {
 	doSign,
 	doTask,
 	signList,
 	taskIndex
 } from "@/api/modules/myCredit.js";
-import { goodsRecommend, goodsSearch } from '@/api/modules/pddShop.js';
 import configurationFun from '@/components/configurationDia/configurationFun.js';
 import configurationDia from '@/components/configurationDia/index.vue';
 import goodList from '@/components/goodList.vue';
@@ -128,8 +125,9 @@ import createRewardVideoAd from "@/utils/createRewardVideoAd.js";
 import { mapActions, mapGetters } from 'vuex';
 import attentionCode from './attentionCode.vue';
 import luckyWheel from './luckyWheel.vue';
+import listMixins from '@/utils/mixin/listMixins.js';
 	export default {
-		mixins: [MescrollMixin, configurationFun], // 使用mixin
+		mixins: [MescrollMixin, configurationFun, listMixins], // 使用mixin
 		components: {
 			luckyWheel,
 			attentionCode,
@@ -156,7 +154,6 @@ import luckyWheel from './luckyWheel.vue';
 				tabIndex: 0,
 				tabGoodList: [],
 				goodPageNum: 1,
-				groupId_index: 0,
 				upOption: {
 					auto: false, // 不自动加载
 					page: {
@@ -233,131 +230,6 @@ import luckyWheel from './luckyWheel.vue';
 					this.mescroll.endErr();
 				});
 				this.mescroll.resetUpScroll();
-			},
-			async upCallback(page) {
-				if (!this.tabs.length) {
-					let res = await goodsGroup({ is_rebate: this.is_rebate });
-					if(res.code != 1) return this.mescroll.endSuccess();
-					this.tabs = res.data.map((item) => {
-						return {
-							...item,
-							goods: []
-						};
-					});
-				}
-				if(!this.tabs.length) return this.mescroll.endSuccess(0);
-				const itemTab = this.tabs[this.tabIndex];
-				if([2, 3].includes(Number(itemTab.lx_type))) return this.requestRem(page);
-				const params = {
-					page: this.goodPageNum,
-					size: 10,
-					id: this.tabs[this.tabIndex].id,
-					is_rebate: this.is_rebate
-				}
-				goodsList(params).then((res) => {
-					const {list, total_count} = res.data;
-					if(page.num == 1) this.tabGoodList = []; // 如果是第一页需手动制空列表
-					this.tabGoodList = this.tabGoodList.concat(list);
-					// 更改商品列表的下拉触底的加载
-					this.mescroll.endBySize(list.length, total_count);
-					const isNextPage = (this.goodPageNum * params.size) < total_count;
-					this.goodPageNum += 1;
-					// 没有下一页
-					if(!isNextPage && (this.tabIndex < this.tabs.length - 1)) {
-						this.tabIndex += 1;
-						this.goodPageNum = 1;
-						this.mescroll.triggerUpScroll();
-					}
-					if(isNextPage && !list.length) {
-						this.mescroll.triggerUpScroll();
-					}
-				}).catch(() =>  this.mescroll.endErr());
-			},
-			async requestRem(page) {
-				const curTab = this.tabs[this.tabIndex];
-				const {
-					id,
-					cid,
-					cid2,
-					cid3,
-					eliteId,
-					groupId,
-					type,
-					positionId,
-					lx_type
-				} = curTab;
-				let params = {
-					id,
-					positionId,
-					page: this.goodPageNum,
-					size: 10,
-					is_rebate: this.is_rebate
-				}
-				let queryApi = goodsQuery;
-				// type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-				switch(type) {
-					case 1:
-						// 拼多多接口的访问
-						if (lx_type == 3) {
-							queryApi = goodsRecommend;
-							params.positionId = positionId;
-						} else {
-							queryApi = material;
-							params.eliteId = eliteId;
-							params.groupId = groupId;
-							params.size = 10;
-						}
-						break;
-					case 2:
-						if (lx_type == 3) {
-							queryApi = goodsSearch;
-							params.positionId = positionId;
-						} else {
-							queryApi = jingfen;
-							params.eliteId = eliteId;
-							params.groupId = groupId;
-							params.size = 20;
-						}
-						break;
-					case 3:
-						queryApi = goodsQuery;
-						params.cid1 = cid;
-						params.cid2 = cid2;
-						params.cid3 = cid3;
-						break;
-					case 4:
-						queryApi = jingfen;
-						params.eliteId = eliteId;
-						params.groupId = groupId[this.groupId_index];
-						params.size = 20;
-						break;
-				};
-				queryApi(params).then(res=>{
-					const { list, total_count } = res.data;
-					if( page.num == 1 ) this.tabGoodList = [];
-					// 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-					let isNextPage = (this.goodPageNum * params.size) < total_count;
-					this.goodPageNum += 1;
-					this.tabGoodList = this.tabGoodList.concat(list); // 追加新数据
-
-					if(!isNextPage && type == 4 && this.groupId_index < (groupId.length - 1)) {
-						// 无下一页
-						this.groupId_index += 1;
-						this.mescroll.endSuccess(total_count, true);
-						this.goodPageNum = 1;
-					} else {
-						this.mescroll.endSuccess(list.length || total_count, isNextPage);
-					}
-					if((list.length == 0) && isNextPage){
-						this.mescroll.triggerUpScroll();
-					}
-					if(!isNextPage && (this.tabIndex < this.tabs.length - 1)) {
-						this.tabIndex += 1;
-						this.goodPageNum = 1;
-						this.groupId_index = 0;
-						this.mescroll.triggerUpScroll();
-					}
-				}).catch(() => this.mescroll.endErr());
 			},
 			// 得到签到列表
 			async getSignList() {

@@ -162,14 +162,8 @@
 <script>
 import { isSend, msgTemplate } from "@/api/modules/card.js";
 import { singleton } from "@/api/modules/home.js";
-import {
-  goodsQuery,
-  groupRecommend,
-  jingfen,
-  material,
-} from "@/api/modules/jsShop.js";
+import { groupRecommend } from "@/api/modules/jsShop.js";
 import { expireOrder, orderPay } from "@/api/modules/order.js";
-import { goodsRecommend, goodsSearch } from '@/api/modules/pddShop.js';
 import configurationFun from '@/components/configurationDia/configurationFun.js';
 import configurationDia from '@/components/configurationDia/index.vue';
 import goodList from "@/components/goodList.vue";
@@ -178,6 +172,7 @@ import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { formatAmount } from "@/utils/index.js";
 import { mapActions, mapGetters } from "vuex";
+import getQueryApi from "@/utils/queryListApi.js";
 import config from "./config.js";
 export default {
     name: "mine",
@@ -271,85 +266,43 @@ export default {
           return this.mescroll.endSuccess(0);
         this.groupRecommendData = recRes.data;
       }
-      const { id, cid, cid2, cid3, eliteId, groupId, type, positionId, lx_type } = this.groupRecommendData;
+      const { groupId, type } = this.groupRecommendData;
       let pageNum = this.pageNum;
-      // const pageNum = page.num;
-      let params = {
-        id,
-        page: pageNum,
-        size: 10,
-      };
-      let queryApi = goodsQuery;
-      // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-      switch (type) {
-        case 1:
-          if (lx_type == 3) {
-            queryApi = goodsRecommend;
-            params.positionId = positionId;
-          } else {
-            queryApi = material;
-            params.eliteId = eliteId;
-            params.groupId = groupId;
-            params.size = 10;
-          }
-          break;
-        case 2:
-          if (lx_type == 3) {
-            queryApi = goodsSearch;
-            params.positionId = positionId;
-          } else {
-            queryApi = jingfen;
-            params.eliteId = eliteId;
-            params.groupId = groupId;
-            params.size = 20;
-          }
-          break;
-        case 3:
-          queryApi = goodsQuery;
-          params.cid1 = cid;
-          params.cid2 = cid2;
-          params.cid3 = cid3;
-          break;
-        case 4:
-          queryApi = jingfen;
-          const groupId_index = this.groupId_index;
-          params.eliteId = eliteId;
-          params.groupId = groupId[groupId_index];
-          params.size = 20;
-          break;
+      let { params, queryApi } = getQueryApi({
+        ...this.groupRecommendData,
+        pageNum
+      });
+      const res = await queryApi(params).catch(() => this.mescroll.endErr());
+      const { list, total_count } = res.data;
+      // 设置列表数据
+      if (page.num == 1) {
+        this.goods = [];
+        this.pageNum = 1;
+        this.lastOddItem = null;
       }
-      queryApi(params).then((res) => {
-        const { list, total_count } = res.data;
-        // 设置列表数据
-        if (page.num == 1) {
-          this.goods = [];
-          this.pageNum = 1;
-          this.lastOddItem = null;
-        }
-        // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-        let isNextPage = pageNum * params.size < total_count;
-        if (!isNextPage && type == 4 && this.groupId_index < groupId.length - 1) {
-          // 无下一页
-          this.groupId_index += 1;
-          this.mescroll.endSuccess(total_count, true);
-          this.pageNum = 0;
-        } else {
-          this.mescroll.endSuccess(list.length || total_count, isNextPage);
-        }
-        if (this.lastOddItem) {
-          this.goods.push(this.lastOddItem);
-          this.lastOddItem = null;
-        }
-        this.pageNum += 1;
-        this.goods = this.goods.concat(list); // 追加新数据
-        const goodLength = this.goods.length;
-        if (goodLength % 2 && goodLength > 6) {
-          this.lastOddItem = this.goods.pop();
-        }
-        if (((list.length <= 0 ) || (this.goods.length <= 4)) && isNextPage ) {
-          this.mescroll.triggerUpScroll();
-        }
-      }).catch(() => this.mescroll.endErr());
+      // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+      let isNextPage = pageNum * params.size < total_count;
+      if (!isNextPage && type == 4 && this.groupId_index < groupId.length - 1) {
+        // 无下一页
+        this.groupId_index += 1;
+        this.mescroll.endSuccess(total_count, true);
+        this.pageNum = 0;
+      } else {
+        this.mescroll.endSuccess(list.length || total_count, isNextPage);
+      }
+      if (this.lastOddItem) {
+        this.goods.push(this.lastOddItem);
+        this.lastOddItem = null;
+      }
+      this.pageNum += 1;
+      this.goods = this.goods.concat(list); // 追加新数据
+      const goodLength = this.goods.length;
+      if (goodLength % 2 && goodLength > 6) {
+        this.lastOddItem = this.goods.pop();
+      }
+      if (((list.length <= 0 ) || (this.goods.length <= 4)) && isNextPage ) {
+        this.mescroll.triggerUpScroll();
+      }
     },
     // 页面的滚动事件
     onPageScroll(e) {

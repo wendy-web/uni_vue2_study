@@ -55,12 +55,18 @@
       title="提现成功"
       label="请留意微信支付的通知 "
       @close="closeSuccessHandle"
-  ></report-success-dia>
+    ></report-success-dia>
+    <idCardConfirmDia
+      :isShow="isShowIdCardDia"
+      @close="isShowIdCardDia = false"
+      @submitId="submitIdHandle"
+    ></idCardConfirmDia>
 </view>
 </template>
 <script>
 import { msgTemplate, withdraw } from "@/api/modules/card.js";
 import reportSuccessDia from '@/components/reportSuccessDia.vue';
+import idCardConfirmDia from '../components/idCardConfirmDia.vue'
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import { reduceFun } from '@/utils/index.js';
@@ -69,7 +75,8 @@ export default {
   name: "withdrawalIndex",
   mixins: [MescrollMixin],
   components: {
-    reportSuccessDia
+    reportSuccessDia,
+    idCardConfirmDia
   },
   data() {
     return {
@@ -77,11 +84,12 @@ export default {
       price_num: '',
       isWithdrawLoad: false,
       isShowSuccess: false,
-      balanceValue: 0
+      balanceValue: 0,
+      isShowIdCardDia: false
     };
   },
   computed: {
-    ...mapGetters(['vipObject']),
+    ...mapGetters(['vipObject', 'userInfo']),
   },
   methods: {
     changeHandle({ detail }) {
@@ -97,8 +105,10 @@ export default {
     },
     async confirmHandle() {
       const minValue = (this.vipObject.first_withdraw == 1) ? 0.1 : Number(this.vipObject.withdraw_min);
-      // console.log('minValue', minValue)
+      if(Number(this.price_num) > Number(this.balanceValue)) return this.$toast(`提现金额应小于可提现金额`);
       if(Number(this.price_num) < minValue || Number(this.price_num) > 500) return this.$toast(`单笔提现金额范围${minValue}-500元`);
+      // 没有身份证信息的校验
+      if(!this.userInfo.idcardVerify) return this.isShowIdCardDia = true;
       this.requestWithdraw();
       return;
       // 关闭订阅消息
@@ -120,6 +130,10 @@ export default {
       this.isWithdrawLoad = false;
       if(res.code != 1) return this.$toast(res.msg);
       this.isShowSuccess = true;
+    },
+    submitIdHandle() {
+      this.isShowIdCardDia = false;
+      this.requestWithdraw();
     }
   },
   onLoad() {

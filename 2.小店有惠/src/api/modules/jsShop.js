@@ -97,3 +97,12 @@ export function groupSearch(data) {
         data
     });
 }
+
+export function pointsMall(data) {
+    return API.request({
+        url: `/api/Goods/pointsMall`,
+        method: 'post',
+        data
+    });
+}
+

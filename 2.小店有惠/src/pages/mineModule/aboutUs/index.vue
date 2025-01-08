@@ -7,23 +7,29 @@
 		<van-cell title="隐私协议" @click="$agreementLookHandle('/agreement/privacy-agreement.html')" is-link />
 		<van-cell title="服务协议" @click="$agreementLookHandle('/agreement/service-agreement.html')" is-link />
 		<van-cell title="开发者" @click="developer" is-link />
+		<van-cell title="积分商城" @click="goToPointsMall" is-link v-if="env != 'release'" />
 		<!-- 背景 -->
 		<view class="about-us-bg"></view>
 	</view>
 </template>
 
 <script>
-	import { getVersion } from '@/utils/auth.js';
+	import { getVersion, getENV } from '@/utils/auth.js';
 	export default {
-		onLoad() {
-			this.version = getVersion();
-		},
 		data(){
 		   return {
 			  version: '',
+			  env: ''
 		   }
 		},
+		onLoad() {
+			this.version = getVersion();
+			this.env = getENV();
+		},
 		methods: {
+			goToPointsMall() {
+				this.$go('/pages/homeModule/pointsMall/index')
+			},
 			versionHandle() {
 				this.$toast('已经是最新版本啦~');
 			},

@@ -40,9 +40,7 @@
 		<view class="cont_txtList">
 			<view class="cont_txtList-item"
 				v-for="(item, index) in textList[1].content" :key="index"
-			>
-			{{item}}
-			</view>
+			>{{item}}</view>
 		</view>
 		<view class="leader_title">
 			<text class="headline_text">想赚的更多，你能做</text>

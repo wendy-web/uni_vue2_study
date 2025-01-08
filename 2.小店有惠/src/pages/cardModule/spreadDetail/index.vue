@@ -33,6 +33,7 @@
     <view :class="['cont_box', !config ? 'loading_circle3' : '']">
       <productCont
         :config="config"
+        :is_xq="is_xq"
         @confirm="confirmHandle"
         v-if="config"
       ></productCont>
@@ -55,22 +56,35 @@
     <view :class="['bottom-tools-box', !config ? 'loading_circle2' : '']">
       <view class="bottom-tools">
         <view class="collect_box">
+          <view class="collection-btn" v-if="is_xq">
+            <button open-type="share" class="share_btn" :data-item="item"></button>
+            <image class="collection-btn-icon" src="https://file.y1b.cn/store/1-0/24830/66d12920372b5.png" mode="widthFix"></image>
+            <text>分享</text>
+          </view>
           <view class="collection-btn " @click="collectHandle">
             <image class="collection-btn-icon" mode="widthFix"
               :src="isCollect ? 'https://file.y1b.cn/store/1-0/24530/6658511d2715b.png' : 'https://file.y1b.cn/store/1-0/24528/665587c7a3dc1.png'"
               ></image>
             <text>{{ isCollect ? "已收藏" : "收藏" }}</text>
           </view>
-
-          <view class="collection-btn " @click="isShowImg = true">
+          <view class="collection-btn " @click="isShowImg = true" v-if="!is_xq">
             <image class="collection-btn-icon" mode="widthFix"
               src="https://file.y1b.cn/store/1-0/2465/6660238537481.png"
               ></image>
             <text>客服</text>
           </view>
         </view>
+        <view class="spread_btn" v-if="is_xq" @click="buyHandle">
+          <liu-customize-swiper :swiperList="headImgArr"
+            ref="headImgArrRef" class="customize_box"
+          ></liu-customize-swiper>
+          <view class="spread_btn-price">
+            <view v-html="formatItemPrice(config && config.price)"></view>
+            <view>{{ config.face_value ? '券后价购买' : '立即购买' }} </view>
+          </view>
+        </view>
         <!-- 推广 -->
-        <view class="spread_btn" @click="spreadHandle">
+        <view class="spread_btn" v-else @click="spreadHandle">
           <view class="spread_btn-left">
             <view v-html="formatItemPrice(config && config.rebateMoney, 1)"></view>
           </view>
@@ -106,19 +120,22 @@
 <script>
 import { goodsDetails } from "@/api/modules/card.js";
 import { toggleCollect } from '@/api/modules/jsShop.js';
+import { userPosition } from "@/api/modules/login.js";
 import { toggleCollect as pddToggleCollect } from '@/api/modules/pddShop.js';
 import showImgDia from '@/components/showImgDia.vue';
 import { getNavbarData } from "@/components/xhNavbar/xhNavbar";
+import { getUrlKey } from "@/utils/auth.js";
 import { mapGetters } from "vuex";
+import liuCustomizeSwiper from './liu-customize-swiper';
 import palette from './palette.js';
 import paletteFaceValue from './paletteFaceValue.js';
 import paletteShare from './paletteShare.js';
 import productCont from "./productCont.vue";
-
 export default {
   components: {
     productCont,
-    showImgDia
+    showImgDia,
+    liuCustomizeSwiper
   },
   data() {
     return {
@@ -136,13 +153,16 @@ export default {
       rebate: '',
       lx_type: '',
       isShowImg: false,
-      is_popover: 0,
       optionsParams: {},
       template: null,
       templateShareAppUrl: null,
       shareImgUrl: '',
       showShareImage: '',
-      painterHeight: 1080
+      painterHeight: 1080,
+      is_xq: 0,
+      headImgArr: [],
+      mlocid: 0,
+      plocid: 0,
     };
   },
   watch: {
@@ -151,24 +171,56 @@ export default {
     ...mapGetters(['vipObject', 'isAutoLogin', 'userInfo']),
   },
   onShareAppMessage() {
-    const { queryId, lx_type, positionId, rebate, is_popover } = this.optionsParams;
+    const { queryId, lx_type, positionId, rebate, is_popover, is_xq } = this.optionsParams;
     let title = `${this.userInfo.nick_name}邀请你卖货，每件赚${this.config.rebateMoney}元`;
     let share = {
       title,
       imageUrl: this.shareImgUrl,
-      path: `pages/cardModule/spreadDetail/index?lx_type=${lx_type}&queryId=${queryId}&positionId=${positionId}&rebate=${rebate}&is_popover=${is_popover}`
+      path: `pages/cardModule/spreadDetail/index?lx_type=${lx_type}&queryId=${queryId}&positionId=${positionId || 0}&rebate=${rebate}&is_popover=${is_popover || 0}`
     }
+    if(this.is_xq) {
+      share.title = this.config.goods_name;
+      share.imageUrl = '';
+      share.path += `&mlocid=${this.mlocid}&plocid=${this.plocid}&is_xq=${is_xq}`
+    }
+    console.log('share.path', share.path)
     return share;
   },
   onLoad(options) {
-    if(options.is_popover) this.is_popover = options.is_popover;
-    const optionsParams = {
-      queryId: options.queryId,
-      lx_type: options.lx_type,
-      positionId: options.positionId || 0,
-      rebate: options.rebate || 0,
-      is_popover: options.is_popover || 0
+    let queryId, lx_type, positionId, is_popover, is_xq, rebate, mlocid, plocid= 0;
+    if(options.q) {
+      const codeUrl = decodeURIComponent(options.q);
+      console.log('codeUrl', codeUrl);
+      queryId = getUrlKey(codeUrl, 'queryId');
+      lx_type = getUrlKey(codeUrl, 'lx_type');
+      positionId = getUrlKey(codeUrl, 'positionId');
+      rebate = getUrlKey(codeUrl, 'rebate');
+      is_popover = getUrlKey(codeUrl, 'is_popover');
+      is_xq = getUrlKey(codeUrl, 'is_xq');
+      mlocid = getUrlKey(codeUrl, 'mlocid');
+      plocid = getUrlKey(codeUrl, 'plocid');
+    } else {
+      queryId = options.queryId;
+      lx_type = options.lx_type;
+      positionId = options.positionId;
+      rebate = options.rebate || 0;
+      mlocid = options.mlocid;
+      plocid = options.plocid;
+      is_popover = options.is_popover || 0;
+      is_xq = options.is_xq || 0;
     }
+    this.mlocid = mlocid;
+    this.plocid = plocid;
+    this.is_xq = is_xq;
+    const optionsParams = {
+      queryId,
+      lx_type,
+      positionId,
+      rebate,
+      is_popover,
+      is_xq,
+    }
+    if(mlocid || plocid) userPosition({ mlocid, plocid});
     this.optionsParams = optionsParams;
     this.initGoodsDetails(optionsParams);
     getNavbarData().then((res) => {
@@ -182,6 +234,13 @@ export default {
     this.balanceValue = this.vipObject.balance;
   },
   methods: {
+    buyHandle() {
+      const { appid, path } = this.config;
+      this.$openEmbeddedMiniProgram({
+        appId: appid,
+        path
+      })
+    },
     onImgOk (event) {
       const { path, type } = event.mp.detail || event.target;
       if(type == 'shareImg') return this.shareImgUrl = path;
@@ -205,7 +264,9 @@ export default {
       let { detail } = res.data;
       this.config = detail;
       if(this.config){
-        const { banner_image, atts, detail_image, is_collect, goods_sign, skuId, rebate } = this.config;
+        const { banner_image, atts, detail_image, is_collect, goods_sign, skuId, rebate, imgArr} = this.config;
+        this.headImgArr = imgArr;
+       if(this.headImgArr && this.headImgArr.length) this.$refs.headImgArrRef.init(this.headImgArr);
         this.banner_image = banner_image;
         this.attsList = atts;
         this.detail_image = detail_image;
@@ -285,8 +346,6 @@ export default {
 
       if(!this.showShareImage) return this.createShowShareImg();
       this.showShareImg();
-      return;
-      this.$go(`/pages/cardModule/spreadDetail/saveType?goods_sign=${this.goods_sign || 0}&skuId=${this.skuId || 0}&rebate=${this.rebate || 0}&is_popover=${this.is_popover}`);
     },
     // 展示推广图
     showShareImg() {
@@ -332,6 +391,9 @@ export default {
       return dom;
     }
   },
+  onUnload() {
+    this.$refs.headImgArrRef && this.$refs.headImgArrRef.clearIntervalTimer();
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -529,8 +591,10 @@ page {
   color: #fff;
   font-weight: bold;
   text-align: center;
-  line-height: 44rpx;
-  width: 60%;
+  width: 384rpx;
+  &-price {
+    font-size: 24rpx;
+  }
   .spread_btn-left {
     display: flex;
     align-items: center;

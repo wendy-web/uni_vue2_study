@@ -196,7 +196,14 @@
         {
             "root": "pages/homeModule/",
             "name": "homeModule",
-            "pages": [{
+            "pages": [
+                {
+                    "path": "pointsMall/index",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "积分商城"
+                    }
+                },{
                     "path": "productDetails/index",
                     "style": {
                         "navigationStyle": "custom",

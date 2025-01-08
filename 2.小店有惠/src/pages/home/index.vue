@@ -82,15 +82,15 @@
     @close="closePopoverDiaHandle"
     @openLink="openLinkHandle"
   ></popoverDia>
-    <!-- 弹窗管理 -->
-    <configurationDia
-        ref="configurationDia"
-        :isShow="isShowConfig"
-        @close="closeShowConfig"
-        :config="config"
-        @popoverRember="requestPopoverRember"
-        :remainTime="remainTime"
-    ></configurationDia>
+<!-- 弹窗管理 -->
+<configurationDia
+    ref="configurationDia"
+    :isShow="isShowConfig"
+    @close="closeShowConfig"
+    :config="config"
+    @popoverRember="requestPopoverRember"
+    :remainTime="remainTime"
+></configurationDia>
 </view>
 </template>
 <script>
@@ -101,16 +101,7 @@ import {
     popover,
     singleton
 } from "@/api/modules/home.js";
-import {
-    goodsQuery,
-    jingfen,
-    keywordList,
-    material
-} from '@/api/modules/jsShop.js';
-import {
-    goodsRecommend,
-    goodsSearch,
-} from '@/api/modules/pddShop.js';
+import { keywordList } from '@/api/modules/jsShop.js';
 import configurationFun from '@/components/configurationDia/configurationFun.js';
 import configurationDia from '@/components/configurationDia/index.vue';
 import goodList from "@/components/goodList.vue";
@@ -120,6 +111,7 @@ import { getNavbarData } from "@/components/xhNavbar/xhNavbar.js";
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import WxCountUp from "@/utils/WxCountUp.js";
 import { getPlatform } from "@/utils/auth.js";
+import getQueryApi from "@/utils/queryListApi.js";
 import getViewPort from '@/utils/getViewPort.js';
 import { mapActions, mapGetters, mapMutations } from "vuex";
 let _options = {
@@ -163,7 +155,8 @@ export default {
             target: 4,
             resGetAdNum: 0,
             initBtnPlocidList: ['3109728916', '3107158515'],
-            popoverConfig: {}
+            popoverConfig: {},
+            isRequestNum: 0,
 		}
 	},
     computed: {
@@ -295,6 +288,7 @@ export default {
         },
         /*下拉刷新的回调 */
         downCallback() {
+            this.isRequestNum = 0;
             this.getUserInfo(); // 获取用户信息
             this.singletonInit();
             if(this.tabs[this.tabIndex]) this.tabs[this.tabIndex].pageNum = 1;
@@ -358,95 +352,47 @@ export default {
         async requestRem(page) {
             const curTab = this.tabs[this.tabIndex];
             const {
-                id,
-                cid,
-                cid2,
-                cid3,
-                eliteId,
                 groupId,
                 type,
                 pageNum,
                 groupId_index,
-                positionId,
-                lx_type
             } = curTab;
-            let params = {
-                id,
-                positionId,
-                page: pageNum,
-                size: 10,
+            let { params, queryApi } = getQueryApi(curTab);
+            const res = await queryApi(params).catch(()=>this.mescroll.endErr());
+            const { list, total_count } = res.data;
+            // 设置列表数据
+            curTab.num = page.num; // 页码
+            curTab.curPageLen = list.length; // 当前页长
+            curTab.hasNext = this.mescroll.optUp.hasNext; // 是否还有下一页
+            if( page.num == 1 ) {
+                curTab.goods = [];
+                curTab.pageNum = 1;
+            }; // 如果是第一页需手动制空列表
+            // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+            let isNextPage = (pageNum * params.size) < total_count;
+            if(!isNextPage && type == 4 && groupId_index < (groupId.length - 1)) {
+                // 无下一页
+                curTab.groupId_index += 1;
+                this.mescroll.endSuccess(total_count, true);
+                curTab.pageNum = 0;
+            } else {
+                this.mescroll.endSuccess(list.length || total_count, isNextPage);
             }
-			let queryApi = goodsQuery;
-            // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-            switch(type) {
-                case 1:
-                    // 拼多多接口的访问
-                    if (lx_type == 3) {
-                        queryApi = goodsRecommend;
-                        params.positionId = positionId;
-                    } else {
-                        queryApi = material;
-                        params.eliteId = eliteId;
-                        params.groupId = groupId;
-                        params.size = 10;
-                    }
-                    break;
-                case 2:
-                    if (lx_type == 3) {
-                        queryApi = goodsSearch;
-                        params.positionId = positionId;
-                    } else {
-                        queryApi = jingfen;
-                        params.eliteId = eliteId;
-                        params.groupId = groupId;
-                        params.size = 20;
-                    }
-                    break;
-                case 3:
-                    queryApi = goodsQuery;
-                    params.cid1 = cid;
-                    params.cid2 = cid2;
-                    params.cid3 = cid3;
-                    break;
-                case 4:
-                    queryApi = jingfen;
-                    params.eliteId = eliteId;
-                    params.groupId = groupId[groupId_index];
-                    params.size = 20;
-                    break;
-            };
-            queryApi(params).then(res=>{
-                const {
-                    list,
-                    total_count
-                } = res.data;
-                // 设置列表数据
-                curTab.num = page.num; // 页码
-                curTab.curPageLen = list.length; // 当前页长
-                curTab.hasNext = this.mescroll.optUp.hasNext; // 是否还有下一页
-                if( page.num == 1 ) {
-                    curTab.goods = [];
-                    curTab.pageNum = 1;
-                }; // 如果是第一页需手动制空列表
-                // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-                let isNextPage = (pageNum * params.size) < total_count;
-                if(!isNextPage && type == 4 && groupId_index < (groupId.length - 1)) {
-                    // 无下一页
-                    curTab.groupId_index += 1;
-                    this.mescroll.endSuccess(total_count, true);
-                    curTab.pageNum = 0;
-                } else {
-                    this.mescroll.endSuccess(list.length || total_count, isNextPage);
-                }
-                if((list.length == 0 || curTab.goods.length < 6 ) && (pageNum * params.size) < total_count ){
-                    this.mescroll.triggerUpScroll();
-                }
-                curTab.pageNum += 1;
-                curTab.goods = curTab.goods.concat(list); // 追加新数据
-            }).catch(()=>this.mescroll.endErr());
+            if((list.length == 0 || curTab.goods.length < 6 ) && this.isNextPage ){
+                this.mescroll.triggerUpScroll();
+            }
+            curTab.pageNum += 1;
+            curTab.goods = curTab.goods.concat(list); // 追加新数据
+            if (list.length <= 0 && isNextPage && this.isRequestNum < 2) {
+                this.isRequestNum += 1;
+                this.mescroll.triggerUpScroll();
+                return;
+            }
+            this.isRequestNum = 0;
 		},
         // 切换菜单
         tabChange (index, item) {
+            this.isRequestNum = 0;
             // 记录切换前滚动条的位置
             if(!this.preIndex) this.preIndex = 0
             let preTab = this.tabs[this.preIndex]

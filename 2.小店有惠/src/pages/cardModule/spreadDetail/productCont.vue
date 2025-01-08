@@ -18,7 +18,10 @@
 		<scroll-view scroll-x scroll-with-animation :scroll-animation-duration="300" class="scroll_box">
 			<view class="lab_box">
 				<view class="lab_txt lx_type">{{ config.lx_type == 2 ? '京东' : '拼多多' }}</view>
-				<view class="lab_txt face_value" v-if=" config.face_value">{{ config.face_value }}元券</view>
+				<view class="lab_txt face_value"v-if="config.face_value">
+					{{ is_xq ? `${config.credits}积分抵${config.face_value}元券`: `${config.face_value}元券`}}
+				</view>
+				<!-- <view class="lab_txt face_value" v-if="config.face_value">{{ config.face_value }}元券</view> -->
 				<block v-if="config.tags.length">
 					<view class="lab_txt" v-for="(item, idx) in config.tags" :key="idx">{{ item }}</view>
 				</block>
@@ -58,6 +61,10 @@ export default {
 				return {
 				}
 			}
+		},
+		is_xq: {
+			type: [String, Number],
+			default: 0
 		}
 	},
 	data() {

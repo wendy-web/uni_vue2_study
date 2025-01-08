@@ -127,3 +127,12 @@ export function goodsExtend(data) {
         data
     });
 }
+
+// 身份证验证
+export function idcardVerify(data) {
+    return API.request({
+        url: `/api/Team_apply/idcardVerify`,
+        method: 'post',
+        data
+    });
+}

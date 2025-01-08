@@ -83,20 +83,16 @@
 </template>
 <script>
 import {
-    goodsQuery,
     groupRecommend,
     groupSearch,
-    jingfen,
     keywordList,
-    material
 } from '@/api/modules/jsShop.js';
-import { goodsRecommend, goodsSearch } from '@/api/modules/pddShop.js';
 import goodList from '@/components/goodList.vue';
 import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 import getViewPort from '@/utils/getViewPort.js';
 import { mapActions, mapGetters } from 'vuex';
 import selTabs from './content/selTabs.vue';
-
+import getQueryApi from "@/utils/queryListApi.js";
 export default {
     mixins: [MescrollMixin], // 使用mixin
     components: {
@@ -318,71 +314,20 @@ export default {
                 if(recRes.code != 1 || !recRes.data) return this.mescroll.endSuccess(0);
                 this.groupRecommendData = recRes.data;
             }
-            const {
-                id,
-                cid,
-                cid2,
-                cid3,
-                eliteId,
-                groupId,
-                type,
-                lx_type,
-                positionId
-            } = this.groupRecommendData;
+            const { groupId, type } = this.groupRecommendData;
             let pageNum = this.pageNum;
-            // const pageNum = page.num;
-            let params = {
-                id,
-                page: pageNum,
-                size: 10,
-                is_rebate: this.is_rebate,
-            }
-            let queryApi = goodsQuery;
-            // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-            switch(type) {
-                case 1:
-                    if (lx_type == 3) {
-                        queryApi = goodsRecommend;
-                        params.positionId = positionId;
-                    } else {
-                        queryApi = material;
-                        params.eliteId = eliteId;
-                        params.groupId = groupId;
-                        params.size = 10;
-                    }
-                    break;
-                case 2:
-                    if (lx_type == 3) {
-                        queryApi = goodsSearch;
-                        params.positionId = positionId;
-                    } else {
-                        queryApi = jingfen;
-                        params.eliteId = eliteId;
-                        params.groupId = groupId;
-                        params.size = 20;
-                    }
-                    break;
-                case 3:
-                    queryApi = goodsQuery;
-                    params.cid1 = cid;
-                    params.cid2 = cid2;
-                    params.cid3 = cid3;
-                    break;
-                case 4:
-                    queryApi = jingfen;
-                    const groupId_index = this.groupId_index;
-                    params.eliteId = eliteId;
-                    params.groupId = groupId[groupId_index];
-                    params.size = 20;
-                    break;
-            };
+            let { params, queryApi } = getQueryApi({
+                ...this.groupRecommendData,
+                pageNum
+            });
+            params.is_rebate = this.is_rebate;
             const res = await queryApi(params).catch(() => this.mescroll.endErr());
             const { list, total_count } = res.data;
             if( page.num == 1 ) {
                 this.recommendGoods = [];
                 this.pageNum = 1;
                 this.lastOddItem = null;
-            }; //如果是第一页需手动制空列表
+            }; // 如果是第一页需手动制空列表
             // 联网成功的回调,隐藏下拉刷新和上拉加载的状态;
             let isNextPage = (pageNum * params.size) <= total_count;
             if(!isNextPage && type == 4 && this.groupId_index < (groupId.length - 1)) {

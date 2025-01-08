@@ -129,15 +129,20 @@
                 {{ config.skuName }}
               </view>
             </view>
-            <view class="face_value">
+            <view class="face_value" v-if="config.discount">
                 <image class="bg_img" src="https://file.y1b.cn/store/1-0/23714/64b0a4064af05.png" mode="scaleToFill"></image>
                 <view>
-                <text style="font-size: 48rpx">{{ config.discount }}</text>元
+                  <text style="font-size: 48rpx">{{ config.discount }}</text>元
                 </view>
                 <view> 专属优惠券 </view>
             </view>
+            <view class="face_price" v-else>
+              <view>秒杀价</view>
+              <view class="face_price-value">{{ config.coupon_price }}</view>
+            </view>
             <view class="cont_btn">
-                <image class="btn_txt" src="https://file.y1b.cn/store/1-0/24612/666948ebab3f6.png" mode="scaleToFill"></image>
+                <!-- <image class="btn_txt" src="https://file.y1b.cn/store/1-0/24612/666948ebab3f6.png" mode="scaleToFill"></image> -->
+                 {{ config.discount ? '一键抢券' : '立即抢购' }}
             </view>
             </view>
         </view>
@@ -238,7 +243,7 @@ export default {
       this.isFinShed = true;
     },
     onChangeHandle(event) {
-      // return
+      // return;
       let {
         hours,
         minutes,
@@ -507,6 +512,27 @@ export default {
     color: #ef2b20;
     line-height: 66rpx;
   }
+  .face_price {
+    width: 510rpx;
+    margin: auto;
+    margin-top: 42rpx;
+    height: 138rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 32rpx;
+    line-height: 56rpx;
+    color: #333;
+    &-value {
+      font-size: 56rpx;
+      margin-left: 20rpx;
+      &::before{
+        content: '￥';
+        font-size: 28rpx;
+      }
+    }
+  }
   .cont_btn {
     width: 510rpx;
     height: 88rpx;
@@ -518,6 +544,8 @@ export default {
     align-items: center;
     justify-content: center;
     margin-top: 74rpx;
+    color: #fff;
+    font-weight: bold;
     .btn_txt{
       width: 142rpx;
       height: 34rpx;

@@ -178,3 +178,6 @@ export function getPlatform() {
     // (platform == 'devtools') && (platform = 'android');
     return platform;
 }
+export function getUrlKey(pageUrl, name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(pageUrl) || [, ""])[1].replace(/\+/g, '%20')) || null;
+}

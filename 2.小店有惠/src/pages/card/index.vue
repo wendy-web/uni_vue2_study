@@ -219,8 +219,6 @@
 <script>
 import { apply, applyInfo, inviteXq, isSend, msgTemplate, wordConfig } from "@/api/modules/card.js";
 import { goodsGroup, goodsList } from "@/api/modules/home.js";
-import { goodsQuery, jingfen, material } from '@/api/modules/jsShop.js';
-import { goodsRecommend, goodsSearch } from '@/api/modules/pddShop.js';
 import configurationFun from '@/components/configurationDia/configurationFun.js';
 import configurationDia from '@/components/configurationDia/index.vue';
 import reportSuccessDia from '@/components/reportSuccessDia.vue';
@@ -231,6 +229,7 @@ import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/me
 import { getBaseUrl } from "@/utils/auth.js";
 import { lxTypeStatusCheckout } from "@/utils/goDetailCommonFun.js";
 import { formatAmount } from '@/utils/index.js';
+import getQueryApi from "@/utils/queryListApi.js";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
     mixins: [MescrollMixin, configurationFun], // 使用mixin
@@ -293,6 +292,7 @@ export default {
             domBoxResHeight: 0,
             tabHeightValue: 0, // 底部导航栏的高度
             isShowMinHight: true,
+            isRequestNum: 0,
         }
     },
     watch: {
@@ -438,6 +438,7 @@ export default {
         },
         // 切换菜单
         tabChange (index, item) {
+            this.isRequestNum = 0;
             this.isShowMinHight = true;
             this.tabIndex = index;
             // 当前菜单的数据
@@ -455,6 +456,7 @@ export default {
         downCallback(page) {
             this.tabIndex = 0;
             this.tabs = [];
+            this.isRequestNum = 0;
             this.getUserInfo();
             // if(!this.isAutoLogin) return;
             if(!this.isAutoLogin) return; // 未登录禁止加载使用
@@ -539,7 +541,8 @@ export default {
                 pageNum,
                 groupId_index
             } = currentShopGroup;
-            const { params, queryApi } = this.getRequestCont(currentShopGroup);
+            const { params, queryApi } = getQueryApi(currentShopGroup);
+            params.is_rebate = 1;
             const res = await queryApi({ ...params, level: 1 }).catch(() => this.mescroll.endErr());
             if(res.code != 1 || !res.data) {
                 this.mescroll.endSuccess(goods?.length || 0);
@@ -569,77 +572,18 @@ export default {
             this.tabs[this.tabIndex] = currentTabItem;
             if(list.length && isNextPage) return;
             // 没有下一页 - 加载列表的另一项
+            if (list.length <= 0 && isNextPage && this.isRequestNum < 2) {
+                this.isRequestNum += 1;
+                this.mescroll.triggerUpScroll();
+                return;
+            }
+            this.isRequestNum = 0;
             if(!isNextPage) {
                 shopGroup_index += 1;
                 currentTabItem.shopGroup_index = shopGroup_index;
             }
             this.mescroll.triggerUpScroll();
 
-        },
-        getRequestCont(currentTabItem) {
-            let {
-                id,
-                cid,
-                cid2,
-                cid3,
-                eliteId,
-                groupId,
-                type,
-                positionId,
-                lx_type,
-                pageNum,
-                groupId_index
-            } = currentTabItem;
-            let params = {
-                id,
-                positionId,
-                page: pageNum,
-                size: 10,
-                is_rebate: 1
-            }
-			let queryApi = goodsQuery;
-            // type 1-猜你喜欢 2-京东精选 3-关键词查询, 4 选品库组合
-            switch(type) {
-                case 1:
-                    // 拼多多接口的访问
-                    if (lx_type == 3) {
-                        queryApi = goodsRecommend;
-                        params.positionId = positionId;
-                    } else {
-                        queryApi = material;
-                        params.eliteId = eliteId;
-                        params.groupId = groupId;
-                        params.size = 10;
-                    }
-                    break;
-                case 2:
-                    if (lx_type == 3) {
-                        queryApi = goodsSearch;
-                        params.positionId = positionId;
-                    } else {
-                        queryApi = jingfen;
-                        params.eliteId = eliteId;
-                        params.groupId = groupId;
-                        params.size = 20;
-                    }
-                    break;
-                case 3:
-                    queryApi = goodsQuery;
-                    params.cid1 = cid;
-                    params.cid2 = cid2;
-                    params.cid3 = cid3;
-                    break;
-                case 4:
-                    queryApi = jingfen;
-                    params.eliteId = eliteId;
-                    params.groupId = groupId[groupId_index];
-                    params.size = 20;
-                    break;
-            };
-            return {
-                queryApi,
-                params
-            }
         },
         async requestRem(page) {
             const currentTabItem = this.tabs[this.tabIndex];
@@ -653,7 +597,8 @@ export default {
                 shopGroup
             } = currentTabItem;
             // 返回请求的参数
-            const { params, queryApi } = this.getRequestCont(currentTabItem);
+            const { params, queryApi } = getQueryApi(currentTabItem);
+            params.is_rebate = 1;
             const res = await queryApi(params).catch(() => this.mescroll.endErr());
             // this.isShowMinHight = false;
             // this.mescroll.endSuccess(goods?.length || 0);
@@ -694,15 +639,18 @@ export default {
             currentTabItem.groupId_index = groupId_index;
             this.tabs[this.tabIndex] = currentTabItem;
             if(list.length && isNextPage) return;
-            if(!isNextPage) {
+            if(!isNextPage && (this.isRequestNum < 2)) {
+                this.isRequestNum += 1;
                 this.mescroll.triggerUpScroll();
+                return;
             }
+            this.isRequestNum = 0;
 		},
         async couponDetailHandle(item, index) {
             const res = await lxTypeStatusCheckout(item);
             if (res.code != 1) return this.tabGoodList.splice(index, 1);
             const { lx_type, goods_sign, skuId, positionId, rebate } = item;
-            this.$go(`/pages/cardModule/spreadDetail/index?lx_type=${lx_type}&goods_sign=${goods_sign || 0}&skuId=${skuId ||0}&queryId=${goods_sign || skuId}&positionId=${positionId}&rebate=${rebate}`)
+            this.$go(`/pages/cardModule/spreadDetail/index?lx_type=${lx_type}&queryId=${goods_sign || skuId}&positionId=${positionId}&rebate=${rebate}`)
         },
         async spreadHandle(item) {
             const res = await lxTypeStatusCheckout(item);
