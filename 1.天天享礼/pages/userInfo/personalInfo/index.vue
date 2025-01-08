@@ -1,5 +1,6 @@
 <template>
  <view class="personal-info-box">
+  <demo></demo>
     <view class="list-box">
       <view class="list-item item_title">基本信息</view>
       <!-- 头像 -->
@@ -73,14 +74,14 @@
           <van-icon name="arrow" color="#999999" size="14" />
         </view>
       </view> -->
-      <view class="list-item" @click="animationHandle2"  v-if="isTest">
+      <view class="list-item" @click="animationHandle2" v-if="isTest">
         <view class="li-left">测试</view>
         <view class="li-right">
           <view class="lir-item">库迪咖啡首页</view>
           <van-icon name="arrow" color="#999999" size="14" />
         </view>
       </view>
-      <view class="list-item" @click="animationHandle3"  v-if="isTest">
+      <view class="list-item" @click="animationHandle3" v-if="isTest">
         <view class="li-left">测试</view>
         <view class="li-right">
           <view class="lir-item">省钱卡活动</view>
@@ -162,10 +163,12 @@ import { compareVersion, parseTime } from "@/utils/index.js";
 import uploadImgAI from "@/utils/uploadImgAI.js";
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import confirmDia from './confirmDia.vue';
+import { myMixins } from './mixins.js'
 export default{
-    components:{
-        confirmDia
-    },
+  components:{
+    confirmDia
+  },
+  mixins: [myMixins],
 	data() {
 		return {
       canIuse: false,

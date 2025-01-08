@@ -65,7 +65,8 @@
             <view class="nick_cont" @click.stop="goRecordHandle">
               <view class="nick_name">{{ userInfo.nick_name || "未登录" }}</view>
               <view class="nick_lab" v-if="vipObject.over_time">
-                省钱{{['月', '季', '年'][vipObject.card_type || 0]}}卡：{{vipObject.over_time}}到期</view>
+                省钱{{['月', '季', '年'][vipObject.card_type || 0]}}卡：{{vipObject.over_time}}到期
+              </view>
             </view>
           </view>
           <view class="car_top-cont box_fl">

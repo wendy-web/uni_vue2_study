@@ -156,7 +156,6 @@
       @popoverRember="requestPopoverRember"
       :remainTime="remainTime"
     ></configurationDia>
-    <!-- 配置的弹窗管理 -->
     <awardDia
       ref="awardDia"
       :isShow="isShowAwardDia"
@@ -203,7 +202,7 @@
 </template>
 <script>
 import { guessList, keywordList, overDo } from "@/api/modules/jsShop.js";
-import { bfxlPopup, couponGroup, couponList, drawPopover, giftCreate } from "@/api/modules/shopMall.js";
+import { bfxlPopup, couponGroup, couponList, drawPopover, giftCreate, cpAdvertising } from "@/api/modules/shopMall.js";
 import awardDia from "@/components/configurationDia/awardDia.vue";
 import configurationFun from "@/components/configurationDia/configurationFun.js";
 import configurationDia from "@/components/configurationDia/index.vue";
@@ -280,6 +279,11 @@ export default {
       serviceCreditsShow: false, // 赚取牛金豆的弹窗
       _RewardedVideoAd: null, // 激励视频
       adunit: "adunit-bc00b5948e4bbd52",
+      adUnitId: 'adunit-26e8d6c7260f8f20', // 配置弹窗的开屏幕广告
+      isShowEndAd: false,
+      isShowTimeAd: 0,
+      interstitialAd: null, // 在页面中定义插屏广告
+      adTimeOut: null,
       showTitleBg: false,
       // 组件渲染占据的高度
       goldenBeanComHeight: 0,
@@ -327,7 +331,8 @@ export default {
       scroll_top: 0,
       currentIndex: 0,
       isLoadRequestList: false,
-      vipNumberShopCurrent: -1
+      vipNumberShopCurrent: -1,
+      isClearAdTimeOut: false
     };
   },
   watch: {
@@ -362,6 +367,8 @@ export default {
     },
     // 监听弹窗的列表
     diaList(newValue, oldValue) {
+      console.log('newValue： diaList', newValue)
+      this.showAdSetTime();
       if (newValue.length && newValue[0] == "award") {
         this.isShowAwardDia = true;
       }
@@ -375,7 +382,12 @@ export default {
     isShowSticky(newVal, oldValue) {
       if (newVal) return this.$refs.anNoticeBarShow.init();
       this.$refs.anNoticeBarShow.close();
-    }
+    },
+    // isShowEndAd(newValue) {
+    //   console.log('isShowEndAd::::的监听', newValue, this.diaList)
+    //   if (!newValue) return;
+    //   this.showAdSetTime();
+    // },
   },
   computed: {
     ...mapGetters(["userInfo", "gift", "diaList", 'isAutoLogin', 'isAlreadyShowLight', 'iconFindLightIndex', 'isConnected']),
@@ -542,16 +554,65 @@ export default {
       this.configurationInit(); // 弹窗配置
     }
     if (this.$refs.anNoticeImgShow) this.$refs.anNoticeImgShow.init() // 渲染的初始化
+    if(this.isClearAdTimeOut) {
+      console.log('返回的show',this.isShowEndAd)
+      this.showAdSetTime();
+    };
   },
   onHide() {
+    if(this.adTimeOut) {
+      clearTimeout(this.adTimeOut);
+      this.adTimeOut = null;
+      this.isClearAdTimeOut = true;
+    }
     this.setShowLightHandle();
     this.$refs.anNoticeBarShow.clearNoticeTime();
     const type = getDiaType();
-    if (type == "award") {
-      setDiaType("awardEnd");
-    }
+    if (type == "award") setDiaType("awardEnd");
   },
   methods: {
+    showAdSetTime() {
+      console.log('fanhuu', this.diaList)
+      if (this.diaList.length && this.diaList[0] == "adunit" && this.isShowEndAd) {
+        // 在适合的场景显示插屏广告
+        if (this.interstitialAd) {
+          console.log('this.isShowTimeAd', this.isShowTimeAd, this.adTimeOut);
+          if(this.adTimeOut) return;
+          this.adTimeOut = setTimeout(() => {
+            console.log('播放激励视频')
+            this.interstitialAd.show().catch((err) => {
+              console.log('err', err)
+              this.delCurrentDiaList('adunit');
+            });
+          }, this.isShowTimeAd * 1000);
+          return;
+        }
+        this.delCurrentDiaList('adunit');
+      }
+    },
+    async initInterstitialAd() {
+      if(!this.isShowEndAd && wx.createInterstitialAd) {
+        const res = await cpAdvertising();
+        // console.log('res', res)
+        if(res.code != 1 || !res.code) return this.delCurrentDiaList('adunit');
+        const { show, show_time } = res.data;
+        this.isShowEndAd = Boolean(show);
+        this.isShowTimeAd = Number(show_time);
+        if(!this.isShowEndAd) return;
+        this.setDiaList('adunit');
+        this.interstitialAd = wx.createInterstitialAd({
+          adUnitId: 'adunit-26e8d6c7260f8f20'
+        });
+        this.interstitialAd.onLoad((res) => { });
+        this.interstitialAd.onError((err) => {
+          console.log('err插屏错误:', err)
+          this.delCurrentDiaList('adunit');
+        });
+        this.interstitialAd.onClose(() => {
+          this.delCurrentDiaList('adunit');
+        });
+      }
+    },
     animationfinishHandle(event){
       this.currentIndex = event.detail.current;
     },
@@ -1135,6 +1196,8 @@ export default {
   },
   onUnload() {
     this._RewardedVideoAd.videoAdDestroy();
+    clearTimeout(this.adTimeOut);
+    this.adTimeOut = null;
   },
 };
 </script>

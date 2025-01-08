@@ -73,7 +73,13 @@ const serviceCredits = {
         }
     },
     computed: {
-        ...mapGetters(['userInfo', 'gift', 'diaList', 'isAutoLogin', 'lightArr'])
+        ...mapGetters(['userInfo', 'gift', 'diaList', 'isAutoLogin', 'lightArr']),
+        diaListStatus() {
+            return {
+                showList: this.showList,
+                lightArr: this.lightArr
+            }
+        }
     },
     watch: {
         diaList: {
@@ -97,6 +103,17 @@ const serviceCredits = {
                 this.psite = null;
                 this.configurationInit();
             }
+        },
+        diaListStatus: {
+            handler(newValue, oldValue) {
+                const { showList, lightArr, } = newValue;
+                console.log('newValue------2', newValue, this.currentPageNum);
+                if (this.currentPageNum == 1 && (!showList || !showList.length) && !lightArr && !this.isShowEndAd) {
+                    console.log('监听的加载')
+                    this.initInterstitialAd();
+                }
+            },
+            deep: true
         }
     },
     onLoad(options) {
@@ -200,7 +217,7 @@ const serviceCredits = {
             this.showDia();
         },
         showDia() {
-            if (!this.showList.length) return;
+            if (!this.showList || !this.showList.length) return;
             this.config = this.showList[0];
             let {
                 second,
@@ -284,9 +301,9 @@ const serviceCredits = {
                 is_popover: 1,
                 isCodeErrorShow: (this.codeErrorId || this.tradeIn) && isAuto, // 扫码异常展示推券的事件区分
             });
-            this.closeShowConfig(id || this.currentId, false);
+            this.closeShowConfig(id || this.currentId, false, false);
         },
-        async closeShowConfig(id, nextDia = true, isCloseClick = false) {
+        async closeShowConfig(id, nextDia = true, isCloseClick = true) {
             const currentId = id || this.currentId;
             this.getUserInfo();
             this.closeConfigHandle();
@@ -294,14 +311,18 @@ const serviceCredits = {
             // 记录已点击的事件
             await popoverRember({ id: currentId });
             if ((this.showList.length > 1 && nextDia) || this.codeErrorId || this.losingNew || this.psite || this.tradeIn) {
-                if (this.codeErrorId && isCloseClick && this.config.image) {
-                    this.$wxReportEvent("closetc");
-                }
+                // if (this.codeErrorId && isCloseClick && this.config.image) {
+                //     this.$wxReportEvent("closetc");
+                // }
                 this.codeErrorId = null;
                 this.losingNew = null;
                 this.psite = null;
                 this.tradeIn = null;
                 setTimeout(() => this.configurationInit(), 3000);
+                return;
+            } else if (!this.isShowEndAd && isCloseClick) {
+                console.log('点击后的干扰')
+                setTimeout(() => this.initInterstitialAd(), 3000);
             }
         },
     },

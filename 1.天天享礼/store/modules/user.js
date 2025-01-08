@@ -32,7 +32,7 @@ const state = {
     gift: getGift() || 0, // 0 非新用户 1 新用户
     location: getLocation() || null,
     userTotal: {},
-    diaList: ['privacy'], // 弹起列表 - 用户更新弹窗的配置
+    diaList: ['privacy'], // 弹起列表 - 用户更新弹窗的配置 - adunit - 广告的配置
     isAutoPrivacy: Boolean(getAutoPrivacy()),
     isMiniProgram: 0, // 未进入；1 已进入
     isAutoLogin: Boolean(getAutoLogin()), // 1 自动登录；

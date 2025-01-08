@@ -137,3 +137,11 @@ export function creditsDraw(data) {
         data
     });
 }
+// 首页插屏广告
+export function cpAdvertising(data) {
+    return API.request({
+        url: '/api/index/cpAdvertising',
+        method: 'post',
+        data
+    });
+}

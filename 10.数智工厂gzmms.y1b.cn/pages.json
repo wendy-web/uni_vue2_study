@@ -1,0 +1,508 @@
+{
+	"pages": [
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/tabBar/workbench/index",
+			"style": {
+				"navigationBarTitleText": "通知待办",
+				"navigationStyle": "custom" // 隐藏系统导航栏
+			}
+		},
+		{
+			"path": "pages/tabBar/home/index",
+			"style": {
+				"navigationBarTitleText": "申请",
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/tabBar/mine/index",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"navigationStyle": "custom" // 隐藏系统导航栏
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom" // 隐藏系统导航栏
+			}
+		},
+		{
+			"path": "pages/tabBar/workbench/backlog/backlog",
+			"style": {
+				"navigationBarTitleText": "待办列表",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/ipHint/ipHint",
+			"style": {
+				"navigationStyle": "custom", // 隐藏系统导航栏
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/common/user/user",
+			"style": {
+				"navigationBarTitleText": "人员列表",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/common/transfer/transfer",
+			"style": {
+				"navigationBarTitleText": "扫码结果页",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/common/deviceScan/deviceScan",
+			"style": {
+				"navigationBarTitleText": "设备扫码结果页"
+			}
+		},
+		{
+			"path": "pages/common/switch/switch",
+			"style": {
+				"navigationBarTitleText": "",
+				"navigationStyle": "custom" // 隐藏系统导航栏
+			}
+		}
+
+	],
+	"subPackages": [{
+			"root": "pages/purchaseModule/",
+			"name": "purchaseModule",
+			"pages": [{
+					"path": "order/list/list",
+					"style": {
+						"navigationBarTitleText": "采购单列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "order/detail/detail",
+					"style": {
+						"navigationBarTitleText": "采购单详情",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "refund/list/list",
+					"style": {
+						"navigationBarTitleText": "采购退货单列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "refund/detail/detail",
+					"style": {
+						"navigationBarTitleText": "采购退货单详情",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "swap/list/list",
+					"style": {
+						"navigationBarTitleText": "采购换货单列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "swap/detail/detail",
+					"style": {
+						"navigationBarTitleText": "采购换货单详情",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/warehouseModule/",
+			"name": "warehouseModule",
+			"pages": [{
+					"path": "buyIn/list/list",
+					"style": {
+						"navigationBarTitleText": "采购入库单列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "buyIn/detail/detail",
+					"style": {
+						"navigationBarTitleText": "采购入库单详情",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "otherIn/list/list",
+					"style": {
+						"navigationBarTitleText": "其他入库单列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "otherIn/detail/detail",
+					"style": {
+						"navigationBarTitleText": "其他入库单详情",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "retGoods/list/list",
+					"style": {
+						"navigationBarTitleText": "退货出库单列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "retGoods/detail/detail",
+					"style": {
+						"navigationBarTitleText": "退货出库单详情",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "getSupplier/list/list",
+					"style": {
+						"navigationBarTitleText": "领料出库单列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "getSupplier/detail/detail",
+					"style": {
+						"navigationBarTitleText": "领料出库单详情",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "getSupplier/add/add",
+					"style": {
+						"navigationBarTitleText": "新建领料单",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "getSupplier/receiveDetail/receiveDetail",
+					"style": {
+						"navigationBarTitleText": "本次领料明细",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "retSupplier/list/list",
+					"style": {
+						"navigationBarTitleText": "退料入库单列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "retSupplier/detail/detail",
+					"style": {
+						"navigationBarTitleText": "退料入库单详情",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "split/list/list",
+					"style": {
+						"navigationBarTitleText": "拆装单列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "split/detail/detail",
+					"style": {
+						"navigationBarTitleText": "拆装单详情",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "allot/list/list",
+					"style": {
+						"navigationBarTitleText": "调拨单列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "allot/detail/detail",
+					"style": {
+						"navigationBarTitleText": "调拨单详情",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "check/list/list",
+					"style": {
+						"navigationBarTitleText": "盘点单列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "check/detail/detail",
+					"style": {
+						"navigationBarTitleText": "盘点单详情",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "check/add/add",
+					"style": {
+						"navigationBarTitleText": "新建盘点",
+						"navigationBarBackgroundColor": "#ffffff",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "scrap/list/list",
+					"style": {
+						"navigationBarTitleText": "报废单列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "scrap/detail/detail",
+					"style": {
+						"navigationBarTitleText": "报废单详情",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "common/selectGoods/selectGoods",
+					"style": {
+						"navigationBarTitleText": "选择商品",
+						"enablePullDownRefresh": false
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/reportModule/",
+			"name": "reportModule",
+			"pages": [{
+					"path": "goodsStock/list/list",
+					"style": {
+						"navigationBarTitleText": "货品库存列表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				},
+				{
+					"path": "inoutRecord/list/list",
+					"style": {
+						"navigationBarTitleText": "出入库明细报表",
+						"navigationStyle": "custom" // 隐藏系统导航栏
+					}
+				}
+
+			]
+		},
+		{
+			"root": "pages/deviceModule/",
+			"name": "deviceModule",
+			"pages": [{
+					"path": "archive/equipment/list",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "资产档案"
+					}
+				},
+				{
+					"path": "archive/equipment/manage",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "综合管理"
+					}
+				},
+				{
+					"path": "archive/equipment/detail",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "更多信息"
+					}
+				},
+				{
+					"path": "inspection/project/list",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "点巡检项目"
+					}
+				},
+				{
+					"path": "inspection/plan/list",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "点巡检计划"
+					}
+				},
+				{
+					"path": "inspection/plan/detail",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "点巡检计划详情"
+					}
+				},
+				{
+					"path": "inspection/record/add",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "点巡检执行新增"
+					}
+				},
+				{
+					"path": "inspection/record/list",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "点巡检记录"
+					}
+				},
+				{
+					"path" : "inspection/record/detail",
+					"style" :
+					{
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "点巡检记录详情"
+					}
+				},
+				{
+					"path": "maintain/repair/list",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "设备维修单"
+					}
+				},
+				{
+					"path": "maintain/repair/detail",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "编辑设备维修单"
+					}
+				},
+				{
+					"path": "maintain/repair/selDevice",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "选择设备"
+					}
+				},
+				{
+					"path": "maintain/repair/selDeviceOrder",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "选择领用单备件"
+					}
+				},
+				{
+					"path": "maintain/plan/list",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "保养计划"
+					}
+				},
+				{
+					"path": "maintain/plan/detail",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "保养计划详情"
+					}
+				},
+				{
+					"path": "maintain/plan/detailMore",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "查看更多信息"
+					}
+				},
+				{
+					"path": "maintain/workOrder/list",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "保养工单"
+					}
+				},
+				{
+					"path": "maintain/workOrder/detail",
+					"style": {
+						"navigationBarTextStyle": "white",
+						"backgroundColor": "#0B63D2",
+						"navigationBarBackgroundColor": "#0B63D2",
+						"navigationBarTitleText": "编辑保养工单"
+					}
+				}
+			]
+		}
+	],
+	"preloadRule": {
+		"pages/tabBar/home/index": {
+			"network": "all",
+			"packages": ["purchaseModule", "warehouseModule", "reportModule"]
+		}
+	},
+	"tabBar": {
+		"color": "##000018",
+		"selectedColor": "#3D6DFF",
+		"backgroundColor": "#F3F6FE",
+		"list": [{
+				"pagePath": "pages/tabBar/workbench/index",
+				"iconPath": "static/tabsImg/home_icon.png",
+				"selectedIconPath": "static/tabsImg/home_select.png",
+				"text": "首页"
+			}, {
+				"pagePath": "pages/tabBar/home/index",
+				"iconPath": "static/tabsImg/menu_icon.png",
+				"selectedIconPath": "static/tabsImg/menu_select.png",
+				"text": "申请"
+			},
+			{
+				"pagePath": "pages/tabBar/mine/index",
+				"iconPath": "static/tabsImg/mine_icon.png",
+				"selectedIconPath": "static/tabsImg/min_select.png",
+				"text": "我的"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "GZHN云物料",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}
